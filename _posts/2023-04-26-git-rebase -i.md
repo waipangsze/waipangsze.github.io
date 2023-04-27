@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "git"
+title: "git rebase -i "
 categories: git
 tags: rebase
 author: wpsze
