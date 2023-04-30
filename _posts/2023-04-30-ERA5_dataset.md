@@ -17,14 +17,14 @@ Some related links,
 
 [WRF using ERA5 data](https://forum.mmm.ucar.edu/threads/wrf-using-era5-data.12116/)
 
-> - [Climate Data Store - Copernicus](https://cds.climate.copernicus.eu/)
-> - [ERA5 (UCAR) ERA5 Reanalysis (0.25 Degree Latitude-Longitude Grid) ds633.0 DOI: 10.5065/BH6N-5N20](https://rda.ucar.edu/datasets/ds633.0/dataaccess/)
-> - [ERA5 hourly data on single levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview)
-> - [ERA5 hourly data on pressure levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview)
+- [Climate Data Store - Copernicus](https://cds.climate.copernicus.eu/)
+- [ERA5 (UCAR) ERA5 Reanalysis (0.25 Degree Latitude-Longitude Grid) ds633.0 DOI: 10.5065/BH6N-5N20](https://rda.ucar.edu/datasets/ds633.0/dataaccess/)
+- [ERA5 hourly data on single levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview)
+- [ERA5 hourly data on pressure levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview)
 
 ## Required Meteorological Fields for Running WRF
 
-> https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.1/users_guide_chap3.html#_Required_Meteorological_Fields
+> [user_guide_v4/v4.1/users_guide_chap3.html#_Required_Meteorological_Fields](https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.1/users_guide_chap3.html#_Required_Meteorological_Fields)
 
 ```sh
 3D Data (e.g. data on pressure levels)
@@ -229,17 +229,17 @@ The Vtable that comes with WRF includes not only Vtable.ECMWF, but also Vtable.E
 **Latest commit b5df64a on Apr 12, 2011**
 For use with ERA-interim pressure-level output
 For ERA-interim data at NCAR, use the pl (sc and uv) and sfc sc files. 
-> https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ERA-interim.pl
+> [Vtable.ERA-interim.pl](https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ERA-interim.pl)
 
 ### Vtable.ECMWF
 **Latest commit 5c01f57 on Jun 12, 2010**
-> https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ECMWF
+> [Vtable.ECMWF](https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ECMWF)
 
 ### Vtable.ERA-interim.ml
 **Latest commit b5df64a on Apr 12, 2011**
 For use with ERA-interim model-level output.
 For ERA-interim data at NCAR, use the ml (sc and uv) and sfc sc files. 
-> https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ERA-interim.ml
+> [Vtable.ERA-interim.ml](https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ERA-interim.ml)
 
 ```sh
 ln -s /xxx/ERA-interim.pl Vtable
