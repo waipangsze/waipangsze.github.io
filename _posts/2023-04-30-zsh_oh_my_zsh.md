@@ -110,6 +110,10 @@ Zsh's directory jump is more intelligent, you don't need to enter cd, just enter
 ~/Applications
 ```
 
+## zsh mkdir/source/...: not found
+Using bash for all script,
+> #!/bin/bash 
+
 ## Building zsh without root
 
 > No terminal handling library found
