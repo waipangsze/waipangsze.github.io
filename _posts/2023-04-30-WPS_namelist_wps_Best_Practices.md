@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "WPS namelist.wps Examples"
+title: "WPS namelist.wps Best Practices"
 categories: WRF
 tags: WPS namelist.wps
 author: wpsze
