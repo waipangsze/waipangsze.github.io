@@ -11,18 +11,16 @@ author: wpsze
 
 # ERA5 dataset
 
-It is imperative to complete the registration process on the Copernicus Climate Data Store by creating an account.. 
+It is imperative to complete the registration process on the Copernicus Climate Data Store by creating an account.
 
 Some related links,
 
 [WRF using ERA5 data](https://forum.mmm.ucar.edu/threads/wrf-using-era5-data.12116/)
 
-> [Climate Data Store - Copernicus](https://cds.climate.copernicus.eu/)
-
-> [ERA5 (UCAR) ERA5 Reanalysis (0.25 Degree Latitude-Longitude Grid) ds633.0 | DOI: 10.5065/BH6N-5N20](https://rda.ucar.edu/datasets/ds633.0/dataaccess/)
-
-> [ERA5 hourly data on single levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview)
-> [ERA5 hourly data on pressure levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview)
+> - [Climate Data Store - Copernicus](https://cds.climate.copernicus.eu/)
+> - [ERA5 (UCAR) ERA5 Reanalysis (0.25 Degree Latitude-Longitude Grid) ds633.0 DOI: 10.5065/BH6N-5N20](https://rda.ucar.edu/datasets/ds633.0/dataaccess/)
+> - [ERA5 hourly data on single levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview)
+> - [ERA5 hourly data on pressure levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview)
 
 ## Required Meteorological Fields for Running WRF
 
