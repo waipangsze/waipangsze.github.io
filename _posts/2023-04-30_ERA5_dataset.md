@@ -1,0 +1,280 @@
+---
+layout: post
+title: "ERA5 dataset"
+created: '2023-04-25T06:14:58.314Z'
+modified: '2023-04-25T10:07:42.657Z'
+categories: NWP
+tags: WRF MPAS IC BC ERA5 ECMWF
+author: wpsze
+---
+
+* content
+{:toc}
+
+# ERA5 dataset
+
+You have to register an account of Copernicus Climate Data Store. 
+
+Some sharings,
+
+[WRF using ERA5 data](https://forum.mmm.ucar.edu/threads/wrf-using-era5-data.12116/)
+
+> [ERA5 (UCAR) ERA5 Reanalysis (0.25 Degree Latitude-Longitude Grid) ds633.0 | DOI: 10.5065/BH6N-5N20](https://rda.ucar.edu/datasets/ds633.0/dataaccess/)
+
+> [ERA5 hourly data on single levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview)
+> [ERA5 hourly data on pressure levels from 1940 to present](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview)
+
+## Required Meteorological Fields for Running WRF
+
+> https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.1/users_guide_chap3.html#_Required_Meteorological_Fields
+
+```sh
+3D Data (e.g. data on pressure levels)
+	Temperature
+	U and V components of Wind
+	Geopotential Height
+	Relative Humidity (the code can calculate RH if Specific Humidity is available;this is controlled in the Vtable)
+
+2D Data
+	Surface Pressure
+	Mean Sea Level Pressure
+	Skin Temperature/SST
+	2-meter Temperature
+	2-meter Relative or Specific Humidity
+	10-meter U and V components of wind
+	Soil data (temperature and moisture) and soil height	
+If any masked field is ingested, then a LANDSEA field is recommended
+Water equivalent snow depth (SNOW) is a nice field to have, but not required.
+SEAICE is good to have for a high latitude winter case, but it is not required.
+```
+
+## Shell script
+```sh
+#!/bin/sh
+# source requried packages
+source /home/wpsze/anaconda3/bin/activate venv
+
+yyyy='2022'
+mm='06'
+dd='26'
+hh='18'
+
+for next_hh in $(seq 0 3 36); do # Forecast time = 12, 24, 36, 48, 60, 72, 84, 96, 108, 130
+	NEXT_DATE=$(TZ=UTC date -d "${yyyy}-${mm}-${dd}T${hh}:00:00Z +$next_hh hour" +%Y%m%d%H)
+	echo ${NEXT_DATE}
+
+	echo "downloading " ${NEXT_DATE}
+	SLoutfile="ERA5-0p25-SL-${NEXT_DATE}.grib"
+	PLoutfile="ERA5-0p25-PL-${NEXT_DATE}.grib"
+	resolution="0.25"
+
+	python ERA5-sl.py ${NEXT_DATE} ${SLoutfile} ${resolution}
+	python ERA5-pl.py ${NEXT_DATE} ${PLoutfile} ${resolution}
+done
+```
+## ERA5-sl.py
+```python
+#!/usr/bin/env python
+# Retrieve ERA5 data on single levels(sl)
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("datetime_string", help="Datetime string of the downloaded data in format YYYYMMDDHH", type=str)
+parser.add_argument("ofile", help="Output file of the downloaded data, e.g. ERA5-SL-YYYYMMDDHH.grib", type=str)
+parser.add_argument("resoln", help="Horizontal resolution of the downloaded data (in degree), e.g. 0.25", type=str)
+args = parser.parse_args()
+
+import datetime
+datetime_object = datetime.datetime.strptime(args.datetime_string, "%Y%m%d%H")
+yyyy = datetime_object.strftime("%Y")
+mm = datetime_object.strftime("%m")
+dd = datetime_object.strftime("%d")
+hh = datetime_object.strftime("%H:00")
+
+print("================", args)
+
+import sys
+import logging
+import cdsapi
+c = cdsapi.Client()
+try:
+    c.retrieve(
+        "reanalysis-era5-single-levels",
+        {
+            "product_type": "reanalysis",
+            "format": "grib",
+            "variable": [
+                "10m_u_component_of_wind",
+                "10m_v_component_of_wind",
+                "2m_dewpoint_temperature",
+                "2m_temperature",
+                "land_sea_mask",
+                "mean_sea_level_pressure",
+                "sea_ice_cover",
+                "sea_surface_temperature",
+                "skin_temperature",
+                "snow_density",
+                "snow_depth",
+                "soil_temperature_level_1",
+                "soil_temperature_level_2",
+                "soil_temperature_level_3",
+                "soil_temperature_level_4",
+                "surface_pressure",
+                "volumetric_soil_water_layer_1",
+                "volumetric_soil_water_layer_2",
+                "volumetric_soil_water_layer_3",
+                "volumetric_soil_water_layer_4"
+            ],
+            "grid": [args.resoln, args.resoln],
+            "year": yyyy,
+            "month": [
+                mm
+            ],
+            "day": [
+                dd
+            ],
+            "time": [
+                hh
+            ],
+        #    "area":[15, 90, 10, 120], # North, West, South, East. Default: global
+        },
+        args.ofile)
+except Exception as err:
+    if str(err) == "no data is available within your requested subset. Request returned no data.":
+        logging.exception(err)
+        sys.exit(96)
+    else:
+        raise err
+```
+
+## ERA5-pl.py
+```sh
+#!/usr/bin/env python
+# Retrieve ERA5 data on pressure level(pl)
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("datetime_string", help="Datetime string of the downloaded data in format YYYYMMDDHH", type=str)
+parser.add_argument("ofile", help="Output file of the downloaded data, e.g. ERA5-PL-YYYYMMDDHH.grib", type=str)
+parser.add_argument("resoln", help="Horizontal resolution of the downloaded data (in degree), e.g. 0.25", type=str)
+args = parser.parse_args()
+
+import datetime
+datetime_object = datetime.datetime.strptime(args.datetime_string, "%Y%m%d%H")
+yyyy = datetime_object.strftime("%Y")
+mm = datetime_object.strftime("%m")
+dd = datetime_object.strftime("%d")
+hh = datetime_object.strftime("%H:00")
+
+print("================", args)
+
+import sys
+import logging
+import cdsapi
+c = cdsapi.Client()
+try:
+    c.retrieve(
+        "reanalysis-era5-pressure-levels",
+        {
+            "product_type": "reanalysis",
+            "format": "grib",
+            "variable": [
+                "geopotential",
+                "relative_humidity",
+                "specific_humidity",
+                "temperature",
+                "u_component_of_wind",
+                "v_component_of_wind"
+            ],
+            "pressure_level": [
+                '1', '2', '3',
+                '5', '7', '10',
+                '20', '30', '50',
+                '70', '100', '125',
+                '150', '175', '200',
+                '225', '250', '300',
+                '350', '400', '450',
+                '500', '550', '600',
+                '650', '700', '750',
+                '775', '800', '825',
+                '850', '875', '900',
+                '925', '950', '975',
+                '1000'
+            ],
+            "grid": [args.resoln, args.resoln],
+            "year": yyyy,
+            "month": [
+                mm
+            ],
+            "day": [
+                dd
+            ],
+            "time": [
+                hh
+            ],
+        #    "area":[15, 90, 10, 120], # North, West, South, East. Default: global
+        },
+        args.ofile)
+except Exception as err:
+    if str(err) == "no data is available within your requested subset. Request returned no data.":
+        logging.exception(err)
+        sys.exit(96)
+    else:
+        raise err
+
+
+```
+
+## Vtable
+
+The Vtable that comes with WRF includes not only Vtable.ECMWF, but also Vtable.ERA-interim.pl and Vtable.ERA-interim.ml, where Vtable.ERA-interim.pl corresponds to the ERA-Interim data of the pressure level, Vtable.ERA-interim.ml corresponds to the ERA-Interim data of the model level.
+
+### Vtable.ERA-interim.pl
+**Latest commit b5df64a on Apr 12, 2011**
+For use with ERA-interim pressure-level output
+For ERA-interim data at NCAR, use the pl (sc and uv) and sfc sc files. 
+> https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ERA-interim.pl
+
+### Vtable.ECMWF
+**Latest commit 5c01f57 on Jun 12, 2010**
+> https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ECMWF
+
+### Vtable.ERA-interim.ml
+**Latest commit b5df64a on Apr 12, 2011**
+For use with ERA-interim model-level output.
+For ERA-interim data at NCAR, use the ml (sc and uv) and sfc sc files. 
+> https://github.com/openwfm/wrf-fire/blob/master/WPS/ungrib/Variable_Tables/Vtable.ERA-interim.ml
+
+```sh
+ln -s /xxx/ERA-interim.pl Vtable
+
+# If Vtable.ERA-interim.pl works for you, I don't think you need to switch to Vtable.ECMWRF.
+# If not, Please use Vtable.ECMWF to ungrib ERA5 data. 
+ln -s /xxx/Vtable.ECMWF Vtable
+```
+
+## ./link_grib.csh
+```sh
+$ ./link_grib.csh ../DATA/ERA5/*.grib
+```
+
+## namelist.wps, setup &ungrib 
+```sh
+&ungrib
+ out_format = 'WPS',
+ prefix = 'FILE',
+/
+```
+
+## ./ungrib.exe
+```sh
+$ ./ungrib.exe
+```
+Outputs are format of **FILE:2022-06-27_15** that is intermediate file that are ready for WRF metgrid or MPAS init.
+
+## Error: Missing/incomplete configuration file: /home/xx/.cdsapirc??
+
+原因是缺少 C:\Users\OUSUSU下缺少 .cdsapirc 文件 ， 这个文件里装着下载的Key，我们到这个连接（ https://cds.climate.copernicus.eu/api-how-to ）按照要求拿到我们的Key，没有注册的注册，注册后右边回直接出现key，这时我们把右边的东西复制
+Copy the code displayed beside, in the file $HOME/.cdsapirc (in your Unix/Linux environment).
+
+> ll -a /home/wpsze/.cdsapirc
+
+
