@@ -11,11 +11,13 @@ author: wpsze
 
 # ERA5 dataset
 
-You have to register an account of Copernicus Climate Data Store. 
+It is imperative to complete the registration process on the Copernicus Climate Data Store by creating an account.. 
 
-Some sharings,
+Some related links,
 
 [WRF using ERA5 data](https://forum.mmm.ucar.edu/threads/wrf-using-era5-data.12116/)
+
+> [Climate Data Store - Copernicus](https://cds.climate.copernicus.eu/)
 
 > [ERA5 (UCAR) ERA5 Reanalysis (0.25 Degree Latitude-Longitude Grid) ds633.0 | DOI: 10.5065/BH6N-5N20](https://rda.ucar.edu/datasets/ds633.0/dataaccess/)
 
@@ -270,9 +272,10 @@ Outputs are format of **FILE:2022-06-27_15** that is intermediate file that are 
 
 ## Error: Missing/incomplete configuration file: /home/xx/.cdsapirc??
 
-原因是缺少 C:\Users\OUSUSU下缺少 .cdsapirc 文件 ， 这个文件里装着下载的Key，我们到这个连接（ https://cds.climate.copernicus.eu/api-how-to ）按照要求拿到我们的Key，没有注册的注册，注册后右边回直接出现key，这时我们把右边的东西复制
-Copy the code displayed beside, in the file $HOME/.cdsapirc (in your Unix/Linux environment).
+The reason is that the .cdsapirc file under /home/xx/ is missing. This file contains the downloaded Key. We go to this link (https://cds.climate.copernicus.eu/api-how-to) to get it as required To our Key, if there is no registration, the key will appear directly on the right after registration. At this time, we will copy the things on the right
+Copy the code shown next to the file $HOME/.cdsapirc (in your Unix/Linux environment).
 
+check,
 > ll -a /home/wpsze/.cdsapirc
 
 
