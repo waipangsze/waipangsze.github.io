@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "WPS namelist.wps Examples ccc"
+title: "WPS namelist.wps Examples"
 categories: WRF
 tags: WPS namelist.wps
 author: wpsze
