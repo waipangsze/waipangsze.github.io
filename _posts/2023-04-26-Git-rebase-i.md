@@ -9,46 +9,19 @@ author: wpsze
 * content
 {:toc}
 
-# 使用 rebase -i 合併提交
-> https://backlog.com/git-tutorial/tw/stepup/stepup7_5.html
+# Use rebase -i to merge commits
 
-若要合併過去的提交，請使用rebase -i命令。
+> Ref: https://backlog.com/git-tutorial/tw/stepup/stepup7_5.html
 
-> $ git rebase -i HEAD~~
-預設的文字編輯器會自動開啟，您將看到HEAD 到 HEAD~~ 的提交如下圖顯示。
-
-```sh
-pick 9a54fd4 添加commit的說明
-pick 0d4a808 添加pull的說明
-
-# Rebase 326fc9f..0d4a808 onto d286baa
-#
-# Commands:
-#  p, pick = use commit
-#  r, reword = use commit, but edit the commit message
-#  e, edit = use commit, but stop for amending
-#  s, squash = use commit, but meld into previous commit
-#  f, fixup = like "squash", but discard this commit's log message
-#  x, exec = run command (the rest of the line) using shell
-#
-# If you remove a line here THAT COMMIT WILL BE LOST.
-# However, if you remove everything, the rebase will be aborted.
-#
-```
-將**第二行的 "pick" 改為 "squash"，儲存後並退出**。由於合併後要提交，所以編輯器會提醒您編輯這個最新的提交訊息，請編輯訊息後儲存並退出。
-這樣，兩個提交就合併成一個提交了。請用 log 命令確認歷史記錄。
-
-# 使用 rebase -i 修改提交
-> https://backlog.com/git-tutorial/tw/stepup/stepup7_6.html
-
-使用 rebase -i 命令選擇要修改的提交
+To merge past commits, use the rebase -i command
 
 > $ git rebase -i HEAD~~
-預設文字編輯器會開啟從 HEAD 到 HEAD~~ 的提交，如下圖顯示：
+
+The default text editor will open automatically, and you will see commits from HEAD to HEAD~~
 
 ```sh
-pick 9a54fd4 添加commit的說明
-pick 0d4a808 添加pull的說明
+pick 9a54fd4 add commit instructions
+pick 0d4a808 Add instructions for pull
 
 # Rebase 326fc9f..0d4a808 onto d286baa
 #
@@ -65,10 +38,41 @@ pick 0d4a808 添加pull的說明
 #
 ```
 
-**將第一行的 "pick" 的文字改成 "edit"** ，儲存並退出。接著，將會顯示以下內容，會 checkout 到欲修改的提交。
+Change the "pick" in the **second line to "squash", save and exit**. Since you need to submit after merging, the editor will remind you to edit the latest submission message, please save and exit after editing the message.
+In this way, the two commits are merged into one commit. Please check the history with the log command.
+
+# Amend commits with rebase -i
+> Ref: https://backlog.com/git-tutorial/tw/stepup/stepup7_6.html
+
+Use the rebase -i command to select the commits to amend
+
+> $ git rebase -i HEAD~~
+> 
+The default text editor will open commits from HEAD to HEAD~~
 
 ```sh
-Stopped at d286baa... 添加commit的說明
+pick 9a54fd4 add commit instructions
+pick 0d4a808 Add instructions for pull
+
+# Rebase 326fc9f..0d4a808 onto d286baa
+#
+# Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+#  s, squash = use commit, but meld into previous commit
+#  f, fixup = like "squash", but discard this commit's log message
+#  x, exec = run command (the rest of the line) using shell
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+# However, if you remove everything, the rebase will be aborted.
+#
+```
+
+**Change the text of "pick" in the first line to "edit"**, save and exit. Then, the following content will be displayed, and the commit to be modified will be checked out.
+
+```sh
+Stopped at d286baa... add commit
 You can amend the commit now, with
 
         git commit --amend
@@ -78,13 +82,13 @@ Once you are satisfied with your changes, run
         git rebase --continue
 ```
 
-打開 sample.txt ，修改成為以下內容。
+open sample.txt ，make changes.
 
 ```sh
 $ git add sample.txt
 $ git commit --amend
 ```
 
-您現在需要執行 "git rebase --continue"以完成rebase的操作。
+You now need to execute "git rebase --continue" to complete the rebase.
 
 > $ git rebase --continue
