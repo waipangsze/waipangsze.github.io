@@ -83,6 +83,14 @@ vim ~/.bashrc
 OSH_THEME="simple"
 ```
 
+and change theme like /home/wpsze/.oh-my-bash/themes/font/font.theme.sh
+```sh
+CLOCK_THEME_PROMPT_PREFIX='['
+CLOCK_THEME_PROMPT_SUFFIX=']'
+
+local hostname="${_omb_prompt_bold_green}\u@\h"
+```
+
 ## conda initialize 
 Add the following into .bashrc
 
