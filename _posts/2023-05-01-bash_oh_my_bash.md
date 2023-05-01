@@ -91,6 +91,18 @@ CLOCK_THEME_PROMPT_SUFFIX=']'
 local hostname="${_omb_prompt_bold_green}\u@\h"
 ```
 
+## absolute path
+How can I display the absolute path in bash prompt?
+<https://superuser.com/questions/202212/how-can-i-display-the-absolute-path-in-bash-prompt>
+
+```sh
+# PS1='\u@\h:\w\$ '
+# Replace the "\w" with "\$PWD"
+PS1=[\u@\h ]\$PWD$
+PS1="$(clock_prompt)$python_venv${hostname}:${_omb_prompt_bold_teal}\${PWD}\$ ${_omb_prompt_normal}"
+```
+The key here is **\w** gives the full path while **\W** gives only the directory.
+
 ## conda initialize 
 Add the following into .bashrc
 
