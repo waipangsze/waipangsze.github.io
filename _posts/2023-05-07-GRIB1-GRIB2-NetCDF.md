@@ -1,4 +1,5 @@
 ---
+layout: article
 title: 'GRIB1, GRIB2, NetCDF'
 categories: [WRF]
 tags: [WRF,WPS,HPC,MPAS]

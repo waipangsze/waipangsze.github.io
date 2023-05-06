@@ -1,4 +1,5 @@
 ---
+layout: article
 title: Intel OneAPI
 categories: [Linux]
 tags: [WRF,HPC]
