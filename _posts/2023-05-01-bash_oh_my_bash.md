@@ -1,13 +1,10 @@
 ---
 layout: article
 title: "Bash & Oh-My-Bash"
-categories: Linux
-tags: HPC Bash shell
+categories: [Linux]
+tags: [shell script, HPC]
 author: wpsze
 ---
-
-* content
-{:toc}
 
 # Bash & Oh-My-Bash
 

@@ -1,15 +1,9 @@
 ---
 layout: article
-title: WRF geographical static Data
-created: '2023-04-25T03:57:59.207Z'
-modified: '2023-04-25T04:04:32.800Z'
-categories: WRF
-tags: WPS geodata
+title: "WRF geographical static Data"
+categories: [WRF]
+tags: [WRF,WPS,geodata]
 author: wpsze
----
-
-* content
-{:toc}
 ---
 
 # WRF geographical static Data

@@ -1,13 +1,10 @@
 ---
 layout: article
 title: "WRF em_real namelist.input Examples"
-categories: WRF
-tags: WRF namelist.input
+categories: [WRF]
+tags: [WRF,namelist.input]
 author: wpsze
 ---
-
-* content
-{:toc}
 
 # WRF em_real namelist.input Examples
 

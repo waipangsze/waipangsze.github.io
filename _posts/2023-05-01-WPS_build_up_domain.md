@@ -1,13 +1,10 @@
 ---
 layout: article
 title: "WPS build up domain"
-categories: WPS
-tags: WRF NWP domain ncl
+categories: [WRF]
+tags: [WRF,WPS,NWP,domain,ncl]
 author: wpsze
 ---
-
-* content
-{:toc}
 
 # WPS build up domain
 

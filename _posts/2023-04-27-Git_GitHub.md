@@ -1,18 +1,10 @@
 ---
 layout: article
-title: Git/Github
-created: '2023-04-24T07:06:32.631Z'
-modified: '2023-04-27T07:01:38.414Z'
-categories: Git
-tags: Github init add commit conflicts
+title: "Git/Github"
+categories: [Git]
+tags: [Github,git init, git add, git commit, git conflicts]
 author: wpsze
 ---
-
-* content
-{:toc}
----
-
-# Git/Github
 
 ## Create an empty git repo
 Git settings will be recorded in the .gitconfig file under the home page of the user's directory. We need to use the config command to set it.
@@ -33,7 +25,7 @@ $ mkdir tutorial
 $ cd tutorial
 $ git init
 
-# Initialized empty Git repository in /Users/yourname/Desktop/tutorial/.git/
+## Initialized empty Git repository in /Users/yourname/Desktop/tutorial/.git/
 $ git status
 $ git add .
 $ git commit -m "first commit"
