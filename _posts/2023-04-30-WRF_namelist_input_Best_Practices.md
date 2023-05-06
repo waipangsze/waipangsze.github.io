@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: "WRF namelist.input: Best Practices"
 categories: WRF
 tags: WRF namelist.input

@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: "Bash & Oh-My-Bash"
 categories: Linux
 tags: HPC Bash shell

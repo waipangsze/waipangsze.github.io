@@ -1,15 +1,10 @@
 ---
-layout: post
+layout: article
 title: WRF installation on a Linux-based machine
-created: '2023-04-25T03:06:22.479Z'
-modified: '2023-04-25T03:57:23.790Z'
 categories: WRF
-tags: NWP installation gnu gcc
+tags: NWP WRF installation gnu gcc
 author: wpsze
 ---
-
-* content
-{:toc}
 
 # WRF installation on a Linux-based machine
 

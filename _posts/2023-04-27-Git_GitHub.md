@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: Git/Github
 created: '2023-04-24T07:06:32.631Z'
 modified: '2023-04-27T07:01:38.414Z'

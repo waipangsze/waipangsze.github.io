@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: "Tmux terminal multiplexer"
 categories: Linux
 tags: HPC terminal tmux

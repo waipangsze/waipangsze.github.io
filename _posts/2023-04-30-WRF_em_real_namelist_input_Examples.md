@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: "WRF em_real namelist.input Examples"
 categories: WRF
 tags: WRF namelist.input

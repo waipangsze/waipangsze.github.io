@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: "WPS namelist.wps Examples"
 categories: WRF
 tags: WPS namelist.wps

@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: "ERA5 dataset"
 categories: NWP
 tags: WRF MPAS IC BC ERA5 ECMWF

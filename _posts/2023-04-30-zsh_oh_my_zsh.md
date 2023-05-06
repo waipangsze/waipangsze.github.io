@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: "zsh & oh-my-zsh"
 categories: HPC
 tags: Linux shell terminal

@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title: "WPS build up domain"
 categories: WPS
 tags: WRF NWP domain ncl
