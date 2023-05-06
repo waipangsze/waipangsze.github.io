@@ -1,6 +1,6 @@
 ---
 layout: article
-title: Intel OneAPI
+title: "Intel OneAPI"
 categories: [Linux]
 tags: [WRF,HPC]
 mathjax: true
