@@ -1,7 +1,9 @@
 ---
 title: Intel OneAPI
-created: '2023-05-04T02:13:46.570Z'
-modified: '2023-05-04T05:56:52.983Z'
+categories: [Linux]
+tags: [WRF,HPC]
+mathjax: true
+author: wpsze
 ---
 
 # Intel OneAPI

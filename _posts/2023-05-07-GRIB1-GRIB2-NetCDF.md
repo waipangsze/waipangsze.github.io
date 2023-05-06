@@ -1,7 +1,9 @@
 ---
 title: 'GRIB1, GRIB2, NetCDF'
-created: '2023-04-25T10:05:36.294Z'
-modified: '2023-05-03T06:34:35.758Z'
+categories: [WRF]
+tags: [WRF,WPS,HPC,MPAS]
+mathjax: true
+author: wpsze
 ---
 
 # GRIB1, GRIB2, NetCDF
