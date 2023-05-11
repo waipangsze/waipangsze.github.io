@@ -1,7 +1,7 @@
 ---
 layout: article
 title: "ERA5 ERA5T expver dimension issue"
-categories: [WRF]
+categories: [NWP]
 tags: [WRF,HPC,ERA5]
 mathjax: true
 author: wpsze
