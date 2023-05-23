@@ -117,7 +117,8 @@ try:
                 "volumetric_soil_water_layer_1",
                 "volumetric_soil_water_layer_2",
                 "volumetric_soil_water_layer_3",
-                "volumetric_soil_water_layer_4"
+                "volumetric_soil_water_layer_4",
+		"geopotential"
             ],
             "grid": [args.resoln, args.resoln],
             "year": yyyy,
@@ -140,6 +141,7 @@ except Exception as err:
     else:
         raise err
 ```
+> Remark: + geopotential? Yes for SOILHGT field not found in intermediate file ERA5
 
 ## ERA5-pl.py
 ```sh
@@ -273,4 +275,14 @@ Copy the code shown next to the file $HOME/.cdsapirc (in your Unix/Linux environ
 check,
 > ll -a /home/wpsze/.cdsapirc
 
+## SOILHGT field not found in intermediate file ERA5
 
+Besides processing the time-dependent atmospheric and land-surface ERA5 fields, I think you will also need to use ungrib to process the ERA5 invariant fields, including SOILHGT. Once you've created an intermediate file with invariant fields, you can concatenate the contents of that file to each of your time-varying intermediate files. [link](https://forum.mmm.ucar.edu/threads/error-while-interpolating-regional-initial-conditions-using-era-5-grib-data.12532/)
+
+The HGT_M value from geogrid comes from the static topographic data. The met_em files contain both that HGT_M value, which is identical to the value from geogrid, and **SOILHGT, which is the terrain information coming from the input/first-guess data (e.g., GFS)**. During real.exe, both are used again. The HGT value in the wrfinput* files comes from the HGT_M value and should still be the same at that time (if using the default namelist setting surface_input_source=3). **real.exe also checks for SOILHGT, which is used for smoothing the coarse grid topography on domain 1 during the wrf process.** [link](https://forum.mmm.ucar.edu/threads/soilhgt.11582/)
+
+Smooth_cg_topo and ERA-5 / ERA-Interim data?
+> For ECMWF and ERA, the Vtable says it uses grib code 129 level 0 for both SOILGEO and SOILHGT.
+Please download ERA5 terrain data from
+/FS/DECS/DS630.0/e5.oper.invariant/201601/e5.oper.invariant.128_129_z.regn320sc.2016010100_2016010100.grb
+ERA-I terrain can be found in https://rda.ucar.edu/datasets/ds627.0/, where if you download any sfc dataset, you can find terrain data in it.[link](https://forum.mmm.ucar.edu/threads/smooth_cg_topo-and-era-5-era-interim-data.9323/)
