@@ -12,6 +12,7 @@ from IPython.core.interactiveshell import InteractiveShell
 InteractiveShell.ast_node_interactivity = "all"
 ```
 
+# Sample plot
 ```sh
 import os.path
 import xarray as xr

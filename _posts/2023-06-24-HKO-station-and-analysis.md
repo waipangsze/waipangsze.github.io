@@ -7,7 +7,7 @@ author: wpsze
 ---
 
 # Download HKO weather dataset
-From i-lens.hk
+From [i-lens.hk 香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)
 ```sh
 export yyyy=2023
 export mm=04
@@ -20,10 +20,11 @@ for dd in {14..16}; do
     #sleep $((80 + RANDOM % 21)) ;
 done
 ```
-And then, extract them.
+Subsequently, extract those elements.
 
 # List of HKO station
-It is a part of HKO stations and most of naming are smae as HKO definition but few of them are my assgin.
+
+As part of the HKO stations, the majority of the names I use align with the definitions provided by HKO. However, there are a few instances where I have personally assigned names to certain elements.
 
 ```sh
 ID,lat,lon,station,station_en,station_ch
