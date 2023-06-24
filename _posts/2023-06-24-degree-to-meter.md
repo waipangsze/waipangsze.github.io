@@ -10,6 +10,7 @@ author: wpsze
 
 At the equator for longitude and for latitude anywhere, the following approximations are valid:
 
+```sh
 1° = 111 km  (or 60 nautical miles)
 0.1° = 11.1 km
 0.01° = 1.11 km (2 decimals, km accuracy)
@@ -31,7 +32,7 @@ At the equator for longitude and for latitude anywhere, the following approximat
 0.1" = 3 m
 1/9" = 3 m
 1/27" = 1 m
-
+```
 If you report a position to the nearest 0.01°  (two decimal places for latitude and longitude), you will only be accurate to around 1 km.  While this is adequate for rough locations on a global scale, for detailed work it will be inadequate.
 
 # Latitude and longitude 
