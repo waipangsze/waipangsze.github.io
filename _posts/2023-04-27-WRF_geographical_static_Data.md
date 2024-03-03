@@ -10,6 +10,9 @@ author: wpsze
 
 These are all the mandatory fields required to run WPS and WRF.
 
+All are under:
+> https://www2.mmm.ucar.edu/wrf/src/wps_files/
+
 Download links:
 > http://www2.mmm.ucar.edu/wrf/src/wps_files/geog_complete.tar.bz2
 >> This is a large compressed file (≈ 2.3 GB)
