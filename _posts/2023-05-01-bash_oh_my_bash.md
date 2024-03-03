@@ -145,6 +145,13 @@ function dl() {
     dirs -v | head -n 10
 }
 ```
+Remark:
+In .oh-my-bash/lib/directories.sh
+New package may be false on this function as
+```sh
+OMB_DIRECTORIES_CD_USE_PUSHD=true #false
+```
+Set as **ture**
 
 ## autojump - a faster way to navigate your filesystem
 [Git autojump](https://github.com/wting/autojump)
