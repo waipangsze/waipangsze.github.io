@@ -65,3 +65,15 @@ micromamba env create --name newenv --file oldenv.yaml
 $ source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
 $ micromamba activate venv
 ```
+
+### activate or execute
+Transaction finished
+
+To activate this environment, use:
+
+    micromamba activate venv
+
+Or to execute a single command in this environment, use:
+
+    micromamba run -n venv mycommand
+
