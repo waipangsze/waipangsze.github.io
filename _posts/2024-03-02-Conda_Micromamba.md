@@ -1,0 +1,67 @@
+---
+layout: article
+title: Conda/Micromamba
+categories: [Linux]
+tags: [conda, Micromamba]
+author: wpsze
+---
+
+The easiest way to export a .yml file from a conda environment is to first activate your environment by running:
+```sh
+conda activate myvenv
+```
+And then run the following command that generated your .yml file:
+```sh
+conda env export > list.yml
+```
+Finally, you can create a new environment using the .yml file, like:
+```sh
+conda env create --name myvenv --file=list.yml
+```
+
+or 
+```sh
+conda env export | grep -v "^prefix: " > environment.yml
+conda env create -f environment.yml
+```
+
+Remove environment,
+```sh
+conda remove -n ENV_NAME --all
+```
+
+# Micromamba
+Micromamba is a standalone version of Mamba which is an alternative to Conda. This stack delivers a custom anaconda/miniconda type deployment based on the communities conda-forge channel with micromamba as the package manager. For more information visit [micromamba documentation](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html).
+
+## Installation
+```sh
+wget micro.mamba.pm/install.sh
+chmod +x install.sh
+./install.sh
+```
+> # Parsing arguments
+if [ -t 0 ] ; then
+  printf "Micromamba binary folder? [~/.local/bin] "
+  read BIN_FOLDER
+  printf "Init shell ($shell)? [Y/n] "
+  read INIT_YES
+  printf "Configure conda-forge? [Y/n] "
+  read CONDA_FORGE_YES
+fi
+
+- /home/wpsze/.local/bin
+- init shell? Y
+- configure-forge? Y
+
+Finally, it will initalize micromambs config on .bashrc
+
+### Create env by given yaml
+
+```
+micromamba env create --name newenv --file oldenv.yaml
+```
+### Source and activate env
+```
+$ source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+$ micromamba activate venv
+```
