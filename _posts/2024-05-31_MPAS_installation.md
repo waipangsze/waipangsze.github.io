@@ -1,11 +1,12 @@
 ---
 layout: article
-title: Error: MPAS Installation
+title: MPAS Installation
 categories: [MPAS]
 tags: [Installation]
 author: wpsze
 ---
 
+For MPASv7.0 and above,
 
 ```sh
 #!/bin/bash

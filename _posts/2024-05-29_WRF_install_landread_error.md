@@ -1,6 +1,6 @@
 ---
 layout: article
-title: fatal error: rpc/types.h: No such file or directory
+title: fatal error - rpc/types.h - No such file or directory
 categories: [WRF]
 tags: [WRF, Installation]
 author: wpsze
