@@ -13,7 +13,8 @@ author: wpsze
 > micromamba install anaconda::cmake
 
 2. cmake
-```
+
+```sh
 export libs_DIR=$HOME/Library/
 ### Compilers
 export MPI_FC=mpifort
@@ -27,6 +28,7 @@ export F77=${MPI_F77}
 export F90=${MPI_F77}
 export CC=${MPI_F77}
 export CXX=${MPI_F77}
+```
 
 ############################## Pio ############################
 if [[ ${do_pio} == True ]]; then
