@@ -4,6 +4,8 @@ title: VSCode with Markdown editor
 categories: [Linux]
 tags: [Markdown, VSCode, editor]
 author: wpsze
+mathjax: true
+mathjax_autoNumber: true
 ---
 
 Working with [Markdown files in Visual Studio Code](https://code.visualstudio.com/docs/languages/markdown) is simple, straightforward, and fun. Besides VS Code's basic editing, there are a several Markdown-specific features that help you be more productive.
@@ -140,12 +142,81 @@ It is [GNU Compiler Collection (GCC)](https://en.wikipedia.org/wiki/GNU_Compiler
 
 ## Math block
 
+### In TeXt theme, MathJax is used.
+
+1. [MathJax 語法補帖](https://nightcatv.github.io/2020/06/05/MathJax%20%E8%AA%9E%E6%B3%95%E8%A3%9C%E5%B8%96/#MathJax-%E8%AA%9E%E6%B3%95%E8%A3%9C%E5%B8%96)
+2. [MathJax 语法快速指南](https://bachzart.github.io/2020/09/17/MathJax-%E8%AF%AD%E6%B3%95%E5%BF%AB%E9%80%9F%E6%8C%87%E5%8D%97/)
+
+edit waipangsze.github.io/_includes/markdown-enhancements/mathjax.html and add
+
+```
+displayMath: [ ['$$','$$'], ['\\[','\\]'] ]
+```
+
+and,
+
+```
+<script type="text/x-mathjax-config">
+	var _config = { tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ],
+        displayMath: [ ['$$','$$'], ['\\[','\\]'] ]
+	}};
+	_config.TeX = { equationNumbers: { autoNumber: "all" } };
+	MathJax.Hub.Config(_config);
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+```
+
 Inline math: $x^2$
 
 $$
-\displaystyle
 \left( \sum_{k=1}^n a_k b_k \right)^2
 \leq
 \left( \sum_{k=1}^n a_k^2 \right)
 \left( \sum_{k=1}^n b_k^2 \right)
 $$
+
+$$
+a+1 = b \\
+c+2 = d 
+$$
+
+$$
+\begin{align}
+a &= 1 \\
+b &= 2 
+\end{align}
+$$
+
+$$
+\begin{align*}
+  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+      \vdots & \ddots & \vdots \\
+      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
+\end{align*}
+$$
+
+$$
+a = 1 \\
+b + 1 = 2 \\
+c + 1 + 2 = 3
+$$
+
+$$
+\begin{cases}
+a_1x + b_1y + c_1z = d_1\\
+a_2x + b_2y + c_2z = d_2\\
+a_3x + b_3y + c_3z = d_3\\
+\end{cases}
+$$
+
+
