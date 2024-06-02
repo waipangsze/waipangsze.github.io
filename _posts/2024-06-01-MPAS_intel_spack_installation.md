@@ -72,18 +72,43 @@ $ spack install --add cmake%intel
 
 # Install enviroment for MPAS
 
-```sh
-############################## Directory Listing ############################
-export HOME=`pwd`
+Prepare 
 
+```sh
+#!/bin/bash
+
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         
+#date:           
+#Version:        
+#Description:    The purpose of the script
+#Copyright (C)： 2022 All rights reserved
+#------------------------------------------------#
+
+export libs_DIR=/home/wpsze/MPAS-A/intel/modules_library/Library/
+
+# intel compiler & intel onempi
 spack env activate intel_oneapi
 
-export download_DIR=$HOME/mpas_install/
-export libs_DIR=$HOME/Library/
+which mpiicc && mpiicc --version
+which mpiifort && mpiifort --version
+which mpiicpc && mpiicpc --version
+which icc && icc --version
+which ifort && ifort --version
 
+# MPAS env
+export PATH=$libs_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$libs_DIR/lib:$LD_LIBRARY_PATH
 export LDFLAGS=-L$libs_DIR/lib
 export CPPFLAGS=-I$libs_DIR/include
+
+export PNETCDF_PATH=$libs_DIR
+export PNETCDF=$libs_DIR
+export NETCDF_PATH=$libs_DIR
+export NETCDF=$libs_DIR
+export PIO=$libs_DIR
+
 
 export CC=mpiicc
 export CXX=mpiicpc
@@ -95,10 +120,33 @@ export MPIF77=mpiifort
 export MPIFC=mpiifort
 export MPICC=mpiicc
 export MPICXX=mpiicpc
+
 export CFLAGS='-O3 -fPIC -static-intel'
 export CXXFLAGS='-O3 -fPIC -static-intel'
 export FFLAGS='-O3 -fPIC -static-intel'
+```
+
+Then, env sh
+
+```sh
+############################## Directory Listing ############################
+export HOME=`pwd`
+
+source /home/wpsze/MPAS-A/intel/modules_library/mpas_env_intel.sh
+
+export download_DIR=$HOME/mpas_install/
+
 TARGET=ifort
+
+which mpiicc && mpiicc --version
+which mpiifort && mpiifort --version
+which mpiicpc && mpiicpc --version
+which icc && icc --version
+which ifort && ifort --version
+
+echo $HOME
+echo $download_DIR
+echo $libs_DIR
 
 mpiicc --version
 mpiifort --version
@@ -109,11 +157,7 @@ echo $libs_DIR
 
 mkdir -p mpas_install
 mkdir -p Library
-```
 
-Then,
-
-```sh
 do_download=False # True or False
 compile_all=True
 
@@ -270,8 +314,6 @@ if [[ $compile_all == True ]]; then
 		tar xvf ParallelIO-pio2_5_8.tar.gz 1>/dev/null 2>&1
 		cd ParallelIO-pio2_5_8/
 
-		export CC=mpicc 
-		export FC=mpif90 
 		#./configure --prefix=$libs_DIR --enable-fortran
 		#cmake -DNetCDF_C_PATH=$libs_DIR -DNetCDF_Fortran_PATH=$libs_DIR -DPnetCDF_PATH=$libs_DIR -DPIO_ENABLE_TIMING=OFF -DCMAKE_INSTALL_PREFIX=$libs_DIR
 		cmake -DNetCDF_C_PATH=$NETCDF -DNetCDF_Fortran_PATH=$NETCDF -DPnetCDF_PATH=$PNETCDF -DHDF5_PATH=$libs_DIR -DCMAKE_INSTALL_PREFIX=$libs_DIR -DPIO_USE_MALLOC=ON -DCMAKE_VERBOSE_MAKEFILE=1 -DPIO_ENABLE_TIMING=OFF ./
@@ -309,4 +351,26 @@ if [[ $compile_all == True ]]; then
 	fi
 	
 fi
+```
+
+# MPASv7.3
+
+
+
+# Reference
+
+1. [Full WRF and WPS Installation Example (Intel)](https://forum.mmm.ucar.edu/threads/full-wrf-and-wps-installation-example-intel.15229/)
+
+2. [Make ifort error](https://forum.mmm.ucar.edu/threads/make-ifort-error.340/)
+```sh
+# After reading your comment I decided to edit the Makefile, and in the lines of ifort I made the following change:
+# Code:
+ifort:
+        ( $(MAKE) all \
+        "FC_PARALLEL = mpiifort" \
+        "CC_PARALLEL = mpiicc" \
+        "CXX_PARALLEL = mpiicpc" \
+        "FC_SERIAL = ifort" \
+        "CC_SERIAL = icc" \
+        "CXX_SERIAL = icpc" \
 ```
