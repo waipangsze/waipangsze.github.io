@@ -218,13 +218,6 @@ if [[ $compile_all == True ]]; then
 		tar xvf netcdf-c-4.7.4.tar.gz 1>/dev/null 2>&1 
 		cd netcdf-c-4.7.4/
 		
-		# have to define below parameters
-		export FC=mpifort
-		export F77=mpifort
-		export F90=mpifort
-		export CC=mpicc
-		export CXX=mpic++
-		
 		#export LIBS="-lhdf5_hl -lhdf5 -lz -ldl"
 		
 		export LD_LIBRARY_PATH=$libs_DIR/lib:$LD_LIBRARY_PATH

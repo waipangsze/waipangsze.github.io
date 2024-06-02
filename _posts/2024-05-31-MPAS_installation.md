@@ -87,7 +87,7 @@ MPAS was built with .F files.
 The native timer interface is being used
 Using the PIO 2 library.
 *******************************************************************************
-make[1]: Leaving directory /em/home/wpsze/MPAS-A/mpasv73/MPAS-Model-7.3
+make[1]: Leaving directory /home/wpsze/MPAS-A/mpasv73/MPAS-Model-7.3
 If compilation of the init_atmosphere core was successful, we should also have an executable file named init_atmosphere_model
 '
 fi
