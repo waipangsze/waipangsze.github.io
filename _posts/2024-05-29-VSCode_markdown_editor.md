@@ -140,6 +140,22 @@ It is [GNU Compiler Collection (GCC)](https://en.wikipedia.org/wiki/GNU_Compiler
 
 2. Close the file.
 
+## In TeXt theme,
+
+Success!
+{:.success}
+
+info!
+{:.info}
+
+warning!
+{:.warning} 
+
+error!
+{:.error}
+
+`success`{:.success} `info`{:.info} `warning`{:.warning} `error`{:.error}
+
 ## Math block
 
 ### In TeXt theme, MathJax is used.

@@ -30,6 +30,7 @@ export CC=${MPI_F77}
 export CXX=${MPI_F77}
 ```
 
+```sh
 ############################## Pio ############################
 if [[ ${do_pio} == True ]]; then
     echo "=== PIO ===="
@@ -50,6 +51,7 @@ if [[ ${do_pio} == True ]]; then
     echo "=== PIO (end) ===="
 fi
 ```
+
 where ./ is PIO directory.
 
 ```

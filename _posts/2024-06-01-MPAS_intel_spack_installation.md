@@ -1,188 +1,107 @@
 ---
 layout: article
-title: MPAS Installation
+title: MPAS -- Installation by Spack and Intel
 categories: [MPAS]
-tags: [Installation]
+tags: [MPAS, Spack, Intel, Installation]
 author: wpsze
+mathjax: true
+mathjax_autoNumber: true
 ---
 
-# For MPASv7.0 and above,
+# Using Spack
+
+Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large supercomputing centers, where many users and application teams share common installations of software on clusters with exotic architectures, using libraries that do not have a standard ABI. Spack is non-destructive: installing a new version does not break existing installations, so many configurations can coexist on the same system.
+Most importantly, Spack is simple. It offers a simple spec syntax so that users can specify versions and configuration options concisely. Spack is also simple for package authors: package files are written in pure Python, and specs allow package authors to maintain a single file for many different builds of the same package.
+
+<https://spack.readthedocs.io/en/latest/>
+
+## Search packages online
+
+> <https://packages.spack.io/>
+
+# Install Intel compiler and intel-onempi
 
 ```sh
-#!/bin/bash
-
-#------------------------------------------------#
-#Author:         wpsze
-#Email：         
-#date:           
-#Version:        0.0 
-#Description:    Install libraries that MPAS needs 
-#Copyright (C)： 2022 All rights reserved
-#------------------------------------------------#
-
-## ./mpas_env_install_gcc10_3_0.sh 2>&1 |tee log.log
-
-############################## Directory Listing ############################
-export HOME=`pwd`
-
-source /home/wpsze/MPAS-A/mpas_env.sh
-
-gcc --version
-g++ --version
-gfortran --version
-mpif90 --version
-mpicc --version
-make --version
-cmake --version
-
-echo $NETCDF
-echo $PNETCDF
-echo $PIO
-
-##--Intel MPI与Open MPI、MPICH等MPI实现不同：
-##--mpiicc、mpiicpc和mpiifort命令：使用Intel编译器
-##--mpicc、mpif90和mpifc命令：默认使用GNU编译器
-
-do_init_atmosphere=True # True, False
-do_atmosphere=True
-do_build_tables=True
-
-mpas_version="MPASv8"
-
-echo "Copy MPAS-Model to build-mpas ... "
-rm -rf build-mpas
-cp -r MPAS-Model-8.0.0 build-mpas
-cd build-mpas
-
-############################## init_atmosphere ############################ -g -O0 -fbacktrace
-if [[ ${do_init_atmosphere} == True ]]; then
-	echo "=== init_atmosphere ===="
-	
-	make clean CORE=init_atmosphere
-	make clean CORE=atmosphere
-	
-	# mpas_dmpar.F:
- 	# call MPI_Allreduce(inArray, outArray, nElements, MPI_INTEGERKIND, MPI_MAX, dminfo % comm, mpi_ierr) 
-	# Warning: Rank mismatch between actual argument at (1) and actual argument at (2) (scalar and rank-1)
-	
-	#export FFLAGS="-w -fallow-argument-mismatch -O2"
-	#export FCFLAGS="-w -fallow-argument-mismatch -O2"
-
-	# make gfortran CORE=init_atmosphere PRECISION=single DEBUG=true USE_PIO2=true >& log_build2.txt
-	
-	make -j8 gfortran CORE=init_atmosphere PRECISION=single USE_PIO2=true 2>&1 |tee log_build_init.txt
-	
-	### Check MPAS model.
-	#ls -la init_atmosphere_model
-	echo "=== init_atmosphere (end) ===="
-: '
-*******************************************************************************
-MPAS was built with default single-precision reals.
-Debugging is off.
-Parallel version is on.
-Papi libraries are off.
-TAU Hooks are off.
-MPAS was built without OpenMP support.
-MPAS was built with .F files.
-The native timer interface is being used
-Using the PIO 2 library.
-*******************************************************************************
-make[1]: Leaving directory /em/home/wpsze/MPAS-A/mpasv73/MPAS-Model-7.3
-If compilation of the init_atmosphere core was successful, we should also have an executable file named init_atmosphere_model
-'
-fi
-
-############################## atmosphere_model ############################
-if [[ ${do_atmosphere} == True ]]; then
-	echo "=== atmosphere_model ===="
-	# To preserve all executables except atmosphere_model and clean the MPAS infrastructure, run: 
-	make clean CORE=atmosphere
-	
-	#export FFLAGS="-w -fallow-argument-mismatch -O2"
-	#export FCFLAGS="-w -fallow-argument-mismatch -O2"
-
-	# DEBUG=true
-	
-	make gfortran CORE=atmosphere PRECISION=single USE_PIO2=true 2>&1 |tee log_build_atm.txt
-	
-	### Check MPAS model.
-	#ls -la atmosphere_model
-	echo "=== atmosphere_model (end) ===="
-: '
-*******************************************************************************
-MPAS was built with default single-precision reals.
-Debugging is off.
-Parallel version is on.
-Papi libraries are off.
-TAU Hooks are off.
-MPAS was built without OpenMP support.
-MPAS was built with .F files.
-The native timer interface is being used
-Using the PIO 2 library.
-*******************************************************************************
-'
-
-wait
-
-fi
-
-if [[ -f atmosphere_model ]]; then
-	mkdir -p $HOME/${mpas_version}
-	mv streams.init_atmosphere $HOME/${mpas_version}
-	mv namelist.init_atmosphere $HOME/${mpas_version}
-	mv init_atmosphere_model $HOME/${mpas_version}
-
-	mv atmosphere_model $HOME/${mpas_version}
-	mv build_tables $HOME/${mpas_version}
-	mv namelist.atmosphere $HOME/${mpas_version}
-	mv streams.atmosphere $HOME/${mpas_version}
-	mv stream_list.atmosphere.diagnostics $HOME/${mpas_version}
-	mv stream_list.atmosphere.output $HOME/${mpas_version}
-	mv stream_list.atmosphere.surface $HOME/${mpas_version}
-
-	mv ./src/core_atmosphere/physics/physics_wrf/files/* $HOME/${mpas_version}/
-
-	if [[ ${do_build_tables} == True ]]; then
-		cd $HOME/${mpas_version}
-		./build_tables
-	fi
-
-fi
+$ spack env create intel_oneapi 
+$ spack env activate intel_oneapi
+$ spack info --all intel-oneapi-mpi
+$ spack info --all intel-oneapi-compilers
 ```
 
-and,
+Try to install [intel-oneapi-mpi/2021.4.0](https://spack.readthedocs.io/en/latest/build_systems/inteloneapipackage.html ), 
 
 ```sh
-#!/bin/bash
+$ spack install --add intel-oneapi-compilers@2021.4.0
+# Add the compilers to your compilers.yaml so spack can use them:
+# For 2023.x and earlier versions, use:
+$ spack compiler add `spack location -i intel-oneapi-compilers@2021.4.0`/compiler/latest/linux/bin/intel64
+$ spack compiler add `spack location -i intel-oneapi-compilers@2021.4.0`/compiler/latest/linux/bin
+# Verify that the compilers are available:
+$ spack compiler list
+$ spack location -i intel-oneapi-compilers@2021.4.0
+```
 
-#------------------------------------------------#
-#Author:         wpsze
-#homeail：        
-#date:           
-#Version:        0.0 
-#Description:    Install libraries that MPAS needs 
-#Copyright (C)： 2022 All rights reserved
-#------------------------------------------------#
+Then, install intel-onempi,
 
+```sh
+$ spack install --add intel-oneapi-mpi@2021.4.0%intel
+```
+
+Done.
+
+And, check
+
+```sh
+spack env activate intel_oneapi
+
+which mpiicc && mpiicc --version
+which mpiifort && mpiifort --version
+which mpiicpc && mpiicpc --version
+which icc && icc --version
+which ifort && ifort --version
+```
+
+Additionally, install curl and cmake,
+
+```sh
+$ spack info --all curl
+$ spack install --add curl%intel
+$ spack info --all cmake
+$ spack install --add cmake%intel
+```
+
+# Install enviroment for MPAS
+
+```sh
 ############################## Directory Listing ############################
 export HOME=`pwd`
+
+spack env activate intel_oneapi
+
 export download_DIR=$HOME/mpas_install/
 export libs_DIR=$HOME/Library/
-
-export PATH=/home/wpsze/GNU_GCC/Library/gcc-v9.3.0/bin:$PATH
-export LD_LIBRARY_PATH=/home/wpsze/GNU_GCC/Library/gcc-v9.3.0/lib/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-#export LD_LIBRARY_PATH=/home/wpsze/GNU_GCC/Library/gcc-v9.3.0/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/home/wpsze/GNU_GCC/Library/gcc-v9.3.0/lib64:$LD_LIBRARY_PATH
 
 export LD_LIBRARY_PATH=$libs_DIR/lib:$LD_LIBRARY_PATH
 export LDFLAGS=-L$libs_DIR/lib
 export CPPFLAGS=-I$libs_DIR/include
 
-source /home/wpsze/micromamba/etc/profile.d/micromamba.sh # install cmake
-micromamba activate mpas_env
+export CC=mpiicc
+export CXX=mpiicpc
+export FC=mpiifort
+export F77=mpiifort
+export F90=mpiifort
+export MPIF90=mpiifort
+export MPIF77=mpiifort
+export MPIFC=mpiifort
+export MPICC=mpiicc
+export MPICXX=mpiicpc
+export CFLAGS='-O3 -fPIC -static-intel'
+export CXXFLAGS='-O3 -fPIC -static-intel'
+export FFLAGS='-O3 -fPIC -static-intel'
+TARGET=ifort
 
-gcc --version
-gfortran --version
+mpiicc --version
+mpiifort --version
 
 echo $HOME
 echo $download_DIR
@@ -190,7 +109,11 @@ echo $libs_DIR
 
 mkdir -p mpas_install
 mkdir -p Library
+```
 
+Then,
+
+```sh
 do_download=False # True or False
 compile_all=True
 
@@ -199,14 +122,14 @@ compile_all=True
 #  2) ncarbinlibs/1.1 (xx)  5) netcdf/4.7.0        8) pio/1.9.23 (2.5.2)      11) metis/5.1.0
 #  3) gnu/8.3.0 (done)         6) mpich/3.3.1         9) ncl/6.6.2 (already)       12) hdf5/1.10.5
 
-do_mpich=False
+#do_mpich=False ## intel-onempi
 do_zlib=False
-do_hdf5=False
+do_hdf5=True
 do_pnetcdf=False
 do_netcdfC=False
 do_netcdfF=False
 do_pio=False
-do_metis=True
+do_metis=fTrue
 
 ############################## Downloading Libraries ############################
 if [[ $do_download  == True ]]; then
@@ -235,42 +158,6 @@ if [[ $compile_all == True ]]; then
 	
 	#export NETCDF_PATH=$libs_DIR/bin:$PATH
 	#export NETCDF=$libs_DIR/bin:$PATH
-	
-	#export PIO=$libs_DIR/bin:$PATH
-	
-	### Compilers
-	export MPI_FC=mpifort
-	export MPI_F77=mpifort
-	export MPI_F90=mpifort
-	export MPI_CC=mpicc
-	export MPI_CXX=mpic++
-	### all serial are same as MPI
-	export FC=${MPI_FC}
-	export F77=${MPI_F77}
-	export F90=${MPI_F77}
-	export CC=${MPI_F77}
-	export CXX=${MPI_F77}
-	
-	############################## MPICH ############################
-	if [[ ${do_mpich}  == True ]]; then
-		#export PATH=$libs_DIR/gcc-v8.3.0/bin:$PATH
-		#export LD_LIBRARY_PATH=$libs_DIR/gcc-v8.3.0/lib:$LD_LIBRARY_PATH
-		#export LD_LIBRARY_PATH=$libs_DIR/gcc-v8.3.0/lib64:$LD_LIBRARY_PATH
-			
-		echo "=== MPICH ===="
-		cd $download_DIR
-		tar xvf mpich-4.0.2.tar.gz 1>/dev/null 2>&1  # 3.3.1 4.0.2
-		cd mpich-4.0.2/
-
-		./configure --prefix=$libs_DIR --with-device=ch3 #--enable-pic
-		make -j 4
-		make check
-		make install
-		#make testing
-		cd ..
-		rm -rf mpich-4.0.2
-		echo "=== MPICH (end) ===="
-	fi
 	
 	############################## zlib ############################ *** zlib test OK ***
 	if [[ ${do_zlib}  == True ]]; then
@@ -406,6 +293,14 @@ if [[ $compile_all == True ]]; then
 	############################## metis ############################
 	if [[ ${do_metis} == True ]]; then
 		echo "=== metis ===="
+
+        ## metis is serial 
+        export CC=icc
+        export CXX=icpc
+        export FC=ifort
+        export F77=ifort
+        export F90=ifort
+
 		cd $download_DIR
 		tar xvf metis-5.1.0.tar.gz 1>/dev/null 2>&1
 		cd metis-5.1.0/
@@ -421,14 +316,4 @@ if [[ $compile_all == True ]]; then
 	fi
 	
 fi
-```
-
-# For MPASv6.3 and before
-
-Install cmake, curl and unzip !!! 
-{:.warning}
-
-```sh
-source /home/wpsze/micromamba/etc/profile.d/micromamba.sh # install cmake
-micromamba activate mpas_env
 ```
