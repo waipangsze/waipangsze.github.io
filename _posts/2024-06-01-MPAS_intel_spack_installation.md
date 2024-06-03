@@ -355,13 +355,43 @@ fi
 
 # MPASv7.3
 
-
-
 # Reference
 
 1. [Full WRF and WPS Installation Example (Intel)](https://forum.mmm.ucar.edu/threads/full-wrf-and-wps-installation-example-intel.15229/)
 
 2. [Make ifort error](https://forum.mmm.ucar.edu/threads/make-ifort-error.340/)
+
+In Makefile,
+
+```sh
+ifort:
+	( $(MAKE) all \
+	"FC_PARALLEL = mpif90" \
+	"CC_PARALLEL = mpicc" \
+	"CXX_PARALLEL = mpicxx" \
+	"FC_SERIAL = ifort" \
+	"CC_SERIAL = icc" \
+	"CXX_SERIAL = icpc" \
+	"FFLAGS_PROMOTION = -real-size 64" \
+	"FFLAGS_OPT = -O3 -convert big_endian -free -align array64byte" \
+	"CFLAGS_OPT = -O3" \
+	"CXXFLAGS_OPT = -O3" \
+	"LDFLAGS_OPT = -O3" \
+	"FFLAGS_DEBUG = -g -convert big_endian -free -CU -CB -check all -fpe0 -traceback" \
+	"CFLAGS_DEBUG = -g -traceback" \
+	"CXXFLAGS_DEBUG = -g -traceback" \
+	"LDFLAGS_DEBUG = -g -fpe0 -traceback" \
+	"FFLAGS_OMP = -qopenmp" \
+	"CFLAGS_OMP = -qopenmp" \
+	"CORE = $(CORE)" \
+	"DEBUG = $(DEBUG)" \
+	"USE_PAPI = $(USE_PAPI)" \
+	"OPENMP = $(OPENMP)" \
+	"CPPFLAGS = $(MODEL_FORMULATION) -D_MPI" )
+```
+
+where use **mpif90/mpicc/mpicxx** but now we want to use **mpiifort/mpiicc/mpiicpc**.
+
 ```sh
 # After reading your comment I decided to edit the Makefile, and in the lines of ifort I made the following change:
 # Code:
@@ -374,3 +404,42 @@ ifort:
         "CC_SERIAL = icc" \
         "CXX_SERIAL = icpc" \
 ```
+
+# For MPASv8.1.0,
+
+<https://github.com/MPAS-Dev/MPAS-Model/releases/tag/v8.1.0>
+
+The top-level Makefile provides a new intel build target for the Intel oneAPI Fortran, C, and C++ compiler suite.
+{:.info}
+
+```sh
+intel-mpi:   # BUILDTARGET Intel compiler suite with Intel MPI library
+	( $(MAKE) all \
+	"FC_PARALLEL = mpiifort" \
+	"CC_PARALLEL = mpiicc" \
+	"CXX_PARALLEL = mpiicpc" \
+	"FC_SERIAL = ifort" \
+	"CC_SERIAL = icc" \
+	"CXX_SERIAL = icpc" \
+	"FFLAGS_PROMOTION = -real-size 64" \
+	"FFLAGS_OPT = -O3 -convert big_endian -free -align array64byte" \
+	"CFLAGS_OPT = -O3" \
+	"CXXFLAGS_OPT = -O3" \
+	"LDFLAGS_OPT = -O3" \
+	"FFLAGS_DEBUG = -g -convert big_endian -free -CU -CB -check all -fpe0 -traceback" \
+	"CFLAGS_DEBUG = -g -traceback" \
+	"CXXFLAGS_DEBUG = -g -traceback" \
+	"LDFLAGS_DEBUG = -g -fpe0 -traceback" \
+	"FFLAGS_OMP = -qopenmp" \
+	"CFLAGS_OMP = -qopenmp" \
+	"PICFLAG = -fpic" \
+	"BUILD_TARGET = $(@)" \
+	"CORE = $(CORE)" \
+	"DEBUG = $(DEBUG)" \
+	"USE_PAPI = $(USE_PAPI)" \
+	"OPENMP = $(OPENMP)" \
+	"CPPFLAGS = $(MODEL_FORMULATION) -D_MPI" )
+```
+
+$ make intel-mpi CORE=core options
+{:.info}
