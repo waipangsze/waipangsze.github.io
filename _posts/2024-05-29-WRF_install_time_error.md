@@ -45,3 +45,21 @@ Save the configure.wrf with the change and try recompiling.
 ./compile -j 8 em_real 2>&1 | tee compile.log
 ```
 
+or 
+
+```sh
+	#cp -r WRF-4.5.1-raw WRFV4.5.1
+
+	cd WRFV4.5.1/
+	
+	./clean -a
+	./configure 
+	##  34 (dmpar) GNU [gfortran/gcc]
+
+	## rewrite: The character class \s will match the whitespace characters <tab> and <space>.
+	## and don't include $(DM_FC) 
+	sed -i "s/\s\stime\s//g" configure.wrf
+	#sed -i "s/-DNMM_CORE=$(WRF_NMM_CORE)/-DNMM_CORE=$(WRF_NMM_CORE)\s-DLANDREAD_STUB/g" configure.wrf
+
+	./compile -j 4 em_real 2>&1 | tee compile.log
+```
