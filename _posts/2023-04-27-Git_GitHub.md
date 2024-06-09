@@ -19,6 +19,11 @@ Follow this command, you can set the color of Git's output (output) results.
 $ git config --global color.ui auto
 ```
 
+change editor,
+```sh
+$ git config --global core.editor "vim"
+```
+
 Follow the steps below to set the newly created tutorial directory as a Git database
 ```sh
 $ mkdir tutorial

@@ -80,6 +80,53 @@ To uninstall a package, type spack uninstall package. This will ask the user for
 spack uninstall --dependents ecflow@5.11.4
 ```
 
+# Error
+
+Not successful. 
+
+- [Installation issue: ecflow@5.11.4 with boost@1.85.0 #44116](https://github.com/spack/spack/issues/44116)
+- [Bug fix for ecflow: versions up to 5.11.4 require boost 1.84 or earlier #44181](https://github.com/spack/spack/pull/44181)
+- [Merge spack develop as of 2024/05/09 into spack-stack-dev #432](https://github.com/JCSDA/spack/pull/432)
+
+## Try
+
+```sh
+ $ spack install --add ecflow%gcc ^boost@1.84.0
+==> Concretized ecflow%gcc ^boost@1.84.0
+......
+==> Installing boost-1.84.0-7awv37536onadsx3urg2sfra7hippfov [29/33]
+==> No binary for boost-1.84.0-7awv37536onadsx3urg2sfra7hippfov found: installing from source
+==> Using cached archive: //wpsze/spack/var/spack/cache/_source-cache/archive/cc/cc4b893acf645c9d4b698e9a0f08ca8846aa5d6c68275c14c3e7949c24109454.tar.bz2
+==> Applied patch //wpsze/spack/var/spack/repos/builtin/packages/boost/python_jam-1_77.patch
+==> Applied patch //wpsze/spack/var/spack/repos/builtin/packages/boost/bootstrap-compiler.patch
+==> Ran patch() for boost
+==> boost: Executing phase: 'install'
+==> boost: Successfully installed boost-1.84.0-7awv37536onadsx3urg2sfra7hippfov
+  Stage: 29.98s.  Install: 2m 23.30s.  Post-install: 1m 8.91s.  Total: 4m 6.00s
+[+] //wpsze/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/boost-1.84.0-7awv37536onadsx3urg2sfra7hippfov
+[+] //wpsze/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/py-pip-23.1.2-7d22lvklf5zxutex5ggyhxp3oxpqhzai
+[+] //wpsze/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/py-setuptools-69.2.0-axw5axor273y224weubpqloritokktqx
+[+] //wpsze/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/py-numpy-1.26.4-3vq4eb6gkjjmc3i2pzn4y4pjqscg5bys
+==> Installing ecflow-5.11.4-4chvjzr5j33mtu5m3effo7lugzwskirx [33/33]
+==> No binary for ecflow-5.11.4-4chvjzr5j33mtu5m3effo7lugzwskirx found: installing from source
+==> Using cached archive: //wpsze/spack/var/spack/cache/_source-cache/archive/48/4836a876277c9a65a47a3dc87cae116c3009699f8a25bab4e3afabf160bcf212.tar.gz
+==> Applied patch //wpsze/spack/var/spack/repos/builtin/packages/ecflow/ctsapi_cassert.patch
+==> ecflow: Executing phase: 'cmake'
+==> ecflow: Executing phase: 'build'
+==> ecflow: Executing phase: 'install'
+==> ecflow: Successfully installed ecflow-5.11.4-4chvjzr5j33mtu5m3effo7lugzwskirx
+  Stage: 1.25s.  Cmake: 19.16s.  Build: 3m 47.02s.  Install: 4.49s.  Post-install: 1.60s.  Total: 4m 20.25s
+[+] //wpsze/spack/opt/spack/linux-rocky8-haswell/gcc-8.5.0/ecflow-5.11.4-4chvjzr5j33mtu5m3effo7lugzwskirx
+==> Updating view at //wpsze/spack/var/spack/environments/ecFlow/.spack-env/view
+```
+
+**done** and check,
+
+```sh
+ $ ecflow_client --version
+Ecflow version(5.11.4) boost(1.84.0) compiler(gcc 8.5.0) protocol(JSON cereal 1.3.0) openssl(enabled) Compiled on Jun 10 2024 00:11:14
+```
+
 # ecFlow
 
 在该目录中创建以下几个子目录：
