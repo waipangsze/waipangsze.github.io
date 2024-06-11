@@ -6,6 +6,7 @@ tags: [Markdown, VSCode, editor]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
+mermaid: true
 ---
 
 Working with [Markdown files in Visual Studio Code](https://code.visualstudio.com/docs/languages/markdown) is simple, straightforward, and fun. Besides VS Code's basic editing, there are a several Markdown-specific features that help you be more productive.
@@ -135,6 +136,17 @@ int main() {
 | Row 2         | *Italic*        | Cell 6        |
 | Row 3         | ~~Strike~~      | Cell 9        |
 
+| Left-Aligned  | Center Aligned  | Right Aligned |
+|:------------- |:---------------:| -------------:|
+| Row 1         | **Bold**        | Cell 3        |
+|===============|=================|===============|
+| Row 2         | *Italic*        | Cell 6        |
+|===============|=================|===============|
+| Row 3         | ~~Strike~~      | Cell 9        |
+|===============|=================|===============|
+| Row 3         | [Link](dot.com) | Cell 9        |
+
+
 ```markdown
 | Syntax | Description |
 | ----------- | ----------- |
@@ -160,6 +172,19 @@ int main() {
 | Row 1         | **Bold**        | Cell 3        |
 | Row 2         | *Italic*        | Cell 6        |
 | Row 3         | ~~Strike~~      | Cell 9        |
+
+|-----------------+------------+-----------------+----------------|
+| Default aligned |Left aligned| Center aligned  | Right aligned  |
+|-----------------|:-----------|:---------------:|---------------:|
+| First body part |Second cell | Third cell      | fourth cell    |
+| Second line     |foo         | **strong**      | baz            |
+| Third line      |quux        | baz             | bar            |
+|-----------------+------------+-----------------+----------------|
+| Second body     |            |                 |                |
+| 2 line          |            |                 |                |
+|=================+============+=================+================|
+| Footer row      |            |                 |                |
+|-----------------+------------+-----------------+----------------|
 ```
 
 ### Useful link
@@ -223,6 +248,11 @@ error!
 ```
 
 ## TeXt - Mermaid,
+
+set 
+
+mermaid: true
+{:.info}
 
 ### Flowchart
 
@@ -311,6 +341,12 @@ gantt
     ```
 
 ## Math block
+
+set
+
+mathjax: true
+mathjax_autoNumber: true
+{:.info}
 
 ### In TeXt theme, MathJax is used.
 
