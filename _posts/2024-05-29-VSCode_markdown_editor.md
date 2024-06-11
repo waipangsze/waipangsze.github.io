@@ -111,6 +111,8 @@ int main() {
 
 ## Table
 
+<https://discourse.devontechnologies.com/t/css-for-markdown-styling-tables/71369>
+
 | Syntax | Description |
 | ----------- | ----------- |
 | Header | Title |
@@ -135,16 +137,6 @@ int main() {
 | Row 1         | **Bold**        | Cell 3        |
 | Row 2         | *Italic*        | Cell 6        |
 | Row 3         | ~~Strike~~      | Cell 9        |
-
-| Left-Aligned  | Center Aligned  | Right Aligned |
-|:------------- |:---------------:| -------------:|
-| Row 1         | **Bold**        | Cell 3        |
-|===============|=================|===============|
-| Row 2         | *Italic*        | Cell 6        |
-|===============|=================|===============|
-| Row 3         | ~~Strike~~      | Cell 9        |
-|===============|=================|===============|
-| Row 3         | [Link](dot.com) | Cell 9        |
 
 
 ```markdown
@@ -173,18 +165,6 @@ int main() {
 | Row 2         | *Italic*        | Cell 6        |
 | Row 3         | ~~Strike~~      | Cell 9        |
 
-|-----------------+------------+-----------------+----------------|
-| Default aligned |Left aligned| Center aligned  | Right aligned  |
-|-----------------|:-----------|:---------------:|---------------:|
-| First body part |Second cell | Third cell      | fourth cell    |
-| Second line     |foo         | **strong**      | baz            |
-| Third line      |quux        | baz             | bar            |
-|-----------------+------------+-----------------+----------------|
-| Second body     |            |                 |                |
-| 2 line          |            |                 |                |
-|=================+============+=================+================|
-| Footer row      |            |                 |                |
-|-----------------+------------+-----------------+----------------|
 ```
 
 ### Useful link
@@ -249,9 +229,7 @@ error!
 
 ## TeXt - Mermaid,
 
-set 
-
-mermaid: true
+set `mermaid: true`
 {:.info}
 
 ### Flowchart
@@ -309,17 +287,16 @@ gantt
     dateFormat  YYYY-MM-DD
     title Adding GANTT diagram functionality to mermaid
     section A section
-    Completed task            :done,    des1, 2014-01-06,2014-01-08
-    Active task               :active,  des2, 2014-01-09, 3d
-    Future task               :         des3, after des2, 5d
-    Future task2              :         des4, after des3, 5d
+        Completed task            :done,    des1, 2014-01-06,2014-01-08
+        Active task               :active,  des2, 2014-01-09, 3d
+        Future task               :         des3, after des2, 5d
+        Future task2              :         des4, after des3, 5d
     section Critical tasks
-    Completed task in the critical line :crit, done, 2014-01-06,24h
-    Implement parser and jison          :crit, done, after des1, 2d
-    Create tests for parser             :crit, active, 3d
-    Future task in critical line        :crit, 5d
-    Create tests for renderer           :2d
-    Add to mermaid
+        Completed task in the critical line :crit, done, 2014-01-06,24h
+        Implement parser and jison          :crit, done, after des1, 2d
+        Create tests for parser             :crit, active, 3d
+        Future task in critical line        :crit, 5d
+        Create tests for renderer           :2d
 ```
 
     ```mermaid
@@ -327,25 +304,53 @@ gantt
         dateFormat  YYYY-MM-DD
         title Adding GANTT diagram functionality to mermaid
         section A section
-        Completed task            :done,    des1, 2014-01-06,2014-01-08
-        Active task               :active,  des2, 2014-01-09, 3d
-        Future task               :         des3, after des2, 5d
-        Future task2              :         des4, after des3, 5d
+            Completed task            :done,    des1, 2014-01-06,2014-01-08
+            Active task               :active,  des2, 2014-01-09, 3d
+            Future task               :         des3, after des2, 5d
+            Future task2              :         des4, after des3, 5d
         section Critical tasks
-        Completed task in the critical line :crit, done, 2014-01-06,24h
-        Implement parser and jison          :crit, done, after des1, 2d
-        Create tests for parser             :crit, active, 3d
-        Future task in critical line        :crit, 5d
-        Create tests for renderer           :2d
-        Add to mermaid
+            Completed task in the critical line :crit, done, 2014-01-06,24h
+            Implement parser and jison          :crit, done, after des1, 2d
+            Create tests for parser             :crit, active, 3d
+            Future task in critical line        :crit, 5d
+            Create tests for renderer           :2d
+    ```
+
+```mermaid
+gantt
+    title A Gantt Diagram
+    dateFormat YYYY-MM-DD
+    section Section
+        A task          :a1, 2014-01-01, 30d
+        Another task    :after a1, 20d
+    section Another
+        Task in Another :2014-01-12, 12d
+        another task    :24d
+    section Another 2
+        Task in Another :2014-01-12, 12d
+        another task    :24d
+```
+
+    ```mermaid
+    gantt
+        title A Gantt Diagram
+        dateFormat YYYY-MM-DD
+        section Section
+            A task          :a1, 2014-01-01, 30d
+            Another task    :after a1, 20d
+        section Another
+            Task in Another :2014-01-12, 12d
+            another task    :24d
+        section Another 2
+            Task in Another :2014-01-12, 12d
+            another task    :24d
     ```
 
 ## Math block
 
-set
-
-mathjax: true
-mathjax_autoNumber: true
+set\
+`mathjax: true`\
+`mathjax_autoNumber: true`
 {:.info}
 
 ### In TeXt theme, MathJax is used.

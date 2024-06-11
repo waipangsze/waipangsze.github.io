@@ -1,7 +1,7 @@
 ---
 layout: article
 title: WPS geo data and binary tile files
-categories: [NWP]
+categories: [WRF]
 tags: [tile files, WPS, WRF, MPAS]
 author: wpsze
 ---
