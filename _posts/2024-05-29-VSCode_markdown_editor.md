@@ -113,7 +113,30 @@ int main() {
 | Syntax | Description |
 | ----------- | ----------- |
 | Header | Title |
-| Paragraph | Text |
+| Paragraph 1| Text 1|
+| Paragraph 2 | Text 2|
+
+| Left-Aligned  | Center Aligned  | Right Aligned |
+|:------------- |:---------------:| -------------:|
+| Row 1         | Cell 2          | Cell 3        |
+| Row 2         | Cell 5          | Cell 6        |
+| Row 3         | Cell 8          | Cell 9        |
+
+| Left-Aligned  | Center Aligned  | Right Aligned |
+|:------------- |:---------------:| -------------:|
+| Row 1         | **Bold**        | Cell 3        |
+| Row 2         | *Italic*        | Cell 6        |
+| Row 3         | ~~Strike~~      | Cell 9        |
+| Row 3         | [Link](dot.com) | Cell 9        |
+
+| <!-- -->      | <!-- -->        | <!-- -->      |
+|:-------------:|:---------------:|:-------------:|
+| Row 1         | **Bold**        | Cell 3        |
+| Row 2         | *Italic*        | Cell 6        |
+| Row 3         | ~~Strike~~      | Cell 9        |
+
+### Useful link
+- [Markdown Table Generator](https://www.tablesgenerator.com/markdown_tables)
 
 ## Links
 

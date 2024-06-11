@@ -1,6 +1,6 @@
 ---
 layout: article
-title: "WRF geographical static Data"
+title: "WRF/WPS Geographical Static Data"
 categories: [WRF]
 tags: [WRF,WPS,geodata]
 author: wpsze
@@ -27,3 +27,4 @@ Download links:
 
 For the WPS geographical input data download sets that correspond to **Version 3** of the WPS/WRF code.
 > https://www2.mmm.ucar.edu/wrf/users/download/get_sources_wps_geog_V3.html
+
