@@ -135,6 +135,33 @@ int main() {
 | Row 2         | *Italic*        | Cell 6        |
 | Row 3         | ~~Strike~~      | Cell 9        |
 
+```markdown
+| Syntax | Description |
+| ----------- | ----------- |
+| Header | Title |
+| Paragraph 1| Text 1|
+| Paragraph 2 | Text 2|
+
+| Left-Aligned  | Center Aligned  | Right Aligned |
+|:------------- |:---------------:| -------------:|
+| Row 1         | Cell 2          | Cell 3        |
+| Row 2         | Cell 5          | Cell 6        |
+| Row 3         | Cell 8          | Cell 9        |
+
+| Left-Aligned  | Center Aligned  | Right Aligned |
+|:------------- |:---------------:| -------------:|
+| Row 1         | **Bold**        | Cell 3        |
+| Row 2         | *Italic*        | Cell 6        |
+| Row 3         | ~~Strike~~      | Cell 9        |
+| Row 3         | [Link](dot.com) | Cell 9        |
+
+| <!-- -->      | <!-- -->        | <!-- -->      |
+|:-------------:|:---------------:|:-------------:|
+| Row 1         | **Bold**        | Cell 3        |
+| Row 2         | *Italic*        | Cell 6        |
+| Row 3         | ~~Strike~~      | Cell 9        |
+```
+
 ### Useful link
 - [Markdown Table Generator](https://www.tablesgenerator.com/markdown_tables)
 
@@ -178,6 +205,116 @@ error!
 {:.error}
 
 `success`{:.success} `info`{:.info} `warning`{:.warning} `error`{:.error}
+
+```markdown
+Success!
+{:.success}
+
+info!
+{:.info}
+
+warning!
+{:.warning} 
+
+error!
+{:.error}
+
+`success`{:.success} `info`{:.info} `warning`{:.warning} `error`{:.error}
+```
+
+## TeXt - Mermaid,
+
+### Flowchart
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+```markdown
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->John: Hello John, how are you?
+    loop Healthcheck
+        John->John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts <br/>prevail...
+    John-->Alice: Great!
+    John->Bob: How about you?
+    Bob-->John: Jolly good!
+```
+
+```markdown
+```mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->John: Hello John, how are you?
+    loop Healthcheck
+        John->John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts <br/>prevail...
+    John-->Alice: Great!
+    John->Bob: How about you?
+    Bob-->John: Jolly good!
+```
+```
+
+### Gant Diagrams
+
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    title Adding GANTT diagram functionality to mermaid
+    section A section
+    Completed task            :done,    des1, 2014-01-06,2014-01-08
+    Active task               :active,  des2, 2014-01-09, 3d
+    Future task               :         des3, after des2, 5d
+    Future task2              :         des4, after des3, 5d
+    section Critical tasks
+    Completed task in the critical line :crit, done, 2014-01-06,24h
+    Implement parser and jison          :crit, done, after des1, 2d
+    Create tests for parser             :crit, active, 3d
+    Future task in critical line        :crit, 5d
+    Create tests for renderer           :2d
+    Add to mermaid
+```
+
+```markdown
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    title Adding GANTT diagram functionality to mermaid
+    section A section
+    Completed task            :done,    des1, 2014-01-06,2014-01-08
+    Active task               :active,  des2, 2014-01-09, 3d
+    Future task               :         des3, after des2, 5d
+    Future task2              :         des4, after des3, 5d
+    section Critical tasks
+    Completed task in the critical line :crit, done, 2014-01-06,24h
+    Implement parser and jison          :crit, done, after des1, 2d
+    Create tests for parser             :crit, active, 3d
+    Future task in critical line        :crit, 5d
+    Create tests for renderer           :2d
+    Add to mermaid
+```
+```
 
 ## Math block
 
