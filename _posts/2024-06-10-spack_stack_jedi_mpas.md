@@ -77,58 +77,84 @@ Your branch is up to date with 'origin/release/1.5.1'.
 nothing to commit, working tree clean
 
 $ source setup.sh
-Setting environment variable SPACK_STACK_DIR to /home/wpsze/spack-stack/spack-stack
-Sourcing spack environment /home/wpsze/spack-stack/spack-stack/spack/share/spack/setup-env.sh
 
-$ spack stack create env --site linux.default --name jedi_gccv_mylinux
+$ spack stack create env --site linux.default --name jedi_gccv850_linux
 Configuring basic directory information ...
   ... script directory: /home/wpsze/spack-stack/spack-stack/spack/lib/jcsda-emc/spack-stack/stack
   ... base directory: /home/wpsze/spack-stack/spack-stack/spack/lib/jcsda-emc/spack-stack
   ... spack directory: /home/wpsze/spack-stack/spack-stack/spack
 Creating environment from command-line args
-Successfully wrote environment at /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv_mylinux/spack.yaml
+Successfully wrote environment at /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux/spack.yaml
 
 WARNING! User umask is neither 0022 nor 0027, check before proceeding
 
-==> Created environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv_mylinux
+==> Created environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux
 
-$ spack env activate envs/jedi_gccv_mylinux
+$ spack env activate envs/jedi_gccv850_linux
 
 $ spack find
-==> In environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv_mylinux
+==> In environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux
 ==> No root specs
 ==> 0 installed packages
 
+
 ## MPAS-JEDI
-$ spack add ecbuild eigen udunits gsl-lite 
-$ spack concretize
-...ecbuild@3.7.2%gcc@8.5.0...
-$ spack find
-==> In environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv_mylinux
-==> Root specs
-ecbuild   eigen   gsl-lite   udunits 
-
-==> 0 installed packages
-
+$ spack add ecbuild eigen udunits gsl-lite environment-modules
+$ spack add mpich
 $ spack add hdf5^mpich parallelio^mpich
-$ spack concretize
-...hdf5@1.14.0%gcc@8.5.0...mpich@4.1.1%gcc@8.5.0...
-$ spack find
-==> In environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv_mylinux
-==> Root specs
-ecbuild   eigen   gsl-lite   hdf5   parallelio   udunits 
-
-==> 0 installed packages
-
-$ spack add git-lfs environment-modules
-$ spack concretize
-
 $ spack add ecmwf-atlas@0.31.1^mpich
-$ spack concretize
 
 $ spack install
+
+# all are successful.
+
+ $ spack find
+==> In environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux
+==> Root specs
+ecbuild   ecmwf-atlas@0.31.1   eigen   environment-modules   gsl-lite   hdf5   mpich   parallelio   udunits 
+
+==> Installed packages
+-- linux-rocky8-haswell / gcc@8.5.0 -----------------------------
+autoconf@2.69                       diffutils@3.9              fiat@1.2.0       libfabric@1.18.1   m4@1.4.19               pigz@2.7                util-macros@1.19.3
+automake@1.16.5                     ecbuild@3.7.2              findutils@4.9.0  libffi@3.4.4       mpich@4.1.1             pkg-config@0.29.2       xz@5.4.1
+berkeley-db@18.1.40                 eckit@1.23.1               flex@2.6.3       libiconv@1.17      ncurses@6.4             python@3.10.8           yaksa@0.2
+bison@3.8.2                         ecmwf-atlas@0.31.1         gdbm@1.23        libmd@1.0.4        netcdf-c@4.9.2          readline@8.2            zlib@1.2.13
+boost@1.78.0                        ectrans@1.2.0              gettext@0.21.1   libpciaccess@0.17  netcdf-fortran@4.6.0    snappy@1.1.10           zstd@1.5.2
+bzip2@1.0.8                         eigen@3.4.0                gmake@4.4.1      libsigsegv@2.14    openblas@0.3.19         sqlite@3.42.0
+c-blosc@1.21.4                      environment-modules@5.3.1  gsl-lite@0.37.0  libtool@2.4.7      openssl@1.1.1u          tar@1.34
+ca-certificates-mozilla@2023-01-10  expat@2.5.0                hdf5@1.14.0      libxcrypt@4.4.35   parallel-netcdf@1.12.2  tcl@8.6.12
+cmake@3.23.1                        fckit@0.10.1               libaec@1.0.6     libxml2@2.10.3     parallelio@2.5.10       udunits@2.2.28
+curl@8.1.2                          fftw@3.3.10                libbsd@0.11.7    lz4@1.9.4          perl@5.38.0             util-linux-uuid@2.38.1
+==> 65 installed packages
+
 $ spack module tcl refresh
+==> You are about to regenerate tcl module files for:
+
+-- linux-rocky8-haswell / gcc@8.5.0 -----------------------------
+kmosf2b autoconf@2.69                       owkksle expat@2.5.0       o5fm2ib libpciaccess@0.17       zzdldzz pkg-config@0.29.2
+3zzqcqa automake@1.16.5                     z5frtgj fckit@0.10.1      bcnervk libsigsegv@2.14         vu7mzai python@3.10.8
+rksajpa berkeley-db@18.1.40                 dyhv6t6 fftw@3.3.10       oi52wco libtool@2.4.7           nbav53o readline@8.2
+k4yohcw bison@3.8.2                         abwhtim fiat@1.2.0        dh3pgna libxcrypt@4.4.35        awehs3f snappy@1.1.10
+3zcm66d boost@1.78.0                        th5cmuq findutils@4.9.0   56a6xgk libxml2@2.10.3          xmupg6k sqlite@3.42.0
+yd6i5au bzip2@1.0.8                         hjgtmaq flex@2.6.3        rwcgkls lz4@1.9.4               vetdjwa tar@1.34
+at3s3ei c-blosc@1.21.4                      lisu52h gdbm@1.23         uwicvjw m4@1.4.19               m3xviog tcl@8.6.12
+edma3gu ca-certificates-mozilla@2023-01-10  wzfhnm7 gettext@0.21.1    jefb5lu mpich@4.1.1             uadvmuz udunits@2.2.28
+h5p5rs7 cmake@3.23.1                        ba4vudd gmake@4.4.1       dzxkixc ncurses@6.4             wdfeec7 util-linux-uuid@2.38.1
+jf7usug curl@8.1.2                          t4udhou gsl-lite@0.37.0   6d2z7tb netcdf-c@4.9.2          evqjofh util-macros@1.19.3
+32jm5xp diffutils@3.9                       fja7tdm hdf5@1.14.0       3ltfgi2 netcdf-fortran@4.6.0    72t2yvx xz@5.4.1
+pzidwlf ecbuild@3.7.2                       vbf3elz libaec@1.0.6      u5n5zri openblas@0.3.19         iyrk2i7 yaksa@0.2
+wov4yva eckit@1.23.1                        65boafj libbsd@0.11.7     mgcs3tx openssl@1.1.1u          x54v3wn zlib@1.2.13
+v45ibbv ecmwf-atlas@0.31.1                  63u4otp libfabric@1.18.1  56vql6d parallel-netcdf@1.12.2  bteldyo zstd@1.5.2
+kb6u64z ectrans@1.2.0                       frf3blg libffi@3.4.4      efx7bmd parallelio@2.5.10
+t4jxg3j eigen@3.4.0                         pnmrtbc libiconv@1.17     se4zvg5 perl@5.38.0
+om7l5xf environment-modules@5.3.1           vgtevgl libmd@1.0.4       l3xczgm pigz@2.7
+
+==> Do you want to proceed? [y/n] y
+==> Regenerating tcl module files
+
 $ spack stack setup-meta-modules
+...
+Metamodule generation completed successfully in /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux/install/modulefiles/Core
 ```
 
 Error:
@@ -138,8 +164,14 @@ Error:
 > ==> Installing krb5-1.20.1-muktx57itqz6x2z74afwncpub2higpei
 > msgfmt: error while opening "en_US.mo" for writing: Permission denied
 > msgfmt: error while opening "de.mo" for writing: Permission denied
+>> No install git-lfs
 
 > Error: git-lfs-3.3.0-6ilwlfqmm7ud5crbugmcskju5gtkgk4j: Package was not installed
+>> `$ micromamba activate git-lfs`
+>> `$ micromamba install git-lfs`
+
+Remark:
+Git Large File Storage (LFS) replaces large files such as audio samples, videos, datasets, and graphics with text pointers inside Git, while storing the file contents on a remote server like GitHub.com or GitHub Enterprise.
 
 source env,
 
@@ -158,7 +190,7 @@ $ git clone -b release/2.0.0 https://github.com/JCSDA/mpas-bundle.git code
 $ mkdir build
 $ cd build
 
-$ spack env activate envs/jedi_gccv_mylinux
+$ spack env activate envs/jedi_gccv850_linux
 $ module list
 ```
 
@@ -166,6 +198,10 @@ MPAS-JEDI uses cmake to automatically download the code from various github repo
 
 ```sh
 $ git lfs install
+```
+
+and then,
+```sh
 $ cmake ../code
 ```
 
