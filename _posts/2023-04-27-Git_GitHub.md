@@ -36,7 +36,18 @@ $ git add .
 $ git commit -m "first commit"
 $ git status
 $ git log
-$ git log --graph --oneline
+$ git log --all --graph --oneline
+```
+
+## Create branch and swich
+
+```sh
+$ git checkout -b iss53
+Switched to a new branch "iss53"
+This is shorthand for:
+
+$ git branch iss53
+$ git checkout iss53
 ```
 
 ### Push to the remote database
