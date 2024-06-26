@@ -7,6 +7,21 @@ mathjax: true
 author: wpsze
 ---
 
+# WRF
+
+- Version 1.0: WRF was first released December 2000
+- Version 2.0: May 2004
+- Version 3.0: April 2008
+- Version 4.0: June 2018 (add hybrid vertical coordinate)
+- Version 4.1: April 2019
+- Version 4.2: April 2020
+- Version 4.3: May 2021
+- Version 4.4: April 2022
+- Version 4.5: April 2023
+     - 4.5.1: July 2023
+     - 4.5.2: December 2023
+- Version 4.6: May 2024
+
 # WRF installation on a Linux-based machine
 
 Weather Research & Forecasting Model (WRF) is a state of the art mesoscale numerical weather prediction system designed for both atmospheric research and operational forecasting applications [^1].
