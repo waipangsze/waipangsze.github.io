@@ -1,8 +1,8 @@
 ---
 layout: article
-title: ecFlow -- Installation by Spack
+title: ecFlow -- Installation & Usage
 categories: [MPAS]
-tags: [ecFlow, Spack, Installation]
+tags: [ecFlow, Spack, Micromamba, Conda, Installation]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
@@ -88,7 +88,7 @@ Not successful.
 - [Bug fix for ecflow: versions up to 5.11.4 require boost 1.84 or earlier #44181](https://github.com/spack/spack/pull/44181)
 - [Merge spack develop as of 2024/05/09 into spack-stack-dev #432](https://github.com/JCSDA/spack/pull/432)
 
-## Try
+## Try with boost@1.84.0
 
 ```sh
  $ spack install --add ecflow%gcc ^boost@1.84.0
@@ -127,17 +127,46 @@ Not successful.
 Ecflow version(5.11.4) boost(1.84.0) compiler(gcc 8.5.0) protocol(JSON cereal 1.3.0) openssl(enabled) Compiled on Jun 10 2024 00:11:14
 ```
 
+# By micromamba *****
+
+```sh
+$ micromamba create -n ecFlow
+Empty environment created at prefix: /home/wpsze/micromamba/envs/ecFlow
+$ micromamba activate ecFlow
+|ecFlow|wpsze:/home/wpsze $ micromamba install ecflow -c conda-forge
+|ecFlow|wpsze:/home/wpsze $ ecflow_client --version
+Ecflow version(5.13.0) boost(1.84.0) compiler(gcc 12.3.0) protocol(JSON cereal 1.3.0) openssl(enabled) Compiled on Jun 20 2024 08:28:01
+
+ $ ecf*
+ecflow_client        ecflow_http          ecflow_logsvr.pl     ecflow_standalone    ecflow_stop.sh       
+ecflow_udp_client    ecflow_ui.x
+ecflow_fuse.py       ecflow_logserver.sh  ecflow_server        
+ecflow_start.sh      ecflow_udp           ecflow_ui
+```
+
+
+
+and it installs,
+
+```sh
+  + libboost-python                  1.84.0  py312h389efb2_3      conda-forge      124kB
+  + libboost-python-devel            1.84.0  py312h9cebb41_3      conda-forge       20kB
+  + ecflow                           5.13.0  py312hc3ad225_0      conda-forge       17MB
+```
+
+where boost is 1.84.0
+
 # ecFlow
 
-在该目录中创建以下几个子目录：
+Create the following subdirectories in this directory:
 
-def：保存 ecFlow 的工作流定义文件和任务的 ecf 脚本文件
+**def**: ecf script file that stores ecFlow workflow definition files and tasks
 
-ecfout：ecFlow 服务运行的目录，ecFlow 服务的日志会保存在该目录下
+**ecfout**: The directory where the ecFlow service operates. The logs of the ecFlow service will be stored in this directory.
 
-program：保存模式程序、配置文件和脚本
+**Programs**: Save mode programs, profiles, and scripts
 
-workdir：模式运行的目录
+**workdir**: directory where the mode operates
 
 ```sh
 mkdir -p def
@@ -145,3 +174,161 @@ mkdir -p ecfout
 mkdir -p program
 mkdir -p workdir
 ```
+
+## ecFlow Quickstart
+[ecFlow Quickstart](https://confluence.ecmwf.int/display/ECFLOW/ecFlow+Quickstart)
+
+```sh
+ $ ll ./ecflow_quickstart  
+total 160K
+drwxrwxr-x 3 wpsze wpsze  33K Jun  7 22:06 ./
+drwxrwxr-x 3 wpsze wpsze  33K Jun  7 22:06 ../
+-rw-rw-r-- 1 wpsze wpsze 2.4K Jun  7 17:51 ecflow_quickstart.tar.gz
+-rw-r--r-- 1 wpsze wpsze 1.8K Nov  2  2022 head.h
+-rw-r--r-- 1 wpsze wpsze  760 Nov  2  2022 instructions.txt
+-rw-r--r-- 1 wpsze wpsze  209 Nov  1  2022 tail.h
+drwxr-xr-x 2 wpsze wpsze  33K Nov  2  2022 test/
+-rw-r--r-- 1 wpsze wpsze  222 Nov  2  2022 test.def
+
+ $ ll test
+total 165K
+drwxr-xr-x 2 wpsze wpsze  33K Nov  2  2022 ./
+drwxrwxr-x 3 wpsze wpsze  33K Jun  7 22:06 ../
+-rw-r--r-- 1 wpsze wpsze  627 Nov  2  2022 t1.1
+-rw-r--r-- 1 wpsze wpsze  877 Nov  2  2022 t1.2
+-rw-r--r-- 1 wpsze wpsze  119 Nov  2  2022 t1.ecf
+-rwxr-xr-x 1 wpsze wpsze 2.1K Nov  2  2022 t1.job1*
+-rwxr-xr-x 1 wpsze wpsze 2.1K Nov  2  2022 t1.job2*
+-rw-r--r-- 1 wpsze wpsze  627 Nov  2  2022 t2.1
+-rw-r--r-- 1 wpsze wpsze  118 Nov  2  2022 t2.ecf
+-rwxr-xr-x 1 wpsze wpsze 2.1K Nov  2  2022 t2.job1*
+
+ $ cat test/t1.ecf 
+%include "../head.h"
+
+echo "I, %ECF_NAME%, am part of a suite that lives in %ECF_HOME%"
+sleep 2
+
+%include "../tail.h"
+
+ $ cat test/t2.ecf 
+%include "../head.h"
+
+echo "I, %ECF_NAME%, am part of a suite that lives in %ECF_HOME%"
+sleep 2
+
+%include "../tail.h"
+```
+
+### Inspect and update the suite definition
+The file **test.def** defines a suite called "test". Open this file in a text editor and note the structure.
+
+```sh
+suite test
+   edit ECF_HOME "/replace/with/own/home/ecflow/quickstart"
+   task t1
+   task t2
+        trigger t1 eq complete
+endsuite
+```
+
+We define a suite called "test"; it defines a variable called **ECF_HOME**, then it defines two tasks **("tasks" are things that actually run)** and specifies that **task t2 will be run as soon as task t1 has completed**. The scripts corresponding to the tasks are specified in **".ecf"** files in the test directory. Have a look - they simply print some information about themselves, then sleep for 2 seconds.
+
+The first thing you must do is to complete the path to your working directory in the **ECF_HOME** definition in test.def and save the file.
+
+### Start an ecFlow server
+We will start a **new running instance of an ecFlow server using the default port**. It is possible to use a different port by **adding --port=3500 (for example)** to every ecFlow command-line action. Note also that we start it as a background task - it will run until the server is stopped. It can be run in the foreground, but in that case you will need to use a new terminal for any subsequent commands!
+
+To start the ecflow server:
+
+```sh
+$ ecflow_server &
+or
+$ export ECF_PORT=2500
+$ ecflow_start.sh -p $ECF_PORT
+```
+
+Check that it is running:
+
+```sh
+$ ecflow_client --ping
+ping server(localhost:3141) succeeded in 00:00:00.034207  ~34 milliseconds
+```
+
+or check
+
+```sh
+ $ ps -u wpsze -f | grep ecflow | grep -v grep
+wpsze    3248171 3700943  0 14:26 pts/6    00:00:00 ecflow_server
+```
+
+Please note **“Host”** and **“Port Number”** here. Also note that each user must use a unique port number (we recommend using a random number between 2500 and 9999)
+
+To view the ecflow GUI:
+
+```sh
+ecflow_ui &
+```
+
+When opening the ecflow GUI flow for the first time you will need to add your server to the GUI. In the GUI click on **“Servers” and then “Manage servers”**. A new window will appear. Click on **“Add server”. Here you need to add the Name, Host, and Port of your server**. For “Host” and “Port” please refer to the last section of output from the previous step.
+
+To stop the ecflow server:
+
+```sh
+ecflow_stop.sh -p $ECF_PORT
+```
+
+e.g.
+
+```sh
+ $ ecflow_stop.sh -p 3141
+Fri Jun 28 08:57:33 UTC 2024
+
+User "10004" attempting to stop ecf server on ip:3141
+
+Checking if the server is running on ip:3141
+ping server(ip:3141) succeeded in 00:00:00.011797  ~11 milliseconds
+
+Halting, check pointing and terminating the server
+[1]+  Done                    ecflow_server
+```
+
+and then,
+
+```sh
+$ ps -u wpsze -f | grep ecflow | grep -v grep
+``` 
+has shown nothing now.
+
+### Load your suite definition into the server
+
+```sh
+$ ecflow_client --load=test.def
+```
+
+Check that it is loaded by asking the server to give you back the suite definition:
+
+```sh
+$ ecflow_client --get
+#5.11.4
+suite test
+  edit ECF_HOME '/EM/wpsze/ecflow/ecflow_quickstart/'
+  task t1
+  task t2
+    trigger t1 eq complete
+endsuite
+# enddef
+```
+
+### Monitor and interact via the GUI
+#### Start ecFlowUI:
+
+```sh
+$ ecflow_ui &
+```
+
+Once ecFlowUI has started, you must tell it how to reach your server. Go to the 
+
+Servers → Manage Servers menu, click "Add server", then enter the details of your server. Name can be anything you want - it's for you to identify the server to your self; something like "localtest" would be fine here. Host should in this case be "localhost", and Port should be XXX. The other fields can be left blank, but keep the "Add server to current view" box ticked.
+
+You should now see your suite loaded into the GUI! To make the server active, right-click on the top-level node representing the server ("localtest in our case) and choose "Restart". Now right-click on the "test" node and choose "Begin" to make the suite active. The default behaviour is to only refresh its view of the suite every 60 seconds, so you will need to click the green refresh button at the top every so often to see the progress of the tasks.
