@@ -20,7 +20,7 @@ Most importantly, Spack is simple. It offers a simple spec syntax so that users 
 > <https://packages.spack.io/>
 > <https://packages.spack.io/package.html?name=ecflow>
 
-# Install 
+# Install (doesn't use spack)
 
 ```sh
 $ spack env create ecFlow 
@@ -237,21 +237,40 @@ We define a suite called "test"; it defines a variable called **ECF_HOME**, then
 The first thing you must do is to complete the path to your working directory in the **ECF_HOME** definition in test.def and save the file.
 
 ### Start an ecFlow server
-We will start a **new running instance of an ecFlow server using the default port**. It is possible to use a different port by **adding --port=3500 (for example)** to every ecFlow command-line action. Note also that we start it as a background task - it will run until the server is stopped. It can be run in the foreground, but in that case you will need to use a new terminal for any subsequent commands!
+We will start a **new running instance of an ecFlow server using the default port (# start ecFlow with default port 3141)**. It is possible to use a different port by **adding --port=3500 (for example)** to every ecFlow command-line action. Note also that we start it as a background task - it will run until the server is stopped. It can be run in the foreground, but in that case you will need to use a new terminal for any subsequent commands!
 
 To start the ecflow server:
 
 ```sh
 $ ecflow_server &
 or
-$ export ECF_PORT=2500
-$ ecflow_start.sh -p $ECF_PORT
+$ export ECF_PORT=3141
+$ ecflow_start.sh -d /home/wpsze/xxx -p $ECF_PORT
+```
+
+**make sure this port can be used**
+{:.info}
+
+#### check what port numbers are being used
+
+You can check what port numbers are being used, with netstat: To list all open network ports on your machine, run **netstat -lnptu**.
+Here is a breakdown of the parameters:
+
+l - List all listening ports
+n - Display the numeric IP addresses (i.e., don't do reverse DNS lookups
+p - List the process name that is attached to that port
+t - List all TCP connections
+u - List all UDP connections
+
+```sh
+ $ netstat -lnptu
+ tcp        0      0 0.0.0.0:3141            0.0.0.0:*               LISTEN      169655/ecflow_serve
 ```
 
 Check that it is running:
 
 ```sh
-$ ecflow_client --ping
+$ ecflow_client --ping --port=3141
 ping server(localhost:3141) succeeded in 00:00:00.034207  ~34 milliseconds
 ```
 
@@ -263,14 +282,6 @@ wpsze    3248171 3700943  0 14:26 pts/6    00:00:00 ecflow_server
 ```
 
 Please note **“Host”** and **“Port Number”** here. Also note that each user must use a unique port number (we recommend using a random number between 2500 and 9999)
-
-To view the ecflow GUI:
-
-```sh
-ecflow_ui &
-```
-
-When opening the ecflow GUI flow for the first time you will need to add your server to the GUI. In the GUI click on **“Servers” and then “Manage servers”**. A new window will appear. Click on **“Add server”. Here you need to add the Name, Host, and Port of your server**. For “Host” and “Port” please refer to the last section of output from the previous step.
 
 To stop the ecflow server:
 
@@ -300,16 +311,28 @@ $ ps -u wpsze -f | grep ecflow | grep -v grep
 ``` 
 has shown nothing now.
 
-### Load your suite definition into the server
+### Load your suite definition into the server **
 
 ```sh
-$ ecflow_client --load=test.def
+$ ecflow_client --load=test.def --port=3141
+```
+
+More,
+```sh
+ecflow_client --help
+ecflow_client --load=/my/home/fred.def
+ecflow_client --load=/my/home/exotic.def            # will error if suites of same name exists
+ecflow_client --load=/my/home/exotic.def force      # overwrite suite's of same name in the server
+ecflow_client --load=/my/home/exotic.def check_only # Just check, don't send to server
+ecflow_client --load=/my/home/exotic.def stats      # Show defs statistics, don't send to server
+ecflow_client --load=host1.3141.check               # Load checkpoint file to the server
+ecflow_client --load=host1.3141.check print         # print definition to standard out in defs format
 ```
 
 Check that it is loaded by asking the server to give you back the suite definition:
 
 ```sh
-$ ecflow_client --get
+$ ecflow_client --get --port=3141
 #5.11.4
 suite test
   edit ECF_HOME '/EM/wpsze/ecflow/ecflow_quickstart/'
@@ -321,7 +344,9 @@ endsuite
 ```
 
 ### Monitor and interact via the GUI
-#### Start ecFlowUI:
+#### Start ecFlowUI: (Local PC)
+
+When opening the ecflow GUI flow for the first time you will need to add your server to the GUI. In the GUI click on **“Servers” and then “Manage servers”**. A new window will appear. Click on **“Add server”. Here you need to add the Name, Host, and Port of your server**. For “Host” and “Port” please refer to the last section of output from the previous step.
 
 ```sh
 $ ecflow_ui &
@@ -331,4 +356,199 @@ Once ecFlowUI has started, you must tell it how to reach your server. Go to the
 
 Servers → Manage Servers menu, click "Add server", then enter the details of your server. Name can be anything you want - it's for you to identify the server to your self; something like "localtest" would be fine here. Host should in this case be "localhost", and Port should be XXX. The other fields can be left blank, but keep the "Add server to current view" box ticked.
 
-You should now see your suite loaded into the GUI! To make the server active, right-click on the top-level node representing the server ("localtest in our case) and choose "Restart". Now right-click on the "test" node and choose "Begin" to make the suite active. The default behaviour is to only refresh its view of the suite every 60 seconds, so you will need to click the green refresh button at the top every so often to see the progress of the tasks.
+You should now see your suite loaded into the GUI! To make the server active, right-click on the top-level node representing the server ("localtest in our case) and choose **"Restart"**. Now right-click on the "test" node and **choose "Begin"** to make the suite active. The default behaviour is to only refresh its view of the suite every 60 seconds, so you will need to click the green refresh button at the top every so often to see the progress of the tasks.
+
+![ecflow-ui_Task](https://confluence.ecmwf.int/download/attachments/52464709/worddavd23273b6552a14558257676bb73f41be.png?version=1&modificationDate=1448363109499&api=v2)
+
+The diagram shows the typical status changes for a Task.
+
+### Start
+At this time, the service is stopped and needs to be started manually.
+
+```sh
+$ecflow_client --begin --host=login05 --port=3141
+```
+
+Since no triggering mechanism is added, t1 will be executed immediately after the service starts.
+
+### Replace suite
+Replace the entire suite,
+```sh
+ecflow_client --replace=/test test.def --port=3141
+```
+
+### check the status of the server
+To check the status of the server, enter the following unix command
+```sh
+ecflow_client --host=login05 --port=3141 --stats
+Server statistics
+   Version                         Ecflow version(5.13.0) boost(1.84.0) compiler(gcc 12.3.0) protocol(JSON cereal 1.3.0) openssl(enabled) Compiled on Jun 20 2024 08:28:01
+   Status                          RUNNING
+   Host                            xxx.com
+   Port                            3141
+   Up since                        2024-Jul-02 23:44:29
+......
+```
+If ecflow_server is in **halted state**, the server needs to be restarted.
+
+## ecFlow variables
+[ecFlow variables](https://confluence.ecmwf.int/display/ECFLOW/ecFlow++variables)
+
+> ECF_HOME
+> ECF_INCLUDE
+> ECF_FILES
+
+## Execute, rerun, requeue
+
+In ecflow_ui, it is important to understand the distinction between execute, rerun and re-queue.
+
+These options are available with the right mouse button over a task.
+
+> **Execute**: This means run the task immediately. (Hence ignores any dependency that holds the task).
+
+This option preserves the previous output, from the job. You should see output files  t1.1, t1.2, t1.3, each time the task is run.
+
+> **Rerun**: This places the task, back into the queued state.
+
+The task will now honour any dependencies that would hold the job. i.e. time dependencies, limits, triggers, suspend, etc. (You will be introduced to these terms later on in the tutorial) If the task does run, the previous output is preserved.
+
+> **Re-queue**: This resets the task back to the queued state.
+
+If the task has a default status, this is applied. The task output number is reset, such that the next output will be written to t1.1. This will overwrite any existing output with that extension when the task runs. Any subsequent calls to execute or rerun will now overwrite the output files, t1.2,t1.3 etc.
+
+##  Add description
+The manual page makes the documentation in the **ecf script** visible in ecflow_ui.
+
+The description page is the combination of all the text before the directives 
+**%manual** and **%end**. (or create **f1.man**)
+
+e.g. edit t2.ecf
+```sh
+%manual
+   Manual for task t2
+   Operations: if this task fails, set it to complete and report next working day
+   Analyst:    Check something ?
+%end
+ 
+%include <head.h>
+echo "I am part of a suite that lives in %ECF_HOME%"
+%include <tail.h>
+ 
+%manual
+   There can be multiple manual pages in the same file.
+   When viewed they are simply concatenated.
+%end
+```
+
+## familys
+Tasks can be organized into a tree structure similar to a Unix file system, where **task is like a file** and **family is like a folder**.
+
+A suite is a family with additional properties (see Dates). **family** can contain other families. Similar to directories, tasks in different families can have the same name.
+
+Unless a file location is specified, ecFlow assumes that the structure of the suite corresponds to the location of the task file in the file system.
+
+```sh
+# Definition of the suite test.
+ suite test
+   edit ECF_INCLUDE "$ECF_HOME/course"  # replace '$ECF_HOME' with the path to your ECF_HOME directory
+   edit ECF_HOME    "$ECF_HOME/course"
+   family f1
+      task t1
+      task t2
+   endfamily
+endsuite
+```
+
+## Time Dependencies
+[Time Dependencies](https://confluence.ecmwf.int/display/ECFLOW/Time+Dependencies)
+
+## Time Triggers
+[Time Triggers](https://confluence.ecmwf.int/display/ECFLOW/Time+Triggers)
+
+## Add a Cron
+[Add a Cron](https://confluence.ecmwf.int/display/ECFLOW/Add+a+Cron)
+
+## Repeat ***
+[Repeat](https://confluence.ecmwf.int/display/ECFLOW/Repeat)
+
+It is sometimes useful to repeat the same task or family several times, looping on a specific value. You can do that by defining a repeat attribute. You can iterate over sequences of:
+
+- strings
+- integers
+- dates
+
+A sequence of integers or dates is created by specifying the first and the last element, with an optional increment (the default is one).
+
+From **ecflow5 we can also loop over an arbitrary list of dates**.
+```sh
+repeat datelist YMD 20130101 20130102 20130103 20200101 20190101
+repeat date YMD 20090331 20121212 1  # <start> <end> <increment>
+```
+
+> The following generated variables, are accessible for trigger expressions
+> YMD, YMD_YYYY, YMD_MM, YMD_DD, YMD_DOW,YMD_JULIAN
+
+e.g.
+```sh
+
+# Definition of the suite test.
+suite test
+ edit ECF_INCLUDE "$HOME/course"
+ edit ECF_HOME    "$HOME/course"
+ family f4
+     edit SLEEP 2
+     repeat string NAME a b c d e f
+     family f5
+         repeat integer VALUE 1 10
+         task t1
+             repeat date DATE 20101230 20110105
+             label info ""
+             label date ""
+     endfamily
+ endfamily
+endsuite
+```
+
+[repeat & trigger](https://confluence.ecmwf.int/display/ECFLOW/Glossary#term-trigger)
+
+When we use relative time attributes under a Repeat. They are automatically reset when the repeat loops. Take for example:
+```sh
+suite test
+ edit ECF_HOME    "$HOME/course"
+ edit ECF_INCLUDE "$HOME/course"
+ edit ECF_FILES "$HOME/course"
+  family hc00
+    repeat integer HYEAR 1993 2017
+    task t1
+    task t2
+      trigger t1  == complete
+  endfamily
+endsuite
+```
+
+**Repeat increment**
+
+A repeat under a family node will only increment when all the child nodes are complete.
+
+In the example above, **once task t1, and t2 are complete**, the repeat integer rep will increment to the next value.
+
+## with SBATCH
+
+sbatch.h
+```c++
+#SBATCH --qos=%QUEUE%
+#SBATCH --job-name=%TASK%_%FAMILY1:NOT_DEF%
+#SBATCH --account=%ACCOUNT%
+#SBATCH --output=%ECF_JOBOUT%
+#SBATCH --error=%ECF_JOBOUT%
+#SBATCH --time=%RQ_TIME%
+```
+
+# References
+
+[ECFLOW教程 2018](https://perillaroc.github.io/ecflow-tutorial-cn/chap01/)
+[The latest ecflow is available for Linux and macOS from conda forge](https://confluence.ecmwf.int/display/ECFLOW/Conda-forge)
+[https://git.ecmwf.int/projects/USS](https://git.ecmwf.int/projects/USS)
+[HPC2020: Using ecFlow](https://confluence.ecmwf.int/display/UDOC/HPC2020%3A+Using+ecFlow)
+[基于ECFLOW实现华中区域快速更新同化预报业务流程](http://qxkj.ijournals.cn/qxkj/article/abstract/20190122)
+
