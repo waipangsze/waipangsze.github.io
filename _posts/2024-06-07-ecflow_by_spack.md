@@ -551,4 +551,4 @@ sbatch.h
 [https://git.ecmwf.int/projects/USS](https://git.ecmwf.int/projects/USS)
 [HPC2020: Using ecFlow](https://confluence.ecmwf.int/display/UDOC/HPC2020%3A+Using+ecFlow)
 [基于ECFLOW实现华中区域快速更新同化预报业务流程](http://qxkj.ijournals.cn/qxkj/article/abstract/20190122)
-
+[ecFlow学习笔记：编译V5.X版本](https://mp.weixin.qq.com/s/d17lDCd7f2_hS0S4E1mgTg)
