@@ -20,7 +20,7 @@ Most importantly, Spack is simple. It offers a simple spec syntax so that users 
 > <https://packages.spack.io/>
 > <https://packages.spack.io/package.html?name=ecflow>
 
-# Install (doesn't use spack)
+# Install (don't use spack)
 
 ```sh
 $ spack env create ecFlow 
@@ -158,23 +158,6 @@ where boost is 1.84.0
 
 # ecFlow
 
-Create the following subdirectories in this directory:
-
-**def**: ecf script file that stores ecFlow workflow definition files and tasks
-
-**ecfout**: The directory where the ecFlow service operates. The logs of the ecFlow service will be stored in this directory.
-
-**Programs**: Save mode programs, profiles, and scripts
-
-**workdir**: directory where the mode operates
-
-```sh
-mkdir -p def
-mkdir -p ecfout
-mkdir -p program
-mkdir -p workdir
-```
-
 ## ecFlow Quickstart
 [ecFlow Quickstart](https://confluence.ecmwf.int/display/ECFLOW/ecFlow+Quickstart)
 
@@ -253,6 +236,7 @@ $ ecflow_start.sh -d /home/wpsze/xxx -p $ECF_PORT
 
 #### check what port numbers are being used
 
+#### netstat -lnptu
 You can check what port numbers are being used, with netstat: To list all open network ports on your machine, run **netstat -lnptu**.
 Here is a breakdown of the parameters:
 
@@ -352,6 +336,21 @@ When opening the ecflow GUI flow for the first time you will need to add your se
 $ ecflow_ui &
 ```
 
+#### ssh tunnel
+SSH tunneling, or SSH port forwarding, is a method of transporting arbitrary data over an encrypted SSH connection. SSH tunnels allow connections made to a local port (that is, to a port on your own desktop) to be forwarded to a remote machine via a secure channel.
+
+on local PC terminal,
+```sh
+$ ssh -L 9090:localhost:3141 server.ip
+$ ssh -NL 9090:localhost:3141 server.ip
+```
+where local PC's port 9090 to server.ip's port 3141
+
+and you can set ecflow_ui config,
+- host=localhost
+- port=local PC's port 9090
+
+#### ecFlowUI has started
 Once ecFlowUI has started, you must tell it how to reach your server. Go to the 
 
 Servers → Manage Servers menu, click "Add server", then enter the details of your server. Name can be anything you want - it's for you to identify the server to your self; something like "localtest" would be fine here. Host should in this case be "localhost", and Port should be XXX. The other fields can be left blank, but keep the "Add server to current view" box ticked.
@@ -546,9 +545,9 @@ sbatch.h
 
 # References
 
-[ECFLOW教程 2018](https://perillaroc.github.io/ecflow-tutorial-cn/chap01/)
-[The latest ecflow is available for Linux and macOS from conda forge](https://confluence.ecmwf.int/display/ECFLOW/Conda-forge)
-[https://git.ecmwf.int/projects/USS](https://git.ecmwf.int/projects/USS)
-[HPC2020: Using ecFlow](https://confluence.ecmwf.int/display/UDOC/HPC2020%3A+Using+ecFlow)
-[基于ECFLOW实现华中区域快速更新同化预报业务流程](http://qxkj.ijournals.cn/qxkj/article/abstract/20190122)
+[ECFLOW教程 2018](https://perillaroc.github.io/ecflow-tutorial-cn/chap01/)\
+[The latest ecflow is available for Linux and macOS from conda forge](https://confluence.ecmwf.int/display/ECFLOW/Conda-forge)\
+[https://git.ecmwf.int/projects/USS](https://git.ecmwf.int/projects/USS)\
+[HPC2020: Using ecFlow](https://confluence.ecmwf.int/display/UDOC/HPC2020%3A+Using+ecFlow)\
+[基于ECFLOW实现华中区域快速更新同化预报业务流程](http://qxkj.ijournals.cn/qxkj/article/abstract/20190122)\
 [ecFlow学习笔记：编译V5.X版本](https://mp.weixin.qq.com/s/d17lDCd7f2_hS0S4E1mgTg)
