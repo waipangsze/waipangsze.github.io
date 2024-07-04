@@ -156,9 +156,7 @@ and it installs,
 
 where boost is 1.84.0
 
-# ecFlow
-
-## ecFlow Quickstart
+# ecFlow Quickstart
 [ecFlow Quickstart](https://confluence.ecmwf.int/display/ECFLOW/ecFlow+Quickstart)
 
 ```sh
@@ -203,7 +201,7 @@ sleep 2
 %include "../tail.h"
 ```
 
-### Inspect and update the suite definition
+## Inspect and update the suite definition
 The file **test.def** defines a suite called "test". Open this file in a text editor and note the structure.
 
 ```sh
@@ -219,7 +217,7 @@ We define a suite called "test"; it defines a variable called **ECF_HOME**, then
 
 The first thing you must do is to complete the path to your working directory in the **ECF_HOME** definition in test.def and save the file.
 
-### Start an ecFlow server
+## Start an ecFlow server
 We will start a **new running instance of an ecFlow server using the default port (# start ecFlow with default port 3141)**. It is possible to use a different port by **adding --port=3500 (for example)** to every ecFlow command-line action. Note also that we start it as a background task - it will run until the server is stopped. It can be run in the foreground, but in that case you will need to use a new terminal for any subsequent commands!
 
 To start the ecflow server:
@@ -234,9 +232,9 @@ $ ecflow_start.sh -d /home/wpsze/xxx -p $ECF_PORT
 **make sure this port can be used**
 {:.info}
 
-#### check what port numbers are being used
+### check what port numbers are being used
 
-#### netstat -lnptu
+### netstat -lnptu
 You can check what port numbers are being used, with netstat: To list all open network ports on your machine, run **netstat -lnptu**.
 Here is a breakdown of the parameters:
 
@@ -295,7 +293,7 @@ $ ps -u wpsze -f | grep ecflow | grep -v grep
 ``` 
 has shown nothing now.
 
-### Load your suite definition into the server **
+## Load your suite definition into the server **
 
 ```sh
 $ ecflow_client --load=test.def --port=3141
@@ -327,8 +325,8 @@ endsuite
 # enddef
 ```
 
-### Monitor and interact via the GUI
-#### Start ecFlowUI: (Local PC)
+## Monitor and interact via the GUI
+### Start ecFlowUI: (Local PC)
 
 When opening the ecflow GUI flow for the first time you will need to add your server to the GUI. In the GUI click on **“Servers” and then “Manage servers”**. A new window will appear. Click on **“Add server”. Here you need to add the Name, Host, and Port of your server**. For “Host” and “Port” please refer to the last section of output from the previous step.
 
@@ -336,7 +334,7 @@ When opening the ecflow GUI flow for the first time you will need to add your se
 $ ecflow_ui &
 ```
 
-#### ssh tunnel
+### ssh tunnel
 SSH tunneling, or SSH port forwarding, is a method of transporting arbitrary data over an encrypted SSH connection. SSH tunnels allow connections made to a local port (that is, to a port on your own desktop) to be forwarded to a remote machine via a secure channel.
 
 on local PC terminal,
@@ -350,7 +348,7 @@ and you can set ecflow_ui config,
 - host=localhost
 - port=local PC's port 9090
 
-#### ecFlowUI has started
+### ecFlowUI has started
 Once ecFlowUI has started, you must tell it how to reach your server. Go to the 
 
 Servers → Manage Servers menu, click "Add server", then enter the details of your server. Name can be anything you want - it's for you to identify the server to your self; something like "localtest" would be fine here. Host should in this case be "localhost", and Port should be XXX. The other fields can be left blank, but keep the "Add server to current view" box ticked.
@@ -361,7 +359,7 @@ You should now see your suite loaded into the GUI! To make the server active, ri
 
 The diagram shows the typical status changes for a Task.
 
-### Start
+## Start
 At this time, the service is stopped and needs to be started manually.
 
 ```sh
@@ -370,13 +368,13 @@ $ecflow_client --begin --host=login05 --port=3141
 
 Since no triggering mechanism is added, t1 will be executed immediately after the service starts.
 
-### Replace suite
+## Replace suite
 Replace the entire suite,
 ```sh
 ecflow_client --replace=/test test.def --port=3141
 ```
 
-### check the status of the server
+## check the status of the server
 To check the status of the server, enter the following unix command
 ```sh
 ecflow_client --host=login05 --port=3141 --stats
@@ -549,5 +547,5 @@ sbatch.h
 [The latest ecflow is available for Linux and macOS from conda forge](https://confluence.ecmwf.int/display/ECFLOW/Conda-forge)\
 [https://git.ecmwf.int/projects/USS](https://git.ecmwf.int/projects/USS)\
 [HPC2020: Using ecFlow](https://confluence.ecmwf.int/display/UDOC/HPC2020%3A+Using+ecFlow)\
-[基于ECFLOW实现华中区域快速更新同化预报业务流程](http://qxkj.ijournals.cn/qxkj/article/abstract/20190122)\
+[基于ECFLOW实现华中区域快速更新-同化预报业务流程](http://qxkj.ijournals.cn/qxkj/article/abstract/20190122)\
 [ecFlow学习笔记：编译V5.X版本](https://mp.weixin.qq.com/s/d17lDCd7f2_hS0S4E1mgTg)
