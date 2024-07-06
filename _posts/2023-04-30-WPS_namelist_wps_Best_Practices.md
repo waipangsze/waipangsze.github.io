@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "WPS namelist.wps Best Practices"
 categories: [WRF]
 tags: [WRF,WPS,namelist.wps]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # WPS namelist.wps: Best Practices
 

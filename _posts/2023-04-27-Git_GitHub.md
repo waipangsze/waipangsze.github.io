@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "Git/Github"
 categories: [Git]
 tags: [Github,git init, git add, git commit, git conflicts]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 ## Create an empty git repo
 Git settings will be recorded in the .gitconfig file under the home page of the user's directory. We need to use the config command to set it.

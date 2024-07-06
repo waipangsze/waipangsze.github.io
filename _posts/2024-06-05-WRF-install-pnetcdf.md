@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: WRF uses Pnetcdf
 categories: [WRF]
 tags: [WRF, Installation, Pnetcdf]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Issue
 

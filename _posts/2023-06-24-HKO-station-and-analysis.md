@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: HKO station and analysis
 categories: [NWP]
 tags: [HKO, obs, WRF,  MPAS]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Download HKO weather dataset
 From [i-lens.hk 香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)

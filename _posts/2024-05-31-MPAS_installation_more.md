@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: MPAS Installation (More)
 categories: [MPAS]
 tags: [Installation]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 The repository URL can be found from the MPAS GitHub page at <https://github.com/MPAS-Dev/MPAS-Model>
 

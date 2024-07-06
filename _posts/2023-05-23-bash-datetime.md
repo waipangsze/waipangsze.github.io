@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: Bash datetime (manipulate)
 categories: [Linux]
 tags: [bash]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Bash datetime (manipulate)
 

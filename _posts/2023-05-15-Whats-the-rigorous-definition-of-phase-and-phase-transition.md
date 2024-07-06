@@ -1,11 +1,13 @@
 ---
-layout: article
+layout: post
 title: "What's the rigorous definition of phase and phase transition?"
 categories: [physics]
 tags: [phase transition]
 author: wpsze
 ---
 
+* content
+{:toc}
 
 # What's the rigorous definition of phase and phase transition?
 

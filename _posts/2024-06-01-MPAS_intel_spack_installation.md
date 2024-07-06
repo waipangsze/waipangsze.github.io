@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: post
 title: MPAS -- Installation by Spack and Intel
 categories: [MPAS]
 tags: [MPAS, Spack, Intel, Installation]
@@ -7,6 +7,9 @@ author: wpsze
 mathjax: true
 mathjax_autoNumber: true
 ---
+
+* content
+{:toc}
 
 # Using Spack
 

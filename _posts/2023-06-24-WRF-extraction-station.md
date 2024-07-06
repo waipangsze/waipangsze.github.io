@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: WRF-extraction-station
 categories: [WRF]
 tags: [NWP, Jupyter]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 ```python
 import numpy as np

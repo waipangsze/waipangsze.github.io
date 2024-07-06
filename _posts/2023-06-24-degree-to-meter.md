@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: Approximate Metric Equivalents for Degrees, Minutes, and Seconds
 categories: [NWP]
 tags: [WRF, MPAS]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Approximate Metric Equivalents for Degrees, Minutes, and Seconds
 

@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: MPAS-JEDI 
 categories: [MPAS]
 tags: [MPAS, DA]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Workshop
 

@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: post
 title: VSCode with Markdown editor
 categories: [Linux]
 tags: [Markdown, VSCode, editor]
@@ -8,6 +8,9 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 ---
+
+* content
+{:toc}
 
 Working with [Markdown files in Visual Studio Code](https://code.visualstudio.com/docs/languages/markdown) is simple, straightforward, and fun. Besides VS Code's basic editing, there are a several Markdown-specific features that help you be more productive.
 

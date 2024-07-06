@@ -1,11 +1,14 @@
 ---
-layout: article
+layout: post
 title: "WRF installation on a Linux-based machine"
 categories: [WRF]
 tags: [NWP,WRF,WPS,Installation,gnu,gcc]
 mathjax: true
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # WRF
 

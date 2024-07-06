@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "WRF namelist.input: Best Practices"
 categories: [WRF]
 tags: [WRF,namelist.input]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # WRF namelist.input: Best Practices
 

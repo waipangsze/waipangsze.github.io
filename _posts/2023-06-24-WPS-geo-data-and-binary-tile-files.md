@@ -1,11 +1,13 @@
 ---
-layout: article
+layout: post
 title: WPS geo data and binary tile files
 categories: [WRF]
 tags: [tile files, WPS, WRF, MPAS]
 author: wpsze
 ---
 
+* content
+{:toc}
 
 # Binary files in the geog folder
 

@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "Git: solve conflicted files"
 categories: [Git]
 tags: [Github, git commit, git conflicts]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Git: solve conflicted files
 

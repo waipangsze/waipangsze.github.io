@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "Git rebase -i "
 categories: [Git]
 tags: [git rebase]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Use rebase -i to merge commits
 

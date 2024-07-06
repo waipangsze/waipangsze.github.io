@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: post
 title: ssh tunnel
 categories: [Linux]
 tags: [ssh]
@@ -8,6 +8,9 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 ---
+
+* content
+{:toc}
 
 # Introduction to SSH Tunnels
 

@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "Tmux terminal multiplexer"
 categories: [Linux]
 tags: [HPC,terminal,tmux]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Tmux terminal multiplexer
 

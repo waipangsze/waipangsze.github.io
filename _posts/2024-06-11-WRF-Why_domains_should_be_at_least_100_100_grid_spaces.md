@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "WRF: Why domains should be at least 100x100 grid spaces?"
 categories: [WRF]
 tags: [WRF]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # [Why domains should be at least 100x100 grid spaces?](https://forum.mmm.ucar.edu/threads/why-domains-should-be-at-least-100x100-grid-spaces.16793/)
 

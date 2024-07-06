@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: MPAS Installation
 categories: [MPAS]
 tags: [Installation]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # For MPASv7.0 and above,
 

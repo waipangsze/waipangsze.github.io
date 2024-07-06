@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "WPS build up domain"
 categories: [WRF]
 tags: [WRF,WPS,NWP,domain,ncl]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # WPS build up domain
 

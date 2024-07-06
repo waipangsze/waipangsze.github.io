@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "ERA5 dataset"
 categories: [NWP]
 tags: [WRF,WPS,MPAS,IC/BC,ERA5,ECMWF]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # ERA5 dataset
 

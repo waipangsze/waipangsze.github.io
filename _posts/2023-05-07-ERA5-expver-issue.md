@@ -1,11 +1,14 @@
 ---
-layout: article
+layout: post
 title: "ERA5 ERA5T expver dimension issue"
 categories: [NWP]
 tags: [WRF,HPC,ERA5]
 mathjax: true
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # ERA5 ERA5T expver dimension issue
 

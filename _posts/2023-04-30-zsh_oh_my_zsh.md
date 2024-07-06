@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "zsh & oh-my-zsh"
 categories: [Linux]
 tags: [shell script,HPC]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # zsh & oh-my-zsh
 

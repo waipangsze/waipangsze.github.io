@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: unrecognized command line option ‘-f90=gfortran’ & ungrib.exe compile error
 categories: [WRF]
 tags: [WPS, Installation]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Issue
 

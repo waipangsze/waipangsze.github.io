@@ -1,11 +1,14 @@
 ---
-layout: article
+layout: post
 title: "Git cherry-pick"
 categories: [Git]
 tags: [git cherry-pick]
 mathjax: true
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Git cherry-pick
 

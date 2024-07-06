@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: make -- time No such file or directory
 categories: [WRF]
 tags: [WRF, Installation]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Issue
 

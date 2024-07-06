@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: post
 title: Error Error Error NoahMP submodule files not populating WRF directories
 categories: [WRF]
 tags: [Installation]
@@ -7,6 +7,9 @@ author: wpsze
 mathjax: true
 mathjax_autoNumber: true
 ---
+
+* content
+{:toc}
 
 # Issue
 

@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "ERA5 dataset (2) contains invariant variables"
 categories: [NWP]
 tags: [ICBC, grib, ERA5, WRF, WPS]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # ERA5 dataset (2) contains invariant variables
 

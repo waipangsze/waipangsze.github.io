@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: post
 title: ecFlow -- Installation & Usage
 categories: [MPAS]
 tags: [ecFlow, Spack, Micromamba, Conda, Installation]
@@ -7,6 +7,9 @@ author: wpsze
 mathjax: true
 mathjax_autoNumber: true
 ---
+
+* content
+{:toc}
 
 # Using Spack
 

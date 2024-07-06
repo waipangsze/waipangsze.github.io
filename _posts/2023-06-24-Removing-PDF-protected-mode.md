@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: Removing PDF protected mode
 categories: [Linux]
 tags: [PDF]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # 
 

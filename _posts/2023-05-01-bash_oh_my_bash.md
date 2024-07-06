@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "Bash & Oh-My-Bash"
 categories: [Linux]
 tags: [shell script, HPC]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Bash & Oh-My-Bash
 

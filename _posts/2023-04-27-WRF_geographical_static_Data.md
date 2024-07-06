@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: "WRF/WPS Geographical Static Data"
 categories: [WRF]
 tags: [WRF,WPS,geodata]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # WRF geographical static Data
 

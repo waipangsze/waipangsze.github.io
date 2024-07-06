@@ -1,10 +1,13 @@
 ---
-layout: article
+layout: post
 title: Jupyter-Notebook
 categories: [Jupyter]
 tags: [Jupyter, python]
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # How to display full output in Jupyter, not only last result?
 ```python

@@ -1,11 +1,14 @@
 ---
-layout: article
+layout: post
 title: "Intel OneAPI"
 categories: [Linux]
 tags: [WRF,HPC]
 mathjax: true
 author: wpsze
 ---
+
+* content
+{:toc}
 
 # Intel OneAPI
 
