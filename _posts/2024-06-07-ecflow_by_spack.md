@@ -546,9 +546,10 @@ sbatch.h
 
 # References
 
-[ECFLOW教程 2018](https://perillaroc.github.io/ecflow-tutorial-cn/chap01/)\
-[The latest ecflow is available for Linux and macOS from conda forge](https://confluence.ecmwf.int/display/ECFLOW/Conda-forge)\
-[https://git.ecmwf.int/projects/USS](https://git.ecmwf.int/projects/USS)\
-[HPC2020: Using ecFlow](https://confluence.ecmwf.int/display/UDOC/HPC2020%3A+Using+ecFlow)\
-[基于ECFLOW实现华中区域快速更新-同化预报业务流程](http://qxkj.ijournals.cn/qxkj/article/abstract/20190122)\
-[ecFlow学习笔记：编译V5.X版本](https://mp.weixin.qq.com/s/d17lDCd7f2_hS0S4E1mgTg)
+1. [ECFLOW教程 2018](https://perillaroc.github.io/ecflow-tutorial-cn/chap01/)
+2. **[CEMC ecFlow 实战教程 本教程用于 CEMC 2023 培训的 ecFlow 上机实习环节](https://cemc-ecflow-tutorial-2023.readthedocs.io/zh-cn/latest/)**
+3. [The latest ecflow is available for Linux and macOS from conda forge](https://confluence.ecmwf.int/display/ECFLOW/Conda-forge)
+4. [https://git.ecmwf.int/projects/USS](https://git.ecmwf.int/projects/USS)
+5. [HPC2020: Using ecFlow](https://confluence.ecmwf.int/display/UDOC/HPC2020%3A+Using+ecFlow)
+6. [基于ECFLOW实现华中区域快速更新-同化预报业务流程](http://qxkj.ijournals.cn/qxkj/article/abstract/20190122)
+7. [ecFlow学习笔记：编译V5.X版本](https://mp.weixin.qq.com/s/d17lDCd7f2_hS0S4E1mgTg)
