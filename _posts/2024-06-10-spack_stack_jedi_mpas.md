@@ -40,8 +40,10 @@ spack-stack is mainly a collection of Spack configuration files, but provides a 
 
 To generate a new spack-stack directory structure, 
 
-run 'git clone --recurse-submodules https://github.com/JCSDA/spack-stack',
-{:.info}
+run 
+```sh
+git clone --recurse-submodules https://github.com/JCSDA/spack-stack
+```
 
 optionally with, e.g., '-b release/1.4.1' to specify the version
 
@@ -73,6 +75,8 @@ For example, if default is gcc@8.5.0.
 
 ```sh
 $ git clone -b release/1.5.1 --recurse-submodules https://github.com/JCSDA/spack-stack
+
+$ cd spack-stack
 
 $ git status
 On branch release/1.5.1
@@ -174,6 +178,8 @@ Error:
 >> `$ micromamba activate git-lfs`
 >> `$ micromamba install git-lfs`
 
+
+
 Remark:
 Git Large File Storage (LFS) replaces large files such as audio samples, videos, datasets, and graphics with text pointers inside Git, while storing the file contents on a remote server like GitHub.com or GitHub Enterprise.
 
@@ -187,6 +193,11 @@ source env,
 ## mpas_bundle
 
 ```sh
+$ source spack/share/spack/setup-env.sh
+$ source spack-stack/setup.sh
+$ spack env activate spack-stack/envs/jedi_gcc_linux
+$ spack find
+
 $ mkdir mpas_bundle_v2
 $ cd mpas_bundle_v2
 $ git clone -b release/2.0.0 https://github.com/JCSDA/mpas-bundle.git code
@@ -194,8 +205,7 @@ $ git clone -b release/2.0.0 https://github.com/JCSDA/mpas-bundle.git code
 $ mkdir build
 $ cd build
 
-$ spack env activate envs/jedi_gccv850_linux
-$ module list
+# (no need) $ module list
 ```
 
 MPAS-JEDI uses cmake to automatically download the code from various github repositories, listed in CMakeLists.txt under ~code. Now type the command below under the build directory:
@@ -206,13 +216,28 @@ $ git lfs install
 
 and then,
 ```sh
+$ spack load ecbuild@3.7.2
+$ spack load eigen@3.4.0 gsl-lite@0.37.0 hdf5@1.14.0 udunits@2.2.28 netcdf-c@4.9.2 netcdf-fortran@4.6.0 parallel-netcdf@1.12.2 parallelio@2.5.10
+$ spack load openblas@0.3.19
+$ spack load eckit@1.23.1
+$ spack load fckit@0.10.1
+$ spack load ecmwf-atlas@0.31.1
+
 $ cmake ../code
+
+......
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/wpsze/mpas_bundle_v2/build
 ```
 
 After it completes, **you will see the actual source code of various reporitories (e.g., oops, saber, ufo, ioda, crtm, mpas-jedi, and MPAS) is now under the code directory**. Meanwhile, **Makefile files to build executables are generated under the build directory**. Now it is ready to compile MPAS-JEDI under 'build' using the standard make. However, it is NOT recommended to compile the code on the login node at the same time.
 
 ```sh
 $ make -j14
+
+.......
+[100%]
 ```
 
 This requests xx min walltime of a login node with 14 cores.
@@ -222,6 +247,21 @@ Once we reach 100% of the compilation, we can check mpas-jedi related executable
 
 ```sh
 $ ls bin/mpas*
+
+bin/mpas_atmosphere                       bin/mpasjedi_forecast.x
+bin/mpas_atmosphere_build_tables          bin/mpasjedi_gen_ens_pert_B.x
+bin/mpas_data_checker.py                  bin/mpasjedi_hofx3d.x
+bin/mpas_data_downloader.py               bin/mpasjedi_hofx.x
+bin/mpas_init_atmosphere                  bin/mpasjedi_rtpp.x
+bin/mpasjedi_convertstate.x               bin/mpasjedi_staticbinit.x
+bin/mpasjedi_dirac.x                      bin/mpasjedi_variational.x
+bin/mpasjedi_eda.x                        bin/mpas_namelist_gen
+bin/mpasjedi_enkf.x                       bin/mpas_parse_atmosphere
+bin/mpasjedi_enshofx.x                    bin/mpas_parse_init_atmosphere
+bin/mpasjedi_error_covariance_training.x  bin/mpas_streams_gen
+
+$ ls bin/ioda-up*
+bin/ioda-upgrade-v1-to-v2.x  bin/ioda-upgrade-v2-to-v3.x
 ```
 
 The last step is to ensure that the code was compiled properly by running the MPAS-JEDI ctests, with two lines of simple command:

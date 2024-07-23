@@ -42,7 +42,8 @@ wget micro.mamba.pm/install.sh
 chmod +x install.sh
 ./install.sh
 ```
-> # Parsing arguments
+
+## Parsing arguments
 if [ -t 0 ] ; then
   printf "Micromamba binary folder? [~/.local/bin] "
   read BIN_FOLDER
@@ -80,4 +81,12 @@ Or to execute a single command in this environment, use:
 
     micromamba run -n venv mycommand
 
+## check/add channel
 
+```sh
+$ micromamba config list --sources
+channels:
+  - conda-forge  # '~/.condarc'
+
+$ micromamba config append channels conda-forge
+```
