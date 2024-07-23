@@ -269,18 +269,19 @@ The last step is to ensure that the code was compiled properly by running the MP
 ```sh
 $ cd mpas-jedi
 $ ctest
+
+100% tests passed, 0 tests failed out of 47
+
+Label Time Summary:
+executable    =  54.21 sec*proc (13 tests)
+mpasjedi      = 380.26 sec*proc (47 tests)
+mpi           = 287.59 sec*proc (43 tests)
+script        = 326.05 sec*proc (34 tests)
+
+Total Test time (real) = 380.91 sec
 ```
 
-The output to the terminal should look as following:
-```sh
-xxx
-```
-
-To determine if a test passes or fails, *a comparison of the test log and reference file is done internally taking as reference a tolerance value*. This tolerance is specified via YAML file. These files can be found under **mpas-jedi/test/testoutput** in the build folder:
-
-```sh
-xxx
-```
+To determine if a test passes or fails, *a comparison of the test log and reference file is done internally taking as reference a tolerance value*. This tolerance is specified via YAML file. These files can be found under **mpas-jedi/test/testoutput** in the build folder.
 
 ## Converting NCEP BUFR observation into IODA-HDF5 format
 
