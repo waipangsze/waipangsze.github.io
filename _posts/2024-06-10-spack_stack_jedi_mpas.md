@@ -218,13 +218,13 @@ $ git lfs install
 
 and then,
 ```sh
-$ spack load ecbuild@3.7.2
-$ spack load eigen@3.4.0 gsl-lite@0.37.0 hdf5@1.14.0 udunits@2.2.28 netcdf-c@4.9.2 netcdf-fortran@4.6.0 parallel-netcdf@1.12.2 parallelio@2.5.10
-$ spack load openblas@0.3.19
-$ spack load eckit@1.23.1
-$ spack load fckit@0.10.1
-$ spack load ecmwf-atlas@0.31.1
-$ spack load cmake@3.23.1 mpich@4.1.1
+spack load ecbuild@3.7.2
+spack load eigen@3.4.0 gsl-lite@0.37.0 hdf5@1.14.0 udunits@2.2.28 netcdf-c@4.9.2 netcdf-fortran@4.6.0 parallel-netcdf@1.12.2 parallelio@2.5.10
+spack load openblas@0.3.19
+spack load eckit@1.23.1
+spack load fckit@0.10.1
+spack load ecmwf-atlas@0.31.1
+spack load cmake@3.23.1 mpich@4.1.1
 
 $ cmake ../code
 
@@ -492,3 +492,64 @@ LIBS = -L$(NETCDF)/lib -L$(NETCDFF)/lib -lnetcdff -lnetcdf ${BUFR_LIB}
 INCS = -I$(NETCDF)/include -I$(NETCDFF)/include
 ```
 
+# Specific Issue (cluster)
+
+> git-lfs issue
+> Ran patch() for krb5 & error while opening "en_US.mo" for writing: Permission denied
+
+If copy whole **mpas_bundle_v2** (e.g. local PC) that includes **build** and **code** to workstation or cluster,
+
+1. if your workstation/cluster has spack-stack (for jedi-mpas)
+2. remove build/CMakeCache.txt
+3. remove build/_deps/mpas_data-subbuild/CMakeCache.txt
+4. run $ cmake ../code
+5. it will re-generate your curren config
+
+Reference error:
+```sh
+CMake Error: The current CMakeCache.txt directory /xxx/mpas_bundle_v2_temp/build/CMakeCache.txt is different than the directory /home/wpsze/mpas_bundle_v2/build where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+CMake Error: The source "/EM/wpsze/cpas/CPAS-MPAS-JEDI/DA-obs2ioda-EM/mpas_bundle_v2_temp/code/CMakeLists.txt" does not match the source "/home/wpsze/mpas_bundle_v2/code/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.
+CMake Error: The current CMakeCache.txt directory /xxx/mpas_bundle_v2_temp/build/_deps/mpas_data-subbuild/CMakeCache.txt is different than the directory /home/wpsze/mpas_bundle_v2/build/_deps/mpas_data-subbuild where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+```
+
+1. config done
+```sh
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /xxx/mpas_bundle_v2_temp/build
+```
+
+2. make -j12
+```sh
+[100%] Built target mpasjedi_variational.x
+```
+
+3. cd mpas-jedi & ctest
+```sh
+74% tests passed, 12 tests failed out of 47
+
+Label Time Summary:
+executable    =  42.47 sec*proc (13 tests)
+mpasjedi      = 680.81 sec*proc (47 tests)
+mpi           = 672.80 sec*proc (43 tests)
+script        = 638.33 sec*proc (34 tests)
+
+Total Test time (real) = 683.12 sec
+
+The following tests FAILED:
+	 23 - test_mpasjedi_parameters_bumpcov (Failed)
+	 24 - test_mpasjedi_parameters_bumploc (Failed)
+	 25 - test_mpasjedi_dirac_bumpcov (Failed)
+	 29 - test_mpasjedi_3dvar_bumpcov (Failed)
+	 35 - test_mpasjedi_3dhybrid_bumpcov_bumploc (Failed)
+	 39 - test_mpasjedi_eda_3dhybrid (Failed)
+	 41 - test_mpasjedi_letkf_3dloc_4pe (Failed)
+	 42 - test_mpasjedi_lgetkf_4pe (Failed)
+	 44 - test_mpasjedi_parameters_bumpcov_2pe (Failed)
+	 45 - test_mpasjedi_parameters_bumploc_2pe (Failed)
+	 46 - test_mpasjedi_3dvar_2pe (Failed)
+	 47 - test_mpasjedi_3dhybrid_bumpcov_bumploc_2pe (Failed)
+Errors while running CTest
+Output from these tests are in: /xxx/build/mpas-jedi/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+```
