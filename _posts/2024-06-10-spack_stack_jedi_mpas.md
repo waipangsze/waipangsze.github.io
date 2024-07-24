@@ -190,6 +190,8 @@ source env,
 #spack env activate ${SPACK_ENV}
 ```
 
+> ** do above on local PC because git-lfs fails on workstation/cluster.
+
 ## mpas_bundle
 
 ```sh
@@ -222,6 +224,7 @@ $ spack load openblas@0.3.19
 $ spack load eckit@1.23.1
 $ spack load fckit@0.10.1
 $ spack load ecmwf-atlas@0.31.1
+$ spack load cmake@3.23.1 mpich@4.1.1
 
 $ cmake ../code
 
@@ -293,17 +296,31 @@ $ cd obs2ioda/obs2ioda-v2/src/
 
 NCEP BUFR library (https://github.com/NOAA-EMC/NCEPLIBS-bufr) is required to compile **obs2ioda-v2.x**. Edit **obs2ioda-v2/src/Makefile** to set proper **BUFR_LIB** before make. Here we have pre-build BUFR_LIB on Taiwania-3 and we put the pre-build BUFR_LIB path in Makefile.
 
-### NCEP BUFR library
+### (Required) NCEP BUFR library
 
 ```sh
 $ git clone https://github.com/NOAA-EMC/NCEPLIBS-bufr
 
 $ mkdir build && cd build
-$ cmake -DCMAKE_INSTALL_PREFIX=path1 -DMASTER_TABLE_DIR=path2 ..
+
+# $ cmake -DCMAKE_INSTALL_PREFIX=path1 -DMASTER_TABLE_DIR=path2 .. # path1=./
+$ cmake -DCMAKE_INSTALL_PREFIX=./ .. 
+-- Build files have been written to: /home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build
+
 $ make -j4
+......
+[100%] Built target outtest6_8
+
 $ ctest
+......
+100% tests passed, 0 tests failed out of 94
+Total Test time (real) =  30.62 sec
+
 $ make install
+......
+-- Installing: /home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/bin/debufr
 ```
+
 Both **path1** and **path2** may be full or relative pathnames on the system, up to a maximum of 90 characters each.
 
 Installation of the library and utilities will be under **path1**. Installation of the master BUFR tables will be under **path2**, or *under path1 if -DMASTER_TABLE_DIR=path2 is omitted from the above cmake command*.
@@ -312,10 +329,166 @@ If Python interoperability is desired, -DENABLE_PYTHON=ON can also be added to t
 
 ### Go back to IODA
 
+### obs2ioda-v2.x
+https://github.com/jamiebresch/obs2ioda/blob/main/obs2ioda-v2/README.md
+
+NCEP BUFR library (https://github.com/NOAA-EMC/NCEPLIBS-bufr) is required to compile **obs2ioda-v2.x**. Edit **obs2ioda-v2/src/Makefile** to set proper **BUFR_LIB** before make. ~~Here we have pre-build BUFR_LIB on Taiwania-3 and we put the pre-build BUFR_LIB path in Makefile.~~ We have to build one as above and put the build BUFR_LIB path in Makefile.
+
+Default Makefile includes,
+
+```sh
+#--------------
+#INTEL compiler
+#--------------
+FC = ifort
+#BUFR_LIB = -L/glade/u/home/hclin/extlib/intel -lbufr
+#FFLAGS = -mcmodel medium # needed for intel error message "failed to convert GOTPCREL relocation"
+BUFR_LIB = -L/glade/campaign/mmm/parc/ivette/pandac/converters/WRFDA_3DVAR_dmpar/var/external/bufr -lbufr
+FFLAGS = -mcmodel medium # needed for intel error message "failed to convert GOTPCREL relocation" # -g -traceback -debug all -check all
+
+LIBS = -L$(NETCDF)/lib -lnetcdff -lnetcdf ${BUFR_LIB}
+INCS = -I$(NETCDF)/include
+```   
+
+then,
+
+```sh
+BUFR_LIB = -L/home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/lib -lbufr
+export NETCDF=/home/wpsze/spack-stack/envs/jedi_gcc_linux/install/gcc/9.4.0/netcdf-fortran-4.6.0-gwqak4i/
+export NETCDF=/home/wpsze/micromamba/envs/obs2ioda/x86_64-conda-linux-gnu/
+```
+
 Then compile the converter by using make command:
 
 ```sh
+$ cd obs2ioda/obs2ioda-v2/src/
 $ make
+# $ make clean
 ```
 If the compilation is successful, the executable file **obs2ioda-v2.x** will be generated.
+
+#### Error 1
+
+```sh
+hsd.f90:306:11:
+
+  306 |       if ( fexist(ij) == .false. ) then
+      |           1
+Error: Logicals at (1) must be compared with .eqv. instead of ==
+make: *** [Makefile:67: hsd.o] Error 1
+```
+
+check, and then replace with "eqv"
+
+```sh
+$ grep -rin "==" hsd.f90 
+306:      if ( fexist(ij) == .false. ) then
+...
+```
+
+to
+
+```sh
+ $ grep -rin "eqv" hsd.f90 
+306:      if ( fexist(ij) .eqv. .false. ) then
+```
+
+#### Error 2
+
+```sh
+/usr/bin/ld: cannot find -lbufr
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:46: obs2ioda] Error 1
+```
+
+check,
+
+```sh
+NCEPLIBS-bufr/build/include/ is bufr_4
+NCEPLIBS-bufr/build/lib/ is libbufr_4.a
+```
+
+#### Error 3
+
+```sh
+/usr/bin/ld: warning: libnetcdf.so.19, needed by /home/wpsze/spack-stack/envs/jedi_gcc_linux/install/gcc/9.4.0/netcdf-fortran-4.6.0-gwqak4i/lib/libnetcdff.so, may conflict with libnetcdf.so.15
+```
+
+Export,
+
+```sh
+export NETCDF=/home/wpsze/spack-stack/envs/jedi_gcc_linux/install/gcc/9.4.0/netcdf-c-4.9.2-yhizvd3/
+export NETCDFF=/home/wpsze/spack-stack/envs/jedi_gcc_linux/install/gcc/9.4.0/netcdf-fortran-4.6.0-gwqak4i/
+```
+
+and, modify in Makefile
+
+```sh
+LIBS = -L$(NETCDF)/lib -L$(NETCDFF)/lib -lnetcdff -lnetcdf ${BUFR_LIB}
+INCS = -I$(NETCDF)/include -I$(NETCDFF)/include
+```
+
+#### Error 4
+
+```sh
+hsd.o: in function `__ahi_hsd_mod_MOD_hisd_radiance_to_tbb':
+hsd.f90:(.text+0x19ed): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1a06): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1a1a): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1a50): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1a58): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1a64): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1ad1): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1ad9): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1aea): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.o: in function `__ahi_hsd_mod_MOD_pixlin_to_lonlat':
+hsd.f90:(.text+0x1eca): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header' defined in .bss section in hsd.o
+hsd.f90:(.text+0x1eed): additional relocation overflows omitted from the output
+/usr/bin/ld: failed to convert GOTPCREL relocation; relink with --no-relax
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:46: obs2ioda] Error 1
+```
+
+We use gfortran,
+```sh
+#------------
+#GNU compiler
+#------------
+FC = gfortran
+BUFR_LIB = -L/home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/lib -lbufr_4
+
+FFLAGS = -ffree-line-length-none -mcmodel=medium 
+```
+
+### Finally, modified Makefile
+
+```sh
+#! /bin/sh -v
+
+#------------
+#GNU compiler
+#------------
+FC = gfortran
+BUFR_LIB = -L/home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/lib -lbufr_4
+
+FFLAGS = -ffree-line-length-none -mcmodel=medium #-fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
+
+#GNU10 = -fallow-argument-mismatch -fallow-invalid-boz
+#FFLAGS = -mcmodel=medium -fpic -ffree-line-length-none ${GNU10} -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
+
+#GNU10 = #-fallow-argument-mismatch -fallow-invalid-boz
+#FFLAGS = -ffree-line-length-none ${GNU10} #-fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow
+
+#--------------
+#INTEL compiler
+#--------------
+#FC = ifort
+#BUFR_LIB = -L/glade/u/home/hclin/extlib/intel -lbufr
+#FFLAGS = -mcmodel medium # needed for intel error message "failed to convert GOTPCREL relocation"
+#BUFR_LIB = -L/home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/lib -lbufr
+#FFLAGS = -mcmodel medium # needed for intel error message "failed to convert GOTPCREL relocation" # -g -traceback -debug all -check all
+
+LIBS = -L$(NETCDF)/lib -L$(NETCDFF)/lib -lnetcdff -lnetcdf ${BUFR_LIB}
+INCS = -I$(NETCDF)/include -I$(NETCDFF)/include
+```
 
