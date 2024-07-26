@@ -492,6 +492,16 @@ LIBS = -L$(NETCDF)/lib -L$(NETCDFF)/lib -lnetcdff -lnetcdf ${BUFR_LIB}
 INCS = -I$(NETCDF)/include -I$(NETCDFF)/include
 ```
 
+# JEDI-MPAS Test and Application Files
+
+https://gdex.ucar.edu/dataset/147b_jcsda.html
+
+JEDI-MPAS is the interface between the generic components of the Joint Effort for Data assimilation Integration (JEDI) system and the atmospheric core of the Model for Prediction Across Scales (MPAS). The JEDI software package is a unified, innovative data assimilation system for Earth System Prediction. Developed and distributed by UCP’s Joint Center for Satellite Data Assimilation (JCSDA), JEDI is versatile and sophisticated enough for a variety of applications, from operational weather forecasting and atmospheric research on High Performance Computing (HPC), to learning the fundamentals of data assimilation by running idealized toy models on your laptop. The atmospheric component of MPAS is a non-hydrostatic model using an unstructured centroidal Voronoi mesh with smoothly varying resolution for global or regional domains. The primary development partners for MPAS are Los Alamos National Laboratory and the National Center for Atmospheric Research.
+
+This data set provides example observation files, model backgrounds, and other input files needed to run a variety of JEDI-MPAS applications, including the comprehensive suite of unit tests and example activities that are described in online tutorials. This data set accompanies JEDI-MPAS, version 1.0.0, released 24 September 20.
+
+> Wget shell script - Download all files using Wget, preferred for Linux.
+
 # Specific Issue (cluster)
 
 > git-lfs issue
@@ -552,4 +562,41 @@ The following tests FAILED:
 Errors while running CTest
 Output from these tests are in: /xxx/build/mpas-jedi/Testing/Temporary/LastTest.log
 Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+```
+
+# if git-lfs exists,
+
+Assume your workstation or cluster already has git-lfs, then may skip the error on it. Try below,
+
+```sh
+set -v
+source /home/wpsze/spack/share/spack/setup-env.sh
+source /home/wpsze/spack-stack/spack-stack/setup.sh
+
+spack stack create env --site linux.default --name gcc_mpich
+
+spack env activate /home/wpsze/spack-stack/spack-stack/envs/gcc_mpich
+spack add gcc@10.5.0
+spack install
+spack compiler add `spack location -i gcc@10.5.0`
+
+spack add environment-modules%gcc@10.5.0 ecbuild%gcc@10.5.0 eigen%gcc@10.5.0 udunits%gcc@10.5.0 gsl-lite%gcc@10.5.0
+spack add mpich%gcc@10.5.0
+spack add hdf5%gcc@10.5.0^mpich parallelio%gcc@10.5.0^mpich 
+
+# Tried atlas v0.31.1 can make successful compilation. Newer version like 0.35.0 fails.
+spack add ecmwf-atlas@0.31.1%gcc@10.5.0^mpich
+spack install
+spack module tcl refresh
+#spack stack setup-meta-modules
+```
+
+# module load
+
+```sh
+module () {
+  eval $(${SPACK_ENV}/install/gcc/x.x.x/environment-modules-xxx/bin/modulecmd bash $@)
+}
+
+module load xxx
 ```
