@@ -86,7 +86,7 @@ As stated in the answer to [Cloning environment with micromamba](https://stackov
 
 Instead, export the environment yaml and create a new environment using the --file flag. Then remove the old environment.
 
-1. export the env dependencies: micromamba env export oldenv > oldenv.yaml
+1. export the env dependencies: micromamba env export -n oldenv > oldenv.yaml
 2. create a new env with a new name: micromamba create -n newenv --file oldenv.yaml
 3. remove the old env: micromamba env remove -n oldenv
 4. delete the yaml file: rm oldenv.yaml
