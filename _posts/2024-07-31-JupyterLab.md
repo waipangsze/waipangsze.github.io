@@ -1,8 +1,8 @@
 ---
 layout: post
 title: JupyterLab
-categories: [Linux]
-tags: [Linux]
+categories: [Jupyter]
+tags: [Jupyter, python]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
@@ -22,7 +22,9 @@ micromamba activate venv
 micromamba install python=3.11
 micromamba install -c conda-forge jupyterlab
 micromamba install anaconda::ipykernel
+micromamba install nodejs
 micromamba install -c conda-forge jupyter-resource-usage
+micromamba install -c conda-forge jupyterlab_execute_time
 ```
 
 ## Execute 
@@ -64,11 +66,11 @@ pip install jupyterlab-nvdashboard
 ```
 
 # References
-[HKU HPC](https://hpc.hku.hk/hpc/software/jupyterlab/)
-[jupyter-resource-usage](https://github.com/jupyter-server/jupyter-resource-usage)
-[List of extensions and tools](https://jupyterlab-contrib.github.io/extensions.html)
-[Voyager is a JupyterLab MIME renderer extension to view CSV and JSON data in Voyager 2](https://github.com/altair-viz/jupyterlab_voyager)
-[jupyterlab/debugger](https://github.com/jupyterlab/debugger)
-[JupyterLab extension](https://jupyterlab.readthedocs.io/en/stable/user/extensions.html#id9)
+- [HKU HPC](https://hpc.hku.hk/hpc/software/jupyterlab/)
+- [jupyter-resource-usage](https://github.com/jupyter-server/jupyter-resource-usage)
+- [List of extensions and tools](https://jupyterlab-contrib.github.io/extensions.html)
+- [Voyager is a JupyterLab MIME renderer extension to view CSV and JSON data in Voyager 2](https://github.com/altair-viz/jupyterlab_voyager)
+- [jupyterlab/debugger](https://github.com/jupyterlab/debugger)
+- [JupyterLab extension](https://jupyterlab.readthedocs.io/en/stable/user/extensions.html#id9)
 
 
