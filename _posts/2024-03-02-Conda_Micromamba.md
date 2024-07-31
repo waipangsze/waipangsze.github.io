@@ -81,6 +81,16 @@ Or to execute a single command in this environment, use:
 
     micromamba run -n venv mycommand
 
+## clone an environment,
+As stated in the answer to [Cloning environment with micromamba](https://stackoverflow.com/questions/76884520/cloning-environment-with-micromamba), **--clone** is not an option in micromamba.
+
+Instead, export the environment yaml and create a new environment using the --file flag. Then remove the old environment.
+
+1. export the env dependencies: micromamba env export oldenv > oldenv.yaml
+2. create a new env with a new name: micromamba create -n newenv --file oldenv.yaml
+3. remove the old env: micromamba env remove -n oldenv
+4. delete the yaml file: rm oldenv.yaml
+
 ## check/add channel
 
 ```sh
