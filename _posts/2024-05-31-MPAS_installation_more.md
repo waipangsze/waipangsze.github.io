@@ -54,6 +54,9 @@ executables
 - **execution time ~35\% less compared with double-precision**
 - output files approximately half as large
 
+For mpich,
+- see https://www.mpich.org/static/downloads/4.2.0/mpich-4.2.0-installguide.pdf
+
 # For MPASv7.0 and above,
 
 ```sh
@@ -287,6 +290,7 @@ if [[ $compile_all == True ]]; then
 	#export PIO=$libs_DIR/bin:$PATH
 	
 	### Compilers
+	## commment out for mpich !!
 	export MPI_FC=mpifort
 	export MPI_F77=mpifort
 	export MPI_F90=mpifort

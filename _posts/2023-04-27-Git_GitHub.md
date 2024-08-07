@@ -9,7 +9,7 @@ author: wpsze
 * content
 {:toc}
 
-## Create an empty git repo
+# Create an empty git repo
 Git settings will be recorded in the .gitconfig file under the home page of the user's directory. We need to use the config command to set it.
 
 ```sh
@@ -42,7 +42,7 @@ $ git log
 $ git log --all --graph --oneline
 ```
 
-## Create branch and swich
+# Create branch and swich
 
 ```sh
 $ git checkout -b iss53
@@ -53,7 +53,7 @@ $ git branch iss53
 $ git checkout iss53
 ```
 
-### Push to the remote database
+## Push to the remote database
 
 ```sh
 $ git remote add <name> <url>
@@ -66,12 +66,12 @@ $ git push -u origin master
 $ git clone <repository> <directory>
 ```
 
-### Conflicts
+## Conflicts
 Between your last push and the next push, if someone else pushes to update the remote database but you do not update your local database, your push will be rejected. At this time, you need to perform a merge operation to import other people's modification history,otherwise the push will be rejected.
-#### Resolve conflict
+### Resolve conflict
 > The upper part separated by == is the editing content of the local database, and the lower part is the editing content of the remote database. After modifying all conflicting places, performing a commit will submit the commit content of the conflicting merge message.
 
-## git clone a given github repo
+# git clone a given github repo
 When the remote github repo is known, You can git clone the remote address first
 Then copy the project file to be submitted to the clone folder
 ```sh
@@ -97,8 +97,8 @@ git merge origin/master # git merge origin main
 ```
 [WHAT TO DO WHEN GIT BRANCH HAS DIVERGED?](https://poanchen.github.io/blog/2020/09/19/what-to-do-when-git-branch-has-diverged)
 
-## Common Error
-### [rejected]        master -> master (non-fast-forward)
+# Common Error
+## [rejected]        master -> master (non-fast-forward)
 > ! [rejected]        master -> master (non-fast-forward)
 > error: failed to push some refs to ’’
 > To prevent you from losing history, non-fast-forward updates were rejected
@@ -131,3 +131,16 @@ $ git add sample.txt
 $ git commit -m "merge"
 ```
 
+# .gitignore file itself is not being ignored
+
+This means that .gitignore is a tracked file.... so you changed it, so it shows up as changed. This would be the expected result... and it makes sense. Do you want to ignore .gitignore? This is not quite a good idea because by tracking it, everyone gets to ignore the same things in the project. Now, if you would like to be the only person in the project to be ignoring the files that you started the question from, you might have to consider adding that to **.git/info/exclude** so that it's only on you and no one else.
+
+```sh
+ $ cat .git/info/exclude
+# git ls-files --others --exclude-from=.git/info/exclude
+# Lines that start with '#' are comments.
+# For a project mostly in C, the following would be a good set of
+# exclude patterns (uncomment them if you want to use them):
+# *.[oa]
+# *~
+```

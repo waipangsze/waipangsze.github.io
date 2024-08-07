@@ -242,6 +242,7 @@ if [[ $compile_all == True ]]; then
 	#export PIO=$libs_DIR/bin:$PATH
 	
 	### Compilers
+	## commment out for mpich
 	export MPI_FC=mpifort
 	export MPI_F77=mpifort
 	export MPI_F90=mpifort
