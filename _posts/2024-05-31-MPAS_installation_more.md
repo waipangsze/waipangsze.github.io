@@ -17,8 +17,9 @@ There is no “configuration” step for MPAS, unlike, e.g., for the WRF model
 - All build flags are either set in the top-level Makefile or on the command-line
 General MPAS build command:
 
+```sh
 $ make target CORE=core options
-{:.info}
+```
 
 target can be either
 - **clean**
@@ -288,21 +289,7 @@ if [[ $compile_all == True ]]; then
 	#export NETCDF=$libs_DIR/bin:$PATH
 	
 	#export PIO=$libs_DIR/bin:$PATH
-	
-	### Compilers
-	## commment out for mpich !!
-	export MPI_FC=mpifort
-	export MPI_F77=mpifort
-	export MPI_F90=mpifort
-	export MPI_CC=mpicc
-	export MPI_CXX=mpic++
-	### all serial are same as MPI
-	export FC=${MPI_FC}
-	export F77=${MPI_F77}
-	export F90=${MPI_F77}
-	export CC=${MPI_F77}
-	export CXX=${MPI_F77}
-	
+
 	############################## MPICH ############################
 	if [[ ${do_mpich}  == True ]]; then
 		#export PATH=$libs_DIR/gcc-v8.3.0/bin:$PATH
@@ -323,6 +310,24 @@ if [[ $compile_all == True ]]; then
 		rm -rf mpich-4.0.2
 		echo "=== MPICH (end) ===="
 	fi
+
+	### Compilers
+	## commment out for mpich !!
+	export SERIAL_FC=gfortran
+	export SERIAL_F77=gfortran
+	export SERIAL_CC=gcc
+	export SERIAL_CXX=g++
+	export MPI_FC=mpifort
+	export MPI_F77=mpifort
+	export MPI_F90=mpifort
+	export MPI_CC=mpicc
+	export MPI_CXX=mpic++
+	### all serial are same as MPI
+	export FC=${MPI_FC}
+	export F77=${MPI_F77}
+	export F90=${MPI_F77}
+	export CC=${MPI_F77}
+	export CXX=${MPI_F77}
 	
 	############################## zlib ############################ *** zlib test OK ***
 	if [[ ${do_zlib}  == True ]]; then

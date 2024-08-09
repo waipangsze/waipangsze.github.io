@@ -240,21 +240,7 @@ if [[ $compile_all == True ]]; then
 	#export NETCDF=$libs_DIR/bin:$PATH
 	
 	#export PIO=$libs_DIR/bin:$PATH
-	
-	### Compilers
-	## commment out for mpich
-	export MPI_FC=mpifort
-	export MPI_F77=mpifort
-	export MPI_F90=mpifort
-	export MPI_CC=mpicc
-	export MPI_CXX=mpic++
-	### all serial are same as MPI
-	export FC=${MPI_FC}
-	export F77=${MPI_F77}
-	export F90=${MPI_F77}
-	export CC=${MPI_F77}
-	export CXX=${MPI_F77}
-	
+
 	############################## MPICH ############################
 	if [[ ${do_mpich}  == True ]]; then
 		#export PATH=$libs_DIR/gcc-v8.3.0/bin:$PATH
@@ -275,6 +261,24 @@ if [[ $compile_all == True ]]; then
 		rm -rf mpich-4.0.2
 		echo "=== MPICH (end) ===="
 	fi
+
+	### Compilers
+	## commment out for mpich
+	export SERIAL_FC=gfortran
+	export SERIAL_F77=gfortran
+	export SERIAL_CC=gcc
+	export SERIAL_CXX=g++
+	export MPI_FC=mpifort
+	export MPI_F77=mpifort
+	export MPI_F90=mpifort
+	export MPI_CC=mpicc
+	export MPI_CXX=mpic++
+	### all serial are same as MPI
+	export FC=${MPI_FC}
+	export F77=${MPI_F77}
+	export F90=${MPI_F77}
+	export CC=${MPI_F77}
+	export CXX=${MPI_F77}
 	
 	############################## zlib ############################ *** zlib test OK ***
 	if [[ ${do_zlib}  == True ]]; then
@@ -435,4 +439,59 @@ Install cmake, curl and unzip !!!
 ```sh
 source /home/wpsze/micromamba/etc/profile.d/micromamba.sh # install cmake
 micromamba activate mpas_env
+```
+
+# mpas_env.sh
+
+```sh
+#!/bin/bash
+
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         
+#date:           2022-10-21 23:13:49
+#Version:        0.0 
+#Description:    The purpose of the script
+#Copyright (C)： 2022 All rights reserved
+#------------------------------------------------#
+
+# Install: make/cmake
+# Actually: can install gnu 
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate mpas_env
+
+export libs_DIR=/EM/wpsze/MPAS-A/modules_library/Library/
+
+# GCC env
+export PATH=/home/wpsze/GNU_GCC/Library/gcc-v9.3.0/bin:$PATH
+export LD_LIBRARY_PATH=/home/wpsze/GNU_GCC/Library/gcc-v9.3.0/lib/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH=/home/wpsze/GNU_GCC/Library/gcc-v9.3.0/lib64:$LD_LIBRARY_PATH
+
+# MPAS env 
+export PATH=$libs_DIR/bin:$PATH
+export LD_LIBRARY_PATH=$libs_DIR/lib:$LD_LIBRARY_PATH
+export LDFLAGS=-L$libs_DIR/lib
+export CPPFLAGS=-I$libs_DIR/include
+
+export PNETCDF_PATH=$libs_DIR
+export PNETCDF=$libs_DIR
+export NETCDF_PATH=$libs_DIR
+export NETCDF=$libs_DIR
+export PIO=$libs_DIR
+
+##--Intel MPI与Open MPI、MPICH等MPI实现不同：
+##--mpiicc、mpiicpc和mpiifort命令：使用Intel编译器
+##--mpicc、mpif90和mpifc命令：默认使用GNU编译器
+## 
+export FC=mpifort
+export F77=mpifort
+export F90=mpifort
+export CC=mpicc
+export MPIF90=mpifort
+export MPIF77=mpifort
+export MPIFC=mpifort
+export MPICC=mpicc
+
+gcc --version
+gfortran --version
 ```

@@ -39,7 +39,7 @@ micromamba activate new-env-1
 
 # install python kernel for Jupyter
 # avoid installation of any jupyter related modules
-pip install --user ipykernel
+micromamba install anaconda::ipykernel
 
 # added the kernel to Jupyter and name it as "Environment(myproject)"
 python -m ipykernel install --user --name=mnew-env-1 --display-name='Environment(new-env-1)'
@@ -50,7 +50,7 @@ micromamba acitvate new-env-2
 
 # install python kernel for Jupyter
 # avoid installation of any jupyter related modules
-pip install --user ipykernel
+micromamba install anaconda::ipykernel
 
 # added the kernel to Jupyter and name it as "Environment(myproject)"
 python -m ipykernel install --user --name=mnew-env-2 --display-name='Environment(new-env-2)'
