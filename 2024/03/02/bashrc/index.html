@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  If you spend a lot of time on the command line, chances are that you’ll want to customize your shell environment. This can mean creating aliases, adding a new directory to the $PATH ,">
+    <meta name="description" content="content {:toc}  If you spend a lot of time on the command line, chances are that you’ll want to customize your shell environment. This can mean creating aliases, adding a new directory to the $PATH ,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="bashrc">
 <meta property="og:url" content="https://waipangsze.github.io/2024/03/02/bashrc/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  If you spend a lot of time on the command line, chances are that you’ll want to customize your shell environment. This can mean creating aliases, adding a new directory to the $PATH ,">
+<meta property="og:description" content="content {:toc}  If you spend a lot of time on the command line, chances are that you’ll want to customize your shell environment. This can mean creating aliases, adding a new directory to the $PATH ,">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-03-01T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          284 words
+          266 words
         
       </span>
     
@@ -299,27 +299,66 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<p>If you spend a lot of time on the command line, chances are that you’ll want to customize your shell environment. This can mean creating aliases, adding a new directory to the <strong>$PATH</strong> , or changing the look of the shell prompt.</p>
-<p>You may have come across some tutorials where they say to put your configuration either in the <strong>.bashrc</strong>, <strong>.bash_profile</strong> or another configuration file that is read and executed by the bash shell.</p>
-<h1 id="Bash-Startup-Files"><a href="#Bash-Startup-Files" class="headerlink" title="Bash Startup Files"></a>Bash Startup Files</h1><p>When invoked as an interactive login shell, Bash looks for the <strong>&#x2F;etc&#x2F;profile</strong> file, and if the file exists , it runs the commands listed in the file. Then Bash searches for <strong>~&#x2F;.bash_profile</strong>, <strong>~&#x2F;.bash_login</strong>, and <strong>~&#x2F;.profile</strong> files, in the listed order, and executes commands from the first readable file found.</p>
-<p>When Bash is invoked as an <em>interactive non-login shell</em>, it reads and executes commands from <strong>~&#x2F;.bashrc</strong>, if that file exists, and it is readable.</p>
-<h2 id="Difference-Between-bashrc-and-bash-profile"><a href="#Difference-Between-bashrc-and-bash-profile" class="headerlink" title="Difference Between .bashrc and .bash_profile"></a>Difference Between .bashrc and .bash_profile</h2><p><strong>.bash_profile</strong> is read and executed when Bash is invoked as an interactive login shell, while <strong>.bashrc</strong> is executed for an interactive non-login shell.</p>
-<p>Use <strong>.bash_profile</strong> to run commands that should run only once, such as customizing the <strong>$PATH</strong> environment variable .</p>
-<p>Put the commands that should run every time you launch a new shell in the <strong>.bashrc</strong> file. This include your aliases and functions , custom prompts, history customizations , and so on.</p>
+<p>If you spend a lot of time on the command line, chances are that
+you’ll want to customize your shell environment. This can mean creating
+aliases, adding a new directory to the <strong>$PATH</strong> , or
+changing the look of the shell prompt.</p>
+<p>You may have come across some tutorials where they say to put your
+configuration either in the <strong>.bashrc</strong>,
+<strong>.bash_profile</strong> or another configuration file that is
+read and executed by the bash shell.</p>
+<h1 id="bash-startup-files">Bash Startup Files</h1>
+<p>When invoked as an interactive login shell, Bash looks for the
+<strong>/etc/profile</strong> file, and if the file exists , it runs the
+commands listed in the file. Then Bash searches for
+<strong><sub>/.bash_profile<strong>,
+</strong></sub>/.bash_login</strong>, and <strong>~/.profile</strong>
+files, in the listed order, and executes commands from the first
+readable file found.</p>
+<p>When Bash is invoked as an <em>interactive non-login shell</em>, it
+reads and executes commands from <strong>~/.bashrc</strong>, if that
+file exists, and it is readable.</p>
+<h2 id="difference-between-.bashrc-and-.bash_profile">Difference Between
+.bashrc and .bash_profile</h2>
+<p><strong>.bash_profile</strong> is read and executed when Bash is
+invoked as an interactive login shell, while <strong>.bashrc</strong> is
+executed for an interactive non-login shell.</p>
+<p>Use <strong>.bash_profile</strong> to run commands that should run
+only once, such as customizing the <strong>$PATH</strong> environment
+variable .</p>
+<p>Put the commands that should run every time you launch a new shell in
+the <strong>.bashrc</strong> file. This include your aliases and
+functions , custom prompts, history customizations , and so on.</p>
 <blockquote>
-<p>Typically, ~&#x2F;.bash_profile contains lines like below that source the .bashrc file. This means each time you log in to the terminal, both files are read and executed.</p>
+<p>Typically, ~/.bash_profile contains lines like below that source the
+.bashrc file. This means each time you log in to the terminal, both
+files are read and executed.</p>
 </blockquote>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-keyword">if</span> [ -f ~/.bashrc ]; <span class="hljs-keyword">then</span><br>	. ~/.bashrc<br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
-<h2 id="profile-and-bash-profile"><a href="#profile-and-bash-profile" class="headerlink" title="~&#x2F;.profile and ~&#x2F;.bash_profile"></a>~&#x2F;.profile and ~&#x2F;.bash_profile</h2><p>Most Linux distributions are using <strong>~&#x2F;.profile</strong> instead of <strong>~&#x2F;.bash_profile</strong>. The <strong>~&#x2F;.profile</strong> file is read by <em>all shells</em>, while <strong>~&#x2F;.bash_profile</strong> <em>only by Bash</em>.</p>
-<p>If any startup file is not present on your system, you can create it.</p>
-<h1 id="More"><a href="#More" class="headerlink" title="More"></a>More</h1><h2 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h2><p>profile，路徑：&#x2F;etc&#x2F;profile，用於設定係統級的環境變數和啟動程序，在此文件下配置對所有使用者生效。<br>當登入使用者（login）時，檔案會被執行，並從&#x2F;etc&#x2F;profile.d目錄的設定檔中找到shell設定。</p>
-<h2 id="bash-profile"><a href="#bash-profile" class="headerlink" title="bash_profile"></a>bash_profile</h2><p>bash_profile只對單一使用者有效，檔案儲存位於~&#x2F;.bash_profile，該檔案是一個使用者層級的設置，可以理解為某個使用者的設定檔目錄下。</p>
+<h2 id="profile-and-.bash_profile">~/.profile and ~/.bash_profile</h2>
+<p>Most Linux distributions are using <strong>~/.profile</strong>
+instead of <strong><sub>/.bash_profile<strong>. The
+</strong></sub>/.profile</strong> file is read by <em>all shells</em>,
+while <strong>~/.bash_profile</strong> <em>only by Bash</em>.</p>
+<p>If any startup file is not present on your system, you can create
+it.</p>
+<h1 id="more">More</h1>
+<h2 id="profile">profile</h2>
+<p>profile，路徑：/etc/profile，用於設定係統級的環境變數和啟動程序，在此文件下配置對所有使用者生效。
+當登入使用者（login）時，檔案會被執行，並從/etc/profile.d目錄的設定檔中找到shell設定。</p>
+<h2 id="bash_profile">bash_profile</h2>
+<p>bash_profile只對單一使用者有效，檔案儲存位於~/.bash_profile，該檔案是一個使用者層級的設置，可以理解為某個使用者的設定檔目錄下。</p>
 <p>該文件也可以用於配置環境變數和啟動程序，但僅針對單一使用者有效。</p>
-<p>和 profile 檔案類似，bash_profile 也可以在使用者登入（login）時生效，也可以用來設定環境變數。</p>
+<p>和 profile 檔案類似，bash_profile
+也可以在使用者登入（login）時生效，也可以用來設定環境變數。</p>
 <p>但與 profile 不同，bash_profile 只能對目前使用者生效。</p>
-<p>#BASH Alias<br>BASH Alias is a shortcut to run commands using some mapping. It is a way to create some shortcut commands for repetitive and multiple tasks. We create an alias in a BASH environment in specified files. We can also incorporate BASH functions, variables, etc to make the Alias more programmatic and flexible.</p>
+<p>#BASH Alias BASH Alias is a shortcut to run commands using some
+mapping. It is a way to create some shortcut commands for repetitive and
+multiple tasks. We create an alias in a BASH environment in specified
+files. We can also incorporate BASH functions, variables, etc to make
+the Alias more programmatic and flexible.</p>
 
                 
               </div>
@@ -485,6 +524,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

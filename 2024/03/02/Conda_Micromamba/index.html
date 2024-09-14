@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  The easiest way to export a .yml file from a conda environment is to first activate your environment by running: 1conda activate myvenv And then run the following command that generate">
+    <meta name="description" content="content {:toc}  The easiest way to export a .yml file from a conda environment is to first activate your environment by running: 1conda activate myvenv And then run the following command that generat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Conda&#x2F;Micromamba">
 <meta property="og:url" content="https://waipangsze.github.io/2024/03/02/Conda_Micromamba/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  The easiest way to export a .yml file from a conda environment is to first activate your environment by running: 1conda activate myvenv And then run the following command that generate">
+<meta property="og:description" content="content {:toc}  The easiest way to export a .yml file from a conda environment is to first activate your environment by running: 1conda activate myvenv And then run the following command that generat">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-03-01T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
@@ -237,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          127 words
+          117 words
         
       </span>
     
@@ -248,7 +248,7 @@
         
         
         
-          2 mins
+          1 mins
         
       </span>
     
@@ -300,50 +300,61 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<p>The easiest way to export a .yml file from a conda environment is to first activate your environment by running:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda activate myvenv<br></code></pre></td></tr></table></figure>
-<p>And then run the following command that generated your .yml file:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> <span class="hljs-built_in">export</span> &gt; list.yml<br></code></pre></td></tr></table></figure>
-<p>Finally, you can create a new environment using the .yml file, like:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> create --name myvenv --file=list.yml<br></code></pre></td></tr></table></figure>
-
-<p>or </p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> <span class="hljs-built_in">export</span> | grep -v <span class="hljs-string">&quot;^prefix: &quot;</span> &gt; environment.yml<br>conda <span class="hljs-built_in">env</span> create -f environment.yml<br></code></pre></td></tr></table></figure>
-
-<p>Remove environment,</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda remove -n ENV_NAME --all<br></code></pre></td></tr></table></figure>
-
-<h1 id="Micromamba"><a href="#Micromamba" class="headerlink" title="Micromamba"></a>Micromamba</h1><p>Micromamba is a standalone version of Mamba which is an alternative to Conda. This stack delivers a custom anaconda&#x2F;miniconda type deployment based on the communities conda-forge channel with micromamba as the package manager. For more information visit <a target="_blank" rel="noopener" href="https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html">micromamba documentation</a>.</p>
-<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">wget micro.mamba.pm/install.sh<br><span class="hljs-built_in">chmod</span> +x install.sh<br>./install.sh<br></code></pre></td></tr></table></figure>
-
-<h2 id="Parsing-arguments"><a href="#Parsing-arguments" class="headerlink" title="Parsing arguments"></a>Parsing arguments</h2><p>if [ -t 0 ] ; then<br>  printf “Micromamba binary folder? [~&#x2F;.local&#x2F;bin] “<br>  read BIN_FOLDER<br>  printf “Init shell ($shell)? [Y&#x2F;n] “<br>  read INIT_YES<br>  printf “Configure conda-forge? [Y&#x2F;n] “<br>  read CONDA_FORGE_YES<br>fi</p>
+<p>The easiest way to export a .yml file from a conda environment is to
+first activate your environment by running: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda activate myvenv<br></code></pre></td></tr></table></figure> And then run
+the following command that generated your .yml file: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> <span class="hljs-built_in">export</span> &gt; list.yml<br></code></pre></td></tr></table></figure>
+Finally, you can create a new environment using the .yml file, like:
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> create --name myvenv --file=list.yml<br></code></pre></td></tr></table></figure></p>
+<p>or <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> <span class="hljs-built_in">export</span> | grep -v <span class="hljs-string">&quot;^prefix: &quot;</span> &gt; environment.yml<br>conda <span class="hljs-built_in">env</span> create -f environment.yml<br></code></pre></td></tr></table></figure></p>
+<p>Remove environment, <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda remove -n ENV_NAME --all<br></code></pre></td></tr></table></figure></p>
+<h1 id="micromamba">Micromamba</h1>
+<p>Micromamba is a standalone version of Mamba which is an alternative
+to Conda. This stack delivers a custom anaconda/miniconda type
+deployment based on the communities conda-forge channel with micromamba
+as the package manager. For more information visit <a
+target="_blank" rel="noopener" href="https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html">micromamba
+documentation</a>.</p>
+<h2 id="installation">Installation</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">wget micro.mamba.pm/install.sh<br><span class="hljs-built_in">chmod</span> +x install.sh<br>./install.sh<br></code></pre></td></tr></table></figure>
+<h2 id="parsing-arguments">Parsing arguments</h2>
+<p>if [ -t 0 ] ; then printf "Micromamba binary folder? [~/.local/bin] "
+read BIN_FOLDER printf "Init shell ($shell)? [Y/n] " read INIT_YES
+printf "Configure conda-forge? [Y/n] " read CONDA_FORGE_YES fi</p>
 <ul>
-<li>&#x2F;home&#x2F;wpsze&#x2F;.local&#x2F;bin</li>
+<li>/home/wpsze/.local/bin</li>
 <li>init shell? Y</li>
 <li>configure-forge? Y</li>
 </ul>
 <p>Finally, it will initalize micromambs config on .bashrc</p>
-<h3 id="Create-env-by-given-yaml"><a href="#Create-env-by-given-yaml" class="headerlink" title="Create env by given yaml"></a>Create env by given yaml</h3><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">micromamba env create</span> <span class="hljs-literal">--</span><span class="hljs-comment">name newenv</span> <span class="hljs-literal">--</span><span class="hljs-comment">file oldenv</span><span class="hljs-string">.</span><span class="hljs-comment">yaml</span><br></code></pre></td></tr></table></figure>
-<h3 id="Source-and-activate-env"><a href="#Source-and-activate-env" class="headerlink" title="Source and activate env"></a>Source and activate env</h3><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">$ <span class="hljs-keyword">source</span> <span class="hljs-regexp">/home/</span>wpsze<span class="hljs-regexp">/micromamba/</span>etc<span class="hljs-regexp">/profile.d/mi</span>cromamba.sh<br>$ micromamba activate venv<br></code></pre></td></tr></table></figure>
-
-<h3 id="activate-or-execute"><a href="#activate-or-execute" class="headerlink" title="activate or execute"></a>activate or execute</h3><p>Transaction finished</p>
+<h3 id="create-env-by-given-yaml">Create env by given yaml</h3>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">micromamba env create</span> <span class="hljs-literal">--</span><span class="hljs-comment">name newenv</span> <span class="hljs-literal">--</span><span class="hljs-comment">file oldenv</span><span class="hljs-string">.</span><span class="hljs-comment">yaml</span><br></code></pre></td></tr></table></figure>
+<h3 id="source-and-activate-env">Source and activate env</h3>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">$ <span class="hljs-keyword">source</span> <span class="hljs-regexp">/home/</span>wpsze<span class="hljs-regexp">/micromamba/</span>etc<span class="hljs-regexp">/profile.d/mi</span>cromamba.sh<br>$ micromamba activate venv<br></code></pre></td></tr></table></figure>
+<h3 id="activate-or-execute">activate or execute</h3>
+<p>Transaction finished</p>
 <p>To activate this environment, use:</p>
-<pre><code class="hljs">micromamba activate venv
-</code></pre>
+<pre><code class="hljs">micromamba activate venv</code></pre>
 <p>Or to execute a single command in this environment, use:</p>
-<pre><code class="hljs">micromamba run -n venv mycommand
-</code></pre>
-<h2 id="clone-an-environment"><a href="#clone-an-environment" class="headerlink" title="clone an environment,"></a>clone an environment,</h2><p>As stated in the answer to <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/76884520/cloning-environment-with-micromamba">Cloning environment with micromamba</a>, <strong>–clone</strong> is not an option in micromamba.</p>
-<p>Instead, export the environment yaml and create a new environment using the –file flag. Then remove the old environment.</p>
-<ol>
-<li>export the env dependencies: micromamba env export -n oldenv &gt; oldenv.yaml</li>
-<li>create a new env with a new name: micromamba create -n newenv –file oldenv.yaml</li>
+<pre><code class="hljs">micromamba run -n venv mycommand</code></pre>
+<h2 id="clone-an-environment">clone an environment,</h2>
+<p>As stated in the answer to <a
+target="_blank" rel="noopener" href="https://stackoverflow.com/questions/76884520/cloning-environment-with-micromamba">Cloning
+environment with micromamba</a>, <strong>--clone</strong> is not an
+option in micromamba.</p>
+<p>Instead, export the environment yaml and create a new environment
+using the --file flag. Then remove the old environment.</p>
+<ol type="1">
+<li>export the env dependencies: micromamba env export -n oldenv &gt;
+oldenv.yaml</li>
+<li>create a new env with a new name: micromamba create -n newenv --file
+oldenv.yaml</li>
 <li>remove the old env: micromamba env remove -n oldenv</li>
 <li>delete the yaml file: rm oldenv.yaml</li>
 </ol>
-<h2 id="check-add-channel"><a href="#check-add-channel" class="headerlink" title="check&#x2F;add channel"></a>check&#x2F;add channel</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ micromamba config list --sources<br>channels:<br>  - conda-forge  <span class="hljs-comment"># &#x27;~/.condarc&#x27;</span><br><br>$ micromamba config append channels conda-forge<br></code></pre></td></tr></table></figure>
+<h2 id="checkadd-channel">check/add channel</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ micromamba config list --sources<br>channels:<br>  - conda-forge  <span class="hljs-comment"># &#x27;~/.condarc&#x27;</span><br><br>$ micromamba config append channels conda-forge<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -511,6 +522,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  METIS - Serial Graph Partitioning and Fill-reducing Matrix OrderingMETIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill red">
+    <meta name="description" content="content {:toc}  METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering METIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill r">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MPAS -- install Metis">
 <meta property="og:url" content="https://waipangsze.github.io/2024/05/31/MPAS_install_metis_error/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  METIS - Serial Graph Partitioning and Fill-reducing Matrix OrderingMETIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill red">
+<meta property="og:description" content="content {:toc}  METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering METIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill r">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-05-30T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
@@ -300,14 +300,22 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="METIS-Serial-Graph-Partitioning-and-Fill-reducing-Matrix-Ordering"><a href="#METIS-Serial-Graph-Partitioning-and-Fill-reducing-Matrix-Ordering" class="headerlink" title="METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering"></a>METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering</h1><p><a target="_blank" rel="noopener" href="http://glaros.dtc.umn.edu/gkhome/metis/metis/overview">METIS</a> is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices. The algorithms implemented in METIS are based on the multilevel recursive-bisection, multilevel k-way, and multi-constraint partitioning schemes developed in our lab.</p>
-<h1 id="Issue-Solution"><a href="#Issue-Solution" class="headerlink" title="Issue &amp; Solution"></a>Issue &amp; Solution</h1><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs clean">############################## metis ############################<br><span class="hljs-keyword">if</span> [[ $&#123;do_metis&#125; == <span class="hljs-literal">True</span> ]]; then<br>	echo <span class="hljs-string">&quot;=== metis ====&quot;</span><br>	cd $download_DIR<br>	tar xvf metis<span class="hljs-number">-5.1</span><span class="hljs-number">.0</span>.tar.gz <span class="hljs-number">1</span>&gt;/dev/null <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br>	cd metis<span class="hljs-number">-5.1</span><span class="hljs-number">.0</span>/<br>	#./configure --prefix=$libs_DIR<br>	<br>	make config prefix=$libs_DIR<br>	make<br>	#make check<br>	make install<br>	cd ..<br>	rm -rf metis<span class="hljs-number">-5.1</span><span class="hljs-number">.0</span><br>	echo <span class="hljs-string">&quot;=== metis (end) ====&quot;</span><br>fi<br></code></pre></td></tr></table></figure>
-
+<h1
+id="metis---serial-graph-partitioning-and-fill-reducing-matrix-ordering">METIS
+- Serial Graph Partitioning and Fill-reducing Matrix Ordering</h1>
+<p><a
+target="_blank" rel="noopener" href="http://glaros.dtc.umn.edu/gkhome/metis/metis/overview">METIS</a>
+is a set of serial programs for partitioning graphs, partitioning finite
+element meshes, and producing fill reducing orderings for sparse
+matrices. The algorithms implemented in METIS are based on the
+multilevel recursive-bisection, multilevel k-way, and multi-constraint
+partitioning schemes developed in our lab.</p>
+<h1 id="issue-solution">Issue &amp; Solution</h1>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs clean">############################## metis ############################<br><span class="hljs-keyword">if</span> [[ $&#123;do_metis&#125; == <span class="hljs-literal">True</span> ]]; then<br>	echo <span class="hljs-string">&quot;=== metis ====&quot;</span><br>	cd $download_DIR<br>	tar xvf metis<span class="hljs-number">-5.1</span><span class="hljs-number">.0</span>.tar.gz <span class="hljs-number">1</span>&gt;/dev/null <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br>	cd metis<span class="hljs-number">-5.1</span><span class="hljs-number">.0</span>/<br>	#./configure --prefix=$libs_DIR<br>	<br>	make config prefix=$libs_DIR<br>	make<br>	#make check<br>	make install<br>	cd ..<br>	rm -rf metis<span class="hljs-number">-5.1</span><span class="hljs-number">.0</span><br>	echo <span class="hljs-string">&quot;=== metis (end) ====&quot;</span><br>fi<br></code></pre></td></tr></table></figure>
 <p>Output files are,</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"> $ <span class="hljs-built_in">ls</span> Library/bin/*meti*<br>Library/bin/gpmetis  Library/bin/m2gmetis  Library/bin/mpmetis  Library/bin/ndmetis<br> $ <span class="hljs-built_in">ls</span> Library/lib/*meti*<br>Library/lib/libmetis.a<br> $ <span class="hljs-built_in">ls</span> Library/include/*meti*<br>Library/include/metis.h<br></code></pre></td></tr></table></figure>
-
 
                 
               </div>
@@ -475,6 +483,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

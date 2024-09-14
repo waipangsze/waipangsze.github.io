@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  Create an empty git repoGit settings will be recorded in the .gitconfig file under the home page of the user’s directory. We need to use the config command to set it. 12$ git config --">
+    <meta name="description" content="content {:toc}  Create an empty git repo Git settings will be recorded in the .gitconfig file under the home page of the user&#39;s directory. We need to use the config command to set it. 12$ git config">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git&#x2F;Github">
 <meta property="og:url" content="https://waipangsze.github.io/2023/04/27/Git_GitHub/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  Create an empty git repoGit settings will be recorded in the .gitconfig file under the home page of the user’s directory. We need to use the config command to set it. 12$ git config --">
+<meta property="og:description" content="content {:toc}  Create an empty git repo Git settings will be recorded in the .gitconfig file under the home page of the user&#39;s directory. We need to use the config command to set it. 12$ git config">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-04-26T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
@@ -240,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          277 words
+          275 words
         
       </span>
     
@@ -303,60 +303,89 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="Create-an-empty-git-repo"><a href="#Create-an-empty-git-repo" class="headerlink" title="Create an empty git repo"></a>Create an empty git repo</h1><p>Git settings will be recorded in the .gitconfig file under the home page of the user’s directory. We need to use the config command to set it.</p>
+<h1 id="create-an-empty-git-repo">Create an empty git repo</h1>
+<p>Git settings will be recorded in the .gitconfig file under the home
+page of the user's directory. We need to use the config command to set
+it.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git config --global user.name <span class="hljs-string">&quot;&lt;username&gt;&quot;</span><br>$ git config --global user.email <span class="hljs-string">&quot;&lt;email&gt;&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>Follow this command, you can set the color of Git’s output (output) results.</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git config --global color.ui auto<br></code></pre></td></tr></table></figure>
-
-<p>change editor,</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git config --global core.editor <span class="hljs-string">&quot;vim&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>Follow the steps below to set the newly created tutorial directory as a Git database</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">mkdir</span> tutorial<br>$ <span class="hljs-built_in">cd</span> tutorial<br>$ git init<br><br><span class="hljs-comment">## Initialized empty Git repository in /Users/yourname/Desktop/tutorial/.git/</span><br>$ git status<br>$ git add .<br>$ git commit -m <span class="hljs-string">&quot;first commit&quot;</span><br>$ git status<br>$ git <span class="hljs-built_in">log</span><br>$ git <span class="hljs-built_in">log</span> --all --graph --oneline<br></code></pre></td></tr></table></figure>
-
-<h1 id="Create-branch-and-swich"><a href="#Create-branch-and-swich" class="headerlink" title="Create branch and swich"></a>Create branch and swich</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git checkout -b iss53<br>Switched to a new branch <span class="hljs-string">&quot;iss53&quot;</span><br>This is shorthand <span class="hljs-keyword">for</span>:<br><br>$ git branch iss53<br>$ git checkout iss53<br></code></pre></td></tr></table></figure>
-
-<h2 id="Push-to-the-remote-database"><a href="#Push-to-the-remote-database" class="headerlink" title="Push to the remote database"></a>Push to the remote database</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git remote add &lt;name&gt; &lt;url&gt;<br>$ git remote add origin https://xxx/tutorial.git<br></code></pre></td></tr></table></figure>
-<p>Execute the following command to submit the push to the remote database origin, specify the parameter -u item when executing the submission, and then omit the specified branch name. But when pushing to a blank remote database, you must specify the name of the remote database and branch, which must not be omitted.<br>During the process, the system will&#x2F;may ask for user name and password</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git push -u origin master<br>$ git <span class="hljs-built_in">clone</span> &lt;repository&gt; &lt;directory&gt;<br></code></pre></td></tr></table></figure>
-
-<h2 id="Conflicts"><a href="#Conflicts" class="headerlink" title="Conflicts"></a>Conflicts</h2><p>Between your last push and the next push, if someone else pushes to update the remote database but you do not update your local database, your push will be rejected. At this time, you need to perform a merge operation to import other people’s modification history,otherwise the push will be rejected.</p>
-<h3 id="Resolve-conflict"><a href="#Resolve-conflict" class="headerlink" title="Resolve conflict"></a>Resolve conflict</h3><blockquote>
-<p>The upper part separated by &#x3D;&#x3D; is the editing content of the local database, and the lower part is the editing content of the remote database. After modifying all conflicting places, performing a commit will submit the commit content of the conflicting merge message.</p>
-</blockquote>
-<h1 id="git-clone-a-given-github-repo"><a href="#git-clone-a-given-github-repo" class="headerlink" title="git clone a given github repo"></a>git clone a given github repo</h1><p>When the remote github repo is known, You can git clone the remote address first<br>Then copy the project file to be submitted to the clone folder</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Add all files, such as submitting only some files requires a single git add file name</span><br>git add. <br>git commit -m <span class="hljs-string">&quot;remarks for submission&quot;</span><br><br><span class="hljs-comment"># Force push can overwrite master</span><br>git push -u -f origin master<br></code></pre></td></tr></table></figure>
-
-<p>If you git <strong>commit –amend</strong> here, then error “Your branch and ‘origin&#x2F;master’ have diverged” will reject your git push. The process here is,</p>
-<ol>
-<li>git clone github repo (latest one with commit ID A)</li>
-<li>you make something changes</li>
-<li>$ git commit –amend -m “remarks for submission”</li>
-<li>The above commit with amend will create a New commit ID and rewrite the original commit ID A. Therefore, it can not reconignate two commit ID’s and tell your branch and remote ‘origin&#x2F;master’ have diverged.</li>
-</ol>
-<p>The solution is,</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">git rebase origin/master <span class="hljs-comment"># git rebase origin main</span><br><span class="hljs-comment"># or</span><br>git merge origin/master <span class="hljs-comment"># git merge origin main</span><br></code></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://poanchen.github.io/blog/2020/09/19/what-to-do-when-git-branch-has-diverged">WHAT TO DO WHEN GIT BRANCH HAS DIVERGED?</a></p>
-<h1 id="Common-Error"><a href="#Common-Error" class="headerlink" title="Common Error"></a>Common Error</h1><h2 id="rejected-master-master-non-fast-forward"><a href="#rejected-master-master-non-fast-forward" class="headerlink" title="[rejected]        master -&gt; master (non-fast-forward)"></a>[rejected]        master -&gt; master (non-fast-forward)</h2><blockquote>
-<p>! [rejected]        master -&gt; master (non-fast-forward)<br>error: failed to push some refs to ’’<br>To prevent you from losing history, non-fast-forward updates were rejected<br>Merge the remote changes (e.g. ‘git pull’) before pushing again.  See the<br>‘Note about fast-forwards’ section of ‘git push –help’ for details.</p>
+<p>Follow this command, you can set the color of Git's output (output)
+results. <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git config --global color.ui auto<br></code></pre></td></tr></table></figure></p>
+<p>change editor, <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git config --global core.editor <span class="hljs-string">&quot;vim&quot;</span><br></code></pre></td></tr></table></figure></p>
+<p>Follow the steps below to set the newly created tutorial directory as
+a Git database <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">mkdir</span> tutorial<br>$ <span class="hljs-built_in">cd</span> tutorial<br>$ git init<br><br><span class="hljs-comment">## Initialized empty Git repository in /Users/yourname/Desktop/tutorial/.git/</span><br>$ git status<br>$ git add .<br>$ git commit -m <span class="hljs-string">&quot;first commit&quot;</span><br>$ git status<br>$ git <span class="hljs-built_in">log</span><br>$ git <span class="hljs-built_in">log</span> --all --graph --oneline<br></code></pre></td></tr></table></figure></p>
+<h1 id="create-branch-and-swich">Create branch and swich</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git checkout -b iss53<br>Switched to a new branch <span class="hljs-string">&quot;iss53&quot;</span><br>This is shorthand <span class="hljs-keyword">for</span>:<br><br>$ git branch iss53<br>$ git checkout iss53<br></code></pre></td></tr></table></figure>
+<h2 id="push-to-the-remote-database">Push to the remote database</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git remote add &lt;name&gt; &lt;url&gt;<br>$ git remote add origin https://xxx/tutorial.git<br></code></pre></td></tr></table></figure>
+<p>Execute the following command to submit the push to the remote
+database origin, specify the parameter -u item when executing the
+submission, and then omit the specified branch name. But when pushing to
+a blank remote database, you must specify the name of the remote
+database and branch, which must not be omitted. During the process, the
+system will/may ask for user name and password <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git push -u origin master<br>$ git <span class="hljs-built_in">clone</span> &lt;repository&gt; &lt;directory&gt;<br></code></pre></td></tr></table></figure></p>
+<h2 id="conflicts">Conflicts</h2>
+<p>Between your last push and the next push, if someone else pushes to
+update the remote database but you do not update your local database,
+your push will be rejected. At this time, you need to perform a merge
+operation to import other people's modification history,otherwise the
+push will be rejected. ### Resolve conflict &gt; The upper part
+separated by == is the editing content of the local database, and the
+lower part is the editing content of the remote database. After
+modifying all conflicting places, performing a commit will submit the
+commit content of the conflicting merge message.</p>
+<h1 id="git-clone-a-given-github-repo">git clone a given github
+repo</h1>
+<p>When the remote github repo is known, You can git clone the remote
+address first Then copy the project file to be submitted to the clone
+folder <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Add all files, such as submitting only some files requires a single git add file name</span><br>git add. <br>git commit -m <span class="hljs-string">&quot;remarks for submission&quot;</span><br><br><span class="hljs-comment"># Force push can overwrite master</span><br>git push -u -f origin master<br></code></pre></td></tr></table></figure></p>
+<p>If you git <strong>commit --amend</strong> here, then error "Your
+branch and 'origin/master' have diverged" will reject your git push. The
+process here is, 1. git clone github repo (latest one with commit ID A)
+2. you make something changes 3. $ git commit --amend -m "remarks for
+submission" 4. The above commit with amend will create a New commit ID
+and rewrite the original commit ID A. Therefore, it can not reconignate
+two commit ID's and tell your branch and remote 'origin/master' have
+diverged.</p>
+<p>The solution is, <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">git rebase origin/master <span class="hljs-comment"># git rebase origin main</span><br><span class="hljs-comment"># or</span><br>git merge origin/master <span class="hljs-comment"># git merge origin main</span><br></code></pre></td></tr></table></figure> <a
+target="_blank" rel="noopener" href="https://poanchen.github.io/blog/2020/09/19/what-to-do-when-git-branch-has-diverged">WHAT
+TO DO WHEN GIT BRANCH HAS DIVERGED?</a></p>
+<h1 id="common-error">Common Error</h1>
+<h2 id="rejected-master---master-non-fast-forward">[rejected] master
+-&gt; master (non-fast-forward)</h2>
+<blockquote>
+<p>! [rejected] master -&gt; master (non-fast-forward) error: failed to
+push some refs to ’’ To prevent you from losing history,
+non-fast-forward updates were rejected Merge the remote changes (e.g.
+'git pull') before pushing again. See the 'Note about fast-forwards'
+section of 'git push --help' for details.</p>
 </blockquote>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git pull origin master<br><br><span class="hljs-comment"># * branch master -&gt; FETCH_HEAD</span><br><span class="hljs-comment"># CONFLICT (content): Merge conflict in file</span><br><span class="hljs-comment"># Automatic merge failed; fix conflicts and then commit the result.</span><br><span class="hljs-comment"># A warning message will appear warning about conflicts during the merge.</span><br></code></pre></td></tr></table></figure>
-<p>The conficts like,</p>
+<p>The conficts like, &gt; &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD &gt; commit
+records the state of the index &gt; ======= &gt; pull Get the content of
+the remote database &gt; &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+4c0182374230cd6eaa93b30049ef2386264fe12a</p>
+<p>Modify the conflicting places, import the modifications of both
+parties, and delete the redundant marked lines.</p>
 <blockquote>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<br>commit records the state of the index<br>=&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;<br>pull Get the content of the remote database<br>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 4c0182374230cd6eaa93b30049ef2386264fe12a</p>
+<p>commit records the state of the index pull Get the content of the
+remote database</p>
 </blockquote>
-<p>Modify the conflicting places, import the modifications of both parties, and delete the redundant marked lines.</p>
-<blockquote>
-<p>commit records the state of the index<br>pull Get the content of the remote database</p>
-</blockquote>
-<p>When the content is modified and the file conflict is resolved, a commit is required.</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git add sample.txt<br>$ git commit -m <span class="hljs-string">&quot;merge&quot;</span><br></code></pre></td></tr></table></figure>
-
-<h1 id="gitignore-file-itself-is-not-being-ignored"><a href="#gitignore-file-itself-is-not-being-ignored" class="headerlink" title=".gitignore file itself is not being ignored"></a>.gitignore file itself is not being ignored</h1><p>This means that .gitignore is a tracked file…. so you changed it, so it shows up as changed. This would be the expected result… and it makes sense. Do you want to ignore .gitignore? This is not quite a good idea because by tracking it, everyone gets to ignore the same things in the project. Now, if you would like to be the only person in the project to be ignoring the files that you started the question from, you might have to consider adding that to <strong>.git&#x2F;info&#x2F;exclude</strong> so that it’s only on you and no one else.</p>
+<p>When the content is modified and the file conflict is resolved, a
+commit is required. <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git add sample.txt<br>$ git commit -m <span class="hljs-string">&quot;merge&quot;</span><br></code></pre></td></tr></table></figure></p>
+<h1 id="gitignore-file-itself-is-not-being-ignored">.gitignore file
+itself is not being ignored</h1>
+<p>This means that .gitignore is a tracked file.... so you changed it,
+so it shows up as changed. This would be the expected result... and it
+makes sense. Do you want to ignore .gitignore? This is not quite a good
+idea because by tracking it, everyone gets to ignore the same things in
+the project. Now, if you would like to be the only person in the project
+to be ignoring the files that you started the question from, you might
+have to consider adding that to <strong>.git/info/exclude</strong> so
+that it's only on you and no one else.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ <span class="hljs-built_in">cat</span> .git/info/exclude<br><span class="hljs-comment"># git ls-files --others --exclude-from=.git/info/exclude</span><br><span class="hljs-comment"># Lines that start with &#x27;#&#x27; are comments.</span><br><span class="hljs-comment"># For a project mostly in C, the following would be a good set of</span><br><span class="hljs-comment"># exclude patterns (uncomment them if you want to use them):</span><br><span class="hljs-comment"># *.[oa]</span><br><span class="hljs-comment"># *~</span><br></code></pre></td></tr></table></figure>
+
                 
               </div>
             
@@ -529,6 +558,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

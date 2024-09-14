@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  Why domains should be at least 100x100 grid spaces?Each WRF domain should be at least 100x100 grid points (e_we and e_sn). When running a simulation, the input data for the lateral bou">
+    <meta name="description" content="content {:toc}  Why domains should be at least 100x100 grid spaces? Each WRF domain should be at least 100x100 grid points (e_we and e_sn). When running a simulation, the input data for the lateral b">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WRF: Why domains should be at least 100x100 grid spaces?">
 <meta property="og:url" content="https://waipangsze.github.io/2024/06/11/WRF-Why_domains_should_be_at_least_100_100_grid_spaces/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  Why domains should be at least 100x100 grid spaces?Each WRF domain should be at least 100x100 grid points (e_we and e_sn). When running a simulation, the input data for the lateral bou">
+<meta property="og:description" content="content {:toc}  Why domains should be at least 100x100 grid spaces? Each WRF domain should be at least 100x100 grid points (e_we and e_sn). When running a simulation, the input data for the lateral b">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-06-10T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          58 words
+          56 words
         
       </span>
     
@@ -299,14 +299,38 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="Why-domains-should-be-at-least-100x100-grid-spaces"><a href="#Why-domains-should-be-at-least-100x100-grid-spaces" class="headerlink" title="Why domains should be at least 100x100 grid spaces?"></a><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/why-domains-should-be-at-least-100x100-grid-spaces.16793/">Why domains should be at least 100x100 grid spaces?</a></h1><p>Each WRF domain should be at least 100x100 grid points (e_we and e_sn).</p>
-<p>When running a simulation, the input data for the lateral boundaries, every so many intervals (e.g., every 3 hours), are much more coarse than the simulation you’re trying to run.</p>
-<p>Synoptic-scale systems typically move through a large area in a short amount of time. If a domains is too small, there isn’t enough space for the model to develop anything of interest before the large-scale parcels have propagated through the domain and exited the other side. This is sometimes referred to as “sweeping,” meaning the <strong>input essentially wipes out what WRF is trying to simulate at high resolution, with different physics and higher-res terrain, landuse, the dynamics, and all the other features you want</strong>. Even if you’re only interested in microscale events, the large-scale factors are important for forcing.</p>
-<p>Essentially, if your domain is too small, you’re basically going to get the output as if the domain was still a coarse-resolution. You want your domain to have enough space so that you can actually see the effect.</p>
-<p>This is not a computational limitation. It’s more an issue of reasonable and beneficial output.<br>{:.info}</p>
-<p><strong>Also note that the model will use the rows and columns around the edges of the domain for communication. This is set, by default, to 5 rows and 5 columns (it can be changed with the &amp;bdy_control namelist parameter ‘spec_bdy_width,’ but shouldn’t be smaller than 5). This means that if e_we &#x3D; 100 and e_sn &#x3D; 100, at a minimum, the domain is already cut down to 90x90.</strong></p>
+<h1 id="why-domains-should-be-at-least-100x100-grid-spaces"><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/why-domains-should-be-at-least-100x100-grid-spaces.16793/">Why
+domains should be at least 100x100 grid spaces?</a></h1>
+<p>Each WRF domain should be at least 100x100 grid points (e_we and
+e_sn).</p>
+<p>When running a simulation, the input data for the lateral boundaries,
+every so many intervals (e.g., every 3 hours), are much more coarse than
+the simulation you’re trying to run.</p>
+<p>Synoptic-scale systems typically move through a large area in a short
+amount of time. If a domains is too small, there isn’t enough space for
+the model to develop anything of interest before the large-scale parcels
+have propagated through the domain and exited the other side. This is
+sometimes referred to as “sweeping,” meaning the <strong>input
+essentially wipes out what WRF is trying to simulate at high resolution,
+with different physics and higher-res terrain, landuse, the dynamics,
+and all the other features you want</strong>. Even if you’re only
+interested in microscale events, the large-scale factors are important
+for forcing.</p>
+<p>Essentially, if your domain is too small, you’re basically going to
+get the output as if the domain was still a coarse-resolution. You want
+your domain to have enough space so that you can actually see the
+effect.</p>
+<p>This is not a computational limitation. It’s more an issue of
+reasonable and beneficial output. {:.info}</p>
+<p><strong>Also note that the model will use the rows and columns around
+the edges of the domain for communication. This is set, by default, to 5
+rows and 5 columns (it can be changed with the &amp;bdy_control namelist
+parameter ‘spec_bdy_width,' but shouldn't be smaller than 5). This means
+that if e_we = 100 and e_sn = 100, at a minimum, the domain is already
+cut down to 90x90.</strong></p>
 
                 
               </div>
@@ -472,6 +496,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

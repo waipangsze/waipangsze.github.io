@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  ERA5 dataset (2) contains invariant variablesPostDownlaodRef: Initializing the WRF model with ECMWF ERA-Interim reanalysis  I am suspicious that you don’t have the file that contains i">
+    <meta name="description" content="content {:toc}  ERA5 dataset (2) contains invariant variables Post Downlaod Ref: Initializing the WRF model with ECMWF ERA-Interim reanalysis  I am suspicious that you don&#39;t have the file that contai">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ERA5 dataset (2) contains invariant variables">
 <meta property="og:url" content="https://waipangsze.github.io/2023/05/11/ERA5-2-invariant-variables/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  ERA5 dataset (2) contains invariant variablesPostDownlaodRef: Initializing the WRF model with ECMWF ERA-Interim reanalysis  I am suspicious that you don’t have the file that contains i">
+<meta property="og:description" content="content {:toc}  ERA5 dataset (2) contains invariant variables Post Downlaod Ref: Initializing the WRF model with ECMWF ERA-Interim reanalysis  I am suspicious that you don&#39;t have the file that contai">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-05-10T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
@@ -240,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          597 words
+          594 words
         
       </span>
     
@@ -303,41 +303,55 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="ERA5-dataset-2-contains-invariant-variables"><a href="#ERA5-dataset-2-contains-invariant-variables" class="headerlink" title="ERA5 dataset (2) contains invariant variables"></a>ERA5 dataset (2) contains invariant variables</h1><p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/error-while-running-real-exe-with-era5-data-in-wrf-4-3-3.11500/">Post</a><br><a target="_blank" rel="noopener" href="https://rda.ucar.edu/datasets/ds633.0/dataaccess/">Downlaod</a><br>Ref: <a target="_blank" rel="noopener" href="https://dreambooker.site/2017/12/20/initializing-the-wrf-model-with-ecmwf-era-interim-reanalysis/#/plpy">Initializing the WRF model with ECMWF ERA-Interim reanalysis</a></p>
+<h1 id="era5-dataset-2-contains-invariant-variables">ERA5 dataset (2)
+contains invariant variables</h1>
+<p><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/error-while-running-real-exe-with-era5-data-in-wrf-4-3-3.11500/">Post</a>
+<a target="_blank" rel="noopener" href="https://rda.ucar.edu/datasets/ds633.0/dataaccess/">Downlaod</a>
+Ref: <a
+target="_blank" rel="noopener" href="https://dreambooker.site/2017/12/20/initializing-the-wrf-model-with-ecmwf-era-interim-reanalysis/#/plpy">Initializing
+the WRF model with ECMWF ERA-Interim reanalysis</a></p>
 <blockquote>
-<p>I am suspicious that you don’t have the file that contains invariant variables, especially landmask and terrain height, which are two important variables for WRF&#x2F;WPS.</p>
+<p>I am suspicious that you don't have the file that contains invariant
+variables, especially landmask and terrain height, which are two
+important variables for WRF/WPS.</p>
 </blockquote>
 <blockquote>
-<p>Please let me know if I am wrong. Otherwise, please download the following two files (from NCAR CISL)</p>
+<p>Please let me know if I am wrong. Otherwise, please download the
+following two files (from NCAR CISL)</p>
 </blockquote>
 <blockquote>
-<p>e5.oper.invariant.128_172_lsm.regn320sc.2016010100_2016010100.grb<br>e5.oper.invariant.128_129_z.regn320sc.2016010100_2016010100.grb</p>
+<p>e5.oper.invariant.128_172_lsm.regn320sc.2016010100_2016010100.grb
+e5.oper.invariant.128_129_z.regn320sc.2016010100_2016010100.grb</p>
 </blockquote>
 <blockquote>
-<p>These files are not ‘built-in’ files. You have to download them, then go through the ungrib and metgrid processes.</p>
+<p>These files are not 'built-in' files. You have to download them, then
+go through the ungrib and metgrid processes.</p>
 </blockquote>
 <blockquote>
-<p>Note that the two files need to be ungribbed separately (with start_date and end_date &#x3D; ‘2016-01-01_00:00:00’, and prefix &#x3D; ‘FILE2’ in &amp;unribThese files</p>
+<p>Note that the two files need to be ungribbed separately (with
+start_date and end_date = '2016-01-01_00:00:00', and prefix = 'FILE2' in
+&amp;unribThese files</p>
 </blockquote>
 <blockquote>
-<p>Then rename FILE2:2016-01-01_00 to be FILE2, and set</p>
+<p>Then rename FILE2:2016-01-01_00 to be FILE2, and set <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">&amp;metgrid<br>fg_name = <span class="hljs-string">&#x27;FILE1&#x27;</span>,<br>io_form_metgrid = 2,<br>constants_name = <span class="hljs-string">&#x27;./FILE2&#x27;</span><br></code></pre></td></tr></table></figure>
+From here you can continue to run metgrid.exe.</p>
 </blockquote>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">&amp;metgrid<br>fg_name = <span class="hljs-string">&#x27;FILE1&#x27;</span>,<br>io_form_metgrid = 2,<br>constants_name = <span class="hljs-string">&#x27;./FILE2&#x27;</span><br></code></pre></td></tr></table></figure>
-<p>From here you can continue to run metgrid.exe.</p>
-<h2 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h2><p><a target="_blank" rel="noopener" href="https://rda.ucar.edu/datasets/ds633.0/dataaccess/">Downlaod</a></p>
+<h2 id="download">Download</h2>
+<p><a
+target="_blank" rel="noopener" href="https://rda.ucar.edu/datasets/ds633.0/dataaccess/">Downlaod</a></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/usr/bin/env csh</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># c-shell script to download selected files from rda.ucar.edu using Wget</span><br><span class="hljs-comment"># NOTE: if you want to run under a different shell, make sure you change</span><br><span class="hljs-comment">#       the &#x27;set&#x27; commands according to your shell&#x27;s syntax</span><br><span class="hljs-comment"># after you save the file, don&#x27;t forget to make it executable</span><br><span class="hljs-comment">#   i.e. - &quot;chmod 755 &lt;name_of_script&gt;&quot;</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Experienced Wget Users: add additional command-line flags to &#x27;opts&#x27; here</span><br><span class="hljs-comment">#   Use the -r (--recursive) option with care</span><br><span class="hljs-comment">#   Do NOT use the -b (--background) option - simultaneous file downloads</span><br><span class="hljs-comment">#       can cause your data access to be blocked</span><br><span class="hljs-built_in">set</span> opts = <span class="hljs-string">&quot;-N&quot;</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Check wget version.  Set the --no-check-certificate option</span><br><span class="hljs-comment"># if wget version is 1.10 or higher</span><br><span class="hljs-built_in">set</span> v = `wget -V |grep <span class="hljs-string">&#x27;GNU Wget &#x27;</span> | <span class="hljs-built_in">cut</span> -d <span class="hljs-string">&#x27; &#x27;</span> -f 3`<br><span class="hljs-built_in">set</span> a = `<span class="hljs-built_in">echo</span> <span class="hljs-variable">$v</span> | <span class="hljs-built_in">cut</span> -d <span class="hljs-string">&#x27;.&#x27;</span> -f 1`<br><span class="hljs-built_in">set</span> b = `<span class="hljs-built_in">echo</span> <span class="hljs-variable">$v</span> | <span class="hljs-built_in">cut</span> -d <span class="hljs-string">&#x27;.&#x27;</span> -f 2`<br><span class="hljs-keyword">if</span>(100 * <span class="hljs-variable">$a</span> + <span class="hljs-variable">$b</span> &gt; 109) <span class="hljs-keyword">then</span><br>  <span class="hljs-built_in">set</span> cert_opt = <span class="hljs-string">&quot;--no-check-certificate&quot;</span><br><span class="hljs-keyword">else</span><br>  <span class="hljs-built_in">set</span> cert_opt = <span class="hljs-string">&quot;&quot;</span><br>endif<br><br><span class="hljs-built_in">set</span> filelist= ( \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_026_cl.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_027_cvl.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_028_cvh.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_029_tvl.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_030_tvh.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_043_slt.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_074_sdfor.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_129_z.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_160_sdor.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_161_isor.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_162_anor.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_163_slor.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.128_172_lsm.ll025sc.1979010100_1979010100.grb  \<br>  https://data.rda.ucar.edu/ds633.0/e5.oper.invariant/197901/e5.oper.invariant.228_007_dl.ll025sc.1979010100_1979010100.grb  \<br>)<br><span class="hljs-keyword">while</span>(<span class="hljs-variable">$#filelist</span> &gt; 0)<br>  <span class="hljs-built_in">set</span> syscmd = <span class="hljs-string">&quot;wget <span class="hljs-variable">$cert_opt</span> <span class="hljs-variable">$opts</span> <span class="hljs-variable">$filelist</span>[1]&quot;</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$syscmd</span> ...&quot;</span><br>  <span class="hljs-variable">$syscmd</span><br>  <span class="hljs-built_in">shift</span> filelist<br>end<br></code></pre></td></tr></table></figure>
 <p>Two are important,</p>
-<p>terrain height,</p>
-<blockquote>
-<p>e5.oper.invariant.128_129_z.ll025sc.1979010100_1979010100.grb</p>
-</blockquote>
-<p>landmask,</p>
-<blockquote>
-<p>e5.oper.invariant.128_172_lsm.ll025sc.1979010100_1979010100.grb</p>
-</blockquote>
-<h2 id="Ungrib"><a href="#Ungrib" class="headerlink" title="Ungrib"></a>Ungrib</h2><h3 id="source-WRF-env"><a href="#source-WRF-env" class="headerlink" title="source WRF env"></a>source WRF env</h3><h3 id="soft-link"><a href="#soft-link" class="headerlink" title="soft-link"></a>soft-link</h3><ol>
+<p>terrain height, &gt;
+e5.oper.invariant.128_129_z.ll025sc.1979010100_1979010100.grb</p>
+<p>landmask, &gt;
+e5.oper.invariant.128_172_lsm.ll025sc.1979010100_1979010100.grb</p>
+<h2 id="ungrib">Ungrib</h2>
+<h3 id="source-wrf-env">source WRF env</h3>
+<h3 id="soft-link">soft-link</h3>
+<ol type="1">
 <li>link_grib.csh</li>
 <li>namelist.wps</li>
 <li>ungrib.exe</li>
@@ -347,19 +361,15 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh">&amp;share<br> wrf_core = <span class="hljs-string">&#x27;ARW&#x27;</span>,<br> max_dom = 1,<br> start_date = <span class="hljs-string">&#x27;1979-01-01_00:00:00&#x27;</span>,<br> end_date   = <span class="hljs-string">&#x27;1979-01-01_00:00:00&#x27;</span>,<br> interval_seconds = 10800,<br> io_form_geogrid = 2<br>/<br><br>&amp;ungrib<br> out_format = <span class="hljs-string">&#x27;WPS&#x27;</span>,<br> prefix = <span class="hljs-string">&#x27;FIX&#x27;</span>,<br>/<br></code></pre></td></tr></table></figure>
 <p>and link_grib.csh</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ./link_grib.csh e5.oper.invariant.*<br>GRIBFILE.AAA -&gt; e5.oper.invariant.128_129_z.ll025sc.1979010100_1979010100.grb<br>GRIBFILE.AAB -&gt; e5.oper.invariant.128_172_lsm.ll025sc.1979010100_1979010100.grb<br></code></pre></td></tr></table></figure>
-
 <p>then ungrib.exe</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ./ungrib.exe<br>FIX:1979-01-01_00<br></code></pre></td></tr></table></figure>
-
-<h3 id="check-results"><a href="#check-results" class="headerlink" title="check results"></a>check results</h3><p>Plot Intermediate Files in netCDF Format<br>Using <strong>int2nc.exe (Found in WPS&#x2F;util&#x2F;)</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ./int2nc.exe FIX:1979-01-01_00<br>FIX:1979-01-01_00.nc<br>$ ncview FIX:1979-01-01_00.nc<br></code></pre></td></tr></table></figure>
-
-<h2 id="For-metgrid-exe"><a href="#For-metgrid-exe" class="headerlink" title="For metgrid.exe"></a>For metgrid.exe</h2><p>namelist.wps is written as</p>
+<h3 id="check-results">check results</h3>
+<p>Plot Intermediate Files in netCDF Format Using <strong>int2nc.exe
+(Found in WPS/util/)</strong> <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ./int2nc.exe FIX:1979-01-01_00<br>FIX:1979-01-01_00.nc<br>$ ncview FIX:1979-01-01_00.nc<br></code></pre></td></tr></table></figure></p>
+<h2 id="for-metgrid.exe">For metgrid.exe</h2>
+<p>namelist.wps is written as</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">&amp;share<br> start_date = <span class="hljs-string">&#x27;2015-08-07_00:00:00&#x27;</span>,<span class="hljs-string">&#x27;2015-08-07_00:00:00&#x27;</span>,<br> end_date   = <span class="hljs-string">&#x27;2015-08-08_12:00:00&#x27;</span>,<span class="hljs-string">&#x27;2015-08-08_12:00:00&#x27;</span>,<br>&amp;metgrid<br> fg_name = <span class="hljs-string">&#x27;ERA5&#x27;</span>,<br> constants_name = <span class="hljs-string">&#x27;/xxx/xxx/FIX:1979-01-01_00&#x27;</span>,<br> io_form_metgrid = 2,<br></code></pre></td></tr></table></figure>
-
-<p>Finally,</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ./metgrid.exe<br></code></pre></td></tr></table></figure>
-
+<p>Finally, <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ./metgrid.exe<br></code></pre></td></tr></table></figure></p>
 
                 
               </div>
@@ -533,6 +543,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

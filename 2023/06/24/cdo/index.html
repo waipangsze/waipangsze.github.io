@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  ncrename - netCDF RenamerOptions  -aold_name, new_name Attribute renaming. The old and new names of the attribute are specified by the associated old_name and new_name values. Global a">
+    <meta name="description" content="content {:toc}  ncrename - netCDF Renamer Options &gt; -a old_name, new_name Attribute renaming. The old and new names of the attribute are specified by the associated old_name and new_name values. G">
 <meta property="og:type" content="article">
 <meta property="og:title" content="netCDF operator (nco, cdo)">
 <meta property="og:url" content="https://waipangsze.github.io/2023/06/24/cdo/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  ncrename - netCDF RenamerOptions  -aold_name, new_name Attribute renaming. The old and new names of the attribute are specified by the associated old_name and new_name values. Global a">
+<meta property="og:description" content="content {:toc}  ncrename - netCDF Renamer Options &gt; -a old_name, new_name Attribute renaming. The old and new names of the attribute are specified by the associated old_name and new_name values. G">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-06-23T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
@@ -240,7 +240,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          85 words
+          88 words
         
       </span>
     
@@ -303,29 +303,44 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h2 id="ncrename-netCDF-Renamer"><a href="#ncrename-netCDF-Renamer" class="headerlink" title="ncrename - netCDF Renamer"></a>ncrename - netCDF Renamer</h2><p>Options</p>
-<blockquote>
-<p>-a<br>old_name, new_name Attribute renaming. The old and new names of the attribute are specified by the associated old_name and new_name values. Global attributes are treated no differently than variable attributes. This option may be specified more than once. You cannot change the attribute name for one particular variable (unless it is uniquely named); all occurrences of the attribute of a given name will be renamed. This is considered an oversight and will be addressed in a future version of NCO.<br>-d<br>old_name, new_name Dimension renaming. The old and new names of the dimension are specified by the associated old_name and new_name values. This option may be specified more than once.<br>-v<br>old_name, new_name Variable renaming. The old and new names of the variable are specified by the associated old_name and new_name values. This option may be specified more than once.<br>-i<br>Interactive. ncrename will prompt for confirmation before overwriting an existing file.</p>
-</blockquote>
-<p>Examples<br>Rename the variable p to pressure and t to temperature in netCDF in.nc. In this case p must exist in the input file (or ncrename will abort), but the presence of t is optional:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncrename -v p,pressure -v .t,temperature in.nc<br></code></pre></td></tr></table></figure>
-<p>ncrename does not automatically attach dimensions to variables of the same name. If you want to rename a coordinate variable so that it remains a coordinate variable, you must separately rename both the dimension and the variable:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncrename -d lon,longitude -v lon,longitude in.nc<br></code></pre></td></tr></table></figure>
-
-<h2 id="ncrcat-netCDF-Record-Concatenator"><a href="#ncrcat-netCDF-Record-Concatenator" class="headerlink" title="ncrcat - netCDF Record Concatenator"></a>ncrcat - netCDF Record Concatenator</h2><p>ncrcat concatenates record variables across an arbitrary number of input files. The final record dimension is by default the sum of the lengths of the record dimensions in the input files.</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncrcat -O <span class="hljs-string">&quot;diag*.nc&quot;</span> <span class="hljs-variable">$&#123;path_out&#125;</span><br>$ ncrcat 85.nc 86.nc 87.nc 88.nc 89.nc 8589.nc<br>$ ncrcat 8[56789].nc 8589.nc<br></code></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://disc.gsfc.nasa.gov/information/howto?title=How%20to%20Concatenate%20the%20Time%20Dimension%20of%20netCDF%20Files%20with%20NCO">How to Concatenate the Time Dimension of netCDF Files with NCO</a></p>
-<h2 id="Appending-variables"><a href="#Appending-variables" class="headerlink" title="Appending variables"></a>Appending variables</h2><p>This puts the contents yyy of bbb.nc into aaa.nc.</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncks -A -v yyy bbb.nc aaa.nc<br></code></pre></td></tr></table></figure>
-
-
-<h2 id="ncdiff-netCDF-Differencer"><a href="#ncdiff-netCDF-Differencer" class="headerlink" title="ncdiff - netCDF Differencer"></a>ncdiff - netCDF Differencer</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncdiff 86_0112.nc 85_0112.nc diff.nc<br></code></pre></td></tr></table></figure>
-
-<h2 id="cdo-sub"><a href="#cdo-sub" class="headerlink" title="cdo sub"></a>cdo sub</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ cdo sub v1.nc v2.nc diff.nc<br></code></pre></td></tr></table></figure>
-
-
+<h2 id="ncrename---netcdf-renamer">ncrename - netCDF Renamer</h2>
+<p>Options &gt; -a old_name, new_name Attribute renaming. The old and
+new names of the attribute are specified by the associated old_name and
+new_name values. Global attributes are treated no differently than
+variable attributes. This option may be specified more than once. You
+cannot change the attribute name for one particular variable (unless it
+is uniquely named); all occurrences of the attribute of a given name
+will be renamed. This is considered an oversight and will be addressed
+in a future version of NCO. -d old_name, new_name Dimension renaming.
+The old and new names of the dimension are specified by the associated
+old_name and new_name values. This option may be specified more than
+once. -v old_name, new_name Variable renaming. The old and new names of
+the variable are specified by the associated old_name and new_name
+values. This option may be specified more than once. -i &gt;Interactive.
+ncrename will prompt for confirmation before overwriting an existing
+file.</p>
+<p>Examples Rename the variable p to pressure and t to temperature in
+netCDF in.nc. In this case p must exist in the input file (or ncrename
+will abort), but the presence of t is optional: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncrename -v p,pressure -v .t,temperature in.nc<br></code></pre></td></tr></table></figure> ncrename
+does not automatically attach dimensions to variables of the same name.
+If you want to rename a coordinate variable so that it remains a
+coordinate variable, you must separately rename both the dimension and
+the variable: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncrename -d lon,longitude -v lon,longitude in.nc<br></code></pre></td></tr></table></figure></p>
+<h2 id="ncrcat---netcdf-record-concatenator">ncrcat - netCDF Record
+Concatenator</h2>
+<p>ncrcat concatenates record variables across an arbitrary number of
+input files. The final record dimension is by default the sum of the
+lengths of the record dimensions in the input files. <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncrcat -O <span class="hljs-string">&quot;diag*.nc&quot;</span> <span class="hljs-variable">$&#123;path_out&#125;</span><br>$ ncrcat 85.nc 86.nc 87.nc 88.nc 89.nc 8589.nc<br>$ ncrcat 8[56789].nc 8589.nc<br></code></pre></td></tr></table></figure> <a
+target="_blank" rel="noopener" href="https://disc.gsfc.nasa.gov/information/howto?title=How%20to%20Concatenate%20the%20Time%20Dimension%20of%20netCDF%20Files%20with%20NCO">How
+to Concatenate the Time Dimension of netCDF Files with NCO</a></p>
+<h2 id="appending-variables">Appending variables</h2>
+<p>This puts the contents yyy of bbb.nc into aaa.nc. <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncks -A -v yyy bbb.nc aaa.nc<br></code></pre></td></tr></table></figure></p>
+<h2 id="ncdiff---netcdf-differencer">ncdiff - netCDF Differencer</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncdiff 86_0112.nc 85_0112.nc diff.nc<br></code></pre></td></tr></table></figure>
+<h2 id="cdo-sub">cdo sub</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ cdo sub v1.nc v2.nc diff.nc<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -499,6 +514,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

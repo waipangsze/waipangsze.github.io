@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  gdb debuggerGDB stands for GNU Project Debugger.GDB（GNU Debugger）是UNIX及UNIX-like下的強大調試工具，可以調試ada, c, c++, asm, minimal, d, fortran, objective-c, go, java,pascal等語言。本文以C程序為例如，介紹GDB啟動調試的">
+    <meta name="description" content="content {:toc}  gdb debugger GDB stands for GNU Project Debugger. GDB（GNU Debugger）是UNIX及UNIX-like下的強大調試工具，可以調試ada, c, c++, asm, minimal, d, fortran, objective-c, go, java,pascal等語言。本文以C程序為例如，介紹GDB啟動">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gdb debugger">
 <meta property="og:url" content="https://waipangsze.github.io/2023/05/11/gdb/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  gdb debuggerGDB stands for GNU Project Debugger.GDB（GNU Debugger）是UNIX及UNIX-like下的強大調試工具，可以調試ada, c, c++, asm, minimal, d, fortran, objective-c, go, java,pascal等語言。本文以C程序為例如，介紹GDB啟動調試的">
+<meta property="og:description" content="content {:toc}  gdb debugger GDB stands for GNU Project Debugger. GDB（GNU Debugger）是UNIX及UNIX-like下的強大調試工具，可以調試ada, c, c++, asm, minimal, d, fortran, objective-c, go, java,pascal等語言。本文以C程序為例如，介紹GDB啟動">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-05-10T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          369 words
+          370 words
         
       </span>
     
@@ -299,75 +299,102 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="gdb-debugger"><a href="#gdb-debugger" class="headerlink" title="gdb debugger"></a>gdb debugger</h1><p>GDB stands for GNU Project Debugger.<br>GDB（GNU Debugger）是UNIX及UNIX-like下的強大調試工具，可以調試ada, c, c++, asm, minimal, d, fortran, objective-c, go, java,pascal等語言。本文以C程序為例如，介紹GDB啟動調試的多種方式。</p>
-<ol>
+<h1 id="gdb-debugger">gdb debugger</h1>
+<p>GDB stands for GNU Project Debugger. GDB（GNU
+Debugger）是UNIX及UNIX-like下的強大調試工具，可以調試ada, c, c++, asm,
+minimal, d, fortran, objective-c, go,
+java,pascal等語言。本文以C程序為例如，介紹GDB啟動調試的多種方式。</p>
+<ol type="1">
 <li>Compile your code with debugging option</li>
 </ol>
-<h2 id="Launch-gdb"><a href="#Launch-gdb" class="headerlink" title="Launch gdb"></a>Launch gdb</h2><p>In general, it is</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">gdb ./wrf.exe<br></code></pre></td></tr></table></figure>
-<p>but most of time, it is by mpirun,</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">mpirun -n 1 gdb ./wrf.exe<br></code></pre></td></tr></table></figure>
-
-<p>Sample output,</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">GNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-110.el7<br>Copyright (C) 2013 Free Software Foundation, Inc.<br>License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;<br>This is free software: you are free to change and redistribute it.<br>There is NO WARRANTY, to the extent permitted by law.  Type <span class="hljs-string">&quot;show copying&quot;</span><br>and <span class="hljs-string">&quot;show warranty&quot;</span> <span class="hljs-keyword">for</span> details.<br>This GDB was configured as <span class="hljs-string">&quot;x86_64-redhat-linux-gnu&quot;</span>.<br>For bug reporting instructions, please see:<br>&lt;http://www.gnu.org/software/gdb/bugs/&gt;...<br>Reading symbols from /xxx/WRFV4.4_debug/main/wrf.exe...done.<br>(gdb)<br></code></pre></td></tr></table></figure>
-
-<h2 id="commands"><a href="#commands" class="headerlink" title="commands"></a>commands</h2><p>Here are few useful commands to get started with gdb for the above example:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sh">run or r –&gt; executes the program from start to end.<br><span class="hljs-built_in">break</span> or b –&gt; sets breakpoint on a particular line.<br><span class="hljs-built_in">disable</span> -&gt; <span class="hljs-built_in">disable</span> a breakpoint.<br><span class="hljs-built_in">enable</span> –&gt; <span class="hljs-built_in">enable</span> a disabled breakpoint.<br>delete -&gt; delete a breakpoint by index 1,2,3,...<br>next or n -&gt; executes next line of code, but don’t dive into <span class="hljs-built_in">functions</span>.<br>step –&gt; go to next instruction, diving into the <span class="hljs-keyword">function</span>.<br>list or l –&gt; displays the code.<br><span class="hljs-built_in">print</span> or p –&gt; used to display the stored value.<br>quit or q –&gt; exits out of gdb.<br>clear –&gt; to clear all breakpoints.<br><span class="hljs-built_in">continue</span> –&gt; <span class="hljs-built_in">continue</span> normal execution.<br>reverse-next -&gt; Run the program backward<br>reverse-step -&gt; Run the program backward<br>reverse-continue -&gt; Run the program backward<br></code></pre></td></tr></table></figure>
-
-<h2 id="movement"><a href="#movement" class="headerlink" title="movement"></a>movement</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">up (n)<br>down (n)<br><span class="hljs-built_in">print</span> or p<br></code></pre></td></tr></table></figure>
-
-<h2 id="Single-step-execution-next"><a href="#Single-step-execution-next" class="headerlink" title="Single step execution -next"></a>Single step execution -next</h2><p>The next command (can be abbreviated as n) is used to continue to execute the next statement after the program is stopped, assuming that debugging has been started, and stop at line 10, if you want to continue execution, use n to execute the next statement, if later Keeping up with the number num, it means that the instruction is executed num times, and the effect of continuing to execute n lines is achieved.</p>
+<h2 id="launch-gdb">Launch gdb</h2>
+<p>In general, it is <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">gdb ./wrf.exe<br></code></pre></td></tr></table></figure> but most of time, it is by mpirun,
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">mpirun -n 1 gdb ./wrf.exe<br></code></pre></td></tr></table></figure></p>
+<p>Sample output, <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">GNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-110.el7<br>Copyright (C) 2013 Free Software Foundation, Inc.<br>License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;<br>This is free software: you are free to change and redistribute it.<br>There is NO WARRANTY, to the extent permitted by law.  Type <span class="hljs-string">&quot;show copying&quot;</span><br>and <span class="hljs-string">&quot;show warranty&quot;</span> <span class="hljs-keyword">for</span> details.<br>This GDB was configured as <span class="hljs-string">&quot;x86_64-redhat-linux-gnu&quot;</span>.<br>For bug reporting instructions, please see:<br>&lt;http://www.gnu.org/software/gdb/bugs/&gt;...<br>Reading symbols from /xxx/WRFV4.4_debug/main/wrf.exe...done.<br>(gdb)<br></code></pre></td></tr></table></figure></p>
+<h2 id="commands">commands</h2>
+<p>Here are few useful commands to get started with gdb for the above
+example: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sh">run or r –&gt; executes the program from start to end.<br><span class="hljs-built_in">break</span> or b –&gt; sets breakpoint on a particular line.<br><span class="hljs-built_in">disable</span> -&gt; <span class="hljs-built_in">disable</span> a breakpoint.<br><span class="hljs-built_in">enable</span> –&gt; <span class="hljs-built_in">enable</span> a disabled breakpoint.<br>delete -&gt; delete a breakpoint by index 1,2,3,...<br>next or n -&gt; executes next line of code, but don’t dive into <span class="hljs-built_in">functions</span>.<br>step –&gt; go to next instruction, diving into the <span class="hljs-keyword">function</span>.<br>list or l –&gt; displays the code.<br><span class="hljs-built_in">print</span> or p –&gt; used to display the stored value.<br>quit or q –&gt; exits out of gdb.<br>clear –&gt; to clear all breakpoints.<br><span class="hljs-built_in">continue</span> –&gt; <span class="hljs-built_in">continue</span> normal execution.<br>reverse-next -&gt; Run the program backward<br>reverse-step -&gt; Run the program backward<br>reverse-continue -&gt; Run the program backward<br></code></pre></td></tr></table></figure></p>
+<h2 id="movement">movement</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">up (n)<br>down (n)<br><span class="hljs-built_in">print</span> or p<br></code></pre></td></tr></table></figure>
+<h2 id="single-step-execution--next">Single step execution -next</h2>
+<p>The next command (can be abbreviated as n) is used to continue to
+execute the next statement after the program is stopped, assuming that
+debugging has been started, and stop at line 10, if you want to continue
+execution, use n to execute the next statement, if later Keeping up with
+the number num, it means that the instruction is executed num times, and
+the effect of continuing to execute n lines is achieved.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh">(gdb) b 10<br>Breakpoint 1 at 0x405b26: file wrf.f90, line 10.<br>(gdb) run<br>Starting program: /xxx/./wrf.exe <br>[Thread debugging using libthread_db enabled]<br>Using host libthread_db library <span class="hljs-string">&quot;/lib64/libthread_db.so.1&quot;</span>.<br><br>Breakpoint 1, wrf () at wrf.f90:22<br>22        CALL wrf_init<br>Missing separate debuginfos, use: debuginfo-install ...<br>(gdb) n<br> starting wrf task            0  of            1<br>25        CALL wrf_dfi<br></code></pre></td></tr></table></figure>
-
-<h2 id="Step-into-step"><a href="#Step-into-step" class="headerlink" title="Step into -step"></a>Step into -step</h2><p>For the above situation, if we want to track the internal situation of the function, we can use the step command (which can be abbreviated as s), which can single-step trace to the inside of the function, but only if the function has debugging information and source code information.</p>
-<h2 id="core-document"><a href="#core-document" class="headerlink" title="core document"></a>core document</h2><p>When a program core dumps, a core file may be generated, which can help us identify location problems for a large enough program. But it was proposed before that the system does not limit the generation of core files. You can use the command limit - c to view:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">ulimit</span> -c<br>0<br>$ <span class="hljs-built_in">ulimit</span> -c unlimited  <span class="hljs-comment"># Indicates that there is no limit to the core file size</span><br></code></pre></td></tr></table></figure>
-<p>Or add at the end of ~&#x2F;.bashrc: ulimit -c unlimited</p>
-<h2 id="check-breakpoints"><a href="#check-breakpoints" class="headerlink" title="check breakpoints"></a>check breakpoints</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ info breakpoints<br></code></pre></td></tr></table></figure>
-
-<h2 id="set-breakpoints"><a href="#set-breakpoints" class="headerlink" title="set breakpoints"></a>set breakpoints</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ b 10<br>$ b main.c:10 <span class="hljs-comment"># Important</span><br>$ b Function<br></code></pre></td></tr></table></figure>
-
-<h3 id="Generate-breakpoints-based-on-expression-value-changes"><a href="#Generate-breakpoints-based-on-expression-value-changes" class="headerlink" title="Generate breakpoints based on expression value changes"></a>Generate breakpoints based on expression value changes</h3><p>Sometimes we need to observe a certain value or expression to know when it has changed. At this time, we can use the watch command. For example:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ watch a<br></code></pre></td></tr></table></figure>
-<p>At this time, let the program continue to run. If the value of a changes, the relevant content will be printed, such as：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">Hardware watchpoint 2: a<br>Old value = 12<br>New value = 11<br></code></pre></td></tr></table></figure>
-<p>But here to pay attention is that the program must be running, otherwise it will appear:</p>
-<blockquote>
-<p>No symbol “a” in current context.<br>Because the program is not running, the current context has no relevant variable information.</p>
-</blockquote>
-<h2 id="TUI-Text-User-Interface"><a href="#TUI-Text-User-Interface" class="headerlink" title="TUI(Text User Interface)"></a>TUI(Text User Interface)</h2><p>The GDB Text User Interface, TUI in short, is a terminal interface which uses the curses library to show the source file, the assembly output, the program registers and GDB commands in separate text windows.</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ gdb main -tui<br></code></pre></td></tr></table></figure>
-<p>Sounds like what you’re looking for is the callstack&#x2F;backtrace. For that, just use the </p>
-<blockquote>
-<p>$ (gdb) backtrace&#x2F;bt or where </p>
-</blockquote>
+<h2 id="step-into--step">Step into -step</h2>
+<p>For the above situation, if we want to track the internal situation
+of the function, we can use the step command (which can be abbreviated
+as s), which can single-step trace to the inside of the function, but
+only if the function has debugging information and source code
+information.</p>
+<h2 id="core-document">core document</h2>
+<p>When a program core dumps, a core file may be generated, which can
+help us identify location problems for a large enough program. But it
+was proposed before that the system does not limit the generation of
+core files. You can use the command limit - c to view: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">ulimit</span> -c<br>0<br>$ <span class="hljs-built_in">ulimit</span> -c unlimited  <span class="hljs-comment"># Indicates that there is no limit to the core file size</span><br></code></pre></td></tr></table></figure> Or
+add at the end of ~/.bashrc: ulimit -c unlimited</p>
+<h2 id="check-breakpoints">check breakpoints</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ info breakpoints<br></code></pre></td></tr></table></figure>
+<h2 id="set-breakpoints">set breakpoints</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ b 10<br>$ b main.c:10 <span class="hljs-comment"># Important</span><br>$ b Function<br></code></pre></td></tr></table></figure>
+<h3 id="generate-breakpoints-based-on-expression-value-changes">Generate
+breakpoints based on expression value changes</h3>
+<p>Sometimes we need to observe a certain value or expression to know
+when it has changed. At this time, we can use the watch command. For
+example: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ watch a<br></code></pre></td></tr></table></figure> At this time, let the program continue to run. If
+the value of a changes, the relevant content will be printed, such as：
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">Hardware watchpoint 2: a<br>Old value = 12<br>New value = 11<br></code></pre></td></tr></table></figure> But here to pay attention is that the program must be
+running, otherwise it will appear: &gt; No symbol "a" in current
+context. Because the program is not running, the current context has no
+relevant variable information.</p>
+<h2 id="tuitext-user-interface">TUI(Text User Interface)</h2>
+<p>The GDB Text User Interface, TUI in short, is a terminal interface
+which uses the curses library to show the source file, the assembly
+output, the program registers and GDB commands in separate text windows.
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ gdb main -tui<br></code></pre></td></tr></table></figure> Sounds like what you're looking for is the
+callstack/backtrace. For that, just use the &gt; $ (gdb) backtrace/bt or
+where</p>
 <p>command.</p>
-<h2 id="frame"><a href="#frame" class="headerlink" title="frame"></a>frame</h2><ol>
-<li>According to the stack frame number or stack frame address, select the stack frame to be viewed. The syntax format is as follows:<blockquote>
-<p>(gdb) frame spec</p>
-</blockquote>
-</li>
-<li>With the help of the following command, we can view the information stored in the current stack frame:<blockquote>
-<p>(gdb) info frame</p>
-</blockquote>
-</li>
+<h2 id="frame">frame</h2>
+<ol type="1">
+<li>According to the stack frame number or stack frame address, select
+the stack frame to be viewed. The syntax format is as follows: &gt;
+(gdb) frame spec</li>
+<li>With the help of the following command, we can view the information
+stored in the current stack frame: &gt; (gdb) info frame</li>
 </ol>
-<h2 id="backtrace-bt"><a href="#backtrace-bt" class="headerlink" title="backtrace&#x2F;bt"></a>backtrace&#x2F;bt</h2><blockquote>
-<p>backtrace </p>
-</blockquote>
-<p>The command is used to print the information of all stack frames in the current debugging environment</p>
-<h2 id="Step-out-of-current-function-with-GDB"><a href="#Step-out-of-current-function-with-GDB" class="headerlink" title="Step out of current function with GDB"></a>Step out of current function with GDB</h2><p>You can use the <strong>finish</strong> command.</p>
+<h2 id="backtracebt">backtrace/bt</h2>
 <blockquote>
-<p>finish: Continue running until just after function in the selected stack frame returns. Print the returned value (if any). This command can be abbreviated as fin.</p>
+<p>backtrace</p>
 </blockquote>
-<h2 id="Reserse"><a href="#Reserse" class="headerlink" title="Reserse"></a>Reserse</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">reverse-next -&gt; Run the program backward<br>reverse-step -&gt; Run the program backward<br>reverse-continue -&gt; Run the program backward<br></code></pre></td></tr></table></figure>
-
-<h2 id="Example-WRF"><a href="#Example-WRF" class="headerlink" title="Example: WRF"></a>Example: WRF</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">source</span> wrf_env.sh<br><br>(gdb) b solve_em.F:xxx                       <span class="hljs-comment"># try to stop before CALL first_rk_step_part1(...)</span><br>(gdb) b module_first_rk_step_part1.f90:387   <span class="hljs-comment"># try to stop before CALL surface_driver(...)</span><br>(gdb) b module_surface_driver.f90:2683       <span class="hljs-comment"># try to stop before CALL lsm(...) </span><br>(gdb) b module_sf_noahdrv.f90:1234           <span class="hljs-comment"># try to stop before Call urban(...) for WRF</span><br>(gdb) b module_sf_noahdrv.F:xxxx             <span class="hljs-comment"># try to stop before Call urban(...) for MPAS</span><br>(gdb) run<br>...<br>(gdb) n/s/p/f/bt<br></code></pre></td></tr></table></figure>
-
-<h2 id="Inferior-1-process-exited-normally"><a href="#Inferior-1-process-exited-normally" class="headerlink" title="Inferior 1 (process ) exited normally"></a>Inferior 1 (process ) exited normally</h2><p>That is not an error, from gdb’s point of view. Your program just finished gracefully, with a return value of 0, and gdb informs you of that.</p>
-<h2 id="What-does-no-stack-mean-in-gdb"><a href="#What-does-no-stack-mean-in-gdb" class="headerlink" title="What does no stack mean in gdb?"></a>What does <strong>no stack</strong> mean in gdb?</h2><h2 id="Missing-separate-debuginfos-use-debuginfo-install-cyrus-sasl-lib"><a href="#Missing-separate-debuginfos-use-debuginfo-install-cyrus-sasl-lib" class="headerlink" title="Missing separate debuginfos, use: debuginfo-install cyrus-sasl-lib-?"></a>Missing separate debuginfos, use: debuginfo-install cyrus-sasl-lib-?</h2><ol>
+<p>The command is used to print the information of all stack frames in
+the current debugging environment</p>
+<h2 id="step-out-of-current-function-with-gdb">Step out of current
+function with GDB</h2>
+<p>You can use the <strong>finish</strong> command. &gt; finish:
+Continue running until just after function in the selected stack frame
+returns. Print the returned value (if any). This command can be
+abbreviated as fin.</p>
+<h2 id="reserse">Reserse</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">reverse-next -&gt; Run the program backward<br>reverse-step -&gt; Run the program backward<br>reverse-continue -&gt; Run the program backward<br></code></pre></td></tr></table></figure>
+<h2 id="example-wrf">Example: WRF</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">source</span> wrf_env.sh<br><br>(gdb) b solve_em.F:xxx                       <span class="hljs-comment"># try to stop before CALL first_rk_step_part1(...)</span><br>(gdb) b module_first_rk_step_part1.f90:387   <span class="hljs-comment"># try to stop before CALL surface_driver(...)</span><br>(gdb) b module_surface_driver.f90:2683       <span class="hljs-comment"># try to stop before CALL lsm(...) </span><br>(gdb) b module_sf_noahdrv.f90:1234           <span class="hljs-comment"># try to stop before Call urban(...) for WRF</span><br>(gdb) b module_sf_noahdrv.F:xxxx             <span class="hljs-comment"># try to stop before Call urban(...) for MPAS</span><br>(gdb) run<br>...<br>(gdb) n/s/p/f/bt<br></code></pre></td></tr></table></figure>
+<h2 id="inferior-1-process-exited-normally">Inferior 1 (process ) exited
+normally</h2>
+<p>That is not an error, from gdb's point of view. Your program just
+finished gracefully, with a return value of 0, and gdb informs you of
+that.</p>
+<h2 id="what-does-no-stack-mean-in-gdb">What does <strong>no
+stack</strong> mean in gdb?</h2>
+<h2
+id="missing-separate-debuginfos-use-debuginfo-install-cyrus-sasl-lib-">Missing
+separate debuginfos, use: debuginfo-install cyrus-sasl-lib-?</h2>
+<ol type="1">
 <li>Install debuginfos</li>
 <li>$ debuginfo-install glibc</li>
 </ol>
@@ -536,6 +563,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

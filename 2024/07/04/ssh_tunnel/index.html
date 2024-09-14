@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  Introduction to SSH TunnelsSecure Shell, or SSH, is used to create a secure channel between a local and remote computer. While SSH is commonly used for secure terminal access and file">
+    <meta name="description" content="content {:toc}  Introduction to SSH Tunnels Secure Shell, or SSH, is used to create a secure channel between a local and remote computer. While SSH is commonly used for secure terminal access and fil">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ssh tunnel">
 <meta property="og:url" content="https://waipangsze.github.io/2024/07/04/ssh_tunnel/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  Introduction to SSH TunnelsSecure Shell, or SSH, is used to create a secure channel between a local and remote computer. While SSH is commonly used for secure terminal access and file">
+<meta property="og:description" content="content {:toc}  Introduction to SSH Tunnels Secure Shell, or SSH, is used to create a secure channel between a local and remote computer. While SSH is commonly used for secure terminal access and fil">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-07-03T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
@@ -299,42 +299,64 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="Introduction-to-SSH-Tunnels"><a href="#Introduction-to-SSH-Tunnels" class="headerlink" title="Introduction to SSH Tunnels"></a>Introduction to SSH Tunnels</h1><p>Secure Shell, or SSH, is used to create a secure channel between a local and remote computer. While SSH is commonly used for secure terminal access and file transfers, it can also be used to create a secure tunnel between computers for forwarding other network connections that are not normally encrypted. SSH tunnels are also useful for allowing outside access to internal network resources.</p>
-<p>An <strong>SSH tunneling (SSH Port Forwarding)</strong> establishes a connection between your local machine and the remote machine via a TCP port. When you configure your local application to use an SSH tunnel you tell it to connect to your local machine at a specified port, rather than the remote machine. The tunnel then carries your traffic securely to the remote machine.</p>
-<p>SSH Port Forwarding：</p>
-<ul>
-<li>Local Port Forwarding</li>
-<li>Remote Port Forwarding</li>
-<li>Dynamic Port Forwarding</li>
-</ul>
+<h1 id="introduction-to-ssh-tunnels">Introduction to SSH Tunnels</h1>
+<p>Secure Shell, or SSH, is used to create a secure channel between a
+local and remote computer. While SSH is commonly used for secure
+terminal access and file transfers, it can also be used to create a
+secure tunnel between computers for forwarding other network connections
+that are not normally encrypted. SSH tunnels are also useful for
+allowing outside access to internal network resources.</p>
+<p>An <strong>SSH tunneling (SSH Port Forwarding)</strong> establishes a
+connection between your local machine and the remote machine via a TCP
+port. When you configure your local application to use an SSH tunnel you
+tell it to connect to your local machine at a specified port, rather
+than the remote machine. The tunnel then carries your traffic securely
+to the remote machine.</p>
+<p>SSH Port Forwarding： - Local Port Forwarding - Remote Port
+Forwarding - Dynamic Port Forwarding</p>
 <p>For both local and remote port forwarding, there are three roles:</p>
 <ul>
-<li>Client<ul>
-<li>Any machine from which you can type ssh to start Port Forwarding</li>
-</ul>
-</li>
-<li>SSH server<ul>
+<li>Client
+<ul>
+<li>Any machine from which you can type ssh to start Port
+Forwarding</li>
+</ul></li>
+<li>SSH server
+<ul>
 <li>Clients can use SSH connections for machine learning</li>
+</ul></li>
+<li>target server
+<ul>
+<li>Some machines you want to establish a connection to, usually to open
+services on this machine to the outside world</li>
+</ul></li>
 </ul>
-</li>
-<li>target server<ul>
-<li>Some machines you want to establish a connection to, usually to open services on this machine to the outside world</li>
-</ul>
-</li>
-</ul>
-<p><strong>Note that</strong> both the client and the SSH server can themselves be the target server. It does not mean that only three machines can be used for port forwarding!</p>
-<h2 id="Local-Port-Forwarding"><a href="#Local-Port-Forwarding" class="headerlink" title="Local Port Forwarding"></a>Local Port Forwarding</h2><p>Local forwarding is used to forward a port from the client machine to the server machine. </p>
-<p>Quite a few organizations for all incoming SSH access through a single <strong>jump server</strong>. The server may be a standard Linux&#x2F;Unix box, usually with some extra hardening, intrusion detection, and&#x2F;or logging, or it may be a commercial jump server solution.</p>
-<p>To create a local port forward add the <strong>-L</strong> parameter to the ssh command line.</p>
+<p><strong>Note that</strong> both the client and the SSH server can
+themselves be the target server. It does not mean that only three
+machines can be used for port forwarding!</p>
+<h2 id="local-port-forwarding">Local Port Forwarding</h2>
+<p>Local forwarding is used to forward a port from the client machine to
+the server machine.</p>
+<p>Quite a few organizations for all incoming SSH access through a
+single <strong>jump server</strong>. The server may be a standard
+Linux/Unix box, usually with some extra hardening, intrusion detection,
+and/or logging, or it may be a commercial jump server solution.</p>
+<p>To create a local port forward add the <strong>-L</strong> parameter
+to the ssh command line.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh -L 9090:localhost:8080 user@server-ip<br></code></pre></td></tr></table></figure>
-
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh -L 9090:192.168.1.101:8080 user@server-ip<br></code></pre></td></tr></table></figure>
-<p>The 192.168.1.101 here is relative to user@server-ip, so it is the IP address of the server behind the firewall or VPN. Then, you can visit 192.168.1.101:9090</p>
-<h2 id="Remote-Port-Forwarding"><a href="#Remote-Port-Forwarding" class="headerlink" title="Remote Port Forwarding"></a>Remote Port Forwarding</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ssh -R 9090:localhost:8080 user@server-ip<br></code></pre></td></tr></table></figure>
-
-<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a target="_blank" rel="noopener" href="https://www.ssh.com/academy/iam/jump-server">What is a Jump Server?</a><br><a target="_blank" rel="noopener" href="https://johnliu55.tw/ssh-tunnel.html">SSH Tunneling (Port Forwarding) 詳解</a></p>
+<p>The 192.168.1.101 here is relative to user@server-ip, so it is the IP
+address of the server behind the firewall or VPN. Then, you can visit
+192.168.1.101:9090</p>
+<h2 id="remote-port-forwarding">Remote Port Forwarding</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ssh -R 9090:localhost:8080 user@server-ip<br></code></pre></td></tr></table></figure>
+<h1 id="references">References</h1>
+<p><a target="_blank" rel="noopener" href="https://www.ssh.com/academy/iam/jump-server">What is a Jump
+Server?</a><br />
+<a target="_blank" rel="noopener" href="https://johnliu55.tw/ssh-tunnel.html">SSH Tunneling (Port
+Forwarding) 詳解</a></p>
 
                 
               </div>

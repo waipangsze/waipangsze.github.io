@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  Git: solve conflicted filesWhat’s the simplest way to list conflicted files in Git?123456# # Search for all conflicting files.git diff --name-only --diff-filter&#x3D;U --relative# Search fo">
+    <meta name="description" content="content {:toc}  Git: solve conflicted files What&#39;s the simplest way to list conflicted files in Git? 123456# # Search for all conflicting files.git diff --name-only --diff-filter&#x3D;U --relative# Search">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git: solve conflicted files">
 <meta property="og:url" content="https://waipangsze.github.io/2023/05/07/Git-conflicts/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  Git: solve conflicted filesWhat’s the simplest way to list conflicted files in Git?123456# # Search for all conflicting files.git diff --name-only --diff-filter&#x3D;U --relative# Search fo">
+<meta property="og:description" content="content {:toc}  Git: solve conflicted files What&#39;s the simplest way to list conflicted files in Git? 123456# # Search for all conflicting files.git diff --name-only --diff-filter&#x3D;U --relative# Search">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-05-06T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
@@ -238,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          80 words
+          79 words
         
       </span>
     
@@ -301,11 +301,15 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="Git-solve-conflicted-files"><a href="#Git-solve-conflicted-files" class="headerlink" title="Git: solve conflicted files"></a>Git: solve conflicted files</h1><h2 id="What’s-the-simplest-way-to-list-conflicted-files-in-Git"><a href="#What’s-the-simplest-way-to-list-conflicted-files-in-Git" class="headerlink" title="What’s the simplest way to list conflicted files in Git?"></a>What’s the simplest way to list conflicted files in Git?</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># # Search for all conflicting files.</span><br>git diff --name-only --diff-filter=U --relative<br><br><span class="hljs-comment"># Search for all conflicting files.</span><br>grep -lr <span class="hljs-string">&quot;&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD&quot;</span> ./*<br><br></code></pre></td></tr></table></figure>
-<h2 id="Resolve-easy-obvious-conflicts"><a href="#Resolve-easy-obvious-conflicts" class="headerlink" title="Resolve easy&#x2F;obvious conflicts"></a>Resolve easy&#x2F;obvious conflicts</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#At this point you may review each files. If solution is to accept local/our version, run:</span><br>git checkout --ours PATH/FILE<br><br><span class="hljs-comment">#If solution is to accept remote/other-branch version, run:</span><br>git checkout --theirs PATH/FILE<br><br><span class="hljs-comment">#If you have multiple files and you want to accept local/our version, run:</span><br>grep -lr <span class="hljs-string">&#x27;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#x27;</span> . | xargs git checkout --ours<br><br><span class="hljs-comment">#If you have multiple files and you want to accept remote/other-branch version, run:</span><br>grep -lr <span class="hljs-string">&#x27;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#x27;</span> . | xargs git checkout --theirs<br></code></pre></td></tr></table></figure>
-
+<h1 id="git-solve-conflicted-files">Git: solve conflicted files</h1>
+<h2 id="whats-the-simplest-way-to-list-conflicted-files-in-git">What's
+the simplest way to list conflicted files in Git?</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># # Search for all conflicting files.</span><br>git diff --name-only --diff-filter=U --relative<br><br><span class="hljs-comment"># Search for all conflicting files.</span><br>grep -lr <span class="hljs-string">&quot;&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD&quot;</span> ./*<br><br></code></pre></td></tr></table></figure>
+<h2 id="resolve-easyobvious-conflicts">Resolve easy/obvious
+conflicts</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#At this point you may review each files. If solution is to accept local/our version, run:</span><br>git checkout --ours PATH/FILE<br><br><span class="hljs-comment">#If solution is to accept remote/other-branch version, run:</span><br>git checkout --theirs PATH/FILE<br><br><span class="hljs-comment">#If you have multiple files and you want to accept local/our version, run:</span><br>grep -lr <span class="hljs-string">&#x27;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#x27;</span> . | xargs git checkout --ours<br><br><span class="hljs-comment">#If you have multiple files and you want to accept remote/other-branch version, run:</span><br>grep -lr <span class="hljs-string">&#x27;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#x27;</span> . | xargs git checkout --theirs<br></code></pre></td></tr></table></figure>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git add sample.txt<br>$ git commit<br></code></pre></td></tr></table></figure>
 
                 
@@ -476,6 +480,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

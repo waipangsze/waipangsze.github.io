@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  SpackSpack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large">
+    <meta name="description" content="content {:toc}  Spack Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for larg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spack">
 <meta property="og:url" content="https://waipangsze.github.io/2024/06/07/spack/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  SpackSpack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large">
+<meta property="og:description" content="content {:toc}  Spack Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for larg">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-06-06T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          543 words
+          460 words
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
         
-          5 mins
+          4 mins
         
       </span>
     
@@ -299,93 +299,173 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="Spack"><a href="#Spack" class="headerlink" title="Spack"></a>Spack</h1><p>Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large supercomputing centers, where many users and application teams share common installations of software on clusters with exotic architectures, using libraries that do not have a standard ABI. Spack is non-destructive: installing a new version does not break existing installations, so many configurations can coexist on the same system.<br>Most importantly, Spack is simple. It offers a simple spec syntax so that users can specify versions and configuration options concisely. Spack is also simple for package authors: package files are written in pure Python, and specs allow package authors to maintain a single file for many different builds of the same package.</p>
-<p><a target="_blank" rel="noopener" href="https://spack.readthedocs.io/en/latest/">https://spack.readthedocs.io/en/latest/</a></p>
-<h2 id="Search-packages-online"><a href="#Search-packages-online" class="headerlink" title="Search packages online"></a>Search packages online</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://packages.spack.io/">https://packages.spack.io/</a></p>
+<h1 id="spack">Spack</h1>
+<p>Spack is a package management tool designed to support multiple
+versions and configurations of software on a wide variety of platforms
+and environments. It was designed for large supercomputing centers,
+where many users and application teams share common installations of
+software on clusters with exotic architectures, using libraries that do
+not have a standard ABI. Spack is non-destructive: installing a new
+version does not break existing installations, so many configurations
+can coexist on the same system. Most importantly, Spack is simple. It
+offers a simple spec syntax so that users can specify versions and
+configuration options concisely. Spack is also simple for package
+authors: package files are written in pure Python, and specs allow
+package authors to maintain a single file for many different builds of
+the same package.</p>
+<p><a target="_blank" rel="noopener" href="https://spack.readthedocs.io/en/latest/"
+class="uri">https://spack.readthedocs.io/en/latest/</a></p>
+<h2 id="search-packages-online">Search packages online</h2>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://packages.spack.io/"
+class="uri">https://packages.spack.io/</a></p>
 </blockquote>
-<h1 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h1><p>Getting Spack is easy. You can clone it from the github repository using this command:</p>
-<p>git clone -c feature.manyFiles&#x3D;true <a target="_blank" rel="noopener" href="https://github.com/spack/spack.git">https://github.com/spack/spack.git</a><br>{:.info}</p>
+<h1 id="installation">Installation</h1>
+<p>Getting Spack is easy. You can clone it from the github repository
+using this command:</p>
+<p>git clone -c feature.manyFiles=true
+https://github.com/spack/spack.git {:.info}</p>
 <p>This will create a directory called spack.</p>
-<p>Once you have cloned Spack, we recommend sourcing the appropriate script for your shell:</p>
-<p>. spack&#x2F;share&#x2F;spack&#x2F;setup-env.sh<br>{:.info}</p>
+<p>Once you have cloned Spack, we recommend sourcing the appropriate
+script for your shell:</p>
+<p>. spack/share/spack/setup-env.sh {:.info}</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">For bash/zsh/sh<br>. spack/share/spack/setup-env.sh<br>(add into .bashrc)<br>For tcsh/csh<br><span class="hljs-built_in">source</span> spack/share/spack/setup-env.csh<br></code></pre></td></tr></table></figure>
-
-<p>Sourcing these files will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash and zsh, it also sets up tab completion.</p>
+<p>Sourcing these files will put the spack command in your PATH, set up
+your MODULEPATH to use Spack’s packages, and add other useful shell
+integration for certain commands, environments, and modules. For bash
+and zsh, it also sets up tab completion.</p>
 <ul>
 <li>spack env create yourEnvironmentName</li>
 <li>spack env activate yourEnvironmentName</li>
-<li>spack env list # You can see a list of your available environments</li>
-<li>spack env status # you can see which environment you are currently	</li>
+<li>spack env list # You can see a list of your available
+environments</li>
+<li>spack env status # you can see which environment you are
+currently<br />
+</li>
 <li>spack env deactivate</li>
-<li>spack find # to see what packages are installed in the current environment</li>
-<li>spack add <a href="mailto:&#112;&#121;&#116;&#104;&#111;&#x6e;&#64;&#x33;&#46;&#x31;&#48;">&#112;&#121;&#116;&#104;&#111;&#x6e;&#64;&#x33;&#46;&#x31;&#48;</a></li>
+<li>spack find # to see what packages are installed in the current
+environment</li>
+<li>spack add python@3.10</li>
 <li>spack add compilerName@compilerVersion</li>
-<li>spack install –add xxx</li>
-<li>compilerPath&#x3D;$(spack location -i compilerName@compilerVersion)</li>
-<li>spack add <a href="mailto:&#112;&#121;&#116;&#x68;&#111;&#x6e;&#64;&#x33;&#x2e;&#49;&#48;">&#112;&#121;&#116;&#x68;&#111;&#x6e;&#64;&#x33;&#x2e;&#49;&#48;</a>%<a href="mailto:&#x67;&#99;&#x63;&#64;&#x39;&#x2e;&#53;&#46;&#48;">&#x67;&#99;&#x63;&#64;&#x39;&#x2e;&#53;&#46;&#48;</a> # As a general rule, you should use the same compiler for installing all of your packages within an environment</li>
+<li>spack install --add xxx</li>
+<li>compilerPath=$(spack location -i compilerName@compilerVersion)</li>
+<li>spack add python@3.10%gcc@9.5.0 # As a general rule, you should use
+the same compiler for installing all of your packages within an
+environment</li>
 <li>spack env remove yourEnvironmentName</li>
 </ul>
-<h1 id="Compiler-configuration"><a href="#Compiler-configuration" class="headerlink" title="Compiler configuration"></a>Compiler configuration</h1><p>Spack has the ability to build packages with multiple compilers and compiler versions. Compilers can be made available to Spack by specifying them manually in <strong>compilers.yaml</strong> or <strong>packages.yaml</strong>, or automatically by running spack compiler find, but for convenience Spack will automatically detect compilers the first time it needs them.</p>
-<p>You can see which compilers are available to Spack by running </p>
-<p>spack compilers or spack compiler list<br>{:.info}</p>
+<h1 id="compiler-configuration">Compiler configuration</h1>
+<p>Spack has the ability to build packages with multiple compilers and
+compiler versions. Compilers can be made available to Spack by
+specifying them manually in <strong>compilers.yaml</strong> or
+<strong>packages.yaml</strong>, or automatically by running spack
+compiler find, but for convenience Spack will automatically detect
+compilers the first time it needs them.</p>
+<p>You can see which compilers are available to Spack by running</p>
+<p>spack compilers or spack compiler list {:.info}</p>
 <blockquote>
 <p>Any of these compilers can be used to build Spack packages.</p>
 </blockquote>
-<p>spack compiler add<br>{:.info}</p>
+<p>spack compiler add {:.info}</p>
 <p>An alias for <strong>spack compiler find</strong>.</p>
-<p>spack compiler find<br>{:.info}</p>
-<p>Lists the compilers currently available to Spack. If you do not see a compiler in this list, but you want to use it with Spack, you can simply run spack compiler find with the path to where the compiler is installed. For example:</p>
+<p>spack compiler find {:.info}</p>
+<p>Lists the compilers currently available to Spack. If you do not see a
+compiler in this list, but you want to use it with Spack, you can simply
+run spack compiler find with the path to where the compiler is
+installed. For example:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack compiler find /usr/local/tools/ic-13.0.079<br>==&gt; Added 1 new compiler to ~/.spack/linux/compilers.yaml<br>    intel@13.0.079<br></code></pre></td></tr></table></figure>
-
-<p>Or you can run spack compiler find with no arguments to force auto-detection. This is useful if you do not know where compilers are installed, but you know that new compilers have been added to your PATH. For example, you might load a module, like this:</p>
+<p>Or you can run spack compiler find with no arguments to force
+auto-detection. This is useful if you do not know where compilers are
+installed, but you know that new compilers have been added to your PATH.
+For example, you might load a module, like this:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ module load gcc/4.9.0<br>$ spack compiler find<br>==&gt; Added 1 new compiler to ~/.spack/linux/compilers.yaml<br>    gcc@4.9.0<br></code></pre></td></tr></table></figure>
-<p>This loads the environment module for gcc-4.9.0 to add it to PATH, and then it adds the compiler to Spack.</p>
-<p>spack compiler info<br>{:.info}</p>
-<p>If you want to see specifics on a particular compiler, you can run spack compiler info on it:</p>
+<p>This loads the environment module for gcc-4.9.0 to add it to PATH,
+and then it adds the compiler to Spack.</p>
+<p>spack compiler info {:.info}</p>
+<p>If you want to see specifics on a particular compiler, you can run
+spack compiler info on it:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack compiler info intel@15<br>intel@15.0.0:<br>  paths:<br>    cc  = /usr/local/bin/icc-15.0.090<br>    cxx = /usr/local/bin/icpc-15.0.090<br>    f77 = /usr/local/bin/ifort-15.0.090<br>    <span class="hljs-built_in">fc</span>  = /usr/local/bin/ifort-15.0.090<br>  modules = []<br>  operating_system = centos6<br></code></pre></td></tr></table></figure>
-
-<p>This shows which C, C++, and Fortran compilers were detected by Spack. Notice also that we didn’t have to be too specific about the version. We just said intel@15, and information about the only matching Intel compiler was displayed.</p>
-<h2 id="Manual-compiler-configuration"><a href="#Manual-compiler-configuration" class="headerlink" title="Manual compiler configuration"></a>Manual compiler configuration</h2><p>If auto-detection fails, you can manually configure a compiler by editing your <strong>~&#x2F;.spack&#x2F;<platform>&#x2F;compilers.yaml file</strong>. You can do this by running <strong>spack config edit compilers</strong>, which will open the file in your favorite editor.</p>
-<h2 id="Build-Your-Own-Compiler"><a href="#Build-Your-Own-Compiler" class="headerlink" title="Build Your Own Compiler"></a>Build Your Own Compiler</h2><p>If you are particular about which compiler&#x2F;version you use, you might wish to have Spack build it for you. For example:</p>
+<p>This shows which C, C++, and Fortran compilers were detected by
+Spack. Notice also that we didn’t have to be too specific about the
+version. We just said intel@15, and information about the only matching
+Intel compiler was displayed.</p>
+<h2 id="manual-compiler-configuration">Manual compiler
+configuration</h2>
+<p>If auto-detection fails, you can manually configure a compiler by
+editing your <strong>~/.spack/<platform>/compilers.yaml file</strong>.
+You can do this by running <strong>spack config edit compilers</strong>,
+which will open the file in your favorite editor.</p>
+<h2 id="build-your-own-compiler">Build Your Own Compiler</h2>
+<p>If you are particular about which compiler/version you use, you might
+wish to have Spack build it for you. For example:</p>
 <blockquote>
-<p>$ spack install <a href="mailto:&#103;&#99;&#99;&#x40;&#x34;&#x2e;&#x39;&#x2e;&#51;">&#103;&#99;&#99;&#x40;&#x34;&#x2e;&#x39;&#x2e;&#51;</a></p>
+<p>$ spack install gcc@4.9.3</p>
 </blockquote>
-<p>Once that has finished, you will need to add it to your <strong>compilers.yaml</strong> file. </p>
+<p>Once that has finished, you will need to add it to your
+<strong>compilers.yaml</strong> file.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">spack add gcc@4.9.3<br>spack install<br>spack compiler add `spack location -i gcc@4.9.3`<br></code></pre></td></tr></table></figure>
-
-<p>You can then set Spack to use it by default by adding the following to your packages.yaml file:</p>
+<p>You can then set Spack to use it by default by adding the following
+to your packages.yaml file:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">packages:<br>  all:<br>    compiler: [gcc@4.9.3]<br></code></pre></td></tr></table></figure>
-
-<h1 id="Specs-dependencies"><a href="#Specs-dependencies" class="headerlink" title="Specs &amp; dependencies"></a>Specs &amp; dependencies</h1><p>We know that <strong>spack install</strong>, <strong>spack uninstall</strong>, and other commands take a package name with an optional version specifier. In Spack, that descriptor is called a spec. Spack uses specs to refer to a particular build configuration (or configurations) of a package. Specs are more than a package name and a version; you can use them to specify the compiler, compiler version, architecture, compile options, and dependency options for a build. In this section, we’ll go over the full syntax of specs.</p>
-<p>Here is an example of a much longer spec than we’ve seen thus far:</p>
+<h1 id="specs-dependencies">Specs &amp; dependencies</h1>
+<p>We know that <strong>spack install</strong>, <strong>spack
+uninstall</strong>, and other commands take a package name with an
+optional version specifier. In Spack, that descriptor is called a spec.
+Spack uses specs to refer to a particular build configuration (or
+configurations) of a package. Specs are more than a package name and a
+version; you can use them to specify the compiler, compiler version,
+architecture, compile options, and dependency options for a build. In
+this section, we’ll go over the full syntax of specs.</p>
+<p>Here is an example of a much longer spec than we’ve seen thus
+far:</p>
 <blockquote>
-<p>mpileaks @1.2:1.4 %<a href="mailto:&#x67;&#99;&#99;&#64;&#52;&#x2e;&#55;&#x2e;&#53;">&#x67;&#99;&#99;&#64;&#52;&#x2e;&#55;&#x2e;&#53;</a> +debug -qt target&#x3D;x86_64 ^callpath @1.1 %<a href="mailto:&#103;&#99;&#x63;&#64;&#x34;&#x2e;&#55;&#x2e;&#50;">&#103;&#99;&#x63;&#64;&#x34;&#x2e;&#55;&#x2e;&#50;</a></p>
+<p>mpileaks <span class="citation" data-cites="1.2:1.4">@1.2:1.4</span>
+%gcc@4.7.5 +debug -qt target=x86_64 ^callpath <span class="citation"
+data-cites="1.1">@1.1</span> %gcc@4.7.2</p>
 </blockquote>
-<p>If provided to spack install, this will install the mpileaks library at <strong>some version between 1.2 and 1.4 (inclusive)</strong>, built using <strong>gcc at version 4.7.5</strong> for a generic x86_64 architecture, with <strong>debug options enabled</strong>, and <strong>without Qt support</strong>. Additionally, it says to link it with the <strong>callpath library (which it depends on)</strong>, and to <strong>build callpath with gcc 4.7.2</strong>. Most specs will not be as complicated as this one, but this is a good example of what is possible with specs.</p>
+<p>If provided to spack install, this will install the mpileaks library
+at <strong>some version between 1.2 and 1.4 (inclusive)</strong>, built
+using <strong>gcc at version 4.7.5</strong> for a generic x86_64
+architecture, with <strong>debug options enabled</strong>, and
+<strong>without Qt support</strong>. Additionally, it says to link it
+with the <strong>callpath library (which it depends on)</strong>, and to
+<strong>build callpath with gcc 4.7.2</strong>. Most specs will not be
+as complicated as this one, but this is a good example of what is
+possible with specs.</p>
 <p>More formally, a spec consists of the following pieces:</p>
 <ul>
 <li>Package name identifier (mpileaks above)</li>
-<li>@ Optional version specifier (@1.2:1.4)</li>
-<li>% Optional compiler specifier, with an optional compiler version (gcc or <a href="mailto:&#103;&#99;&#x63;&#x40;&#52;&#46;&#x37;&#46;&#x33;">&#103;&#99;&#x63;&#x40;&#52;&#46;&#x37;&#46;&#x33;</a>)</li>
-<li>+ or - or ~ Optional variant specifiers (+debug, -qt, or ~qt) for boolean variants. Use ++ or -- or ~~ to propagate variants through the dependencies (++debug, --qt, or ~~qt).</li>
-<li>name&#x3D;<value> Optional variant specifiers that are not restricted to boolean variants. Use name&#x3D;&#x3D;<value> to propagate variant through the dependencies.</li>
-<li>name&#x3D;<value> Optional compiler flag specifiers. Valid flag names are cflags, cxxflags, fflags, cppflags, ldflags, and ldlibs. Use name&#x3D;&#x3D;<value> to propagate compiler flags through the dependencies.</li>
-<li>target&#x3D;&lt;value&gt; os&#x3D;&lt;value&gt; Optional architecture specifier (target&#x3D;haswell os&#x3D;CNL10)</li>
-<li>^ Dependency specs (^<a href="mailto:&#99;&#x61;&#x6c;&#108;&#112;&#x61;&#116;&#104;&#64;&#49;&#x2e;&#x31;">&#99;&#x61;&#x6c;&#108;&#112;&#x61;&#116;&#104;&#64;&#49;&#x2e;&#x31;</a>)</li>
+<li>@ Optional version specifier (<span class="citation"
+data-cites="1.2:1.4">@1.2:1.4</span>)</li>
+<li>% Optional compiler specifier, with an optional compiler version
+(gcc or gcc@4.7.3)</li>
+<li>+ or - or ~ Optional variant specifiers (+debug, -qt, or ~qt) for
+boolean variants. Use ++ or -- or ~~ to propagate variants through the
+dependencies (++debug, --qt, or ~~qt).</li>
+<li>name=<value> Optional variant specifiers that are not restricted to
+boolean variants. Use name==<value> to propagate variant through the
+dependencies.</li>
+<li>name=<value> Optional compiler flag specifiers. Valid flag names are
+cflags, cxxflags, fflags, cppflags, ldflags, and ldlibs. Use
+name==<value> to propagate compiler flags through the dependencies.</li>
+<li>target=&lt;value&gt; os=&lt;value&gt; Optional architecture
+specifier (target=haswell os=CNL10)</li>
+<li>^ Dependency specs (^callpath@1.1)</li>
 </ul>
-<p>套件表示法<br>@ 開頭表示版本號<br>% 開頭表示編譯器<br>^ 開頭表示依賴項</p>
-<h1 id="Spack-load"><a href="#Spack-load" class="headerlink" title="Spack load"></a>Spack load</h1><p>There are several different ways to use Spack packages once you have installed them. As you’ve seen, spack packages are installed into long paths with hashes, and you need a way to get them into your path. The easiest way is to use <strong>spack load</strong>, which is described in this section.</p>
+<p>套件表示法 @ 開頭表示版本號 % 開頭表示編譯器 ^ 開頭表示依賴項</p>
+<h1 id="spack-load">Spack load</h1>
+<p>There are several different ways to use Spack packages once you have
+installed them. As you’ve seen, spack packages are installed into long
+paths with hashes, and you need a way to get them into your path. The
+easiest way is to use <strong>spack load</strong>, which is described in
+this section.</p>
 <blockquote>
-<p>spack load mpich %<a href="mailto:&#x67;&#x63;&#x63;&#64;&#52;&#46;&#x34;&#x2e;&#55;">&#x67;&#x63;&#x63;&#64;&#52;&#46;&#x34;&#x2e;&#55;</a></p>
+<p>spack load mpich %gcc@4.4.7</p>
 </blockquote>
-<h1 id="Slurm"><a href="#Slurm" class="headerlink" title="Slurm"></a>Slurm</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment"># This file is called submit-script.sh</span><br><span class="hljs-comment">#SBATCH --partition=shared       # default &quot;shared&quot;, if not specified</span><br><span class="hljs-comment">#SBATCH --time=0-04:30:00        # run time in days-hh:mm:ss</span><br><span class="hljs-comment">#SBATCH --nodes=1                # require 1 nodes</span><br><span class="hljs-comment">#SBATCH --ntasks-per-node=64     # cpus per node (by default, &quot;ntasks&quot;=&quot;cpus&quot;)</span><br><span class="hljs-comment">#SBATCH --mem-per-cpu=4000       # RAM per node in megabytes</span><br><span class="hljs-comment">#SBATCH --error=job.%J.err</span><br><span class="hljs-comment">#SBATCH --output=job.%J.out</span><br><span class="hljs-comment"># v---Remember to activate your Spack environment!! </span><br>spack <span class="hljs-built_in">env</span> activate yourEnvironmentName<br>srun --mpi=pmix -n 64 /home/username/mpiprogram<br></code></pre></td></tr></table></figure>
-
-
-
-
+<h1 id="slurm">Slurm</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment"># This file is called submit-script.sh</span><br><span class="hljs-comment">#SBATCH --partition=shared       # default &quot;shared&quot;, if not specified</span><br><span class="hljs-comment">#SBATCH --time=0-04:30:00        # run time in days-hh:mm:ss</span><br><span class="hljs-comment">#SBATCH --nodes=1                # require 1 nodes</span><br><span class="hljs-comment">#SBATCH --ntasks-per-node=64     # cpus per node (by default, &quot;ntasks&quot;=&quot;cpus&quot;)</span><br><span class="hljs-comment">#SBATCH --mem-per-cpu=4000       # RAM per node in megabytes</span><br><span class="hljs-comment">#SBATCH --error=job.%J.err</span><br><span class="hljs-comment">#SBATCH --output=job.%J.out</span><br><span class="hljs-comment"># v---Remember to activate your Spack environment!! </span><br>spack <span class="hljs-built_in">env</span> activate yourEnvironmentName<br>srun --mpi=pmix -n 64 /home/username/mpiprogram<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -551,6 +631,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

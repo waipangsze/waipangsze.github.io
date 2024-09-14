@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  The Secure Shell Protocol (SSH) is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login an">
+    <meta name="description" content="content {:toc}  The Secure Shell Protocol (SSH) is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ssh setup">
 <meta property="og:url" content="https://waipangsze.github.io/2024/06/05/ssh/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  The Secure Shell Protocol (SSH) is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login an">
+<meta property="og:description" content="content {:toc}  The Secure Shell Protocol (SSH) is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login a">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-06-04T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          230 words
+          229 words
         
       </span>
     
@@ -299,29 +299,44 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Secure_Shell">The Secure Shell Protocol (SSH)</a> is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login and command-line execution.</p>
-<p>SSH was designed for Unix-like operating systems as a replacement for Telnet and unsecured remote Unix shell protocols, such as the Berkeley Remote Shell (rsh) and the related rlogin and rexec protocols, which all use insecure, plaintext methods of authentication, like passwords.</p>
-<p>安全外殼協定（Secure Shell Protocol，簡稱SSH）是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境[1]。SSH通過在網路中建立安全隧道來實現SSH客戶端與伺服器之間的連線[2]。SSH最常見的用途是遠端登入系統，人們通常利用SSH來傳輸命令列介面和遠端執行命令。SSH使用頻率最高的場合是類Unix系統，但是Windows作業系統也能有限度地使用SSH。2015年，微軟宣布將在未來的作業系統中提供原生SSH協定支援[3]，Windows 10 1803版本已提供OpenSSH工具</p>
-<h1 id="Generate-a-key-pair"><a href="#Generate-a-key-pair" class="headerlink" title="Generate a key pair"></a>Generate a key pair</h1><p>In you local PC,</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Secure_Shell">The Secure Shell
+Protocol (SSH)</a> is a cryptographic network protocol for operating
+network services securely over an unsecured network. Its most notable
+applications are remote login and command-line execution.</p>
+<p>SSH was designed for Unix-like operating systems as a replacement for
+Telnet and unsecured remote Unix shell protocols, such as the Berkeley
+Remote Shell (rsh) and the related rlogin and rexec protocols, which all
+use insecure, plaintext methods of authentication, like passwords.</p>
+<p>安全外殼協定（Secure Shell
+Protocol，簡稱SSH）是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境[1]。SSH通過在網路中建立安全隧道來實現SSH客戶端與伺服器之間的連線[2]。SSH最常見的用途是遠端登入系統，人們通常利用SSH來傳輸命令列介面和遠端執行命令。SSH使用頻率最高的場合是類Unix系統，但是Windows作業系統也能有限度地使用SSH。2015年，微軟宣布將在未來的作業系統中提供原生SSH協定支援[3]，Windows
+10 1803版本已提供OpenSSH工具</p>
+<h1 id="generate-a-key-pair">Generate a key pair</h1>
+<p>In you local PC,</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh-keygen<br>or<br>$ ssh-keygen -t rsa<br></code></pre></td></tr></table></figure>
-
-<p>where -t rsa option specifies that the type of the key should be RSA. Other choices include DSA, ECDSA, and ED25519. Select the protocol your SSH connection will use.</p>
-<p>and id_rsa&#x2F;id_rsa.pub are generated on .ssh.</p>
+<p>where -t rsa option specifies that the type of the key should be RSA.
+Other choices include DSA, ECDSA, and ED25519. Select the protocol your
+SSH connection will use.</p>
+<p>and id_rsa/id_rsa.pub are generated on .ssh.</p>
 <ul>
 <li>id_rsa contains the private key.</li>
 <li>id_rsa.pub contains the public key.</li>
 </ul>
-<h1 id="id-rsa-pub"><a href="#id-rsa-pub" class="headerlink" title="id_rsa.pub"></a>id_rsa.pub</h1><p>Copy id_rsa.pub to remote machine .ssh&#x2F;authorized_keys</p>
-<h1 id="ssh-login-without-password"><a href="#ssh-login-without-password" class="headerlink" title="ssh login without password"></a>ssh login without password</h1><p>In your SSH session with the remote machine, update the permissions of the .ssh directory and authorized_keys file in case they need it:</p>
+<h1 id="id_rsa.pub">id_rsa.pub</h1>
+<p>Copy id_rsa.pub to remote machine .ssh/authorized_keys</p>
+<h1 id="ssh-login-without-password">ssh login without password</h1>
+<p>In your SSH session with the remote machine, update the permissions
+of the .ssh directory and authorized_keys file in case they need it:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">chmod</span> 700 ~/.ssh<br>$ <span class="hljs-built_in">chmod</span> 600 ~/.ssh/authorized_keys<br></code></pre></td></tr></table></figure>
-
-<p>Now, close your connection and your Terminal or Command Prompt. When you reopen it and try to connect to the remote server again from the client where you have your private key saved, you should receive a request to enter the passphrase instead of your username and password.</p>
-<p>Reference:</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://www.strongdm.com/blog/ssh-passwordless-login">How to Set Up SSH Passwordless Login (Step-by-Step Tutorial)</a></li>
-</ol>
+<p>Now, close your connection and your Terminal or Command Prompt. When
+you reopen it and try to connect to the remote server again from the
+client where you have your private key saved, you should receive a
+request to enter the passphrase instead of your username and
+password.</p>
+<p>Reference: 1. <a
+target="_blank" rel="noopener" href="https://www.strongdm.com/blog/ssh-passwordless-login">How to Set
+Up SSH Passwordless Login (Step-by-Step Tutorial)</a></p>
 
                 
               </div>
@@ -487,6 +502,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 

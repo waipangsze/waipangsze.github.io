@@ -19,12 +19,12 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="content{:toc}  Bash datetime (manipulate)1234567NAME       date - print or set the system date and timeSYNOPSIS       date [OPTION]... [+FORMAT]       date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.s">
+    <meta name="description" content="content {:toc}  Bash datetime (manipulate) 1234567NAME       date - print or set the system date and timeSYNOPSIS       date [OPTION]... [+FORMAT]       date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Bash datetime (manipulate)">
 <meta property="og:url" content="https://waipangsze.github.io/2023/05/23/bash-datetime/index.html">
 <meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
-<meta property="og:description" content="content{:toc}  Bash datetime (manipulate)1234567NAME       date - print or set the system date and timeSYNOPSIS       date [OPTION]... [+FORMAT]       date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.s">
+<meta property="og:description" content="content {:toc}  Bash datetime (manipulate) 1234567NAME       date - print or set the system date and timeSYNOPSIS       date [OPTION]... [+FORMAT]       date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-05-22T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          228 words
+          225 words
         
       </span>
     
@@ -299,19 +299,19 @@
               <div class="markdown-body">
                 
                 <ul>
-<li>content<br>{:toc}</li>
+<li>content {:toc}</li>
 </ul>
-<h1 id="Bash-datetime-manipulate"><a href="#Bash-datetime-manipulate" class="headerlink" title="Bash datetime (manipulate)"></a>Bash datetime (manipulate)</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">NAME<br>       <span class="hljs-built_in">date</span> - <span class="hljs-built_in">print</span> or <span class="hljs-built_in">set</span> the system <span class="hljs-built_in">date</span> and time<br><br>SYNOPSIS<br>       <span class="hljs-built_in">date</span> [OPTION]... [+FORMAT]<br>       <span class="hljs-built_in">date</span> [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]<br><br></code></pre></td></tr></table></figure>
-
-<p>We want to manipulate the datetime change. </p>
-<h2 id="Format-YYYMMDD"><a href="#Format-YYYMMDD" class="headerlink" title="Format&#x3D;YYYMMDD"></a>Format&#x3D;YYYMMDD</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sh">YYYYMMDD=<span class="hljs-string">&quot;20210315&quot;</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y%m%d -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day&quot;</span>)<br><span class="hljs-comment"># 20210316</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day&quot;</span>)<br><span class="hljs-comment"># 2021-03-16</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day&quot;</span>)<br><span class="hljs-comment"># 2021-03-16_00:00:00</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 hour&quot;</span>)<br><span class="hljs-comment"># 2021-03-15_01:00:00</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 min&quot;</span>)<br><span class="hljs-comment"># 2021-03-15_00:01:00</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 second&quot;</span>)<br><span class="hljs-comment"># 2021-03-15_00:00:01</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day + 1 hour + 1 min + 1 second&quot;</span>)<br><span class="hljs-comment"># 2021-03-16_01:01:01</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="Format-YYYY-MM-DD"><a href="#Format-YYYY-MM-DD" class="headerlink" title="Format&#x3D;YYYY-MM-DD"></a>Format&#x3D;YYYY-MM-DD</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">YYYYMMDD=<span class="hljs-string">&quot;2021-04-15&quot;</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day + 1 hour + 1 min + 1 second&quot;</span>)<br><span class="hljs-comment"># 2021-04-16_01:01:01</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="Format-YYYY-MM-DD-HH-MM-SS”"><a href="#Format-YYYY-MM-DD-HH-MM-SS”" class="headerlink" title="Format&#x3D;YYYY-MM-DD HH:MM:SS”"></a>Format&#x3D;YYYY-MM-DD HH:MM:SS”</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">YYYYMMDD=<span class="hljs-string">&quot;2017-01-19 00:05:01&quot;</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day + 1 hour + 1 min + 1 second&quot;</span>)<br><span class="hljs-comment"># 2017-01-20_08:06:02</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="To-seperate"><a href="#To-seperate" class="headerlink" title="To seperate"></a>To seperate</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">FCST_DURATION=<span class="hljs-string">&quot;000_17:00:00&quot;</span><br><br>fcst_DD=<span class="hljs-variable">$&#123;FCST_DURATION:0:3&#125;</span><br>fcst_hh=<span class="hljs-variable">$&#123;FCST_DURATION:4:2&#125;</span><br>fcst_mm=<span class="hljs-variable">$&#123;FCST_DURATION:7:2&#125;</span><br>fcst_ss=<span class="hljs-variable">$&#123;FCST_DURATION:10:2&#125;</span><br></code></pre></td></tr></table></figure>
-
+<h1 id="bash-datetime-manipulate">Bash datetime (manipulate)</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">NAME<br>       <span class="hljs-built_in">date</span> - <span class="hljs-built_in">print</span> or <span class="hljs-built_in">set</span> the system <span class="hljs-built_in">date</span> and time<br><br>SYNOPSIS<br>       <span class="hljs-built_in">date</span> [OPTION]... [+FORMAT]<br>       <span class="hljs-built_in">date</span> [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]<br><br></code></pre></td></tr></table></figure>
+<p>We want to manipulate the datetime change.</p>
+<h2 id="formatyyymmdd">Format=YYYMMDD</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sh">YYYYMMDD=<span class="hljs-string">&quot;20210315&quot;</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y%m%d -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day&quot;</span>)<br><span class="hljs-comment"># 20210316</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day&quot;</span>)<br><span class="hljs-comment"># 2021-03-16</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day&quot;</span>)<br><span class="hljs-comment"># 2021-03-16_00:00:00</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 hour&quot;</span>)<br><span class="hljs-comment"># 2021-03-15_01:00:00</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 min&quot;</span>)<br><span class="hljs-comment"># 2021-03-15_00:01:00</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 second&quot;</span>)<br><span class="hljs-comment"># 2021-03-15_00:00:01</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day + 1 hour + 1 min + 1 second&quot;</span>)<br><span class="hljs-comment"># 2021-03-16_01:01:01</span><br></code></pre></td></tr></table></figure>
+<h2 id="formatyyyy-mm-dd">Format=YYYY-MM-DD</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">YYYYMMDD=<span class="hljs-string">&quot;2021-04-15&quot;</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day + 1 hour + 1 min + 1 second&quot;</span>)<br><span class="hljs-comment"># 2021-04-16_01:01:01</span><br></code></pre></td></tr></table></figure>
+<h2 id="formatyyyy-mm-dd-hhmmss">Format=YYYY-MM-DD HH:MM:SS"</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">YYYYMMDD=<span class="hljs-string">&quot;2017-01-19 00:05:01&quot;</span><br>Next_day=$(<span class="hljs-built_in">date</span> +%Y-%m-%d_%H:%M:%S -d <span class="hljs-string">&quot;<span class="hljs-variable">$YYYYMMDD</span> + 1 day + 1 hour + 1 min + 1 second&quot;</span>)<br><span class="hljs-comment"># 2017-01-20_08:06:02</span><br></code></pre></td></tr></table></figure>
+<h2 id="to-seperate">To seperate</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">FCST_DURATION=<span class="hljs-string">&quot;000_17:00:00&quot;</span><br><br>fcst_DD=<span class="hljs-variable">$&#123;FCST_DURATION:0:3&#125;</span><br>fcst_hh=<span class="hljs-variable">$&#123;FCST_DURATION:4:2&#125;</span><br>fcst_mm=<span class="hljs-variable">$&#123;FCST_DURATION:7:2&#125;</span><br>fcst_ss=<span class="hljs-variable">$&#123;FCST_DURATION:10:2&#125;</span><br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -477,6 +477,21 @@
 
 
 
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
 
 
 
