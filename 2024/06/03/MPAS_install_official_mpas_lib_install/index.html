@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="content{:toc}  Preliminary requirements: the easiest routeInstalling the full set of I&#x2F;O libraries required by MPAS can be tedious.To make this easier, we’ve prepared a shell script that may be">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Official MPAS Installation lib -- Preliminary requirements">
+<meta property="og:url" content="https://waipangsze.github.io/2024/06/03/MPAS_install_official_mpas_lib_install/index.html">
+<meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
+<meta property="og:description" content="content{:toc}  Preliminary requirements: the easiest routeInstalling the full set of I&#x2F;O libraries required by MPAS can be tedious.To make this easier, we’ve prepared a shell script that may be">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="Installation">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Official MPAS Installation lib -- Preliminary requirements - Physics &amp; Numerical Weather Prediction</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Official MPAS Installation lib -- Preliminary requirements"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-03 00:00" pubdate>
+          June 3, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          420 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Official MPAS Installation lib -- Preliminary requirements</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>content<br>{:toc}</li>
+</ul>
+<h1 id="Preliminary-requirements-the-easiest-route"><a href="#Preliminary-requirements-the-easiest-route" class="headerlink" title="Preliminary requirements: the easiest route"></a>Preliminary requirements: the easiest route</h1><p>Installing the full set of I&#x2F;O libraries required by MPAS can be tedious.<br>To make this easier, we’ve prepared a shell script that may be helpful:</p>
+<p>Preliminary requirements: the easiest route</p>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/scripts/mpas_lib_install.sh">https://www2.mmm.ucar.edu/projects/mpas/scripts/mpas_lib_install.sh</a></p>
+<p>Notes:</p>
+<ul>
+<li>Before running or following the above script, you will need to have<br>downloaded the library sources from <a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/scripts">https://www2.mmm.ucar.edu/projects/mpas/scripts</a></li>
+<li>If you already have an MPI library, skip the MPICH installation</li>
+<li>After editing paths and compiler names at the top, you may be able<br>to run the script, but in general the script may be best used as a<br>guide</li>
+</ul>
+<p>attached below,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/usr/bin/env bash</span><br><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Sources for all libraries used in this script can be found at</span><br><span class="hljs-comment"># http://www2.mmm.ucar.edu/people/duda/files/mpas/sources/ </span><br><span class="hljs-comment">#</span><br><br><span class="hljs-comment"># Where to find sources for libraries - generally, the directory into which</span><br><span class="hljs-comment"># you have downloaded the sources from the URL, above</span><br><span class="hljs-built_in">export</span> LIBSRC=/sysdisk2/duda/sources<br><br><span class="hljs-comment"># Where to install libraries - this directory must be writable by you</span><br><span class="hljs-built_in">export</span> LIBBASE=/sysdisk2/duda/mpas-libs<br><br><span class="hljs-comment"># Compilers</span><br><span class="hljs-built_in">export</span> SERIAL_FC=gfortran<br><span class="hljs-built_in">export</span> SERIAL_F77=gfortran<br><span class="hljs-built_in">export</span> SERIAL_CC=gcc<br><span class="hljs-built_in">export</span> SERIAL_CXX=g++<br><span class="hljs-built_in">export</span> MPI_FC=mpifort<br><span class="hljs-built_in">export</span> MPI_F77=mpifort<br><span class="hljs-built_in">export</span> MPI_CC=mpicc<br><span class="hljs-built_in">export</span> MPI_CXX=mpic++<br><br><br><span class="hljs-built_in">export</span> CC=<span class="hljs-variable">$SERIAL_CC</span><br><span class="hljs-built_in">export</span> CXX=<span class="hljs-variable">$SERIAL_CXX</span><br><span class="hljs-built_in">export</span> F77=<span class="hljs-variable">$SERIAL_F77</span><br><span class="hljs-built_in">export</span> FC=<span class="hljs-variable">$SERIAL_FC</span><br><span class="hljs-built_in">unset</span> F90  <span class="hljs-comment"># This seems to be set by default on NCAR&#x27;s Cheyenne and is problematic</span><br><span class="hljs-built_in">unset</span> F90FLAGS<br><span class="hljs-built_in">export</span> CFLAGS=<span class="hljs-string">&quot;-g&quot;</span><br><span class="hljs-built_in">export</span> FFLAGS=<span class="hljs-string">&quot;-g -fbacktrace&quot;</span><br><span class="hljs-built_in">export</span> FCFLAGS=<span class="hljs-string">&quot;-g -fbacktrace -fallow-argument-mismatch&quot;</span><br><span class="hljs-built_in">export</span> F77FLAGS=<span class="hljs-string">&quot;-g -fbacktrace -fallow-argument-mismatch&quot;</span><br><br><br><span class="hljs-comment">########################################</span><br><span class="hljs-comment"># MPICH</span><br><span class="hljs-comment">########################################</span><br>tar xzvf <span class="hljs-variable">$&#123;LIBSRC&#125;</span>/mpich-3.3.1.tar.gz <br><span class="hljs-built_in">cd</span> mpich-3.3.1<br>./configure --prefix=<span class="hljs-variable">$&#123;LIBBASE&#125;</span><br>make -j 4<br><span class="hljs-comment">#make check</span><br>make install<br><span class="hljs-comment">#make testing</span><br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$&#123;LIBBASE&#125;</span>/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$&#123;LIBBASE&#125;</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">rm</span> -rf mpich-3.3.1<br><br><span class="hljs-comment">########################################</span><br><span class="hljs-comment"># zlib</span><br><span class="hljs-comment">########################################</span><br>tar xzvf <span class="hljs-variable">$&#123;LIBSRC&#125;</span>/zlib-1.2.11.tar.gz<br><span class="hljs-built_in">cd</span> zlib-1.2.11<br>./configure --prefix=<span class="hljs-variable">$&#123;LIBBASE&#125;</span> --static<br>make -j 4<br>make install<br><span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">rm</span> -rf zlib-1.2.11<br><br><span class="hljs-comment">########################################</span><br><span class="hljs-comment"># HDF5</span><br><span class="hljs-comment">########################################</span><br>tar xjvf <span class="hljs-variable">$&#123;LIBSRC&#125;</span>/hdf5-1.10.5.tar.bz2<br><span class="hljs-built_in">cd</span> hdf5-1.10.5<br><span class="hljs-built_in">export</span> FC=<span class="hljs-variable">$MPI_FC</span><br><span class="hljs-built_in">export</span> CC=<span class="hljs-variable">$MPI_CC</span><br><span class="hljs-built_in">export</span> CXX=<span class="hljs-variable">$MPI_CXX</span><br>./configure --prefix=<span class="hljs-variable">$&#123;LIBBASE&#125;</span> --enable-parallel --with-zlib=<span class="hljs-variable">$&#123;LIBBASE&#125;</span> --disable-shared<br>make -j 4<br><span class="hljs-comment">#make check</span><br>make install<br><span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">rm</span> -rf hdf5-1.10.5<br><br><span class="hljs-comment">########################################</span><br><span class="hljs-comment"># Parallel-netCDF</span><br><span class="hljs-comment">########################################</span><br>tar xzvf <span class="hljs-variable">$&#123;LIBSRC&#125;</span>/pnetcdf-1.12.2.tar.gz<br><span class="hljs-built_in">cd</span> pnetcdf-1.12.2<br><span class="hljs-built_in">export</span> CC=<span class="hljs-variable">$SERIAL_CC</span><br><span class="hljs-built_in">export</span> CXX=<span class="hljs-variable">$SERIAL_CXX</span><br><span class="hljs-built_in">export</span> F77=<span class="hljs-variable">$SERIAL_F77</span><br><span class="hljs-built_in">export</span> FC=<span class="hljs-variable">$SERIAL_FC</span><br><span class="hljs-built_in">export</span> MPICC=<span class="hljs-variable">$MPI_CC</span><br><span class="hljs-built_in">export</span> MPICXX=<span class="hljs-variable">$MPI_CXX</span><br><span class="hljs-built_in">export</span> MPIF77=<span class="hljs-variable">$MPI_F77</span><br><span class="hljs-built_in">export</span> MPIF90=<span class="hljs-variable">$MPI_FC</span><br><span class="hljs-comment">### Will also need gcc in path</span><br>./configure --prefix=<span class="hljs-variable">$&#123;LIBBASE&#125;</span><br>make -j 4<br><span class="hljs-comment">#make check</span><br><span class="hljs-comment">#make ptest</span><br><span class="hljs-comment">#make testing</span><br>make install<br><span class="hljs-built_in">export</span> PNETCDF=<span class="hljs-variable">$&#123;LIBBASE&#125;</span><br><span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">rm</span> -rf pnetcdf-1.12.2<br><br><span class="hljs-comment">########################################</span><br><span class="hljs-comment"># netCDF (C library)</span><br><span class="hljs-comment">########################################</span><br>tar xzvf <span class="hljs-variable">$&#123;LIBSRC&#125;</span>/netcdf-c-4.6.3.tar.gz<br><span class="hljs-built_in">cd</span> netcdf-c-4.6.3<br><span class="hljs-built_in">export</span> CPPFLAGS=<span class="hljs-string">&quot;-I<span class="hljs-variable">$&#123;LIBBASE&#125;</span>/include&quot;</span><br><span class="hljs-built_in">export</span> LDFLAGS=<span class="hljs-string">&quot;-L<span class="hljs-variable">$&#123;LIBBASE&#125;</span>/lib&quot;</span><br><span class="hljs-built_in">export</span> LIBS=<span class="hljs-string">&quot;-lhdf5_hl -lhdf5 -lz -ldl&quot;</span><br><span class="hljs-built_in">export</span> CC=<span class="hljs-variable">$MPI_CC</span><br>./configure --prefix=<span class="hljs-variable">$&#123;LIBBASE&#125;</span> --disable-dap --enable-netcdf4 --enable-pnetcdf --enable-cdf5 --enable-parallel-tests --disable-shared<br>make -j 4 <br><span class="hljs-comment">#make check</span><br>make install<br><span class="hljs-built_in">export</span> NETCDF=<span class="hljs-variable">$&#123;LIBBASE&#125;</span><br><span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">rm</span> -rf netcdf-c-4.6.3<br><br><span class="hljs-comment">########################################</span><br><span class="hljs-comment"># netCDF (Fortran interface library)</span><br><span class="hljs-comment">########################################</span><br>tar xzvf <span class="hljs-variable">$&#123;LIBSRC&#125;</span>/netcdf-fortran-4.5.2.tar.gz<br><span class="hljs-built_in">cd</span> netcdf-fortran-4.5.2<br><span class="hljs-built_in">export</span> FC=<span class="hljs-variable">$MPI_FC</span><br><span class="hljs-built_in">export</span> F77=<span class="hljs-variable">$MPI_F77</span><br><span class="hljs-built_in">export</span> LIBS=<span class="hljs-string">&quot;-lnetcdf -lpnetcdf <span class="hljs-variable">$&#123;LIBS&#125;</span>&quot;</span><br>./configure --prefix=<span class="hljs-variable">$&#123;LIBBASE&#125;</span> --enable-parallel-tests --disable-shared<br>make -j 4<br><span class="hljs-comment">#make check</span><br>make install<br><span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">rm</span> -rf netcdf-fortran-4.5.2<br><br><span class="hljs-comment">########################################</span><br><span class="hljs-comment"># PIO</span><br><span class="hljs-comment">########################################</span><br>git <span class="hljs-built_in">clone</span> https://github.com/NCAR/ParallelIO<br><span class="hljs-built_in">cd</span> ParallelIO<br>git checkout -b pio-2.5.8 pio2_5_8<br><span class="hljs-built_in">export</span> PIOSRC=`<span class="hljs-built_in">pwd</span>`<br><span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">mkdir</span> pio<br><span class="hljs-built_in">cd</span> pio<br><span class="hljs-built_in">export</span> CC=<span class="hljs-variable">$MPI_CC</span><br><span class="hljs-built_in">export</span> FC=<span class="hljs-variable">$MPI_FC</span><br>cmake -DNetCDF_C_PATH=<span class="hljs-variable">$NETCDF</span> -DNetCDF_Fortran_PATH=<span class="hljs-variable">$NETCDF</span> -DPnetCDF_PATH=<span class="hljs-variable">$PNETCDF</span> -DHDF5_PATH=<span class="hljs-variable">$NETCDF</span> -DCMAKE_INSTALL_PREFIX=<span class="hljs-variable">$LIBBASE</span> -DPIO_USE_MALLOC=ON -DCMAKE_VERBOSE_MAKEFILE=1 -DPIO_ENABLE_TIMING=OFF <span class="hljs-variable">$PIOSRC</span><br>make<br><span class="hljs-comment">#make check</span><br>make install<br><span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">rm</span> -rf pio ParallelIO<br><span class="hljs-built_in">export</span> PIO=<span class="hljs-variable">$LIBBASE</span><br><br><span class="hljs-comment">########################################</span><br><span class="hljs-comment"># Other environment vars needed by MPAS</span><br><span class="hljs-comment">########################################</span><br><span class="hljs-built_in">export</span> MPAS_EXTERNAL_LIBS=<span class="hljs-string">&quot;-L<span class="hljs-variable">$&#123;LIBBASE&#125;</span>/lib -lhdf5_hl -lhdf5 -ldl -lz&quot;</span><br><span class="hljs-built_in">export</span> MPAS_EXTERNAL_INCLUDES=<span class="hljs-string">&quot;-I<span class="hljs-variable">$&#123;LIBBASE&#125;</span>/include&quot;</span><br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Installation/" class="print-no-link">#Installation</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Official MPAS Installation lib -- Preliminary requirements</div>
+      <div>https://waipangsze.github.io/2024/06/03/MPAS_install_official_mpas_lib_install/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 3, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/04/WRF_install_Error_NoahMP_submodule_files/" title="Error Error Error NoahMP submodule files not populating WRF directories">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Error Error Error NoahMP submodule files not populating WRF directories</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/01/MPAS_intel_spack_installation/" title="MPAS -- Installation by Spack and Intel">
+                        <span class="hidden-mobile">MPAS -- Installation by Spack and Intel</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

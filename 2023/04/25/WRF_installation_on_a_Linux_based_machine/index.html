@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="content{:toc}  WRF Version 1.0: WRF was first released December 2000 Version 2.0: May 2004 Version 3.0: April 2008 Version 4.0: June 2018 (add hybrid vertical coordinate) Version 4.1: April 2019 Vers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WRF installation on a Linux-based machine">
+<meta property="og:url" content="https://waipangsze.github.io/2023/04/25/WRF_installation_on_a_Linux_based_machine/index.html">
+<meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
+<meta property="og:description" content="content{:toc}  WRF Version 1.0: WRF was first released December 2000 Version 2.0: May 2004 Version 3.0: April 2008 Version 4.0: June 2018 (add hybrid vertical coordinate) Version 4.1: April 2019 Vers">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="gnu">
+<meta property="article:tag" content="gcc">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="WPS">
+<meta property="article:tag" content="Installation">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WRF installation on a Linux-based machine - Physics &amp; Numerical Weather Prediction</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WRF installation on a Linux-based machine"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-04-25 00:00" pubdate>
+          April 25, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          815 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WRF installation on a Linux-based machine</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>content<br>{:toc}</li>
+</ul>
+<h1 id="WRF"><a href="#WRF" class="headerlink" title="WRF"></a>WRF</h1><ul>
+<li>Version 1.0: WRF was first released December 2000</li>
+<li>Version 2.0: May 2004</li>
+<li>Version 3.0: April 2008</li>
+<li>Version 4.0: June 2018 (add hybrid vertical coordinate)</li>
+<li>Version 4.1: April 2019</li>
+<li>Version 4.2: April 2020</li>
+<li>Version 4.3: May 2021</li>
+<li>Version 4.4: April 2022</li>
+<li>Version 4.5: April 2023<ul>
+<li>4.5.1: July 2023</li>
+<li>4.5.2: December 2023</li>
+</ul>
+</li>
+<li>Version 4.6: May 2024</li>
+</ul>
+<h1 id="WRF-installation-on-a-Linux-based-machine"><a href="#WRF-installation-on-a-Linux-based-machine" class="headerlink" title="WRF installation on a Linux-based machine"></a>WRF installation on a Linux-based machine</h1><p>Weather Research &amp; Forecasting Model (WRF) is a state of the art mesoscale numerical weather prediction system designed for both atmospheric research and operational forecasting applications <sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="[WRF](https://www.mmm.ucar.edu/models/wrf)">[1]</span></a></sup>.</p>
+<p>The installation steps are,</p>
+<ol>
+<li>Source gcc compiler</li>
+<li>Test gcc compiler</li>
+<li>Install all requried libraries</li>
+<li>Test libraries</li>
+<li>Install WRF</li>
+<li>Install WPS</li>
+</ol>
+<p>Three shell scripts are under the same directory,</p>
+<blockquote>
+<p>gcc_env.sh<br>wrf_env.sh<br>wrf_env_install.sh<br>wrf_wps_install.sh</p>
+</blockquote>
+<h2 id="GCC-version-gcc-env-sh"><a href="#GCC-version-gcc-env-sh" class="headerlink" title="GCC version (gcc_env.sh)"></a>GCC version (gcc_env.sh)</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-built_in">export</span> gcc_libs_DIR=/home/wpsze/gcc/<br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$gcc_libs_DIR</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$gcc_libs_DIR</span>/bin:<span class="hljs-variable">$PATH</span><br><br><span class="hljs-built_in">export</span> gcc_version=<span class="hljs-string">&quot;gcc-v4.8.5&quot;</span> <span class="hljs-comment"># 4.8.5/8.3.0/9.3.0/10.3.0/12.2.0</span><br><br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$gcc_libs_DIR</span>/<span class="hljs-variable">$&#123;gcc_version&#125;</span>/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$gcc_libs_DIR</span>/<span class="hljs-variable">$&#123;gcc_version&#125;</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$gcc_libs_DIR</span>/<span class="hljs-variable">$&#123;gcc_version&#125;</span>/lib64:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><br>gcc --version<br>gfortran --version<br></code></pre></td></tr></table></figure>
+
+<h3 id="Testing-System-Compatibility"><a href="#Testing-System-Compatibility" class="headerlink" title="Testing System Compatibility"></a>Testing System Compatibility</h3><p>We have to test the compiler system in your computer&#x2F;clsuter.</p>
+<h4 id="Download-test-tar-files"><a href="#Download-test-tar-files" class="headerlink" title="Download test tar files,"></a>Download test tar files,</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_tests.tar">http://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_tests.tar</a></p>
+</blockquote>
+<h4 id="run-gcc-test-sh"><a href="#run-gcc-test-sh" class="headerlink" title="run_gcc_test.sh"></a>run_gcc_test.sh</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> gcc_env.sh<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;==========================================================================================&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; All tests are from http://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_tests.tar &quot;</span><br>gfortran --version<br>gcc --version<br>cpp --version<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;==========================================================================================&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=============================== Fortran_C_tests.tar  =====================================&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;==========================================================================================&quot;</span><br><span class="hljs-comment"># Unpack the test files by entering the following input into the terminal:</span><br><span class="hljs-comment"># tar -xf Fortran_C_tests.tar</span><br><br><span class="hljs-comment"># TEST #1: FIXED FORMAT FORTRAN TEST</span><br>gfortran TEST_1_fortran_only_fixed.f<br>./a.out<br><span class="hljs-comment"># SUCCESS test 1 fortran only fixed format</span><br><br><span class="hljs-comment"># TEST #2: FREE FORMAT FORTRAN TEST</span><br>gfortran TEST_2_fortran_only_free.f90<br>./a.out<br><span class="hljs-comment"># Assume Fortran 2003: has FLUSH, ALLOCATABLE, derived type, and ISO C Binding</span><br><span class="hljs-comment"># SUCCESS test 2 fortran only free format</span><br><br><span class="hljs-comment"># TEST #3: C</span><br>gcc TEST_3_c_only.c<br>./a.out<br><span class="hljs-comment"># SUCCESS test 3 c only</span><br><br><span class="hljs-comment"># TEST #4: FORTRAN CALLING A C FUNCTION (GCC AND GFORTRAN HAVE DIFFERENT DEFAULTS, </span><br><span class="hljs-comment"># SO WE FORCE BOTH TO ALWAYS USE 64 BIT (-M64) WHEN COMBINING THEM)</span><br>gcc -c -m64 TEST_4_fortran+c_c.c<br>gfortran -c -m64 TEST_4_fortran+c_f.f90<br>gfortran -m64 TEST_4_fortran+c_f.o TEST_4_fortran+c_c.o<br>./a.out<br><span class="hljs-comment"># C function called by Fortran</span><br><span class="hljs-comment"># Values are xx = 2.00 and ii = 1</span><br><span class="hljs-comment"># SUCCESS test 4 fortran calling c</span><br><br><span class="hljs-comment"># TEST #5: CSH</span><br>./TEST_csh.csh<br><span class="hljs-comment"># SUCCESS csh test</span><br><span class="hljs-comment">#  TEST #6: PERL</span><br>./TEST_perl.pl<br><span class="hljs-comment"># SUCCESS perl test</span><br><span class="hljs-comment">#  TEST #7: SH</span><br>./TEST_sh.sh<br><span class="hljs-comment"># SUCCESS sh test</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="WRF-v3-8-1-2"><a href="#WRF-v3-8-1-2" class="headerlink" title="WRF v3.8.1 [2]"></a>WRF v3.8.1 <sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="[WRFv3.8.1 installation on a Linux machine](https://metclim.ucd.ie/2017/06/wrf-installation-on-a-linux-machine/)">[2]</span></a></sup></h2><p>Using a version of gfortran which is 4.4.0 or newer is recommended. </p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/">https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/</a><br>netcdf-4.1.3<br>mpich-3.0.4<br>zlib-1.2.7<br>libpng-1.2.50<br>JasPer-1.900.1<br>The above libraries are requried for running WRF and download to folder wrf_instsall&#x2F;. </p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">source</span> gcc_env.sh<br><span class="hljs-comment">#export gcc_version=&quot;gcc-v4.8.5&quot; # and change gcc_env.sh !!!!!!</span><br><br><span class="hljs-built_in">export</span> HOME=`<span class="hljs-built_in">pwd</span>`<br><span class="hljs-built_in">export</span> download_DIR=<span class="hljs-variable">$HOME</span>/wrf_install/<br><span class="hljs-built_in">export</span> libs_DIR=<span class="hljs-variable">$HOME</span>/Library/<br><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$libs_DIR</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><span class="hljs-built_in">export</span> LDFLAGS=-L<span class="hljs-variable">$libs_DIR</span>/lib<br><span class="hljs-built_in">export</span> CPPFLAGS=-I<span class="hljs-variable">$libs_DIR</span>/include<br><br>gcc --version<br>gfortran --version<br><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$HOME</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$libs_DIR</span><br><br><span class="hljs-built_in">mkdir</span> -p wrf_install<br><span class="hljs-built_in">mkdir</span> -p Library<br><br><span class="hljs-comment">############################## zlib ############################</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-built_in">rm</span> -rf zlib-1.2.7/<br>tar xvf zlib-1.2.7.tar.gz<br><br><span class="hljs-built_in">cd</span> zlib-1.2.7/<br><br>./configure --prefix=<span class="hljs-variable">$libs_DIR</span><br>make<br>make install<br><br><span class="hljs-comment">############################## libpng ############################</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-built_in">rm</span> -rf libpng-1.2.50<br>tar xvf libpng-1.2.50.tar.gz<br><br><span class="hljs-built_in">cd</span> libpng-1.2.50/<br><br>./configure --prefix=<span class="hljs-variable">$libs_DIR</span><br>make<br>make install<br><br><span class="hljs-comment">############################## netcdf-C ############################</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-built_in">rm</span> -rf netcdf-4.1.3<br>tar xvf netcdf-4.1.3.tar.gz<br><br><span class="hljs-built_in">cd</span> netcdf-4.1.3/<br><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$libs_DIR</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><span class="hljs-built_in">export</span> LDFLAGS=-L<span class="hljs-variable">$libs_DIR</span>/lib<br><span class="hljs-built_in">export</span> CPPFLAGS=-I<span class="hljs-variable">$libs_DIR</span>/include<br><br><span class="hljs-comment"># ./configure --prefix=$libs_DIR</span><br>./configure --prefix=<span class="hljs-variable">$libs_DIR</span> --disable-dap --disable-netcdf-4 --disable-shared<br>make<br>make install<br><br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$libs_DIR</span>/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> NETCDF=<span class="hljs-variable">$libs_DIR</span><br><span class="hljs-comment">############################## JasPer ############################</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-built_in">rm</span> -rf jasper-1.900.1<br>tar vxf jasper-1.900.1.tar.gz<br><br><span class="hljs-built_in">cd</span> jasper-1.900.1<br><br><span class="hljs-comment">#sed -i &#x27;s|char|const char|g&#x27; src/libjasper/jpg/jpg_dummy.c</span><br><br>./configure --prefix=<span class="hljs-variable">$libs_DIR</span><br><br>make<br>make install<br><span class="hljs-comment">##############################MPICH############################</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-built_in">rm</span> mpich-3.0.4<br>tar vxf mpich-3.0.4.tar.gz<br><br><span class="hljs-built_in">cd</span> mpich-3.0.4/<br>./configure --prefix=<span class="hljs-variable">$libs_DIR</span> <span class="hljs-comment">#--with-device=ch3</span><br><br>make<br>make install<br><br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$libs_DIR</span>/bin:<span class="hljs-variable">$PATH</span><br></code></pre></td></tr></table></figure>
+
+<p>and, combine all required libaries in wrf_env.sh</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> gcc_env.sh<br><span class="hljs-built_in">export</span> HOME=`<span class="hljs-built_in">pwd</span>`<br><span class="hljs-built_in">export</span> libs_DIR=<span class="hljs-variable">$HOME</span>/Library/<br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$libs_DIR</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><span class="hljs-built_in">export</span> LDFLAGS=-L<span class="hljs-variable">$libs_DIR</span>/lib<br><span class="hljs-built_in">export</span> CPPFLAGS=-I<span class="hljs-variable">$libs_DIR</span>/include<br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$libs_DIR</span>/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> NETCDF=<span class="hljs-variable">$libs_DIR</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Library-Compatibility-Tests"><a href="#Library-Compatibility-Tests" class="headerlink" title="Library Compatibility Tests"></a>Library Compatibility Tests</h3><p>We have to test the Library in your computer&#x2F;clsuter.</p>
+<h4 id="Download-test-tar-files-1"><a href="#Download-test-tar-files-1" class="headerlink" title="Download test tar files,"></a>Download test tar files,</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_NETCDF_MPI_tests.tar">http://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_NETCDF_MPI_tests.tar</a></p>
+</blockquote>
+<h4 id="run-library-test-sh"><a href="#run-library-test-sh" class="headerlink" title="run_library_test.sh"></a>run_library_test.sh</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> wrf_env.sh<br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;==========================================================================================&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=========================== Fortran_C_NETCDF_MPI_tests.tar ===============================&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;==========================================================================================&quot;</span><br><span class="hljs-comment"># To unpack the tar file, type:</span><br><span class="hljs-comment"># wget -c https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_NETCDF_MPI_tests.tar</span><br><span class="hljs-comment"># tar -xf Fortran_C_NETCDF_MPI_tests.tar</span><br><br><span class="hljs-comment"># Test #1: Fortran + C + NetCDF</span><br><br><span class="hljs-comment"># The NetCDF-only test requires the include file from the NETCDF package be in this directory. Copy the file here:</span><br><span class="hljs-built_in">cp</span> <span class="hljs-variable">$&#123;NETCDF&#125;</span>/include/netcdf.inc .<br><br><span class="hljs-comment"># Compile the Fortran and C codes for the purpose of this test </span><br><span class="hljs-comment"># (the -c option says to not try to build an executable). Type the following commands:</span><br>gfortran -c 01_fortran+c+netcdf_f.f<br>gcc -c 01_fortran+c+netcdf_c.c<br>gfortran 01_fortran+c+netcdf_f.o 01_fortran+c+netcdf_c.o \<br>     -L<span class="hljs-variable">$&#123;NETCDF&#125;</span>/lib -lnetcdff -lnetcdf<br>./a.out<br><br><span class="hljs-comment"># The following should be displayed on your screen:</span><br><span class="hljs-comment"># C function called by Fortran</span><br><span class="hljs-comment"># Values are xx = 2.00 and ii = 1</span><br><span class="hljs-comment"># SUCCESS test 1 fortran + c + netcdf</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;==========================================================================================&quot;</span><br><span class="hljs-comment"># Test #2: Fortran + C + NetCDF + MPI</span><br><br><span class="hljs-comment"># The NetCDF+MPI test requires include files from both of these packages be in this directory, </span><br><span class="hljs-comment"># but the MPI scripts automatically make the mpif.h file available without assistance, </span><br><span class="hljs-comment"># so no need to copy that one. Copy the NetCDF include file here:</span><br><span class="hljs-built_in">cp</span> <span class="hljs-variable">$&#123;NETCDF&#125;</span>/include/netcdf.inc .<br><br><span class="hljs-comment"># Note that the MPI executables mpif90 and mpicc are used below when compiling. Issue the following commands:</span><br>mpif90 -c 02_fortran+c+netcdf+mpi_f.f<br>mpicc -c 02_fortran+c+netcdf+mpi_c.c<br>mpif90 02_fortran+c+netcdf+mpi_f.o \<br>02_fortran+c+netcdf+mpi_c.o \<br>     -L<span class="hljs-variable">$&#123;NETCDF&#125;</span>/lib -lnetcdff -lnetcdf<br>mpirun ./a.out<br><br><span class="hljs-comment"># The following should be displayed on your screen:</span><br><span class="hljs-comment"># C function called by Fortran</span><br><span class="hljs-comment"># Values are xx = 2.00 and ii = 1</span><br><span class="hljs-comment"># status = 2</span><br><span class="hljs-comment"># SUCCESS test 2 fortran + c + netcdf + mpi</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;==========================================================================================&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Install-WRFv3-8-1"><a href="#Install-WRFv3-8-1" class="headerlink" title="Install WRFv3.8.1"></a>Install WRFv3.8.1</h3><h4 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/src/WRFV3.8.1.TAR.gz">http://www2.mmm.ucar.edu/wrf/src/WRFV3.8.1.TAR.gz</a> </p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment"># WRF will not compile using GCC version 6 or higher. </span><br><span class="hljs-comment"># It will only work with version 4.8.5. </span><br><span class="hljs-comment"># The GCC6 module loads automatically when you log in.</span><br><span class="hljs-comment"># If you unload it, the system will default to GCC 4.8.5.</span><br><br><span class="hljs-built_in">source</span> wrf_env.sh<br><span class="hljs-built_in">export</span> HOME=`<span class="hljs-built_in">pwd</span>` <br><span class="hljs-built_in">export</span> libs_DIR=/home/wpsze/WRFv381/Library/ <span class="hljs-comment"># HOME = /home/wpsze/WRFv381/</span><br><span class="hljs-built_in">export</span> download_DIR=<span class="hljs-variable">$HOME</span>/wrf_install/<br><br><span class="hljs-comment"># gunzip WRFV3.8.1.TAR.gz</span><br><span class="hljs-comment"># tar -xf WRFV3.8.1.TAR</span><br><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br><br><span class="hljs-built_in">cd</span> WRFV3/<br><br><span class="hljs-built_in">export</span> WRF_DIR=<span class="hljs-string">&quot;WRFV3&quot;</span><br><br><span class="hljs-comment">#./clean -a ## running or not</span><br><br>./configure <br><span class="hljs-comment">##  34 (dmpar) GNU [gfortran/gcc]</span><br><br>./compile -j 4 em_real 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> compile.log<br><span class="hljs-comment">#./compile em_real 2&gt;&amp;1 | tee compile.log</span><br><br><span class="hljs-comment"># # #It should fail on the first time (namely main/real.exe is not created)</span><br><span class="hljs-comment"># # #with the following error:</span><br><span class="hljs-comment"># # #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br><span class="hljs-comment"># # #real_em.f90:32.7:</span><br><br><span class="hljs-comment"># # #   USE module_initialize_real, ONLY : wrfu_initialize, find_my_parent, find_my_</span><br><span class="hljs-comment"># # 	1</span><br><span class="hljs-comment"># # #Fatal Error: Can&#x27;t open module file &#x27;module_initialize_real.mod&#x27; for reading at (1): No such file or</span><br><span class="hljs-comment"># # #directory</span><br><span class="hljs-comment"># # #nup_em.f90:90.7:</span><br><br><span class="hljs-comment"># # #   USE module_initialize_real, only : wrfu_initialize</span><br><span class="hljs-comment"># # #       1</span><br><span class="hljs-comment"># # #Fatal Error: Can&#x27;t open module file &#x27;module_initialize_real.mod&#x27; for reading at (1): No such file or</span><br><span class="hljs-comment"># # #directory</span><br><span class="hljs-comment"># # #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br><br><span class="hljs-comment"># # #Then it should end successfully when running the</span><br><span class="hljs-comment"># # #command a second time (do not understand why but it works...)</span><br><br><span class="hljs-comment"># # # ---&gt;                  Executables successfully built                  &lt;---</span><br></code></pre></td></tr></table></figure>
+<p>This should return the following four files:</p>
+<blockquote>
+<p>wrf.exe<br>real.exe<br>ndown.exe<br>tc.exe</p>
+</blockquote>
+<h3 id="Install-WPSv3-8-1"><a href="#Install-WPSv3-8-1" class="headerlink" title="Install WPSv3.8.1"></a>Install WPSv3.8.1</h3><h4 id="Download-1"><a href="#Download-1" class="headerlink" title="Download"></a>Download</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/src/WPSV3.8.1.TAR.gz">http://www2.mmm.ucar.edu/wrf/src/WPSV3.8.1.TAR.gz</a></p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> wrf_env.sh<br><span class="hljs-built_in">export</span> HOME=`<span class="hljs-built_in">pwd</span>` <br><span class="hljs-built_in">export</span> libs_DIR=/home/wpsze/WRFv381/Library/ <span class="hljs-comment"># HOME = /home/wpsze/WRFv381/</span><br><span class="hljs-built_in">export</span> download_DIR=<span class="hljs-variable">$HOME</span>/wrf_install/<br><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-comment">#tar xvf xxxx.tar.gz</span><br><span class="hljs-built_in">cd</span> WPS/<br><span class="hljs-built_in">export</span> WRF_DIR=../WRFV3/<br><span class="hljs-built_in">export</span> JASPERLIB=<span class="hljs-variable">$libs_DIR</span>/lib/<br><span class="hljs-built_in">export</span> JASPERINC=<span class="hljs-variable">$libs_DIR</span>/include/<br><br><span class="hljs-comment">#then option 1 Linux x86_64, gfortran    (serial)</span><br><br><span class="hljs-comment"># ./clean -a</span><br><br>./configure<br><br><span class="hljs-comment"># 1 (dmpar) gfortran</span><br><br>./compile 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> compile.log<br></code></pre></td></tr></table></figure>
+<p>This should return the three executable files needed to run WPS.</p>
+<blockquote>
+<p>geogrid.exe<br>metgrid.exe<br>ungrib.exe</p>
+</blockquote>
+<h2 id="WRF-v4-4-0"><a href="#WRF-v4-4-0" class="headerlink" title="WRF v4.4.0"></a>WRF v4.4.0</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.mmm.ucar.edu/models/wrf">WRF</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://metclim.ucd.ie/2017/06/wrf-installation-on-a-linux-machine/">WRFv3.8.1 installation on a Linux machine</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/gnu/" class="print-no-link">#gnu</a>
+      
+        <a href="/tags/gcc/" class="print-no-link">#gcc</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/WPS/" class="print-no-link">#WPS</a>
+      
+        <a href="/tags/Installation/" class="print-no-link">#Installation</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WRF installation on a Linux-based machine</div>
+      <div>https://waipangsze.github.io/2023/04/25/WRF_installation_on_a_Linux_based_machine/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 25, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/25/GNU/" title="GNU GCC">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">GNU GCC</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/24/Slurm/" title="Slurm">
+                        <span class="hidden-mobile">Slurm</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

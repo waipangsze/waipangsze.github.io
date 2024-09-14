@@ -1,0 +1,896 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="content{:toc}  WRF namelist.input: Best Practiceshttps:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;wrf&#x2F;users&#x2F;namelist_best_prac_wrf.html Git: WRF&#x2F;run&#x2F;README.namelist  In namelist.input, multiple columns are used f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WRF namelist.input: Best Practices">
+<meta property="og:url" content="https://waipangsze.github.io/2023/04/30/WRF_namelist_input_Best_Practices/index.html">
+<meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
+<meta property="og:description" content="content{:toc}  WRF namelist.input: Best Practiceshttps:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;wrf&#x2F;users&#x2F;namelist_best_prac_wrf.html Git: WRF&#x2F;run&#x2F;README.namelist  In namelist.input, multiple columns are used f">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="namelist.input">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WRF namelist.input: Best Practices - Physics &amp; Numerical Weather Prediction</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WRF namelist.input: Best Practices"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-04-30 00:00" pubdate>
+          April 30, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          715 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WRF namelist.input: Best Practices</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>content<br>{:toc}</li>
+</ul>
+<h1 id="WRF-namelist-input-Best-Practices"><a href="#WRF-namelist-input-Best-Practices" class="headerlink" title="WRF namelist.input: Best Practices"></a>WRF namelist.input: Best Practices</h1><p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/namelist_best_prac_wrf.html">https://www2.mmm.ucar.edu/wrf/users/namelist_best_prac_wrf.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/run/README.namelist">Git: WRF&#x2F;run&#x2F;README.namelist</a></p>
+<ol>
+<li>In namelist.input, multiple columns are used for multiple domains; however max_dom determines how many columns will be used. For example, if you use 3 columns, but only set max_dom &#x3D; 2, the last column will be ignored.</li>
+<li>Not all parameters have mulitple columns. In the descriptions below, it has been specified if a parameter is to be used for multiple domains (max_dom). If this is not shown, then you must only specify one value (in the first column), or you will receive a namelist error upon running.</li>
+</ol>
+<h2 id="domains"><a href="#domains" class="headerlink" title="&amp;domains"></a>&amp;domains</h2><h3 id="time-step"><a href="#time-step" class="headerlink" title="time_step"></a>time_step</h3><p>It is recommended to use a value of <strong>5-6xDX (in km)</strong> for a typical case. If you are using many vertical levels and&#x2F;or with map-scale-factors much larger than 1, you will need to use a smaller time_step. If you are getting CFL errors that stop your run, this means your run has become unstable and <strong>you may need to decrease this value to about 4xDX (or perhaps even 3xDX)</strong>. It makes things easier if you use a time step that evenly divides into your history_interval, so that your output times will be evenly spaced.</p>
+<h3 id="e-vert-max-dom"><a href="#e-vert-max-dom" class="headerlink" title="e_vert (max_dom)"></a>e_vert (max_dom)</h3><p>The number of vertical (or Eta) levels onto which real.exe will interpolate the incoming data. This number must be the same for each domain.<br>It is not recommended to have fewer than 35 levels.** Typically 40-60 levels is recommended**.</p>
+<h3 id="p-top-requested"><a href="#p-top-requested" class="headerlink" title="p_top_requested"></a>p_top_requested</h3><p>The pressure top (in Pa) to use in the model. This level must be available in the incoming WPS data.</p>
+<blockquote>
+<p>The <strong>default and recommended value is 5000 Pa</strong>, and it is not suggested to use a level any lower (in the atmosphere) than this.</p>
+</blockquote>
+<h3 id="num-metgrid-levels"><a href="#num-metgrid-levels" class="headerlink" title="num_metgrid_levels"></a>num_metgrid_levels</h3><p>look for the value near the top of the log.ncdump file.</p>
+<blockquote>
+<p>ncdump -h met_em.d01.<date> &gt;&amp; log.ncdump</p>
+</blockquote>
+<h3 id="feedback"><a href="#feedback" class="headerlink" title="feedback"></a>feedback</h3><p>This determines whether feedback will be used when using nesting, and should be used to determine whether the run will be a one-way or two-way nested run.<br>When feedback is on, the values of the coarse domain are overwritten by the values of the variables (average of cell values for mass points, and average of the cell-face values for horizontal momentum points) in the nest at the coincident points. For masked fields, only the single point value at the collocating points is fed back. If the parent_grid_ratio is even, an arbitrary choice of the southwest corner point value is used for feedback. This is the reason it is recommended to use an odd parent_grid_ratio with this option. When feedback is off , it is equivalent to a one-way nested run, since nest results are not reflected in the parent domain.</p>
+<p><strong>usually, set is feedback &#x3D; 0 (off)</strong></p>
+<h3 id="smooth-option"><a href="#smooth-option" class="headerlink" title="smooth_option"></a>smooth_option</h3><p>Determines whether smoothing is to be used for the parent domain in the area of the nest <strong>if feedback is on (feedback &#x3D; 1)</strong>. Three options are available:</p>
+<ul>
+<li>0 &#x3D; no smoothing</li>
+<li>1 &#x3D; 1-2-1 smoothing</li>
+<li>2 &#x3D; smoothing-desmoothing.<br><strong>It is typically recommended to keep this option set to 0.</strong></li>
+</ul>
+<h2 id="physics"><a href="#physics" class="headerlink" title="&amp;physics"></a>&amp;physics</h2><h3 id="mp-physics-max-dom"><a href="#mp-physics-max-dom" class="headerlink" title="mp_physics (max_dom)"></a>mp_physics (max_dom)</h3><p>WSM6 or …</p>
+<h3 id="ra-lw-physics-max-dom"><a href="#ra-lw-physics-max-dom" class="headerlink" title="ra_lw_physics (max_dom)"></a>ra_lw_physics (max_dom)</h3><p>This should be set to the same option for each domain. <strong>We recommend using the RRTMG option (option 4).</strong></p>
+<h3 id="ra-sw-physics-max-dom"><a href="#ra-sw-physics-max-dom" class="headerlink" title="ra_sw_physics (max_dom)"></a>ra_sw_physics (max_dom)</h3><p>This should be set to the same option for each domain. <strong>We recommend using the RRTMG option (option 4).</strong></p>
+<h3 id="radt-max-dom"><a href="#radt-max-dom" class="headerlink" title="radt (max_dom)"></a>radt (max_dom)</h3><p>Minutes between radiation physics calls.<br>It is recommended to <strong>use 1 minute per km of dx</strong> (e.g., <strong>set to 10 for 10km parent domain</strong>). If you are running a high-resolution domain and compute time is a concern, then it is okay to use radt &#x3D; 10-15 min, along with setting ‘swint_opt’.<strong>Use the same value for all domains</strong>.</p>
+<h3 id="sf-sfclay-physics-max-dom"><a href="#sf-sfclay-physics-max-dom" class="headerlink" title="sf_sfclay_physics (max_dom)"></a>sf_sfclay_physics (max_dom)</h3><p>Surface layer physics option.<br>A given option may only work with a certain PBL option.<br>This should be set to <strong>the same option for each domain</strong>.</p>
+<h3 id="sf-surface-physics-max-dom"><a href="#sf-surface-physics-max-dom" class="headerlink" title="sf_surface_physics (max_dom)"></a>sf_surface_physics (max_dom)</h3><p>Land surface model (LSM) option.<br>This choice must be made prior to running real.exe. num_soil_layers must also match this option.<br>This should be set to the <strong>same option for each domain</strong>. If you decide to change this option later, <strong>make sure num_soil_layers is set correctly for the new option, and you will need to re-run real.exe</strong>.</p>
+<h3 id="num-soil-layers"><a href="#num-soil-layers" class="headerlink" title="num_soil_layers"></a>num_soil_layers</h3><p>If you choose to use a different LSM later, you must make sure this value is set correctly for the new model, and you will need to re-run real.exe.</p>
+<h3 id="bl-pbl-physics-max-dom"><a href="#bl-pbl-physics-max-dom" class="headerlink" title="bl_pbl_physics (max_dom)"></a>bl_pbl_physics (max_dom)</h3><p>This option <strong>should be used when your domain grid size is &gt; 500m</strong>.</p>
+<h3 id="bldt-max-dom"><a href="#bldt-max-dom" class="headerlink" title="bldt (max_dom)"></a>bldt (max_dom)</h3><p>Minutes between boundary layer physics calls.<br>This should be set to the <strong>same option for each domain</strong>. <strong>The typical&#x2F;recommended value is 0 (every time step)</strong>.</p>
+<blockquote>
+<p><strong>bldt (max_dom)                      &#x3D; 0,       ! minutes between boundary-layer physics calls</strong></p>
+</blockquote>
+<h3 id="cu-physics-max-dom"><a href="#cu-physics-max-dom" class="headerlink" title="cu_physics (max_dom)"></a>cu_physics (max_dom)</h3><ul>
+<li>For a grid size &gt;10 km, a cumulus scheme is necessary. </li>
+<li>It is not necessary when the grid size is &lt; 4km. </li>
+<li>In <strong>between 4km and 10km is a somewhat gray area</strong>, so avoid this range if possible. <ul>
+<li>If you must use this size, however, you can try the <strong>GF and MSKF schemes (options 3 and 11), as these schemes are scale-aware</strong>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="cudt"><a href="#cudt" class="headerlink" title="cudt ?"></a>cudt ?</h3><p>Minutes between cumulus physics calls.<br>The<strong>typical&#x2F;recommended value is every time step</strong>, as <strong>most cumulus schemes are cheap to run</strong>. Note: for the KF scheme this is also used for averaging time for vertical velocity trigger. This options is not used by the G3 or GD schemes.</p>
+<blockquote>
+<p><strong>cudt (max_dom)                      &#x3D; 0,       ! minutes between cumulus physics calls</strong></p>
+</blockquote>
+<h3 id="isfflx"><a href="#isfflx" class="headerlink" title="isfflx ?"></a>isfflx ?</h3><p>Option that determines heat and moisture fluxes from the surface.<br>Use this option if you wish to turn off surface sensible and latent heat fluxes for some of the surface physics options. It may also be used to control how surface fluxes are used in idealized simulations (e.g., LES).</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">isfflx                              = 1,	! heat and moisture fluxes from the surface<br>                                                 (only works <span class="hljs-keyword">for</span> sf_sfclay_physics = 1,5,7,11)<br>                                                 1 = with fluxes from the surface <br>                                                 0 = no flux from the surface<br>                                                     with bl_pbl_physics=0 this uses tke_drag_coefficient<br>                                                     and tke_heat_flux <span class="hljs-keyword">in</span> vertical diffusion<br>                                                 2 = use drag from sf_sfclay_physics and heat flux from<br>                                                     tke_heat_flux with bl_pbl_physics=0<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>isfflx &#x3D; 1,</strong></p>
+</blockquote>
+<h3 id="ifsnow"><a href="#ifsnow" class="headerlink" title="ifsnow ?"></a>ifsnow ?</h3><p>This option can be turned off to remove snow effects for the simple soil model (sf_surface_physics &#x3D; 1).</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">ifsnow                              = 1,	! snow-cover effects<br>                                                 (only works <span class="hljs-keyword">for</span> sf_surface_physics = 1)<br>                                                 1 = with snow-cover effect<br>                                                 0 = without snow-cover effect<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>ifsnow &#x3D; 1,</strong></p>
+</blockquote>
+<h3 id="icloud"><a href="#icloud" class="headerlink" title="icloud ?"></a>icloud ?</h3><p>Option to compute cloud fraction for radiation.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">icloud                              = 1,	! cloud effect to the optical depth <span class="hljs-keyword">in</span> radiation<br>                                                 (only works <span class="hljs-keyword">for</span> ra_sw_physics = 1,4 and ra_lw_physics = 1,4)<br>                                                 Since 3.6, this also controls the cloud fraction options<br>                                                 1 = with cloud effect, and use cloud fraction option 1<br>                                                     (Xu-Randall method) <br>                                                 0 = without cloud effect<br>                                                 2 = with cloud effect, and use cloud fraction option 2 (0/1 based<br>                                                     on threshold<br>                                                 3 = with cloud effect, and use cloud fraction option 3, based on<br>                                                     Sundqvist et al. (1989) (since 3.7)<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>icloud &#x3D; 1,</strong></p>
+</blockquote>
+<p>or consider the icloud &#x3D; 3 that may be better.</p>
+<h3 id="surface-input-source"><a href="#surface-input-source" class="headerlink" title="surface_input_source"></a>surface_input_source</h3><p>Where landuse and soil category data come from. Available options are:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">surface_input_source                = 3,	! <span class="hljs-built_in">where</span> landuse and soil category data come from:<br>                                                 1 = WPS/geogrid but with dominant categories recomputed<br>                                                 2 = GRIB data from another model (only possible<br>                                                     (VEGCAT/SOILCAT are <span class="hljs-keyword">in</span> met_em files from WPS)<br>                                                 3 = use dominant land and soil categories from WPS/geogrid (default since 3.8)<br></code></pre></td></tr></table></figure>
+
+<h3 id="num-land-cat"><a href="#num-land-cat" class="headerlink" title="num_land_cat"></a>num_land_cat</h3><p>The number of land categories in the input static&#x2F;geogrid data. This must match what’s produced in WPS&#x2F;geogrid. Available options are:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">num_land_cat                        = 21,      ! number of land categories <span class="hljs-keyword">in</span> input data.<br>                                                 24 - <span class="hljs-keyword">for</span> USGS (default); 20 <span class="hljs-keyword">for</span> MODIS<br>                                                 28 - <span class="hljs-keyword">for</span> USGS <span class="hljs-keyword">if</span> including lake category<br>                                                 21 - <span class="hljs-keyword">for</span> MODIS <span class="hljs-keyword">if</span> including lake category (default since 3.8)<br>					                                      40 - <span class="hljs-keyword">for</span> NCLD<br></code></pre></td></tr></table></figure>
+<p>and may be 5x for LCZ dataset (Urban).</p>
+<h3 id="sf-urban-physics-max-dom"><a href="#sf-urban-physics-max-dom" class="headerlink" title="sf_urban_physics (max_dom)"></a>sf_urban_physics (max_dom)</h3><p>This value <strong>must be the same for each domain, and it must be set for each domain.</strong></p>
+<h2 id="dynamics"><a href="#dynamics" class="headerlink" title="&amp;dynamics"></a>&amp;dynamics</h2><h3 id="w-damping"><a href="#w-damping" class="headerlink" title="w_damping ??"></a>w_damping ??</h3><p>Vertical velocity damping flag. Options are 1&#x3D;with damping; 0&#x3D;without damping.<br><strong>For real-time&#x2F;operational runs, this should always be turned on for model stability</strong> (it is only activated when required.)<br>For budget studies, do not use this option.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">w_damping                           = 0,       ! vertical velocity damping flag (<span class="hljs-keyword">for</span> operational use)<br>                                                 0 = without damping<br>                                                 1 = with    damping<br></code></pre></td></tr></table></figure>
+
+<h3 id="diff-opt-max-dom"><a href="#diff-opt-max-dom" class="headerlink" title="diff_opt (max_dom) ?"></a>diff_opt (max_dom) ?</h3><p>Turbulence and mixing option.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh">diff_opt(max_dom)                   = 1,	! turbulence and mixing option:<br>                                                 0 = no turbulence or explicit<br>                                                     spatial numerical filters (km_opt IS IGNORED).<br>                                                 1 = evaluates 2nd order<br>                                                     diffusion term on coordinate surfaces.<br>                                                     uses kvdif <span class="hljs-keyword">for</span> vertical diff unless PBL option<br>                                                     is used. may be used with km_opt = 1 and 4.<br>                                                     (= 1, recommended <span class="hljs-keyword">for</span> real-data cases)<br>                                                 2 = evaluates mixing terms <span class="hljs-keyword">in</span><br>                                                     physical space (stress form) (x,y,z).<br>                                                     turbulence parameterization is chosen<br>                                                     by specifying km_opt.<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>diff_opt &#x3D; 1, 1, 1,</strong></p>
+</blockquote>
+<h3 id="km-opt-max-dom"><a href="#km-opt-max-dom" class="headerlink" title="km_opt (max_dom) ?"></a>km_opt (max_dom) ?</h3><p>Eddy coefficient option.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">km_opt(max_dom)                     = 4,	! eddy coefficient option<br>                                                 1 = constant (use khdif kvdif)<br>                                                 2 = 1.5 order TKE closure (3D)<br>                                                 3 = Smagorinsky first order closure (3D)<br>                                                     Note: option 2 and 3 are not recommended <span class="hljs-keyword">for</span> DX &gt; 2 km<br>                                                 4 = horizontal Smagorinsky first order closure<br>                                                     (recommended <span class="hljs-keyword">for</span> real-data cases)<br>                                                 5 = SMS-3DTKE scale-adaptive LES/PBL scheme. It must be<br>                                                     used with diff_opt = 2. PBL schemes must be turned off<br>                                                     (bl_pbl_physics=0). It can work with sf_sfclay_physics = 1, 5, 91.<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>km_opt &#x3D; 4, 4, 4,</strong></p>
+</blockquote>
+<h3 id="diff-6th-opt"><a href="#diff-6th-opt" class="headerlink" title="diff_6th_opt ?"></a>diff_6th_opt ?</h3><p>6th order numerical diffusion option.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">diff_6th_opt (max_dom)              = 0,       ! 6th-order numerical diffusion<br>                                                 0 = no 6th-order diffusion (default)<br>                                                 1 = 6th-order numerical diffusion (not recommended)<br>                                                 2 = 6th-order numerical diffusion but prohibit up-gradient diffusion<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>diff_6th_opt &#x3D; 0, 0, 0,</strong></p>
+</blockquote>
+<h3 id="diff-6th-factor"><a href="#diff-6th-factor" class="headerlink" title="diff_6th_factor ?"></a>diff_6th_factor ?</h3><p>6th order numerical diffusion non-dimensional rate.<br>The maximum value is 1.0, which corresponds to complete removal of 2dx wave in one timestep.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">diff_6th_factor (max_dom)           = 0.12,    ! 6th-order numerical diffusion non-dimensional rate (max value 1.0<br>                                                     corresponds to complete removal of 2dx wave <span class="hljs-keyword">in</span> one timestep)<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>diff_6th_factor &#x3D; 0.12, 0.12, 0.12,</strong></p>
+</blockquote>
+<h3 id="base-temp"><a href="#base-temp" class="headerlink" title="base_temp ?"></a>base_temp ?</h3><p>Base state sea-level (surface) temperature (in K).<br>This option can help to improve simulations when the model top is higher than 20 km (~ 50 mb). Note: This option is only available for real data, and em-only. This is a representative temperature at sea-level in the middle of your domain, regardless of the topography height at that point. <strong>Typical values range from 270-300 K</strong>. This value must stay the same through initialization, model runs, and restarts.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">base_temp                           = 290.,    ! real-data, em ONLY, base sea-level temp (K)<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>base_temp &#x3D; 290.,</strong></p>
+</blockquote>
+<h3 id="damp-opt"><a href="#damp-opt" class="headerlink" title="damp_opt ?"></a>damp_opt ?</h3><p>Upper-level damping flag.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">damp_opt                            = 0,	! upper level damping flag <br>                                                 0 = without damping<br>                                                 1 = with diffusive damping, maybe used <span class="hljs-keyword">for</span> real-data cases <br>                                                     (dampcoef nondimensional ~0.01-0.1)<br>                                                 2 = with Rayleigh  damping (dampcoef inverse time scale [1/s] e.g. .003; idealized <span class="hljs-keyword">case</span> only<br>                                                     not <span class="hljs-keyword">for</span> real-data cases)<br>                                                 3 = with w-Rayleigh damping (dampcoef inverse time scale [1/s] e.g. .2; <br>                                                     <span class="hljs-keyword">for</span> real-data cases)<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>damp_opt &#x3D; 0,</strong></p>
+</blockquote>
+<h3 id="zdamp-max-dom"><a href="#zdamp-max-dom" class="headerlink" title="zdamp (max_dom) ?"></a>zdamp (max_dom) ?</h3><p>Damping depth (in meters) from model top. <strong>(default is 5000.)</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">zdamp (max_dom)                     = 5000.,	! damping depth (m) from model top<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>z_damp &#x3D; 5000., 5000., 5000.,</strong></p>
+</blockquote>
+<h3 id="dampcoef-max-dom"><a href="#dampcoef-max-dom" class="headerlink" title="dampcoef (max_dom) ??"></a>dampcoef (max_dom) ??</h3><p>Damping coefficient (also see damp_opt above)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">dampcoef (max_dom)                  = 0.,	! damping coefficient (see above)<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>dampcoef &#x3D; 0.2, 0.2, 0.2,</strong></p>
+</blockquote>
+<h3 id="khdif-max-dom"><a href="#khdif-max-dom" class="headerlink" title="khdif (max_dom) ?"></a>khdif (max_dom) ?</h3><p>Horizontal diffusion constant (m^2&#x2F;s)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">khdif (max_dom)                     = 0,	; horizontal diffusion constant (m^2/s). A typical value should be 0.1*DX <span class="hljs-keyword">in</span> meters.<br></code></pre></td></tr></table></figure>
+
+<h3 id="kvdif-max-dom"><a href="#kvdif-max-dom" class="headerlink" title="kvdif (max_dom) ?"></a>kvdif (max_dom) ?</h3><p>Vertical diffusion constant (m^2&#x2F;s)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">kvdif (max_dom)                     = 0,	! vertical diffusion constant (m^2/s). A typical value should be 100.<br></code></pre></td></tr></table></figure>
+
+<h3 id="non-hydrostatic-max-dom"><a href="#non-hydrostatic-max-dom" class="headerlink" title="non_hydrostatic (max_dom) ??"></a>non_hydrostatic (max_dom) ??</h3><p>Whether running the model in hydrostatic or non-hydrotstatic (default) mode.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">non_hydrostatic (max_dom)           = .<span class="hljs-literal">true</span>.,	! whether running the model <span class="hljs-keyword">in</span> hydrostatic or non-hydro mode<br></code></pre></td></tr></table></figure>
+
+<h3 id="moist-adv-opt-max-dom"><a href="#moist-adv-opt-max-dom" class="headerlink" title="moist_adv_opt (max_dom)"></a>moist_adv_opt (max_dom)</h3><p>Positive-definite or monotonic advection to help eliminate over&#x2F;under prediction of moisture. Option are:</p>
+<ul>
+<li>0 &#x3D; advection with no bounds or filters in place</li>
+<li><strong>1 &#x3D; positive-definite advection of moisure (default)</strong></li>
+<li>2 &#x3D; monotonic option</li>
+</ul>
+<h3 id="scalar-adv-opt-max-dom"><a href="#scalar-adv-opt-max-dom" class="headerlink" title="scalar_adv_opt (max_dom)"></a>scalar_adv_opt (max_dom)</h3><p>Positive-definite advection of scalars. Options are:</p>
+<ul>
+<li>0 &#x3D; advection with no bounds or filters in place</li>
+<li><strong>1 &#x3D; positive-definite advection of moisure (default)</strong></li>
+<li>2 &#x3D; monotonic option</li>
+</ul>
+<h2 id="bdy-control"><a href="#bdy-control" class="headerlink" title="&amp;bdy_control"></a>&amp;bdy_control</h2><h3 id="spec-bdy-width"><a href="#spec-bdy-width" class="headerlink" title="spec_bdy_width"></a>spec_bdy_width</h3><p>The number of rows for specified boundary value nudging. This value is the total of ‘spec_zone’ and ‘relax_zone’ (see below).<br><strong>A wider boundary zone may work better for coarser driving data</strong>.</p>
+<blockquote>
+<p><strong>spec_bdy_width &#x3D; 5,</strong></p>
+</blockquote>
+<h3 id="spec-zone"><a href="#spec-zone" class="headerlink" title="spec_zone"></a>spec_zone</h3><p>The number of points in specified zone (specific boundary condition option).<br>Leave this <strong>set to the default of 1</strong>.</p>
+<blockquote>
+<p><strong>spec_zone &#x3D; 1,</strong></p>
+</blockquote>
+<h3 id="relax-zone"><a href="#relax-zone" class="headerlink" title="relax_zone"></a>relax_zone</h3><p>The number of points in relaxation zone (specific boundary condition option).<br>A <strong>wider boundary zone may work better for coarser driving data</strong>.</p>
+<blockquote>
+<p><strong>relax_zone &#x3D; 4,</strong></p>
+</blockquote>
+<h3 id="specified-max-dom"><a href="#specified-max-dom" class="headerlink" title="specified (max_dom)"></a>specified (max_dom)</h3><p>Specified boundary conditions.</p>
+<blockquote>
+<p>The first row and column are specified with external model values (spec_zone &#x3D; 1, which should not be changed). The rows and columns in relax_zone have values blended from an external model and WRF. The value of relax_zone may be changed, as long as spec_bdy_width &#x3D; spec_zone + relax_zone. This can be used with periodic_x in tropical channel simulations.</p>
+</blockquote>
+<p><strong>This can only be turned on (.true.) for domain 01 - must be false for all other domains. This is for real data cases only</strong>.</p>
+<blockquote>
+<p><strong>specified &#x3D; .true., .false., .false.,</strong></p>
+</blockquote>
+<h3 id="nested-max-dom"><a href="#nested-max-dom" class="headerlink" title="nested (max_dom)"></a>nested (max_dom)</h3><p>Nested boundary conditions.<br>This <strong>must be set to .true. for nests.</strong> This can be used for real or idealized cases.</p>
+<blockquote>
+<p><strong>nested &#x3D; .false., .true., .true.,</strong></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/namelist-input/" class="print-no-link">#namelist.input</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WRF namelist.input: Best Practices</div>
+      <div>https://waipangsze.github.io/2023/04/30/WRF_namelist_input_Best_Practices/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 30, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/30/WRF_em_real_namelist_input_Examples/" title="WRF em_real namelist.input Examples">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">WRF em_real namelist.input Examples</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/30/zsh_oh_my_zsh/" title="zsh &amp; oh-my-zsh">
+                        <span class="hidden-mobile">zsh &amp; oh-my-zsh</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
