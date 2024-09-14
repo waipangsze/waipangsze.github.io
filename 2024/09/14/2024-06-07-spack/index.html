@@ -321,11 +321,11 @@
 <li>spack env status # you can see which environment you are currently	</li>
 <li>spack env deactivate</li>
 <li>spack find # to see what packages are installed in the current environment</li>
-<li>spack add <a href="mailto:&#x70;&#121;&#x74;&#x68;&#x6f;&#110;&#x40;&#x33;&#46;&#x31;&#48;">&#x70;&#121;&#x74;&#x68;&#x6f;&#110;&#x40;&#x33;&#46;&#x31;&#48;</a></li>
+<li>spack add <a href="mailto:&#112;&#x79;&#116;&#x68;&#x6f;&#x6e;&#x40;&#51;&#x2e;&#49;&#48;">&#112;&#x79;&#116;&#x68;&#x6f;&#x6e;&#x40;&#51;&#x2e;&#49;&#48;</a></li>
 <li>spack add compilerName@compilerVersion</li>
 <li>spack install –add xxx</li>
 <li>compilerPath&#x3D;$(spack location -i compilerName@compilerVersion)</li>
-<li>spack add <a href="mailto:&#112;&#121;&#x74;&#104;&#x6f;&#110;&#x40;&#x33;&#46;&#x31;&#48;">&#112;&#121;&#x74;&#104;&#x6f;&#110;&#x40;&#x33;&#46;&#x31;&#48;</a>%<a href="mailto:&#x67;&#99;&#99;&#x40;&#57;&#x2e;&#x35;&#46;&#48;">&#x67;&#99;&#99;&#x40;&#57;&#x2e;&#x35;&#46;&#48;</a> # As a general rule, you should use the same compiler for installing all of your packages within an environment</li>
+<li>spack add <a href="mailto:&#112;&#121;&#116;&#104;&#x6f;&#x6e;&#64;&#51;&#46;&#x31;&#x30;">&#112;&#121;&#116;&#104;&#x6f;&#x6e;&#64;&#51;&#46;&#x31;&#x30;</a>%<a href="mailto:&#x67;&#x63;&#99;&#64;&#57;&#x2e;&#53;&#46;&#x30;">&#x67;&#x63;&#99;&#64;&#57;&#x2e;&#53;&#46;&#x30;</a> # As a general rule, you should use the same compiler for installing all of your packages within an environment</li>
 <li>spack env remove yourEnvironmentName</li>
 </ul>
 <h1 id="Compiler-configuration"><a href="#Compiler-configuration" class="headerlink" title="Compiler configuration"></a>Compiler configuration</h1><p>Spack has the ability to build packages with multiple compilers and compiler versions. Compilers can be made available to Spack by specifying them manually in <strong>compilers.yaml</strong> or <strong>packages.yaml</strong>, or automatically by running spack compiler find, but for convenience Spack will automatically detect compilers the first time it needs them.</p>
@@ -351,7 +351,7 @@
 <h2 id="Manual-compiler-configuration"><a href="#Manual-compiler-configuration" class="headerlink" title="Manual compiler configuration"></a>Manual compiler configuration</h2><p>If auto-detection fails, you can manually configure a compiler by editing your <strong>~&#x2F;.spack&#x2F;<platform>&#x2F;compilers.yaml file</strong>. You can do this by running <strong>spack config edit compilers</strong>, which will open the file in your favorite editor.</p>
 <h2 id="Build-Your-Own-Compiler"><a href="#Build-Your-Own-Compiler" class="headerlink" title="Build Your Own Compiler"></a>Build Your Own Compiler</h2><p>If you are particular about which compiler&#x2F;version you use, you might wish to have Spack build it for you. For example:</p>
 <blockquote>
-<p>$ spack install <a href="mailto:&#x67;&#x63;&#99;&#64;&#x34;&#46;&#57;&#x2e;&#51;">&#x67;&#x63;&#99;&#64;&#x34;&#46;&#57;&#x2e;&#51;</a></p>
+<p>$ spack install <a href="mailto:&#x67;&#99;&#99;&#x40;&#x34;&#x2e;&#57;&#x2e;&#x33;">&#x67;&#99;&#99;&#x40;&#x34;&#x2e;&#57;&#x2e;&#x33;</a></p>
 </blockquote>
 <p>Once that has finished, you will need to add it to your <strong>compilers.yaml</strong> file. </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">spack add gcc@4.9.3<br>spack install<br>spack compiler add `spack location -i gcc@4.9.3`<br></code></pre></td></tr></table></figure>
@@ -362,24 +362,24 @@
 <h1 id="Specs-dependencies"><a href="#Specs-dependencies" class="headerlink" title="Specs &amp; dependencies"></a>Specs &amp; dependencies</h1><p>We know that <strong>spack install</strong>, <strong>spack uninstall</strong>, and other commands take a package name with an optional version specifier. In Spack, that descriptor is called a spec. Spack uses specs to refer to a particular build configuration (or configurations) of a package. Specs are more than a package name and a version; you can use them to specify the compiler, compiler version, architecture, compile options, and dependency options for a build. In this section, we’ll go over the full syntax of specs.</p>
 <p>Here is an example of a much longer spec than we’ve seen thus far:</p>
 <blockquote>
-<p>mpileaks @1.2:1.4 %<a href="mailto:&#103;&#99;&#99;&#64;&#52;&#x2e;&#x37;&#46;&#53;">&#103;&#99;&#99;&#64;&#52;&#x2e;&#x37;&#46;&#53;</a> +debug -qt target&#x3D;x86_64 ^callpath @1.1 %<a href="mailto:&#x67;&#x63;&#99;&#x40;&#x34;&#46;&#55;&#x2e;&#x32;">&#x67;&#x63;&#99;&#x40;&#x34;&#46;&#55;&#x2e;&#x32;</a></p>
+<p>mpileaks @1.2:1.4 %<a href="mailto:&#x67;&#x63;&#99;&#x40;&#52;&#46;&#x37;&#46;&#53;">&#x67;&#x63;&#99;&#x40;&#52;&#46;&#x37;&#46;&#53;</a> +debug -qt target&#x3D;x86_64 ^callpath @1.1 %<a href="mailto:&#x67;&#99;&#x63;&#x40;&#x34;&#46;&#55;&#46;&#50;">&#x67;&#99;&#x63;&#x40;&#x34;&#46;&#55;&#46;&#50;</a></p>
 </blockquote>
 <p>If provided to spack install, this will install the mpileaks library at <strong>some version between 1.2 and 1.4 (inclusive)</strong>, built using <strong>gcc at version 4.7.5</strong> for a generic x86_64 architecture, with <strong>debug options enabled</strong>, and <strong>without Qt support</strong>. Additionally, it says to link it with the <strong>callpath library (which it depends on)</strong>, and to <strong>build callpath with gcc 4.7.2</strong>. Most specs will not be as complicated as this one, but this is a good example of what is possible with specs.</p>
 <p>More formally, a spec consists of the following pieces:</p>
 <ul>
 <li>Package name identifier (mpileaks above)</li>
 <li>@ Optional version specifier (@1.2:1.4)</li>
-<li>% Optional compiler specifier, with an optional compiler version (gcc or <a href="mailto:&#103;&#x63;&#99;&#64;&#52;&#x2e;&#55;&#46;&#x33;">&#103;&#x63;&#99;&#64;&#52;&#x2e;&#55;&#46;&#x33;</a>)</li>
+<li>% Optional compiler specifier, with an optional compiler version (gcc or <a href="mailto:&#103;&#x63;&#99;&#x40;&#52;&#46;&#55;&#46;&#x33;">&#103;&#x63;&#99;&#x40;&#52;&#46;&#55;&#46;&#x33;</a>)</li>
 <li>+ or - or ~ Optional variant specifiers (+debug, -qt, or ~qt) for boolean variants. Use ++ or -- or ~~ to propagate variants through the dependencies (++debug, --qt, or ~~qt).</li>
 <li>name&#x3D;<value> Optional variant specifiers that are not restricted to boolean variants. Use name&#x3D;&#x3D;<value> to propagate variant through the dependencies.</li>
 <li>name&#x3D;<value> Optional compiler flag specifiers. Valid flag names are cflags, cxxflags, fflags, cppflags, ldflags, and ldlibs. Use name&#x3D;&#x3D;<value> to propagate compiler flags through the dependencies.</li>
 <li>target&#x3D;&lt;value&gt; os&#x3D;&lt;value&gt; Optional architecture specifier (target&#x3D;haswell os&#x3D;CNL10)</li>
-<li>^ Dependency specs (^<a href="mailto:&#x63;&#x61;&#x6c;&#x6c;&#x70;&#x61;&#116;&#x68;&#x40;&#x31;&#46;&#49;">&#x63;&#x61;&#x6c;&#x6c;&#x70;&#x61;&#116;&#x68;&#x40;&#x31;&#46;&#49;</a>)</li>
+<li>^ Dependency specs (^<a href="mailto:&#99;&#97;&#x6c;&#x6c;&#x70;&#x61;&#x74;&#x68;&#64;&#49;&#x2e;&#49;">&#99;&#97;&#x6c;&#x6c;&#x70;&#x61;&#x74;&#x68;&#64;&#49;&#x2e;&#49;</a>)</li>
 </ul>
 <p>套件表示法<br>@ 開頭表示版本號<br>% 開頭表示編譯器<br>^ 開頭表示依賴項</p>
 <h1 id="Spack-load"><a href="#Spack-load" class="headerlink" title="Spack load"></a>Spack load</h1><p>There are several different ways to use Spack packages once you have installed them. As you’ve seen, spack packages are installed into long paths with hashes, and you need a way to get them into your path. The easiest way is to use <strong>spack load</strong>, which is described in this section.</p>
 <blockquote>
-<p>spack load mpich %<a href="mailto:&#x67;&#99;&#99;&#64;&#52;&#x2e;&#x34;&#x2e;&#x37;">&#x67;&#99;&#99;&#64;&#52;&#x2e;&#x34;&#x2e;&#x37;</a></p>
+<p>spack load mpich %<a href="mailto:&#103;&#99;&#x63;&#x40;&#x34;&#x2e;&#x34;&#x2e;&#55;">&#103;&#99;&#x63;&#x40;&#x34;&#x2e;&#x34;&#x2e;&#55;</a></p>
 </blockquote>
 <h1 id="Slurm"><a href="#Slurm" class="headerlink" title="Slurm"></a>Slurm</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment"># This file is called submit-script.sh</span><br><span class="hljs-comment">#SBATCH --partition=shared       # default &quot;shared&quot;, if not specified</span><br><span class="hljs-comment">#SBATCH --time=0-04:30:00        # run time in days-hh:mm:ss</span><br><span class="hljs-comment">#SBATCH --nodes=1                # require 1 nodes</span><br><span class="hljs-comment">#SBATCH --ntasks-per-node=64     # cpus per node (by default, &quot;ntasks&quot;=&quot;cpus&quot;)</span><br><span class="hljs-comment">#SBATCH --mem-per-cpu=4000       # RAM per node in megabytes</span><br><span class="hljs-comment">#SBATCH --error=job.%J.err</span><br><span class="hljs-comment">#SBATCH --output=job.%J.out</span><br><span class="hljs-comment"># v---Remember to activate your Spack environment!! </span><br>spack <span class="hljs-built_in">env</span> activate yourEnvironmentName<br>srun --mpi=pmix -n 64 /home/username/mpiprogram<br></code></pre></td></tr></table></figure>
 
