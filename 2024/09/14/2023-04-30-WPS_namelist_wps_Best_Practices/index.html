@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="content{:toc}  WPS namelist.wps: Best Practiceshttps:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;wrf&#x2F;users&#x2F;namelist_best_prac_wps.html  In namelist.wps, multiple columns are used for multiple domains; however max_domains de">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WPS namelist.wps Best Practices">
+<meta property="og:url" content="https://waipangsze.github.io/2024/09/14/2023-04-30-WPS_namelist_wps_Best_Practices/index.html">
+<meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
+<meta property="og:description" content="content{:toc}  WPS namelist.wps: Best Practiceshttps:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;wrf&#x2F;users&#x2F;namelist_best_prac_wps.html  In namelist.wps, multiple columns are used for multiple domains; however max_domains de">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-09-14T13:29:16.773Z">
+<meta property="article:modified_time" content="2024-09-14T13:24:49.821Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="WPS">
+<meta property="article:tag" content="namelist.wps">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WPS namelist.wps Best Practices - Physics &amp; Numerical Weather Prediction</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WPS namelist.wps Best Practices"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-14 21:29" pubdate>
+          September 14, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          212 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WPS namelist.wps Best Practices</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>content<br>{:toc}</li>
+</ul>
+<h1 id="WPS-namelist-wps-Best-Practices"><a href="#WPS-namelist-wps-Best-Practices" class="headerlink" title="WPS namelist.wps: Best Practices"></a>WPS namelist.wps: Best Practices</h1><p><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/namelist_best_prac_wps.html">https://www2.mmm.ucar.edu/wrf/users/namelist_best_prac_wps.html</a></p>
+<ol>
+<li>In namelist.wps, multiple columns are used for multiple domains; however max_domains determines how many columns will be used. For example, if you use 3 columns, but only set max_dom &#x3D; 2, the last column will be ignored.</li>
+<li>Not all parameters have mulitple columns.</li>
+</ol>
+<h2 id="max-dom"><a href="#max-dom" class="headerlink" title="max_dom"></a>max_dom</h2><p>Nested domains are necessary when scaling down from coarse first-guess (input) data to a fine resolution, and the recommended ratios for coarse data resolution to the parent domain are odd ratios of <strong>3:1 or 5:1</strong>. For example, if your domain of interest needs to have a resolution of 3 km, but your input data have a resolution of 27 km, and you are using a 3:1 ratio, your domain 01, should be around 9 km, and then you can have a nested domain with 3 km grid spacing. In this case, max_dom &#x3D; 3.</p>
+<h2 id="parent-grid-ratio"><a href="#parent-grid-ratio" class="headerlink" title="parent_grid_ratio"></a>parent_grid_ratio</h2><p>The nesting ratio relative to the domain’s parent. <strong>For the coarsest domain, parent_grid_ratio should be set to 1</strong>.<br><strong>Recommended ratios are 3 or 5</strong>. If you are unfamiliar with the model, it is best to leave this set to 3. It is not recommended to use an even number ratio since it is best to have a center grid cell for the fine domain that corresponds with the center of the coarse domain.<br>grid cell.</p>
+<h2 id="i-j-parent-start"><a href="#i-j-parent-start" class="headerlink" title="i_, j_parent_start"></a>i_, j_parent_start</h2><p>It is good practice to keep nest boundaries away from coarse domain boundaries, and to keep them away from steep topography. As a rough approximation, <strong>keep about 1&#x2F;3 of the coarse-grid domain surrounding each side of the nest</strong>. This does not have to be exact, and the nest does not have to be centered perfectly, but this helps to stay away from problems later. If the prevailing winds are westerly, it is better to place the nest further away from the west boundary, than the east.</p>
+<h2 id="e-we-e-sn"><a href="#e-we-e-sn" class="headerlink" title="e_we, e_sn"></a>e_we, e_sn</h2><p>It is recommended to have domains <strong>no smaller than about 100x100</strong>. Note that there will be about 10 grid points (minimum of 5) on each side, in the boundary zone. If domains are too small, the solution will be determined by forcing data.<br>When considering the size of the coarse domain, <strong>there is no need to be economical. Doubling the size of the coarse grid domain will only result in a 25% nested forecast time increase</strong>. <strong>It’s also important to consider the speed at which systems are moving through the simulated region. A multi-day forecast needs a much larger domain than a short forecast. If cost is prohibitive, consider adding an external domain.</strong></p>
+<h2 id="geog-data-res"><a href="#geog-data-res" class="headerlink" title="geog_data_res"></a>geog_data_res</h2><p>Prior to V3.8, if you wish to use the MODIS data, it would be necessary to specify:</p>
+<blockquote>
+<p>geog_data_res &#x3D; ‘modis_30s+10m’, ‘modis_30s+2m’, ‘modis_30s+30s’</p>
+</blockquote>
+<p>Possible available resolutions are <strong>10m (<del>19km), 5m (</del>9km), 2m (<del>4km), and 30s (</del>0.9km)</strong>.<br>When there are multiple resolutions available for geographical input data, choose a resolution that is <strong>slightly better</strong> than your grid resolution. For example, <strong>if your grid resolution is 9km, using 2 minute static data would be ideal</strong>.</p>
+<h2 id="dx-dy"><a href="#dx-dy" class="headerlink" title="dx, dy"></a>dx, dy</h2><p>This is given in meters for the Lambert, Polar, and Mercator projections. For the ‘lat-lon’ projection, this is given in degrees latitude. For namelist.wps it is only necessary to specify the coarse domain resolution, as nest domains will be calculated based on parent_grid_ratio.<br>It is recommended that <strong>dx and dy have the same value</strong> for Mercator, Polar, and Lambert projections.</p>
+<h2 id="map-proj"><a href="#map-proj" class="headerlink" title="map_proj"></a>map_proj</h2><ul>
+<li>lambert: well-suited for mid-latitudes; domain cannot contain poles; domain cannot be periodic in west-east direction</li>
+<li>mercator: well-suited for low-latitudes; may be used for a “channel” domain (periodic in west-east direction).</li>
+<li>polar: good for high-latitude domains, especially if the domain contains a pole</li>
+<li>lat-lon: also called cylindrical equidistant; required for global domains (but does not have to be global); can be used in its normal or rotated aspect</li>
+</ul>
+<p>It is best to check the range of the map scale factor (e.g., <strong>MAPFRAC_M</strong> for the map factor in the center of a grid cell) after running geogrid.exe (this can be checked easily with the ncview program). <strong>Values should be close to 1 to ensure the projection is not causing distortion.</strong></p>
+<h2 id="ref-lat-ref-lon"><a href="#ref-lat-ref-lon" class="headerlink" title="ref_lat, ref_lon"></a>ref_lat, ref_lon</h2><p>Real values specifying the latitude and longitude of a location whose (i,j) location in the simulation is known.</p>
+<blockquote>
+<p>For ARW, ref_lat and ref_lon give the latitude and longitude of a known location in the domain (it’s recommended that these are set to the center of the coarse domain</p>
+</blockquote>
+<h2 id="truelat1-2"><a href="#truelat1-2" class="headerlink" title="truelat1&#x2F;2"></a>truelat1&#x2F;2</h2><ul>
+<li>truelat1: A real value specifying the first true latitude for the Lambert conformal conic projection, or the true latitude for the polar stereographic projection, or the Mercator projection.</li>
+<li>truelat2: A real value specifying the second true latitude for the Lambert conformal conic projection.</li>
+</ul>
+<h2 id="stand-lon"><a href="#stand-lon" class="headerlink" title="stand_lon"></a>stand_lon</h2><p>If this longitude is set to the <strong>same value as ref_lon</strong>, your coarsest domain will be centered.</p>
+<h2 id="geog-data-path"><a href="#geog-data-path" class="headerlink" title="geog_data_path"></a>geog_data_path</h2><p>It’s best to set this to <strong>the absolute path.</strong></p>
+<h2 id="ungrid"><a href="#ungrid" class="headerlink" title="&amp;ungrid"></a>&amp;ungrid</h2><h3 id="out-format"><a href="#out-format" class="headerlink" title="out_format"></a>out_format</h3><p>If you are running ungrib in the WPS&#x2F; program, this should be set to <strong>“WPS.”</strong></p>
+<h3 id="prefix"><a href="#prefix" class="headerlink" title="prefix"></a>prefix</h3><p>The prefix that will be assigned to intermediate files (produced from the ungrib.exe program). This can be left as set to ‘FILE’ or can be changed to anything you choose like GFS, ERA5, SST.</p>
+<blockquote>
+<p>If you will be using more than one type of input data, and it’s necessary to run ungrib twice, you may consider setting this to something that is meaningful to the data type (e.g., “SST” for sea surface temperature data). If you do need to run ungrib twice, set this to only one prefix name per ungrib.exe run.</p>
+</blockquote>
+<h2 id="metgrid"><a href="#metgrid" class="headerlink" title="&amp;metgrid"></a>&amp;metgrid</h2><h3 id="fg-name"><a href="#fg-name" class="headerlink" title="fg_name"></a>fg_name</h3><p>This is the prefix that was used when the intermediate files were created (see above). To combine different data sources, <strong>list all prefixes</strong> (e.g., fg_name &#x3D; ‘GFS’, ‘SST’), that combine GFS and SST</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/WPS/" class="print-no-link">#WPS</a>
+      
+        <a href="/tags/namelist-wps/" class="print-no-link">#namelist.wps</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WPS namelist.wps Best Practices</div>
+      <div>https://waipangsze.github.io/2024/09/14/2023-04-30-WPS_namelist_wps_Best_Practices/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/14/2023-04-30-ERA5_dataset/" title="ERA5 dataset">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ERA5 dataset</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/14/2023-04-30-WPS_namelist_wps_examples/" title="WPS namelist.wps Examples">
+                        <span class="hidden-mobile">WPS namelist.wps Examples</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,754 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="content{:toc}  SpackSpack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spack">
+<meta property="og:url" content="https://waipangsze.github.io/2024/09/14/2024-06-07-spack/index.html">
+<meta property="og:site_name" content="Physics &amp; Numerical Weather Prediction">
+<meta property="og:description" content="content{:toc}  SpackSpack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-09-14T13:29:16.797Z">
+<meta property="article:modified_time" content="2024-09-14T13:24:49.825Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="Spack">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Spack - Physics &amp; Numerical Weather Prediction</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spack"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-14 21:29" pubdate>
+          September 14, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          543 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Spack</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li>content<br>{:toc}</li>
+</ul>
+<h1 id="Spack"><a href="#Spack" class="headerlink" title="Spack"></a>Spack</h1><p>Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large supercomputing centers, where many users and application teams share common installations of software on clusters with exotic architectures, using libraries that do not have a standard ABI. Spack is non-destructive: installing a new version does not break existing installations, so many configurations can coexist on the same system.<br>Most importantly, Spack is simple. It offers a simple spec syntax so that users can specify versions and configuration options concisely. Spack is also simple for package authors: package files are written in pure Python, and specs allow package authors to maintain a single file for many different builds of the same package.</p>
+<p><a target="_blank" rel="noopener" href="https://spack.readthedocs.io/en/latest/">https://spack.readthedocs.io/en/latest/</a></p>
+<h2 id="Search-packages-online"><a href="#Search-packages-online" class="headerlink" title="Search packages online"></a>Search packages online</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://packages.spack.io/">https://packages.spack.io/</a></p>
+</blockquote>
+<h1 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h1><p>Getting Spack is easy. You can clone it from the github repository using this command:</p>
+<p>git clone -c feature.manyFiles&#x3D;true <a target="_blank" rel="noopener" href="https://github.com/spack/spack.git">https://github.com/spack/spack.git</a><br>{:.info}</p>
+<p>This will create a directory called spack.</p>
+<p>Once you have cloned Spack, we recommend sourcing the appropriate script for your shell:</p>
+<p>. spack&#x2F;share&#x2F;spack&#x2F;setup-env.sh<br>{:.info}</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">For bash/zsh/sh<br>. spack/share/spack/setup-env.sh<br>(add into .bashrc)<br>For tcsh/csh<br><span class="hljs-built_in">source</span> spack/share/spack/setup-env.csh<br></code></pre></td></tr></table></figure>
+
+<p>Sourcing these files will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash and zsh, it also sets up tab completion.</p>
+<ul>
+<li>spack env create yourEnvironmentName</li>
+<li>spack env activate yourEnvironmentName</li>
+<li>spack env list # You can see a list of your available environments</li>
+<li>spack env status # you can see which environment you are currently	</li>
+<li>spack env deactivate</li>
+<li>spack find # to see what packages are installed in the current environment</li>
+<li>spack add <a href="mailto:&#x70;&#121;&#x74;&#x68;&#x6f;&#110;&#x40;&#x33;&#46;&#x31;&#48;">&#x70;&#121;&#x74;&#x68;&#x6f;&#110;&#x40;&#x33;&#46;&#x31;&#48;</a></li>
+<li>spack add compilerName@compilerVersion</li>
+<li>spack install –add xxx</li>
+<li>compilerPath&#x3D;$(spack location -i compilerName@compilerVersion)</li>
+<li>spack add <a href="mailto:&#112;&#121;&#x74;&#104;&#x6f;&#110;&#x40;&#x33;&#46;&#x31;&#48;">&#112;&#121;&#x74;&#104;&#x6f;&#110;&#x40;&#x33;&#46;&#x31;&#48;</a>%<a href="mailto:&#x67;&#99;&#99;&#x40;&#57;&#x2e;&#x35;&#46;&#48;">&#x67;&#99;&#99;&#x40;&#57;&#x2e;&#x35;&#46;&#48;</a> # As a general rule, you should use the same compiler for installing all of your packages within an environment</li>
+<li>spack env remove yourEnvironmentName</li>
+</ul>
+<h1 id="Compiler-configuration"><a href="#Compiler-configuration" class="headerlink" title="Compiler configuration"></a>Compiler configuration</h1><p>Spack has the ability to build packages with multiple compilers and compiler versions. Compilers can be made available to Spack by specifying them manually in <strong>compilers.yaml</strong> or <strong>packages.yaml</strong>, or automatically by running spack compiler find, but for convenience Spack will automatically detect compilers the first time it needs them.</p>
+<p>You can see which compilers are available to Spack by running </p>
+<p>spack compilers or spack compiler list<br>{:.info}</p>
+<blockquote>
+<p>Any of these compilers can be used to build Spack packages.</p>
+</blockquote>
+<p>spack compiler add<br>{:.info}</p>
+<p>An alias for <strong>spack compiler find</strong>.</p>
+<p>spack compiler find<br>{:.info}</p>
+<p>Lists the compilers currently available to Spack. If you do not see a compiler in this list, but you want to use it with Spack, you can simply run spack compiler find with the path to where the compiler is installed. For example:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack compiler find /usr/local/tools/ic-13.0.079<br>==&gt; Added 1 new compiler to ~/.spack/linux/compilers.yaml<br>    intel@13.0.079<br></code></pre></td></tr></table></figure>
+
+<p>Or you can run spack compiler find with no arguments to force auto-detection. This is useful if you do not know where compilers are installed, but you know that new compilers have been added to your PATH. For example, you might load a module, like this:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ module load gcc/4.9.0<br>$ spack compiler find<br>==&gt; Added 1 new compiler to ~/.spack/linux/compilers.yaml<br>    gcc@4.9.0<br></code></pre></td></tr></table></figure>
+<p>This loads the environment module for gcc-4.9.0 to add it to PATH, and then it adds the compiler to Spack.</p>
+<p>spack compiler info<br>{:.info}</p>
+<p>If you want to see specifics on a particular compiler, you can run spack compiler info on it:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack compiler info intel@15<br>intel@15.0.0:<br>  paths:<br>    cc  = /usr/local/bin/icc-15.0.090<br>    cxx = /usr/local/bin/icpc-15.0.090<br>    f77 = /usr/local/bin/ifort-15.0.090<br>    <span class="hljs-built_in">fc</span>  = /usr/local/bin/ifort-15.0.090<br>  modules = []<br>  operating_system = centos6<br></code></pre></td></tr></table></figure>
+
+<p>This shows which C, C++, and Fortran compilers were detected by Spack. Notice also that we didn’t have to be too specific about the version. We just said intel@15, and information about the only matching Intel compiler was displayed.</p>
+<h2 id="Manual-compiler-configuration"><a href="#Manual-compiler-configuration" class="headerlink" title="Manual compiler configuration"></a>Manual compiler configuration</h2><p>If auto-detection fails, you can manually configure a compiler by editing your <strong>~&#x2F;.spack&#x2F;<platform>&#x2F;compilers.yaml file</strong>. You can do this by running <strong>spack config edit compilers</strong>, which will open the file in your favorite editor.</p>
+<h2 id="Build-Your-Own-Compiler"><a href="#Build-Your-Own-Compiler" class="headerlink" title="Build Your Own Compiler"></a>Build Your Own Compiler</h2><p>If you are particular about which compiler&#x2F;version you use, you might wish to have Spack build it for you. For example:</p>
+<blockquote>
+<p>$ spack install <a href="mailto:&#x67;&#x63;&#99;&#64;&#x34;&#46;&#57;&#x2e;&#51;">&#x67;&#x63;&#99;&#64;&#x34;&#46;&#57;&#x2e;&#51;</a></p>
+</blockquote>
+<p>Once that has finished, you will need to add it to your <strong>compilers.yaml</strong> file. </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">spack add gcc@4.9.3<br>spack install<br>spack compiler add `spack location -i gcc@4.9.3`<br></code></pre></td></tr></table></figure>
+
+<p>You can then set Spack to use it by default by adding the following to your packages.yaml file:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">packages:<br>  all:<br>    compiler: [gcc@4.9.3]<br></code></pre></td></tr></table></figure>
+
+<h1 id="Specs-dependencies"><a href="#Specs-dependencies" class="headerlink" title="Specs &amp; dependencies"></a>Specs &amp; dependencies</h1><p>We know that <strong>spack install</strong>, <strong>spack uninstall</strong>, and other commands take a package name with an optional version specifier. In Spack, that descriptor is called a spec. Spack uses specs to refer to a particular build configuration (or configurations) of a package. Specs are more than a package name and a version; you can use them to specify the compiler, compiler version, architecture, compile options, and dependency options for a build. In this section, we’ll go over the full syntax of specs.</p>
+<p>Here is an example of a much longer spec than we’ve seen thus far:</p>
+<blockquote>
+<p>mpileaks @1.2:1.4 %<a href="mailto:&#103;&#99;&#99;&#64;&#52;&#x2e;&#x37;&#46;&#53;">&#103;&#99;&#99;&#64;&#52;&#x2e;&#x37;&#46;&#53;</a> +debug -qt target&#x3D;x86_64 ^callpath @1.1 %<a href="mailto:&#x67;&#x63;&#99;&#x40;&#x34;&#46;&#55;&#x2e;&#x32;">&#x67;&#x63;&#99;&#x40;&#x34;&#46;&#55;&#x2e;&#x32;</a></p>
+</blockquote>
+<p>If provided to spack install, this will install the mpileaks library at <strong>some version between 1.2 and 1.4 (inclusive)</strong>, built using <strong>gcc at version 4.7.5</strong> for a generic x86_64 architecture, with <strong>debug options enabled</strong>, and <strong>without Qt support</strong>. Additionally, it says to link it with the <strong>callpath library (which it depends on)</strong>, and to <strong>build callpath with gcc 4.7.2</strong>. Most specs will not be as complicated as this one, but this is a good example of what is possible with specs.</p>
+<p>More formally, a spec consists of the following pieces:</p>
+<ul>
+<li>Package name identifier (mpileaks above)</li>
+<li>@ Optional version specifier (@1.2:1.4)</li>
+<li>% Optional compiler specifier, with an optional compiler version (gcc or <a href="mailto:&#103;&#x63;&#99;&#64;&#52;&#x2e;&#55;&#46;&#x33;">&#103;&#x63;&#99;&#64;&#52;&#x2e;&#55;&#46;&#x33;</a>)</li>
+<li>+ or - or ~ Optional variant specifiers (+debug, -qt, or ~qt) for boolean variants. Use ++ or -- or ~~ to propagate variants through the dependencies (++debug, --qt, or ~~qt).</li>
+<li>name&#x3D;<value> Optional variant specifiers that are not restricted to boolean variants. Use name&#x3D;&#x3D;<value> to propagate variant through the dependencies.</li>
+<li>name&#x3D;<value> Optional compiler flag specifiers. Valid flag names are cflags, cxxflags, fflags, cppflags, ldflags, and ldlibs. Use name&#x3D;&#x3D;<value> to propagate compiler flags through the dependencies.</li>
+<li>target&#x3D;&lt;value&gt; os&#x3D;&lt;value&gt; Optional architecture specifier (target&#x3D;haswell os&#x3D;CNL10)</li>
+<li>^ Dependency specs (^<a href="mailto:&#x63;&#x61;&#x6c;&#x6c;&#x70;&#x61;&#116;&#x68;&#x40;&#x31;&#46;&#49;">&#x63;&#x61;&#x6c;&#x6c;&#x70;&#x61;&#116;&#x68;&#x40;&#x31;&#46;&#49;</a>)</li>
+</ul>
+<p>套件表示法<br>@ 開頭表示版本號<br>% 開頭表示編譯器<br>^ 開頭表示依賴項</p>
+<h1 id="Spack-load"><a href="#Spack-load" class="headerlink" title="Spack load"></a>Spack load</h1><p>There are several different ways to use Spack packages once you have installed them. As you’ve seen, spack packages are installed into long paths with hashes, and you need a way to get them into your path. The easiest way is to use <strong>spack load</strong>, which is described in this section.</p>
+<blockquote>
+<p>spack load mpich %<a href="mailto:&#x67;&#99;&#99;&#64;&#52;&#x2e;&#x34;&#x2e;&#x37;">&#x67;&#99;&#99;&#64;&#52;&#x2e;&#x34;&#x2e;&#x37;</a></p>
+</blockquote>
+<h1 id="Slurm"><a href="#Slurm" class="headerlink" title="Slurm"></a>Slurm</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment"># This file is called submit-script.sh</span><br><span class="hljs-comment">#SBATCH --partition=shared       # default &quot;shared&quot;, if not specified</span><br><span class="hljs-comment">#SBATCH --time=0-04:30:00        # run time in days-hh:mm:ss</span><br><span class="hljs-comment">#SBATCH --nodes=1                # require 1 nodes</span><br><span class="hljs-comment">#SBATCH --ntasks-per-node=64     # cpus per node (by default, &quot;ntasks&quot;=&quot;cpus&quot;)</span><br><span class="hljs-comment">#SBATCH --mem-per-cpu=4000       # RAM per node in megabytes</span><br><span class="hljs-comment">#SBATCH --error=job.%J.err</span><br><span class="hljs-comment">#SBATCH --output=job.%J.out</span><br><span class="hljs-comment"># v---Remember to activate your Spack environment!! </span><br>spack <span class="hljs-built_in">env</span> activate yourEnvironmentName<br>srun --mpi=pmix -n 64 /home/username/mpiprogram<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Spack/" class="category-chain-item">Spack</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Spack/" class="print-no-link">#Spack</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spack</div>
+      <div>https://waipangsze.github.io/2024/09/14/2024-06-07-spack/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/14/2024-06-07-ecflow_by_spack/" title="ecFlow -- Installation &amp; Usage">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ecFlow -- Installation &amp; Usage</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/14/2024-06-10-spack_stack_jedi_mpas/" title="Spack-Stack (MPAS-JEDI)">
+                        <span class="hidden-mobile">Spack-Stack (MPAS-JEDI)</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
