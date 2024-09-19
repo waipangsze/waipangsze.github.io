@@ -58,7 +58,7 @@ fi
 
 Finally, it will initalize micromambs config on .bashrc
 
-###Export the contents of the existing environment to a YAML file.
+### Export the contents of the existing environment to a YAML file.
 
 ```sh
 micromamba env export -n oldenv > oldenv.yaml
