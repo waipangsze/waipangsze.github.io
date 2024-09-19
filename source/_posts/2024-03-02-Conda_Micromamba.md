@@ -40,6 +40,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
+```sh
 ## Parsing arguments
 if [ -t 0 ] ; then
   printf "Micromamba binary folder? [~/.local/bin] "
@@ -49,6 +50,7 @@ if [ -t 0 ] ; then
   printf "Configure conda-forge? [Y/n] "
   read CONDA_FORGE_YES
 fi
+```
 
 - /home/wpsze/.local/bin
 - init shell? Y
@@ -56,13 +58,19 @@ fi
 
 Finally, it will initalize micromambs config on .bashrc
 
+###Export the contents of the existing environment to a YAML file.
+
+```sh
+micromamba env export -n oldenv > oldenv.yaml
+```
+
 ### Create env by given yaml
 
-```
+```sh
 micromamba env create --name newenv --file oldenv.yaml
 ```
 ### Source and activate env
-```
+```sh
 $ source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
 $ micromamba activate venv
 ```
