@@ -126,6 +126,7 @@ This is a first release in WRF of a **basic electrification for the NSSL microph
 If you have trouble with this option please contact the developers directly (i.e., not wrf_help):
 
 > Ted Mansell (Ted.Mansell _at_ noaa.gov)
+
 > Alexandre Fierro (Alex.Fierro _at_ noaa.gov) 
 
 Specific namelist.input options are given below, along with a list of output fields.
@@ -247,11 +248,13 @@ Lightning activity is related to two important factors: dynamic–thermodynamic 
 The Implementation of an Explicit Charging and Discharge Lightning Scheme within the WRF-ARW Model: Benchmark Simulations of a Continental Squall Line, a Tropical Cyclone, and a Winter Storm
 
 This work describes the recent implementation of explicit lightning physics within the Weather Research and Forecasting (WRF) Model. 
+
 - Charging of hydrometeors consists of five distinct noninductive parameterizations, polarization of cloud water, and the exchange of charge during collisional mass transfer. 
 - The three components of the ambient electric field are explicitly solved for via the computationally efficient multigrid elliptic solver. 
 - The discharge process employs concepts adapted from two well-documented bulk lightning models, whereby charge reduction is imposed within a prescribed volume centered at grid points characterized by electric field magnitudes exceeding a given breakdown threshold. 
 
 This lightning model was evaluated through benchmark 
+
 - convection-allowing (3 km) model simulations of three contrasting convective systems: a continental squall line, 
 - a major hurricane (Rita 2005), and 
 - a winter storm. 
@@ -261,6 +264,7 @@ The areal coverage and magnitude of the simulated hourly flash origin density (F
 ## Thunderstorm Indices (LPI, Layrh, SCP)
 
 **Thunderstorm Indices (LPI, Layrh, SCP)** obtained from IMD-WRF (3km) Hourly outputs.
+
 - Model GEFS - WRF Description
 - <https://srf.tropmet.res.in/srf/ts_prediction_system/lpi_model.php>
 - **Lightning Potential Index (LPI)**
@@ -273,6 +277,7 @@ The areal coverage and magnitude of the simulated hourly flash origin density (F
 ## Prediction of lightning activity using WRF-ELEC model
 
 > **Gharaylou, M., Farahani, M. M., Mahmoudian, A., & Hosseini, M. (2020)**. Prediction of lightning activity using WRF-ELEC model: Impact of initial and boundary conditions. Journal of Atmospheric and Solar-Terrestrial Physics, 210, 105438.
+
 > - <https://sci-hub.se/https://doi.org/10.1016/j.jastp.2020.105438>
 
 - The WRF model belongs to the first group in which lightning is predicted based on the **Bulk Lightning Model (BLM)**. Ziegler and MacGorman (1994) have studied lightning flashes in a twoand three-dimensional cloud models using the WRF model.
