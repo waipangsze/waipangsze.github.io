@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Using Spack Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large supercomp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS -- Installation by Spack and Intel">
+<meta property="og:url" content="https://waipangsze.github.io/2024/06/01/MPAS_intel_spack_installation/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Using Spack Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large supercomp">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-05-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-16T01:04:10.085Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="Installation">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="Spack">
+<meta property="article:tag" content="Intel">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS -- Installation by Spack and Intel - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS -- Installation by Spack and Intel"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-01 00:00" pubdate>
+          June 1, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS -- Installation by Spack and Intel</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="using-spack">Using Spack</h1>
+<p>Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large supercomputing centers, where many users and application teams share common installations of software on clusters with exotic architectures, using libraries that do not have a standard ABI. Spack is non-destructive: installing a new version does not break existing installations, so many configurations can coexist on the same system. Most importantly, Spack is simple. It offers a simple spec syntax so that users can specify versions and configuration options concisely. Spack is also simple for package authors: package files are written in pure Python, and specs allow package authors to maintain a single file for many different builds of the same package.</p>
+<p><a target="_blank" rel="noopener" href="https://spack.readthedocs.io/en/latest/" class="uri">https://spack.readthedocs.io/en/latest/</a></p>
+<h2 id="search-packages-online">Search packages online</h2>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://packages.spack.io/" class="uri">https://packages.spack.io/</a></p>
+</blockquote>
+<h1 id="install-intel-compiler-and-intel-onempi">Install Intel compiler and intel-onempi</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack <span class="hljs-built_in">env</span> create intel_oneapi <br>$ spack <span class="hljs-built_in">env</span> activate intel_oneapi<br>$ spack info --all intel-oneapi-mpi<br>$ spack info --all intel-oneapi-compilers<br></code></pre></td></tr></table></figure>
+<p>Try to install <a target="_blank" rel="noopener" href="https://spack.readthedocs.io/en/latest/build_systems/inteloneapipackage.html">intel-oneapi-mpi/2021.4.0</a>,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack install --add intel-oneapi-compilers@2021.4.0<br><span class="hljs-comment"># Add the compilers to your compilers.yaml so spack can use them:</span><br><span class="hljs-comment"># For 2023.x and earlier versions, use:</span><br>$ spack compiler add `spack location -i intel-oneapi-compilers@2021.4.0`/compiler/latest/linux/bin/intel64<br>$ spack compiler add `spack location -i intel-oneapi-compilers@2021.4.0`/compiler/latest/linux/bin<br><span class="hljs-comment"># Verify that the compilers are available:</span><br>$ spack compiler list<br>$ spack location -i intel-oneapi-compilers@2021.4.0<br></code></pre></td></tr></table></figure>
+<p>Then, install intel-onempi,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack install --add intel-oneapi-mpi@2021.4.0%intel<br></code></pre></td></tr></table></figure>
+<p>Done.</p>
+<p>And, check</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">spack <span class="hljs-built_in">env</span> activate intel_oneapi<br><br><span class="hljs-built_in">which</span> mpiicc &amp;&amp; mpiicc --version<br><span class="hljs-built_in">which</span> mpiifort &amp;&amp; mpiifort --version<br><span class="hljs-built_in">which</span> mpiicpc &amp;&amp; mpiicpc --version<br><span class="hljs-built_in">which</span> icc &amp;&amp; icc --version<br><span class="hljs-built_in">which</span> ifort &amp;&amp; ifort --version<br></code></pre></td></tr></table></figure>
+<p>Additionally, install curl and cmake,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack info --all curl<br>$ spack install --add curl%intel<br>$ spack info --all cmake<br>$ spack install --add cmake%intel<br></code></pre></td></tr></table></figure>
+<h1 id="install-enviroment-for-mpas">Install enviroment for MPAS</h1>
+<p>Prepare</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#------------------------------------------------#</span><br><span class="hljs-comment">#Author:         wpsze</span><br><span class="hljs-comment">#Email：         </span><br><span class="hljs-comment">#date:           </span><br><span class="hljs-comment">#Version:        </span><br><span class="hljs-comment">#Description:    The purpose of the script</span><br><span class="hljs-comment">#Copyright (C)： 2022 All rights reserved</span><br><span class="hljs-comment">#------------------------------------------------#</span><br><br><span class="hljs-built_in">export</span> libs_DIR=/home/wpsze/MPAS-A/intel/modules_library/Library/<br><br><span class="hljs-comment"># intel compiler &amp; intel onempi</span><br>spack <span class="hljs-built_in">env</span> activate intel_oneapi<br><br><span class="hljs-built_in">which</span> mpiicc &amp;&amp; mpiicc --version<br><span class="hljs-built_in">which</span> mpiifort &amp;&amp; mpiifort --version<br><span class="hljs-built_in">which</span> mpiicpc &amp;&amp; mpiicpc --version<br><span class="hljs-built_in">which</span> icc &amp;&amp; icc --version<br><span class="hljs-built_in">which</span> ifort &amp;&amp; ifort --version<br><br><span class="hljs-comment"># MPAS env</span><br><span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$libs_DIR</span>/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$libs_DIR</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><span class="hljs-built_in">export</span> LDFLAGS=-L<span class="hljs-variable">$libs_DIR</span>/lib<br><span class="hljs-built_in">export</span> CPPFLAGS=-I<span class="hljs-variable">$libs_DIR</span>/include<br><br><span class="hljs-built_in">export</span> PNETCDF_PATH=<span class="hljs-variable">$libs_DIR</span><br><span class="hljs-built_in">export</span> PNETCDF=<span class="hljs-variable">$libs_DIR</span><br><span class="hljs-built_in">export</span> NETCDF_PATH=<span class="hljs-variable">$libs_DIR</span><br><span class="hljs-built_in">export</span> NETCDF=<span class="hljs-variable">$libs_DIR</span><br><span class="hljs-built_in">export</span> PIO=<span class="hljs-variable">$libs_DIR</span><br><br><br><span class="hljs-built_in">export</span> CC=mpiicc<br><span class="hljs-built_in">export</span> CXX=mpiicpc<br><span class="hljs-built_in">export</span> FC=mpiifort<br><span class="hljs-built_in">export</span> F77=mpiifort<br><span class="hljs-built_in">export</span> F90=mpiifort<br><span class="hljs-built_in">export</span> MPIF90=mpiifort<br><span class="hljs-built_in">export</span> MPIF77=mpiifort<br><span class="hljs-built_in">export</span> MPIFC=mpiifort<br><span class="hljs-built_in">export</span> MPICC=mpiicc<br><span class="hljs-built_in">export</span> MPICXX=mpiicpc<br><br><span class="hljs-built_in">export</span> CFLAGS=<span class="hljs-string">&#x27;-O3 -fPIC -static-intel&#x27;</span><br><span class="hljs-built_in">export</span> CXXFLAGS=<span class="hljs-string">&#x27;-O3 -fPIC -static-intel&#x27;</span><br><span class="hljs-built_in">export</span> FFLAGS=<span class="hljs-string">&#x27;-O3 -fPIC -static-intel&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>Then, env sh</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">############################## Directory Listing ############################</span><br><span class="hljs-built_in">export</span> HOME=`<span class="hljs-built_in">pwd</span>`<br><br><span class="hljs-built_in">source</span> /home/wpsze/MPAS-A/intel/modules_library/mpas_env_intel.sh<br><br><span class="hljs-built_in">export</span> download_DIR=<span class="hljs-variable">$HOME</span>/mpas_install/<br><br>TARGET=ifort<br><br><span class="hljs-built_in">which</span> mpiicc &amp;&amp; mpiicc --version<br><span class="hljs-built_in">which</span> mpiifort &amp;&amp; mpiifort --version<br><span class="hljs-built_in">which</span> mpiicpc &amp;&amp; mpiicpc --version<br><span class="hljs-built_in">which</span> icc &amp;&amp; icc --version<br><span class="hljs-built_in">which</span> ifort &amp;&amp; ifort --version<br><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$HOME</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$libs_DIR</span><br><br>mpiicc --version<br>mpiifort --version<br><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$HOME</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$download_DIR</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$libs_DIR</span><br><br><span class="hljs-built_in">mkdir</span> -p mpas_install<br><span class="hljs-built_in">mkdir</span> -p Library<br><br>do_download=False <span class="hljs-comment"># True or False</span><br>compile_all=True<br><br><span class="hljs-comment"># Currently Loaded Modules:</span><br><span class="hljs-comment">#  1) ncarenv/1.0 (xx)      4) ncarcompilers/1.0 (xx)  7) pnetcdf/1.11.2  10) ncview/2.1.7 (already)</span><br><span class="hljs-comment">#  2) ncarbinlibs/1.1 (xx)  5) netcdf/4.7.0        8) pio/1.9.23 (2.5.2)      11) metis/5.1.0</span><br><span class="hljs-comment">#  3) gnu/8.3.0 (done)         6) mpich/3.3.1         9) ncl/6.6.2 (already)       12) hdf5/1.10.5</span><br><br><span class="hljs-comment">#do_mpich=False ## intel-onempi</span><br>do_zlib=False<br>do_hdf5=True<br>do_pnetcdf=False<br>do_netcdfC=False<br>do_netcdfF=False<br>do_pio=False<br>do_metis=fTrue<br><br><span class="hljs-comment">############################## Downloading Libraries ############################</span><br><span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$do_download</span>  == True ]]; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>    wget -c https://zlib.net/zlib-1.2.13.tar.gz<br>    wget -c https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-c-4.7.4.tar.gz<br>    wget -c https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-fortran-4.5.3.tar.gz<br>    <span class="hljs-comment"># wget -c https://github.com/pmodels/mpich/releases/download/v4.0.2/mpich-4.0.2.tar.gz</span><br>    wget -c https://www.mpich.org/static/downloads/3.3.1/mpich-3.3.1.tar.gz<br>    wget -c https://parallel-netcdf.github.io/Release/pnetcdf-1.11.2.tar.gz <br>    <span class="hljs-comment"># Pio is from https://github.com/NCAR/ParallelIO/releases</span><br>    <span class="hljs-comment"># metis is from http://glaros.dtc.umn.edu/gkhome/metis/metis/download</span><br>    wget -c https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDF5/HDF5_1_12_0/source/hdf5-1.12.0.tar.gz<br><br><span class="hljs-keyword">fi</span><br><br><span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$compile_all</span> == True ]]; <span class="hljs-keyword">then</span><br>	<span class="hljs-comment">###################################################################</span><br>	<span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$libs_DIR</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br>	<span class="hljs-built_in">export</span> LDFLAGS=-L<span class="hljs-variable">$libs_DIR</span>/lib<br>	<span class="hljs-built_in">export</span> CPPFLAGS=-I<span class="hljs-variable">$libs_DIR</span>/include<br>	<span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$libs_DIR</span>/bin:<span class="hljs-variable">$PATH</span><br>	<br>	<span class="hljs-comment">#export PNETCDF_PATH=$libs_DIR/bin:$PATH</span><br>	<span class="hljs-comment">#export PNETCDF=$libs_DIR/bin:$PATH</span><br>	<br>	<span class="hljs-comment">#export NETCDF_PATH=$libs_DIR/bin:$PATH</span><br>	<span class="hljs-comment">#export NETCDF=$libs_DIR/bin:$PATH</span><br>	<br>	<span class="hljs-comment">############################## zlib ############################ *** zlib test OK ***</span><br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;do_zlib&#125;</span>  == True ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== zlib ====&quot;</span><br>		<span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>		tar xvf zlib-1.2.13.tar.gz 1&gt;/dev/null 2&gt;&amp;1 <br>		<span class="hljs-built_in">cd</span> zlib-1.2.13/<br><br>		./configure --prefix=<span class="hljs-variable">$libs_DIR</span> <span class="hljs-comment">#--static</span><br>		make -j 4<br>		make install<br>		make check<br>		<span class="hljs-built_in">cd</span> ..<br>		<span class="hljs-built_in">rm</span> -rf zlib-1.2.13<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== zlib (end) ====&quot;</span><br>	<span class="hljs-keyword">fi</span><br>	<br>	<span class="hljs-comment">############################## HDF5 ############################ </span><br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;do_hdf5&#125;</span> == True ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== hdf5 ====&quot;</span><br>		<span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>		tar xvf hdf5-1.12.0.tar.gz 1&gt;/dev/null 2&gt;&amp;1 <br>		<span class="hljs-built_in">cd</span> hdf5-1.12.0/<br><br>		./configure --prefix=<span class="hljs-variable">$libs_DIR</span> --enable-parallel --with-zlib=<span class="hljs-variable">$libs_DIR</span> --enable-fortran <span class="hljs-comment">#--disable-shared</span><br>		make -j 4<br>		make check<br>		make install<br>		<span class="hljs-built_in">cd</span> ..<br>		<span class="hljs-built_in">rm</span> -rf hdf5-1.12.0<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== hdf5 (end) ====&quot;</span><br>	<span class="hljs-keyword">fi</span><br>	<br>	<span class="hljs-comment">############################## pnetcdf ############################ PnetCDF has been successfully installed </span><br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;do_pnetcdf&#125;</span> == True ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== pnetcdf ====&quot;</span><br>		<span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>		tar xvf pnetcdf-1.11.2.tar.gz 1&gt;/dev/null 2&gt;&amp;1 <br>		<span class="hljs-built_in">cd</span> pnetcdf-1.11.2/<br><br>		./configure --prefix=<span class="hljs-variable">$libs_DIR</span><br>		make -j 4<br>		make check<br>		make ptest<br>		make testing<br>		make install<br>		<span class="hljs-built_in">cd</span> ..<br>		<span class="hljs-built_in">rm</span> -rf pnetcdf-1.11.2<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== pnetcdf (end) ====&quot;</span><br>	<span class="hljs-keyword">fi</span><br>	<br>	<span class="hljs-comment">############################## netcdf-C ############################  Congratulations! You have successfully installed netCDF!</span><br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;do_netcdfC&#125;</span> == True ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== netcdf-C ====&quot;</span><br>		<span class="hljs-comment">## -disable-dap：--disable-dap的原因是缺少一个‘curl’的lib</span><br>		<span class="hljs-comment">## 4.1.3以后的版本Fortran和C分开了。把disable--netcdf-4 写进去也无所谓</span><br>		<span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>		tar xvf netcdf-c-4.7.4.tar.gz 1&gt;/dev/null 2&gt;&amp;1 <br>		<span class="hljs-built_in">cd</span> netcdf-c-4.7.4/<br>		<br>		<span class="hljs-comment">#export LIBS=&quot;-lhdf5_hl -lhdf5 -lz -ldl&quot;</span><br>		<br>		<span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$libs_DIR</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br>		<span class="hljs-built_in">export</span> LDFLAGS=-L<span class="hljs-variable">$libs_DIR</span>/lib<br>		<span class="hljs-built_in">export</span> CPPFLAGS=-I<span class="hljs-variable">$libs_DIR</span>/include<br>		<br>		<span class="hljs-comment">#./configure --prefix=$libs_DIR --disable-dap --enable-pnetcdf --enable-netcdf4 --enable-cdf5 --enable-parallel-tests --disable-shared</span><br>		./configure --prefix=<span class="hljs-variable">$libs_DIR</span> --enable-shared --enable-netcdf4 --disable-filter-testing --disable-dap<br>		make -j 4 <br>		make check<br>		make install<br>		<span class="hljs-built_in">cd</span> ..<br>		<span class="hljs-built_in">rm</span> -rf netcdf-c-4.7.4<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== netcdf-C (end) ====&quot;</span><br>	<span class="hljs-keyword">fi</span><br>	<br>	<span class="hljs-comment">############################## netcdf-F ############################ </span><br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;do_netcdfF&#125;</span> == True ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== netcdf-F ====&quot;</span><br>		<span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>		tar xvf netcdf-fortran-4.5.3.tar.gz 1&gt;/dev/null 2&gt;&amp;1 <br>		<span class="hljs-built_in">cd</span> netcdf-fortran-4.5.3/<br>		<br>		<br>		<span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$libs_DIR</span>/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br>		<span class="hljs-built_in">export</span> LDFLAGS=-L<span class="hljs-variable">$libs_DIR</span>/lib<br>		<span class="hljs-built_in">export</span> CPPFLAGS=-I<span class="hljs-variable">$libs_DIR</span>/include<br>		<br>		<span class="hljs-comment">#</span><br>		<span class="hljs-comment"># configure: error: netcdf-c version 4.7.4 or greater is required</span><br>		<br>		nc-config --cflags<br>		nc-config --libs<br>		./configure --prefix=<span class="hljs-variable">$libs_DIR</span> --enable-shared <span class="hljs-comment">#--enable-parallel-tests #--disable-shared</span><br>		<br>		<span class="hljs-comment">#CFLAGS=$(nc-config --cflags) LDFLAGS=$(nc-config --libs) ./configure --prefix=$libs_DIR --enable-parallel-tests #--disable-shared</span><br>		<br>		make -j 4 <br>		make check<br>		make install<br>		<span class="hljs-built_in">cd</span> ..<br>		<span class="hljs-built_in">rm</span> -rf netcdf-fortran-4.5.3<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== netcdf-F (end) ====&quot;</span><br>	<span class="hljs-keyword">fi</span><br>	<br>	<span class="hljs-comment">############################## Pio ############################</span><br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;do_pio&#125;</span> == True ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== PIO ====&quot;</span><br>		<span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>		tar xvf ParallelIO-pio2_5_8.tar.gz 1&gt;/dev/null 2&gt;&amp;1<br>		<span class="hljs-built_in">cd</span> ParallelIO-pio2_5_8/<br><br>		<span class="hljs-comment">#./configure --prefix=$libs_DIR --enable-fortran</span><br>		<span class="hljs-comment">#cmake -DNetCDF_C_PATH=$libs_DIR -DNetCDF_Fortran_PATH=$libs_DIR -DPnetCDF_PATH=$libs_DIR -DPIO_ENABLE_TIMING=OFF -DCMAKE_INSTALL_PREFIX=$libs_DIR</span><br>		cmake -DNetCDF_C_PATH=<span class="hljs-variable">$NETCDF</span> -DNetCDF_Fortran_PATH=<span class="hljs-variable">$NETCDF</span> -DPnetCDF_PATH=<span class="hljs-variable">$PNETCDF</span> -DHDF5_PATH=<span class="hljs-variable">$libs_DIR</span> -DCMAKE_INSTALL_PREFIX=<span class="hljs-variable">$libs_DIR</span> -DPIO_USE_MALLOC=ON -DCMAKE_VERBOSE_MAKEFILE=1 -DPIO_ENABLE_TIMING=OFF ./<br>		make<br>		<span class="hljs-comment">#make check</span><br>		make install<br>		<span class="hljs-built_in">cd</span> ..<br>		<span class="hljs-built_in">rm</span> -rf ParallelIO-pio2_5_8<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== PIO (end) ====&quot;</span><br>	<span class="hljs-keyword">fi</span><br><br>	<span class="hljs-comment">############################## metis ############################</span><br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;do_metis&#125;</span> == True ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== metis ====&quot;</span><br><br>        <span class="hljs-comment">## metis is serial </span><br>        <span class="hljs-built_in">export</span> CC=icc<br>        <span class="hljs-built_in">export</span> CXX=icpc<br>        <span class="hljs-built_in">export</span> FC=ifort<br>        <span class="hljs-built_in">export</span> F77=ifort<br>        <span class="hljs-built_in">export</span> F90=ifort<br><br>		<span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>		tar xvf metis-5.1.0.tar.gz 1&gt;/dev/null 2&gt;&amp;1<br>		<span class="hljs-built_in">cd</span> metis-5.1.0/<br>		<span class="hljs-comment">#./configure --prefix=$libs_DIR</span><br>		<br>		make config prefix=<span class="hljs-variable">$libs_DIR</span><br>		make<br>		<span class="hljs-comment">#make check</span><br>		make install<br>		<span class="hljs-built_in">cd</span> ..<br>		<span class="hljs-built_in">rm</span> -rf metis-5.1.0<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== metis (end) ====&quot;</span><br>	<span class="hljs-keyword">fi</span><br>	<br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+<h1 id="mpasv7.3">MPASv7.3</h1>
+<h1 id="reference">Reference</h1>
+<ol type="1">
+<li><p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/full-wrf-and-wps-installation-example-intel.15229/">Full WRF and WPS Installation Example (Intel)</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/make-ifort-error.340/">Make ifort error</a></p></li>
+</ol>
+<p>In Makefile,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs sh">ifort:<br>	( $(MAKE) all \<br>	<span class="hljs-string">&quot;FC_PARALLEL = mpif90&quot;</span> \<br>	<span class="hljs-string">&quot;CC_PARALLEL = mpicc&quot;</span> \<br>	<span class="hljs-string">&quot;CXX_PARALLEL = mpicxx&quot;</span> \<br>	<span class="hljs-string">&quot;FC_SERIAL = ifort&quot;</span> \<br>	<span class="hljs-string">&quot;CC_SERIAL = icc&quot;</span> \<br>	<span class="hljs-string">&quot;CXX_SERIAL = icpc&quot;</span> \<br>	<span class="hljs-string">&quot;FFLAGS_PROMOTION = -real-size 64&quot;</span> \<br>	<span class="hljs-string">&quot;FFLAGS_OPT = -O3 -convert big_endian -free -align array64byte&quot;</span> \<br>	<span class="hljs-string">&quot;CFLAGS_OPT = -O3&quot;</span> \<br>	<span class="hljs-string">&quot;CXXFLAGS_OPT = -O3&quot;</span> \<br>	<span class="hljs-string">&quot;LDFLAGS_OPT = -O3&quot;</span> \<br>	<span class="hljs-string">&quot;FFLAGS_DEBUG = -g -convert big_endian -free -CU -CB -check all -fpe0 -traceback&quot;</span> \<br>	<span class="hljs-string">&quot;CFLAGS_DEBUG = -g -traceback&quot;</span> \<br>	<span class="hljs-string">&quot;CXXFLAGS_DEBUG = -g -traceback&quot;</span> \<br>	<span class="hljs-string">&quot;LDFLAGS_DEBUG = -g -fpe0 -traceback&quot;</span> \<br>	<span class="hljs-string">&quot;FFLAGS_OMP = -qopenmp&quot;</span> \<br>	<span class="hljs-string">&quot;CFLAGS_OMP = -qopenmp&quot;</span> \<br>	<span class="hljs-string">&quot;CORE = <span class="hljs-subst">$(CORE)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;DEBUG = <span class="hljs-subst">$(DEBUG)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;USE_PAPI = <span class="hljs-subst">$(USE_PAPI)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;OPENMP = <span class="hljs-subst">$(OPENMP)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;CPPFLAGS = <span class="hljs-subst">$(MODEL_FORMULATION)</span> -D_MPI&quot;</span> )<br></code></pre></td></tr></table></figure>
+<p>where use <strong>mpif90/mpicc/mpicxx</strong> but now we want to use <strong>mpiifort/mpiicc/mpiicpc</strong>.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># After reading your comment I decided to edit the Makefile, and in the lines of ifort I made the following change:</span><br><span class="hljs-comment"># Code:</span><br>ifort:<br>        ( $(MAKE) all \<br>        <span class="hljs-string">&quot;FC_PARALLEL = mpiifort&quot;</span> \<br>        <span class="hljs-string">&quot;CC_PARALLEL = mpiicc&quot;</span> \<br>        <span class="hljs-string">&quot;CXX_PARALLEL = mpiicpc&quot;</span> \<br>        <span class="hljs-string">&quot;FC_SERIAL = ifort&quot;</span> \<br>        <span class="hljs-string">&quot;CC_SERIAL = icc&quot;</span> \<br>        <span class="hljs-string">&quot;CXX_SERIAL = icpc&quot;</span> \<br></code></pre></td></tr></table></figure>
+<h1 id="for-mpasv8.1.0">For MPASv8.1.0,</h1>
+<p><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/releases/tag/v8.1.0" class="uri">https://github.com/MPAS-Dev/MPAS-Model/releases/tag/v8.1.0</a></p>
+<p>The top-level Makefile provides a new intel build target for the Intel oneAPI Fortran, C, and C++ compiler suite. {:.info}</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs sh">intel-mpi:   <span class="hljs-comment"># BUILDTARGET Intel compiler suite with Intel MPI library</span><br>	( $(MAKE) all \<br>	<span class="hljs-string">&quot;FC_PARALLEL = mpiifort&quot;</span> \<br>	<span class="hljs-string">&quot;CC_PARALLEL = mpiicc&quot;</span> \<br>	<span class="hljs-string">&quot;CXX_PARALLEL = mpiicpc&quot;</span> \<br>	<span class="hljs-string">&quot;FC_SERIAL = ifort&quot;</span> \<br>	<span class="hljs-string">&quot;CC_SERIAL = icc&quot;</span> \<br>	<span class="hljs-string">&quot;CXX_SERIAL = icpc&quot;</span> \<br>	<span class="hljs-string">&quot;FFLAGS_PROMOTION = -real-size 64&quot;</span> \<br>	<span class="hljs-string">&quot;FFLAGS_OPT = -O3 -convert big_endian -free -align array64byte&quot;</span> \<br>	<span class="hljs-string">&quot;CFLAGS_OPT = -O3&quot;</span> \<br>	<span class="hljs-string">&quot;CXXFLAGS_OPT = -O3&quot;</span> \<br>	<span class="hljs-string">&quot;LDFLAGS_OPT = -O3&quot;</span> \<br>	<span class="hljs-string">&quot;FFLAGS_DEBUG = -g -convert big_endian -free -CU -CB -check all -fpe0 -traceback&quot;</span> \<br>	<span class="hljs-string">&quot;CFLAGS_DEBUG = -g -traceback&quot;</span> \<br>	<span class="hljs-string">&quot;CXXFLAGS_DEBUG = -g -traceback&quot;</span> \<br>	<span class="hljs-string">&quot;LDFLAGS_DEBUG = -g -fpe0 -traceback&quot;</span> \<br>	<span class="hljs-string">&quot;FFLAGS_OMP = -qopenmp&quot;</span> \<br>	<span class="hljs-string">&quot;CFLAGS_OMP = -qopenmp&quot;</span> \<br>	<span class="hljs-string">&quot;PICFLAG = -fpic&quot;</span> \<br>	<span class="hljs-string">&quot;BUILD_TARGET = <span class="hljs-subst">$(@)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;CORE = <span class="hljs-subst">$(CORE)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;DEBUG = <span class="hljs-subst">$(DEBUG)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;USE_PAPI = <span class="hljs-subst">$(USE_PAPI)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;OPENMP = <span class="hljs-subst">$(OPENMP)</span>&quot;</span> \<br>	<span class="hljs-string">&quot;CPPFLAGS = <span class="hljs-subst">$(MODEL_FORMULATION)</span> -D_MPI&quot;</span> )<br></code></pre></td></tr></table></figure>
+<p>$ make intel-mpi CORE=core options {:.info}</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Installation/" class="print-no-link">#Installation</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/Spack/" class="print-no-link">#Spack</a>
+      
+        <a href="/tags/Intel/" class="print-no-link">#Intel</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS -- Installation by Spack and Intel</div>
+      <div>https://waipangsze.github.io/2024/06/01/MPAS_intel_spack_installation/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 1, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/03/MPAS_install_official_mpas_lib_install/" title="Official MPAS Installation lib -- Preliminary requirements">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Official MPAS Installation lib -- Preliminary requirements</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/31/MPAS_install_ParallelIO-pio2_error/" title="MPAS -- install ParallelIO-pio2_5_8">
+                        <span class="hidden-mobile">MPAS -- install ParallelIO-pio2_5_8</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

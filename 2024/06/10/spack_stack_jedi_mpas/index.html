@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="spack-stack Spack-stack is a framework for installing software libraries to support NOAA&#39;s Unified Forecast System (UFS) applications and the Joint Effort for Data assimilation Integration (JEDI) coup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spack-Stack (MPAS-JEDI)">
+<meta property="og:url" content="https://waipangsze.github.io/2024/06/10/spack_stack_jedi_mpas/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="spack-stack Spack-stack is a framework for installing software libraries to support NOAA&#39;s Unified Forecast System (UFS) applications and the Joint Effort for Data assimilation Integration (JEDI) coup">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-16T01:04:10.085Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="DA">
+<meta property="article:tag" content="Spack">
+<meta property="article:tag" content="Spack-Stack">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Spack-Stack (MPAS-JEDI) - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spack-Stack (MPAS-JEDI)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-10 00:00" pubdate>
+          June 10, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Spack-Stack (MPAS-JEDI)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="spack-stack">spack-stack</h1>
+<p>Spack-stack is a framework for installing software libraries to support NOAA's Unified Forecast System (UFS) applications and the Joint Effort for Data assimilation Integration (JEDI) coupled to several Earth system prediction models (MPAS, NEPTUNE, UM, FV3, GEOS, UFS).</p>
+<p>Spack-stack provides a practical framework for setting up and managing software libraries that support the Unified Forecast System (UFS) and Joint Effort for Data assimilation Integration (JEDI) projects, along with several other Earth system prediction models, such as the Model for Prediction Across Scales (MPAS), the Navy Environmental Prediction System Utilizing a Nonhydrostatic Engine (NEPTUNE), the Unified Model (UM), and the Goddard Earth Observing System (GEOS). This project results from collaboration among the Joint Center for Satellite Data Assimilation (JCSDA), the National Oceanic and Atmospheric Administration’s (NOAA’s) Environmental Modeling Center (EMC) and Earth Prediction Innovation Center (EPIC), and the U.S. Naval Research Laboratory (NRL). Spack-stack utilizes the Spack package manager, originally developed at Lawrence Livermore National Laboratory to cater to scientific high-performance computing (HPC) workflows.</p>
+<p><a target="_blank" rel="noopener" href="https://www.jcsda.org/news-blog/2023/10/2/jedi-spack-stack-150-the-new-standard">SPACK-STACK 1.5.0</a> &gt; That started changing in 2021, when JCSDA and NOAA EMC began exploring Spack as an option for creating a single software stack that could be used for both the JEDI DA software environment and the Unified Forecast System (UFS) ecosystem.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/JCSDA/spack-stack">github spack-stack</a></p>
+<p><a target="_blank" rel="noopener" href="https://spack-stack.readthedocs.io/en/latest/#">spack-stack.readthedocs.io</a></p>
+<p><a target="_blank" rel="noopener" href="https://epic.noaa.gov/spack-stack/">Spack-stack</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.google.com/search?q=ONE+STACK+TO+BUILD+THEM+ALL%3A+THE+NOAA-EMC%2FJCSDA+SPACK-STACK&amp;rlz=1C5CHFA_enHK1003HK1003&amp;sourceid=chrome&amp;ie=UTF-8">ONE STACK TO BUILD THEM ALL: THE NOAA-EMC/JCSDA SPACK-STACK (PPT)</a></p>
+<p><a target="_blank" rel="noopener" href="https://epic.noaa.gov/wp-content/uploads/2023/08/UIFCW-2023-Thu-17.-RICHERT_spack-stack-UIFCW-July-2023.pdf">spack-stack: A reproducible, many-platform software stack for operational weather applications (PPT)</a></p>
+<p>spack-stack is a set of Spack configurations and extensions {:.info}</p>
+<p>spack-stack is mainly a collection of Spack configuration files, but provides a Spack extension to simplify the installation process {:.info}</p>
+<h1 id="new-spack-stack-directory-structure">New spack-stack directory structure</h1>
+<p>To generate a new spack-stack directory structure,</p>
+<p>run <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> --recurse-submodules https://github.com/JCSDA/spack-stack<br></code></pre></td></tr></table></figure></p>
+<p>optionally with, e.g., '-b release/1.4.1' to specify the version</p>
+<p>source &lt;path to spack-stack directory&gt;/setup.sh {:.info}</p>
+<h1 id="new-environment">New environment</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ spack stack create <span class="hljs-built_in">env</span> --site &lt;site name&gt; --template &lt;template name&gt; --name &lt;environment name&gt;<br>$ <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;SPACK_STACK_DIR&#125;</span>/envs/&lt;environment name&gt;/<br>$ spack <span class="hljs-built_in">env</span> activate .<br><br><span class="hljs-comment"># If not using an existing site configuration, you may wish to modify config files and/or populate them using commands</span><br><span class="hljs-comment"># such as &#x27;spack external find&#x27; and &#x27;spack compiler find&#x27;.</span><br><span class="hljs-comment"># See https://spack-tutorial.readthedocs.io/en/latest/tutorial_configuration.html</span><br><br>$ spack concretize 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> log.concretize<br>$ spack install [--verbose] [--fail-fast] 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> log.install<br>$ spack module lmod refresh<br>$ spack stack setup-meta-modules<br></code></pre></td></tr></table></figure>
+<h2 id="mpas-jdei">MPAS-JDEI</h2>
+<p>Ref:<a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas-jedi/tutorial/202310NCU/">Welcome to the MPAS-JEDI tutorial practice guide</a></p>
+<p>For example, if default is gcc@8.5.0.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git <span class="hljs-built_in">clone</span> -b release/1.5.1 --recurse-submodules https://github.com/JCSDA/spack-stack<br><br>$ <span class="hljs-built_in">cd</span> spack-stack<br><br>$ git status<br>On branch release/1.5.1<br>Your branch is up to <span class="hljs-built_in">date</span> with <span class="hljs-string">&#x27;origin/release/1.5.1&#x27;</span>.<br><br>nothing to commit, working tree clean<br><br>$ <span class="hljs-built_in">source</span> setup.sh<br><br>$ spack stack create <span class="hljs-built_in">env</span> --site linux.default --name jedi_gccv850_linux<br>Configuring basic directory information ...<br>  ... script directory: /home/wpsze/spack-stack/spack-stack/spack/lib/jcsda-emc/spack-stack/stack<br>  ... base directory: /home/wpsze/spack-stack/spack-stack/spack/lib/jcsda-emc/spack-stack<br>  ... spack directory: /home/wpsze/spack-stack/spack-stack/spack<br>Creating environment from command-line args<br>Successfully wrote environment at /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux/spack.yaml<br><br>WARNING! User <span class="hljs-built_in">umask</span> is neither 0022 nor 0027, check before proceeding<br><br>==&gt; Created environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux<br><br>$ spack <span class="hljs-built_in">env</span> activate envs/jedi_gccv850_linux<br><br>$ spack find<br>==&gt; In environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux<br>==&gt; No root specs<br>==&gt; 0 installed packages<br><br><br><span class="hljs-comment">## MPAS-JEDI</span><br>$ spack add ecbuild eigen udunits gsl-lite environment-modules<br>$ spack add mpich<br>$ spack add hdf5^mpich parallelio^mpich<br>$ spack add ecmwf-atlas@0.31.1^mpich<br><br>$ spack install<br><br><span class="hljs-comment"># all are successful.</span><br><br> $ spack find<br>==&gt; In environment /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux<br>==&gt; Root specs<br>ecbuild   ecmwf-atlas@0.31.1   eigen   environment-modules   gsl-lite   hdf5   mpich   parallelio   udunits <br><br>==&gt; Installed packages<br>-- linux-rocky8-haswell / gcc@8.5.0 -----------------------------<br>autoconf@2.69                       diffutils@3.9              fiat@1.2.0       libfabric@1.18.1   m4@1.4.19               pigz@2.7                util-macros@1.19.3<br>automake@1.16.5                     ecbuild@3.7.2              findutils@4.9.0  libffi@3.4.4       mpich@4.1.1             pkg-config@0.29.2       xz@5.4.1<br>berkeley-db@18.1.40                 eckit@1.23.1               flex@2.6.3       libiconv@1.17      ncurses@6.4             python@3.10.8           yaksa@0.2<br>bison@3.8.2                         ecmwf-atlas@0.31.1         gdbm@1.23        libmd@1.0.4        netcdf-c@4.9.2          readline@8.2            zlib@1.2.13<br>boost@1.78.0                        ectrans@1.2.0              gettext@0.21.1   libpciaccess@0.17  netcdf-fortran@4.6.0    snappy@1.1.10           zstd@1.5.2<br>bzip2@1.0.8                         eigen@3.4.0                gmake@4.4.1      libsigsegv@2.14    openblas@0.3.19         sqlite@3.42.0<br>c-blosc@1.21.4                      environment-modules@5.3.1  gsl-lite@0.37.0  libtool@2.4.7      openssl@1.1.1u          tar@1.34<br>ca-certificates-mozilla@2023-01-10  expat@2.5.0                hdf5@1.14.0      libxcrypt@4.4.35   parallel-netcdf@1.12.2  tcl@8.6.12<br>cmake@3.23.1                        fckit@0.10.1               libaec@1.0.6     libxml2@2.10.3     parallelio@2.5.10       udunits@2.2.28<br>curl@8.1.2                          fftw@3.3.10                libbsd@0.11.7    lz4@1.9.4          perl@5.38.0             util-linux-uuid@2.38.1<br>==&gt; 65 installed packages<br><br>$ spack module tcl refresh<br>==&gt; You are about to regenerate tcl module files <span class="hljs-keyword">for</span>:<br><br>-- linux-rocky8-haswell / gcc@8.5.0 -----------------------------<br>kmosf2b autoconf@2.69                       owkksle expat@2.5.0       o5fm2ib libpciaccess@0.17       zzdldzz pkg-config@0.29.2<br>3zzqcqa automake@1.16.5                     z5frtgj fckit@0.10.1      bcnervk libsigsegv@2.14         vu7mzai python@3.10.8<br>rksajpa berkeley-db@18.1.40                 dyhv6t6 fftw@3.3.10       oi52wco libtool@2.4.7           nbav53o readline@8.2<br>k4yohcw bison@3.8.2                         abwhtim fiat@1.2.0        dh3pgna libxcrypt@4.4.35        awehs3f snappy@1.1.10<br>3zcm66d boost@1.78.0                        th5cmuq findutils@4.9.0   56a6xgk libxml2@2.10.3          xmupg6k sqlite@3.42.0<br>yd6i5au bzip2@1.0.8                         hjgtmaq flex@2.6.3        rwcgkls lz4@1.9.4               vetdjwa tar@1.34<br>at3s3ei c-blosc@1.21.4                      lisu52h gdbm@1.23         uwicvjw m4@1.4.19               m3xviog tcl@8.6.12<br>edma3gu ca-certificates-mozilla@2023-01-10  wzfhnm7 gettext@0.21.1    jefb5lu mpich@4.1.1             uadvmuz udunits@2.2.28<br>h5p5rs7 cmake@3.23.1                        ba4vudd gmake@4.4.1       dzxkixc ncurses@6.4             wdfeec7 util-linux-uuid@2.38.1<br>jf7usug curl@8.1.2                          t4udhou gsl-lite@0.37.0   6d2z7tb netcdf-c@4.9.2          evqjofh util-macros@1.19.3<br>32jm5xp diffutils@3.9                       fja7tdm hdf5@1.14.0       3ltfgi2 netcdf-fortran@4.6.0    72t2yvx xz@5.4.1<br>pzidwlf ecbuild@3.7.2                       vbf3elz libaec@1.0.6      u5n5zri openblas@0.3.19         iyrk2i7 yaksa@0.2<br>wov4yva eckit@1.23.1                        65boafj libbsd@0.11.7     mgcs3tx openssl@1.1.1u          x54v3wn zlib@1.2.13<br>v45ibbv ecmwf-atlas@0.31.1                  63u4otp libfabric@1.18.1  56vql6d parallel-netcdf@1.12.2  bteldyo zstd@1.5.2<br>kb6u64z ectrans@1.2.0                       frf3blg libffi@3.4.4      efx7bmd parallelio@2.5.10<br>t4jxg3j eigen@3.4.0                         pnmrtbc libiconv@1.17     se4zvg5 perl@5.38.0<br>om7l5xf environment-modules@5.3.1           vgtevgl libmd@1.0.4       l3xczgm pigz@2.7<br><br>==&gt; Do you want to proceed? [y/n] y<br>==&gt; Regenerating tcl module files<br><br>$ spack stack setup-meta-modules<br>...<br>Metamodule generation completed successfully <span class="hljs-keyword">in</span> /home/wpsze/spack-stack/spack-stack/envs/jedi_gccv850_linux/install/modulefiles/Core<br></code></pre></td></tr></table></figure>
+<p>Error: &gt; Error: eigen-3.4.0-t4jxg3j727pxxsr75zstl2eblmkzapfz: timeout: The read operation timed out &gt;&gt; rerun: $ spack install</p>
+<blockquote>
+<p>==&gt; Installing krb5-1.20.1-muktx57itqz6x2z74afwncpub2higpei msgfmt: error while opening "en_US.mo" for writing: Permission denied msgfmt: error while opening "de.mo" for writing: Permission denied &gt; No install git-lfs</p>
+</blockquote>
+<blockquote>
+<p>Error: git-lfs-3.3.0-6ilwlfqmm7ud5crbugmcskju5gtkgk4j: Package was not installed &gt; <code>$ micromamba activate git-lfs</code> &gt; <code>$ micromamba install git-lfs</code></p>
+</blockquote>
+<p>Remark: Git Large File Storage (LFS) replaces large files such as audio samples, videos, datasets, and graphics with text pointers inside Git, while storing the file contents on a remote server like GitHub.com or GitHub Enterprise.</p>
+<p>source env,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#source $&#123;SPACK_DIR&#125;/setup.sh</span><br><span class="hljs-comment">#spack env activate $&#123;SPACK_ENV&#125;</span><br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>** do above on local PC because git-lfs fails on workstation/cluster.</p>
+</blockquote>
+<h2 id="mpas_bundle">mpas_bundle</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">source</span> spack/share/spack/setup-env.sh<br>$ <span class="hljs-built_in">source</span> spack-stack/setup.sh<br>$ spack <span class="hljs-built_in">env</span> activate spack-stack/envs/jedi_gcc_linux<br>$ spack find<br><br>$ <span class="hljs-built_in">mkdir</span> mpas_bundle_v2<br>$ <span class="hljs-built_in">cd</span> mpas_bundle_v2<br>$ git <span class="hljs-built_in">clone</span> -b release/2.0.0 https://github.com/JCSDA/mpas-bundle.git code<br><br>$ <span class="hljs-built_in">mkdir</span> build<br>$ <span class="hljs-built_in">cd</span> build<br><br><span class="hljs-comment"># (no need) $ module list</span><br></code></pre></td></tr></table></figure>
+<p>MPAS-JEDI uses cmake to automatically download the code from various github repositories, listed in CMakeLists.txt under ~code. Now type the command below under the build directory:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git lfs install<br></code></pre></td></tr></table></figure>
+<p>and then, <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sh">spack load ecbuild@3.7.2<br>spack load eigen@3.4.0 gsl-lite@0.37.0 hdf5@1.14.0 udunits@2.2.28 netcdf-c@4.9.2 netcdf-fortran@4.6.0 parallel-netcdf@1.12.2 parallelio@2.5.10<br>spack load openblas@0.3.19<br>spack load eckit@1.23.1<br>spack load fckit@0.10.1<br>spack load ecmwf-atlas@0.31.1<br>spack load cmake@3.23.1 mpich@4.1.1<br><br>$ cmake ../code<br><br>......<br>-- Configuring <span class="hljs-keyword">done</span><br>-- Generating <span class="hljs-keyword">done</span><br>-- Build files have been written to: /home/wpsze/mpas_bundle_v2/build<br></code></pre></td></tr></table></figure></p>
+<p>After it completes, <strong>you will see the actual source code of various reporitories (e.g., oops, saber, ufo, ioda, crtm, mpas-jedi, and MPAS) is now under the code directory</strong>. Meanwhile, <strong>Makefile files to build executables are generated under the build directory</strong>. Now it is ready to compile MPAS-JEDI under 'build' using the standard make. However, it is NOT recommended to compile the code on the login node at the same time.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ make -j14<br><br>.......<br>[100%]<br></code></pre></td></tr></table></figure>
+<p>This requests xx min walltime of a login node with 14 cores. {:.info}</p>
+<p>Once we reach 100% of the compilation, we can check mpas-jedi related executables:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">ls</span> bin/mpas*<br><br>bin/mpas_atmosphere                       bin/mpasjedi_forecast.x<br>bin/mpas_atmosphere_build_tables          bin/mpasjedi_gen_ens_pert_B.x<br>bin/mpas_data_checker.py                  bin/mpasjedi_hofx3d.x<br>bin/mpas_data_downloader.py               bin/mpasjedi_hofx.x<br>bin/mpas_init_atmosphere                  bin/mpasjedi_rtpp.x<br>bin/mpasjedi_convertstate.x               bin/mpasjedi_staticbinit.x<br>bin/mpasjedi_dirac.x                      bin/mpasjedi_variational.x<br>bin/mpasjedi_eda.x                        bin/mpas_namelist_gen<br>bin/mpasjedi_enkf.x                       bin/mpas_parse_atmosphere<br>bin/mpasjedi_enshofx.x                    bin/mpas_parse_init_atmosphere<br>bin/mpasjedi_error_covariance_training.x  bin/mpas_streams_gen<br><br>$ <span class="hljs-built_in">ls</span> bin/ioda-up*<br>bin/ioda-upgrade-v1-to-v2.x  bin/ioda-upgrade-v2-to-v3.x<br></code></pre></td></tr></table></figure>
+<p>The last step is to ensure that the code was compiled properly by running the MPAS-JEDI ctests, with two lines of simple command:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span> mpas-jedi<br>$ ctest<br><br>100% tests passed, 0 tests failed out of 47<br><br>Label Time Summary:<br>executable    =  54.21 sec*proc (13 tests)<br>mpasjedi      = 380.26 sec*proc (47 tests)<br>mpi           = 287.59 sec*proc (43 tests)<br>script        = 326.05 sec*proc (34 tests)<br><br>Total Test time (real) = 380.91 sec<br></code></pre></td></tr></table></figure>
+<p>To determine if a test passes or fails, <em>a comparison of the test log and reference file is done internally taking as reference a tolerance value</em>. This tolerance is specified via YAML file. These files can be found under <strong>mpas-jedi/test/testoutput</strong> in the build folder.</p>
+<h2 id="converting-ncep-bufr-observation-into-ioda-hdf5-format">Converting NCEP BUFR observation into IODA-HDF5 format</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span> mpas_jedi_tutorial <br>$ git <span class="hljs-built_in">clone</span> https://github.com/NCAR/obs2ioda<br>$ <span class="hljs-built_in">cd</span> obs2ioda/obs2ioda-v2/src/<br></code></pre></td></tr></table></figure>
+<p>NCEP BUFR library (https://github.com/NOAA-EMC/NCEPLIBS-bufr) is required to compile <strong>obs2ioda-v2.x</strong>. Edit <strong>obs2ioda-v2/src/Makefile</strong> to set proper <strong>BUFR_LIB</strong> before make. Here we have pre-build BUFR_LIB on Taiwania-3 and we put the pre-build BUFR_LIB path in Makefile.</p>
+<h3 id="required-ncep-bufr-library">(Required) NCEP BUFR library</h3>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git <span class="hljs-built_in">clone</span> https://github.com/NOAA-EMC/NCEPLIBS-bufr<br><br>$ <span class="hljs-built_in">mkdir</span> build &amp;&amp; <span class="hljs-built_in">cd</span> build<br><br><span class="hljs-comment"># $ cmake -DCMAKE_INSTALL_PREFIX=path1 -DMASTER_TABLE_DIR=path2 .. # path1=./</span><br>$ cmake -DCMAKE_INSTALL_PREFIX=./ .. <br>-- Build files have been written to: /home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build<br><br>$ make -j4<br>......<br>[100%] Built target outtest6_8<br><br>$ ctest<br>......<br>100% tests passed, 0 tests failed out of 94<br>Total Test time (real) =  30.62 sec<br><br>$ make install<br>......<br>-- Installing: /home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/bin/debufr<br></code></pre></td></tr></table></figure>
+<p>Both <strong>path1</strong> and <strong>path2</strong> may be full or relative pathnames on the system, up to a maximum of 90 characters each.</p>
+<p>Installation of the library and utilities will be under <strong>path1</strong>. Installation of the master BUFR tables will be under <strong>path2</strong>, or <em>under path1 if -DMASTER_TABLE_DIR=path2 is omitted from the above cmake command</em>.</p>
+<p>If Python interoperability is desired, -DENABLE_PYTHON=ON can also be added to the above cmake command. However, version 3 of Python must be installed and available on the system.</p>
+<h3 id="go-back-to-ioda">Go back to IODA</h3>
+<h3 id="obs2ioda-v2.x">obs2ioda-v2.x</h3>
+<p>https://github.com/jamiebresch/obs2ioda/blob/main/obs2ioda-v2/README.md</p>
+<p>NCEP BUFR library (https://github.com/NOAA-EMC/NCEPLIBS-bufr) is required to compile <strong>obs2ioda-v2.x</strong>. Edit <strong>obs2ioda-v2/src/Makefile</strong> to set proper <strong>BUFR_LIB</strong> before make. <del>Here we have pre-build BUFR_LIB on Taiwania-3 and we put the pre-build BUFR_LIB path in Makefile.</del> We have to build one as above and put the build BUFR_LIB path in Makefile.</p>
+<p>Default Makefile includes,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#--------------</span><br><span class="hljs-comment">#INTEL compiler</span><br><span class="hljs-comment">#--------------</span><br>FC = ifort<br><span class="hljs-comment">#BUFR_LIB = -L/glade/u/home/hclin/extlib/intel -lbufr</span><br><span class="hljs-comment">#FFLAGS = -mcmodel medium # needed for intel error message &quot;failed to convert GOTPCREL relocation&quot;</span><br>BUFR_LIB = -L/glade/campaign/mmm/parc/ivette/pandac/converters/WRFDA_3DVAR_dmpar/var/external/bufr -lbufr<br>FFLAGS = -mcmodel medium <span class="hljs-comment"># needed for intel error message &quot;failed to convert GOTPCREL relocation&quot; # -g -traceback -debug all -check all</span><br><br>LIBS = -L$(NETCDF)/lib -lnetcdff -lnetcdf <span class="hljs-variable">$&#123;BUFR_LIB&#125;</span><br>INCS = -I$(NETCDF)/include<br>```   <br><br><span class="hljs-keyword">then</span>,<br><br>```sh<br>BUFR_LIB = -L/home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/lib -lbufr<br><span class="hljs-built_in">export</span> NETCDF=/home/wpsze/spack-stack/envs/jedi_gcc_linux/install/gcc/9.4.0/netcdf-fortran-4.6.0-gwqak4i/<br><span class="hljs-built_in">export</span> NETCDF=/home/wpsze/micromamba/envs/obs2ioda/x86_64-conda-linux-gnu/<br></code></pre></td></tr></table></figure>
+<p>Then compile the converter by using make command:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">cd</span> obs2ioda/obs2ioda-v2/src/<br>$ make<br><span class="hljs-comment"># $ make clean</span><br></code></pre></td></tr></table></figure>
+<p>If the compilation is successful, the executable file <strong>obs2ioda-v2.x</strong> will be generated.</p>
+<h4 id="error-1">Error 1</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">hsd.f90:306:11:<br><br>  306 |       <span class="hljs-keyword">if</span> ( fexist(ij) == .<span class="hljs-literal">false</span>. ) <span class="hljs-keyword">then</span><br>      |           1<br>Error: Logicals at (1) must be compared with .eqv. instead of ==<br>make: *** [Makefile:67: hsd.o] Error 1<br></code></pre></td></tr></table></figure>
+<p>check, and then replace with "eqv"</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ grep -rin <span class="hljs-string">&quot;==&quot;</span> hsd.f90 <br>306:      <span class="hljs-keyword">if</span> ( fexist(ij) == .<span class="hljs-literal">false</span>. ) <span class="hljs-keyword">then</span><br>...<br></code></pre></td></tr></table></figure>
+<p>to</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ grep -rin <span class="hljs-string">&quot;eqv&quot;</span> hsd.f90 <br>306:      <span class="hljs-keyword">if</span> ( fexist(ij) .eqv. .<span class="hljs-literal">false</span>. ) <span class="hljs-keyword">then</span><br></code></pre></td></tr></table></figure>
+<h4 id="error-2">Error 2</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">/usr/bin/ld: cannot find -lbufr<br>collect2: error: ld returned 1 <span class="hljs-built_in">exit</span> status<br>make: *** [Makefile:46: obs2ioda] Error 1<br></code></pre></td></tr></table></figure>
+<p>check,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">NCEPLIBS-bufr/build/include/ is bufr_4<br>NCEPLIBS-bufr/build/lib/ is libbufr_4.a<br></code></pre></td></tr></table></figure>
+<h4 id="error-3">Error 3</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">/usr/bin/ld: warning: libnetcdf.so.19, needed by /home/wpsze/spack-stack/envs/jedi_gcc_linux/install/gcc/9.4.0/netcdf-fortran-4.6.0-gwqak4i/lib/libnetcdff.so, may conflict with libnetcdf.so.15<br></code></pre></td></tr></table></figure>
+<p>Export,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> NETCDF=/home/wpsze/spack-stack/envs/jedi_gcc_linux/install/gcc/9.4.0/netcdf-c-4.9.2-yhizvd3/<br><span class="hljs-built_in">export</span> NETCDFF=/home/wpsze/spack-stack/envs/jedi_gcc_linux/install/gcc/9.4.0/netcdf-fortran-4.6.0-gwqak4i/<br></code></pre></td></tr></table></figure>
+<p>and, modify in Makefile</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">LIBS = -L$(NETCDF)/lib -L$(NETCDFF)/lib -lnetcdff -lnetcdf <span class="hljs-variable">$&#123;BUFR_LIB&#125;</span><br>INCS = -I$(NETCDF)/include -I$(NETCDFF)/include<br></code></pre></td></tr></table></figure>
+<h4 id="error-4">Error 4</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sh">hsd.o: <span class="hljs-keyword">in</span> <span class="hljs-keyword">function</span> `__ahi_hsd_mod_MOD_hisd_radiance_to_tbb<span class="hljs-string">&#x27;:</span><br><span class="hljs-string">hsd.f90:(.text+0x19ed): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header&#x27;</span> defined <span class="hljs-keyword">in</span> .bss section <span class="hljs-keyword">in</span> hsd.o<br>hsd.f90:(.text+0x1a06): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header<span class="hljs-string">&#x27; defined in .bss section in hsd.o</span><br><span class="hljs-string">hsd.f90:(.text+0x1a1a): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header&#x27;</span> defined <span class="hljs-keyword">in</span> .bss section <span class="hljs-keyword">in</span> hsd.o<br>hsd.f90:(.text+0x1a50): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header<span class="hljs-string">&#x27; defined in .bss section in hsd.o</span><br><span class="hljs-string">hsd.f90:(.text+0x1a58): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header&#x27;</span> defined <span class="hljs-keyword">in</span> .bss section <span class="hljs-keyword">in</span> hsd.o<br>hsd.f90:(.text+0x1a64): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header<span class="hljs-string">&#x27; defined in .bss section in hsd.o</span><br><span class="hljs-string">hsd.f90:(.text+0x1ad1): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header&#x27;</span> defined <span class="hljs-keyword">in</span> .bss section <span class="hljs-keyword">in</span> hsd.o<br>hsd.f90:(.text+0x1ad9): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header<span class="hljs-string">&#x27; defined in .bss section in hsd.o</span><br><span class="hljs-string">hsd.f90:(.text+0x1aea): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header&#x27;</span> defined <span class="hljs-keyword">in</span> .bss section <span class="hljs-keyword">in</span> hsd.o<br>hsd.o: <span class="hljs-keyword">in</span> <span class="hljs-keyword">function</span> `__ahi_hsd_mod_MOD_pixlin_to_lonlat<span class="hljs-string">&#x27;:</span><br><span class="hljs-string">hsd.f90:(.text+0x1eca): relocation truncated to fit: R_X86_64_PC32 against symbol `__ahi_hsd_mod_MOD_header&#x27;</span> defined <span class="hljs-keyword">in</span> .bss section <span class="hljs-keyword">in</span> hsd.o<br>hsd.f90:(.text+0x1eed): additional relocation overflows omitted from the output<br>/usr/bin/ld: failed to convert GOTPCREL relocation; relink with --no-relax<br>collect2: error: ld returned 1 <span class="hljs-built_in">exit</span> status<br>make: *** [Makefile:46: obs2ioda] Error 1<br></code></pre></td></tr></table></figure>
+<p>We use gfortran, <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#------------</span><br><span class="hljs-comment">#GNU compiler</span><br><span class="hljs-comment">#------------</span><br>FC = gfortran<br>BUFR_LIB = -L/home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/lib -lbufr_4<br><br>FFLAGS = -ffree-line-length-none -mcmodel=medium <br></code></pre></td></tr></table></figure></p>
+<h3 id="finally-modified-makefile">Finally, modified Makefile</h3>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#! /bin/sh -v</span><br><br><span class="hljs-comment">#------------</span><br><span class="hljs-comment">#GNU compiler</span><br><span class="hljs-comment">#------------</span><br>FC = gfortran<br>BUFR_LIB = -L/home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/lib -lbufr_4<br><br>FFLAGS = -ffree-line-length-none -mcmodel=medium <span class="hljs-comment">#-fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow</span><br><br><span class="hljs-comment">#GNU10 = -fallow-argument-mismatch -fallow-invalid-boz</span><br><span class="hljs-comment">#FFLAGS = -mcmodel=medium -fpic -ffree-line-length-none $&#123;GNU10&#125; -fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow</span><br><br><span class="hljs-comment">#GNU10 = #-fallow-argument-mismatch -fallow-invalid-boz</span><br><span class="hljs-comment">#FFLAGS = -ffree-line-length-none $&#123;GNU10&#125; #-fbacktrace -ggdb -fcheck=bounds,do,mem,pointer -ffpe-trap=invalid,zero,overflow</span><br><br><span class="hljs-comment">#--------------</span><br><span class="hljs-comment">#INTEL compiler</span><br><span class="hljs-comment">#--------------</span><br><span class="hljs-comment">#FC = ifort</span><br><span class="hljs-comment">#BUFR_LIB = -L/glade/u/home/hclin/extlib/intel -lbufr</span><br><span class="hljs-comment">#FFLAGS = -mcmodel medium # needed for intel error message &quot;failed to convert GOTPCREL relocation&quot;</span><br><span class="hljs-comment">#BUFR_LIB = -L/home/wpsze/mpas_jedi_tutorial/NCEPLIBS-bufr/build/lib -lbufr</span><br><span class="hljs-comment">#FFLAGS = -mcmodel medium # needed for intel error message &quot;failed to convert GOTPCREL relocation&quot; # -g -traceback -debug all -check all</span><br><br>LIBS = -L$(NETCDF)/lib -L$(NETCDFF)/lib -lnetcdff -lnetcdf <span class="hljs-variable">$&#123;BUFR_LIB&#125;</span><br>INCS = -I$(NETCDF)/include -I$(NETCDFF)/include<br></code></pre></td></tr></table></figure>
+<h1 id="jedi-mpas-test-and-application-files">JEDI-MPAS Test and Application Files</h1>
+<p>https://gdex.ucar.edu/dataset/147b_jcsda.html</p>
+<p>JEDI-MPAS is the interface between the generic components of the Joint Effort for Data assimilation Integration (JEDI) system and the atmospheric core of the Model for Prediction Across Scales (MPAS). The JEDI software package is a unified, innovative data assimilation system for Earth System Prediction. Developed and distributed by UCP’s Joint Center for Satellite Data Assimilation (JCSDA), JEDI is versatile and sophisticated enough for a variety of applications, from operational weather forecasting and atmospheric research on High Performance Computing (HPC), to learning the fundamentals of data assimilation by running idealized toy models on your laptop. The atmospheric component of MPAS is a non-hydrostatic model using an unstructured centroidal Voronoi mesh with smoothly varying resolution for global or regional domains. The primary development partners for MPAS are Los Alamos National Laboratory and the National Center for Atmospheric Research.</p>
+<p>This data set provides example observation files, model backgrounds, and other input files needed to run a variety of JEDI-MPAS applications, including the comprehensive suite of unit tests and example activities that are described in online tutorials. This data set accompanies JEDI-MPAS, version 1.0.0, released 24 September 20.</p>
+<blockquote>
+<p>Wget shell script - Download all files using Wget, preferred for Linux.</p>
+</blockquote>
+<h1 id="specific-issue-cluster">Specific Issue (cluster)</h1>
+<blockquote>
+<p>git-lfs issue Ran patch() for krb5 &amp; error while opening "en_US.mo" for writing: Permission denied</p>
+</blockquote>
+<p>If copy whole <strong>mpas_bundle_v2</strong> (e.g. local PC) that includes <strong>build</strong> and <strong>code</strong> to workstation or cluster,</p>
+<ol type="1">
+<li>if your workstation/cluster has spack-stack (for jedi-mpas)</li>
+<li>remove build/CMakeCache.txt</li>
+<li>remove build/_deps/mpas_data-subbuild/CMakeCache.txt</li>
+<li>run $ cmake ../code</li>
+<li>it will re-generate your curren config</li>
+</ol>
+<p>Reference error: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">CMake Error: The current CMakeCache.txt directory /xxx/mpas_bundle_v2_temp/build/CMakeCache.txt is different than the directory /home/wpsze/mpas_bundle_v2/build <span class="hljs-built_in">where</span> CMakeCache.txt was created. This may result <span class="hljs-keyword">in</span> binaries being created <span class="hljs-keyword">in</span> the wrong place. If you are not sure, reedit the CMakeCache.txt<br>CMake Error: The <span class="hljs-built_in">source</span> <span class="hljs-string">&quot;/EM/wpsze/cpas/CPAS-MPAS-JEDI/DA-obs2ioda-EM/mpas_bundle_v2_temp/code/CMakeLists.txt&quot;</span> does not match the <span class="hljs-built_in">source</span> <span class="hljs-string">&quot;/home/wpsze/mpas_bundle_v2/code/CMakeLists.txt&quot;</span> used to generate cache.  Re-run cmake with a different <span class="hljs-built_in">source</span> directory.<br>CMake Error: The current CMakeCache.txt directory /xxx/mpas_bundle_v2_temp/build/_deps/mpas_data-subbuild/CMakeCache.txt is different than the directory /home/wpsze/mpas_bundle_v2/build/_deps/mpas_data-subbuild <span class="hljs-built_in">where</span> CMakeCache.txt was created. This may result <span class="hljs-keyword">in</span> binaries being created <span class="hljs-keyword">in</span> the wrong place. If you are not sure, reedit the CMakeCache.txt<br></code></pre></td></tr></table></figure></p>
+<ol type="1">
+<li><p>config done <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">-- Configuring <span class="hljs-keyword">done</span><br>-- Generating <span class="hljs-keyword">done</span><br>-- Build files have been written to: /xxx/mpas_bundle_v2_temp/build<br></code></pre></td></tr></table></figure></p></li>
+<li><p>make -j12 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">[100%] Built target mpasjedi_variational.x<br></code></pre></td></tr></table></figure></p></li>
+<li><p>cd mpas-jedi &amp; ctest <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs sh">74% tests passed, 12 tests failed out of 47<br><br>Label Time Summary:<br>executable    =  42.47 sec*proc (13 tests)<br>mpasjedi      = 680.81 sec*proc (47 tests)<br>mpi           = 672.80 sec*proc (43 tests)<br>script        = 638.33 sec*proc (34 tests)<br><br>Total Test time (real) = 683.12 sec<br><br>The following tests FAILED:<br>	 23 - test_mpasjedi_parameters_bumpcov (Failed)<br>	 24 - test_mpasjedi_parameters_bumploc (Failed)<br>	 25 - test_mpasjedi_dirac_bumpcov (Failed)<br>	 29 - test_mpasjedi_3dvar_bumpcov (Failed)<br>	 35 - test_mpasjedi_3dhybrid_bumpcov_bumploc (Failed)<br>	 39 - test_mpasjedi_eda_3dhybrid (Failed)<br>	 41 - test_mpasjedi_letkf_3dloc_4pe (Failed)<br>	 42 - test_mpasjedi_lgetkf_4pe (Failed)<br>	 44 - test_mpasjedi_parameters_bumpcov_2pe (Failed)<br>	 45 - test_mpasjedi_parameters_bumploc_2pe (Failed)<br>	 46 - test_mpasjedi_3dvar_2pe (Failed)<br>	 47 - test_mpasjedi_3dhybrid_bumpcov_bumploc_2pe (Failed)<br>Errors <span class="hljs-keyword">while</span> running CTest<br>Output from these tests are <span class="hljs-keyword">in</span>: /xxx/build/mpas-jedi/Testing/Temporary/LastTest.<span class="hljs-built_in">log</span><br>Use <span class="hljs-string">&quot;--rerun-failed --output-on-failure&quot;</span> to re-run the failed cases verbosely.<br></code></pre></td></tr></table></figure></p></li>
+</ol>
+<h1 id="if-git-lfs-exists">if git-lfs exists,</h1>
+<p>Assume your workstation or cluster already has git-lfs, then may skip the error on it. Try below,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">set</span> -v<br><span class="hljs-built_in">source</span> /home/wpsze/spack/share/spack/setup-env.sh<br><span class="hljs-built_in">source</span> /home/wpsze/spack-stack/spack-stack/setup.sh<br><br>spack stack create <span class="hljs-built_in">env</span> --site linux.default --name gcc_mpich<br><br>spack <span class="hljs-built_in">env</span> activate /home/wpsze/spack-stack/spack-stack/envs/gcc_mpich<br>spack add gcc@10.5.0<br>spack install<br>spack compiler add `spack location -i gcc@10.5.0`<br><br>spack add environment-modules%gcc@10.5.0 ecbuild%gcc@10.5.0 eigen%gcc@10.5.0 udunits%gcc@10.5.0 gsl-lite%gcc@10.5.0<br>spack add mpich%gcc@10.5.0<br>spack add hdf5%gcc@10.5.0^mpich parallelio%gcc@10.5.0^mpich <br><br><span class="hljs-comment"># Tried atlas v0.31.1 can make successful compilation. Newer version like 0.35.0 fails.</span><br>spack add ecmwf-atlas@0.31.1%gcc@10.5.0^mpich<br>spack install<br>spack module tcl refresh<br><span class="hljs-comment">#spack stack setup-meta-modules</span><br></code></pre></td></tr></table></figure>
+<h1 id="module-load">module load</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-function"><span class="hljs-title">module</span></span> () &#123;<br>  <span class="hljs-built_in">eval</span> $(<span class="hljs-variable">$&#123;SPACK_ENV&#125;</span>/install/gcc/x.x.x/environment-modules-xxx/bin/modulecmd bash <span class="hljs-variable">$@</span>)<br>&#125;<br><br>module load xxx<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Spack/" class="category-chain-item">Spack</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/DA/" class="print-no-link">#DA</a>
+      
+        <a href="/tags/Spack/" class="print-no-link">#Spack</a>
+      
+        <a href="/tags/Spack-Stack/" class="print-no-link">#Spack-Stack</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spack-Stack (MPAS-JEDI)</div>
+      <div>https://waipangsze.github.io/2024/06/10/spack_stack_jedi_mpas/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 10, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/11/WRF-Why_domains_should_be_at_least_100_100_grid_spaces/" title="WRF: Why domains should be at least 100x100 grid spaces?">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">WRF: Why domains should be at least 100x100 grid spaces?</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/07/ecflow_by_spack/" title="ecFlow -- Installation &amp; Usage">
+                        <span class="hidden-mobile">ecFlow -- Installation &amp; Usage</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,833 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="WRF-ELEC model MicroTed&#x2F;wrf4-elec https:&#x2F;&#x2F;github.com&#x2F;MicroTed&#x2F;wrf4-elec The impact of initial conditions in predicting lightning activity using the Weather Research and Forecasting (WRF) with the elec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Predicting lightning activity using WRF-ELEC model">
+<meta property="og:url" content="https://waipangsze.github.io/2024/09/20/wrf4-elec-lightning/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="WRF-ELEC model MicroTed&#x2F;wrf4-elec https:&#x2F;&#x2F;github.com&#x2F;MicroTed&#x2F;wrf4-elec The impact of initial conditions in predicting lightning activity using the Weather Research and Forecasting (WRF) with the elec">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-09-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-20T09:47:53.759Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF-ELEC">
+<meta property="article:tag" content="Lightning">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Predicting lightning activity using WRF-ELEC model - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Predicting lightning activity using WRF-ELEC model"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-20 00:00" pubdate>
+          September 20, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Predicting lightning activity using WRF-ELEC model</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="wrf-elec-model">WRF-ELEC model</h1>
+<h2 id="microtedwrf4-elec">MicroTed/wrf4-elec</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/MicroTed/wrf4-elec" class="uri">https://github.com/MicroTed/wrf4-elec</a></p>
+<p>The impact of initial conditions in predicting lightning activity using the Weather Research and Forecasting (WRF) with the electrification (ELEC) extra package, known as WRF-ELEC model, has been investigated.</p>
+<h3 id="an-example-of-namelist.input">An example of namelist.input</h3>
+<p><a target="_blank" rel="noopener" href="https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/test/em_quarter_ss/electest/namelist.input#L55" class="uri">https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/test/em_quarter_ss/electest/namelist.input#L55</a></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs makefile">&amp;physics<br>mp_physics                          = 18,     1,     1,<br>elec_physics                        = 1,<br>nssl_ipelec                         = 2,<br>nssl_cccn                           = 0.8e9,<br>nssl_isaund                         = 11,<br>nssl_iscreen                        = 1,<br>nssl_idischarge                     = 1,<br>nssl_ibrkd                          = 4,<br>ra_lw_physics                       = 0,     0,     0,<br>ra_sw_physics                       = 0,     0,     0,<br>radt                                = 30,    30,    30,<br>sf_sfclay_physics                   = 0,     0,     0,<br>sf_surface_physics                  = 0,     0,     0,<br>bl_pbl_physics                      = 0,     0,     0,<br>bldt                                = 0,     0,     0,<br>cu_physics                          = 0,     0,     0,<br>cudt                                = 5,     5,     5,<br>num_soil_layers                     = 5,<br>/<br></code></pre></td></tr></table></figure>
+<h2 id="wrf-models-registry.elec">wrf-model's registry.elec</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/Registry/registry.elec" class="uri">https://github.com/wrf-model/WRF/blob/master/Registry/registry.elec</a></p>
+<div class="note note-primary">
+            <p>Look at namelist !!</p>
+          </div>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># SPACE CHARGE EXPLICIT LIGHTNING</span><br><span class="hljs-attribute">state</span>   real    scr            ikjftb  scalar      <span class="hljs-number">1</span>         -     \<br>   <span class="hljs-attribute">i0rhusdf</span>=(bdy_interp:dt)    <span class="hljs-string">&quot;SCR&quot;</span>       <span class="hljs-string">&quot;Rain space charge mixing ratio&quot;</span> <span class="hljs-string">&quot;# C kg(-1)&quot;</span><br><span class="hljs-attribute">state</span>   real    scw            ikjftb  scalar      <span class="hljs-number">1</span>         -     \<br>   <span class="hljs-attribute">i0rhusdf</span>=(bdy_interp:dt)    <span class="hljs-string">&quot;SCW&quot;</span>       <span class="hljs-string">&quot;cloud water space charge mixing ratio&quot;</span> <span class="hljs-string">&quot;# C kg(-1)&quot;</span><br><span class="hljs-attribute">state</span>   real    sci            ikjftb  scalar      <span class="hljs-number">1</span>         -     \<br>   <span class="hljs-attribute">i0rhusdf</span>=(bdy_interp:dt)    <span class="hljs-string">&quot;SCI&quot;</span>       <span class="hljs-string">&quot;cloud ice space charge mixing ratio&quot;</span> <span class="hljs-string">&quot;# C kg(-1)&quot;</span><br><span class="hljs-attribute">state</span>   real    scs            ikjftb  scalar      <span class="hljs-number">1</span>         -     \<br>   <span class="hljs-attribute">i0rhusdf</span>=(bdy_interp:dt)    <span class="hljs-string">&quot;SCS&quot;</span>       <span class="hljs-string">&quot;snow space charge mixing ratio&quot;</span> <span class="hljs-string">&quot;# C kg(-1)&quot;</span><br><span class="hljs-attribute">state</span>   real    sch            ikjftb  scalar      <span class="hljs-number">1</span>         -     \<br>   <span class="hljs-attribute">i0rhusdf</span>=(bdy_interp:dt)    <span class="hljs-string">&quot;SCH&quot;</span>       <span class="hljs-string">&quot;graupel water space charge mixing ratio&quot;</span> <span class="hljs-string">&quot;# C kg(-1)&quot;</span><br><span class="hljs-attribute">state</span>   real    schl           ikjftb  scalar      <span class="hljs-number">1</span>         -     \<br>   <span class="hljs-attribute">i0rhusdf</span>=(bdy_interp:dt)    <span class="hljs-string">&quot;SCHL&quot;</span>       <span class="hljs-string">&quot;hail water space charge mixing ratio&quot;</span> <span class="hljs-string">&quot;# C kg(-1)&quot;</span><br><span class="hljs-attribute">state</span>   real    sciona          ikjftb  scalar      <span class="hljs-number">1</span>         -     \<br>   <span class="hljs-attribute">i0rhusdf</span>=(bdy_interp:dt)    <span class="hljs-string">&quot;SCIONA&quot;</span>       <span class="hljs-string">&quot;Passive net ion space charge&quot;</span> <span class="hljs-string">&quot;# C kg(-1)&quot;</span><br><span class="hljs-attribute">state</span>   real    clnox          ikjftb  scalar      <span class="hljs-number">1</span>         -     \<br>   <span class="hljs-attribute">i0rhusdf</span>=(bdy_interp:dt)    <span class="hljs-string">&quot;CLNOX&quot;</span>      <span class="hljs-string">&quot;Lightning NOx concentration&quot;</span> <span class="hljs-string">&quot;# moles kg(-1)&quot;</span><br><span class="hljs-comment"># END SPACE CHARGE EXPLICIT LIGHTNING</span><br><br><span class="hljs-comment"># EXPLICIT LIGHTNING</span><br><span class="hljs-comment">#</span><br><span class="hljs-attribute">state</span>    real    rscghis_2d      ij   misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;rscghis_2d&quot;</span>             <span class="hljs-string">&quot;MAX NONINDUCTIVE CHARGING 2D&quot;</span>     <span class="hljs-string">&quot;C m-2&quot;</span><br><span class="hljs-attribute">state</span>    real    induc           ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;induc&quot;</span>                  <span class="hljs-string">&quot;TOTAL INDUCTIVE CHARGING &quot;</span>     <span class="hljs-string">&quot;C m-3&quot;</span><br><span class="hljs-attribute">state</span>    real    noninduc        ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;noninduc&quot;</span>               <span class="hljs-string">&quot;TOTAL NONINDUCTIVE CHARGING&quot;</span>     <span class="hljs-string">&quot;C m-3&quot;</span><br><span class="hljs-attribute">state</span>    real    sctot           ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;sctot&quot;</span>                  <span class="hljs-string">&quot;Total Space Charge Density&quot;</span>     <span class="hljs-string">&quot;C m-3&quot;</span><br><span class="hljs-attribute">state</span>    real    elecmag         ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;elecmag&quot;</span>                <span class="hljs-string">&quot;EFIELD MAGNITUDE&quot;</span>     <span class="hljs-string">&quot;V m-1&quot;</span><br><span class="hljs-attribute">state</span>    real    elecx           ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;elecx&quot;</span>                  <span class="hljs-string">&quot;EFIELD X-Component&quot;</span>     <span class="hljs-string">&quot;V m-1&quot;</span><br><span class="hljs-attribute">state</span>    real    elecy           ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;elecy&quot;</span>                  <span class="hljs-string">&quot;EFIELD Y-Component&quot;</span>     <span class="hljs-string">&quot;V m-1&quot;</span><br><span class="hljs-attribute">state</span>    real    elecz           ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;elecz&quot;</span>                  <span class="hljs-string">&quot;EFIELD Z-Component&quot;</span>     <span class="hljs-string">&quot;V m-1&quot;</span><br><span class="hljs-attribute">state</span>    real    pot             ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;pot&quot;</span>                    <span class="hljs-string">&quot;POTENTIAL&quot;</span>     <span class="hljs-string">&quot;V&quot;</span><br><span class="hljs-attribute">state</span>    real    light            ij  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;light&quot;</span>                  <span class="hljs-string">&quot;lightning flash&quot;</span>         <span class="hljs-string">&quot;flash origin density&quot;</span><br><span class="hljs-attribute">state</span>    real    lightdens        ij  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;lightdens&quot;</span>              <span class="hljs-string">&quot;lightning flash density&quot;</span>         <span class="hljs-string">&quot;flash column-1&quot;</span><br><span class="hljs-attribute">state</span>    integer lightdis         ij  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;lightdis&quot;</span>               <span class="hljs-string">&quot;lightning source density&quot;</span>     <span class="hljs-string">&quot;Source column-1&quot;</span><br><span class="hljs-attribute">state</span>    real    flshi           ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;flshi&quot;</span>                  <span class="hljs-string">&quot;Lightning init points&quot;</span>     <span class="hljs-string">&quot;count&quot;</span><br><span class="hljs-attribute">state</span>    real    flshn           ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;flshn&quot;</span>                  <span class="hljs-string">&quot;Negative channels&quot;</span>     <span class="hljs-string">&quot;count&quot;</span><br><span class="hljs-attribute">state</span>    real    flshp           ikj  misc    <span class="hljs-number">1</span>         -     irh         <span class="hljs-string">&quot;flshp&quot;</span>                  <span class="hljs-string">&quot;Positive channels&quot;</span>     <span class="hljs-string">&quot;count&quot;</span><br><span class="hljs-comment"># END EXPLICIT LIGHTNING</span><br><br><br><span class="hljs-comment"># Explicit lightning</span><br><span class="hljs-attribute">rconfig</span>   integer  nssl_ipelec            namelist,physics      max_domains   <span class="hljs-number">0</span>       rh       <span class="hljs-string">&quot;Electrification selection&quot;</span>  <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-attribute">rconfig</span>   integer  nssl_isaund            namelist,physics      <span class="hljs-number">1</span>             <span class="hljs-number">12</span>      rh       <span class="hljs-string">&quot;Charge separation selection&quot;</span>  <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-attribute">rconfig</span>   integer  nssl_iscreen           namelist,physics      <span class="hljs-number">1</span>             <span class="hljs-number">0</span>       rh       <span class="hljs-string">&quot;Screening layer parameterization flag&quot;</span>  <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-attribute">rconfig</span>   real     nssl_lightrad          namelist,physics      <span class="hljs-number">1</span>             <span class="hljs-number">12000</span>   rh       <span class="hljs-string">&quot;discharge cylinder radius (m)&quot;</span>  <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-attribute">rconfig</span>   integer  nssl_idischarge        namelist,physics      <span class="hljs-number">1</span>             <span class="hljs-number">1</span>       rh       <span class="hljs-string">&quot;lightning discharge flag&quot;</span>  <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-attribute">rconfig</span>   integer  nssl_ibrkd             namelist,physics      <span class="hljs-number">1</span>             <span class="hljs-number">4</span>       rh       <span class="hljs-string">&quot;Critical Breakeven Efield profile selection&quot;</span>  <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-attribute">rconfig</span>   real     nssl_ecrit             namelist,physics      <span class="hljs-number">1</span>             <span class="hljs-number">120000</span>  rh       <span class="hljs-string">&quot;Critical Breakeven Efield magnitude for discharge (V/m) assuming height-constant Ecrit profile&quot;</span>  <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-attribute">rconfig</span>   real     nssl_disfrac           namelist,physics      <span class="hljs-number">1</span>             <span class="hljs-number">0</span>.<span class="hljs-number">3</span>     rh       <span class="hljs-string">&quot;percentile of charge removed upon discharge (BLM)&quot;</span>  <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-comment"># end Explicit lightning</span><br><br><span class="hljs-attribute">rconfig</span>   integer  elec_physics           namelist,physics      <span class="hljs-number">1</span>            <span class="hljs-number">0</span>       irh       <span class="hljs-string">&quot;elec_physics&quot;</span>            <span class="hljs-string">&quot;&quot;</span>      <span class="hljs-string">&quot;&quot;</span><br><br><span class="hljs-comment"># external WRF-ELEC package</span><br><span class="hljs-attribute">package</span>   noelec             elec_physics==<span class="hljs-number">0</span>             -             -<br><span class="hljs-attribute">package</span>   eleclgt1d          elec_physics==<span class="hljs-number">1</span>             -             scalar:scr,scw,sci,scs,sch,schl,sciona;state:rscghis_2d,sctot,noninduc,induc,pot,elecmag,elecx,elecy,elecz,light,lightdens,lightdis<br><span class="hljs-attribute">package</span>   eleclgtmsz         elec_physics==<span class="hljs-number">2</span>             -             scalar:scr,scw,sci,scs,sch,schl,sciona;state:rscghis_2d,sctot,noninduc,induc,pot,elecmag,elecx,elecy,elecz,light,lightdens,lightdis,flshi,flshn,flshp<br><span class="hljs-attribute">package</span>   eleclgtmsznox      elec_physics==<span class="hljs-number">3</span>             -             scalar:scr,scw,sci,scs,sch,schl,sciona,clnox;state:rscghis_2d,sctot,noninduc,induc,pot,elecmag,elecx,elecy,elecz,light,lightdens,lightdis,flshi,flshn,flshp<br></code></pre></td></tr></table></figure>
+<h2 id="sourceforege">sourceforege</h2>
+<p><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/wrfelec/files/" class="uri">https://sourceforge.net/projects/wrfelec/files/</a></p>
+<p>This is a first release in WRF of a <strong>basic electrification for the NSSL microphysics scheme</strong>. The electrification parameterizations are based out of past work in modeling. The basics of the charge separation schemes comes from Mansell et al. (2005). Their use in the NSSL 2-moment microphysicsis shown in Mansell et al. 2010 and Mansell and Ziegler (2013). <strong>First implementation into WRF is described by Fierro et al. (2013)</strong>, which includes details of the basic discharge scheme (cylindrical discharge regions centered on lightning initiation points).</p>
+<ul>
+<li>Mansell et al. 2005: Charge structure and lightning sensitivity in a simulated multicell thunderstorm. J. Geophys. Res., 110, D12101, doi:10.1029/2004JD005287</li>
+<li>Mansell, E. R., C. L. Ziegler, and E. C. Bruning, 2010: Simulated electrification of a small thunderstorm with two-moment bulk microphysics. J. Atmos. Sci., 67, 171-194, doi:10. 1175/2009JAS2965.1.</li>
+<li><strong>Fierro, A. O., E.R. Mansell, C. Ziegler and D. R. MacGorman 2013: The implementation of an explicit charging and discharge lightning scheme within the WRF-ARW model: Benchmark simulations of a continental squall line, a tropical cyclone and a winter storm. Monthly Weather Review, Volume 141, 2390-2415</strong> (see below)</li>
+</ul>
+<p>If you have trouble with this option please contact the developers directly (i.e., not wrf_help):</p>
+<blockquote>
+<p>Ted Mansell (Ted.Mansell <em>at</em> noaa.gov) Alexandre Fierro (Alex.Fierro <em>at</em> noaa.gov)</p>
+</blockquote>
+<p>Specific namelist.input options are given below, along with a list of output fields.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs text">Electrification only works with the NSSL 2-moment options (with hail):<br><br> mp_physics(max_dom)<br>                                     = 17, NSSL 2-moment 4-ice scheme (steady background CCN)<br>                                     = 18, NSSL 2-moment 4-ice scheme with predicted CCN (better for idealized than real cases)<br>                                       ; to set a global CCN value, use<br>                                       <br>Other variables in the &amp;physics namelist:<br><br> elec_physics                        = 0, electrification (and charge arrays) turned off (DEFAULT)<br>                                     = 1, electrification turned on with &quot;1D&quot; lightning scheme based on Ziegler and MacGorman (1994, JAS) (only works with mp_physics = 17 or 18, i.e., 2-moment NSSL schemes)<br><br> nssl_ipelec (max_dom)     ! NOTE: only set this to a nonzero value on the innermost domain<br>                                     = 0, charging turned off (DEFAULT)<br>                                     = 2, non-inductive charging only<br>                                     = 3, non-inductive + inductive charging<br>                                     = 1, not used (reserved for future use)<br><br> nssl_idischarge                     = 0, no discharge<br>                                     = 1, discharge turned on (DEFAULT)<br><br> nssl_iscreen                        = 0, no screening layer (DEFAULT)<br>                                     = 1, screening layer scheme of Ziegler et al. (1991, JGR)<br>                                     = 2, screening layer only applied at cloud top (seems to be better for storm complexes and large storms)<br><br> nssl_ibrkd                          = breakdown electric field profile to initiate lightning<br>                                     = 1, constant profile with height with value set by nssl_ecrit<br>                                     = 2 to 5, variants of vertical Ecrit profile of Dwyer (2003, GRL) - &#x27;4&#x27; is recommended (DEFAULT is 4).<br><br> nssl_isaund                         = Calls the appropriate version of the UMIST (e.g., Saunders et al. 1991 scheme)<br>                                     = -5 : Saunders etal 1991 (following Helsdon et al. 2001, but use normal charging instead of &#x27;anomalous&#x27; zones)<br>                                     = 0 : Saunders 1991 (modified as in Wojcik 1994)<br>                                     = 2 : RR scheme ( no extra factor ) (Mansell et al. 2005, JGR)<br>                                     = 4 : Saunders and Peck Scheme ( no extra factor ) (Mansell et al. 2005, JGR)<br>                                     = 9 : Saunders and Peck Scheme ( no extra factor, cutoff at -32.47 as orig eq. from sp98 ) (Mansell et al. 2010, JAS)<br>                                     = 10 : Brooks et al. RARcrit for T &gt; -15 using saund2 (otherwise same as isaund=2) (set rarfac to negative in saund2)<br>                                     = 11 : Brooks et al. RARcrit for T &gt; -15 using saund6 (otherwise same as isaund=4)<br>                                     = 12 : Brooks et al. RARcrit for T &gt; -15 using saund6 (otherwise same as isaund=9) (DEFAULT)<br><br> nssl_lightrad                       = 12000, radius (m) of discharge cylinder for 1-D discharge scheme<br><br> nssl_disfrac                        = 0.3, nominal fraction of charge removed per discharge<br><br> nssl_ecrit                          = 120000, breakdown electric field (Volts/m) to initiate lightning (i.e., constant value with height). (for nssl_ibrkd=1)<br></code></pre></td></tr></table></figure>
+<p>and, OUTPUT FIELDS are</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs text">2D, time-dependent:<br><br>  LIGHT      : Sum of lightning initations in the column<br>  LIGHTDENS  : Flash extent density (sum of the number of flashes that extend into the grid column)<br>  LIGHTDIS   : A kind of &quot;source point&quot; density that adds up the number of points in a column that have lightning<br>               charge magnitude greater than 0.1*chgthr (effectively 0.01 nC/m^3 or more)<br><br>3D, time-dependent:<br><br>  POT         : Electric potential (Volts)<br>  ELECMAG     : Electric field magnitude<br>  ELECX       : x-component of E<br>  ELECY       : y-component of E<br>  ELECZ       : z-component of E<br>  INDUC       : Inductive charge separation rate<br>  NONINDUC    : Net noninductive charge separation rate<br>  SCW         : Charge density carried by cloud droplets<br>  SCR         : Charge density carried by rain<br>  SCI         : Charge density carried by cloud ice<br>  SCS         : Charge density carried by snow<br>  SCH         : Charge density carried by graupel<br>  SCHL        : Charge density carried by hail<br>  SCTOT       : Net charge density<br>  SCIONA      : Residual charge from lightning and evaporating hydrometeors that has not been reattached to another species<br></code></pre></td></tr></table></figure>
+<p>Source: README.wrfelec, updated 2015-05-04</p>
+<h1 id="compile-errors">Compile Errors</h1>
+<ol type="1">
+<li>Error NoahMP submodule files not populating WRF directories.
+<ol type="1">
+<li><a href="https://waipangsze.github.io/2024/06/04/WRF_install_Error_NoahMP_submodule_files/" class="uri">https://waipangsze.github.io/2024/06/04/WRF_install_Error_NoahMP_submodule_files/</a></li>
+</ol></li>
+<li>time No such file or directory.
+<ol type="1">
+<li><a href="https://waipangsze.github.io/2024/05/29/WRF_install_time_error/" class="uri">https://waipangsze.github.io/2024/05/29/WRF_install_time_error/</a></li>
+</ol></li>
+</ol>
+<h1 id="done">Done</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">---&gt;                  Executables successfully built                  &lt;---<br> <br>-rwxrwxr-x 1 wpsze wpsze 43939288 Sep 20 13:08 main/ndown.exe<br>-rwxrwxr-x 1 wpsze wpsze 43824624 Sep 20 13:08 main/real.exe<br>-rwxrwxr-x 1 wpsze wpsze 43238968 Sep 20 13:08 main/tc.exe<br>-rwxrwxr-x 1 wpsze wpsze 48241712 Sep 20 13:07 main/wrf.exe<br></code></pre></td></tr></table></figure>
+<p>and there is an extra folder called "elec",</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ <span class="hljs-built_in">ls</span> wrf4-elec/elec/<br>binwrf.pl                           module_discharge.F<br>depend.elec                         module_discharge_msz.F<br>include_microphysics_driver_elec.F  module_mp_nssl_2mom_elec.F<br>include_solve_lightningnudge.F      module_nudge_light.F<br>Makefile                            module_screen.F<br>module_boxmgsetup.F                 takahashi.txt<br>module_commasmpi.F<br></code></pre></td></tr></table></figure>
+<h1 id="literature-review">Literature review</h1>
+<p>Lightning activity is related to two important factors: dynamic–thermodynamic and microphysical characteristics (e.g., Williams et al., 2005; Rosenfeld et al., 2008; Guo et al., 2016; Wang et al., 2018; Zhao et al., 2020). Since the dynamic–thermodynamic processes affect the development of thunderstorm significantly, lightning activity is influenced by various dynamic–thermodynamic variables: temperature (Price, 1993), relative humidity in the lower and middle troposphere (Xiong et al., 2006; Fan et al., 2007), convective available potential energy (Qie et al., 2004; Stolz et al., 2015), and many others.</p>
+<h2 id="fierro-et-al.-2013">Fierro et al. (2013)</h2>
+<p>The Implementation of an Explicit Charging and Discharge Lightning Scheme within the WRF-ARW Model: Benchmark Simulations of a Continental Squall Line, a Tropical Cyclone, and a Winter Storm</p>
+<p>This work describes the recent implementation of explicit lightning physics within the Weather Research and Forecasting (WRF) Model. - Charging of hydrometeors consists of five distinct noninductive parameterizations, polarization of cloud water, and the exchange of charge during collisional mass transfer. - The three components of the ambient electric field are explicitly solved for via the computationally efficient multigrid elliptic solver. - The discharge process employs concepts adapted from two well-documented bulk lightning models, whereby charge reduction is imposed within a prescribed volume centered at grid points characterized by electric field magnitudes exceeding a given breakdown threshold.</p>
+<p>This lightning model was evaluated through benchmark - convection-allowing (3 km) model simulations of three contrasting convective systems: a continental squall line, - a major hurricane (Rita 2005), and - a winter storm.</p>
+<p>The areal coverage and magnitude of the simulated hourly flash origin density (FOD) for the continental squall line are qualitatively comparable to that of the total lightning data observations from Earth Networks Total Lightning Network (ENTLN). In agreement with the ENTLN observations, no FOD are simulated for the winter storm case. The simulated spatial FOD pattern of the hurricane and the eyewall gross charge structure were both in reasonable agreement with observations. The simulated FOD for all three cases were also evaluated against those obtained with the recently developed McCaul diagnostic lightning prediction schemes and exhibited overall good qualitative agreement with each other for Rita and the continental squall line.</p>
+<h2 id="thunderstorm-indices-lpi-layrh-scp">Thunderstorm Indices (LPI, Layrh, SCP)</h2>
+<p><strong>Thunderstorm Indices (LPI, Layrh, SCP)</strong> obtained from IMD-WRF (3km) Hourly outputs. - Model GEFS - WRF Description - <a target="_blank" rel="noopener" href="https://srf.tropmet.res.in/srf/ts_prediction_system/lpi_model.php" class="uri">https://srf.tropmet.res.in/srf/ts_prediction_system/lpi_model.php</a> - <strong>Lightning Potential Index (LPI)</strong> - Here, LPI has been calculated using IMD-WRF (3km) hourly model output. 24 Hour accumulated LPI has been generated by adding hourly LPI values. The threat of LPI has been categorized in Low, Moderate and High. LOW: LPI &lt; 0.001 and &gt;0.0005; Moderate: LPI :&lt; 0.01 and &gt; 0.001; Threat Level: High: LPI &gt; 0.01. - <strong>SuperCell Composite Parameter (SCP)</strong> - SCP &gt; 1 indicated that the environment is conducive for thunderstorm formation. The Threat Level of SCP has been categorized in Low, Moderate and High. LOW: 3 &lt; SCP &lt; 5; Moderate: 5 &lt; SCP &lt; 7; High: SCP &gt; 7. - <strong>Layer Relative Humidity (LAYRH)</strong> - The threat level of Layrh has been categorized in Low, Moderate and High. LOW: 20 &lt; LAYRH &lt; 40; Moderate: 40 &lt; LAYRH &lt; 60; High : LAYRH &gt; 60</p>
+<h2 id="prediction-of-lightning-activity-using-wrf-elec-model">Prediction of lightning activity using WRF-ELEC model</h2>
+<blockquote>
+<p><strong>Gharaylou, M., Farahani, M. M., Mahmoudian, A., &amp; Hosseini, M. (2020)</strong>. Prediction of lightning activity using WRF-ELEC model: Impact of initial and boundary conditions. Journal of Atmospheric and Solar-Terrestrial Physics, 210, 105438. - <a target="_blank" rel="noopener" href="https://sci-hub.se/https://doi.org/10.1016/j.jastp.2020.105438" class="uri">https://sci-hub.se/https://doi.org/10.1016/j.jastp.2020.105438</a></p>
+</blockquote>
+<ul>
+<li>The WRF model belongs to the first group in which lightning is predicted based on the <strong>Bulk Lightning Model (BLM)</strong>. Ziegler and MacGorman (1994) have studied lightning flashes in a twoand three-dimensional cloud models using the WRF model.</li>
+<li>In the early 90s, Price and Rind (1992) developed a lightning parameterization scheme based on <strong>cloud-top height</strong>.</li>
+<li>Furthermore, another lightning flash parameterization scheme has been introduced by Allen and Pickering (2002) and Allan et al. (2010) based on the <strong>square of deep convective mass flux</strong>.</li>
+<li>Choi et al. (2005) and Zhao et al. (2009) incorporated the <strong>convective available potential energy (CAPE)</strong> in their comparative parameterizations.</li>
+<li>Yair et al. (2010) introduced <strong>Lightning Potential Index (LPI)</strong>, an advanced index for evaluating the probability of lightning occurrence, incorporated the dynamic and microphysic concepts.</li>
+<li>Following, Lynn et al. (2012) introduced the <strong>potential electrical energy (Ep) parameter</strong> into the WRF model, which was used to predict both <strong>Cloud-to-Ground (CG)</strong> and <strong>Intra-Cloud (IC)</strong> <em>lightning events</em>.</li>
+<li>Afterwards, Wong et al. (2013) developed the lightning parameterization based on cloud-top height (Price and Rind, 1992).</li>
+<li>Gharaylou et al. (2019) examined 2 indices which are used in predicting the lightning activities both in time and location. They compared the <strong>electric potential difference (POT)</strong> and the <strong>LPI</strong> performance in predicting the lightning associated with four events over a domain located in the north of Iran.</li>
+<li><strong>The LPI is computationally less expensive and is directly calculated by the WRF model with less computational cost in comparison with the POT which requires an extra package (ELEC model).</strong></li>
+</ul>
+<h3 id="effect-of-initial-and-boundary-conditions-ibcs">Effect of Initial and boundary conditions (IBCs)</h3>
+<ul>
+<li>The mesoscale models ordinarily obtain their initial and boundary conditions (IBCs) from large scale global models. <strong>Applying different initial conditions highly influences the accuracy of the model prediction in local areas</strong> (Zhang et al., 2002, 2006).</li>
+<li>A few works have been done to investigate the effect of initial conditions on lightning activity (Lynn et al., 2012).</li>
+<li>Zepka et al. (2014) studied the impact of the resolution of the NCEP operational Global Forecast System.</li>
+<li>As mentioned, <strong><em>there are very few works</em></strong> related to the assessment of IBC effects in the WRF-ELEC model for lightning prediction.
+<ul>
+<li>WRF-ELEC model initialized with different datasets needs to be verified.</li>
+</ul></li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li>徐良韬, 张义军, 王飞, 郑栋. 2012: 雷暴起电和放电物理过程在WRF模式中的耦合及初步检验. 大气科学, 36(5): 1041-1052. DOI: 10.3878/j.issn.1006-9895.2012.11235
+<ol type="1">
+<li>WRFv3.2.1</li>
+<li>本文将雷暴云的起电、放电物理过程引入中尺度的WRF (Weather Research and Forecasting) 模式,并对超级单体和飑线过程进行了模拟研究.起电过程在Milbrandt双参数微物理方案中写入,包含霰、雹与冰晶、雪之间的非感应起电机制,以及霰、雹与云滴之间的感应起电机制.</li>
+</ol></li>
+<li>徐良韬, 陈双, 姚雯, 等. 利用起放电模式开展闪电活动的直接预报试验. 应用气象学报, 2018, 29(5): 534-545. DOI: 10.11898/1001-7313.20180503.
+<ol type="1">
+<li>WRFv3.4.1</li>
+<li>利用耦合有起电和放电物理过程的中尺度起电放电模式WRF-Electric</li>
+</ol></li>
+<li>Wasson, G., &amp; Panda, S. K. (2024). Sensitivity of PBL parameterization schemes in simulating lightning and thunderstorm using WRF-ELEC model. Climate Dynamics, 1-23.
+<ol type="1">
+<li>The WRF-ELEC model, an auxiliary package integrated into WRF, is specifically designed to compute electric potential and overall lightning flash rate (source: <a target="_blank" rel="noopener" href="https://sourceforge.net/projects/wrfelec" class="uri">https://sourceforge.net/projects/wrfelec</a>).</li>
+<li>It incorporates explicit cloudresolving scale physics for lightning prediction (<a target="_blank" rel="noopener" href="https://scholar.google.com/scholar_url?url=https://journals.ametsoc.org/view/journals/mwre/141/7/mwr-d-12-00278.1.xml%3Ftab_body%3Dpdf&amp;hl=en&amp;sa=T&amp;oi=gsr-r-ggp&amp;ct=res&amp;cd=0&amp;d=6841908713848986342&amp;ei=DTHtZqfdAfSC6rQP2qO70AU&amp;scisig=AFWwaeaoJDdXALkuhsn44g0xEyU5">Fierro et al.2013</a>). Detailed formulations can be found in <a target="_blank" rel="noopener" href="https://scholar.google.com/scholar_url?url=https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2004jd005287&amp;hl=en&amp;sa=T&amp;oi=gsr-r&amp;ct=res&amp;cd=0&amp;d=13100036974408530565&amp;ei=JTHtZs_QIeqs6rQPw4y2sAM&amp;scisig=AFWwaeZ27Z0oFR35ZZvLDk-yrgo_">Mansell et al.(2005)</a> and <a target="_blank" rel="noopener" href="https://scholar.google.com/scholar_url?url=https://journals.ametsoc.org/view/journals/mwre/141/7/mwr-d-12-00278.1.xml%3Ftab_body%3Dpdf&amp;hl=en&amp;sa=T&amp;oi=gsr-r-ggp&amp;ct=res&amp;cd=0&amp;d=6841908713848986342&amp;ei=OTHtZtytGPay6rQPxrKeiAM&amp;scisig=AFWwaeaoJDdXALkuhsn44g0xEyU5">Fierro et al. (2013)</a>.</li>
+<li>skill scores were calculated for each experiment.
+<ol type="1">
+<li>standard statistics and skill score analysis of CAPE (J/kg) and accumulated total precipitation (mm),</li>
+</ol></li>
+</ol></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF-ELEC/" class="print-no-link">#WRF-ELEC</a>
+      
+        <a href="/tags/Lightning/" class="print-no-link">#Lightning</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Predicting lightning activity using WRF-ELEC model</div>
+      <div>https://waipangsze.github.io/2024/09/20/wrf4-elec-lightning/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 20, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/13/Hexo/" title="Setting up Hexo Blog on github.io">
+                        <span class="hidden-mobile">Setting up Hexo Blog on github.io</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
