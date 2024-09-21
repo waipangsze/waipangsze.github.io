@@ -105,3 +105,7 @@ channels:
 
 $ micromamba config append channels conda-forge
 ```
+
+# References
+
+1. [北京大学高性能计算校级公共平台用户文档](https://hpc.pku.edu.cn/ug/guide/soft/conda/#_3)

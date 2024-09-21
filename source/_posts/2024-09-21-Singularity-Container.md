@@ -29,6 +29,59 @@ Major features:
 - 資料和資源存取：Singularity 容器可以直接存取宿主機上的檔案系統和網絡，這簡化了資料的管理和傳輸過程。對於需要處理大量資料的生物資訊分析來說，能夠無縫存取外部資料儲存非常重要。
 - 安全性：與其他容器技術相比，Singularity 提供了更強的安全保障。它防止了容器內的使用者取得宿主機的 root 權限，減少了安全風險。這一點對於確保生物資訊學資料的安全性尤其重要，特別是在處理敏感或受保護的資料時。
 
+From [北京大學高效能運算平台](https://hpc.pku.edu.cn/_book/guide/soft/singularity.html), [北京大學高效能運算校級公共平台使用者文檔](https://hpc.pku.edu.cn/ug/guide/soft/singularity/)
+
+容器技術是一種以應用軟體為中心的虛擬化技術。以應用軟體為單元，將軟體及所有的依賴性打包成容器鏡像，打包後的容器鏡像可直接拷貝到不同的Linux主機上運作。透過容器技術，可以很好的解決安裝軟體時，依賴庫的安裝問題、軟體環境的隔離以及軟體環境的移植問題。
+
+- Singularity為勞倫斯伯克利國家實驗室開發專門用於高效能運算場景的容器技術，Singularity完全基於可移植性進行虛擬化，更加輕量級，部署更快，Singularity目前被廣泛地各高效能運算中心。
+- 透過Singularity來滿足作業運行的軟體環境，首先是創建或取得軟體鏡像，再將創建好的軟體鏡像上傳到叢集上運行；
+- **透過Singularity建立軟體映像，需要在有root權限的Linux主機上，或是在配置好fakeroot的Linux主機上以「fakeroot」的身份進行。**
+
+使用容器部署和使用軟體環境的步驟如下：
+建構容器鏡像，建構容器鏡像的方式有三種：
+
+- 在本機擁有 root 權限的 Linux 主機上安裝 Singularity， 並使用 Singularity 部署容器鏡像；
+- 在支援 fakeroot 的伺服器上，使用 Singularity 部署容器鏡像；
+- 直接從倉庫中拉取已經建置好的容器鏡像；
+- 將容器鏡像上傳到集群，透過 singularity 指令使用建構好的容器鏡像。
+
+### 
+
+容器的優點和缺點(相較於編譯安裝以及 conda 安裝管理軟體，容器有幾個十分明顯的優勢)
+
+容器的優勢
+
+- 可移植性，透過容器部署好運算環境後，可以直接上傳到社會上高效能運算叢集上使用，也可以直接將容器鏡像分享給課題組的其他成員直接使用，大幅減少了部署環境的時間。
+- 可複現性，尤其是一些生信軟體，依賴不同的計算工具，換個人安裝，雖然安裝的軟體版本相同，但是依賴的計算工具版本不同，都可能導致計算結果存在差異，而容器的使用可以很好的避免這個問題。
+- **易管理，不同容器相互隔絕，不存在依賴衝突等問題，例如平台上使用conda 打包了ncl、nco 和ncview，因為這些工具在安裝的時候同時也打包了netcdf 庫，如果用戶在編譯如cesm 和wrf等依賴netcdf 環境的軟體，可能會導致編譯和使用過程出現衝突。**
+
+容器有著這麼多的優點，效能損耗還低，有時候甚至還優於裸機效能，是否就代表所用運算軟體環境都適合用容器部署？答案是否定的，容器其實也有一些缺點需要使用者留意：
+
+容器的缺點
+
+- 使用難度高，相較於裸機上安裝和使用軟體，容器概念的理解、接受還有使用還是需要一定門檻的
+- **跨節點應用由於要呼叫宿主機的 mpi ，相容性有一定的要求，可移植性需要驗證。** 當然，平台也在致力於跨節點應用容器化的測試與打包
+- **最佳化問題，例如為了讓軟體運行更快，Intel 編譯軟體過程中可能會使用-Host 參數，讓編譯器根據主機CPU 型號進行指令優化，或者編譯過程中加入AVX512 的支持，這時候如果將鏡像移植到舊款架構的CPU 主機上，可能會導致鏡像無法正常運作軟體環境**
+
+# SIF（Singularity Image File）& Sandbox
+
+兩種建立客製化 image 的方法。Singularity 的 image 支持兩種模式 sif 及 sandbox，兩者最大的差異就是 sandbox 會保留用戶在環境中，安裝的軟體及設定的參數。而 sif 則比較接近唯獨模式，僅提供環境運行所需要的套件，但當運行結束後不會保留在過程中安裝的套件。
+
+- SIF（Singularity Image File）：壓縮的讀（read-only）的Singularity鏡件，是⽣產使⽤的主形式。
+- Sandbox 可 (writable)的器在形式，是件統中的⼀⽬錄，常⽤於開發或創建⾃⼰的容器，是開發使⽤的主形式。
+
+{% note primary %}
+SIF and sandbox images can be converted to each other.
+{% endnote %}
+
+```sh
+# 1. Convert the SIF format container to sandbox;
+singularity build --sandbox centos76 centos76.sif
+
+# 2. Convert the sandbox container image to SIF format;
+singularity build centos76.sif centos76
+```
+
 # Installing Singularity platform
 
 <https://docs.sylabs.io/guides/3.8/user-guide/quick_start.html>
@@ -88,6 +141,7 @@ $ ./mconfig && \
 Finally, check
 
 ```sh
+$ singularity --version
 $ singularity help
 ```
 
@@ -202,12 +256,112 @@ module load singularity
 singularity exec ubuntu20_lammps.sif mpirun -np 2 --mca btl ^openib lmp_g++_openmpi -in in.lj
 ```
 
+# Conda install singularity
+
+```sh
+$ micromamba env create -n singularity
+$ micromamba activate singularity
+$ micromamba install conda-forge::singularity
+```
+
+version =  linux-ppc64le/singularity-3.8.7-hff88825_0.tar.bz2?
+
 # Running Singularity images
 
+## build or pull
+
+```sh
+$ singularity build ./jason-tensorflow.sif docker://tensorflow/tensorflow:latest-gpu
+$ singularity pull ./jason-tensorflow.sif docker://tensorflow/tensorflow:latestgpu
+$ singularity pull library://lolcow
+$ ls
+lolcow_latest.sif
+```
+
+{% note primary %}
+- Inspect will show you labels, environment variables, and scripts associated with the image determined by the flags you pass.
+{% endnote %}
+
+```sh
+$ singularity inspect my-container.sif
+```
+
+## run, exec, shell
+
+{% note primary %}
+singularity run 
+Run the user-defined default command within a container
+{% endnote %}
+
+```sh
+$ singularity run my-container.sif
+
+$ singularity run lolcow_latest.sif 
+ ______________________________
+< Sun Sep 22 00:17:43 HKT 2024 >
+ ------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+{% note primary %}
+singularity exec
+Run a command within a container
+{% endnote %}
+
+```sh
+$ singularity exec my-container.sif my-command
+
+$ singularity exec lolcow_latest.sif cowsay WRF-MPAS
+ __________
+< WRF-MPAS >
+ ----------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+{% note primary %}
+singularity shell
+Run a shell within a container
+{% endnote %}
+
+```sh
+$ singularity shell my-container.sif
+
+$ singularity shell lolcow_latest.sif 
+Singularity> cowsay here is shell
+ _______________
+< here is shell >
+ ---------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+Singularity> cowsay going 
+ _______
+< going >
+ -------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+Singularity> exit
+exit
+```
 
 # References
 
 1. [Singularity and Docker](https://docs.sylabs.io/guides/2.6/user-guide/singularity_and_docker.html)
 2. [HKU Singularity Container](https://hpc.hku.hk/hpc/software/singularity-container/)
 3. [NVIDIA NGC](https://ngc.nvidia.com/)
+   1. NVIDIA官方自己构建的pytorch和TensorFlow的容器镜像，每个里面包含了cuda、显卡驱动以及cudnn，据说比自己装的速度要快，使用时singularity需要 --nv 选项。
 4. [Docker Hub](https://hub.docker.com/)
+5. [从零开始制作PyTorch的Singularity容器镜像](https://www.cnblogs.com/dechinphy/p/pytorch.html)
