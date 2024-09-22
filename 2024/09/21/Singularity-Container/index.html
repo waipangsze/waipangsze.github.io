@@ -27,7 +27,7 @@
 <meta property="og:description" content="What is Singularity Singularity is a container platform to run complex applications on HPC clusters in a simple, portable, and reproducible way. It supports Docker images and is an alternative to Dock">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-09-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-09-21T09:59:41.996Z">
+<meta property="article:modified_time" content="2024-09-22T03:40:01.707Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="NWP">
@@ -237,7 +237,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k words
+          3.4k words
         
       </span>
     
@@ -248,7 +248,7 @@
         
         
         
-          12 mins
+          29 mins
         
       </span>
     
@@ -338,6 +338,80 @@ HPC
 提供了更強的安全保障。它防止了容器內的使用者取得宿主機的 root
 權限，減少了安全風險。這一點對於確保生物資訊學資料的安全性尤其重要，特別是在處理敏感或受保護的資料時。</li>
 </ul>
+<p>From <a
+target="_blank" rel="noopener" href="https://hpc.pku.edu.cn/_book/guide/soft/singularity.html">北京大學高效能運算平台</a>,
+<a
+target="_blank" rel="noopener" href="https://hpc.pku.edu.cn/ug/guide/soft/singularity/">北京大學高效能運算校級公共平台使用者文檔</a></p>
+<p>容器技術是一種以應用軟體為中心的虛擬化技術。以應用軟體為單元，將軟體及所有的依賴性打包成容器鏡像，打包後的容器鏡像可直接拷貝到不同的Linux主機上運作。透過容器技術，可以很好的解決安裝軟體時，依賴庫的安裝問題、軟體環境的隔離以及軟體環境的移植問題。</p>
+<ul>
+<li>Singularity為勞倫斯伯克利國家實驗室開發專門用於高效能運算場景的容器技術，Singularity完全基於可移植性進行虛擬化，更加輕量級，部署更快，Singularity目前被廣泛地各高效能運算中心。</li>
+<li>透過Singularity來滿足作業運行的軟體環境，首先是創建或取得軟體鏡像，再將創建好的軟體鏡像上傳到叢集上運行；</li>
+<li><strong>透過Singularity建立軟體映像，需要在有root權限的Linux主機上，或是在配置好fakeroot的Linux主機上以「fakeroot」的身份進行。</strong></li>
+</ul>
+<p>使用容器部署和使用軟體環境的步驟如下：
+建構容器鏡像，建構容器鏡像的方式有三種：</p>
+<ul>
+<li>在本機擁有 root 權限的 Linux 主機上安裝 Singularity， 並使用
+Singularity 部署容器鏡像；</li>
+<li>在支援 fakeroot 的伺服器上，使用 Singularity 部署容器鏡像；</li>
+<li>直接從倉庫中拉取已經建置好的容器鏡像；</li>
+<li>將容器鏡像上傳到集群，透過 singularity
+指令使用建構好的容器鏡像。</li>
+</ul>
+<p>容器的優點和缺點(相較於編譯安裝以及 conda
+安裝管理軟體，容器有幾個十分明顯的優勢)</p>
+<p>容器的優勢</p>
+<ul>
+<li>可移植性，透過容器部署好運算環境後，可以直接上傳到社會上高效能運算叢集上使用，也可以直接將容器鏡像分享給課題組的其他成員直接使用，大幅減少了部署環境的時間。</li>
+<li>可複現性，尤其是一些生信軟體，依賴不同的計算工具，換個人安裝，雖然安裝的軟體版本相同，但是依賴的計算工具版本不同，都可能導致計算結果存在差異，而容器的使用可以很好的避免這個問題。</li>
+<li><strong>易管理，不同容器相互隔絕，不存在依賴衝突等問題，例如平台上使用conda
+打包了ncl、nco 和ncview，因為這些工具在安裝的時候同時也打包了netcdf
+庫，如果用戶在編譯如cesm 和wrf等依賴netcdf
+環境的軟體，可能會導致編譯和使用過程出現衝突。</strong></li>
+</ul>
+<p>容器有著這麼多的優點，效能損耗還低，有時候甚至還優於裸機效能，是否就代表所用運算軟體環境都適合用容器部署？答案是否定的，容器其實也有一些缺點需要使用者留意：</p>
+<p>容器的缺點</p>
+<ul>
+<li>使用難度高，相較於裸機上安裝和使用軟體，容器概念的理解、接受還有使用還是需要一定門檻的</li>
+<li><strong>跨節點應用由於要呼叫宿主機的 mpi
+，相容性有一定的要求，可移植性需要驗證。</strong>
+當然，平台也在致力於跨節點應用容器化的測試與打包</li>
+<li><strong>最佳化問題，例如為了讓軟體運行更快，Intel
+編譯軟體過程中可能會使用-Host 參數，讓編譯器根據主機CPU
+型號進行指令優化，或者編譯過程中加入AVX512
+的支持，這時候如果將鏡像移植到舊款架構的CPU
+主機上，可能會導致鏡像無法正常運作軟體環境</strong></li>
+</ul>
+<h1 id="sifsingularity-image-file-sandbox">SIF（Singularity Image
+File）&amp; Sandbox</h1>
+<p>兩種建立客製化 image 的方法。Singularity 的 image 支持兩種模式 sif 及
+sandbox，兩者最大的差異就是 sandbox
+會保留用戶在環境中，安裝的軟體及設定的參數。而 sif
+則比較接近唯獨模式，僅提供環境運行所需要的套件，但當運行結束後不會保留在過程中安裝的套件。</p>
+<ul>
+<li>SIF（Singularity Image
+File）：壓縮的讀（read-only）的Singularity鏡件，是⽣產使⽤的主形式。</li>
+<li>Sandbox 可
+(writable)的器在形式，是件統中的⼀⽬錄，常⽤於開發或創建⾃⼰的容器，是開發使⽤的主形式。</li>
+</ul>
+<div class="note note-primary">
+            <p>SIF and sandbox images can be converted to each other.</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 1. Convert the SIF format container to sandbox;</span><br>singularity build --sandbox centos76 centos76.sif<br><br><span class="hljs-comment"># 2. Convert the sandbox container image to SIF format;</span><br>singularity build centos76.sif centos76<br></code></pre></td></tr></table></figure>
+<h2 id="singularity-container-image">Singularity Container Image</h2>
+<p><a target="_blank" rel="noopener" href="https://www.cuhk.edu.hk/itsc/hpc/singularity.html"
+class="uri">https://www.cuhk.edu.hk/itsc/hpc/singularity.html</a></p>
+<div class="note note-primary">
+            <p>Note that Singularity versions prior to 3.0 used a slightly differentimage format, characterised by the extension .simg. You can still findthese around in the web; newer Singularity versions are still able torun them.</p>
+          </div>
+<p>By default, Singularity containers are <strong>read-only image
+file</strong> that usually end in <strong>.simg</strong>. You can copy
+the singuarity image file directly from others pre-build container with
+any copy file command like cp or scp. You can also pull the container
+from Docker Hub or Sinularity Hub repositories. Base on the container on
+the repositories, you may custom your own container desire for your job
+nature.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#From Docker Hub</span><br>singularity pull docker://ubuntu:latest<br>singularity build centos7_python35.simg docker://centos/python-35-centos7<br>            <br><span class="hljs-comment">#From Singularity Hub</span><br>singularity pull shub://singularityhub/centos<br>singularity build tensorflow.simg shub://opensciencegrid/osgvo-tensorflow<br></code></pre></td></tr></table></figure>
 <h1 id="installing-singularity-platform">Installing Singularity
 platform</h1>
 <p><a
@@ -366,13 +440,28 @@ from a release</h2>
 <p>then, Compile</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ./mconfig &amp;&amp; \<br>    make -C builddir &amp;&amp; \<br>    <span class="hljs-built_in">sudo</span> make -C builddir install<br></code></pre></td></tr></table></figure>
 <p>Finally, check</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity <span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity --version<br>$ singularity <span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
 <p>it has shown,</p>
 <figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs vbnet">Linux container platform optimized <span class="hljs-keyword">for</span> High Performance Computing (HPC) <span class="hljs-built_in">and</span><br>Enterprise Performance Computing (EPC)<br><br><span class="hljs-symbol">Usage:</span><br>  singularity [<span class="hljs-keyword">global</span> options...]<br><br><span class="hljs-symbol">Description:</span><br>......<br></code></pre></td></tr></table></figure>
 <h1 id="building-singularity-images">Building Singularity images</h1>
 <div class="note note-primary">
             <p>當鏡像庫平台沒有找到適用的現成鏡像，使用者可以在本地將軟體打包成鏡像，上傳到超算上運行。<strong>請注意，使用者只能在自己的電腦上製作鏡像，不能在超算上製作鏡像。</strong></p>
           </div>
+<h2 id="build-jedi-environment-with-singularity">Build JEDI environment
+with Singularity</h2>
+<p>From <a
+target="_blank" rel="noopener" href="https://wiki.ucar.edu/display/JEDI/Build+JEDI+environment+with+Singularity"
+class="uri">https://wiki.ucar.edu/display/JEDI/Build+JEDI+environment+with+Singularity</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity --version<br>$ singularity pull shub://JCSDA/singularity<br>$ singularity <span class="hljs-built_in">exec</span> JCSDA-singularity-master.simg <span class="hljs-built_in">cat</span> /etc/os-release<br>$ singularity shell -e JCSDA-singularity-master.simg<br></code></pre></td></tr></table></figure>
+<p>What's inside the JEDI docker image?</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs smali">When you start a Singularity container<span class="hljs-built_in"> instance </span>from the xinzhang8noaa-singularity-master.simg, we already prepapre the gnu version 7.2 compilers<span class="hljs-built_in"> and </span>most of the necessary libraiestools for GSI, OOPS, WRF etc., all libraries are installed under /usr/local, which include<br><br>git<br>git flow<br>emacs<br>open-mpi v2.1.0<br>zlib v1.2.11<br>szip v2.1.1<br>jpeg v9b<br>png v1.4.19<br>jasper v1.900.2<br>hdf5 v1.8.17<br>freetype v2.5.5<br>netcdf-c v4.4.11<br>netcdf-fortran v4.4.4<br>lapack v3.7.0<br>parallel-netcdf v1.8.1<br>xerces-c v3.1.4<br>esmf v7.0.0<br>udunites-2 v2.2.24<br>nco v4.6.6<br>grib_api v1.21.0<br>cdo v1.8.2<br>boost v1.65.1<br>eigen3 v3.3.4<br>pio 1.7.1<br>ecbuild<br>eckit<br>fckit<br><br>The major NCEP libraries are also installed at<span class="hljs-keyword"> :</span><br><br>/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a<br>/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_8.a<br>/nwprod/lib/ip/v2.0.0/libip_v2.0.0_4.a<br>/nwprod/lib/ip/v2.0.0/libip_v2.0.0_8.a<br>/nwprod/lib/ip/v2.0.0/libip_v2.0.0_d.a<br>/nwprod/lib/sigio/v2.0.1/lib/libsigio_v2.0.1_4.a<br>/nwprod/lib/sigio/v2.0.1/libsigio_v2.0.1_4.a<br>/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_4.a<br>/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_8.a<br>/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a<br>/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_4.a<br>/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_8.a<br>/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_d.a<br>/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_4.a<br>/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_8.a<br>/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a<br></code></pre></td></tr></table></figure>
+<ul>
+<li>Download WRF and WPS</li>
+<li>Build WRF and WPS code</li>
+<li>Download MPAS code</li>
+<li>Build MPAS code</li>
+<li>Test MPAS</li>
+</ul>
 <h2 id="example-lammps">Example: LAMMPS</h2>
 <p>LAMMPS 是由桑迪亞國家實驗室開發的一套分子動力學類比的開源程式包。
 LAMMPS使用MPI實現多機器平行計算，在新的版本中，支援基於CUDA和OpenCL的GPU計算。其以GNU通用公眾授權條款釋出，因而開源自由。
@@ -386,7 +475,54 @@ class="uri">http://docs.hpc.whu.edu.cn/files/whuhpcdocs.wiki/sbatch/singularity.
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建sandbox；</span><br><span class="hljs-comment"># 这里将创建的sandbox命名为ubuntu20_lammps,并使用docker hub上现有的容器 ubuntu:20.04 作为基础镜像。</span><br>singularity build --sandbox ./ubuntu20_lammps docker://ubuntu:20.04<br><br><span class="hljs-comment"># 进入创建好的sandbox，并进行修改；</span><br><span class="hljs-comment"># 其中-w表示可写。进入后singularity会自动挂载的HOME目录，如果是用root用户进入，则会挂载/root目录</span><br>singularity shell -w ./ubuntu20_lammps<br><br><span class="hljs-comment"># Ubuntu下安装LAMMPS并行版需要安装必要的依赖包</span><br>apt update &amp;&amp; apt upgrade -y<br>apt install openmpi-bin openmpi-doc libopenmpi-dev -y<br>apt install gcc g++ gfortran make wget vim -y<br><br><span class="hljs-comment"># 安装fftw</span><br>wget http://www.fftw.org/fftw-3.3.9.tar.gz<br>tar zxvf fftw-3.3.9.tar.gz<br><span class="hljs-built_in">cd</span> fftw-3.3.9<br>./configure --prefix=/opt/software/fftw_3.3.9 --enable-shared --enable-static --enable-fma<br>make -j &amp;&amp; make install<br><br><span class="hljs-comment"># 设置临时fftw环境变量</span><br><span class="hljs-built_in">export</span> PATH=/opt/software/fftw_3.3.9/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=/opt/software/fftw_3.3.9/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><br><span class="hljs-comment"># 安装lammps</span><br>wget https://lammps.sandia.gov/tars/lammps-10Feb21.tar.gz<br>tar zxvf lammps-10Feb21.tar.gz<br><span class="hljs-built_in">cd</span> lammps-10Feb21<br><span class="hljs-built_in">cd</span> src<br>vim MAKE/OPTIONS/Makefile.g++_openmpi <span class="hljs-comment"># 修改如下行</span><br>  FFT_INC = -DFFT_FFTW -I/opt/software/fftw_3.3.9/include<br>  FFT_PATH = -L/opt/software/fftw_3.3.9/lib<br>  FFT_LIB = -lfftw3<br><br>make yes-std<br>make no-lib<br>make -j g++_openmpi<br><br><span class="hljs-built_in">mkdir</span> /opt/software/lammps<br><span class="hljs-built_in">cp</span> ./lmp_g++_openmpi /opt/software/lammps/<br><br><span class="hljs-comment"># 设置临时lammps环境变量</span><br><span class="hljs-built_in">export</span> PATH=/opt/software/lammps:<span class="hljs-variable">$PATH</span><br><br><span class="hljs-comment"># 验证(容器内)</span><br><span class="hljs-built_in">cd</span> /root<br><span class="hljs-built_in">cp</span> /opt/lammps-10Feb21/bench/in.lj .<br>mpirun --allow-run-as-root -np 2 --mca btl ^openib lmp_g++_openmpi -<span class="hljs-keyword">in</span> in.lj<br><br><br><span class="hljs-comment"># 退出容器，设置永久环境变量(宿主机)</span><br>vim ./ubuntu20_lammps/environment<br><span class="hljs-comment"># 加入下面两行</span><br><span class="hljs-built_in">export</span> PATH=/opt/software/fftw_3.3.9/bin:/opt/software/lammps:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=/opt/software/fftw_3.3.9/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><br><span class="hljs-comment"># 验证(宿主机)</span><br>singularity <span class="hljs-built_in">exec</span> ./ubuntu20_lammps mpirun --allow-run-as-root -np 2 --mca btl ^openib lmp_g++_openmpi -<span class="hljs-keyword">in</span> in.lj<br><br><span class="hljs-comment"># 把修改好的sandbox打包成sif格式；</span><br><span class="hljs-comment"># 删除不必要的安装包, 如 fftw-3.3.9.tar.gz lammps-10Feb21.tar.gz</span><br><span class="hljs-comment"># 使用前面创建的sandbox目录生成singularity image file格式镜像。</span><br>singularity build ubuntu20_lammps.sif ./ubuntu20_lammps<br></code></pre></td></tr></table></figure>
 <p>then, run it on HPC,</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#SBATCH --partition=hpxg</span><br><span class="hljs-comment">#SBATCH --nodes=1</span><br><span class="hljs-comment">#SBATCH --ntasks-per-node=2</span><br><span class="hljs-comment">#SBATCH --time=1:00:00</span><br><br><span class="hljs-comment"># 加载超算平台预安装的 singularity</span><br>module load singularity<br><span class="hljs-comment"># or load by micromamba</span><br><br><span class="hljs-comment"># 测试in.lj算例</span><br>singularity <span class="hljs-built_in">exec</span> ubuntu20_lammps.sif mpirun -np 2 --mca btl ^openib lmp_g++_openmpi -<span class="hljs-keyword">in</span> in.lj<br></code></pre></td></tr></table></figure>
+<h1 id="conda-install-singularity">Conda install singularity</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ micromamba <span class="hljs-built_in">env</span> create -n singularity<br>$ micromamba activate singularity<br>$ micromamba install conda-forge::singularity<br></code></pre></td></tr></table></figure>
+<p>version = linux-ppc64le/singularity-3.8.7-hff88825_0.tar.bz2?</p>
 <h1 id="running-singularity-images">Running Singularity images</h1>
+<h2 id="build-or-pull">build or pull</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity build ./jason-tensorflow.sif docker://tensorflow/tensorflow:latest-gpu<br>$ singularity pull ./jason-tensorflow.sif docker://tensorflow/tensorflow:latestgpu<br>$ singularity pull library://lolcow<br>$ <span class="hljs-built_in">ls</span><br>lolcow_latest.sif<br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <ul><li>Inspect will show you labels, environment variables, and scriptsassociated with the image determined by the flags you pass.</li></ul>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity inspect my-container.sif<br></code></pre></td></tr></table></figure>
+<h2 id="run-exec-shell">run, exec, shell</h2>
+<div class="note note-primary">
+            <p>singularity run Run the user-defined default command within acontainer</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity run my-container.sif<br><br>$ singularity run lolcow_latest.sif <br> ______________________________<br>&lt; Sun Sep 22 00:17:43 HKT 2024 &gt;<br> ------------------------------<br>        \   ^__^<br>         \  (oo)\_______<br>            (__)\       )\/\<br>                ||----w |<br>                ||     ||<br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <p>singularity exec Run a command within a container</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity <span class="hljs-built_in">exec</span> my-container.sif my-command<br><br>$ singularity <span class="hljs-built_in">exec</span> lolcow_latest.sif cowsay WRF-MPAS<br> __________<br>&lt; WRF-MPAS &gt;<br> ----------<br>        \   ^__^<br>         \  (oo)\_______<br>            (__)\       )\/\<br>                ||----w |<br>                ||     ||<br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <p>singularity shell Run a shell within a container</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity shell my-container.sif<br><br>$ singularity shell lolcow_latest.sif <br>Singularity&gt; cowsay here is shell<br> _______________<br>&lt; here is shell &gt;<br> ---------------<br>        \   ^__^<br>         \  (oo)\_______<br>            (__)\       )\/\<br>                ||----w |<br>                ||     ||<br>Singularity&gt; cowsay going <br> _______<br>&lt; going &gt;<br> -------<br>        \   ^__^<br>         \  (oo)\_______<br>            (__)\       )\/\<br>                ||----w |<br>                ||     ||<br>Singularity&gt; <span class="hljs-built_in">exit</span><br><span class="hljs-built_in">exit</span><br></code></pre></td></tr></table></figure>
+<h1 id="specifying-bind-paths">Specifying bind paths</h1>
+<p>開發容器的目的之一主要是為了解決依賴函式庫的安裝、軟體環境的隔離、以及軟體環境的移植問題。因此，<strong>容器的核心特性之一就是它們的檔案系統與宿主機相隔離。</strong>
+如果我們查看一個 singularity 容器的根目錄，也會看到與 Linux
+主機根目錄相似的結構。這意味著容器內的應用程式只能看到（並與之互動）這個封閉環境中的檔案和目錄。與
+Linux 下掛載（mount）外接硬碟設備類似，容器同樣需要透過掛載 (bind)
+的操作與我們宿主機上的檔案系統互動。<a
+target="_blank" rel="noopener" href="https://juejin.cn/post/7345293582365868041">link</a></p>
+<p>當呼叫容器時，Singularity 會將主機作業系統 “swap”
+為容器中的作業系統，導致我們無法存取主機檔案系統。<strong>然而，在日常使用場景中，已安裝至容器中的應用程式的輸入和輸出檔案往往儲存在主機檔案系統中，因此，我們需要從容器內讀取和寫入主機系統上的檔案。</strong></p>
+<ul>
+<li>singularity 使用 --bind/-B 宿主機目錄:容器內目錄
+選項將主機系統上的目錄對應到容器內的目錄。這允許我們從容器內部存取主機上的文件，從而在主機系統上讀寫資料。</li>
+</ul>
+<p>如需要將多個目錄綁定到 Singularity
+容器中，並且長期保持不變，我們可以進一步將這個變數寫入 .bashrc
+檔案中。</p>
+<p>Here’s an example of using the --bind option and binding /data on the
+host to /mnt in the container (/mnt does not need to already exist in
+the container):</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">ls</span> /data<br>bar  foo<br><br>$ singularity <span class="hljs-built_in">exec</span> --<span class="hljs-built_in">bind</span> /data:/mnt my_container.sif <span class="hljs-built_in">ls</span> /mnt<br>bar  foo<br></code></pre></td></tr></table></figure>
+<p>You can bind multiple directories in a single command with this
+syntax:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity shell --<span class="hljs-built_in">bind</span> /opt,/data:/mnt my_container.sif<br></code></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">export</span> SINGULARITY_BIND=<span class="hljs-string">&quot;/opt,/data:/mnt&quot;</span><br><br>$ singularity shell my_container.sif<br></code></pre></td></tr></table></figure>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a
@@ -394,8 +530,24 @@ target="_blank" rel="noopener" href="https://docs.sylabs.io/guides/2.6/user-guid
 and Docker</a></li>
 <li><a target="_blank" rel="noopener" href="https://hpc.hku.hk/hpc/software/singularity-container/">HKU
 Singularity Container</a></li>
-<li><a target="_blank" rel="noopener" href="https://ngc.nvidia.com/">NVIDIA NGC</a></li>
-<li><a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.sylabs.io/library">Sylabs Cloud</a>
+<ol type="1">
+<li>singularity pull ubuntu.sif
+library://library/default/ubuntu:21.04</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://ngc.nvidia.com/">NVIDIA NGC</a>
+<ol type="1">
+<li>NVIDIA官方自己构建的pytorch和TensorFlow的容器镜像，每个里面包含了cuda、显卡驱动以及cudnn，据说比自己装的速度要快，使用时singularity需要
+--nv 选项。</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a>
+<ol type="1">
+<li>singularity pull ubuntu.sif docker://ubuntu:latest</li>
+</ol></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.cnblogs.com/dechinphy/p/pytorch.html">从零开始制作PyTorch的Singularity容器镜像</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://man.twcc.ai/@twccdocs/howto-twnia2-create-sglrt-container-zh">建立台灣杉二號的容器</a></li>
 </ol>
 
                 
@@ -488,6 +640,12 @@ Singularity Container</a></li>
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/09/21/HPC/" title="HPC 高性能计算平台">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HPC 高性能计算平台</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
