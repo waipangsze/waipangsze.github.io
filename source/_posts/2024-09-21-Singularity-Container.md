@@ -45,8 +45,6 @@ From [北京大學高效能運算平台](https://hpc.pku.edu.cn/_book/guide/soft
 - 直接從倉庫中拉取已經建置好的容器鏡像；
 - 將容器鏡像上傳到集群，透過 singularity 指令使用建構好的容器鏡像。
 
-### 
-
 容器的優點和缺點(相較於編譯安裝以及 conda 安裝管理軟體，容器有幾個十分明顯的優勢)
 
 容器的優勢
@@ -80,6 +78,26 @@ singularity build --sandbox centos76 centos76.sif
 
 # 2. Convert the sandbox container image to SIF format;
 singularity build centos76.sif centos76
+```
+
+## Singularity Container Image
+
+<https://www.cuhk.edu.hk/itsc/hpc/singularity.html>
+
+{% note primary %}
+Note that Singularity versions prior to 3.0 used a slightly different image format, characterised by the extension .simg. You can still find these around in the web; newer Singularity versions are still able to run them.
+{% endnote %}
+
+By default, Singularity containers are **read-only image file** that usually end in **.simg**. You can copy the singuarity image file directly from others pre-build container with any copy file command like cp or scp. You can also pull the container from Docker Hub or Sinularity Hub repositories. Base on the container on the repositories, you may custom your own container desire for your job nature.
+
+```sh
+#From Docker Hub
+singularity pull docker://ubuntu:latest
+singularity build centos7_python35.simg docker://centos/python-35-centos7
+            
+#From Singularity Hub
+singularity pull shub://singularityhub/centos
+singularity build tensorflow.simg shub://opensciencegrid/osgvo-tensorflow
 ```
 
 # Installing Singularity platform
@@ -163,6 +181,76 @@ Description:
 {% note primary %}
 當鏡像庫平台沒有找到適用的現成鏡像，使用者可以在本地將軟體打包成鏡像，上傳到超算上運行。**請注意，使用者只能在自己的電腦上製作鏡像，不能在超算上製作鏡像。**
 {% endnote %}
+
+## Build JEDI environment with Singularity
+
+From <https://wiki.ucar.edu/display/JEDI/Build+JEDI+environment+with+Singularity>
+
+```sh
+$ singularity --version
+$ singularity pull shub://JCSDA/singularity
+$ singularity exec JCSDA-singularity-master.simg cat /etc/os-release
+$ singularity shell -e JCSDA-singularity-master.simg
+```
+
+What's inside the JEDI docker image?
+
+```
+When you start a Singularity container instance from the xinzhang8noaa-singularity-master.simg, we already prepapre the gnu version 7.2 compilers and most of the necessary libraiestools for GSI, OOPS, WRF etc., all libraries are installed under /usr/local, which include
+
+git
+git flow
+emacs
+open-mpi v2.1.0
+zlib v1.2.11
+szip v2.1.1
+jpeg v9b
+png v1.4.19
+jasper v1.900.2
+hdf5 v1.8.17
+freetype v2.5.5
+netcdf-c v4.4.11
+netcdf-fortran v4.4.4
+lapack v3.7.0
+parallel-netcdf v1.8.1
+xerces-c v3.1.4
+esmf v7.0.0
+udunites-2 v2.2.24
+nco v4.6.6
+grib_api v1.21.0
+cdo v1.8.2
+boost v1.65.1
+eigen3 v3.3.4
+pio 1.7.1
+ecbuild
+eckit
+fckit
+
+The major NCEP libraries are also installed at :
+
+/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a
+/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_8.a
+/nwprod/lib/ip/v2.0.0/libip_v2.0.0_4.a
+/nwprod/lib/ip/v2.0.0/libip_v2.0.0_8.a
+/nwprod/lib/ip/v2.0.0/libip_v2.0.0_d.a
+/nwprod/lib/sigio/v2.0.1/lib/libsigio_v2.0.1_4.a
+/nwprod/lib/sigio/v2.0.1/libsigio_v2.0.1_4.a
+/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_4.a
+/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_8.a
+/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a
+/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_4.a
+/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_8.a
+/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_d.a
+/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_4.a
+/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_8.a
+/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a
+```
+
+- Download WRF and WPS 
+- Build WRF and WPS code
+- Download MPAS code
+- Build MPAS code
+- Test MPAS
 
 ## Example: LAMMPS
 
@@ -357,11 +445,49 @@ Singularity> exit
 exit
 ```
 
+# Specifying bind paths
+
+開發容器的目的之一主要是為了解決依賴函式庫的安裝、軟體環境的隔離、以及軟體環境的移植問題。因此，**容器的核心特性之一就是它們的檔案系統與宿主機相隔離。** 如果我們查看一個 singularity 容器的根目錄，也會看到與 Linux 主機根目錄相似的結構。這意味著容器內的應用程式只能看到（並與之互動）這個封閉環境中的檔案和目錄。與 Linux 下掛載（mount）外接硬碟設備類似，容器同樣需要透過掛載 (bind) 的操作與我們宿主機上的檔案系統互動。[link](https://juejin.cn/post/7345293582365868041)
+
+當呼叫容器時，Singularity 會將主機作業系統 “swap” 為容器中的作業系統，導致我們無法存取主機檔案系統。**然而，在日常使用場景中，已安裝至容器中的應用程式的輸入和輸出檔案往往儲存在主機檔案系統中，因此，我們需要從容器內讀取和寫入主機系統上的檔案。**
+
+- singularity 使用 --bind/-B 宿主機目錄:容器內目錄 選項將主機系統上的目錄對應到容器內的目錄。這允許我們從容器內部存取主機上的文件，從而在主機系統上讀寫資料。
+
+如需要將多個目錄綁定到 Singularity 容器中，並且長期保持不變，我們可以進一步將這個變數寫入 .bashrc 檔案中。
+
+Here’s an example of using the --bind option and binding /data on the host to /mnt in the container (/mnt does not need to already exist in the container):
+
+```sh
+$ ls /data
+bar  foo
+
+$ singularity exec --bind /data:/mnt my_container.sif ls /mnt
+bar  foo
+```
+
+You can bind multiple directories in a single command with this syntax:
+
+```sh
+$ singularity shell --bind /opt,/data:/mnt my_container.sif
+```
+
+or 
+
+```sh
+$ export SINGULARITY_BIND="/opt,/data:/mnt"
+
+$ singularity shell my_container.sif
+```
+
 # References
 
 1. [Singularity and Docker](https://docs.sylabs.io/guides/2.6/user-guide/singularity_and_docker.html)
 2. [HKU Singularity Container](https://hpc.hku.hk/hpc/software/singularity-container/)
-3. [NVIDIA NGC](https://ngc.nvidia.com/)
+3. [Sylabs Cloud](https://cloud.sylabs.io/library)
+   1. singularity pull ubuntu.sif library://library/default/ubuntu:21.04
+4. [NVIDIA NGC](https://ngc.nvidia.com/)
    1. NVIDIA官方自己构建的pytorch和TensorFlow的容器镜像，每个里面包含了cuda、显卡驱动以及cudnn，据说比自己装的速度要快，使用时singularity需要 --nv 选项。
-4. [Docker Hub](https://hub.docker.com/)
-5. [从零开始制作PyTorch的Singularity容器镜像](https://www.cnblogs.com/dechinphy/p/pytorch.html)
+5. [Docker Hub](https://hub.docker.com/)
+   1. singularity pull ubuntu.sif docker://ubuntu:latest
+6. [从零开始制作PyTorch的Singularity容器镜像](https://www.cnblogs.com/dechinphy/p/pytorch.html)
+7. [建立台灣杉二號的容器](https://man.twcc.ai/@twccdocs/howto-twnia2-create-sglrt-container-zh)
