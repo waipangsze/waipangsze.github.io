@@ -295,7 +295,7 @@ From <http://docs.hpc.whu.edu.cn/files/whuhpcdocs.wiki/sbatch/singularity.html>
 ```
 # 创建sandbox；
 # 这里将创建的sandbox命名为ubuntu20_lammps,并使用docker hub上现有的容器 ubuntu:20.04 作为基础镜像。
-singularity build --sandbox ./ubuntu20_lammps docker://ubuntu:20.04
+singularity build --sandbox ./ubuntu20_lammps docker://ubuntu:20.04 # sudo ??
 
 # 进入创建好的sandbox，并进行修改；
 # 其中-w表示可写。进入后singularity会自动挂载的HOME目录，如果是用root用户进入，则会挂载/root目录
@@ -376,12 +376,218 @@ module load singularity
 singularity exec ubuntu20_lammps.sif mpirun -np 2 --mca btl ^openib lmp_g++_openmpi -in in.lj
 ```
 
-## Customize .def
+## Customize Definition File .def
+
+File 內容主要分為 Header 和 Sections 兩部分：
+
+- Header：定義 base 映像檔的來源 (例：docker, library, yum…等)。
+- Sections：有多種選項可設定，主要會使用以下 2 個項目：
+  - %post：建立容器後將執行的內容。
+  - %environment：容器建立好後，會將程式的環境變數會放到 /environment 內。
+
+Execute definition file to create a container,
+
+```sh
+$ sudo singularity build <CONTAINER_NAME>.sif <DEF_FILE_NAME>.def
+```
+
+Header,
 
 ```sh
 Bootstrap: library
 From: debian:7
 ```
+
+Preferred bootstrap agents 
+
+- library (images hosted on the Container Library)
+- docker (images hosted on Docker Hub)
+- shub (images hosted on Singularity Hub)
+- oras (images from supporting OCI registries)
+- scratch (a flexible option for building a container from scratch)
+
+Here is an example definition file that uses every available section. We will discuss each section in turn. It is not necessary to include every section (or any sections at all) within a def file. Furthermore, multiple sections of the same name can be included and will be appended to one another during the build process.
+
+<https://docs.sylabs.io/guides/3.7/user-guide/definition_files.html>
+
+```
+Bootstrap: library
+From: ubuntu:18.04
+Stage: build
+
+%setup
+    touch /file1
+    touch ${SINGULARITY_ROOTFS}/file2
+
+%files
+    /file1
+    /file1 /opt
+
+%environment
+    export LISTEN_PORT=12345
+    export LC_ALL=C
+
+%post
+    apt-get update && apt-get install -y netcat
+    NOW=`date`
+    echo "export NOW=\"${NOW}\"" >> $SINGULARITY_ENVIRONMENT
+
+%runscript
+    echo "Container was created $NOW"
+    echo "Arguments received: $*"
+    exec echo "$@"
+
+%startscript
+    nc -lp $LISTEN_PORT
+
+%test
+    grep -q NAME=\"Ubuntu\" /etc/os-release
+    if [ $? -eq 0 ]; then
+        echo "Container base is Ubuntu as expected."
+    else
+        echo "Container base is not Ubuntu."
+        exit 1
+    fi
+
+%labels
+    Author d@sylabs.io
+    Version v0.0.1
+
+%help
+    This is a demo container used to illustrate a def file that uses all supported sections.
+```
+
+### case:
+
+```sh
+BootStrap: library
+From: ubuntu:18.04
+
+%post
+    apt-get -y update
+    apt-get -y upgrade
+
+    apt-get install -y \
+    build-essential \
+    vim \
+    wget \
+    curl \
+    libssl-dev \
+    git \
+    tar \
+    openssh-client \
+    gzip \
+    ca-certificates
+
+    apt-get install -y bzip2
+
+    apt-get clean
+
+    export SHELL=/bin/bash
+    export PATH=/root/.local/bin:$PATH
+    
+    wget micro.mamba.pm/install.sh
+    echo "All paths are default."
+    sed -i -e 's/-t 0/1 == 0/g' install.sh
+    chmod +x install.sh
+    bash install.sh
+
+    # >>> mamba initialize >>>
+    # !! Contents within this block are managed by 'mamba init' !!
+    export MAMBA_EXE='/root/.local/bin/micromamba';
+    export MAMBA_ROOT_PREFIX='/root/micromamba';
+    __mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__mamba_setup"
+    else
+        alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+    fi
+    unset __mamba_setup
+
+    micromamba env list
+
+%environment
+    export SHELL=/bin/bash
+    export LC_ALL=C
+    export PATH=/usr/local/bin:$PATH
+    export PATH=/root/.local/bin:$PATH
+
+    # >>> mamba initialize >>>
+    # !! Contents within this block are managed by 'mamba init' !!
+    export MAMBA_EXE='/root/.local/bin/micromamba';
+    export MAMBA_ROOT_PREFIX='/root/micromamba';
+    __mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__mamba_setup"
+    else
+        alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+    fi
+    unset __mamba_setup
+
+%runscript
+    hostname
+
+%labels
+    Author wpsze
+    Version v0.0.1
+
+%help
+	  Singularity image used get dependencies from micromamba.
+```
+(Fail, why??)
+then,
+
+```sh
+$ sudo singularity build test.sif test.def
+```
+
+## By Sanbox
+
+建立沙盒容器
+
+若需測試套件是否與容器環境相容時，您可以建立「沙盒容器」，既不影響原容器映像檔內容，也無需重建立容器，又可在容器內安裝或進行操作：
+
+請先建立沙盒資料夾，放入容器映像檔的所有內容
+
+```sh
+$ sudo singularity build --sandbox <FOLDER_NAME> docker://nvidia/cuda:10.1-devel-ubuntu18.04
+```
+
+**使用 shell 方式進入沙盒容器內，並具有寫入的權限。**
+
+```sh
+$ sudo singularity shell --writable <FOLDER_NAME>/
+```
+
+即可利用 apt 使用以下指令更新並安裝套件
+
+```sh
+$ apt-get update
+$ apt-get install wget
+```
+
+使用沙盒建立 Singularity 容器映像檔
+
+{% note primary %}
+附註：由於沙盒未將套件寫入 definition file，您無法紀錄容器內有哪些套件，維護不易，較不推薦使用此方式建立容器映像檔。建議使用客製化 Singularity 容器之方式。
+{% endnote %}
+
+```sh
+$ sudo singularity build <CONTAINER_NAME>.sif <FOLDER_NAME>/
+```
+
+- Assume that the sandbox image to be deleted is named molspin
+- First, enter the image to be deleted in readable mode
+  - singularity shell --fakeroot -w molspin
+- Delete all files created based on fakeroot in the container
+  - rm -rf /* 1>/dev/null 2>&1
+- Exit the image
+  - exit
+- Upload the created software image to the high-performance computing cluster and load the singularity software environment
+- Delete the rest
+  - rm -rf molspin
+
+## Example: nmap
 
 # Conda install singularity
 
