@@ -182,18 +182,50 @@ Description:
 當鏡像庫平台沒有找到適用的現成鏡像，使用者可以在本地將軟體打包成鏡像，上傳到超算上運行。**請注意，使用者只能在自己的電腦上製作鏡像，不能在超算上製作鏡像。**
 {% endnote %}
 
-## Build JEDI environment with Singularity
+## Example: Build JEDI environment with Singularity
 
 From <https://wiki.ucar.edu/display/JEDI/Build+JEDI+environment+with+Singularity>
 
+### JCSDA-singularity-latest
+
+From <https://singularityhub.github.io/singularityhub-archive/containers/JCSDA-singularity-latest/>
+
+From <https://singularityhub.github.io/singularityhub-archive/containers/MBlaschek-singularity-jupyter-jedi/>
+
 ```sh
 $ singularity --version
-$ singularity pull shub://JCSDA/singularity
-$ singularity exec JCSDA-singularity-master.simg cat /etc/os-release
-$ singularity shell -e JCSDA-singularity-master.simg
+
+$ singularity pull shub://MBlaschek/singularity-jupyter:jedi
+$ ll
+963M Sep 22 14:10 singularity-jupyter_jedi.sif
+
+$ singularity exec singularity-jupyter_jedi.sif cat /etc/os-release
+NAME="Ubuntu"
+VERSION="16.04.6 LTS (Xenial Xerus)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 16.04.6 LTS"
+VERSION_ID="16.04"
+HOME_URL="http://www.ubuntu.com/"
+SUPPORT_URL="http://help.ubuntu.com/"
+BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+VERSION_CODENAME=xenial
+UBUNTU_CODENAME=xenial
+
+$ singularity inspect singularity-jupyter_jedi.sif
+MAINTAINER: Mark Miesch
+SPECIES: JEDI
+org.label-schema.build-date: Thursday_5_December_2019_10:5:35_UTC
+org.label-schema.schema-version: 1.0
+org.label-schema.usage.singularity.deffile.bootstrap: docker
+org.label-schema.usage.singularity.deffile.from: jcsda/docker_base-gnu-openmpi-dev:latest
+org.label-schema.usage.singularity.version: 3.4.2
+
+$ singularity shell -e singularity-jupyter_jedi.sif
 ```
 
 What's inside the JEDI docker image?
+(note: seems not full set)
 
 ```
 When you start a Singularity container instance from the xinzhang8noaa-singularity-master.simg, we already prepapre the gnu version 7.2 compilers and most of the necessary libraiestools for GSI, OOPS, WRF etc., all libraries are installed under /usr/local, which include
@@ -344,6 +376,13 @@ module load singularity
 singularity exec ubuntu20_lammps.sif mpirun -np 2 --mca btl ^openib lmp_g++_openmpi -in in.lj
 ```
 
+## Customize .def
+
+```sh
+Bootstrap: library
+From: debian:7
+```
+
 # Conda install singularity
 
 ```sh
@@ -489,5 +528,6 @@ $ singularity shell my_container.sif
    1. NVIDIA官方自己构建的pytorch和TensorFlow的容器镜像，每个里面包含了cuda、显卡驱动以及cudnn，据说比自己装的速度要快，使用时singularity需要 --nv 选项。
 5. [Docker Hub](https://hub.docker.com/)
    1. singularity pull ubuntu.sif docker://ubuntu:latest
-6. [从零开始制作PyTorch的Singularity容器镜像](https://www.cnblogs.com/dechinphy/p/pytorch.html)
-7. [建立台灣杉二號的容器](https://man.twcc.ai/@twccdocs/howto-twnia2-create-sglrt-container-zh)
+6. [Singularity Hub Archive](https://singularityhub.github.io/singularityhub-archive/)
+7. [从零开始制作PyTorch的Singularity容器镜像](https://www.cnblogs.com/dechinphy/p/pytorch.html)
+8. [建立台灣杉二號的容器](https://man.twcc.ai/@twccdocs/howto-twnia2-create-sglrt-container-zh)
