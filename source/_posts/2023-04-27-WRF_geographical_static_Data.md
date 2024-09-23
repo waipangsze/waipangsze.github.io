@@ -11,9 +11,11 @@ author: wpsze
 These are all the mandatory fields required to run WPS and WRF.
 
 All are under:
+
 > https://www2.mmm.ucar.edu/wrf/src/wps_files/
 
 Download links:
+
 > http://www2.mmm.ucar.edu/wrf/src/wps_files/geog_complete.tar.bz2
 >> This is a large compressed file (≈ 2.3 GB)
 >> This file will expand to about 50GB in size.
@@ -26,6 +28,7 @@ Download links:
 >> Optional WPS Geographical Input Data
 
 For the WPS geographical input data download sets that correspond to **Version 3** of the WPS/WRF code.
+
 > https://www2.mmm.ucar.edu/wrf/users/download/get_sources_wps_geog_V3.html
 
 ## Landuse
@@ -50,6 +53,8 @@ The data in the 'modis_landuse_20class_30s_with_lakes' directory are the same as
 The data in the 'modis_landuse_21class_30s' data were modified by Boston University, most likely based on data collected in 2004.
 
 ### In summary:
+
+```
 landuse_30s - USGS GLCC, 1992-1993
 landuse_30s_with_lakes - USGS GLCC, 1992-1993, lakes added by NCAR
 landuse_2m - USGS GLCC, 1992-1993, coarsened from 30s
@@ -60,6 +65,7 @@ modis_landuse_20class_15s - MODIS, See reference
 modis_landuse_20class_30s - MODIS, NCEP included tundra class, 2001
 modis_landuse_20class_30s_with_lakes - MODIS, NCEP included tundra class, 2001, lakes added by NCAR
 modis_landuse_21class_30s - MODIS, modified by BU, 2004
+```
 
 # Interpolation options for different resolution
 
@@ -73,5 +79,5 @@ modis_landuse_21class_30s - MODIS, modified by BU, 2004
 
 # References
 
-[Advanced Usage of the WRF Preprocessing System](https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/duda_wps_advanced.pdf)
+1. [Advanced Usage of the WRF Preprocessing System](https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/duda_wps_advanced.pdf)
 

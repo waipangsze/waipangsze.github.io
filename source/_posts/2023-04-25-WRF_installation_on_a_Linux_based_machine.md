@@ -27,6 +27,7 @@ author: wpsze
 Weather Research & Forecasting Model (WRF) is a state of the art mesoscale numerical weather prediction system designed for both atmospheric research and operational forecasting applications [^1].
 
 The installation steps are,
+
 1. Source gcc compiler
 2. Test gcc compiler
 3. Install all requried libraries
@@ -35,12 +36,14 @@ The installation steps are,
 6. Install WPS
 
 Three shell scripts are under the same directory,
+
 > gcc_env.sh
 > wrf_env.sh
 > wrf_env_install.sh
 > wrf_wps_install.sh
 
 ## GCC version (gcc_env.sh)
+
 ```sh
 #!/bin/bash
 
@@ -59,11 +62,14 @@ gfortran --version
 ```
 
 ### Testing System Compatibility
+
 We have to test the compiler system in your computer/clsuter.
 #### Download test tar files,
+
 > http://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_tests.tar
 
 #### run_gcc_test.sh
+
 ```sh
 #!/bin/bash
 source gcc_env.sh
@@ -116,13 +122,16 @@ gfortran -m64 TEST_4_fortran+c_f.o TEST_4_fortran+c_c.o
 ```
 
 ## WRF v3.8.1 [^2]
+
 Using a version of gfortran which is 4.4.0 or newer is recommended. 
+
 > https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/
 > netcdf-4.1.3
 > mpich-3.0.4
 > zlib-1.2.7
 > libpng-1.2.50
 > JasPer-1.900.1
+
 The above libraries are requried for running WRF and download to folder wrf_instsall/. 
 
 ```sh
@@ -215,6 +224,7 @@ export PATH=$libs_DIR/bin:$PATH
 ```
 
 and, combine all required libaries in wrf_env.sh
+
 ```sh
 #!/bin/bash
 source gcc_env.sh
@@ -228,8 +238,10 @@ export NETCDF=$libs_DIR
 ```
 
 ### Library Compatibility Tests
+
 We have to test the Library in your computer/clsuter.
 #### Download test tar files,
+
 > http://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_NETCDF_MPI_tests.tar
 
 #### run_library_test.sh
@@ -237,9 +249,10 @@ We have to test the Library in your computer/clsuter.
 #!/bin/bash
 source wrf_env.sh
 
-echo "=========================================================================================="
-echo "=========================== Fortran_C_NETCDF_MPI_tests.tar ==============================="
-echo "=========================================================================================="
+echo "================================================================="
+echo "=================== Fortran_C_NETCDF_MPI_tests.tar =============="
+echo "================================================================="
+
 # To unpack the tar file, type:
 # wget -c https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/Fortran_C_NETCDF_MPI_tests.tar
 # tar -xf Fortran_C_NETCDF_MPI_tests.tar
@@ -262,7 +275,7 @@ gfortran 01_fortran+c+netcdf_f.o 01_fortran+c+netcdf_c.o \
 # Values are xx = 2.00 and ii = 1
 # SUCCESS test 1 fortran + c + netcdf
 
-echo "=========================================================================================="
+echo "================================================================="
 # Test #2: Fortran + C + NetCDF + MPI
 
 # The NetCDF+MPI test requires include files from both of these packages be in this directory, 
@@ -283,7 +296,7 @@ mpirun ./a.out
 # Values are xx = 2.00 and ii = 1
 # status = 2
 # SUCCESS test 2 fortran + c + netcdf + mpi
-echo "=========================================================================================="
+echo "================================================================="
 ```
 
 ### Install WRFv3.8.1
@@ -341,7 +354,9 @@ export WRF_DIR="WRFV3"
 
 # # # --->                  Executables successfully built                  <---
 ```
+
 This should return the following four files:
+
 > wrf.exe
 > real.exe
 > ndown.exe
@@ -349,6 +364,7 @@ This should return the following four files:
 
 ### Install WPSv3.8.1
 #### Download
+
 > http://www2.mmm.ucar.edu/wrf/src/WPSV3.8.1.TAR.gz
 
 ```sh
@@ -375,7 +391,9 @@ export JASPERINC=$libs_DIR/include/
 
 ./compile 2>&1 | tee compile.log
 ```
+
 This should return the three executable files needed to run WPS.
+
 > geogrid.exe
 > metgrid.exe
 > ungrib.exe
