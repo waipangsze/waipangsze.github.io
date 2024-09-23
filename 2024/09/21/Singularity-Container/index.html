@@ -1,0 +1,965 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="What is Singularity Singularity is a container platform to run complex applications on HPC clusters in a simple, portable, and reproducible way. It supports Docker images and is an alternative to Dock">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Singularity Container">
+<meta property="og:url" content="https://waipangsze.github.io/2024/09/21/Singularity-Container/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="What is Singularity Singularity is a container platform to run complex applications on HPC clusters in a simple, portable, and reproducible way. It supports Docker images and is an alternative to Dock">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-09-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-23T01:06:05.860Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="NWP">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Singularity Container - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Singularity Container"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-21 00:00" pubdate>
+          September 21, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Singularity Container</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="what-is-singularity">What is Singularity</h1>
+<p>Singularity is a container platform to run complex applications on HPC clusters in a simple, portable, and reproducible way. It supports Docker images and is an alternative to Docker, whose security model and execution mode are not well-suited in an HPC environment.</p>
+<p>Major features:</p>
+<ul>
+<li>Verifiable reproducibility and security, using cryptographic signatures, an immutable container image format, and in-memory decryption.</li>
+<li>Integration over isolation by default. Easily make use of GPUs, high speed networks, parallel filesystems on a cluster or server by default.</li>
+<li>Mobility of compute. The single file SIF container format is easy to transport and share.</li>
+<li>A simple, effective security model. You are the same user inside a container as outside, and cannot gain additional privilege on the host system by default.</li>
+</ul>
+<p>容器是一種在隔離環境中運行應用程式的技術。與傳統虛擬機器 （VM） 相比，它們具有多項優勢，例如 更快的部署時間和可重複性。容器還允許開發人員建置和部署軟體，無需擔心底層基礎設施或作業系統詳細資訊。在生物資訊分析中，使用Singularity 容器技術具有以下優點：</p>
+<ul>
+<li>環境一致性和可重複性：專案常常依賴特定版本的軟體和函式庫。 Singularity 容器可以將軟體及其相依性打包在一起，確保分析環境的一致性，無論是在本機、伺服器或雲端平台。這對於實驗的可重複性至關重要，因為它保證了其他研究者可以準確地複製實驗條件，驗證和復現研究結果。</li>
+<li>高效能運算（HPC）友善：Singularity 特別設計來支援高效能運算環境。<strong>它允許使用者以非特權方式運行容器，與 HPC 系統的安全模型相容。這意味著使用者可以在不需要管理員權限的情況下部署和執行容器，這對於多使用者的HPC環境是非常重要的。</strong></li>
+<li>移植性：Singularity 容器可以在任何支援 Singularity 的系統上運行，不受作業系統版本限制。這種高度的移植性確保了生物資訊分析可以輕鬆地從一個運算環境遷移到另一個，無論是從個人電腦到雲端平台，還是在不同的研究機構之間共享。</li>
+<li>資料和資源存取：Singularity 容器可以直接存取宿主機上的檔案系統和網絡，這簡化了資料的管理和傳輸過程。對於需要處理大量資料的生物資訊分析來說，能夠無縫存取外部資料儲存非常重要。</li>
+<li>安全性：與其他容器技術相比，Singularity 提供了更強的安全保障。它防止了容器內的使用者取得宿主機的 root 權限，減少了安全風險。這一點對於確保生物資訊學資料的安全性尤其重要，特別是在處理敏感或受保護的資料時。</li>
+</ul>
+<p>From <a target="_blank" rel="noopener" href="https://hpc.pku.edu.cn/_book/guide/soft/singularity.html">北京大學高效能運算平台</a>, <a target="_blank" rel="noopener" href="https://hpc.pku.edu.cn/ug/guide/soft/singularity/">北京大學高效能運算校級公共平台使用者文檔</a></p>
+<p>容器技術是一種以應用軟體為中心的虛擬化技術。以應用軟體為單元，將軟體及所有的依賴性打包成容器鏡像，打包後的容器鏡像可直接拷貝到不同的Linux主機上運作。透過容器技術，可以很好的解決安裝軟體時，依賴庫的安裝問題、軟體環境的隔離以及軟體環境的移植問題。</p>
+<ul>
+<li>Singularity為勞倫斯伯克利國家實驗室開發專門用於高效能運算場景的容器技術，Singularity完全基於可移植性進行虛擬化，更加輕量級，部署更快，Singularity目前被廣泛地各高效能運算中心。</li>
+<li>透過Singularity來滿足作業運行的軟體環境，首先是創建或取得軟體鏡像，再將創建好的軟體鏡像上傳到叢集上運行；</li>
+<li><strong>透過Singularity建立軟體映像，需要在有root權限的Linux主機上，或是在配置好fakeroot的Linux主機上以「fakeroot」的身份進行。</strong></li>
+</ul>
+<p>使用容器部署和使用軟體環境的步驟如下： 建構容器鏡像，建構容器鏡像的方式有三種：</p>
+<ul>
+<li>在本機擁有 root 權限的 Linux 主機上安裝 Singularity， 並使用 Singularity 部署容器鏡像；</li>
+<li>在支援 fakeroot 的伺服器上，使用 Singularity 部署容器鏡像；</li>
+<li>直接從倉庫中拉取已經建置好的容器鏡像；</li>
+<li>將容器鏡像上傳到集群，透過 singularity 指令使用建構好的容器鏡像。</li>
+</ul>
+<p>容器的優點和缺點(相較於編譯安裝以及 conda 安裝管理軟體，容器有幾個十分明顯的優勢)</p>
+<p>容器的優勢</p>
+<ul>
+<li>可移植性，透過容器部署好運算環境後，可以直接上傳到社會上高效能運算叢集上使用，也可以直接將容器鏡像分享給課題組的其他成員直接使用，大幅減少了部署環境的時間。</li>
+<li>可複現性，尤其是一些生信軟體，依賴不同的計算工具，換個人安裝，雖然安裝的軟體版本相同，但是依賴的計算工具版本不同，都可能導致計算結果存在差異，而容器的使用可以很好的避免這個問題。</li>
+<li><strong>易管理，不同容器相互隔絕，不存在依賴衝突等問題，例如平台上使用conda 打包了ncl、nco 和ncview，因為這些工具在安裝的時候同時也打包了netcdf 庫，如果用戶在編譯如cesm 和wrf等依賴netcdf 環境的軟體，可能會導致編譯和使用過程出現衝突。</strong></li>
+</ul>
+<p>容器有著這麼多的優點，效能損耗還低，有時候甚至還優於裸機效能，是否就代表所用運算軟體環境都適合用容器部署？答案是否定的，容器其實也有一些缺點需要使用者留意：</p>
+<p>容器的缺點</p>
+<ul>
+<li>使用難度高，相較於裸機上安裝和使用軟體，容器概念的理解、接受還有使用還是需要一定門檻的</li>
+<li><strong>跨節點應用由於要呼叫宿主機的 mpi ，相容性有一定的要求，可移植性需要驗證。</strong> 當然，平台也在致力於跨節點應用容器化的測試與打包</li>
+<li><strong>最佳化問題，例如為了讓軟體運行更快，Intel 編譯軟體過程中可能會使用-Host 參數，讓編譯器根據主機CPU 型號進行指令優化，或者編譯過程中加入AVX512 的支持，這時候如果將鏡像移植到舊款架構的CPU 主機上，可能會導致鏡像無法正常運作軟體環境</strong></li>
+</ul>
+<h1 id="sifsingularity-image-file-sandbox">SIF（Singularity Image File）&amp; Sandbox</h1>
+<p>兩種建立客製化 image 的方法。Singularity 的 image 支持兩種模式 sif 及 sandbox，兩者最大的差異就是 sandbox 會保留用戶在環境中，安裝的軟體及設定的參數。而 sif 則比較接近唯獨模式，僅提供環境運行所需要的套件，但當運行結束後不會保留在過程中安裝的套件。</p>
+<ul>
+<li>SIF（Singularity Image File）：壓縮的讀（read-only）的Singularity鏡件，是⽣產使⽤的主形式。</li>
+<li>Sandbox 可 (writable)的器在形式，是件統中的⼀⽬錄，常⽤於開發或創建⾃⼰的容器，是開發使⽤的主形式。</li>
+</ul>
+<div class="note note-primary">
+            <p>SIF and sandbox images can be converted to each other.</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 1. Convert the SIF format container to sandbox;</span><br>singularity build --sandbox centos76 centos76.sif<br><br><span class="hljs-comment"># 2. Convert the sandbox container image to SIF format;</span><br>singularity build centos76.sif centos76<br></code></pre></td></tr></table></figure>
+<h2 id="singularity-container-image">Singularity Container Image</h2>
+<p><a target="_blank" rel="noopener" href="https://www.cuhk.edu.hk/itsc/hpc/singularity.html" class="uri">https://www.cuhk.edu.hk/itsc/hpc/singularity.html</a></p>
+<div class="note note-primary">
+            <p>Note that Singularity versions prior to 3.0 used a slightly different image format, characterised by the extension .simg. You can still find these around in the web; newer Singularity versions are still able to run them.</p>
+          </div>
+<p>By default, Singularity containers are <strong>read-only image file</strong> that usually end in <strong>.simg</strong>. You can copy the singuarity image file directly from others pre-build container with any copy file command like cp or scp. You can also pull the container from Docker Hub or Sinularity Hub repositories. Base on the container on the repositories, you may custom your own container desire for your job nature.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#From Docker Hub</span><br>singularity pull docker://ubuntu:latest<br>singularity build centos7_python35.simg docker://centos/python-35-centos7<br>            <br><span class="hljs-comment">#From Singularity Hub</span><br>singularity pull shub://singularityhub/centos<br>singularity build tensorflow.simg shub://opensciencegrid/osgvo-tensorflow<br></code></pre></td></tr></table></figure>
+<h1 id="installing-singularity-platform">Installing Singularity platform</h1>
+<p><a target="_blank" rel="noopener" href="https://docs.sylabs.io/guides/3.8/user-guide/quick_start.html" class="uri">https://docs.sylabs.io/guides/3.8/user-guide/quick_start.html</a></p>
+<div class="note note-primary">
+            <p><strong>Docker and Singularity server installation requires root privileges</strong>, so you can choose to install Docker on your local personal computer to create an image, and then upload it to the server to run it with Singularity.</p>
+          </div>
+<h2 id="install-development-libraries">install development libraries</h2>
+<p>SingularityCE is a container platform. It allows you to create and run containers that package up pieces of software in a way that is portable and reproducible. You can build a container using SingularityCE on your laptop, and then run it on many of the largest HPC clusters in the world, local university or company clusters, a single server, in the cloud, or on a workstation down the hall. Your container is a single file, and you don’t have to worry about how to install all the software you need on each different operating system.</p>
+<p>SingularityCE的使用不需要管理員權限,但安裝需要管理員權限</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">sudo</span> apt-get update &amp;&amp; <span class="hljs-built_in">sudo</span> apt-get install -y \<br>    build-essential \<br>    libssl-dev \<br>    uuid-dev \<br>    libgpgme11-dev \<br>    squashfs-tools \<br>    libseccomp-dev \<br>    wget \<br>    pkg-config \<br>    git \<br>    cryptsetup<br></code></pre></td></tr></table></figure>
+<h2 id="install-go">Install Go</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">export</span> VERSION=1.16.4 OS=linux ARCH=amd64 &amp;&amp; \  <span class="hljs-comment"># Replace the values as needed</span><br>  wget https://dl.google.com/go/go<span class="hljs-variable">$VERSION</span>.<span class="hljs-variable">$OS</span>-<span class="hljs-variable">$ARCH</span>.tar.gz &amp;&amp; \ <span class="hljs-comment"># Downloads the required Go package</span><br>  <span class="hljs-built_in">sudo</span> tar -C /usr/local -xzvf go<span class="hljs-variable">$VERSION</span>.<span class="hljs-variable">$OS</span>-<span class="hljs-variable">$ARCH</span>.tar.gz &amp;&amp; \ <span class="hljs-comment"># Extracts the archive</span><br>  <span class="hljs-built_in">rm</span> go<span class="hljs-variable">$VERSION</span>.<span class="hljs-variable">$OS</span>-<span class="hljs-variable">$ARCH</span>.tar.gz    <span class="hljs-comment"># Deletes the ``tar`` file</span><br><br>$ <span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;export PATH=/usr/local/go/bin:$PATH&#x27;</span> &gt;&gt; ~/.bashrc &amp;&amp; \<br>  <span class="hljs-built_in">source</span> ~/.bashrc<br></code></pre></td></tr></table></figure>
+<h2 id="download-singularityce-from-a-release">Download SingularityCE from a release</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">export</span> VERSION=3.8.1 &amp;&amp; <span class="hljs-comment"># adjust this as necessary \</span><br>    wget https://github.com/sylabs/singularity/releases/download/v<span class="hljs-variable">$&#123;VERSION&#125;</span>/singularity-ce-<span class="hljs-variable">$&#123;VERSION&#125;</span>.tar.gz &amp;&amp; \<br>    tar -xzf singularity-ce-<span class="hljs-variable">$&#123;VERSION&#125;</span>.tar.gz &amp;&amp; \<br>    <span class="hljs-built_in">cd</span> singularity-ce-<span class="hljs-variable">$&#123;VERSION&#125;</span><br></code></pre></td></tr></table></figure>
+<p>then, Compile</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ./mconfig &amp;&amp; \<br>    make -C builddir &amp;&amp; \<br>    <span class="hljs-built_in">sudo</span> make -C builddir install<br></code></pre></td></tr></table></figure>
+<p>Finally, check</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity --version<br>$ singularity <span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+<p>it has shown,</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs vbnet">Linux container platform optimized <span class="hljs-keyword">for</span> High Performance Computing (HPC) <span class="hljs-built_in">and</span><br>Enterprise Performance Computing (EPC)<br><br><span class="hljs-symbol">Usage:</span><br>  singularity [<span class="hljs-keyword">global</span> options...]<br><br><span class="hljs-symbol">Description:</span><br>......<br></code></pre></td></tr></table></figure>
+<h1 id="building-singularity-images">Building Singularity images</h1>
+<div class="note note-primary">
+            <p>當鏡像庫平台沒有找到適用的現成鏡像，使用者可以在本地將軟體打包成鏡像，上傳到超算上運行。<strong>請注意，使用者只能在自己的電腦上製作鏡像，不能在超算上製作鏡像。</strong></p>
+          </div>
+<h2 id="example-build-jedi-environment-with-singularity">Example: Build JEDI environment with Singularity</h2>
+<p>From <a target="_blank" rel="noopener" href="https://wiki.ucar.edu/display/JEDI/Build+JEDI+environment+with+Singularity" class="uri">https://wiki.ucar.edu/display/JEDI/Build+JEDI+environment+with+Singularity</a></p>
+<h3 id="jcsda-singularity-latest">JCSDA-singularity-latest</h3>
+<p>From <a target="_blank" rel="noopener" href="https://singularityhub.github.io/singularityhub-archive/containers/JCSDA-singularity-latest/" class="uri">https://singularityhub.github.io/singularityhub-archive/containers/JCSDA-singularity-latest/</a></p>
+<p>From <a target="_blank" rel="noopener" href="https://singularityhub.github.io/singularityhub-archive/containers/MBlaschek-singularity-jupyter-jedi/" class="uri">https://singularityhub.github.io/singularityhub-archive/containers/MBlaschek-singularity-jupyter-jedi/</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity --version<br><br>$ singularity pull shub://MBlaschek/singularity-jupyter:jedi<br>$ ll<br>963M Sep 22 14:10 singularity-jupyter_jedi.sif<br><br>$ singularity <span class="hljs-built_in">exec</span> singularity-jupyter_jedi.sif <span class="hljs-built_in">cat</span> /etc/os-release<br>NAME=<span class="hljs-string">&quot;Ubuntu&quot;</span><br>VERSION=<span class="hljs-string">&quot;16.04.6 LTS (Xenial Xerus)&quot;</span><br>ID=ubuntu<br>ID_LIKE=debian<br>PRETTY_NAME=<span class="hljs-string">&quot;Ubuntu 16.04.6 LTS&quot;</span><br>VERSION_ID=<span class="hljs-string">&quot;16.04&quot;</span><br>HOME_URL=<span class="hljs-string">&quot;http://www.ubuntu.com/&quot;</span><br>SUPPORT_URL=<span class="hljs-string">&quot;http://help.ubuntu.com/&quot;</span><br>BUG_REPORT_URL=<span class="hljs-string">&quot;http://bugs.launchpad.net/ubuntu/&quot;</span><br>VERSION_CODENAME=xenial<br>UBUNTU_CODENAME=xenial<br><br>$ singularity inspect singularity-jupyter_jedi.sif<br>MAINTAINER: Mark Miesch<br>SPECIES: JEDI<br>org.label-schema.build-date: Thursday_5_December_2019_10:5:35_UTC<br>org.label-schema.schema-version: 1.0<br>org.label-schema.usage.singularity.deffile.bootstrap: docker<br>org.label-schema.usage.singularity.deffile.from: jcsda/docker_base-gnu-openmpi-dev:latest<br>org.label-schema.usage.singularity.version: 3.4.2<br><br>$ singularity shell -e singularity-jupyter_jedi.sif<br></code></pre></td></tr></table></figure>
+<p>What's inside the JEDI docker image? (note: seems not full set)</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs smali">When you start a Singularity container<span class="hljs-built_in"> instance </span>from the xinzhang8noaa-singularity-master.simg, we already prepapre the gnu version 7.2 compilers<span class="hljs-built_in"> and </span>most of the necessary libraiestools for GSI, OOPS, WRF etc., all libraries are installed under /usr/local, which include<br><br>git<br>git flow<br>emacs<br>open-mpi v2.1.0<br>zlib v1.2.11<br>szip v2.1.1<br>jpeg v9b<br>png v1.4.19<br>jasper v1.900.2<br>hdf5 v1.8.17<br>freetype v2.5.5<br>netcdf-c v4.4.11<br>netcdf-fortran v4.4.4<br>lapack v3.7.0<br>parallel-netcdf v1.8.1<br>xerces-c v3.1.4<br>esmf v7.0.0<br>udunites-2 v2.2.24<br>nco v4.6.6<br>grib_api v1.21.0<br>cdo v1.8.2<br>boost v1.65.1<br>eigen3 v3.3.4<br>pio 1.7.1<br>ecbuild<br>eckit<br>fckit<br><br>The major NCEP libraries are also installed at<span class="hljs-keyword"> :</span><br><br>/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a<br>/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_8.a<br>/nwprod/lib/ip/v2.0.0/libip_v2.0.0_4.a<br>/nwprod/lib/ip/v2.0.0/libip_v2.0.0_8.a<br>/nwprod/lib/ip/v2.0.0/libip_v2.0.0_d.a<br>/nwprod/lib/sigio/v2.0.1/lib/libsigio_v2.0.1_4.a<br>/nwprod/lib/sigio/v2.0.1/libsigio_v2.0.1_4.a<br>/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_4.a<br>/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_8.a<br>/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a<br>/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_4.a<br>/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_8.a<br>/nwprod/lib/w3emc/v2.2.0/libw3emc_v2.2.0_d.a<br>/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_4.a<br>/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_8.a<br>/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a<br></code></pre></td></tr></table></figure>
+<ul>
+<li>Download WRF and WPS</li>
+<li>Build WRF and WPS code</li>
+<li>Download MPAS code</li>
+<li>Build MPAS code</li>
+<li>Test MPAS</li>
+</ul>
+<h2 id="example-lammps">Example: LAMMPS</h2>
+<p>LAMMPS 是由桑迪亞國家實驗室開發的一套分子動力學類比的開源程式包。 LAMMPS使用MPI實現多機器平行計算，在新的版本中，支援基於CUDA和OpenCL的GPU計算。其以GNU通用公眾授權條款釋出，因而開源自由。 LAMMPS最初為一美國政府與私人機構合作專案，由美國能源部與另外三所私有企業實驗室合作開發。</p>
+<p>LAMMPS is a classical molecular dynamics code with a focus on materials modeling. It's an acronym for Large-scale Atomic/Molecular Massively Parallel Simulator.</p>
+<p>From <a target="_blank" rel="noopener" href="http://docs.hpc.whu.edu.cn/files/whuhpcdocs.wiki/sbatch/singularity.html" class="uri">http://docs.hpc.whu.edu.cn/files/whuhpcdocs.wiki/sbatch/singularity.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建sandbox；</span><br><span class="hljs-comment"># 这里将创建的sandbox命名为ubuntu20_lammps,并使用docker hub上现有的容器 ubuntu:20.04 作为基础镜像。</span><br>singularity build --sandbox ./ubuntu20_lammps docker://ubuntu:20.04 <span class="hljs-comment"># sudo ??</span><br><br><span class="hljs-comment"># 进入创建好的sandbox，并进行修改；</span><br><span class="hljs-comment"># 其中-w表示可写。进入后singularity会自动挂载的HOME目录，如果是用root用户进入，则会挂载/root目录</span><br>singularity shell -w ./ubuntu20_lammps<br><br><span class="hljs-comment"># Ubuntu下安装LAMMPS并行版需要安装必要的依赖包</span><br>apt update &amp;&amp; apt upgrade -y<br>apt install openmpi-bin openmpi-doc libopenmpi-dev -y<br>apt install gcc g++ gfortran make wget vim -y<br><br><span class="hljs-comment"># 安装fftw</span><br>wget http://www.fftw.org/fftw-3.3.9.tar.gz<br>tar zxvf fftw-3.3.9.tar.gz<br><span class="hljs-built_in">cd</span> fftw-3.3.9<br>./configure --prefix=/opt/software/fftw_3.3.9 --enable-shared --enable-static --enable-fma<br>make -j &amp;&amp; make install<br><br><span class="hljs-comment"># 设置临时fftw环境变量</span><br><span class="hljs-built_in">export</span> PATH=/opt/software/fftw_3.3.9/bin:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=/opt/software/fftw_3.3.9/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><br><span class="hljs-comment"># 安装lammps</span><br>wget https://lammps.sandia.gov/tars/lammps-10Feb21.tar.gz<br>tar zxvf lammps-10Feb21.tar.gz<br><span class="hljs-built_in">cd</span> lammps-10Feb21<br><span class="hljs-built_in">cd</span> src<br>vim MAKE/OPTIONS/Makefile.g++_openmpi <span class="hljs-comment"># 修改如下行</span><br>  FFT_INC = -DFFT_FFTW -I/opt/software/fftw_3.3.9/include<br>  FFT_PATH = -L/opt/software/fftw_3.3.9/lib<br>  FFT_LIB = -lfftw3<br><br>make yes-std<br>make no-lib<br>make -j g++_openmpi<br><br><span class="hljs-built_in">mkdir</span> /opt/software/lammps<br><span class="hljs-built_in">cp</span> ./lmp_g++_openmpi /opt/software/lammps/<br><br><span class="hljs-comment"># 设置临时lammps环境变量</span><br><span class="hljs-built_in">export</span> PATH=/opt/software/lammps:<span class="hljs-variable">$PATH</span><br><br><span class="hljs-comment"># 验证(容器内)</span><br><span class="hljs-built_in">cd</span> /root<br><span class="hljs-built_in">cp</span> /opt/lammps-10Feb21/bench/in.lj .<br>mpirun --allow-run-as-root -np 2 --mca btl ^openib lmp_g++_openmpi -<span class="hljs-keyword">in</span> in.lj<br><br><br><span class="hljs-comment"># 退出容器，设置永久环境变量(宿主机)</span><br>vim ./ubuntu20_lammps/environment<br><span class="hljs-comment"># 加入下面两行</span><br><span class="hljs-built_in">export</span> PATH=/opt/software/fftw_3.3.9/bin:/opt/software/lammps:<span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">export</span> LD_LIBRARY_PATH=/opt/software/fftw_3.3.9/lib:<span class="hljs-variable">$LD_LIBRARY_PATH</span><br><br><span class="hljs-comment"># 验证(宿主机)</span><br>singularity <span class="hljs-built_in">exec</span> ./ubuntu20_lammps mpirun --allow-run-as-root -np 2 --mca btl ^openib lmp_g++_openmpi -<span class="hljs-keyword">in</span> in.lj<br><br><span class="hljs-comment"># 把修改好的sandbox打包成sif格式；</span><br><span class="hljs-comment"># 删除不必要的安装包, 如 fftw-3.3.9.tar.gz lammps-10Feb21.tar.gz</span><br><span class="hljs-comment"># 使用前面创建的sandbox目录生成singularity image file格式镜像。</span><br>singularity build ubuntu20_lammps.sif ./ubuntu20_lammps<br></code></pre></td></tr></table></figure>
+<p>then, run it on HPC,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#SBATCH --partition=hpxg</span><br><span class="hljs-comment">#SBATCH --nodes=1</span><br><span class="hljs-comment">#SBATCH --ntasks-per-node=2</span><br><span class="hljs-comment">#SBATCH --time=1:00:00</span><br><br><span class="hljs-comment"># 加载超算平台预安装的 singularity</span><br>module load singularity<br><span class="hljs-comment"># or load by micromamba</span><br><br><span class="hljs-comment"># 测试in.lj算例</span><br>singularity <span class="hljs-built_in">exec</span> ubuntu20_lammps.sif mpirun -np 2 --mca btl ^openib lmp_g++_openmpi -<span class="hljs-keyword">in</span> in.lj<br></code></pre></td></tr></table></figure>
+<h2 id="customize-definition-file-.def">Customize Definition File .def</h2>
+<p>File 內容主要分為 Header 和 Sections 兩部分：</p>
+<ul>
+<li>Header：定義 base 映像檔的來源 (例：docker, library, yum…等)。</li>
+<li>Sections：有多種選項可設定，主要會使用以下 2 個項目：
+<ul>
+<li>%post：建立容器後將執行的內容。</li>
+<li>%environment：容器建立好後，會將程式的環境變數會放到 /environment 內。</li>
+</ul></li>
+</ul>
+<p>Execute definition file to create a container,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">sudo</span> singularity build &lt;CONTAINER_NAME&gt;.sif &lt;DEF_FILE_NAME&gt;.def<br></code></pre></td></tr></table></figure>
+<p>Header,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">Bootstrap: library<br>From: debian:7<br></code></pre></td></tr></table></figure>
+<p>Preferred bootstrap agents</p>
+<ul>
+<li>library (images hosted on the Container Library)</li>
+<li>docker (images hosted on Docker Hub)</li>
+<li>shub (images hosted on Singularity Hub)</li>
+<li>oras (images from supporting OCI registries)</li>
+<li>scratch (a flexible option for building a container from scratch)</li>
+</ul>
+<p>Here is an example definition file that uses every available section. We will discuss each section in turn. It is not necessary to include every section (or any sections at all) within a def file. Furthermore, multiple sections of the same name can be included and will be appended to one another during the build process.</p>
+<p><a target="_blank" rel="noopener" href="https://docs.sylabs.io/guides/3.7/user-guide/definition_files.html" class="uri">https://docs.sylabs.io/guides/3.7/user-guide/definition_files.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs bash">Bootstrap: library<br>From: ubuntu:18.04<br>Stage: build<br><br>%setup<br>    <span class="hljs-built_in">touch</span> /file1<br>    <span class="hljs-built_in">touch</span> <span class="hljs-variable">$&#123;SINGULARITY_ROOTFS&#125;</span>/file2<br><br>%files<br>    /file1<br>    /file1 /opt<br><br>%environment<br>    <span class="hljs-built_in">export</span> LISTEN_PORT=12345<br>    <span class="hljs-built_in">export</span> LC_ALL=C<br><br>%post<br>    apt-get update &amp;&amp; apt-get install -y netcat<br>    NOW=`<span class="hljs-built_in">date</span>`<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;export NOW=\&quot;<span class="hljs-variable">$&#123;NOW&#125;</span>\&quot;&quot;</span> &gt;&gt; <span class="hljs-variable">$SINGULARITY_ENVIRONMENT</span><br><br>%runscript<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Container was created <span class="hljs-variable">$NOW</span>&quot;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Arguments received: $*&quot;</span><br>    <span class="hljs-built_in">exec</span> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span><br><br>%startscript<br>    nc -lp <span class="hljs-variable">$LISTEN_PORT</span><br><br>%<span class="hljs-built_in">test</span><br>    grep -q NAME=\&quot;Ubuntu\&quot; /etc/os-release<br>    <span class="hljs-keyword">if</span> [ $? -eq 0 ]; <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Container base is Ubuntu as expected.&quot;</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Container base is not Ubuntu.&quot;</span><br>        <span class="hljs-built_in">exit</span> 1<br>    <span class="hljs-keyword">fi</span><br><br>%labels<br>    Author d@sylabs.io<br>    Version v0.0.1<br><br>%<span class="hljs-built_in">help</span><br>    This is a demo container used to illustrate a def file that uses all supported sections.<br></code></pre></td></tr></table></figure>
+<h3 id="case">case:</h3>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs sh">BootStrap: library<br>From: ubuntu:18.04<br><br>%post<br>    apt-get -y update<br>    apt-get -y upgrade<br><br>    apt-get install -y \<br>    build-essential \<br>    vim \<br>    wget \<br>    curl \<br>    libssl-dev \<br>    git \<br>    tar \<br>    openssh-client \<br>    gzip \<br>    ca-certificates<br><br>    apt-get install -y bzip2<br><br>    apt-get clean<br><br>    <span class="hljs-built_in">export</span> SHELL=/bin/bash<br>    <span class="hljs-built_in">export</span> PATH=/root/.local/bin:<span class="hljs-variable">$PATH</span><br>    <br>    wget micro.mamba.pm/install.sh<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;All paths are default.&quot;</span><br>    sed -i -e <span class="hljs-string">&#x27;s/-t 0/1 == 0/g&#x27;</span> install.sh<br>    <span class="hljs-built_in">chmod</span> +x install.sh<br>    bash install.sh<br><br>    <span class="hljs-comment"># &gt;&gt;&gt; mamba initialize &gt;&gt;&gt;</span><br>    <span class="hljs-comment"># !! Contents within this block are managed by &#x27;mamba init&#x27; !!</span><br>    <span class="hljs-built_in">export</span> MAMBA_EXE=<span class="hljs-string">&#x27;/root/.local/bin/micromamba&#x27;</span>;<br>    <span class="hljs-built_in">export</span> MAMBA_ROOT_PREFIX=<span class="hljs-string">&#x27;/root/micromamba&#x27;</span>;<br>    __mamba_setup=<span class="hljs-string">&quot;<span class="hljs-subst">$(<span class="hljs-string">&quot;<span class="hljs-variable">$MAMBA_EXE</span>&quot;</span> shell hook --shell bash --root-prefix <span class="hljs-string">&quot;<span class="hljs-variable">$MAMBA_ROOT_PREFIX</span>&quot;</span> 2&gt; /dev/null)</span>&quot;</span><br>    <span class="hljs-keyword">if</span> [ $? -eq 0 ]; <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-variable">$__mamba_setup</span>&quot;</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">alias</span> micromamba=<span class="hljs-string">&quot;<span class="hljs-variable">$MAMBA_EXE</span>&quot;</span>  <span class="hljs-comment"># Fallback on help from mamba activate</span><br>    <span class="hljs-keyword">fi</span><br>    <span class="hljs-built_in">unset</span> __mamba_setup<br><br>    micromamba <span class="hljs-built_in">env</span> list<br><br>%environment<br>    <span class="hljs-built_in">export</span> SHELL=/bin/bash<br>    <span class="hljs-built_in">export</span> LC_ALL=C<br>    <span class="hljs-built_in">export</span> PATH=/usr/local/bin:<span class="hljs-variable">$PATH</span><br>    <span class="hljs-built_in">export</span> PATH=/root/.local/bin:<span class="hljs-variable">$PATH</span><br><br>    <span class="hljs-comment"># &gt;&gt;&gt; mamba initialize &gt;&gt;&gt;</span><br>    <span class="hljs-comment"># !! Contents within this block are managed by &#x27;mamba init&#x27; !!</span><br>    <span class="hljs-built_in">export</span> MAMBA_EXE=<span class="hljs-string">&#x27;/root/.local/bin/micromamba&#x27;</span>;<br>    <span class="hljs-built_in">export</span> MAMBA_ROOT_PREFIX=<span class="hljs-string">&#x27;/root/micromamba&#x27;</span>;<br>    __mamba_setup=<span class="hljs-string">&quot;<span class="hljs-subst">$(<span class="hljs-string">&quot;<span class="hljs-variable">$MAMBA_EXE</span>&quot;</span> shell hook --shell bash --root-prefix <span class="hljs-string">&quot;<span class="hljs-variable">$MAMBA_ROOT_PREFIX</span>&quot;</span> 2&gt; /dev/null)</span>&quot;</span><br>    <span class="hljs-keyword">if</span> [ $? -eq 0 ]; <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-variable">$__mamba_setup</span>&quot;</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">alias</span> micromamba=<span class="hljs-string">&quot;<span class="hljs-variable">$MAMBA_EXE</span>&quot;</span>  <span class="hljs-comment"># Fallback on help from mamba activate</span><br>    <span class="hljs-keyword">fi</span><br>    <span class="hljs-built_in">unset</span> __mamba_setup<br><br>%runscript<br>    hostname<br><br>%labels<br>    Author wpsze<br>    Version v0.0.1<br><br>%<span class="hljs-built_in">help</span><br>	  Singularity image used get dependencies from micromamba.<br></code></pre></td></tr></table></figure>
+<p>(Fail, why??) then,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">sudo</span> singularity build test.sif test.def<br></code></pre></td></tr></table></figure>
+<h2 id="by-sanbox">By Sanbox</h2>
+<p>建立沙盒容器</p>
+<p>若需測試套件是否與容器環境相容時，您可以建立「沙盒容器」，既不影響原容器映像檔內容，也無需重建立容器，又可在容器內安裝或進行操作：</p>
+<p>請先建立沙盒資料夾，放入容器映像檔的所有內容</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">sudo</span> singularity build --sandbox &lt;FOLDER_NAME&gt; docker://nvidia/cuda:10.1-devel-ubuntu18.04<br></code></pre></td></tr></table></figure>
+<p><strong>使用 shell 方式進入沙盒容器內，並具有寫入的權限。</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">sudo</span> singularity shell --writable &lt;FOLDER_NAME&gt;/<br></code></pre></td></tr></table></figure>
+<p>即可利用 apt 使用以下指令更新並安裝套件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ apt-get update<br>$ apt-get install wget<br></code></pre></td></tr></table></figure>
+<p>使用沙盒建立 Singularity 容器映像檔</p>
+<div class="note note-primary">
+            <p>附註：由於沙盒未將套件寫入 definition file，您無法紀錄容器內有哪些套件，維護不易，較不推薦使用此方式建立容器映像檔。建議使用客製化 Singularity 容器之方式。</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">sudo</span> singularity build &lt;CONTAINER_NAME&gt;.sif &lt;FOLDER_NAME&gt;/<br></code></pre></td></tr></table></figure>
+<ul>
+<li>Assume that the sandbox image to be deleted is named molspin</li>
+<li>First, enter the image to be deleted in readable mode
+<ul>
+<li>singularity shell --fakeroot -w molspin</li>
+</ul></li>
+<li>Delete all files created based on fakeroot in the container
+<ul>
+<li>rm -rf /* 1&gt;/dev/null 2&gt;&amp;1</li>
+</ul></li>
+<li>Exit the image
+<ul>
+<li>exit</li>
+</ul></li>
+<li>Upload the created software image to the high-performance computing cluster and load the singularity software environment</li>
+<li>Delete the rest
+<ul>
+<li>rm -rf molspin</li>
+</ul></li>
+</ul>
+<h2 id="example-nmap">Example: nmap</h2>
+<h1 id="conda-install-singularity">Conda install singularity</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ micromamba <span class="hljs-built_in">env</span> create -n singularity<br>$ micromamba activate singularity<br>$ micromamba install conda-forge::singularity<br></code></pre></td></tr></table></figure>
+<p>version = linux-ppc64le/singularity-3.8.7-hff88825_0.tar.bz2?</p>
+<h1 id="running-singularity-images">Running Singularity images</h1>
+<h2 id="build-or-pull">build or pull</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity build ./jason-tensorflow.sif docker://tensorflow/tensorflow:latest-gpu<br>$ singularity pull ./jason-tensorflow.sif docker://tensorflow/tensorflow:latestgpu<br>$ singularity pull library://lolcow<br>$ <span class="hljs-built_in">ls</span><br>lolcow_latest.sif<br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <ul><li>Inspect will show you labels, environment variables, and scripts associated with the image determined by the flags you pass.</li></ul>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity inspect my-container.sif<br></code></pre></td></tr></table></figure>
+<h2 id="run-exec-shell">run, exec, shell</h2>
+<div class="note note-primary">
+            <p>singularity run Run the user-defined default command within a container</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity run my-container.sif<br><br>$ singularity run lolcow_latest.sif <br> ______________________________<br>&lt; Sun Sep 22 00:17:43 HKT 2024 &gt;<br> ------------------------------<br>        \   ^__^<br>         \  (oo)\_______<br>            (__)\       )\/\<br>                ||----w |<br>                ||     ||<br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <p>singularity exec Run a command within a container</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity <span class="hljs-built_in">exec</span> my-container.sif my-command<br><br>$ singularity <span class="hljs-built_in">exec</span> lolcow_latest.sif cowsay WRF-MPAS<br> __________<br>&lt; WRF-MPAS &gt;<br> ----------<br>        \   ^__^<br>         \  (oo)\_______<br>            (__)\       )\/\<br>                ||----w |<br>                ||     ||<br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <p>singularity shell Run a shell within a container</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity shell my-container.sif<br><br>$ singularity shell lolcow_latest.sif <br>Singularity&gt; cowsay here is shell<br> _______________<br>&lt; here is shell &gt;<br> ---------------<br>        \   ^__^<br>         \  (oo)\_______<br>            (__)\       )\/\<br>                ||----w |<br>                ||     ||<br>Singularity&gt; cowsay going <br> _______<br>&lt; going &gt;<br> -------<br>        \   ^__^<br>         \  (oo)\_______<br>            (__)\       )\/\<br>                ||----w |<br>                ||     ||<br>Singularity&gt; <span class="hljs-built_in">exit</span><br><span class="hljs-built_in">exit</span><br></code></pre></td></tr></table></figure>
+<h1 id="specifying-bind-paths">Specifying bind paths</h1>
+<p>開發容器的目的之一主要是為了解決依賴函式庫的安裝、軟體環境的隔離、以及軟體環境的移植問題。因此，<strong>容器的核心特性之一就是它們的檔案系統與宿主機相隔離。</strong> 如果我們查看一個 singularity 容器的根目錄，也會看到與 Linux 主機根目錄相似的結構。這意味著容器內的應用程式只能看到（並與之互動）這個封閉環境中的檔案和目錄。與 Linux 下掛載（mount）外接硬碟設備類似，容器同樣需要透過掛載 (bind) 的操作與我們宿主機上的檔案系統互動。<a target="_blank" rel="noopener" href="https://juejin.cn/post/7345293582365868041">link</a></p>
+<p>當呼叫容器時，Singularity 會將主機作業系統 “swap” 為容器中的作業系統，導致我們無法存取主機檔案系統。<strong>然而，在日常使用場景中，已安裝至容器中的應用程式的輸入和輸出檔案往往儲存在主機檔案系統中，因此，我們需要從容器內讀取和寫入主機系統上的檔案。</strong></p>
+<ul>
+<li>singularity 使用 --bind/-B 宿主機目錄:容器內目錄 選項將主機系統上的目錄對應到容器內的目錄。這允許我們從容器內部存取主機上的文件，從而在主機系統上讀寫資料。</li>
+</ul>
+<p>如需要將多個目錄綁定到 Singularity 容器中，並且長期保持不變，我們可以進一步將這個變數寫入 .bashrc 檔案中。</p>
+<p>Here’s an example of using the --bind option and binding /data on the host to /mnt in the container (/mnt does not need to already exist in the container):</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">ls</span> /data<br>bar  foo<br><br>$ singularity <span class="hljs-built_in">exec</span> --<span class="hljs-built_in">bind</span> /data:/mnt my_container.sif <span class="hljs-built_in">ls</span> /mnt<br>bar  foo<br></code></pre></td></tr></table></figure>
+<p>You can bind multiple directories in a single command with this syntax:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ singularity shell --<span class="hljs-built_in">bind</span> /opt,/data:/mnt my_container.sif<br></code></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">export</span> SINGULARITY_BIND=<span class="hljs-string">&quot;/opt,/data:/mnt&quot;</span><br><br>$ singularity shell my_container.sif<br></code></pre></td></tr></table></figure>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://docs.sylabs.io/guides/2.6/user-guide/singularity_and_docker.html">Singularity and Docker</a></li>
+<li><a target="_blank" rel="noopener" href="https://hpc.hku.hk/hpc/software/singularity-container/">HKU Singularity Container</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.sylabs.io/library">Sylabs Cloud</a>
+<ol type="1">
+<li>singularity pull ubuntu.sif library://library/default/ubuntu:21.04</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://ngc.nvidia.com/">NVIDIA NGC</a>
+<ol type="1">
+<li>NVIDIA官方自己构建的pytorch和TensorFlow的容器镜像，每个里面包含了cuda、显卡驱动以及cudnn，据说比自己装的速度要快，使用时singularity需要 --nv 选项。</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a>
+<ol type="1">
+<li>singularity pull ubuntu.sif docker://ubuntu:latest</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://singularityhub.github.io/singularityhub-archive/">Singularity Hub Archive</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dechinphy/p/pytorch.html">从零开始制作PyTorch的Singularity容器镜像</a></li>
+<li><a target="_blank" rel="noopener" href="https://man.twcc.ai/@twccdocs/howto-twnia2-create-sglrt-container-zh">建立台灣杉二號的容器</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Singularity Container</div>
+      <div>https://waipangsze.github.io/2024/09/21/Singularity-Container/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 21, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/21/HPC/" title="HPC 高性能计算平台">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">HPC 高性能计算平台</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/20/wrf4-elec-lightning/" title="Predicting lightning activity using WRF-ELEC model">
+                        <span class="hidden-mobile">Predicting lightning activity using WRF-ELEC model</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
