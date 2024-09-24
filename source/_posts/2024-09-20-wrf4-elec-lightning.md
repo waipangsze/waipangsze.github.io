@@ -20,8 +20,7 @@ WRF-ELEC provides basic electrification and **lightning using the NSSL microphys
 
 If you have trouble with this option please contact the developers directly (i.e., not wrf_help):
 
-> Ted Mansell (Ted.Mansell _at_ noaa.gov)
-
+> Ted Mansell (Ted.Mansell _at_ noaa.gov)\
 > Alexandre Fierro (Alex.Fierro _at_ noaa.gov) 
 
 ## BoxMG 
@@ -190,8 +189,8 @@ it shows,
 ### Configure/compile WRF
 
 {% note danger %}
-Important note:
-Compile WRF using **only one core** with BoxMG !!!
+Important note: \
+Compile WRF using **only one core** with BoxMG !!! \
 ./compile -j 1 em_real 2>&1 | tee compile.log
 {% endnote %}
 
@@ -448,8 +447,8 @@ Source: README.wrfelec, updated 2015-05-04
 - BoxMG directory: /home/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/
 
 {% note danger %}
-Important note:
-Compile WRF using **only one core** with BoxMG !!!
+Important note: \
+Compile WRF using **only one core** with BoxMG !!! \
 ./compile -j 1 em_real 2>&1 | tee compile.log
 {% endnote %}
 
@@ -536,6 +535,19 @@ Enabled NetCDF-4/HDF-5: yes
 NetCDF built with PnetCDF: no
 ```
 
+there is an extra folder called "elec",
+
+```sh
+ $ ls wrf4-elec/elec/
+binwrf.pl                           module_discharge.F
+depend.elec                         module_discharge_msz.F
+include_microphysics_driver_elec.F  module_mp_nssl_2mom_elec.F
+include_solve_lightningnudge.F      module_nudge_light.F
+Makefile                            module_screen.F
+module_boxmgsetup.F                 takahashi.txt
+module_commasmpi.F
+```
+
 # Compile Errors
 
 1. Error NoahMP submodule files not populating WRF directories. 
@@ -550,28 +562,18 @@ NetCDF built with PnetCDF: no
 ```sh
 --->                  Executables successfully built                  <---
  
--rwxrwxr-x 1 wpsze wpsze 43939288 Sep 20 13:08 main/ndown.exe
--rwxrwxr-x 1 wpsze wpsze 43824624 Sep 20 13:08 main/real.exe
--rwxrwxr-x 1 wpsze wpsze 43238968 Sep 20 13:08 main/tc.exe
--rwxrwxr-x 1 wpsze wpsze 48241712 Sep 20 13:07 main/wrf.exe
+-rwxrwxr-x 1 wpsze wpsze 44236440 Sep 24 14:26 main/ndown.exe
+-rwxrwxr-x 1 wpsze wpsze 44121776 Sep 24 14:26 main/real.exe
+-rwxrwxr-x 1 wpsze wpsze 43532016 Sep 24 14:26 main/tc.exe
+-rwxrwxr-x 1 wpsze wpsze 50585304 Sep 24 14:25 main/wrf.exe
+
+ $ ls run/*exe
+run/ndown.exe  run/real.exe  run/tc.exe  run/wrf.ex
 ```
 
-and there is an extra folder called "elec",
+# WRF-ELEC outputs
 
-```sh
- $ ls wrf4-elec/elec/
-binwrf.pl                           module_discharge.F
-depend.elec                         module_discharge_msz.F
-include_microphysics_driver_elec.F  module_mp_nssl_2mom_elec.F
-include_solve_lightningnudge.F      module_nudge_light.F
-Makefile                            module_screen.F
-module_boxmgsetup.F                 takahashi.txt
-module_commasmpi.F
-```
-
-# WRF-Elec outputs
-
-It is important to note that the FOD and reflectivity are derived from Elec, whereas the LPI originates from WRF-ARW simulations.
+It is important to note that the FOD and reflectivity are derived from ELEC, whereas the LPI originates from WRF-ARW simulations.
 
 ## simulated radar reflectivity
 
