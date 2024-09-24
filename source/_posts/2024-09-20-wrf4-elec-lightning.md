@@ -48,9 +48,66 @@ $ ll
 34M boxmg4wrf
 ```
 
+- <https://sourceforge.net/p/boxmg4wrf/git/ci/main/tree/>
+  - Branches: main, boxmg4wrf-0.1, master, release0.0
+
+
+git logg (2024-09-24)
+
+```
+* d8e89bc (HEAD -> master, origin/master, origin/HEAD)  Fix mpi calls to use single or double precision as set by RKIND (11 months ago) <Ted Mansell>
+* 817df7a  Update to compile on M1 mac (assumes using gfortran as compiler) (2 years ago) <Ted Mansell>
+* 3cee0c8 (origin/boxmg4wrf-0.1) Added comment (2 years, 9 months ago) <Ted Mansell>
+* 71c38c1 - Added a check for gcc version 10 or greater to add the -fallow-argument-mismatch compile flag - Updates to test example ex_direct_1_f90 (e.g., double quotes on preprocessed include files) (2 years, 9 months ago) <Ted Mansell>
+* 0e19676 erm: add sgl/dbl suffix for libs (3 years, 7 months ago) <Ted Mansell>
+* 6682023 erm: turn off all but the one that works (currently) (3 years, 7 months ago) <Ted Mansell>
+* 3644096 erm: added dependcies for "check" (3 years, 7 months ago) <Ted Mansell>
+* d98ff35 erm: Minor changes for clarity (hopefully) (3 years, 7 months ago) <Ted Mansell>
+* aaaa34c erm: minor updates (3 years, 7 months ago) <Ted Mansell>
+* b54bb70 erm: added .gitignore file (3 years, 7 months ago) <Ted Mansell>
+* d96cb63 (origin/release0.0) Initial commit (3 years, 7 months ago) <Ted Mansell>
+```
+
 Compile:
 
-- look at <https://waipangsze.github.io/2023/04/25/WRF_installation_on_a_Linux_based_machine/>
+- wrf_env.sh: go to <https://waipangsze.github.io/2023/04/25/WRF_installation_on_a_Linux_based_machine/>
+
+To check environment variables,
+
+- /ARCH/machine
+
+```
+  ifeq ($(findstring x86_64,$(UNAME_M)),x86_64)
+
+    BOXMG_CPU = AMD64
+```
+
+- add these to Makefile to print variables,
+
+```
+$(info $$BOXMG_OS is [${BOXMG_OS}])
+$(info $$BOXMG_CPU is [${BOXMG_CPU}])
+$(info $$BOXMG_COMPILER is [${BOXMG_COMPILER}])
+$(info $$BOXMG_ARCHmake is [${BOXMG_ARCHmake}])
+$(info $$BOXMG_ARCH is [${BOXMG_ARCH}])
+$(info $$BOXMG_PRECISION is [${BOXMG_PRECISION}])
+$(info $$BOXMG_MPI is [${BOXMG_MPI}])
+```
+
+- $ make
+
+```
+ $ uname -a
+Linux xxx 4.18.0-477.10.1.el8_8.x86_64 #1 SMP Tue May 16 11:38:37 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
+
+$BOXMG_OS is [Linux]
+$BOXMG_CPU is [AMD64]
+$BOXMG_COMPILER is [gnu]
+$BOXMG_ARCHmake is [./ARCH]
+$BOXMG_ARCH is [Linux-AMD64]
+$BOXMG_PRECISION is [SINGLE]
+$BOXMG_MPI is [yes]
+```
 
 ```sh
 #!/bin/bash
@@ -61,9 +118,9 @@ gcc --version
 gfortran --version
 mpirun --version
 which mpif90 & mpif90 --version
-
 which mpif77 # Must
 
+export BOXMG_MPI=yes
 make
 ```
 
@@ -93,8 +150,50 @@ drwxrwxr-x 11 wpsze wpsze  33K Sep 23 16:28 ../
 - [Error while Making BoxMG?](https://forum.mmm.ucar.edu/threads/error-while-making-boxmg.12977/)
 
 
+### Test BoxMG
+
+1. Go to /tests and make
+
+```sh
+#!/bin/bash
+export WRF_ENV="/home/wpsze/WRF/WRFv440/wrf_env.sh"
+source ${WRF_ENV}
+
+gcc --version
+gfortran --version
+mpirun --version
+which mpif90 & mpif90 --version
+which mpif77
+
+export LDFLAGS=-L/EM/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/lib
+export LD_LIBRARY_PATH=/EM/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/lib:$LD_LIBRARY_PATH
+export CPPFLAGS=-I/EM/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/include
+echo ${LD_LIBRARY_PATH}
+
+export BOXMG_MPI=yes
+
+make
+```
+
+it shows,
+
+```
+ - building boxmg-sym-std-2D objects in libboxmg_opt_sgl.a ... 
+ - building boxmg-sym-std-3D objects in libboxmg_opt_sgl.a ... 
+ - linking objects .... 
+ - the executable ex_direct_1_f90 has been created.
+```
+
+- boxmg-sym-std-3D/ex_direct_1_f90 is successful.
+- All the rest fails. (why? related RKIND issue.)
 
 ### Configure/compile WRF
+
+{% note danger %}
+Important note:
+Compile WRF using **only one core** with BoxMG !!!
+./compile -j 1 em_real 2>&1 | tee compile.log
+{% endnote %}
 
 To configure WRF, two environment variables must be set: WRF_ELEC and BOXMG
 
@@ -346,7 +445,29 @@ Source: README.wrfelec, updated 2015-05-04
 
 # Compilation process details
 
-- Will use BoxMG in dir: /home/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/
+- BoxMG directory: /home/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/
+
+{% note danger %}
+Important note:
+Compile WRF using **only one core** with BoxMG !!!
+./compile -j 1 em_real 2>&1 | tee compile.log
+{% endnote %}
+
+part of script is shown below,
+
+```sh
+export WRF_ELEC=1
+export BOXMGLIBDIR=/home/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf
+
+cd wrf4-elec/
+
+./clean -a
+./configure 
+##  9 (dmpar) GNU [gfortran/gcc]
+
+sed -i "s/\s\stime\s//g" configure.wrf
+./compile -j 1 em_real 2>&1 | tee compile.log
+```
 
 ```sh
 checking for perl5... no
@@ -375,17 +496,17 @@ Please select from among the following Linux x86_64 options:
   7. (dmpar)   INTEL (ifort/icc): IBM POE
   8. (dmpar)   PATHSCALE (pathf90/pathcc)
   9. (dmpar)   GNU (gfortran/gcc)
- 10. (dmpar)   IBM (xlf90_r/cc_r)
- 11. (dmpar)   PGI (ftn/gcc): Cray XC CLE
- 12. (dmpar)   CRAY CCE (ftn $(NOOMP)/cc): Cray XE and XC
- 13. (dmpar)   INTEL (ftn/icc): Cray XC
- 14. (dmpar)   PGI (pgf90/pgcc)
- 15. (dmpar)   PGI (pgf90/gcc): -f90=pgf90
- 16. (dmpar)   PGI (pgf90/pgcc): -f90=pgf90
- 17. (dmpar)   INTEL (ifort/icc): HSW/BDW
- 18. (dmpar)   INTEL (ifort/icc): KNL MIC
- 19. (dmpar)   AMD (flang/clang) :  AMD ZEN1/ ZEN2/ ZEN3 Architectures
- 20. (dmpar)   FUJITSU (frtpx/fccpx): FX10/FX100 SPARC64 IXfx/Xlfx
+ 1.  (dmpar)   IBM (xlf90_r/cc_r)
+ 2.  (dmpar)   PGI (ftn/gcc): Cray XC CLE
+ 3.  (dmpar)   CRAY CCE (ftn $(NOOMP)/cc): Cray XE and XC
+ 4.  (dmpar)   INTEL (ftn/icc): Cray XC
+ 5.  (dmpar)   PGI (pgf90/pgcc)
+ 6.  (dmpar)   PGI (pgf90/gcc): -f90=pgf90
+ 7.  (dmpar)   PGI (pgf90/pgcc): -f90=pgf90
+ 8.  (dmpar)   INTEL (ifort/icc): HSW/BDW
+ 9.  (dmpar)   INTEL (ifort/icc): KNL MIC
+ 10. (dmpar)   AMD (flang/clang) :  AMD ZEN1/ ZEN2/ ZEN3 Architectures
+ 11. (dmpar)   FUJITSU (frtpx/fccpx): FX10/FX100 SPARC64 IXfx/Xlfx
 
 Enter selection [1-20] : 9
 
