@@ -19,25 +19,27 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="為什麼 HPC 如此重要？ 高效能運算 (HPC) 已不是新鮮事。數十年來，HPC 工作站和超級電腦在學術研究中扮演著不可或缺的角色，解決了複雜的問題並激發了發現和創新。近年來，數據量迅速激增，許多新的應用程式受益於 HPC 的強大功能，即跨共享資源執行運算密集型操作的能力，相較於傳統運算以更少的時間和更低的成本獲得結果。與此同時，HPC 硬體和軟體變得更容易獲得並且廣泛分佈。科學家、工程師和研究">
+    <meta name="description" content="Data assimilation (DA) Data assimilation (DA) (數據同化，或稱資料同化) is a technique by which numerical model data and observations are combined to obtain an analysis that best represents the state of the atmos">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HPC 高性能计算平台">
-<meta property="og:url" content="https://waipangsze.github.io/2024/09/21/HPC/index.html">
+<meta property="og:title" content="Data assimilation (DA)">
+<meta property="og:url" content="https://waipangsze.github.io/2024/09/24/DA-intro/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="為什麼 HPC 如此重要？ 高效能運算 (HPC) 已不是新鮮事。數十年來，HPC 工作站和超級電腦在學術研究中扮演著不可或缺的角色，解決了複雜的問題並激發了發現和創新。近年來，數據量迅速激增，許多新的應用程式受益於 HPC 的強大功能，即跨共享資源執行運算密集型操作的能力，相較於傳統運算以更少的時間和更低的成本獲得結果。與此同時，HPC 硬體和軟體變得更容易獲得並且廣泛分佈。科學家、工程師和研究">
+<meta property="og:description" content="Data assimilation (DA) Data assimilation (DA) (數據同化，或稱資料同化) is a technique by which numerical model data and observations are combined to obtain an analysis that best represents the state of the atmos">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-09-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-09-23T01:06:05.860Z">
+<meta property="article:published_time" content="2024-09-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-24T06:21:16.688Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="NWP">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="DA">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>HPC 高性能计算平台 - wpsze</title>
+  <title>Data assimilation (DA) - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -214,7 +216,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="HPC 高性能计算平台"></span>
+            <span id="subtitle" data-typed-text="Data assimilation (DA)"></span>
           
         </div>
 
@@ -225,8 +227,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-09-21 00:00" pubdate>
-          September 21, 2024 am
+        <time datetime="2024-09-24 00:00" pubdate>
+          September 24, 2024 am
         </time>
       </span>
     
@@ -237,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.9k words
+          15 words
         
       </span>
     
@@ -248,7 +250,7 @@
         
         
         
-          25 mins
+          1 mins
         
       </span>
     
@@ -294,129 +296,18 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">HPC 高性能计算平台</h1>
+            <h1 id="seo-header">Data assimilation (DA)</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="為什麼-hpc-如此重要">為什麼 HPC 如此重要？</h1>
-<p>高效能運算 (HPC) 已不是新鮮事。數十年來，HPC 工作站和超級電腦在學術研究中扮演著不可或缺的角色，解決了複雜的問題並激發了發現和創新。近年來，數據量迅速激增，許多新的應用程式受益於 HPC 的強大功能，即跨共享資源執行運算密集型操作的能力，相較於傳統運算以更少的時間和更低的成本獲得結果。與此同時，HPC 硬體和軟體變得更容易獲得並且廣泛分佈。科學家、工程師和研究人員在一系列使用案例中仰賴著 HPC，包括天氣預報、石油和天然氣勘探、物理學、量子力學以及學術研究和商業應用的其他領域。</p>
-<p>對於每一個涉及計算的課題組來說，購買超算機時還是建立自己的伺服器集群，成為了每個課題組的考量。筆者建議課題組針對專案需求，兩者靈活配置，不存在東風壓倒西風的說法；對於超算資源來說，短時間以較小的經費就可以撬動極大的計算資源，對於專案驗證或緊急的專案需求都是非常好的補充，對於許多大型專案的進展，沒有超算談何開展。當然回歸到課題組的實際需求，自建伺服器集群才是每個課題組最划算的算力投資。</p>
-<p>超算中心產品的特點：完備的軟體運行環境及豐富的軟體選擇，穩定的技術支持，按需使用，靈活充值；缺點：昂貴且不易於管理，容易不知不覺就消耗了寶貴的科研經費（筆者接觸過課題組購置數萬機時，沒有有效管理，學生學習與試誤的過程中，就消耗殆盡；）</p>
-<ul>
-<li>1毛 = 1/10元 (人民幣)</li>
-<li>超算中心價格基本上在0.1-0.3元一個核時(人民幣)，單價看起來還是不貴。</li>
-<li>通常超算中心中主流的64核心節點，一般單價在0.1元每核心時，基於此計算一台64核心的伺服器長期租用，他的成本將會是：</li>
-<li>每天的費用：64x0.1x24=153.6元；每年的費用可能高達56064元；目前一台超算中心的64核心節點，基本市場價格也就在5萬左右；我們也核算過各類伺服器配置，基本上超算同類的運算伺服器，租賃1年的費用，就等於您訂購這台伺服器費用了。</li>
-<li>顯然從長期使用運算資源的角度來說，顯然自建自己的伺服器叢集是課題組更划算的選擇。</li>
-<li>其次：自有的伺服器資源，可以做到更靈活的使用，軟體安裝也非常自由；文件資料本地存儲，使用快捷簡易等優點。</li>
-</ul>
-<p>首先说现在的超算价格：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/523757254/answer/2530239695?utm_psn=1821112184379412482">link</a></p>
-<ul>
-<li>以北京超级云计算中心为代表的，主流超算中心，价格通常不超过0.1元每核时（搞活动的时候0.08元左右），按照题主描述，10万核时约需要8000~1万元。论性价比的话，</li>
-<li>我更推荐一些不太知名的，价格从0.05到0.08元每核时不等。</li>
-<li>其次，题主描述的10万核时应该是按照自己的18核至强计算出来的。不同CPU的性能差距很大，举个例子，<strong>AMD 7601计算1小时的，AMD 7452可能40分钟甚至半小时就算完了</strong>。最后，讨论下自己搭机器与租超算的优缺点。自己搭建机器，肯定无法兼顾性能与价格，例如预算6000以内的话，估计只能买1台双路AMD 7601，可能无法满足短时间内算完全部算例的需求。好处就是机器实打实的是自己的，这10万核时的任务算完了以后，机器还可以干别的用途，甚至卖了回血也可以。而超算与之相反，可以提供最高的算力，满足短期内大量的计算需求。缺点就是算完以后自己啥都留不下。</li>
-</ul>
-<p>实际上并行科技早就已经将超算商业化了，对于普通人也非常友好。我有个同学，自己有计算需求，但是课题组其他人没兴趣，她就自费只充了100块钱就够用了。就像充话费一样简单，使用也非常方便，超算就是一台远程linux电脑，远没有多数人想象的多么高冷神秘。<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/280917515/answer/1487285453">Link</a></p>
-<p>例子:</p>
-<ul>
-<li>10万核时，0.1元每核时，需要1万人民币。</li>
-</ul>
-<h1 id="集群">集群</h1>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://www.chinahpc.com/">北京东方超算科技有限公司, ChinaHPC</a>
-<ul>
-<li>成立于2013年，创始团队来自于北京市计算中心和中国科学院超级计算中心，注册资金1000万元，坐落在北京市海淀区上地信息产业基地。</li>
-<li><a target="_blank" rel="noopener" href="http://www.chinahpc.cn/">东方超算云</a>
-<ul>
-<li>东方超算云的大规模算力集群位于全国一体化算力网络国家枢纽节点<strong>内蒙古自治区</strong></li>
-<li>一期建设360个18KW高密度机柜，计算节点2000台，56000CPU核心，20PB分布式并行存储容量</li>
-<li><a target="_blank" rel="noopener" href="https://cloud.chinahpc.cn/#/login">Login website</a></li>
-<li>公共计算平台服务资源
-<ul>
-<li><strong>A区资源（0.1元核心小时）</strong>; 面向HPC、AI客户; 160节点; 处理器:2*Intel® Xeon® Platinum 9242 Processor（48核心、96线程、基础主频2.3GHz）; 内存：24x16GB 2933MHz，共384GB</li>
-<li><strong>B区资源（0.08元核心小时）</strong>：面向大规模分布式并行，追求性价比用户; 1000节点; 处理器： Intel® Xeon® Processor E5-2680 v4 （28核心，基础主频2.4GHz，最大睿频3.3GHz); 内存：8*16GB ,共128GB 内存; 网络：Mellanox FDR 56Gb Infiniband</li>
-</ul></li>
-</ul></li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="https://www.nscc-tj.cn/">国家超级计算天津中心, 天河一号</a>
-<ul>
-<li>中國人民解放軍國防科學技術大學和天津濱海新區提供的異構超級電腦</li>
-<li>啟用時間: 天河-1：2009年10月29日，天河-1A：2010年10月28日</li>
-<li>天河-1A使用的開源軟體包括：Linux作業系統，SLURM作業調度系統，Lustre叢集檔案系統</li>
-<li>0.07元/核时，配置：单节点12核 , Intel Hexa Core Xeon X5670 ；主频 2.93GHz, 内存48G，私有高速网络，免费存储1TB</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="http://nscc-gz.cn/Product/HighPerformanceComputingService/ServiceCharacteristics.html">国家超级计算广州中心, 天河二号</a>
-<ul>
-<li>中山大學廣州校區東校園</li>
-<li>啟用時間: 2013年</li>
-<li><strong>天河二号</strong>拥有约17920个计算节点，每节点配备两颗Xeon E5系列12核心的中央处理器、三个Xeon Phi 57核心的协处理器（运算加速卡），总内存容量约1.4PB，全局存储总容量约12.4PB。</li>
-<li>0.1元/核时，配置：单节点24核 , Intel Xeon E5-2692 v2 ；主频 2.2GHz, 内存64G，内存频率：DDR3 1333MHz，免费存储500GB</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="https://www.nscc-tj.cn/cjjs_zy_th3">国家超级计算天津中心同国防科技大学联合研制, 天河三号, （E级）超级计算机</a>
-<ul>
-<li>https://baike.baidu.com/item/%E5%A4%A9%E6%B2%B3%E4%B8%89%E8%99%9F/22052788</li>
-<li><a target="_blank" rel="noopener" href="https://www.weidunews.com/article/2024-02-18/1340.html">科技媒体解构中国迄今为止最强大的超级计算机</a></li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="https://nscc.hnu.edu.cn/info/1058/1063.htm">国家超级计算长沙中心</a>
-<ul>
-<li>中心拥有“天河”系列超级计算机、“天河·天马”计算集群等计算平台。其中2022年建成的天河新一代主机系统采用全国产设备，峰值计算性能达200P Flops（64 位精度），可提供1000P Ops人工智能算力（16位精度）</li>
-<li>“天河一号”高性能计算系统, 单节点配置：2*6核Intel Xeon Westmere EP，主频2.93GHz，内存48GB，1块Nvidia M2050 GPU</li>
-<li>CPU：0.10元/核/小时；GPU：2元/块/小时；纯CPU（120核包年）：5万元/年。含GPU（120核包年）：10万元/年。<a target="_blank" rel="noopener" href="https://nscc.hnu.edu.cn/info/1004/1414.htm">国家超级计算长沙中心2019年收费基本执行标准 2019</a></li>
-<li>存储服务：天河存储0.5万元/TB/年；其它存储0.3万元/TB/年</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="http://www.nsccsz.cn/nsccsz2024/index.shtml">国家超级计算深圳中心(深圳云计算中心)</a>
-<ul>
-<li>深圳超算一期, 深圳超算二期</li>
-<li>高性能计算集群约有3000余计算节点，CPU约70000核，总内存容量约230TB，全局存储总容量约20PB</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="https://www.nsccwx.cn/">神威·太湖之光</a>
-<ul>
-<li>啟用時間: 2015年12月31日</li>
-<li>部署在江蘇省無錫市的國家超級計算無錫中心，由清華大學負責營運</li>
-<li>整机处理器个数 40960个</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="http://www.blsc.cn/aboutus/">北京超级云计算中心</a>
-<ul>
-<li>成立于2011年，中国科学院和北京市政府共建，由北京北龙超级云计算有限责任公司运营</li>
-<li>推荐使用T6区，配置：单节点96核，按核计费，Intel Xeon Platinum 9242@2.3GHz，384G内存，100Gps 高速网，免费存储500G，价格1毛/核时=0.1/核时。（用的多会有一些折扣）</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="https://hpc.pku.edu.cn/about.html">北京大学高性能计算校级公共平台</a>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://hpc.pku.edu.cn/ug/">北京大学高性能计算校级公共平台用户文档</a></li>
-<li>每个CPU时0.06元, <a target="_blank" rel="noopener" href="https://hpc.pku.edu.cn/guide_6.html">收费标准</a></li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="http://hpc.ncpgr.cn/">作物遗传改良全国重点实验室生物信息计算平台</a>
-<ul>
-<li>生物信息高性能计算平台为华中农业大学作物遗传改良全国重点实验室公共技术平台，专注为实验室及全校用户提供高通量测序数据的存储和计算服务。</li>
-<li>平台由155个刀片计算节点、2个GPU节点、6个八路大内存胖节点、多套并行存储组成，总体计算能力理论峰值为380万亿次，CPU核心数为5600核，存储硬件12.7PB(可用容量8.8PB)，主存储读写带宽超过45GB/s。平台预装了1000余款各类生物信息分析软件及相关使用文档、各类常用生物信息数据库，用户可使用本平台进行转录调控测序、单细胞测序、三维基因组测序、表观组测序、基因组组装注释等各类常见组学数据分析。可加速大规模重测序数据分析、复杂大基因组组装注释等需消耗大量资源的分析项目。</li>
-<li>每个CPU时0.1元，并行存储空间每GB每月0.05元。重点室用户3折；重点实验室之外的用户不打折。根据用户上报的上一年度的文章，决定本年度的集群机时折扣。</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="https://hpc.whu.edu.cn/index.htm">武汉大学超级计算中心</a>
-<ul>
-<li>由475台CPU服务器、168台KNL服务器和174台GPU服务器组成</li>
-<li>武汉大学超级计算中心收费办法（试行）2024年03月29日 <a target="_blank" rel="noopener" href="https://hpc.whu.edu.cn/info/1008/1057.htm">link</a></li>
-<li>普通节点 用户类型 CPU机时收费标准（元/CPU核小时）校内用户 0.06; 校外用户 0.10 <a target="_blank" rel="noopener" href="https://hpc.whu.edu.cn/info/1008/1057.htm">link</a></li>
-<li>存储空间租用服务</li>
-<li>用户类型 收费标准（元/T年) 校内用户 120; 校外用户 500</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="https://scc.ustc.edu.cn/2010/0304/c386a1641/page.htm">中国科学技术大学超级计算中心</a>
-<ul>
-<li>瀚海 22 超级计算系统, 瀚海 20 超级计算系统, 曙光 TC4600 百万亿次超级计算系统</li>
-<li><a target="_blank" rel="noopener" href="https://scc.ustc.edu.cn/zlsc/user_doc/html/introduction/hanhai22-introduction.html">中国科大超算中心用户使用手册</a></li>
-<li><a target="_blank" rel="noopener" href="https://scc.ustc.edu.cn/2024/0228/c416a630736/page.htm">中国科学技术大学超级计算中心收费标准2023年11月15日版</a></li>
-<li>CPU节点 0.02元/CPU核小时</li>
-<li>免费使用1TB的存储容量，超过1TB后为30.00元/TB月</li>
-<li>校外用户收费为校内用户的3倍</li>
-</ul></li>
-<li><a target="_blank" rel="noopener" href="https://sc.hdu.edu.cn/">杭州电子科技大学超算中心</a>
-<ul>
-<li>曙光TC6000高性能计算集群有CPU计算节点68个</li>
-<li><a target="_blank" rel="noopener" href="https://sc.hdu.edu.cn/wp-content/uploads/2024/05/%E5%85%B3%E4%BA%8E%E5%85%AC%E5%B8%832024%E5%B9%B4%E5%BA%A6%E8%B6%85%E7%AE%97%E4%B8%AD%E5%BF%83%E6%94%B6%E8%B4%B9%E6%A0%87%E5%87%86%E7%9A%84%E9%80%9A%E7%9F%A5.pdf">关于公布 2024 年度超算中心收费标准的通知</a></li>
-<li>校内用户 CPU 节点 0.06 元／核·小时; 存储空间 超出 200GB 部分，每100GB 费用为 10 元/月</li>
-<li>校外用户 CPU 节点 0.12 元／核·小时; 存储空间 超出 200GB 部分，每100GB 费用为 20 元/月</li>
-</ul></li>
-</ul>
+                <h1 id="data-assimilation-da">Data assimilation (DA)</h1>
+<p>Data assimilation (DA) (數據同化，或稱資料同化) is a technique by which numerical model data and observations are combined to obtain an analysis that best represents the state of the atmospheric phenomena of interest</p>
+<h1 id="history">History</h1>
+<h1 id="random-variable">Random Variable</h1>
+<h2 id="bayesian">Bayesian</h2>
+<h2 id="mathematics">Mathematics</h2>
+<h2 id="section"></h2>
 
                 
               </div>
@@ -435,7 +326,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/HPC/" class="category-chain-item">HPC</a>
+  <a href="/categories/DA/" class="category-chain-item">DA</a>
   
   
 
@@ -450,9 +341,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/DA/" class="print-no-link">#DA</a>
       
     </div>
   
@@ -464,8 +359,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>HPC 高性能计算平台</div>
-      <div>https://waipangsze.github.io/2024/09/21/HPC/</div>
+      <div>Data assimilation (DA)</div>
+      <div>https://waipangsze.github.io/2024/09/24/DA-intro/</div>
     </div>
     <div class="license-meta">
       
@@ -477,7 +372,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>September 21, 2024</div>
+          <div>September 24, 2024</div>
         </div>
       
       
@@ -509,18 +404,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/09/23/ONNX/" title="ONNX Open Neural Network Exchange">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ONNX Open Neural Network Exchange</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/09/21/Singularity-Container/" title="Singularity Container">
-                        <span class="hidden-mobile">Singularity Container</span>
+                      <a href="/2024/09/23/ONNX/" title="ONNX Open Neural Network Exchange">
+                        <span class="hidden-mobile">ONNX Open Neural Network Exchange</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
