@@ -133,11 +133,26 @@ int main() {
 | Row 3         | ~~Strike~~      | Cell 9        |
 | Row 3         | [Link](dot.com) | Cell 9        |
 
+<https://nabeelvalley.co.za/blog/2021/23-03/custom-styles-in-markdown/>
+
+<style>
+tr:nth-child(even) {
+  background-color: #b2b2b2!important;
+  color: #f4f4f4!important;
+}
+</style>
+
 | <!-- -->      | <!-- -->        | <!-- -->      |
 |:-------------:|:---------------:|:-------------:|
 | Row 1         | **Bold**        | Cell 3        |
 | Row 2         | *Italic*        | Cell 6        |
 | Row 3         | ~~Strike~~      | Cell 9        |
+
+| elec_physics  | nssl_ipelec  | nssl_idischarge | outputs |
+|:------------- |:---------------:|:---------------:| :-------------|
+| 1         | 2          | 1        | ? |
+| 1         | 3          | 1        | scalar:scr,scw,sci,scs,sch,schl,sciona; <br> state:rscghis_2d,sctot,noninduc,induc,pot, <br> elecmag,elecx,elecy,elecz,light,lightdens,lightdis |
+| 1         | 3          | 2       | state:flshi,flshn,flshp,flshfedic, <br> flshfedicp,flshfedicn,flshfedcg,flshfedcgp,flshfedcgn |
 
 
 ```markdown
@@ -165,6 +180,12 @@ int main() {
 | Row 1         | **Bold**        | Cell 3        |
 | Row 2         | *Italic*        | Cell 6        |
 | Row 3         | ~~Strike~~      | Cell 9        |
+
+| elec_physics  | nssl_ipelec  | nssl_idischarge | outputs |
+|:------------- |:---------------:|:---------------:| :-------------|
+| 1         | 2          | 1        | ? |
+| 1         | 3          | 1        | scalar:scr,scw,sci,scs,sch,schl,sciona; <br> state:rscghis_2d,sctot,noninduc,induc,pot, <br> elecmag,elecx,elecy,elecz,light,lightdens,lightdis |
+| 1         | 3          | 2       | state:flshi,flshn,flshp,flshfedic, <br> flshfedicp,flshfedicn,flshfedcg,flshfedcgp,flshfedcgn |
 
 ```
 

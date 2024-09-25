@@ -250,9 +250,9 @@ The impact of initial conditions in predicting lightning activity using the Weat
 <https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/doc/README.electricity#L41>
 {% endnote %}
 
-## wrf-model's registry.elec
+## wrf4-elec's registry.elec
 
-<https://github.com/wrf-model/WRF/blob/master/Registry/registry.elec>
+<https://github.com/MicroTed/wrf4-elec/blob/main/Registry/registry.elec>
 
 {% note primary %}
 Look at namelist !!
@@ -289,9 +289,16 @@ state    real    elecx           ikj  misc    1         -     irh         "elecx
 state    real    elecy           ikj  misc    1         -     irh         "elecy"                  "EFIELD Y-Component"     "V m-1"
 state    real    elecz           ikj  misc    1         -     irh         "elecz"                  "EFIELD Z-Component"     "V m-1"
 state    real    pot             ikj  misc    1         -     irh         "pot"                    "POTENTIAL"     "V"
-state    real    light            ij  misc    1         -     irh         "light"                  "lightning flash"         "flash origin density"
-state    real    lightdens        ij  misc    1         -     irh         "lightdens"              "lightning flash density"         "flash column-1"
-state    integer lightdis         ij  misc    1         -     irh         "lightdis"               "lightning source density"     "Source column-1"
+state    real    light            ij  misc    1         -     irh         "light"                  "lightning flash initiations"         "flash origin density"
+state    real    lightdens        ij  misc    1         -     irh         "lightdens"              "lightning flash density"    "flash column-1"
+state    real    lightfod         ij  misc    1         -     irh         "lightfod"               "normalized lightning flash origin density"   "flash column-1"
+state    real    flshfedic        ij  misc    1         -     irh         "flshfedic"              "IC lightning flash extent density"         "flash column-1"
+state    real    flshfedicp       ij  misc    1         -     irh         "flshfedicp"             "IC pos lightning flash extent density"         "flash column-1"
+state    real    flshfedicn       ij  misc    1         -     irh         "flshfedicn"             "IC neg lightning flash extent density"         "flash column-1"
+state    real    flshfedcg        ij  misc    1         -     irh         "flshfedcg"              "CG lightning flash extent density"         "flash column-1"
+state    real    flshfedcgn       ij  misc    1         -     irh         "flshfedcgn"             "CG neg lightning flash extent density"         "flash column-1"
+state    real    flshfedcgp       ij  misc    1         -     irh         "flshfedcgp"             "CG pos lightning flash extent density"         "flash column-1"
+state    real    lightdis         ij  misc    1         -     irh         "lightdis"               "lightning source density"     "Source column-1"
 state    real    flshi           ikj  misc    1         -     irh         "flshi"                  "Lightning init points"     "count"
 state    real    flshn           ikj  misc    1         -     irh         "flshn"                  "Negative channels"     "count"
 state    real    flshp           ikj  misc    1         -     irh         "flshp"                  "Positive channels"     "count"
@@ -305,18 +312,45 @@ rconfig   integer  nssl_iscreen           namelist,physics      1             0 
 rconfig   real     nssl_lightrad          namelist,physics      1             12000   rh       "discharge cylinder radius (m)"  ""      ""
 rconfig   integer  nssl_idischarge        namelist,physics      1             1       rh       "lightning discharge flag"  ""      ""
 rconfig   integer  nssl_ibrkd             namelist,physics      1             4       rh       "Critical Breakeven Efield profile selection"  ""      ""
+rconfig   real     nssl_elgtfestop        namelist,physics      1             0.8     rh       "3D lightning initial channel stopping fraction"  ""      ""
 rconfig   real     nssl_ecrit             namelist,physics      1             120000  rh       "Critical Breakeven Efield magnitude for discharge (V/m) assuming height-constant Ecrit profile"  ""      ""
 rconfig   real     nssl_disfrac           namelist,physics      1             0.3     rh       "percentile of charge removed upon discharge (BLM)"  ""      ""
+rconfig   real     nssl_einternal         namelist,physics      1           200.0     rh       "Lightning channel internal field (MSZ)"  ""      ""
+rconfig   real     nssl_tgrnd             namelist,physics      1           266.16    rh       "Temperature threshold for CG (MSZ)"  ""      ""
+rconfig   real     nssl_zgrnd             namelist,physics      1             -1.     rh       "Height threshold for CG (MSZ)"  ""      ""
+rconfig   integer  nssl_clnox             namelist,physics      1             0       rh       "Lightning NOX prediction flag"  ""      ""
 # end Explicit lightning
 
 rconfig   integer  elec_physics           namelist,physics      1            0       irh       "elec_physics"            ""      ""
 
 # external WRF-ELEC package
 package   noelec             elec_physics==0             -             -
-package   eleclgt1d          elec_physics==1             -             scalar:scr,scw,sci,scs,sch,schl,sciona;state:rscghis_2d,sctot,noninduc,induc,pot,elecmag,elecx,elecy,elecz,light,lightdens,lightdis
-package   eleclgtmsz         elec_physics==2             -             scalar:scr,scw,sci,scs,sch,schl,sciona;state:rscghis_2d,sctot,noninduc,induc,pot,elecmag,elecx,elecy,elecz,light,lightdens,lightdis,flshi,flshn,flshp
-package   eleclgtmsznox      elec_physics==3             -             scalar:scr,scw,sci,scs,sch,schl,sciona,clnox;state:rscghis_2d,sctot,noninduc,induc,pot,elecmag,elecx,elecy,elecz,light,lightdens,lightdis,flshi,flshn,flshp
+package   eleclgt            elec_physics==1             -             scalar:scr,scw,sci,scs,sch,schl,sciona;state:rscghis_2d,sctot,noninduc,induc,pot,elecmag,elecx,elecy,elecz,light,lightdens,lightdis
+# for case of no hail (nssl_2momg)
+package   eleclgtg           elec_physics==11            -             scalar:scr,scw,sci,scs,sch,sciona;state:rscghis_2d,sctot,noninduc,induc,pot,elecmag,elecx,elecy,elecz,light,lightdens,lightdis,lightfod
+
+package lightning1d          nssl_idischarge==1   -    state:lightfod
+package lightning3d          nssl_idischarge==2   -    state:flshi,flshn,flshp,flshfedic,flshfedicp,flshfedicn,flshfedcg,flshfedcgp,flshfedcgn
+# package lightning3da         nssl_idischarge==3   -    state:flshi,flshn,flshp
+
+package nssl_cnox_off nssl_clnox==0   -   -
+package nssl_cnox_on  nssl_clnox==1   -   scalar:clnox
 ```
+
+here noted,
+
+<!-- <style>
+tr:nth-child(even) {
+  background-color: #b2b2b2!important;
+  !color: #f4f4f4!important;
+}
+</style> -->
+
+| elec_physics  | nssl_ipelec  | nssl_idischarge | outputs |
+|:------------- |:---------------:|:---------------:| :-------------|
+| 1         | 2          | 1        | ? |
+| 1         | 3          | 1        | scalar:scr,scw,sci,scs,sch,schl,sciona; <br> state:rscghis_2d,sctot,noninduc,induc,pot, <br> elecmag,elecx,elecy,elecz,light,lightdens,lightdis |
+| 1         | 3          | 2       | state:flshi,flshn,flshp,flshfedic, <br> flshfedicp,flshfedicn,flshfedcg,flshfedcgp,flshfedcgn |
 
 ## Specific namelist.input options
 
@@ -669,6 +703,47 @@ float LIGHTFOD(Time, south_north, west_east) ;
 Starting with the electrification processes (inductive and non-inductive
 processes), calculation method of the electric field, along with the
 BoxMG mathematical software for computation of POT is described.
+
+# WRF practice
+
+| option  |  |
+|:------------- | :-------------|
+| elec_physics             |  = 0, electrification (and charge arrays) turned off (DEFAULT) <br> = 1, electrification turned on (only works with mp_physics = 17, 18, or 22 i.e., 2-moment NSSL schemes)        |
+| nssl_ipelec (max_dom)    |  ! NOTE: only set this to a nonzero value on the innermost domain <br> = 0, charging turned off <br> = 2, non-inductive charging only <br> = 3, non-inductive + inductive charging <br> = 1, not used (reserved for future use)        |
+| nssl_idischarge          |  <br> = 0, no discharge <br> = 1, Cylindrical "1D" lightning scheme based on Ziegler and MacGorman (1994, JAS) <br> = 2, 3D discrete discharge adapted from MacGorman et al. (2001)            |
+
+- The WRF-ELEC model outputs a variety of variables related to electrification processes and lightning activity in thunderstorms. Some of the key output variables include:
+
+| WRF-ELEC variables                                 | Unit                 | Description                               |
+|----------------------------------------------------|----------------------|-------------------------------------------|
+| LIGHT(Time, south_north, west_east)                | flash origin density | lightning flash initiations               |
+| LIGHTDENS(Time, south_north, west_east)            | flash column-1       | lightning flash density                   |
+| LIGHTFOD(Time, south_north, west_east)             | flash column-1       | normalized lightning flash origin density |
+| LIGHTDIS(Time, south_north, west_east)             | Source column-1      | lightning source density                  |
+| POT(Time, bottom_top, south_north, west_east)      | V                    | POTENTIAL                                 |
+| ELECMAG(Time, bottom_top, south_north, west_east)  | V m-1                | EFIELD MAGNITUDE                          |
+| ELECX(Time, bottom_top, south_north, west_east)    | V m-1                | EFIELD X-Component                        |
+| ELECY(Time, bottom_top, south_north, west_east)    | V m-1                | EFIELD Y-Component                        |
+| ELECZ(Time, bottom_top, south_north, west_east)    | V m-1                | EFIELD Z-Component                        |
+| SCTOT(Time, bottom_top, south_north, west_east)    | C m-3                | Total Space Charge Density                |
+| RSCGHIS_2D(Time, south_north, west_east)           | C m-2                | MAX NONINDUCTIVE CHARGING 2D              |
+| INDUC(Time, bottom_top, south_north, west_east)    | C m-3                | TOTAL INDUCTIVE CHARGING                  |
+| NONINDUC(Time, bottom_top, south_north, west_east) | C m-3                | TOTAL NONINDUCTIVE CHARGING               |
+| SCTOT(Time, bottom_top, south_north, west_east)    | C m-3                | Total Space Charge Density                |
+
+- If the lightning discharge flag (nssl_idischarge = 2) that is lightning3d, More output variables include: (LIGHTFOD is not calculated)
+
+| WRF-ELEC variables                              | Unit           | Description                           |
+|-------------------------------------------------|----------------|---------------------------------------|
+| FLSHFEDIC(Time, south_north, west_east)         | flash column-1 | IC lightning flash extent density     |
+| FLSHFEDICP(Time, south_north, west_east)        | flash column-1 | IC pos lightning flash extent density |
+| FLSHFEDICN(Time, south_north, west_east)        | flash column-1 | IC neg lightning flash extent density |
+| FLSHFEDCG(Time, south_north, west_east)         | flash column-1 | CG lightning flash extent density     |
+| FLSHFEDCGN(Time, south_north, west_east)        | flash column-1 | CG neg lightning flash extent density |
+| FLSHFEDCGP(Time, south_north, west_east)        | flash column-1 | CG pos lightning flash extent density |
+| FLSHI(Time, bottom_top, south_north, west_east) | count          | Lightning init points                 |
+| FLSHN(Time, bottom_top, south_north, west_east) | count          | Negative channels                     |
+| FLSHP(Time, bottom_top, south_north, west_east) | count          | Positive channels                     |
 
 # Literature review
 
