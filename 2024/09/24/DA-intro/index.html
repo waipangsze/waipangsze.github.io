@@ -27,10 +27,10 @@
 <meta property="og:description" content="Data assimilation (DA) Data assimilation (DA) (數據同化，或稱資料同化) is a technique by which numerical model data and observations are combined to obtain an analysis that best represents the state of the atmos">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-09-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-09-24T06:21:16.688Z">
+<meta property="article:modified_time" content="2024-09-24T08:23:45.660Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="DA">
 <meta name="twitter:card" content="summary_large_image">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          15 words
+          213 words
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          1 mins
+          2 mins
         
       </span>
     
@@ -304,10 +304,64 @@
                 <h1 id="data-assimilation-da">Data assimilation (DA)</h1>
 <p>Data assimilation (DA) (數據同化，或稱資料同化) is a technique by which numerical model data and observations are combined to obtain an analysis that best represents the state of the atmospheric phenomena of interest</p>
 <h1 id="history">History</h1>
+<ul>
+<li>In 1901 Cleveland Abbe founded the United States Weather Bureau. He suggested that the atmosphere followed the principles of thermodynamics and hydrodynamics</li>
+<li>In 1904, Vilhelm Bjerknes proposed a two-step procedure formodel-based weather forecasting. First, a analysis step of data assimilation to generate initial conditions, then a forecasting step solving the initial value problem.</li>
+<li>In 1922, Lewis Fry Richardson carried out the first attempt to perform the weather forecast numerically.</li>
+<li>In 1950, a team of the American meteorologists Jule Charney, Philip Thompson, Larry Gates, and Norwegian meteorologist Ragnar Fj ̈ortoft and the applied mathematician John von Neumann, succeeded in the first numerical weather forecast using the ENIAC digital computer.</li>
+<li>In September 1954, Carl-Gustav Rossby’s group at the Swedish Meteorological and Hydrological Institute produced the first operational forecast (i.e. routine predictions for practical use) based on the barotropic equation. Operational numerical weather prediction in the United States began in 1955 under the Joint Numerical Weather Prediction Unit (JNWPU), a joint project by the U.S. Air Force, Navy, and Weather Bureau.</li>
+<li>In 1959, Karl-Heinz Hinkelmann produced the first reasonable primitive equation forecast, 37 years after Richardson’s failed attempt. Hinkelmann did so by removing high-frequency noise from the numerical model during initialization.</li>
+<li>In 1966, West Germany and the United States began producing operational forecasts based on primitive-equation models, followed by the United Kingdom in 1972, and Australia in 1977.</li>
+</ul>
+<h2 id="polynomial-fitting-of-panofsky">Polynomial Fitting of Panofsky</h2>
+<blockquote>
+<p>Panofsky, R. A. (1949). Objective weather-map analysis. Journal of Atmospheric Sciences, 6(6), 386-392.</p>
+</blockquote>
+<p><span class="math display">\[
+\begin{equation}
+\begin{split}
+p(x,y) = \sum_{i,j} a_{ij} x^i y^j, \qquad  i+j \leq 3
+\end{split}
+\end{equation}
+\tag{2}
+\]</span></p>
+<ul>
+<li>A field of 10 observations can be fitted accurately by a third-degree polynomial, with no smoothing of data.</li>
+<li>The amount of smoothing will depend on the nature of the variable analyzed.</li>
+</ul>
+<h2 id="successive-correction-method-scm-of-cressman">Successive Correction Method (SCM) of Cressman</h2>
+<blockquote>
+<p>Cressman G P, 1959. An operational objective analysis system[J]. Mon Wea Rev, 87: 367-374.</p>
+</blockquote>
+<ul>
+<li>Purpose:
+<ul>
+<li>SCM is designed to improve the accuracy of gridded meteorological data by integrating observations from various sources, such as weather stations, into a coherent grid. This method is particularly useful in situations where observational data is sparse or unevenly distributed.</li>
+</ul></li>
+<li>Basic Principle:
+<ul>
+<li>The method operates on the principle of iteratively correcting a background field (initial guess) using available observational data. Each iteration refines the grid values based on nearby observations, effectively merging the observational data with the background field.</li>
+</ul></li>
+<li>Weighting Function:
+<ul>
+<li>Cressman's SCM employs a specific weighting function that determines how much influence each observation has on the grid point being corrected. This function typically decreases with distance from the observation point, allowing closer observations to have a greater impact on the grid value than those further away.</li>
+</ul></li>
+<li>Computational Efficiency:
+<ul>
+<li>One of the advantages of SCM is its computational simplicity and efficiency, making it suitable for real-time applications in weather forecasting and analysis. It does not require complex background error covariance matrices or assumptions about error distributions, which simplifies its implementation compared to other assimilation methods like Optimal Interpolation (OI) or Variational methods.</li>
+</ul></li>
+</ul>
+<h1 id="inverse-problem">Inverse Problem</h1>
+<p>DA consists of using the actual result of some measurements to infer the values of the parameters that characterize the system.</p>
 <h1 id="random-variable">Random Variable</h1>
 <h2 id="bayesian">Bayesian</h2>
 <h2 id="mathematics">Mathematics</h2>
-<h2 id="section"></h2>
+<h1 id="references">References</h1>
+<ol type="1">
+<li>朱国富, 2015. 数值天气预报中分析同化基本方法的历史发展脉络和评述. 气象, 41(8): 986-996. DOI: 10.7519/j.issn.1000-0526.2015.08.008.</li>
+<li>朱国富, 2015. 理解大气资料同化的根本概念[J]. 气象, 41(4): 456-463. DOI:10.7519/j.issn.1000-0526.2015.04.008</li>
+<li><a target="_blank" rel="noopener" href="https://indico.cern.ch/event/289770/contributions/664473/attachments/541326/746202/DA_CERN_Perianez.pdf">2014, Data Assimilation in Numerical Weather Prediction models</a></li>
+</ol>
 
                 
               </div>
@@ -341,9 +395,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
-      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
