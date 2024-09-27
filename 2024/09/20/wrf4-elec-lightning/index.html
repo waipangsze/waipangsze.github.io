@@ -27,7 +27,7 @@
 <meta property="og:description" content="WRF-ELEC model WRF-ELEC provides basic electrification and lightning using the NSSL microphysics scheme. The electrification parameterizations are based on past work in modeling. The basics of the cha">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-09-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-09-25T09:10:43.232Z">
+<meta property="article:modified_time" content="2024-09-26T07:58:44.916Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="WRF-ELEC">
 <meta property="article:tag" content="Lightning">
@@ -185,6 +185,18 @@
             </li>
           
         
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
         
           <li class="nav-item" id="search-btn">
             <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
@@ -237,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.3k words
+          3.4k words
         
       </span>
     
@@ -248,7 +260,7 @@
         
         
         
-          28 mins
+          29 mins
         
       </span>
     
@@ -485,6 +497,7 @@ tr:nth-child(even) {
 </blockquote>
 <h2 id="lightning_option-from-wrf-arw">lightning_option (from WRF-ARW)</h2>
 <p>Lightning parameterization option to allow flash rate prediction without chemistry.</p>
+<p><a target="_blank" rel="noopener" href="https://ruc.noaa.gov/wrf/wrf-chem/Users_guide.pdf">WRF-Chem Version 4.4 User's Guide: Appendix C: Using the Lightning-NOx Parameterization in WRF-Chem</a></p>
 <div class="note note-primary">
             <p>(for convection resolved runs; must also use do_radar_ref = 1, and mp_physics = 2,4,6,7,8,10,14, or 16)</p>
           </div>
@@ -502,10 +515,31 @@ tr:nth-child(even) {
 <div class="note note-primary">
             <p>The lightning option = 1 you chose is appropriate for dx&lt;5km because it relies on the maximum updraft speed in the storm updraft. You chose dx=10km which will not produce updraft speeds representative of thunderstorms, and in fact the storms are likely represented by the convective parameterization.</p><p>For dx=10 km, you should use lightning_option = 11.</p>
           </div>
-<h2 id="flash-origin-density-fod-from-wrf-elec">Flash Origin Density (FOD) (From WRF-ELEC)</h2>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">float</span> LIGHTFOD(Time, south_north, west_east) ;<br>   LIGHTFOD:FieldType = 104 ;<br>   LIGHTFOD:MemoryOrder = <span class="hljs-string">&quot;XY &quot;</span> ;<br>   LIGHTFOD:description = <span class="hljs-string">&quot;normalized lightning flash origin density&quot;</span> ;<br>   LIGHTFOD:units = <span class="hljs-string">&quot;flash column-1&quot;</span> ;<br>   LIGHTFOD:stagger = <span class="hljs-string">&quot;&quot;</span> ;<br>   LIGHTFOD:coordinates = <span class="hljs-string">&quot;XLONG XLAT XTIME&quot;</span> ;<br></code></pre></td></tr></table></figure>
-<h2 id="electric-potential-difference-pot-from-wrf-elec">Electric POTential difference (POT) (From WRF-ELEC)</h2>
+<h2 id="lightlightdenselectric-potential-difference-pot-from-wrf-elec">light/lightdens/Electric POTential difference (POT) (From WRF-ELEC)</h2>
 <p>Starting with the electrification processes (inductive and non-inductive processes), calculation method of the electric field, along with the BoxMG mathematical software for computation of POT is described.</p>
+<h1 id="what-is-the-time-interval-in-lightflash-column-1">What is the time interval in light(flash column-1)?</h1>
+<p><a target="_blank" rel="noopener" href="https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/phys/module_microphysics_driver.F#L117" class="uri">https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/phys/module_microphysics_driver.F#L117</a></p>
+<p>!--light 2D flash origin densities per output time !--lightdens 2D flash extent densities per output time !--lightdis 2D total number of discharge points per output time</p>
+<ul>
+<li>per output time?
+<ul>
+<li>To find the number of flashes between output times, simply subtract the flashcount array from the previous output time from the current output time to get number of flashes per dt (where64dt = time between output files).</li>
+</ul></li>
+</ul>
+<p>From <a target="_blank" rel="noopener" href="https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/dyn_em/solve_em.F#L157">solve_em.F</a>, <strong>diag_flag and diag_flag_hist</strong> are</p>
+<ul>
+<li>Set diagnostic flag value <strong>history output time</strong></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!-----------------------------------------------------------------------------</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">! Set restart flag value history output time</span><br><span class="hljs-comment">!-----------------------------------------------------------------------------</span><br>   restart_flag = <span class="hljs-literal">.false.</span><br>   <span class="hljs-keyword">if</span> ( Is_alarm_tstep(grid%domain_clock, grid%alarms(restart_alarm)) ) <span class="hljs-keyword">then</span><br>      restart_flag = <span class="hljs-literal">.true.</span><br>   <span class="hljs-keyword">endif</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">! Set diagnostic flag value history output time</span><br><span class="hljs-comment">!-----------------------------------------------------------------------------</span><br><br>   ke_diag = kms <span class="hljs-comment">! default to ke_diag=1 in case of nwp_diagnostics == 1</span><br>   diag_flag = <span class="hljs-literal">.false.</span><br>   <span class="hljs-keyword">if</span> ( Is_alarm_tstep(grid%domain_clock, grid%alarms(HISTORY_ALARM)) ) <span class="hljs-keyword">then</span><br>      diag_flag = <span class="hljs-literal">.true.</span><br>      ke_diag = <span class="hljs-built_in">min</span>(k_end,kde-<span class="hljs-number">1</span>) <span class="hljs-comment">! set depth to full domain for reflectivity field</span><br>   <span class="hljs-keyword">endif</span><br>   diag_flag_hist = diag_flag<br></code></pre></td></tr></table></figure>
+<ul>
+<li>In <a target="_blank" rel="noopener" href="https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/elec/include_microphysics_driver_elec.F#L24">include_microphysics_driver_elec.F</a>,
+<ul>
+<li>diag_flag_hist</li>
+<li>clear_history = .true.</li>
+<li>all set = 0.0</li>
+</ul></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">! this sets the clear flag for the next time step if a history dump is occurring now</span><br><span class="hljs-keyword">IF</span> ( diag_flag_hist ) <span class="hljs-keyword">THEN</span><br>   clear_history = <span class="hljs-literal">.true.</span><br><span class="hljs-keyword">ENDIF</span><br><br><span class="hljs-comment">!    add up flashes up to history dump </span><br><br><span class="hljs-comment">!     if (MOD(NINT(curr_secs),history_interval*60).eq.0) then</span><br><span class="hljs-keyword">IF</span> ( clear_history ) <span class="hljs-keyword">THEN</span><br>   clear_history = <span class="hljs-literal">.false.</span><br><span class="hljs-comment">!      write(0,*) &#x27;clear arrays&#x27;</span><br>light(:,:) = <span class="hljs-number">0.</span><br>lightdis(:,:) = <span class="hljs-number">0.</span><br>lightdens(:,:) = <span class="hljs-number">0.</span><br>induc(:,:,:) = <span class="hljs-number">0.0</span><br>noninduc(:,:,:) = <span class="hljs-number">0.0</span><br>   <span class="hljs-keyword">IF</span> ( idischarge == <span class="hljs-number">1</span> ) <span class="hljs-keyword">THEN</span><br>   lightfod(:,:) = <span class="hljs-number">0.</span><br>   ELSEIF ( idischarge &gt;= <span class="hljs-number">2</span> ) <span class="hljs-keyword">THEN</span><br>   flshfedic(:,:) = <span class="hljs-number">0.</span><br>   flshfedicp(:,:) = <span class="hljs-number">0.</span><br>   flshfedicn(:,:) = <span class="hljs-number">0.</span><br>   flshfedcg(:,:) = <span class="hljs-number">0.</span><br>   flshfedcgp(:,:) = <span class="hljs-number">0.</span><br>   flshfedcgn(:,:) = <span class="hljs-number">0.</span><br>   flshi(:,:,:) = <span class="hljs-number">0.</span><br>   flshn(:,:,:) = <span class="hljs-number">0.</span><br>   flshp(:,:,:) = <span class="hljs-number">0.</span><br>   <span class="hljs-keyword">ENDIF</span><br></code></pre></td></tr></table></figure>
 <h1 id="wrf-practice">WRF practice</h1>
 <table>
 
@@ -677,12 +711,21 @@ tr:nth-child(even) {
 </table>
 <h1 id="literature-review">Literature review</h1>
 <p>Lightning activity is related to two important factors: dynamic–thermodynamic and microphysical characteristics (e.g., Williams et al., 2005; Rosenfeld et al., 2008; Guo et al., 2016; Wang et al., 2018; Zhao et al., 2020). Since the dynamic–thermodynamic processes affect the development of thunderstorm significantly, lightning activity is influenced by various dynamic–thermodynamic variables: temperature (Price, 1993), relative humidity in the lower and middle troposphere (Xiong et al., 2006; Fan et al., 2007), convective available potential energy (Qie et al., 2004; Stolz et al., 2015), and many others.</p>
+<h2 id="pr92">(1992) PR92</h2>
+<blockquote>
+<p>Price, C., and D. Rind (1992), A Simple Lightning Parameterization for Calculating Global Lightning Distributions, J. Geophys. Res., 97(D9), 9919-9933, doi:10.1029/92JD00719.<br />
+Wong, J., M. Barth, and D. Noone, 2013: Evaluating a lightning parameterization based on cloud-top height for mesoscale numerical model simulations, Geosci. Model Dev., 6, 429–443, GMD - Evaluating a lightning parameterization based on cloud-top height for mesoscale numerical model simulations.</p>
+</blockquote>
+<p>ref: <a target="_blank" rel="noopener" href="https://ruc.noaa.gov/wrf/wrf-chem/Users_guide.pdf">WRF-Chem Version 4.4 User's Guide: Appendix C: Using the Lightning-NOx Parameterization in WRF-Chem</a></p>
+<p>You may also find useful information in the actual code for the schemes:</p>
+<ul>
+<li>module_lightning_driver.F</li>
+<li>module_ltng_crmpr92.F</li>
+</ul>
 <h2 id="prediction-of-lightning-flash-density-with-the-wrf-model">(2010) Prediction of lightning flash density with the WRF model</h2>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://pdfs.semanticscholar.org/a206/1d033ccf90082c05a1514df4920005035c0b.pdf" class="uri">https://pdfs.semanticscholar.org/a206/1d033ccf90082c05a1514df4920005035c0b.pdf</a></p>
-</blockquote>
-<blockquote>
-<p>Lynn, B., and Yoav Yair. "Prediction of lightning flash density with the WRF model." Advances in Geosciences 23 (2010): 11-16.</p>
+<p><a target="_blank" rel="noopener" href="https://pdfs.semanticscholar.org/a206/1d033ccf90082c05a1514df4920005035c0b.pdf" class="uri">https://pdfs.semanticscholar.org/a206/1d033ccf90082c05a1514df4920005035c0b.pdf</a><br />
+Lynn, B., and Yoav Yair. "Prediction of lightning flash density with the WRF model." Advances in Geosciences 23 (2010): 11-16.</p>
 </blockquote>
 <p>The <strong>Lightning Potential Index (LPI)</strong> is a measure of the potential for charge generation and separation that leads to lightning flashes in convective thunderstorms. It is calculated from model simulated updraft and microphysical fields. It was designed to predict the potential of lightning occurrence in operational weather forecasting models, but could possibly be used to improve short-range forecasts of heavy rain. <strong>The index is modified here to be model grid-scale transparent between 1 and 4 km (the approximate upper limit of explicit microphysical weather forecasts)</strong>. Two case studies show that the modification appears to work quite well, and that LPI can be calculated on both an extremely high resolution research-grid (i.e., 1.33 km) and high resolution (i.e., 4 km) operationally compatible forecast grid. Analytical expressions are presented to use the LPI to predict the hourly lightning flash density.</p>
 <h2 id="fierro-et-al.">(2013) Fierro et al.</h2>
