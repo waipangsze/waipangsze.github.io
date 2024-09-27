@@ -632,6 +632,8 @@ with do_radar_reflectivity=1 and after running got the REFL_10cm variable. But t
 
 Lightning parameterization option to allow flash rate prediction without chemistry.
 
+[WRF-Chem Version 4.4 User's Guide: Appendix C: Using the Lightning-NOx Parameterization in WRF-Chem](https://ruc.noaa.gov/wrf/wrf-chem/Users_guide.pdf)
+
 {% note primary %}
 (for convection resolved runs; must also use 
 do_radar_ref = 1, and mp_physics = 2,4,6,7,8,10,14, or 16)
@@ -685,24 +687,85 @@ The lightning option = 1 you chose is appropriate for dx<5km because it relies o
 For dx=10 km, you should use lightning_option = 11. 
 {% endnote %}
 
-
-## Flash Origin Density (FOD) (From WRF-ELEC)
-
-```sh
-float LIGHTFOD(Time, south_north, west_east) ;
-   LIGHTFOD:FieldType = 104 ;
-   LIGHTFOD:MemoryOrder = "XY " ;
-   LIGHTFOD:description = "normalized lightning flash origin density" ;
-   LIGHTFOD:units = "flash column-1" ;
-   LIGHTFOD:stagger = "" ;
-   LIGHTFOD:coordinates = "XLONG XLAT XTIME" ;
-```
-
-## Electric POTential difference (POT) (From WRF-ELEC)
+## light/lightdens/Electric POTential difference (POT) (From WRF-ELEC)
 
 Starting with the electrification processes (inductive and non-inductive
 processes), calculation method of the electric field, along with the
 BoxMG mathematical software for computation of POT is described.
+
+# What is the time interval in light(flash column-1)?
+
+<https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/phys/module_microphysics_driver.F#L117>
+
+!--light         2D flash origin densities per output time
+!--lightdens     2D flash extent densities per output time
+!--lightdis      2D total number of discharge points per output time 
+
+- per output time? 
+  - To find the number of flashes between output times, simply subtract the flashcount array from the previous output time from the current output time to get number of flashes per dt (where64dt = time between output files).
+
+From [solve_em.F](https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/dyn_em/solve_em.F#L157), **diag_flag and diag_flag_hist** are
+
+- Set diagnostic flag value **history output time**
+
+```fortran
+!-----------------------------------------------------------------------------
+!
+! Set restart flag value history output time
+!-----------------------------------------------------------------------------
+   restart_flag = .false.
+   if ( Is_alarm_tstep(grid%domain_clock, grid%alarms(restart_alarm)) ) then
+      restart_flag = .true.
+   endif
+!
+! Set diagnostic flag value history output time
+!-----------------------------------------------------------------------------
+
+   ke_diag = kms ! default to ke_diag=1 in case of nwp_diagnostics == 1
+   diag_flag = .false.
+   if ( Is_alarm_tstep(grid%domain_clock, grid%alarms(HISTORY_ALARM)) ) then
+      diag_flag = .true.
+      ke_diag = min(k_end,kde-1) ! set depth to full domain for reflectivity field
+   endif
+   diag_flag_hist = diag_flag
+```
+
+- In [include_microphysics_driver_elec.F](https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/elec/include_microphysics_driver_elec.F#L24), 
+  - diag_flag_hist
+  - clear_history = .true.
+  - all set = 0.0
+
+```fortran     
+! this sets the clear flag for the next time step if a history dump is occurring now
+IF ( diag_flag_hist ) THEN
+   clear_history = .true.
+ENDIF
+
+!    add up flashes up to history dump 
+
+!     if (MOD(NINT(curr_secs),history_interval*60).eq.0) then
+IF ( clear_history ) THEN
+   clear_history = .false.
+!      write(0,*) 'clear arrays'
+light(:,:) = 0.
+lightdis(:,:) = 0.
+lightdens(:,:) = 0.
+induc(:,:,:) = 0.0
+noninduc(:,:,:) = 0.0
+   IF ( idischarge == 1 ) THEN
+   lightfod(:,:) = 0.
+   ELSEIF ( idischarge >= 2 ) THEN
+   flshfedic(:,:) = 0.
+   flshfedicp(:,:) = 0.
+   flshfedicn(:,:) = 0.
+   flshfedcg(:,:) = 0.
+   flshfedcgp(:,:) = 0.
+   flshfedcgn(:,:) = 0.
+   flshi(:,:,:) = 0.
+   flshn(:,:,:) = 0.
+   flshp(:,:,:) = 0.
+   ENDIF
+```
 
 # WRF practice
 
@@ -749,10 +812,21 @@ BoxMG mathematical software for computation of POT is described.
 
 Lightning activity is related to two important factors: dynamic–thermodynamic and microphysical characteristics (e.g., Williams et al., 2005; Rosenfeld et al., 2008; Guo et al., 2016; Wang et al., 2018; Zhao et al., 2020). Since the dynamic–thermodynamic processes affect the development of thunderstorm significantly, lightning activity is influenced by various dynamic–thermodynamic variables: temperature (Price, 1993), relative humidity in the lower and middle troposphere (Xiong et al., 2006; Fan et al., 2007), convective available potential energy (Qie et al., 2004; Stolz et al., 2015), and many others.
 
+## (1992) PR92
+
+> Price, C., and D. Rind (1992), A Simple Lightning Parameterization for Calculating Global Lightning Distributions, J. Geophys. Res., 97(D9), 9919-9933, doi:10.1029/92JD00719. \
+> Wong, J., M. Barth, and D. Noone, 2013: Evaluating a lightning parameterization based on cloud-top height for mesoscale numerical model simulations, Geosci. Model Dev., 6, 429–443, GMD - Evaluating a lightning parameterization based on cloud-top height for mesoscale numerical model simulations.
+
+ref: [WRF-Chem Version 4.4 User's Guide: Appendix C: Using the Lightning-NOx Parameterization in WRF-Chem](https://ruc.noaa.gov/wrf/wrf-chem/Users_guide.pdf)
+
+You may also find useful information in the actual code for the schemes:
+
+- module_lightning_driver.F
+- module_ltng_crmpr92.F
+
 ## (2010) Prediction of lightning flash density with the WRF model
 
-> <https://pdfs.semanticscholar.org/a206/1d033ccf90082c05a1514df4920005035c0b.pdf>
-
+> <https://pdfs.semanticscholar.org/a206/1d033ccf90082c05a1514df4920005035c0b.pdf> \
 > Lynn, B., and Yoav Yair. "Prediction of lightning flash density with the WRF model." Advances in Geosciences 23 (2010): 11-16.
 
 The **Lightning Potential Index (LPI)** is a measure of the potential for charge generation and separation that leads to lightning flashes in convective thunderstorms. It is calculated from model simulated updraft and microphysical fields. It was designed to predict the potential of lightning occurrence in operational weather forecasting models, but could possibly be used to improve short-range forecasts of heavy rain. **The index is modified here to be model grid-scale transparent between 1 and 4 km (the approximate upper limit of explicit microphysical weather forecasts)**. Two case studies show that the modification appears to work quite well, and that LPI can be calculated on both an extremely high resolution research-grid (i.e., 1.33 km) and high resolution (i.e., 4 km) operationally compatible forecast grid. Analytical expressions are presented to use the LPI to predict the hourly lightning flash density.
