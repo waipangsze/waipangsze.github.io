@@ -693,6 +693,9 @@ Starting with the electrification processes (inductive and non-inductive
 processes), calculation method of the electric field, along with the
 BoxMG mathematical software for computation of POT is described.
 
+![WRF-ELEC](https://i.imgur.com/kgs4meR.png)
+
+
 # What is the time interval in light(flash column-1)?
 
 <https://github.com/MicroTed/wrf4-elec/blob/7c90e71bdc4db527d0ec034804e4fd200cdacf28/phys/module_microphysics_driver.F#L117>
