@@ -16,6 +16,10 @@ date: 2024-09-14 21:29:47
 
 # 吸收知識
 
+## 數學物理
+
+- [苏剑林 | BoJone，科学空间博主](https://spaces.ac.cn/)
+
 ## 天氣
 
 - [興趣使然的天氣分析 Mahoshojo](https://www.pixnet.net/pcard/Mahoshojo?utm_source=PIXNET&utm_medium=post_card&utm_term&utm_content=359914739)
@@ -51,6 +55,10 @@ date: 2024-09-14 21:29:47
 ## 衛星雲圖
 
 - [H8/H9 JAXA Himawari Monitor (P-Tree System)](https://www.eorc.jaxa.jp/ptree/index.html)
+
+## 繪圖工具
+
+- [Diagrams.net-簡潔實用的線上繪圖工具](https://app.diagrams.net/)
 
 ## 圖片管理系統（簡稱圖床)
 
