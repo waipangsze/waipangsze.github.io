@@ -63,7 +63,7 @@ date: 2024-09-14 21:29:47
 
 ## 圖片壓縮軟體
 
-[TinyPNG使用智慧有損壓縮技術將您的 PNG and JPEG 圖片的檔案大小降低](https://tinypng.com/cn/)
+- [TinyPNG使用智慧有損壓縮技術將您的 PNG and JPEG 圖片的檔案大小降低](https://tinypng.com/cn/)
 
 ## 圖片管理系統（簡稱圖床)
 

@@ -811,6 +811,16 @@ noninduc(:,:,:) = 0.0
 | FLSHN(Time, bottom_top, south_north, west_east) | count          | Negative channels                     |
 | FLSHP(Time, bottom_top, south_north, west_east) | count          | Positive channels                     |
 
+# Cost: Elapsed time
+
+| WRF-ELEC | mp | idischarge | Elapsed time |
+|:----------|:----|:------------|:--------------|
+| elec=0   | 17 | none       | 4h49m        |
+| elec=1   | 17 | 1          | 6h13m        |
+| elec=1   | 17 | 2          | 9h1m         |
+
+WRFv4.5-ELEC. 
+
 # Literature review
 
 Lightning activity is related to two important factors: dynamic–thermodynamic and microphysical characteristics (e.g., Williams et al., 2005; Rosenfeld et al., 2008; Guo et al., 2016; Wang et al., 2018; Zhao et al., 2020). Since the dynamic–thermodynamic processes affect the development of thunderstorm significantly, lightning activity is influenced by various dynamic–thermodynamic variables: temperature (Price, 1993), relative humidity in the lower and middle troposphere (Xiong et al., 2006; Fan et al., 2007), convective available potential energy (Qie et al., 2004; Stolz et al., 2015), and many others.
