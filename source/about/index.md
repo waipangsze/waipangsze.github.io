@@ -29,6 +29,7 @@ date: 2024-09-14 21:29:47
 - [香港天文台職員編寫的報告及短文](https://www.hko.gov.hk/tc/publica/pubpaper.htm)
 - [香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)
 - [WRF & MPAS-A Support Forum](https://forum.mmm.ucar.edu/)
+- [CUHK Atmospheric Dynamics Group](https://atmosphericdynamicsgroup.github.io/)
 
 ## CFD
 
