@@ -9,5 +9,10 @@ date: 2024-09-14 21:29:47
 我想在這裡記錄我在工作和學習中所做的事情。主要涉及技術問題，同時也涵蓋了一些知識的總結。
 
 
+# My CV
 
 {% pdf ../pdf/wpsze_CV.pdf %}
+
+# Visit tracker
+
+<script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=tt&d=-FD52b9oydXY9a4RbTCAxGTeHgh-1YTFnwSX0jxQlA0'></script>
