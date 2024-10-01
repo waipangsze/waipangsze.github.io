@@ -11,6 +11,7 @@ date: 2024-09-30 21:26:27
 - [Sci-Hub](https://sci-hub.se/)
 - [Google Scholar](https://scholar.google.com/)
 - [ChatGPT](https://chatgpt.com/)
+- [perplexity.ai](https://www.perplexity.ai/?login-source=oneTapHome)
 
 # 吸收知識
 
