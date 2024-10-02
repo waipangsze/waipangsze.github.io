@@ -9,6 +9,7 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2024-10-02 14:00:00
+index_img: https://upload.wikimedia.org/wikipedia/commons/9/99/Worldmap_northern_-_Google_Maps_bar_mock-up.png
 ---
 
 # Embed Google Maps

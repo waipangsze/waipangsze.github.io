@@ -34,6 +34,10 @@ date: 2024-09-30 21:26:27
 
 - [东岳流体 CFD-OpenFOAM | 数据驱动](http://www.dyfluid.com/)
 
+## 生物信息學分析
+
+- [生信技工](https://yanzhongsino.github.io/about/)
+
 # 軟體及模擬應用程式
 
 ## 數值天氣預報

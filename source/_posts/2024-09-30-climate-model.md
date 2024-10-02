@@ -8,6 +8,7 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
+index_img: https://utcdw.physics.utoronto.ca/UTCDW_Guidebook/_images/climate_model_grid.png
 ---
 
 # Climate models
