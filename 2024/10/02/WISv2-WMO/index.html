@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="WIS 2.0 - World Meteorological Organization WMO  WMO | WIS2 Overview (Recommendation) WMO | WMO Information System (WIS) v2 WMO | wis2 implementation WMO | WIS 2.0 Demonstration Projects Japan | Intro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WMO Information System 2.0 (WIS 2.0)">
+<meta property="og:url" content="https://waipangsze.github.io/2024/10/02/WISv2-WMO/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="WIS 2.0 - World Meteorological Organization WMO  WMO | WIS2 Overview (Recommendation) WMO | WMO Information System (WIS) v2 WMO | wis2 implementation WMO | WIS 2.0 Demonstration Projects Japan | Intro">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://community.wmo.int/sites/default/files/inline-images/WIS2_diagram.png">
+<meta property="og:image" content="https://www.ecmwf.int/sites/default/files/styles/wide/public/2023-07/NL176_Giraud_C1-Figure-1.jpg?itok=wCpKEBKG">
+<meta property="og:image" content="https://www.hko.gov.hk/en/education/weather/data-and-technology/images/703_fig1_data_exchange_e.png">
+<meta property="og:image" content="https://www.hko.gov.hk/tc/education/weather/data-and-technology/images/703_fig1_data_exchange_c.png">
+<meta property="og:image" content="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2024/06/24/wis2.0_header.png">
+<meta property="og:image" content="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2024/06/24/wis2.0_figure2.png">
+<meta property="article:published_time" content="2024-10-02T02:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-02T06:28:28.404Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://community.wmo.int/sites/default/files/inline-images/WIS2_diagram.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WMO Information System 2.0 (WIS 2.0) - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WMO Information System 2.0 (WIS 2.0)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-02 10:00" pubdate>
+          October 2, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          215 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          2 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WMO Information System 2.0 (WIS 2.0)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="wis-2.0---world-meteorological-organization-wmo">WIS 2.0 - World Meteorological Organization WMO</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://community.wmo.int/en/activity-areas/wis/WIS2-overview">WMO | WIS2 Overview</a> (<strong>Recommendation</strong>)</li>
+<li><a target="_blank" rel="noopener" href="https://community.wmo.int/en/activity-areas/wis">WMO | WMO Information System (WIS) v2</a></li>
+<li><a target="_blank" rel="noopener" href="https://community.wmo.int/en/activity-areas/wis/wis2-implementation">WMO | wis2 implementation</a></li>
+<li><a target="_blank" rel="noopener" href="https://community.wmo.int/en/activity-areas/wis/wis2-demonstration-projects">WMO | WIS 2.0 Demonstration Projects</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.wis-jma.go.jp/cms/gisc_tokyo/workshop/file/2023/JMA-WS2023_Item04_WIS2.0-Architecture-and-Global-Services.pdf">Japan | Introduction to WIS2 (JMA WIS – Workshop 11.2023)</a> (<strong>Recommendation</strong>)</li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/newsletter/176/computing/wis-20-wmo-data-sharing-21st-century">ECMWF | WIS 2.0: WMO data sharing in the 21st century</a>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/sites/default/files/elibrary/072023/81382-wis-2-0-wmo-data-sharing-in-the-21st-century.pdf">pdf</a></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.cma.gov.cn/en/research/news/202305/t20230529_5537194.html">CMA | Congress acclaims WMO Information System as basis for data sharing</a></li>
+</ul>
+<figure>
+<img src="https://community.wmo.int/sites/default/files/inline-images/WIS2_diagram.png" srcset="/img/loading.gif" lazyload alt="WIS2 Global Services" /><figcaption>WIS2 Global Services</figcaption>
+</figure>
+<p>The WMO Information System 2.0 (WIS 2.0) is the framework for WMO data sharing in the 21st century for all WMO domains and disciplines. It supports the WMO Unified Data policy, the Global Basic Observing Network (GBON) and makes international, regional, and national data sharing simple, effective, and inexpensive. The idea that no Member should be left behind and the objective of lowering the barrier to adoption has been at the core of WIS 2.0 development. These objectives inspire the principles underpinning the WIS 2.0 technical framework, such as adopting open standards and Web technologies to facilitate sharing of increasing variety and volume of real-time data.</p>
+<figure>
+<img src="https://www.ecmwf.int/sites/default/files/styles/wide/public/2023-07/NL176_Giraud_C1-Figure-1.jpg?itok=wCpKEBKG" srcset="/img/loading.gif" lazyload alt="In the WIS 2.0 Pilot phase, a number of Centres are operating one service. This map shows the situation in May 2023. (Image source: ECMWF)" /><figcaption>In the WIS 2.0 Pilot phase, a number of Centres are operating one service. This map shows the situation in May 2023. (Image source: ECMWF)</figcaption>
+</figure>
+<ul>
+<li>WMO Information System 2.0(WIS 2.0), which is the framework for Earth Systems (meteorological, hydrological, climate and ocean) data sharing in the 21st century. It is based on the principle that no Member should be left behind.</li>
+<li>The <strong>WIS 2.0 pilot phase started in the December 2022 and is scheduled for completion by the end of 2023.</strong> WIS 2.0 supports theWMO Unified Data policy, theGlobal Basic Observing Network (GBON)and makes international, regional, and national data sharing simple, effective, and inexpensive.</li>
+<li>Training and capacity-building workshops are accompanying the rollout of WIS 2.0. Its new data-sharing infrastructure will <strong>gradually replace the Global Telecommunication System (GTS)</strong>.</li>
+<li>The users of WIS 2.0 will be able to access data in real-time by subscribing to a Global Broker and receiving notifications when new data are available for download from a Global Cache or from the data provider. They will also be able to access data directly through Web APIs (application programming interfaces), connecting their software (or their browser) and processing or visualising data of their interest.</li>
+<li>WMO has developed the <strong>open-source software “WIS2 in a box”</strong> to support Least Developed Countries and Small Island Developing States in implementing WIS 2.0.</li>
+</ul>
+<h1 id="wis-2.0-in-a-box">WIS 2.0 in a box</h1>
+<p><a target="_blank" rel="noopener" href="https://community.wmo.int/en/wis2box">WMO | WMO INFORMATION SYSTEM (WIS) 2.0 IN A BOX</a></p>
+<p>The WIS2-in-a-box project was started in November 2021 to provide a system to share data using the WIS2 framework.</p>
+<p>The WIS2box-software is implemented such as to offer the flexibility of being deployed both on private/public cloud or on-premises systems. The main features are:</p>
+<ul>
+<li>based on existing open-source software widely used in the operations of some WMO Members.</li>
+<li>allows Members to share data internationally and nationally using message queuing protocols (MQP) and Web services in compliance with WIS2 technical regulations</li>
+<li>provides Web APIs complying with Open Geospatial Consortium (OGC) standards, making access to data extremely easy from all common languages (Python, R, ...) and many open-source and proprietary programs (Excel).</li>
+</ul>
+<p>Demonstration instances of WIS2-in-a-box can be viewed at <a target="_blank" rel="noopener" href="https://demo.wis2box.wis.wmo.int" class="uri">https://demo.wis2box.wis.wmo.int</a>.</p>
+<h2 id="hosting-your-own-wis2-in-a-box">Hosting your own WIS2-in-a-box</h2>
+<ul>
+<li>The WIS2-in-box user guide, detailing how to setup your own WIS2 box, is available here: <a target="_blank" rel="noopener" href="https://docs.wis2box.wis.wmo.int" class="uri">https://docs.wis2box.wis.wmo.int</a></li>
+</ul>
+<h2 id="example">Example</h2>
+<p>WIS2 in a box is a reference implementation of a WMO WIS2 Node</p>
+<ul>
+<li>Many countries
+<ul>
+<li><a target="_blank" rel="noopener" href="https://demo.wis2box.wis.wmo.int/" class="uri">https://demo.wis2box.wis.wmo.int/</a></li>
+</ul></li>
+<li>CMA
+<ul>
+<li><a target="_blank" rel="noopener" href="https://wis2node.wis.cma.cn/" class="uri">https://wis2node.wis.cma.cn/</a></li>
+</ul></li>
+<li>Republic of Korea
+<ul>
+<li><a target="_blank" rel="noopener" href="https://wis2box.kma.go.kr/" class="uri">https://wis2box.kma.go.kr/</a></li>
+</ul></li>
+<li>Poland
+<ul>
+<li><a target="_blank" rel="noopener" href="https://wis2-pilot.imgw.pl/" class="uri">https://wis2-pilot.imgw.pl/</a></li>
+</ul></li>
+</ul>
+<h1 id="hko-cma-wis-2.0">HKO-CMA-WIS 2.0</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/en/education/weather/data-and-technology/00704-Meteorological-information-sharing-in-the-21st-century.html">HKO | Meteorological Information Sharing in the 21st Century (December 2023)</a></li>
+</ul>
+<p>The Hong Kong Observatory (HKO) has recently <strong>set up a WIS 2.0 system on a public cloud and interfaced</strong> with the WIS 2.0 system operated by the China Meteorological Administration (CMA). Collaboration and partnership with CMA to develop and implement WIS 2.0 was underway.</p>
+<ul>
+<li>A conceptual diagram of information publish and subscribe under the framework of WIS 2.0.</li>
+</ul>
+<figure>
+<img src="https://www.hko.gov.hk/en/education/weather/data-and-technology/images/703_fig1_data_exchange_e.png" srcset="/img/loading.gif" lazyload alt="A conceptual diagram of information publish and subscribe under the framework of WIS 2.0" /><figcaption>A conceptual diagram of information publish and subscribe under the framework of WIS 2.0</figcaption>
+</figure>
+<figure>
+<img src="https://www.hko.gov.hk/tc/education/weather/data-and-technology/images/703_fig1_data_exchange_c.png" srcset="/img/loading.gif" lazyload alt="WIS 2.0框架下信息發布和訂閱概念圖" /><figcaption>WIS 2.0框架下信息發布和訂閱概念圖</figcaption>
+</figure>
+<h1 id="building-the-wis-2.0-global-weather-cache-on-aws">Building the WIS 2.0 global weather cache on AWS</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://aws.amazon.com/blogs/publicsector/building-the-wis-2-0-global-weather-cache-on-aws/">Building the WIS 2.0 global weather cache on AWS</a></li>
+</ul>
+<p>The World Meteorological Organization (WMO) wants to build and modernize a global weather framework with WMO Information Systems (WIS) 2.0 to enable and democratize unified access to critical, up-to-date weather data across the world. Currently, lack of observations, easy access to data, computing power, human and capital resources, capacity, and budget hinders accurate and timely forecasts</p>
+<figure>
+<img src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2024/06/24/wis2.0_header.png" srcset="/img/loading.gif" lazyload alt="Building the WIS 2.0 global weather cache on AWS" /><figcaption>Building the WIS 2.0 global weather cache on AWS</figcaption>
+</figure>
+<p>WIS 2.0 data viewed in the WIS 2.0 in a box application. The map below shows US weather data observation locations in a map along with an observation location’s weather data.</p>
+<figure>
+<img src="https://d2908q01vomqb2.cloudfront.net/9e6a55b6b4563e652a23be9d623ca5055c356940/2024/06/24/wis2.0_figure2.png" srcset="/img/loading.gif" lazyload alt="The map shows US weather data observation locations in a map along with an observation location’s weather data" /><figcaption>The map shows US weather data observation locations in a map along with an observation location’s weather data</figcaption>
+</figure>
+<h1 id="referecnes">Referecnes</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="http://gisc.wis.cma.cn/wis/portal.pub?LA=en_US">For WIS.v1 CMA-WIS portal (Beijing Global Information System Center)</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WMO Information System 2.0 (WIS 2.0)</div>
+      <div>https://waipangsze.github.io/2024/10/02/WISv2-WMO/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 2, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/02/google-map/" title="Google Map">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Google Map</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/09/30/PSG/" title="Pseudo-Global Warming (PGW) - Future Projection">
+                        <span class="hidden-mobile">Pseudo-Global Warming (PGW) - Future Projection</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
