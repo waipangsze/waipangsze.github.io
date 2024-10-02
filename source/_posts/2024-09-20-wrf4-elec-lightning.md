@@ -906,6 +906,69 @@ The electric POTential difference (POT) and the Lightning Potential Index (LPI) 
 - As mentioned, ***there are very few works*** related to the assessment of IBC effects in the WRF-ELEC model for lightning prediction.
   - WRF-ELEC model initialized with different datasets needs to be verified.
 
+# Case: Hong Kong Lightning
+
+The "Hong Kong Observatory Lightning Statistics" refers to the detailed records of lightning activity in the Hong Kong region, primarily categorized into cloud-to-ground lightning and intra-cloud lightning. This data not only aids in understanding meteorological patterns but also enhances awareness of the safety risks associated with lightning strikes.
+
+- [香港天文台閃電位置資訊服務 HKO Lightning Location Information Service](https://www.hko.gov.hk/tc/wservice/tsheet/llis.htm)
+
+![閃電定位網絡各個探測站的位置分佈圖/Distribution of lightning sensor stations of the lightning location network](https://www.hko.gov.hk/tc/wservice/tsheet/images/fact2c.jpg)
+
+- [Lightning density map for Hong Kong](https://www.hko.gov.hk/en/wxinfo/llis/llis_map.htm)
+
+![Average yearly number of cloud-to-ground lightning strokes per square kilometer](https://www.hko.gov.hk/en/wxinfo/llis/images/ll_density_e.png)
+
+- [閃電（試驗版） | 香港及珠江三角洲區域自動分區天氣預報/Automatic regional weather forecast in Hong Kong and the Pearl River Delta region](https://maps.weather.gov.hk/ocf/index_uc.html?data=ncln)
+
+## Statistics of lightning days at the HKO Weather Station
+
+![Statistics of lightning days at the HKO Weather Station (Last updated: August 31, 2024). From [i-lens.hk](https://i-lens.hk/hkweather/special_stat.php?event=LIGHTING_DAY&station=HKO)](../../../../figures/2024-09-20-wrf4-elec-lightning/Statistics_of_lightning_days_at_the_HKO_Weather_Station.png)
+
+
+## All Weather Stations - Ranking of Highest Daily Total Lightning Counts in History
+
+From [i-lens.hk](https://i-lens.hk/hkweather/rank.php?station=ALL&element=L_BOTH&type=MAX&year=&month=), Last updated: August 31, 2024
+
+| Ranking |    Weather Station    | Start observation year | Observation date | Total number of lightning strikes per day (times) |
+|:-------:|:---------------------:|:----------------------:|:----------------:|:-------------------------------------------------:|
+|    1    | Hong Kong Observatory |          2005          |    2020-06-06    |                       47537                       |
+|    2    | Hong Kong Observatory |          2005          |    2020-06-07    |                       41446                       |
+|    3    | Hong Kong Observatory |          2005          |    2019-04-20    |                       36299                       |
+|    4    | Hong Kong Observatory |          2005          |    2023-06-01    |                       36253                       |
+|    5    | Hong Kong Observatory |          2005          |    2024-04-30    |                       32603                       |
+|    6    | Hong Kong Observatory |          2005          |    2021-06-28    |                       31859                       |
+|    7    | Hong Kong Observatory |          2005          |    2019-08-25    |                       24951                       |
+|    8    | Hong Kong Observatory |          2005          |    2019-04-19    |                       22053                       |
+|    9    | Hong Kong Observatory |          2005          |    2018-08-22    |                       21152                       |
+|    10   | Hong Kong Observatory |          2005          |    2022-07-30    |                       20187                       |
+|    11   | Hong Kong Observatory |          2005          |    2019-06-13    |                       19526                       |
+|    12   | Hong Kong Observatory |          2005          |    2010-09-09    |                       18813                       |
+|    13   | Hong Kong Observatory |          2005          |    2013-05-22    |                       18568                       |
+|    14   | Hong Kong Observatory |          2005          |    2020-09-15    |                       17879                       |
+|    15   | Hong Kong Observatory |          2005          |    2020-05-30    |                       17765                       |
+|    16   | Hong Kong Observatory |          2005          |    2006-06-09    |                       17587                       |
+|    17   | Hong Kong Observatory |          2005          |    2014-03-30    |                       16823                       |
+|    18   | Hong Kong Observatory |          2005          |    2024-04-26    |                       16328                       |
+|    19   | Hong Kong Observatory |          2005          |    2010-09-08    |                       14659                       |
+|    20   | Hong Kong Observatory |          2005          |    2023-04-21    |                       14471                       |
+
+## Overview of Climate Change Effects
+
+Climate change, driven by the increase in greenhouse gases, has a profound impact on weather patterns. As global temperatures rise, more energy is available in the atmosphere, which intensifies convective storms. Since lightning is primarily a product of such storms, the increase in the frequency and intensity of these storms can lead to changes in lightning activity.
+
+- **Increase Per Degree of Warming:** Across the continental United States (CONUS), the CAPE × P proxy predicts a 12 ± 5% rise in lightning strike rates for each 1°C increase in global mean temperature (Romps et al., 2014). This research suggests that as the planet warms, lightning frequency will likely increase. A 12% rise in lightning activity is anticipated for every degree of warming, which could result in a 50% increase in lightning strikes in regions like the U.S. by the end of the century (Romps et al., 2014; Romps, 2021).
+- **Specific Regional Studies:** Focused on the South China Sea (SCS) and surrounding regions in Southeast Asia to analyze long-term trends and future projections of lightning activity using the longest available satellite-based lightning dataset and climate models. The projections indicate that lightning activity in the SCS region is expected to increase by 10% under SSP245 and by 12% under SSP370 by the end of the 21st century. (Xu et al., 2023; Xu et al., 2024)
+- **Impact of Global Warming on Future Lightning Events**
+  - The IPCC AR6 defines several Shared Socioeconomic Pathways (SSPs) that describe possible future climate scenarios based on different levels of greenhouse gas emissions. (e.g., SSP5-8.5: Very high emissions, with warming over 4.4°C)
+- **Regional Studies on Future Lightning Events (e.g., South China Sea)**
+
+From these papers,
+
+- Romps, D. M., Seeley, J. T., Vollaro, D., & Molinari, J. (2014). Projected increase in lightning strikes in the United States due to global warming. Science, 346(6211), 851-854.
+- Romps, D. M. (2019). Evaluating the future of lightning in cloud‐resolving models. Geophysical Research Letters, 46(24), 14863-14871.
+- Xu, L., Cao, X., Lan, X., Zhang, W., Sun, C., & Zhang, Y. (2024). Future increase in lightning around the South China Sea under climate change. Earth and Space Science, 11(6), e2023EA003356.
+- Xu, Mingyi, et al. "Distribution of lightning spatial modes and climatic causes in China." Atmospheric and Oceanic Science Letters 16.2 (2023): 100338.
+
 
 # References
 1. 香港天文台

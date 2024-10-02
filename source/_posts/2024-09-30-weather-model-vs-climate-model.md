@@ -24,6 +24,10 @@ Understanding the distinctions between weather models and climate models is cruc
 - **Weather Models**: They operate as initial value problems, meaning they require precise initial conditions (like current temperature and pressure) to generate accurate forecasts. Small changes in these initial conditions can significantly impact the forecast outcome.
 - **Climate Models**: In a climate model, you get climate variables for every day, but you don't care exactly on which day and exact location you get a certain value for this variable as long as the long term statistics are correct for the location and reference. This does not depend on the initial conditions of the simulation, but it depends on the parameters in the model itself or how the climate system is modelled (this is called a boundary value problem). These are "Foreced" boundary value problems, focusing on long-term changes influenced by factors like greenhouse gas concentrations and land use changes. The initial state is less critical; instead, the model uses projected future conditions to assess climate evolution.
 
+- 預測未來氣候系統的演變是氣候科學的核心。如前所述，氣候預測是一個邊界值問題。模型必須假設長期限制氣候演變的條件將如何演變，例如對未來溫室氣體排放做出有根據的猜測。相反，天氣預報是一個初始值問題，首先取決於對天氣系統當前狀態的準確了解。氣候預測是一個邊界值的問題，在氣候案例中，最大的不確定性在於確定從太陽接收的能量（邊界值）如何在系統的各個組成部分（即大氣、海洋、陸地和冰凍圈）中分佈。
+  - Bracco, A., Brajard, J., Dijkstra, H. A., Hassanzadeh, P., Lessig, C., & Monteleoni, C. (2024). Machine Learning for the Physics of Climate. arXiv preprint arXiv:2408.09627
+- 氣候變遷的預測不同於天氣預報，後者主要依賴初值，而前者既依賴初始條件,也依​​賴邊界條件或完全依賴邊界條件。短期氣候預測，就是依賴以上兩種條件，這種可預報性被洛崙茲稱為第一類可預報性。對於長期(幾十年或幾百年)的氣候變遷預測，如由人類活動造成的溫室氣體增加引起的全球氣候變化，將不依賴於大氣的初始條件，這是由於在模式長期積分之後，將完全喪失對初條件的記憶，因而失去它的影響。這種完全依賴詳細邊界條件變化的氣候預測被洛崙茲稱為第二類可預報性，其可預報性決定於外界強迫變化的時間尺度。由於氣候系統的慣性，即使施加於邊界的外強迫消失之後很久,氣候系統還將繼續變化相當長的時間，甚至長達千年以上，海平面上升的反應就是一個例子。雖然氣候本質上是一種混沌現象,表現為湍流或非週期現象，但有些情況下也表現出相當程度的週期性或準週期性，這就大大增加了氣候的可預測性。目前在氣候分析中廣泛使用的如子波分析法等,就是為揭示其不同時空尺度的周期性而進行的，另外一個氣候週期性著名的例子是地球軌道參數的米蘭科維奇循環。[link](https://gd.weather.com.cn/climate/qhbhyw/11/1196273.shtml)
+
 ### **3. Resolution**
 
 - **Weather Models**: They typically have a finer spatial and temporal resolution, allowing for detailed predictions over smaller areas (often at a scale of 1 km or less). This granularity is essential for short-term forecasting.
@@ -56,8 +60,8 @@ In summary, while both weather and climate models share foundational scientific 
 
 # References
 
-- [C3S User Learning Services Data Resources - Climate Models](https://climate.copernicus.eu/sites/default/files/2021-12/10-c3s-uls-data-resources-climate-models.pdf) (*** Good ***)
-- [climateextremes.org.au: Types of models](https://climateextremes.org.au/a-closer-look-at-climate-modelling/) (*** Good ***)
+- [C3S User Learning Services Data Resources - Climate Models](https://climate.copernicus.eu/sites/default/files/2021-12/10-c3s-uls-data-resources-climate-models.pdf) ((**Recommendation**))
+- [climateextremes.org.au: Types of models](https://climateextremes.org.au/a-closer-look-at-climate-modelling/) ((**Recommendation**))
 - [The difference between weather and climate](https://skepticalscience.com/weather-forecasts-vs-climate-models-predictions.htm)
 - [Weather and Climate @ Reading: Weather vs. Climate Prediction](https://blogs.reading.ac.uk/weather-and-climate-at-reading/2022/weather-vs-climate-prediction/)
 - [Climate gov: Climate Models](https://www.climate.gov/maps-data/climate-data-primer/predicting-climate/climate-models)
