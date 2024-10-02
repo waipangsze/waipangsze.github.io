@@ -8,6 +8,7 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
+index_img: https://blogs.reading.ac.uk/weather-and-climate-at-reading/files/2022/09/AReintgesfig1.jpg
 ---
 
 ## Differences Between Weather Models and Climate Models
