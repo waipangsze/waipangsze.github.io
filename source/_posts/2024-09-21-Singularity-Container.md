@@ -8,6 +8,7 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
+index_img: https://docs.sylabs.io/guides/3.8/user-guide/_static/logo.png
 ---
 
 # What is Singularity

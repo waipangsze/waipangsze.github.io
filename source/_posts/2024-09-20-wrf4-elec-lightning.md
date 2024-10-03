@@ -8,6 +8,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
+index_img: https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Lighting_barrage.jpg/1280px-Lighting_barrage.jpg
+banner_img: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Port_and_lighthouse_overnight_storm_with_lightning_in_Port-la-Nouvelle.jpg/1920px-Port_and_lighthouse_overnight_storm_with_lightning_in_Port-la-Nouvelle.jpg
 ---
 
 # WRF-ELEC model
@@ -981,16 +983,17 @@ From these papers,
    7. [2019-Reprint 1358-區域與全球閃電定位資料於珠三角地區的精細化比對](https://www.hko.gov.hk/en/publica/reprint/files/r1358.pdf)
    8. [2020-在珠三角一帶與大雨相關的閃電特徵分析](https://www.hko.gov.hk/tc/publica/ghm_21/files/HPaper_WongCP.pdf)
 
-2. 徐良韬, 张义军, 王飞, 郑栋. 2012: 雷暴起电和放电物理过程在WRF模式中的耦合及初步检验. 大气科学, 36(5): 1041-1052. DOI: 10.3878/j.issn.1006-9895.2012.11235
+2. [世界气候“雷极”：印度尼西亚爪哇岛，平均年雷雨日数超过220天](https://mp.weixin.qq.com/s/yuzCZB2Nb5CydG3WCysK_w)
+3. 徐良韬, 张义军, 王飞, 郑栋. 2012: 雷暴起电和放电物理过程在WRF模式中的耦合及初步检验. 大气科学, 36(5): 1041-1052. DOI: 10.3878/j.issn.1006-9895.2012.11235
    1. WRFv3.2.1
    2. 本文将雷暴云的起电、放电物理过程引入中尺度的WRF (Weather Research and Forecasting) 模式,并对超级单体和飑线过程进行了模拟研究.起电过程在Milbrandt双参数微物理方案中写入,包含霰、雹与冰晶、雪之间的非感应起电机制,以及霰、雹与云滴之间的感应起电机制.
-3. 徐良韬, 陈双, 姚雯, 等. 利用起放电模式开展闪电活动的直接预报试验. 应用气象学报, 2018, 29(5): 534-545. DOI: 10.11898/1001-7313.20180503.
+4. 徐良韬, 陈双, 姚雯, 等. 利用起放电模式开展闪电活动的直接预报试验. 应用气象学报, 2018, 29(5): 534-545. DOI: 10.11898/1001-7313.20180503.
    1. WRFv3.4.1
    2. 利用耦合有起电和放电物理过程的中尺度起电放电模式WRF-Electric
-4. Wasson, G., & Panda, S. K. (2024). Sensitivity of PBL parameterization schemes in simulating lightning and thunderstorm using WRF-ELEC model. Climate Dynamics, 1-23.
+5. Wasson, G., & Panda, S. K. (2024). Sensitivity of PBL parameterization schemes in simulating lightning and thunderstorm using WRF-ELEC model. Climate Dynamics, 1-23.
    1. The WRF-ELEC model, an auxiliary package integrated into  WRF, is specifically designed to compute electric potential and overall lightning flash rate (source: <https://sourceforge.net/projects/wrfelec>).
    2. It incorporates explicit cloudresolving scale physics for lightning prediction ([Fierro et al.2013](https://scholar.google.com/scholar_url?url=https://journals.ametsoc.org/view/journals/mwre/141/7/mwr-d-12-00278.1.xml%3Ftab_body%3Dpdf&hl=en&sa=T&oi=gsr-r-ggp&ct=res&cd=0&d=6841908713848986342&ei=DTHtZqfdAfSC6rQP2qO70AU&scisig=AFWwaeaoJDdXALkuhsn44g0xEyU5)). Detailed formulations can be found in [Mansell et al.(2005)](https://scholar.google.com/scholar_url?url=https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2004jd005287&hl=en&sa=T&oi=gsr-r&ct=res&cd=0&d=13100036974408530565&ei=JTHtZs_QIeqs6rQPw4y2sAM&scisig=AFWwaeZ27Z0oFR35ZZvLDk-yrgo_) and [Fierro et al. (2013)](https://scholar.google.com/scholar_url?url=https://journals.ametsoc.org/view/journals/mwre/141/7/mwr-d-12-00278.1.xml%3Ftab_body%3Dpdf&hl=en&sa=T&oi=gsr-r-ggp&ct=res&cd=0&d=6841908713848986342&ei=OTHtZtytGPay6rQPxrKeiAM&scisig=AFWwaeaoJDdXALkuhsn44g0xEyU5).
    3. skill scores were calculated for each experiment.
       1. standard statistics and skill score analysis of CAPE (J/kg) and accumulated total precipitation (mm),
-5. Saleh, N., Gharaylou, M., Farahani,M. M., & Alizadeh, O. (2023).Performance of lightning potentialindex, lightning threat index, and theproduct of CAPE and precipitationin the WRF model. Earth and SpaceScience, 10, e2023EA003104. <https://doi.org/10.1029/2023EA003104>
-6. [2011: Lightning Forecast Algorithm (LFA) Overview](https://weather.ndc.nasa.gov/sport/training/lfa/LFAtraining_20111025.pdf)
+6. Saleh, N., Gharaylou, M., Farahani,M. M., & Alizadeh, O. (2023).Performance of lightning potentialindex, lightning threat index, and theproduct of CAPE and precipitationin the WRF model. Earth and SpaceScience, 10, e2023EA003104. <https://doi.org/10.1029/2023EA003104>
+7. [2011: Lightning Forecast Algorithm (LFA) Overview](https://weather.ndc.nasa.gov/sport/training/lfa/LFAtraining_20111025.pdf)
