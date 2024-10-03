@@ -30,6 +30,8 @@ date: 2024-09-30 21:26:27
 - [WRF & MPAS-A Support Forum](https://forum.mmm.ucar.edu/)
 - [CUHK Atmospheric Dynamics Group](https://atmosphericdynamicsgroup.github.io/)
 
+- [3‧3 氣團和鋒面](https://www.openclass.chc.edu.tw/storage/53/112/%E8%AA%B2%E7%A8%8B%E8%B3%87%E6%96%99.pdf/4C3VihbySO8GtN9cW21cTbki5D2cQnaVqPRQgaM6.pdf#page=0.00)
+
 ## CFD
 
 - [东岳流体 CFD-OpenFOAM | 数据驱动](http://www.dyfluid.com/)
