@@ -6,7 +6,7 @@ date: 2024-09-30 21:26:27
 
 <div class="markdown-body">
 
-# 有用連結
+# 實用連結
 
 - [Sci-Hub](https://sci-hub.se/)
 - [Google Scholar](https://scholar.google.com/)
