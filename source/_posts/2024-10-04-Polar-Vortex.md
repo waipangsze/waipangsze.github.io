@@ -55,13 +55,19 @@ From <http://www.metapp.org.tw/index.php/bossweathernews/293-test>,
 
 當強冷氣團南移過程，通過的地區帶來寒流，但比較暖濕環境也使它減弱，最終冷氣團或渦旋都會減弱消失。但是高緯度的能量消失仍會持續進行，但是其後將轉變為正相還是維持負相則是不一定的，還是要看北極或極地冷氣團的發展情況而定，因果關係是很清楚的。本來原已存在的「氣團學說」再配合「大氣動力」的理論，對於冬季的天氣變化已有完整的詮釋，新創的名詞並無高明之處，徒增困擾而已。
 
+## [Metoffice | What is the Polar Vortex?](https://youtu.be/XGPLHwARPSY)
+
+- The **polar vortex is a circulation of winds high up in the stratosphere**, up to **30 miles (50 km) above the earth**. It is present in winter, and is not a new phenomenon, scientists have known about it for many years.
+- The winds regularly **exceed 155 miles per hour (250 km per hour)** – the strength of the winds in the strongest hurricanes (known as Category 5).
+- A strong polar vortex favours a **strong jet stream**. The jet stream is a fast moving ribbon of air around **5 to 7 miles (8 to 11km) above the earth** that drives weather systems from the Atlantic towards the UK.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XGPLHwARPSY?si=yd2MGyNa0GhkBkCs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 # 北極濤動 Arctic Oscillation (AO)
 
 - [香港天文台 |『氣象冷知識』：北極濤動](https://www.weather.gov.hk/tc/whatsnew/d4_whatsnew_20160226.htm)
-- [Metoffice | What is the Polar Vortex?](https://youtu.be/XGPLHwARPSY)
-  - The **polar vortex is a circulation of winds high up in the stratosphere**, up to **30 miles (50 km) above the earth**. It is present in winter, and is not a new phenomenon, scientists have known about it for many years.
-  - The winds regularly **exceed 155 miles per hour (250 km per hour)** – the strength of the winds in the strongest hurricanes (known as Category 5).
-  - A strong polar vortex favours a **strong jet stream**. The jet stream is a fast moving ribbon of air around **5 to 7 miles (8 to 11km) above the earth** that drives weather systems from the Atlantic towards the UK. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qQnb9LNs2GE?si=OO2XSn5VoD4Jmasm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 [北極濤動（AO）](https://www.weather.gov.hk/tc/climate_change/ao.htm) (又稱北極震盪) 是指北半球中緯度地區（約北緯45度）與北極地區氣壓形勢差別的變化。它是一個代表北極地區大氣環流的重要氣候指數，可分為正位相和負位相。
 
