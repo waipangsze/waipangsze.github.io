@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Predicting lightning activity using WRF-ELEC model  
+title: Global map of Local Climate Zones (LCZ) 
 categories: [NWP, WRF, MPAS]
 tags: [WRF, MPAS, Urban, UCM]
 author: wpsze
@@ -8,8 +8,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://imgur.com/Ufph6lQ
+banner_img: https://imgur.com/TDDLm40
 ---
 
 # Global map of Local Climate Zones
@@ -146,3 +146,8 @@ variables:
 		:history = "Mon Oct 07 12:05:03 2024: GDAL CreateCopy( lcz_filter_v3.nc, ... )" ;
 }
 ```
+
+
+# References
+
+1. Zhao, N., Ma, A., Zhong, Y., Zhao, J., & Cao, L. (2019). Self-training classification framework with spatial-contextual information for local climate zones. Remote Sensing, 11(23), 2828.

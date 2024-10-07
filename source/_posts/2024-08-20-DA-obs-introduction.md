@@ -6,6 +6,8 @@ tags: [DA, NWP, MPAS, WRF]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
+index_img: https://imgur.com/vBbREN9
+banner_img: https://imgur.com/iwgcpCE
 ---
 
 # Meteorological Data Encoding 
@@ -15,6 +17,7 @@ mathjax_autoNumber: true
 - [HKO 淺談氣象數據編碼 (2015)](https://www.hko.gov.hk/tc/education/weather/data-and-technology/00479-abc-of-meteorological-data-encoding.html)
 - [BUFR: A METEOROLOGICAL CODE FOR THE 21ST CENTURY (2010)](https://web.archive.org/web/20180215023559/https://www.eumetsat.int/website/wcm/idc/idcplg?IdcService=GET_FILE&dDocName=PDF_CONF_P57_S5_01_KARHILA_V&RevisionSelectionMethod=LatestReleased&Rendition=Web)
 - [中央氣象局新格式氣象觀測資料作業系統介紹 (2014)](https://photino.cwb.gov.tw/rdcweb/lib/cd/cd01conf/dissertation/2014WAF/A1/A1-23.pdf)
+- [Migration TAC to TDCF](https://community.wmo.int/en/activity-areas/operational-information-service/migration-tac-tdcf)
 
 Currently, most meteorological observations are being produced and transmitted in special formats known as 
 
