@@ -4,11 +4,36 @@
   
   
   <entry>
+    <title>WRF | Reduce the amount of wrfout data</title>
+    <link href="/2024/10/08/reduce-wrfout-size/"/>
+    <url>/2024/10/08/reduce-wrfout-size/</url>
+    
+    <content type="html"><![CDATA[<h1 id="how-to-reduce-the-amount-of-wrfout-data">How to reduce the amount of wrfout data</h1><ul><li><a href="https://forum.mmm.ucar.edu/threads/how-to-reduce-the-amount-of-wrfout-data.8642/">How to reduce the amount of wrfout data</a></li></ul><p>Two methods,</p><ul><li>Go into the WRF/Registry/Registry.EM_COMMON file, and then look for the variables you don’t want. You can remove the ‘h’ from out I/O column. After you do this for all of the variables you want removed, you will need to save the file, go back to the WRF/ directory, issue a ‘clean -a’ and then reconfigure and recompile</li><li>You can also use the Runtime I/O option, which will allow you to add a couple lines to your namelist, and create a text file that the model will read when it is run. With this method, you don't have to recompile the code, but you have to be careful to type everything correctly, and have no spaces in the text file. You can read about it here: <a href="http://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.1/users_guide_chap5.html#runtimeio" class="uri">http://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.1/users_guide_chap5.html#runtimeio</a></li></ul><div class="note note-warning">            <p>Just be careful removing variables. If you ever want to go back and plot specific things, or if you will use the files for anything else later, you may be missing something you didn't realize you would need.</p>          </div><h1 id="iofields_filename-not-working-wrfv4">iofields_filename not working WRFv4</h1><ul><li><a href="https://forum.mmm.ucar.edu/threads/iofields_filename-not-working-wrfv4.12353/#post-29058">iofields_filename not working WRFv4</a></li><li>iofields_filename = 'myoutfields.txt','youtfields.txt','myoutfields.txt','myoutfields.txt',</li><li>Your 'myoutfields.txt' file is set up like <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs text">-:h:0:Times,LU_INDEX,ZS,DZS,FNM<br>-:h:0:FNP,RDNW,RDN,DNW,DN,CFN<br>-:h:0:CFN1,THIS_IS_AN_IDEAL_RUN<br>-:h:0:CF1,CF2,CF3,ITIMESTEP<br>-:h:0:SHDMAX,SHDMIN,SNOALB,TSLB<br>-:h:0:SMOIS,SH2O,SMCREL,SFROFF<br></code></pre></td></tr></table></figure></li></ul><p>But it should all be on a single line. Change the file so that it's in the following format:</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">-:h:0:Times,LU_INDEX,ZS,DZS,FNM,FNP,RDNW,RDN,DNW,DN,CFN,CFN1,THIS_IS_AN_IDEAL_RUN,CF1,CF2,CF3,ITIMESTEP<br></code></pre></td></tr></table></figure><div class="note note-warning">            <p>I also had to remove the variable "Times" from the myoutfields.txt file to get it to run correctly, so you may need to do that, as well. Hopefully these will fix the problem.</p>          </div><h1 id="減少wrfout輸出變數">減少wrfout輸出變數</h1><ul><li><a href="https://mp.weixin.qq.com/s/wIeD4TjlZus-3HeHQRxfvw">減少wrfout輸出變數</a></li><li>具體方法在userguide中也提到過，可以透過修改Registry來實現，ARW核心對應的是Registry/Registry.EM_COMMON文件，對其修改，然後再重新編譯（clean -a、configure、compile）。</li><li>但在3.2版本後，可以透過直接在namelist.input中可以指定剔除不需要輸出的變量，即： <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">&amp;time_control<br>iofields_filename = &quot;my_file_d01.txt&quot;, &quot;my_file_d02.txt&quot;<br>ignore_iofields_warning = .true.,<br></code></pre></td></tr></table></figure></li></ul><p>在my_file_d01.txt檔案中，可以指明需要刪除的變數有哪些，具體內容如下：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">-:h:0:RAINC,RAINNC<br></code></pre></td></tr></table></figure><ul><li><p><strong>-</strong> 表示刪除，<strong>+</strong> 表示增加；</p></li><li><p><strong>h</strong> 表示history，這裡可以理解為輸出，i表示輸入；</p></li><li><p><strong>0-24</strong> ：表示經過的通道，一般 <strong>預設0</strong> ；</p></li></ul><p>可以直接進行換行，但每一行的開頭需要類似 <strong>-:h:0:格式</strong>，然後後面的變數之間用英文逗號隔開。</p><ul><li>ignore_iofields_warning表示碰到錯誤時如何處理，如果設定為.true.則會列印警告訊息且繼續運行，如果設定為.false.時碰到錯誤會直接中斷，建議設定為.true.，所有的domain都通用，不用單獨設定。</li></ul><p>其中註意事項包括：</p><ul><li>多個domain可以使用同一個控製文件，類似上面的 my_file_d01.txt;</li><li>my_file_d01.txt檔案中的變數需完全正確，如果某個變數設定不正確，可以正常執行，但會出現warning，如下：WARNING: Unable to modify mask for wdntc. Variable not found. File: my_file_d01.txt at line 4，根據報錯可以發現第4行的wdntc不正確，重新修改以後可以正常運作。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>WRF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>wrfout</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Global map of Local Climate Zones (LCZ)</title>
     <link href="/2024/10/07/Global-LCZ-for-Urban/"/>
     <url>/2024/10/07/Global-LCZ-for-Urban/</url>
     
-    <content type="html"><![CDATA[<h1 id="global-map-of-local-climate-zones">Global map of Local Climate Zones</h1><ul><li><a href="https://zenodo.org/records/8419340" class="uri">https://zenodo.org/records/8419340</a></li></ul><h2 id="description">Description</h2><p>A global 100 m spatial resolution Local Climate Zone (LCZ) map, derived from multiple earth observation datasets and expert LCZ class labels.</p><p>The LCZ map is based on the LCZ typology (Stewart and Oke, 2012) that distinguish urban surfaces accounting for their typical combination of micro-scale land-covers and associated physical properties. The LCZ scheme is distinguished from other land use / land cover schemes by its focus on urban and rural landscape types, which can be described by any of the 17 classes in the LCZ scheme.</p><p>Out of the 17 LCZ classes, 10 reflect the 'built' environment, and each LCZ type is associated with generic numerical descriptions of key urban canopy parameters critical to model atmospheric responses to urbanisation. In addition, since LCZs were originally designed as a new framework for urban heat island studies (Stewart and Oke, 2012), they also contain a limited set (7) of 'natural' land-cover classes that can be used as 'control' or 'natural reference' areas. As these seven natural classes in the LCZ scheme can not capture the heterogeneity of the world’s existing natural ecosystems, we advise users - if required - to combine the built LCZ classes with any other land-cover product that provides a wider range of natural land-cover classes.</p><ul><li>Stewart ID, Oke TR. (2012). Local Climate Zones for Urban Temperature Studies. Bull Am Meteorol Soc. 93(12):1879-1900. doi:10.1175/BAMS-D-11-00019.1</li></ul><h2 id="versions">Versions</h2><p>If there are there multiple versions of the dataset, list the file updated, when and why update was made:</p><ul><li>_v1: initial release of the data (20220222)</li><li>_v2: add LCZ map of Iceland, consistent with the global LCZ map procedure (20221115)</li><li>_v3: Mosaicing two Global Forest Canopy Height products two cover remote areas (eg. islands) (20231008)</li></ul><h2 id="files-and-brief-description">Files and brief description</h2><p>Files and brief description:</p><ol type="1"><li><strong>lcz_filter_v3.tif</strong></li></ol><div class="note note-primary">            <p>The recommended global LCZ map, compressed as GeoTIFF, with LCZ classes indicated by numbers 1-17</p>          </div><p><strong>The recommended global LCZ map, compressed as GeoTIFF, with LCZ classes indicated by numbers 1-17</strong>. LCZ labels are obtained after applying the morphological Gaussian filter described in Demuzere et al. (2020). The official color scheme - as indicated in the table below - is embedded into the GeoTIFF.</p><p>The table below describes,</p><table><thead><tr class="header"><th style="text-align: left;">LCZ class number</th><th style="text-align: center;">Official class description</th><th style="text-align: left;">Official hex color</th></tr></thead><tbody><tr class="odd"><td style="text-align: left;">LCZ 1</td><td style="text-align: center;">Compact highrise</td><td style="text-align: left;">'#910613'</td></tr><tr class="even"><td style="text-align: left;">LCZ 2</td><td style="text-align: center;">Compact midrise</td><td style="text-align: left;">'#D9081C'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 3</td><td style="text-align: center;">Compact lowrise</td><td style="text-align: left;">'#FF0A22'</td></tr><tr class="even"><td style="text-align: left;">LCZ 4</td><td style="text-align: center;">Open highrise</td><td style="text-align: left;">'#C54F1E'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 5</td><td style="text-align: center;">Open midrise</td><td style="text-align: left;">'#FF6628'</td></tr><tr class="even"><td style="text-align: left;">LCZ 6</td><td style="text-align: center;">Open lowrise</td><td style="text-align: left;">'#FF985E'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 7</td><td style="text-align: center;">Lightweight low-rise</td><td style="text-align: left;">'#FDED3F'</td></tr><tr class="even"><td style="text-align: left;">LCZ 8</td><td style="text-align: center;">Large lowrise</td><td style="text-align: left;">'#BBBBBB'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 9</td><td style="text-align: center;">Sparsely built</td><td style="text-align: left;">'#FFCBAB'</td></tr><tr class="even"><td style="text-align: left;">LCZ 10</td><td style="text-align: center;">Heavy Industry</td><td style="text-align: left;">'#565656'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 11 (A)</td><td style="text-align: center;">Dense trees</td><td style="text-align: left;">'#006A18'</td></tr><tr class="even"><td style="text-align: left;">LCZ 12 (B)</td><td style="text-align: center;">Scattered trees</td><td style="text-align: left;">'#00A926'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 13 (C)</td><td style="text-align: center;">Bush, scrub</td><td style="text-align: left;">'#628432'</td></tr><tr class="even"><td style="text-align: left;">LCZ 14 (D)</td><td style="text-align: center;">Low plants</td><td style="text-align: left;">'#B5DA7F'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 15 (E)</td><td style="text-align: center;">Bare rock or paved</td><td style="text-align: left;">'#000000'</td></tr><tr class="even"><td style="text-align: left;">LCZ 16 (F)</td><td style="text-align: center;">Bare soil or sand</td><td style="text-align: left;">'#FCF7B1'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 17 (G)</td><td style="text-align: center;">Water</td><td style="text-align: left;">'#656BFA'</td></tr></tbody></table><p>Other characteristics: - Projection: World Geodetic System 1984 (EPSG:4326) - Size: 389620, 155995 - Spatial Resolution: 0.000898° (~ 100 m) - Representative for the nominal year of 2018</p><ol type="1"><li>lcz_v3.tif</li></ol><p>Same as 1., but presenting the raw LCZ map, <strong>before applying the morphological Gaussian filter.</strong></p><ol start="3" type="1"><li>lcz_probability_v3.tif</li></ol><p>A probability layer (%) that identifies how often the modal LCZ was chosen per pixel (e.g. a probability of 60% means that the modal LCZ class was mapped 30 times out of 50 LCZ models). This is a pixel-based probability, derived from the lcz_v3.tif map.</p><h1 id="convert-tif-to-netcdf">Convert tif to netcdf</h1><p>GDAL is a translator library for raster and vector geospatial data formats that is released under an MIT style Open Source License by the Open Source Geospatial Foundation</p><p>https://gdal.org/</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">micromamba <span class="hljs-built_in">env</span> create -n gdal<br>micromamba install -c conda-forge gdal=3.6.1<br></code></pre></td></tr></table></figure><p>and then,</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">whereis gdal_translate<br><br><span class="hljs-comment"># for checking</span><br>gdal_translate --long-usage<br><br>gdal_translate -of netCDF -co <span class="hljs-string">&quot;FOMRAT=NC4&quot;</span> lcz_filter_v3.tif lcz_filter_v3.nc <br></code></pre></td></tr></table></figure><p>The detail of file,</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs text">netcdf lcz_filter_v3 &#123;<br>dimensions:<br>lon = 389620 ;<br>lat = 155995 ;<br>variables:<br>char crs ;<br>crs:grid_mapping_name = &quot;latitude_longitude&quot; ;<br>crs:long_name = &quot;CRS definition&quot; ;<br>crs:longitude_of_prime_meridian = 0. ;<br>crs:semi_major_axis = 6378137. ;<br>crs:inverse_flattening = 298.257223563 ;<br>crs:spatial_ref = &quot;GEOGCS[\&quot;WGS 84\&quot;,DATUM[\&quot;WGS_1984\&quot;,SPHEROID[\&quot;WGS 84\&quot;,6378137,298.257223563,AUTHORITY[\&quot;EPSG\&quot;,\&quot;7030\&quot;]],AUTHORITY[\&quot;EPSG\&quot;,\&quot;6326\&quot;]],PRIMEM[\&quot;Greenwich\&quot;,0,AUTHORITY[\&quot;EPSG\&quot;,\&quot;8901\&quot;]],UNIT[\&quot;degree\&quot;,0.0174532925199433,AUTHORITY[\&quot;EPSG\&quot;,\&quot;9122\&quot;]],AXIS[\&quot;Latitude\&quot;,NORTH],AXIS[\&quot;Longitude\&quot;,EAST],AUTHORITY[\&quot;EPSG\&quot;,\&quot;4326\&quot;]]&quot; ;<br>crs:crs_wkt = &quot;GEOGCS[\&quot;WGS 84\&quot;,DATUM[\&quot;WGS_1984\&quot;,SPHEROID[\&quot;WGS 84\&quot;,6378137,298.257223563,AUTHORITY[\&quot;EPSG\&quot;,\&quot;7030\&quot;]],AUTHORITY[\&quot;EPSG\&quot;,\&quot;6326\&quot;]],PRIMEM[\&quot;Greenwich\&quot;,0,AUTHORITY[\&quot;EPSG\&quot;,\&quot;8901\&quot;]],UNIT[\&quot;degree\&quot;,0.0174532925199433,AUTHORITY[\&quot;EPSG\&quot;,\&quot;9122\&quot;]],AXIS[\&quot;Latitude\&quot;,NORTH],AXIS[\&quot;Longitude\&quot;,EAST],AUTHORITY[\&quot;EPSG\&quot;,\&quot;4326\&quot;]]&quot; ;<br>crs:GeoTransform = &quot;-170.0007776279147 0.000898315284119518 0 80.03809518448114 0 -0.000898315284119518 &quot; ;<br>double lat(lat) ;<br>lat:standard_name = &quot;latitude&quot; ;<br>lat:long_name = &quot;latitude&quot; ;<br>lat:units = &quot;degrees_north&quot; ;<br>double lon(lon) ;<br>lon:standard_name = &quot;longitude&quot; ;<br>lon:long_name = &quot;longitude&quot; ;<br>lon:units = &quot;degrees_east&quot; ;<br>byte Band1(lat, lon) ;<br>Band1:long_name = &quot;GDAL Band Number 1&quot; ;<br>Band1:_Unsigned = &quot;true&quot; ;<br>Band1:valid_range = 0s, 255s ;<br>Band1:_FillValue = 0b ;<br>Band1:grid_mapping = &quot;crs&quot; ;<br><br>// global attributes:<br>:GDAL_AREA_OR_POINT = &quot;Area&quot; ;<br>:Conventions = &quot;CF-1.5&quot; ;<br>:GDAL = &quot;GDAL 3.6.1, released 2022/12/14&quot; ;<br>:history = &quot;Mon Oct 07 12:05:03 2024: GDAL CreateCopy( lcz_filter_v3.nc, ... )&quot; ;<br>&#125;<br></code></pre></td></tr></table></figure><h1 id="references">References</h1><ol type="1"><li>Zhao, N., Ma, A., Zhong, Y., Zhao, J., &amp; Cao, L. (2019). Self-training classification framework with spatial-contextual information for local climate zones. Remote Sensing, 11(23), 2828.</li></ol>]]></content>
+    <content type="html"><![CDATA[<h1 id="global-map-of-local-climate-zones">Global map of Local Climate Zones</h1><ul><li><a href="https://zenodo.org/records/8419340" class="uri">https://zenodo.org/records/8419340</a></li></ul><h2 id="description">Description</h2><figure><img src="https://i.imgur.com/46uEI6Z.png" alt="A global 100 m spatial resolution Local Climate Zone (LCZ) map" /><figcaption>A global 100 m spatial resolution Local Climate Zone (LCZ) map</figcaption></figure><p>A global 100 m spatial resolution Local Climate Zone (LCZ) map, derived from multiple earth observation datasets and expert LCZ class labels.</p><p>The LCZ map is based on the LCZ typology (Stewart and Oke, 2012) that distinguish urban surfaces accounting for their typical combination of micro-scale land-covers and associated physical properties. The LCZ scheme is distinguished from other land use / land cover schemes by its focus on urban and rural landscape types, which can be described by any of the 17 classes in the LCZ scheme.</p><p>Out of the 17 LCZ classes, 10 reflect the 'built' environment, and each LCZ type is associated with generic numerical descriptions of key urban canopy parameters critical to model atmospheric responses to urbanisation. In addition, since LCZs were originally designed as a new framework for urban heat island studies (Stewart and Oke, 2012), they also contain a limited set (7) of 'natural' land-cover classes that can be used as 'control' or 'natural reference' areas. As these seven natural classes in the LCZ scheme can not capture the heterogeneity of the world’s existing natural ecosystems, we advise users - if required - to combine the built LCZ classes with any other land-cover product that provides a wider range of natural land-cover classes.</p><ul><li>Stewart ID, Oke TR. (2012). Local Climate Zones for Urban Temperature Studies. Bull Am Meteorol Soc. 93(12):1879-1900. doi:10.1175/BAMS-D-11-00019.1</li></ul><h2 id="versions">Versions</h2><p>If there are there multiple versions of the dataset, list the file updated, when and why update was made:</p><ul><li>_v1: initial release of the data (20220222)</li><li>_v2: add LCZ map of Iceland, consistent with the global LCZ map procedure (20221115)</li><li>_v3: Mosaicing two Global Forest Canopy Height products two cover remote areas (eg. islands) (20231008)</li></ul><h2 id="files-and-brief-description">Files and brief description</h2><p>Files and brief description:</p><ol type="1"><li><strong>lcz_filter_v3.tif</strong></li></ol><div class="note note-primary">            <p>The recommended global LCZ map, compressed as GeoTIFF, with LCZ classes indicated by numbers 1-17</p>          </div><p><strong>The recommended global LCZ map, compressed as GeoTIFF, with LCZ classes indicated by numbers 1-17</strong>. LCZ labels are obtained after applying the morphological Gaussian filter described in Demuzere et al. (2020). The official color scheme - as indicated in the table below - is embedded into the GeoTIFF.</p><figure><img src="https://i.imgur.com/pRByENm.jpeg" alt="Official class description" /><figcaption>Official class description</figcaption></figure><p>The table below describes,</p><table><thead><tr class="header"><th style="text-align: left;">LCZ class number</th><th style="text-align: center;">Official class description</th><th style="text-align: left;">Official hex color</th></tr></thead><tbody><tr class="odd"><td style="text-align: left;">LCZ 1</td><td style="text-align: center;">Compact highrise</td><td style="text-align: left;">'#910613'</td></tr><tr class="even"><td style="text-align: left;">LCZ 2</td><td style="text-align: center;">Compact midrise</td><td style="text-align: left;">'#D9081C'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 3</td><td style="text-align: center;">Compact lowrise</td><td style="text-align: left;">'#FF0A22'</td></tr><tr class="even"><td style="text-align: left;">LCZ 4</td><td style="text-align: center;">Open highrise</td><td style="text-align: left;">'#C54F1E'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 5</td><td style="text-align: center;">Open midrise</td><td style="text-align: left;">'#FF6628'</td></tr><tr class="even"><td style="text-align: left;">LCZ 6</td><td style="text-align: center;">Open lowrise</td><td style="text-align: left;">'#FF985E'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 7</td><td style="text-align: center;">Lightweight low-rise</td><td style="text-align: left;">'#FDED3F'</td></tr><tr class="even"><td style="text-align: left;">LCZ 8</td><td style="text-align: center;">Large lowrise</td><td style="text-align: left;">'#BBBBBB'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 9</td><td style="text-align: center;">Sparsely built</td><td style="text-align: left;">'#FFCBAB'</td></tr><tr class="even"><td style="text-align: left;">LCZ 10</td><td style="text-align: center;">Heavy Industry</td><td style="text-align: left;">'#565656'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 11 (A)</td><td style="text-align: center;">Dense trees</td><td style="text-align: left;">'#006A18'</td></tr><tr class="even"><td style="text-align: left;">LCZ 12 (B)</td><td style="text-align: center;">Scattered trees</td><td style="text-align: left;">'#00A926'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 13 (C)</td><td style="text-align: center;">Bush, scrub</td><td style="text-align: left;">'#628432'</td></tr><tr class="even"><td style="text-align: left;">LCZ 14 (D)</td><td style="text-align: center;">Low plants</td><td style="text-align: left;">'#B5DA7F'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 15 (E)</td><td style="text-align: center;">Bare rock or paved</td><td style="text-align: left;">'#000000'</td></tr><tr class="even"><td style="text-align: left;">LCZ 16 (F)</td><td style="text-align: center;">Bare soil or sand</td><td style="text-align: left;">'#FCF7B1'</td></tr><tr class="odd"><td style="text-align: left;">LCZ 17 (G)</td><td style="text-align: center;">Water</td><td style="text-align: left;">'#656BFA'</td></tr></tbody></table><p>Other characteristics: - Projection: World Geodetic System 1984 (EPSG:4326) - Size: 389620, 155995 - Spatial Resolution: 0.000898° (~ 100 m) - Representative for the nominal year of 2018</p><ol type="1"><li>lcz_v3.tif</li></ol><p>Same as 1., but presenting the raw LCZ map, <strong>before applying the morphological Gaussian filter.</strong></p><ol start="3" type="1"><li>lcz_probability_v3.tif</li></ol><p>A probability layer (%) that identifies how often the modal LCZ was chosen per pixel (e.g. a probability of 60% means that the modal LCZ class was mapped 30 times out of 50 LCZ models). This is a pixel-based probability, derived from the lcz_v3.tif map.</p><h1 id="convert-tif-to-netcdf">Convert tif to netcdf</h1><p>GDAL is a translator library for raster and vector geospatial data formats that is released under an MIT style Open Source License by the Open Source Geospatial Foundation</p><p>https://gdal.org/</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">micromamba <span class="hljs-built_in">env</span> create -n gdal<br>micromamba install -c conda-forge gdal=3.6.1<br></code></pre></td></tr></table></figure><p>and then,</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">whereis gdal_translate<br><br><span class="hljs-comment"># for checking</span><br>gdal_translate --long-usage<br><br>gdal_translate -of netCDF -co <span class="hljs-string">&quot;FOMRAT=NC4&quot;</span> lcz_filter_v3.tif lcz_filter_v3.nc <br></code></pre></td></tr></table></figure><p>The detail of file,</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs text">netcdf lcz_filter_v3 &#123;<br>dimensions:<br>lon = 389620 ;<br>lat = 155995 ;<br>variables:<br>char crs ;<br>crs:grid_mapping_name = &quot;latitude_longitude&quot; ;<br>crs:long_name = &quot;CRS definition&quot; ;<br>crs:longitude_of_prime_meridian = 0. ;<br>crs:semi_major_axis = 6378137. ;<br>crs:inverse_flattening = 298.257223563 ;<br>crs:spatial_ref = &quot;GEOGCS[\&quot;WGS 84\&quot;,DATUM[\&quot;WGS_1984\&quot;,SPHEROID[\&quot;WGS 84\&quot;,6378137,298.257223563,AUTHORITY[\&quot;EPSG\&quot;,\&quot;7030\&quot;]],AUTHORITY[\&quot;EPSG\&quot;,\&quot;6326\&quot;]],PRIMEM[\&quot;Greenwich\&quot;,0,AUTHORITY[\&quot;EPSG\&quot;,\&quot;8901\&quot;]],UNIT[\&quot;degree\&quot;,0.0174532925199433,AUTHORITY[\&quot;EPSG\&quot;,\&quot;9122\&quot;]],AXIS[\&quot;Latitude\&quot;,NORTH],AXIS[\&quot;Longitude\&quot;,EAST],AUTHORITY[\&quot;EPSG\&quot;,\&quot;4326\&quot;]]&quot; ;<br>crs:crs_wkt = &quot;GEOGCS[\&quot;WGS 84\&quot;,DATUM[\&quot;WGS_1984\&quot;,SPHEROID[\&quot;WGS 84\&quot;,6378137,298.257223563,AUTHORITY[\&quot;EPSG\&quot;,\&quot;7030\&quot;]],AUTHORITY[\&quot;EPSG\&quot;,\&quot;6326\&quot;]],PRIMEM[\&quot;Greenwich\&quot;,0,AUTHORITY[\&quot;EPSG\&quot;,\&quot;8901\&quot;]],UNIT[\&quot;degree\&quot;,0.0174532925199433,AUTHORITY[\&quot;EPSG\&quot;,\&quot;9122\&quot;]],AXIS[\&quot;Latitude\&quot;,NORTH],AXIS[\&quot;Longitude\&quot;,EAST],AUTHORITY[\&quot;EPSG\&quot;,\&quot;4326\&quot;]]&quot; ;<br>crs:GeoTransform = &quot;-170.0007776279147 0.000898315284119518 0 80.03809518448114 0 -0.000898315284119518 &quot; ;<br>double lat(lat) ;<br>lat:standard_name = &quot;latitude&quot; ;<br>lat:long_name = &quot;latitude&quot; ;<br>lat:units = &quot;degrees_north&quot; ;<br>double lon(lon) ;<br>lon:standard_name = &quot;longitude&quot; ;<br>lon:long_name = &quot;longitude&quot; ;<br>lon:units = &quot;degrees_east&quot; ;<br>byte Band1(lat, lon) ;<br>Band1:long_name = &quot;GDAL Band Number 1&quot; ;<br>Band1:_Unsigned = &quot;true&quot; ;<br>Band1:valid_range = 0s, 255s ;<br>Band1:_FillValue = 0b ;<br>Band1:grid_mapping = &quot;crs&quot; ;<br><br>// global attributes:<br>:GDAL_AREA_OR_POINT = &quot;Area&quot; ;<br>:Conventions = &quot;CF-1.5&quot; ;<br>:GDAL = &quot;GDAL 3.6.1, released 2022/12/14&quot; ;<br>:history = &quot;Mon Oct 07 12:05:03 2024: GDAL CreateCopy( lcz_filter_v3.nc, ... )&quot; ;<br>&#125;<br></code></pre></td></tr></table></figure><h1 id="part-of-lcz-dataset">Part of LCZ dataset</h1><p>Global tiff is large, and if we only consider a specific area like GBA/Tokyo/Houston.</p><p>Fast and easy Local Climate Zone mapping</p><p>https://lcz-generator.rub.de/</p><ul><li>China, People's Republic of - Hong Kong-Macau-Guangdong Greater Bay Area:<ul><li>https://lcz-generator.rub.de/factsheets/c672ca892c88d1e078a81e7a085913396172f81c/c672ca892c88d1e078a81e7a085913396172f81c_factsheet.html</li></ul></li><li>Japan - Tokyo:<ul><li>https://lcz-generator.rub.de/factsheets/67a3371158ad3ac12d720fde089622c259e8e400/67a3371158ad3ac12d720fde089622c259e8e400_factsheet.html</li></ul></li><li>United States of America - Houston:<ul><li>https://lcz-generator.rub.de/factsheets/037c80744fc1034b8472f594d829c53ce1cccfa7/037c80744fc1034b8472f594d829c53ce1cccfa7_factsheet.html</li></ul></li></ul><p><img src="" /></p><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/4pyAoGS.jpeg" alt="GBA" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/rO8Cz9d.jpeg" alt="Tokyo" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/b3plh7O.jpeg" alt="Houston" /></div></div></div><figure><img src="https://i.imgur.com/lGIE5ba.png" alt="ncview" /><figcaption>ncview</figcaption></figure><h1 id="references">References</h1><ol type="1"><li>Demuzere, M., Kittner, J., &amp; Bechtel, B. (2021). LCZ Generator: a web application to create Local Climate Zone maps. Frontiers in Environmental Science, 9, 637455.</li><li>Zhao, N., Ma, A., Zhong, Y., Zhao, J., &amp; Cao, L. (2019). Self-training classification framework with spatial-contextual information for local climate zones. Remote Sensing, 11(23), 2828.</li><li>杨俊, 任嘉义, 于文博. 局地气候分区视角下城市气候与人居环境研究进展. 生态学报, 2024, 44(11): 4489-4506.<ol type="1"><li>了解人居环境中的气候问题是主动改善和提升的首要条件。这在传统研究中已有大量成果, 如基于“城-郊”二元框架计算城市热岛强度并探讨城郊热力差异[4—6]；结合土地利用/土地覆被分析城市热力景观时空特征[7—9]；分析长时间序列下极端天气、热浪事件发生频率和持续时间[10—12]；探究空气污染与城市功能区的耦合关系[13—15]；以及定量评价气候变化导致的热风险和生态风险等[16—18]。研究普遍以城市行政边界或人口梯度为基准, 忽视了相似地理单元的空间特性。2012年Stewart和Oke提出将局地气候分区(Local Climate Zones, LCZ)作为城市气候研究的通用框架[19], 填补了传统气候分类在中/微观尺度研究中的局限, 得到广泛运用。</li><li>局地气候分区根据城市形态、地表覆盖、地表结构及材质等差异, 将城市下垫面划分为17个基本区域, 包括10个建筑类型和7个自然类型。每个LCZ都有特定范围的相关气候参数, 不同LCZ类型具有不同的局部气候条件(图 1)。LCZ分类体系提出用两个LCZ之间的温差定义并计算城市热岛强度[19—20], 克服了传统研究中城乡的刻板边界。同时建立了城市气候研究基础框架, 规范了全球城市气候研究范式。目前世界各地研究绘制了丰富的LCZ地图, 本研究将对往期文献中LCZ地图制作数据源、方法和已有LCZ数据集进行全面梳理。</li></ol></li><li>许亘昱, 石玉蓉, &amp; 张宇峰. (2023). 规划控制要素视角下城市热环境的测度与优化——以广州中心城区为例. 热带地理, 43(6), 1070-1082.<ol type="1"><li>城市下垫面类别和土地开发强度的多样性造成了城市内部热岛强度的差异。Stewart等（2012）在充分论证传统城郊二元法研究城市热岛问题的不足后，提出了局地气候分区（Local Climate Zone，下文简称LCZ）体系。LCZ将城市下垫面分为10种建成类型和7种自然类型（图4），以天空角系数、高宽比、建筑密度、不透水表面积占比、透水表面积占比、粗糙元高度、地形粗糙类型、热导纳、反射率和人为热等的区间为属性。LCZ用定量方法区分城市的土地构成，相较于传统规划领域方法—从土地利用功能角度出发的定性分类方法，其能更好地体现功能相同的土地利用类型在地块的建筑密度、容积率和绿地率等方面的差异，且具有分析比较的普适性（Bechtel et al., 2015），以LCZ为基础的城市热岛强度分类已通过经验和模型得到证实（Fenner et al., 2014; Stewart et al., 2014; Leconte et al., 2015）。</li></ol></li></ol>]]></content>
     
     
     <categories>
@@ -359,7 +384,7 @@
   
   
   <entry>
-    <title>Predicting lightning activity using WRF-ELEC model</title>
+    <title>WRF | Predicting lightning activity using WRF-ELEC model</title>
     <link href="/2024/09/20/wrf4-elec-lightning/"/>
     <url>/2024/09/20/wrf4-elec-lightning/</url>
     
@@ -514,7 +539,7 @@
   
   
   <entry>
-    <title>WRF-DA Installation</title>
+    <title>WRF | WRF-DA Installation</title>
     <link href="/2024/08/16/wrf-DA_Installation/"/>
     <url>/2024/08/16/wrf-DA_Installation/</url>
     
@@ -701,7 +726,7 @@
   
   
   <entry>
-    <title>WRF: Why domains should be at least 100x100 grid spaces?</title>
+    <title>WRF | WRF: Why domains should be at least 100x100 grid spaces?</title>
     <link href="/2024/06/11/WRF-Why_domains_should_be_at_least_100_100_grid_spaces/"/>
     <url>/2024/06/11/WRF-Why_domains_should_be_at_least_100_100_grid_spaces/</url>
     
@@ -815,7 +840,7 @@
   
   
   <entry>
-    <title>WRF uses Pnetcdf</title>
+    <title>WRF | WRF uses Pnetcdf</title>
     <link href="/2024/06/05/WRF-install-pnetcdf/"/>
     <url>/2024/06/05/WRF-install-pnetcdf/</url>
     
@@ -869,7 +894,7 @@
   
   
   <entry>
-    <title>use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG</title>
+    <title>MPAS | use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG</title>
     <link href="/2024/06/04/MPAS_config_microp_re/"/>
     <url>/2024/06/04/MPAS_config_microp_re/</url>
     
@@ -896,7 +921,7 @@
   
   
   <entry>
-    <title>Error Error Error NoahMP submodule files not populating WRF directories</title>
+    <title>WRF | Error Error Error NoahMP submodule files not populating WRF directories</title>
     <link href="/2024/06/04/WRF_install_Error_NoahMP_submodule_files/"/>
     <url>/2024/06/04/WRF_install_Error_NoahMP_submodule_files/</url>
     
@@ -921,7 +946,7 @@
   
   
   <entry>
-    <title>Official MPAS Installation lib -- Preliminary requirements</title>
+    <title>MPAS | Official MPAS Installation lib -- Preliminary requirements</title>
     <link href="/2024/06/03/MPAS_install_official_mpas_lib_install/"/>
     <url>/2024/06/03/MPAS_install_official_mpas_lib_install/</url>
     
@@ -946,7 +971,7 @@
   
   
   <entry>
-    <title>MPAS -- Installation by Spack and Intel</title>
+    <title>MPAS | Installation by Spack and Intel</title>
     <link href="/2024/06/01/MPAS_intel_spack_installation/"/>
     <url>/2024/06/01/MPAS_intel_spack_installation/</url>
     
@@ -977,7 +1002,7 @@
   
   
   <entry>
-    <title>MPAS -- install ParallelIO-pio2_5_8</title>
+    <title>MPAS | install ParallelIO-pio2_5_8</title>
     <link href="/2024/05/31/MPAS_install_ParallelIO-pio2_error/"/>
     <url>/2024/05/31/MPAS_install_ParallelIO-pio2_error/</url>
     
@@ -1004,7 +1029,7 @@
   
   
   <entry>
-    <title>MPAS -- install Metis</title>
+    <title>MPAS | install Metis</title>
     <link href="/2024/05/31/MPAS_install_metis_error/"/>
     <url>/2024/05/31/MPAS_install_metis_error/</url>
     
@@ -1031,7 +1056,7 @@
   
   
   <entry>
-    <title>MPAS Installation</title>
+    <title>MPAS | MPAS Installation</title>
     <link href="/2024/05/31/MPAS_installation/"/>
     <url>/2024/05/31/MPAS_installation/</url>
     
@@ -1056,7 +1081,7 @@
   
   
   <entry>
-    <title>MPAS Installation (More)</title>
+    <title>MPAS | MPAS Installation (More)</title>
     <link href="/2024/05/31/MPAS_installation_more/"/>
     <url>/2024/05/31/MPAS_installation_more/</url>
     
@@ -1108,34 +1133,7 @@
   
   
   <entry>
-    <title>error - jas_image_t aka struct anonymous has no member named inmem_ and image.inmem_=1</title>
-    <link href="/2024/05/30/WPS_install_enc_jpeg2000_error/"/>
-    <url>/2024/05/30/WPS_install_enc_jpeg2000_error/</url>
-    
-    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>While compiling WPSv3.8.1,</p><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">17 </span>gcc -c  -D_UNDERSCORE -DBYTESWAP -DLINUX -DIO_NETCDF -DBIT32 -DNO_SIGNAL -D_MPI -I/EM/wpsze/WRF/WRFv440/Library/include/ -DUSE_JPEG2000 -DUSE_PNG -D__64BIT__ enc_jp    eg2000.c<br><span class="hljs-symbol">18 </span>enc_jpeg2000.c: In function ‘enc_jpeg2000_’:<br><span class="hljs-symbol">19 </span>enc_jpeg2000.c:<span class="hljs-number">141</span>:<span class="hljs-number">10</span>: <span class="hljs-keyword">error</span>: ‘jas_image_t’ &#123;aka ‘struct &lt;anonymous&gt;’&#125; has no member named ‘inmem_’<br><span class="hljs-symbol">20 </span>  <span class="hljs-number">141</span> |     image.inmem_=<span class="hljs-number">1</span>;<br><span class="hljs-symbol">21 </span>      |          ^<br><span class="hljs-symbol">22 </span>make[<span class="hljs-number">2</span>]: [Makefile:<span class="hljs-number">75</span>: enc_jpeg2000.o] <span class="hljs-keyword">Error</span> <span class="hljs-number">1</span> (ignored)<br></code></pre></td></tr></table></figure><h1 id="search">Search</h1><p>From Grib2 output is broken -- <a href="https://github.com/wrf-model/WRF/issues/993" class="uri">https://github.com/wrf-model/WRF/issues/993</a></p><p>I'm unsure if the issue has been resolved, or if anyone still cares, but I think I see what might be going on here. The offending part of enc_jpeg2000.c relates to a C struct of type jas_image_t (in line 87 in the version of this file I'm looking at):</p><blockquote><p>jas_image_t image;</p></blockquote><p>It throws an error when the code tries to access the inmem_ element:</p><blockquote><pre><code class="hljs">image.inmem_=1;</code></pre></blockquote><p>This C struct is defined by jasper/jas_image.h (version 2.0.14, which is what I have on the system I'm working on). <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* Image class. */</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> &#123;<br><br>        <span class="hljs-type">jas_image_coord_t</span> tlx_;<br>        <span class="hljs-comment">/* The x-coordinate of the top-left corner of the image bounding box. */</span><br><br>        <span class="hljs-type">jas_image_coord_t</span> tly_;<br>        <span class="hljs-comment">/* The y-coordinate of the top-left corner of the image bounding box. */</span><br><br>        <span class="hljs-type">jas_image_coord_t</span> brx_;<br>        <span class="hljs-comment">/* The x-coordinate of the bottom-right corner of the image bounding</span><br><span class="hljs-comment">          box (plus one). */</span><br><br>        <span class="hljs-type">jas_image_coord_t</span> bry_;<br>        <span class="hljs-comment">/* The y-coordinate of the bottom-right corner of the image bounding</span><br><span class="hljs-comment">          box (plus one). */</span><br><br>        <span class="hljs-type">int</span> numcmpts_;<br>        <span class="hljs-comment">/* The number of components. */</span><br><br>        <span class="hljs-type">int</span> maxcmpts_;<br>        <span class="hljs-comment">/* The maximum number of components that this image can have (i.e., the</span><br><span class="hljs-comment">          allocated size of the components array). */</span><br><br>        <span class="hljs-type">jas_image_cmpt_t</span> **cmpts_;<br>        <span class="hljs-comment">/* Per-component information. */</span><br><br>        <span class="hljs-type">jas_clrspc_t</span> clrspc_;<br><br>        <span class="hljs-type">jas_cmprof_t</span> *cmprof_;<br><br><span class="hljs-comment">//      bool inmem_;</span><br><br>&#125; <span class="hljs-type">jas_image_t</span>;<br></code></pre></td></tr></table></figure></p><p>You can see that the bool component inmem_ has been commented out. If you go back to older versions of jasper you can get back to one that doesn't have inmem_ commented out. For example, in the <a href="https://github.com/jasper-software/jasper">github repo for this library</a>, that would be something like SHAH 2b2efba4eda0a654ab02 or version 1.900.24, which dates to Nov 2016.</p><h1 id="workaround">Workaround</h1><h2 id="in-wpsv3.8.1-code">In WPSv3.8.1 code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">./ungrib/src/ngl/g2/dec_jpeg2000.c:104:    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot; inmem %d \n&quot;</span>,image-&gt;inmem_);<br>./ungrib/src/ngl/g2/enc_jpeg2000.c:141:    image.inmem_=1;<br></code></pre></td></tr></table></figure><p>and, modify enc_jpeg2000.c</p><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-comment">/* </span><br><span class="hljs-comment"> * Does not seem to be needed, and throws a compiler error</span><br><span class="hljs-comment"> * image.inmem_=1;</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure><p>Finally, ungrib.exe is generated.</p><p>but, is it right? will that break something...?</p><p>Ref: <a href="https://www.cnblogs.com/jiangleads/articles/11422607.html">WRF 3.9.1.1 安装 记录</a> &gt;此外，如果安装的是较新的jasper版本，还需要更改文件enc_jpeg2000.c （在目录WPS/ungrib/src/ngl/g2/enc_jpeg2000.c） &gt; 参见 <a href="http://forum.wrfforum.com/viewtopic.php?f=20&amp;t=10035" class="uri">http://forum.wrfforum.com/viewtopic.php?f=20&amp;t=10035</a> &gt;将第141行 &gt;&gt; image.inmem_=1; &gt;注释掉 &gt;这样，就能生成ungrib.exe了</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>WRF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Installation</tag>
-      
-      <tag>WPS</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>netcdf-c-4.7.4 final link failed - nonrepresentable section on output</title>
+    <title>MPAS | netcdf-c-4.7.4 final link failed - nonrepresentable section on output</title>
     <link href="/2024/05/30/MPAS_install_netcdf_c_nonrepresentable_error/"/>
     <url>/2024/05/30/MPAS_install_netcdf_c_nonrepresentable_error/</url>
     
@@ -1162,7 +1160,34 @@
   
   
   <entry>
-    <title>Error - Size of put argument of random_seed intrinsic at (1) too small</title>
+    <title>WRF | error - jas_image_t aka struct anonymous has no member named inmem_ and image.inmem_=1</title>
+    <link href="/2024/05/30/WPS_install_enc_jpeg2000_error/"/>
+    <url>/2024/05/30/WPS_install_enc_jpeg2000_error/</url>
+    
+    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>While compiling WPSv3.8.1,</p><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">17 </span>gcc -c  -D_UNDERSCORE -DBYTESWAP -DLINUX -DIO_NETCDF -DBIT32 -DNO_SIGNAL -D_MPI -I/EM/wpsze/WRF/WRFv440/Library/include/ -DUSE_JPEG2000 -DUSE_PNG -D__64BIT__ enc_jp    eg2000.c<br><span class="hljs-symbol">18 </span>enc_jpeg2000.c: In function ‘enc_jpeg2000_’:<br><span class="hljs-symbol">19 </span>enc_jpeg2000.c:<span class="hljs-number">141</span>:<span class="hljs-number">10</span>: <span class="hljs-keyword">error</span>: ‘jas_image_t’ &#123;aka ‘struct &lt;anonymous&gt;’&#125; has no member named ‘inmem_’<br><span class="hljs-symbol">20 </span>  <span class="hljs-number">141</span> |     image.inmem_=<span class="hljs-number">1</span>;<br><span class="hljs-symbol">21 </span>      |          ^<br><span class="hljs-symbol">22 </span>make[<span class="hljs-number">2</span>]: [Makefile:<span class="hljs-number">75</span>: enc_jpeg2000.o] <span class="hljs-keyword">Error</span> <span class="hljs-number">1</span> (ignored)<br></code></pre></td></tr></table></figure><h1 id="search">Search</h1><p>From Grib2 output is broken -- <a href="https://github.com/wrf-model/WRF/issues/993" class="uri">https://github.com/wrf-model/WRF/issues/993</a></p><p>I'm unsure if the issue has been resolved, or if anyone still cares, but I think I see what might be going on here. The offending part of enc_jpeg2000.c relates to a C struct of type jas_image_t (in line 87 in the version of this file I'm looking at):</p><blockquote><p>jas_image_t image;</p></blockquote><p>It throws an error when the code tries to access the inmem_ element:</p><blockquote><pre><code class="hljs">image.inmem_=1;</code></pre></blockquote><p>This C struct is defined by jasper/jas_image.h (version 2.0.14, which is what I have on the system I'm working on). <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* Image class. */</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> &#123;<br><br>        <span class="hljs-type">jas_image_coord_t</span> tlx_;<br>        <span class="hljs-comment">/* The x-coordinate of the top-left corner of the image bounding box. */</span><br><br>        <span class="hljs-type">jas_image_coord_t</span> tly_;<br>        <span class="hljs-comment">/* The y-coordinate of the top-left corner of the image bounding box. */</span><br><br>        <span class="hljs-type">jas_image_coord_t</span> brx_;<br>        <span class="hljs-comment">/* The x-coordinate of the bottom-right corner of the image bounding</span><br><span class="hljs-comment">          box (plus one). */</span><br><br>        <span class="hljs-type">jas_image_coord_t</span> bry_;<br>        <span class="hljs-comment">/* The y-coordinate of the bottom-right corner of the image bounding</span><br><span class="hljs-comment">          box (plus one). */</span><br><br>        <span class="hljs-type">int</span> numcmpts_;<br>        <span class="hljs-comment">/* The number of components. */</span><br><br>        <span class="hljs-type">int</span> maxcmpts_;<br>        <span class="hljs-comment">/* The maximum number of components that this image can have (i.e., the</span><br><span class="hljs-comment">          allocated size of the components array). */</span><br><br>        <span class="hljs-type">jas_image_cmpt_t</span> **cmpts_;<br>        <span class="hljs-comment">/* Per-component information. */</span><br><br>        <span class="hljs-type">jas_clrspc_t</span> clrspc_;<br><br>        <span class="hljs-type">jas_cmprof_t</span> *cmprof_;<br><br><span class="hljs-comment">//      bool inmem_;</span><br><br>&#125; <span class="hljs-type">jas_image_t</span>;<br></code></pre></td></tr></table></figure></p><p>You can see that the bool component inmem_ has been commented out. If you go back to older versions of jasper you can get back to one that doesn't have inmem_ commented out. For example, in the <a href="https://github.com/jasper-software/jasper">github repo for this library</a>, that would be something like SHAH 2b2efba4eda0a654ab02 or version 1.900.24, which dates to Nov 2016.</p><h1 id="workaround">Workaround</h1><h2 id="in-wpsv3.8.1-code">In WPSv3.8.1 code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">./ungrib/src/ngl/g2/dec_jpeg2000.c:104:    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot; inmem %d \n&quot;</span>,image-&gt;inmem_);<br>./ungrib/src/ngl/g2/enc_jpeg2000.c:141:    image.inmem_=1;<br></code></pre></td></tr></table></figure><p>and, modify enc_jpeg2000.c</p><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-comment">/* </span><br><span class="hljs-comment"> * Does not seem to be needed, and throws a compiler error</span><br><span class="hljs-comment"> * image.inmem_=1;</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure><p>Finally, ungrib.exe is generated.</p><p>but, is it right? will that break something...?</p><p>Ref: <a href="https://www.cnblogs.com/jiangleads/articles/11422607.html">WRF 3.9.1.1 安装 记录</a> &gt;此外，如果安装的是较新的jasper版本，还需要更改文件enc_jpeg2000.c （在目录WPS/ungrib/src/ngl/g2/enc_jpeg2000.c） &gt; 参见 <a href="http://forum.wrfforum.com/viewtopic.php?f=20&amp;t=10035" class="uri">http://forum.wrfforum.com/viewtopic.php?f=20&amp;t=10035</a> &gt;将第141行 &gt;&gt; image.inmem_=1; &gt;注释掉 &gt;这样，就能生成ungrib.exe了</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>WRF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Installation</tag>
+      
+      <tag>WPS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>WRF | Error - Size of put argument of random_seed intrinsic at (1) too small</title>
     <link href="/2024/05/30/WRF_install_random_seed_error/"/>
     <url>/2024/05/30/WRF_install_random_seed_error/</url>
     
@@ -1189,7 +1214,7 @@
   
   
   <entry>
-    <title>MPAS-JEDI</title>
+    <title>MPAS | MPAS-JEDI</title>
     <link href="/2024/05/29/MPAS-JEDI_note/"/>
     <url>/2024/05/29/MPAS-JEDI_note/</url>
     
@@ -1216,7 +1241,7 @@
   
   
   <entry>
-    <title>MPAS installation - configure - RUNNING CONFIGURE FOR ch4:ucx</title>
+    <title>MPAS | MPAS installation - configure - RUNNING CONFIGURE FOR ch4:ucx</title>
     <link href="/2024/05/29/MPAS_install_error_CH4_UCX/"/>
     <url>/2024/05/29/MPAS_install_error_CH4_UCX/</url>
     
@@ -1272,7 +1297,7 @@
   
   
   <entry>
-    <title>unrecognized command line option ‘-f90=gfortran’ &amp; ungrib.exe compile error</title>
+    <title>WRF | unrecognized command line option ‘-f90=gfortran’ &amp; ungrib.exe compile error</title>
     <link href="/2024/05/29/WPS_install_gfortran_error/"/>
     <url>/2024/05/29/WPS_install_gfortran_error/</url>
     
@@ -1299,7 +1324,7 @@
   
   
   <entry>
-    <title>fatal error - rpc/types.h - No such file or directory</title>
+    <title>WRF | fatal error - rpc/types.h - No such file or directory</title>
     <link href="/2024/05/29/WRF_install_landread_error/"/>
     <url>/2024/05/29/WRF_install_landread_error/</url>
     
@@ -1326,7 +1351,7 @@
   
   
   <entry>
-    <title>make -- time No such file or directory</title>
+    <title>WRF | make -- time No such file or directory</title>
     <link href="/2024/05/29/WRF_install_time_error/"/>
     <url>/2024/05/29/WRF_install_time_error/</url>
     
@@ -1517,7 +1542,7 @@
   
   
   <entry>
-    <title>WPS geo data and binary tile files</title>
+    <title>WRF | WPS geo data and binary tile files</title>
     <link href="/2023/06/24/WPS-geo-data-and-binary-tile-files/"/>
     <url>/2023/06/24/WPS-geo-data-and-binary-tile-files/</url>
     
@@ -1548,7 +1573,7 @@
   
   
   <entry>
-    <title>WRF-extraction-station</title>
+    <title>WRF | WRF-extraction-station</title>
     <link href="/2023/06/24/WRF-extraction-station/"/>
     <url>/2023/06/24/WRF-extraction-station/</url>
     
@@ -1880,7 +1905,7 @@
   
   
   <entry>
-    <title>GRIB1, GRIB2, NetCDF</title>
+    <title>WRF | GRIB1, GRIB2, NetCDF</title>
     <link href="/2023/05/06/GRIB1_GRIB2_NetCDF/"/>
     <url>/2023/05/06/GRIB1_GRIB2_NetCDF/</url>
     
@@ -1967,7 +1992,7 @@
   
   
   <entry>
-    <title>WPS build up domain</title>
+    <title>WRF | WPS build up domain</title>
     <link href="/2023/05/01/WPS_build_up_domain/"/>
     <url>/2023/05/01/WPS_build_up_domain/</url>
     
@@ -2091,7 +2116,7 @@
   
   
   <entry>
-    <title>WPS namelist.wps Best Practices</title>
+    <title>WRF | WPS namelist.wps Best Practices</title>
     <link href="/2023/04/30/WPS_namelist_wps_Best_Practices/"/>
     <url>/2023/04/30/WPS_namelist_wps_Best_Practices/</url>
     
@@ -2120,7 +2145,7 @@
   
   
   <entry>
-    <title>WPS namelist.wps Examples</title>
+    <title>WRF | WPS namelist.wps Examples</title>
     <link href="/2023/04/30/WPS_namelist_wps_examples/"/>
     <url>/2023/04/30/WPS_namelist_wps_examples/</url>
     
@@ -2149,7 +2174,7 @@
   
   
   <entry>
-    <title>WRF em_real namelist.input Examples</title>
+    <title>WRF | WRF em_real namelist.input Examples</title>
     <link href="/2023/04/30/WRF_em_real_namelist_input_Examples/"/>
     <url>/2023/04/30/WRF_em_real_namelist_input_Examples/</url>
     
@@ -2176,7 +2201,7 @@
   
   
   <entry>
-    <title>WRF namelist.input: Best Practices</title>
+    <title>WRF | WRF namelist.input: Best Practices</title>
     <link href="/2023/04/30/WRF_namelist_input_Best_Practices/"/>
     <url>/2023/04/30/WRF_namelist_input_Best_Practices/</url>
     
@@ -2296,7 +2321,7 @@
   
   
   <entry>
-    <title>WRF/WPS Geographical Static Data</title>
+    <title>WRF | WRF/WPS Geographical Static Data</title>
     <link href="/2023/04/27/WRF_geographical_static_Data/"/>
     <url>/2023/04/27/WRF_geographical_static_Data/</url>
     
@@ -2381,7 +2406,7 @@
   
   
   <entry>
-    <title>WRF installation on a Linux-based machine</title>
+    <title>WRF | WRF installation on a Linux-based machine</title>
     <link href="/2023/04/25/WRF_installation_on_a_Linux_based_machine/"/>
     <url>/2023/04/25/WRF_installation_on_a_Linux_based_machine/</url>
     
