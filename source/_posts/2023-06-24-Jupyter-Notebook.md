@@ -4,6 +4,8 @@ title: Jupyter-Notebook
 categories: [Jupyter]
 tags: [Jupyter, python]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # How to display full output in Jupyter, not only last result?

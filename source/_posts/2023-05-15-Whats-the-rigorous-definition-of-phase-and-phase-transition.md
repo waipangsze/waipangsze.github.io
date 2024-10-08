@@ -4,6 +4,8 @@ title: "What's the rigorous definition of phase and phase transition?"
 categories: [physics]
 tags: [phase transition]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # What's the rigorous definition of phase and phase transition?

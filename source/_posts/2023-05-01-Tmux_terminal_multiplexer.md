@@ -4,6 +4,8 @@ title: "Tmux terminal multiplexer"
 categories: [Linux]
 tags: [HPC,terminal,tmux]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Tmux terminal multiplexer

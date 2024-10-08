@@ -4,6 +4,8 @@ title: "Git: solve conflicted files"
 categories: [Git]
 tags: [Github, git commit, git conflicts]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Git: solve conflicted files

@@ -1,9 +1,11 @@
 ---
 layout: post
-title: MPAS-JEDI 
+title: MPAS | MPAS-JEDI 
 categories: [MPAS]
 tags: [MPAS, DA]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Workshop

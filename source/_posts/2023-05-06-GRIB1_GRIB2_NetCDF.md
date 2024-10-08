@@ -1,10 +1,12 @@
 ---
 layout: post
-title: "GRIB1, GRIB2, NetCDF"
+title: WRF | GRIB1, GRIB2, NetCDF
 categories: [WRF]
 tags: [WRF,WPS,HPC,MPAS]
 mathjax: true
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # GRIB1, GRIB2, NetCDF

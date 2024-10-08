@@ -1,9 +1,11 @@
 ---
 layout: post
-title: WRF uses Pnetcdf
+title: WRF | WRF uses Pnetcdf
 categories: [WRF]
 tags: [WRF, Installation, Pnetcdf]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Issue

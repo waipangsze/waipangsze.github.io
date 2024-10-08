@@ -1,9 +1,11 @@
 ---
 layout: post
-title: "WRF/WPS Geographical Static Data"
+title: WRF | WRF/WPS Geographical Static Data
 categories: [WRF]
 tags: [WRF,WPS,geodata]
 author: wpsze
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/i8XanA7.png
 ---
 
 # WRF geographical static Data

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Predicting lightning activity using WRF-ELEC model  
+title: WRF | Predicting lightning activity using WRF-ELEC model  
 categories: [WRF]
 tags: [WRF-ELEC, Lightning]
 author: wpsze

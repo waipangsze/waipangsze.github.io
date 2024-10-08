@@ -4,6 +4,8 @@ title: "Bash & Oh-My-Bash"
 categories: [Linux]
 tags: [shell script, HPC]
 author: wpsze
+index_img: https://i.imgur.com/WZjshPy.png
+banner_img: https://i.imgur.com/WZjshPy.png
 ---
 
 # Bash & Oh-My-Bash

@@ -4,6 +4,8 @@ title: "GFS/FNL/RDA upgrade (2024)"
 categories: [NWP]
 tags: [WRF,WPS,MPAS,IC/BC,NCEP]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # RDA team

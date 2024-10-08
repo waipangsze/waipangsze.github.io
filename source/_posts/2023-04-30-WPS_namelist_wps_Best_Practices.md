@@ -1,9 +1,15 @@
 ---
 layout: post
-title: "WPS namelist.wps Best Practices"
+title: WRF | WPS namelist.wps Best Practices
 categories: [WRF]
 tags: [WRF,WPS,namelist.wps]
 author: wpsze
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: 
+banner_img: 
 ---
 
 # WPS namelist.wps: Best Practices

@@ -6,6 +6,8 @@ tags: [Jupyter, python]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
+index_img: 
+banner_img: 
 ---
 
 # JupyterLab

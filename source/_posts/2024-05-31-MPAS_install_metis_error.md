@@ -1,9 +1,11 @@
 ---
 layout: post
-title: MPAS -- install Metis
+title: MPAS | install Metis
 categories: [MPAS]
 tags: [Metis, Installation]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering

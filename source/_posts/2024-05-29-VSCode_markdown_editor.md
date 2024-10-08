@@ -8,6 +8,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
+index_img: 
+banner_img: 
 ---
 
 Working with [Markdown files in Visual Studio Code](https://code.visualstudio.com/docs/languages/markdown) is simple, straightforward, and fun. Besides VS Code's basic editing, there are a several Markdown-specific features that help you be more productive.

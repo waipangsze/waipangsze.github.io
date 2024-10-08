@@ -1,9 +1,11 @@
 ---
 layout: post
-title: MPAS -- install ParallelIO-pio2_5_8
+title: MPAS | install ParallelIO-pio2_5_8
 categories: [MPAS]
 tags: [PIO, Installation]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Issue & solution

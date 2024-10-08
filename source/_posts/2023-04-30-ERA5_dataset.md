@@ -4,6 +4,12 @@ title: "ERA5 dataset"
 categories: [NWP]
 tags: [WRF,WPS,MPAS,IC/BC,ERA5,ECMWF]
 author: wpsze
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: 
+banner_img: 
 ---
 
 # ERA5 dataset

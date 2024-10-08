@@ -4,6 +4,8 @@ title: Removing PDF protected mode
 categories: [Linux]
 tags: [PDF]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # 

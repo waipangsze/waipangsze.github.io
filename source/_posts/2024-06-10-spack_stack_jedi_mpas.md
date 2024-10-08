@@ -6,6 +6,8 @@ tags: [Spack, Spack-Stack, MPAS, DA]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
+index_img: 
+banner_img: 
 ---
 
 # spack-stack

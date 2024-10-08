@@ -4,6 +4,8 @@ title: Conda/Micromamba
 categories: [Linux]
 tags: [conda, Micromamba]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 The easiest way to export a .yml file from a conda environment is to first activate your environment by running:

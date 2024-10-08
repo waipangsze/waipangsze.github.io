@@ -1,11 +1,13 @@
 ---
 layout: post
-title: use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG
+title: MPAS | use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG
 categories: [MPAS]
 tags: [WRF,Parametrization]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
+index_img: 
+banner_img: 
 ---
 
 # In WRF,

@@ -1,9 +1,11 @@
 ---
 layout: post
-title: MPAS installation - configure - RUNNING CONFIGURE FOR ch4:ucx
+title: MPAS | MPAS installation - configure - RUNNING CONFIGURE FOR ch4:ucx
 categories: [MPAS]
 tags: [MPAS, Installation]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Issue

@@ -4,6 +4,8 @@ title: "zsh & oh-my-zsh"
 categories: [Linux]
 tags: [shell script,HPC]
 author: wpsze
+index_img: https://i.imgur.com/WZjshPy.png
+banner_img: https://i.imgur.com/WZjshPy.png
 ---
 
 # zsh & oh-my-zsh

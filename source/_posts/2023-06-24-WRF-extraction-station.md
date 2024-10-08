@@ -1,9 +1,11 @@
 ---
 layout: post
-title: WRF-extraction-station
+title: WRF | WRF-extraction-station
 categories: [WRF]
 tags: [NWP, Jupyter]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 ```python

@@ -4,6 +4,8 @@ title: Bash datetime (manipulate)
 categories: [Linux]
 tags: [bash]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Bash datetime (manipulate)

@@ -4,6 +4,8 @@ title: "Git/Github"
 categories: [Git]
 tags: [Github,git init, git add, git commit, git conflicts]
 author: wpsze
+index_img: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Git_session.svg/1920px-Git_session.svg.png
+banner_img: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Git_session.svg/1920px-Git_session.svg.png
 ---
 
 # Create an empty git repo

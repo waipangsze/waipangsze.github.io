@@ -5,6 +5,8 @@ categories: [Linux]
 tags: [WRF,HPC]
 mathjax: true
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Intel OneAPI

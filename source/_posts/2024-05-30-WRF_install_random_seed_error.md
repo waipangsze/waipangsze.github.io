@@ -1,9 +1,11 @@
 ---
 layout: post
-title: Error - Size of put argument of random_seed intrinsic at (1) too small
+title: WRF | Error - Size of put argument of random_seed intrinsic at (1) too small
 categories: [WRF]
 tags: [WRF, Installation]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Issue

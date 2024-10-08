@@ -1,11 +1,13 @@
 ---
 layout: post
-title: MPAS -- Installation by Spack and Intel
+title: MPAS | Installation by Spack and Intel
 categories: [MPAS]
 tags: [MPAS, Spack, Intel, Installation]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
+index_img: 
+banner_img: 
 ---
 
 # Using Spack

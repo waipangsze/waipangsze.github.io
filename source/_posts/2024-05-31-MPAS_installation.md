@@ -1,9 +1,11 @@
 ---
 layout: post
-title: MPAS Installation
+title: MPAS | MPAS Installation
 categories: [MPAS]
 tags: [Installation]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # For MPASv7.0 and above,

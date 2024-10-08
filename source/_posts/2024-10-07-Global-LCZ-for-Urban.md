@@ -8,8 +8,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: https://imgur.com/Ufph6lQ
-banner_img: https://imgur.com/TDDLm40
+index_img: https://i.imgur.com/5tUhQAG.png
+banner_img: https://i.imgur.com/5tUhQAG.png 
 ---
 
 # Global map of Local Climate Zones
@@ -17,6 +17,8 @@ banner_img: https://imgur.com/TDDLm40
 - <https://zenodo.org/records/8419340>
 
 ## Description
+
+![A global 100 m spatial resolution Local Climate Zone (LCZ) map](https://i.imgur.com/46uEI6Z.png)
 
 A global 100 m spatial resolution Local Climate Zone (LCZ) map, derived from multiple earth observation datasets and expert LCZ class labels.
 
@@ -45,6 +47,8 @@ The recommended global LCZ map, compressed as GeoTIFF, with LCZ classes indicate
 {% endnote %}
 
 **The recommended global LCZ map, compressed as GeoTIFF, with LCZ classes indicated by numbers 1-17**. LCZ labels are obtained after applying the morphological Gaussian filter described in Demuzere et al. (2020). The official color scheme - as indicated in the table below - is embedded into the GeoTIFF.
+
+![Official class description](https://i.imgur.com/pRByENm.jpeg)
 
 The table below describes,
 
@@ -147,7 +151,39 @@ variables:
 }
 ```
 
+# Part of LCZ dataset
+
+Global tiff is large, and if we only consider a specific area like GBA/Tokyo/Houston.
+
+Fast and easy Local Climate Zone mapping
+
+https://lcz-generator.rub.de/
+
+- China, People's Republic of - Hong Kong-Macau-Guangdong Greater Bay Area:
+  - https://lcz-generator.rub.de/factsheets/c672ca892c88d1e078a81e7a085913396172f81c/c672ca892c88d1e078a81e7a085913396172f81c_factsheet.html 
+- Japan - Tokyo:
+  - https://lcz-generator.rub.de/factsheets/67a3371158ad3ac12d720fde089622c259e8e400/67a3371158ad3ac12d720fde089622c259e8e400_factsheet.html 
+- United States of America - Houston: 
+  - https://lcz-generator.rub.de/factsheets/037c80744fc1034b8472f594d829c53ce1cccfa7/037c80744fc1034b8472f594d829c53ce1cccfa7_factsheet.html 
+
+
+![]()
+
+{% gi 3 1-2 %}
+  ![GBA](https://i.imgur.com/4pyAoGS.jpeg)
+  ![Tokyo](https://i.imgur.com/rO8Cz9d.jpeg)
+  ![Houston](https://i.imgur.com/b3plh7O.jpeg)
+{% endgi %}
+
+![ncview](https://i.imgur.com/lGIE5ba.png)
+
 
 # References
 
-1. Zhao, N., Ma, A., Zhong, Y., Zhao, J., & Cao, L. (2019). Self-training classification framework with spatial-contextual information for local climate zones. Remote Sensing, 11(23), 2828.
+1. Demuzere, M., Kittner, J., & Bechtel, B. (2021). LCZ Generator: a web application to create Local Climate Zone maps. Frontiers in Environmental Science, 9, 637455.
+2. Zhao, N., Ma, A., Zhong, Y., Zhao, J., & Cao, L. (2019). Self-training classification framework with spatial-contextual information for local climate zones. Remote Sensing, 11(23), 2828.
+3. 杨俊, 任嘉义, 于文博. 局地气候分区视角下城市气候与人居环境研究进展. 生态学报, 2024, 44(11): 4489-4506.
+   1. 了解人居环境中的气候问题是主动改善和提升的首要条件。这在传统研究中已有大量成果, 如基于“城-郊”二元框架计算城市热岛强度并探讨城郊热力差异[4—6]；结合土地利用/土地覆被分析城市热力景观时空特征[7—9]；分析长时间序列下极端天气、热浪事件发生频率和持续时间[10—12]；探究空气污染与城市功能区的耦合关系[13—15]；以及定量评价气候变化导致的热风险和生态风险等[16—18]。研究普遍以城市行政边界或人口梯度为基准, 忽视了相似地理单元的空间特性。2012年Stewart和Oke提出将局地气候分区(Local Climate Zones, LCZ)作为城市气候研究的通用框架[19], 填补了传统气候分类在中/微观尺度研究中的局限, 得到广泛运用。
+   2. 局地气候分区根据城市形态、地表覆盖、地表结构及材质等差异, 将城市下垫面划分为17个基本区域, 包括10个建筑类型和7个自然类型。每个LCZ都有特定范围的相关气候参数, 不同LCZ类型具有不同的局部气候条件(图 1)。LCZ分类体系提出用两个LCZ之间的温差定义并计算城市热岛强度[19—20], 克服了传统研究中城乡的刻板边界。同时建立了城市气候研究基础框架, 规范了全球城市气候研究范式。目前世界各地研究绘制了丰富的LCZ地图, 本研究将对往期文献中LCZ地图制作数据源、方法和已有LCZ数据集进行全面梳理。
+4. 许亘昱, 石玉蓉, & 张宇峰. (2023). 规划控制要素视角下城市热环境的测度与优化——以广州中心城区为例. 热带地理, 43(6), 1070-1082.
+   1. 城市下垫面类别和土地开发强度的多样性造成了城市内部热岛强度的差异。Stewart等（2012）在充分论证传统城郊二元法研究城市热岛问题的不足后，提出了局地气候分区（Local Climate Zone，下文简称LCZ）体系。LCZ将城市下垫面分为10种建成类型和7种自然类型（图4），以天空角系数、高宽比、建筑密度、不透水表面积占比、透水表面积占比、粗糙元高度、地形粗糙类型、热导纳、反射率和人为热等的区间为属性。LCZ用定量方法区分城市的土地构成，相较于传统规划领域方法—从土地利用功能角度出发的定性分类方法，其能更好地体现功能相同的土地利用类型在地块的建筑密度、容积率和绿地率等方面的差异，且具有分析比较的普适性（Bechtel et al., 2015），以LCZ为基础的城市热岛强度分类已通过经验和模型得到证实（Fenner et al., 2014; Stewart et al., 2014; Leconte et al., 2015）。

@@ -1,9 +1,11 @@
 ---
 layout: post
-title: Official MPAS Installation lib -- Preliminary requirements
+title: MPAS | Official MPAS Installation lib -- Preliminary requirements
 categories: [MPAS]
 tags: [Installation]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Preliminary requirements: the easiest route

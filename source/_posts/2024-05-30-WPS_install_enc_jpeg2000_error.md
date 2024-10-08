@@ -1,9 +1,11 @@
 ---
 layout: post
-title:  error - jas_image_t aka struct anonymous has no member named inmem_ and image.inmem_=1
+title:  WRF | error - jas_image_t aka struct anonymous has no member named inmem_ and image.inmem_=1
 categories: [WRF]
 tags: [WPS, Installation]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Issue

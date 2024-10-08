@@ -1,9 +1,11 @@
 ---
 layout: post
-title: "WRF namelist.input: Best Practices"
+title: "WRF | WRF namelist.input: Best Practices"
 categories: [WRF]
 tags: [WRF,namelist.input]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # WRF namelist.input: Best Practices

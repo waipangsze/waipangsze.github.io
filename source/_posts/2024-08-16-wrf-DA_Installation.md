@@ -1,11 +1,13 @@
 ---
 layout: post
-title: WRF-DA Installation
+title: WRF | WRF-DA Installation
 categories: [WRF]
 tags: [DA, Installation, gnu]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
+index_img: 
+banner_img: 
 ---
 
 # Preparation

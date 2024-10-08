@@ -4,6 +4,8 @@ title: rsync - Transferring and synchronizing files
 categories: [Linux]
 tags: [download]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 rsync是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。

@@ -5,6 +5,8 @@ categories: [Git]
 tags: [git cherry-pick]
 mathjax: true
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Git cherry-pick

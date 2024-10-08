@@ -1,9 +1,11 @@
 ---
 layout: post
-title: "WPS build up domain"
+title: WRF | WPS build up domain
 categories: [WRF]
 tags: [WRF,WPS,NWP,domain,ncl]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # WPS build up domain

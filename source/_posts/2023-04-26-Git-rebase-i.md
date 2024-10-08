@@ -4,6 +4,8 @@ title: "Git rebase -i "
 categories: [Git]
 tags: [git rebase]
 author: wpsze
+index_img: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Git_session.svg/1920px-Git_session.svg.png
+banner_img: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Git_session.svg/1920px-Git_session.svg.png
 ---
 
 # Use rebase -i to merge commits

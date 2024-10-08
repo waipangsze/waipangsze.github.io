@@ -1,9 +1,11 @@
 ---
 layout: post
-title: WPS geo data and binary tile files
+title: WRF | WPS geo data and binary tile files
 categories: [WRF]
 tags: [tile files, WPS, WRF, MPAS]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # Binary files in the geog folder

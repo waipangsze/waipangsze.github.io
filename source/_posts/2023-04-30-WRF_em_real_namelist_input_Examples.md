@@ -1,9 +1,11 @@
 ---
 layout: post
-title: "WRF em_real namelist.input Examples"
+title: WRF | WRF em_real namelist.input Examples
 categories: [WRF]
 tags: [WRF,namelist.input]
 author: wpsze
+index_img: 
+banner_img: 
 ---
 
 # WRF em_real namelist.input Examples
