@@ -6,7 +6,7 @@ author: wpsze
 date: 2024-10-06 12:55:11
 ---
 
-# 北極濤動/北極震盪/Arctic Oscillation（AO）
+# 北極濤動/北極震盪/Arctic Oscillation（AO)
 
 [北極濤動（AO）](https://www.weather.gov.hk/tc/climate_change/ao.htm) (又稱北極震盪) 是指北半球中緯度地區（約北緯45度）與北極地區氣壓形勢差別的變化。它是一個代表北極地區大氣環流的重要氣候指數，可分為正位相和負位相。
 
