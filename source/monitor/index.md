@@ -19,3 +19,14 @@ date: 2024-10-06 12:55:11
 - <https://www.cpc.ncep.noaa.gov/products/precip/CWlink/daily_ao_index/ao.shtml>
 
 ![The daily AO index and its forecasts using GFS and Ensemble mean forecast data are shown for the previous 120 days as indicated. Each daily value has been standardized by the standard deviation of the monthly AO index from 1979-2000.](https://www.cpc.ncep.noaa.gov/products/precip/CWlink/daily_ao_index/ao.gefs.fcst.png)
+
+# AI for NWP
+
+- ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models
+
+{% gi 4 2-2 %}
+![1](https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png)
+![2](https://charts.ecmwf.int/streaming/20241009-0710/e3/ps2png-worker-commands-76f744c54b-rk8tn-6fe5cac1a363ec1525f54343b6cc9fd8-ue79gh2y.png)
+![3](https://charts.ecmwf.int/streaming/20241009-0820/27/ps2png-worker-commands-76f744c54b-sgsp8-6fe5cac1a363ec1525f54343b6cc9fd8-ccvm8iij.png)
+![4](https://charts.ecmwf.int/streaming/20241009-0130/fb/ps2png-worker-commands-76f744c54b-r2bdp-6fe5cac1a363ec1525f54343b6cc9fd8-o3sdzb7o.png)
+{% endgi %}

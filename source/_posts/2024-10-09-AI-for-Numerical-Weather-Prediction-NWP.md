@@ -4,6 +4,7 @@ title: AI for Numerical Weather Prediction (NWP)
 categories: [NWP, ML]
 tags: [NWP, ML]
 author: wpsze
+date: 2024-10-09 21:00:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
@@ -21,6 +22,13 @@ AI technologies, particularly machine learning algorithms, excel at analyzing la
 {% note warning %}
 [ECMWF | AIFS Blog](https://www.ecmwf.int/en/about/media-centre/aifs-blog)
 {% endnote %}
+
+- [Scores of forecasts of upper-air parameters by AIFS - experimental machine learning model](https://charts.ecmwf.int/products/plwww_3m_fc_aifs_wp_mean?area=Northern%20Extra-tropics&parameter=Geopotential%20500hPa&score=Root%20mean%20square%20error)
+- [Scores of forecasts of upper-air parameters by experimental machine learning models](https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png)
+
+![ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models **(Higher is better)**](https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png)
+
+![ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models **(Lower is better)**](https://charts.ecmwf.int/streaming/20241009-0710/e3/ps2png-worker-commands-76f744c54b-rk8tn-6fe5cac1a363ec1525f54343b6cc9fd8-ue79gh2y.png)
 
 # Run AI models yourself from ECMWF open data
 
@@ -220,6 +228,23 @@ It has the following options:
 - `--class CLASS`: The 'class' metadata of the model output.
 - `--metadata KEY=VALUE`: Additional metadata metadata in the model output
 
+# Available products
+The output of these ML models are forecasts with 6-hourly time steps out to 10 days initialised from the ECMWF operational analysis. All forecasts are produced on a 0.25 x 0.25-degree grid.
+
+## FourCastNetv2-small:
+Upper-air fields are z (geopotential), r (relative humidity), t (temperature), u (U component of wind), and v (V component of wind) on the following pressure levels: 1000hPa, 925hPa, 850hPa, 700hPa, 600hPa, 500hPa, 400hP, 300hPa, 250hPa, 200hPa, 150hPa, 100hPa and 50hPa
+
+The single-level fields are msl (mean sea level pressure), sp (surface pressure), 10u (10 metre U wind component), 10v (10 metre U wind component), 100u (100 metre U wind component), 100v (100 metre V wind component, 2t (2 metre temperature) and tcwv (total column vertically-integrated water vapour).
+
+## Graphcast:
+Upper-air fields are z (geopotential), q (specific humidity), t (temperature), u (U component of wind), v (V component of wind), w (vertical wind component) on the following pressure levels: 1000hPa, 925hPa, 850hPa, 700hPa, 600hPa, 500hPa, 400hP, 300hPa, 250hPa, 200hPa, 150hPa, 100hPa and 50hPa
+
+The single-level fields are msl (mean sea level pressure), 10u (10 metre U wind component), 10v (10 metre U wind component), and 2t (2 metre temperature). 
+
+## Pangu-Weather:
+Upper-air fields are z (geopotential), q (specific humidity), t (temperature), u (U component of wind), and v (V component of wind) on the following pressure levels: 1000hPa, 925hPa, 850hPa, 700hPa, 600hPa, 500hPa, 400hPa, 300hPa, 250hPa, 200hPa, 150hPa, 100hPa and 50hPa
+
+The single-level fields are msl (mean sea level pressure), 10u (10 metre U wind component), 10v (10 metre U wind component) and 2t (2 metre temperature).
 
 # References
 
@@ -228,4 +253,5 @@ It has the following options:
 3. [ECMWF | 2024 Data-driven regional modelling](https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/data-driven-regional-modelling)
    - some great work for limited-area modelling with Neural-LAM (Oskarsson et al. 2023).
    - In contrast to Neural-LAM, the approach we are currently testing keeps a global model. Over the domain where high-resolution data are available, here the Nordics, a finer-resolution graph is used in the model, to be able to ingest and output data from high-resolution regional analysis, reanalysis or forecast datasets.
-4. [ECMWF | Enter the ensembles](https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/enter-ensembles)
+4. [ECMWF | 2024 Enter the ensembles](https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/enter-ensembles)
+5. [ECMWF | 2023 Machine Learning model data](https://www.ecmwf.int/en/forecasts/dataset/machine-learning-model-data)
