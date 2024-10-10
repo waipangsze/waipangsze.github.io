@@ -1,0 +1,1000 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Introduction to AI in Numerical Weather Prediction Artificial Intelligence (AI) is transforming the field of Numerical Weather Prediction (NWP), significantly enhancing the accuracy and efficiency of">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI for Numerical Weather Prediction (NWP)">
+<meta property="og:url" content="https://waipangsze.github.io/2024/10/09/AI-for-Numerical-Weather-Prediction-NWP/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Introduction to AI in Numerical Weather Prediction Artificial Intelligence (AI) is transforming the field of Numerical Weather Prediction (NWP), significantly enhancing the accuracy and efficiency of">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/RwpxULg.png">
+<meta property="article:published_time" content="2024-10-09T13:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-10T01:07:58.517Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/RwpxULg.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>AI for Numerical Weather Prediction (NWP) - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitor</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/RwpxULg.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI for Numerical Weather Prediction (NWP)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-09 21:00" pubdate>
+          October 9, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          562 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI for Numerical Weather Prediction (NWP)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="introduction-to-ai-in-numerical-weather-prediction">Introduction to AI in Numerical Weather Prediction</h1>
+<p>Artificial Intelligence (AI) is transforming the field of Numerical Weather Prediction (NWP), significantly enhancing the accuracy and efficiency of weather forecasting. Traditional NWP relies on complex physical models to simulate atmospheric processes, but the integration of AI and machine learning (ML) is introducing new methodologies that leverage vast datasets to improve predictions.</p>
+<p>AI technologies, particularly machine learning algorithms, excel at analyzing large volumes of meteorological data from diverse sources, including satellites, radar systems, and surface sensors. These algorithms can identify intricate patterns and correlations that may be overlooked by conventional methods, leading to more precise forecasts. For instance, models like Google DeepMind's GraphCast can predict weather conditions up to ten days in advance in less than a minute, outperforming traditional systems that require hours on supercomputers.</p>
+<div class="note note-warning">
+            <p><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/aifs-blog">ECMWF | AIFS Blog</a></p>
+          </div>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://charts.ecmwf.int/products/plwww_3m_fc_aifs_wp_mean?area=Northern%20Extra-tropics&amp;parameter=Geopotential%20500hPa&amp;score=Root%20mean%20square%20error">Scores of forecasts of upper-air parameters by AIFS - experimental machine learning model</a></li>
+<li><a target="_blank" rel="noopener" href="https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png">Scores of forecasts of upper-air parameters by experimental machine learning models</a></li>
+</ul>
+<figure>
+<img src="https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png" srcset="/img/loading.gif" lazyload alt="ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models (Higher is better)" /><figcaption>ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models <strong>(Higher is better)</strong></figcaption>
+</figure>
+<figure>
+<img src="https://charts.ecmwf.int/streaming/20241009-0710/e3/ps2png-worker-commands-76f744c54b-rk8tn-6fe5cac1a363ec1525f54343b6cc9fd8-ue79gh2y.png" srcset="/img/loading.gif" lazyload alt="ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models (Lower is better)" /><figcaption>ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models <strong>(Lower is better)</strong></figcaption>
+</figure>
+<h1 id="run-ai-models-yourself-from-ecmwf-open-data">Run AI models yourself from ECMWF open data</h1>
+<p>26 September 2024<br />
+The AIFS team</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/run-ai-models-yourself-ecmwf-open-data" class="uri">https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/run-ai-models-yourself-ecmwf-open-data</a></li>
+<li>To announce that users can now run AI models using ECMWF's open data themselves. This breakthrough democratizes access to cutting-edge weather forecasting technology and opens new possibilities for research, education, and application development.</li>
+<li>success of machine learning models like FourCastNet, Pangu-Weather, GraphCast and FuXi, ECMWF is now empowering users to harness these AI tools directly.</li>
+</ul>
+<h2 id="the-power-of-open-data-and-ai">The power of open data and AI</h2>
+<p>By combining ECMWF's high-quality open data with state-of-the-art AI models, users can:</p>
+<ul>
+<li>generate rapid forecasts on their own computer</li>
+<li>explore multi-model ensemble forecasting techniques with AI</li>
+<li>conduct research on model performance and intercomparison without any accounts/licences.</li>
+<li><strong>Plugins already exist for Pangu-Weather, FourCastNet (versions 1 and 2), GraphCast, FuXi and, most recently, Aurora.</strong></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ecmwf-lab/ai-models" class="uri">https://github.com/ecmwf-lab/ai-models</a></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">pip install ai-models <br><br>pip install ai-models-panguweather <span class="hljs-comment"># Or another model </span><br>pip install ai-models-fourcastnet<br>pip install ai-models-graphcast  <span class="hljs-comment"># Install details at https://github.com/ecmwf-lab/ai-models-graphcast</span><br>pip install ai-models-fourcastnetv2 <br><br>ai-models panguweather --input ecmwf-open-data <br></code></pre></td></tr></table></figure>
+<p>See</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ecmwf-lab/ai-models-panguweather">ai-models-panguweather</a>,</li>
+<li><a href="ai-models-fourcastnet">ai-models-fourcastnet</a>,</li>
+<li><a href="ai-models-fourcastnetv2">ai-models-fourcastnetv2</a> and</li>
+<li><a href="ai-models-graphcast">ai-models-graphcast</a></li>
+</ul>
+<p>for more details about these models.</p>
+<div class="note note-warning">
+            <p>To fix ONNX or version issue, we suggest that you <strong>install ai-models in a conda environment and install the CUDA libraries in that environment</strong>.</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda create -n ai-models python=3.10<br>conda activate ai-models<br>conda install cudatoolkit<br>pip install ai-models<br>...<br></code></pre></td></tr></table></figure>
+<h3 id="running-the-models">Running the models</h3>
+<p>To run model, make sure it has been installed, then simply run:</p>
+<div class="note note-warning">
+            <p>By default, the model will be run for <strong>a 10-day lead time (240 hours)</strong>, using <strong>yesterday's 12Z analysis</strong> from ECMWF's MARS archive.</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">ai-models &lt;model-name&gt;<br><br><span class="hljs-comment"># To produce a 15 days forecast, use the --lead-time HOURS option:</span><br>ai-models --lead-time 360 &lt;model-name&gt;<br></code></pre></td></tr></table></figure>
+<h3 id="performances-considerations">Performances Considerations</h3>
+<p>The AI models can run on a CPU; however, they perform significantly better on a GPU.</p>
+<div class="note note-warning">
+            <p><strong>A 10-day forecast can take several hours on a CPU but only around one minute on a modern GPU.</strong></p>
+          </div>
+<div class="note note-warning">
+            <p><strong>We strongly recommend running these models on a computer equipped with a GPU for optimal performance.</strong></p>
+          </div>
+<p>It you see the following message when running a model, it means that the <strong>ONNX runtime was not able to find a the CUDA libraries on your system</strong>:</p>
+<blockquote>
+<p>[W:onnxruntime:Default, onnxruntime_pybind_state.cc:541 CreateExecutionProviderInstance] Failed to create CUDAExecutionProvider. Please reference https://onnxruntime.ai/docs/reference/execution-providers/CUDA-ExecutionProvider.html#requirements to ensure all dependencies are met.</p>
+</blockquote>
+<h3 id="assets">Assets</h3>
+<p>The AI models rely on weights and other assets created during training. The first time you run a model, you will need to download the <strong>trained weights</strong> and <strong>any additional required assets</strong>.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># To download the assets before running a model, use the following command:</span><br>ai-models --download-assets &lt;model-name&gt;<br><br><span class="hljs-comment"># The assets will be downloaded if needed and stored in the current directory. You can provide a different directory to store the assets:</span><br>ai-models --download-assets --assets &lt;some-directory&gt; &lt;model-name&gt;<br><br><span class="hljs-comment"># Then, for running, later on, simply use:</span><br>ai-models --assets &lt;some-directory&gt;  &lt;model-name&gt;<br><span class="hljs-comment"># or </span><br><span class="hljs-built_in">export</span> AI_MODELS_ASSETS=&lt;some-directory&gt;<br>ai-models &lt;model-name&gt;<br></code></pre></td></tr></table></figure>
+<p>For better organisation of the assets directory, you can use the <strong>--assets-sub-directory</strong> option. This option will store the assets of each model in its own subdirectory within the specified assets directory.</p>
+<h3 id="input-data">Input data</h3>
+<p>The models require input data (initial conditions) to run. You can provide the input data using different sources, as described below:</p>
+<h4 id="from-mars">From MARS</h4>
+<div class="note note-warning">
+            <p>By default, <strong>ai-models use yesterday's 12Z analysis from ECMWF</strong>, fetched from the Centre's MARS archive using the <a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/computing/software/ecmwf-web-api">ECMWF WebAPI</a>. <strong>You will need an ECMWF account to access that service</strong>.</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># To change the date or time, use the --date and --time options, respectively:</span><br><br>ai-models --<span class="hljs-built_in">date</span> YYYYMMDD --time HHMM &lt;model-name&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="from-the-cds-era5">From the CDS (ERA5)</h4>
+<p>You can start the models <strong>using ERA5 (ECMWF Reanalysis version 5) data</strong> for the <a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/">Copernicus Climate Data Store (CDS)</a>. You will need to create an account on the CDS. The data will be downloaded using the <a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/api-how-to">CDS API</a>).</p>
+<p>To access the CDS, simply add <strong>--input cds</strong> on the command line. <strong>Please note that ERA5 data is added to the CDS with a delay</strong>, so you will also have to provide a date with --date YYYYMMDD.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ai-models --input cds --<span class="hljs-built_in">date</span> 20230110 --time 0000 &lt;model-name&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="from-a-grib-file">From a GRIB file</h4>
+<p>If you have input data in the GRIB format, you can provide the file using the <strong>--file</strong> option:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ai-models --file &lt;some-grib-file&gt; &lt;model-name&gt;<br></code></pre></td></tr></table></figure>
+<div class="note note-warning">
+            <p>The GRIB file can contain more fields than the ones required by the model. The ai-models command will automatically select the necessary fields from the file.</p>
+          </div>
+<div class="note note-warning">
+            <p>GFS grib files?</p>
+          </div>
+<p>To find out the list of fields needed by a specific model as initial conditions, use the following command:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ai-models --fields &lt;model-name&gt;<br></code></pre></td></tr></table></figure>
+<h3 id="output">Output</h3>
+<p>By default, the model output will be written in GRIB format in a file called <strong>&lt;model-name&gt;.grib</strong>. You can change the file name with the option <strong>--path <file-name></strong>. If the path you specify contains placeholders between { and }, multiple files will be created based on the <a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/ECC">eccodes</a> keys. For example:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ai-models --path <span class="hljs-string">&#x27;out-&#123;step&#125;.grib&#x27;</span> &lt;model-name&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>This command will create a file for each forecasted time step.</strong></p>
+<p>If you want to disable writing the output to a file, use the <strong>--output none</strong> option.</p>
+<h3 id="command-line-options">Command line options</h3>
+<p>It has the following options:</p>
+<ul>
+<li><code>--help</code>: Displays this help message.</li>
+<li><code>--models</code>: Lists all installed models.</li>
+<li><code>--debug</code>: Turns on debug mode. This will print additional information to the console.</li>
+</ul>
+<h4 id="input">Input</h4>
+<ul>
+<li><code>--input INPUT</code>: The input source for the model. This can be a <code>mars</code>, <code>cds</code> or <code>file</code>.</li>
+<li><p><code>--file FILE</code>: The specific file to use as input. This option will set <code>--source</code> to <code>file</code>.</p></li>
+<li><code>--date DATE</code>: The analysis date for the model. This defaults to yesterday.</li>
+<li><p><code>--time TIME</code>: The analysis time for the model. This defaults to 1200.</p></li>
+</ul>
+<h4 id="output-1">Output</h4>
+<ul>
+<li><code>--output OUTPUT</code>: The output destination for the model. Values are <code>file</code> or <code>none</code>.</li>
+<li><code>--path PATH</code>: The path to write the output of the model.</li>
+</ul>
+<h4 id="run">Run</h4>
+<ul>
+<li><code>--lead-time HOURS</code>: The number of hours to forecast. The default is 240 (10 days).</li>
+</ul>
+<h4 id="assets-management">Assets management</h4>
+<ul>
+<li><code>--assets ASSETS</code>: Specifies the path to the directory containing the model assets. The default is the current directory, but you can override it by setting the <code>$AI_MODELS_ASSETS</code> environment variable.</li>
+<li><code>--assets-sub-directory</code>: Enables organising assets in <code>&lt;assets-directory&gt;/&lt;model-name&gt;</code> subdirectories.</li>
+<li><code>--download-assets</code>: Downloads the assets if they do not exist.</li>
+</ul>
+<h4 id="misc.-options">Misc. options</h4>
+<ul>
+<li><code>--fields</code>: Print the list of fields needed by a model as initial conditions.</li>
+<li><code>--expver EXPVER</code>: The experiment version of the model output.</li>
+<li><code>--class CLASS</code>: The 'class' metadata of the model output.</li>
+<li><code>--metadata KEY=VALUE</code>: Additional metadata metadata in the model output</li>
+</ul>
+<h1 id="available-products">Available products</h1>
+<p>The output of these ML models are forecasts with 6-hourly time steps out to 10 days initialised from the ECMWF operational analysis. All forecasts are produced on a 0.25 x 0.25-degree grid.</p>
+<h2 id="fourcastnetv2-small">FourCastNetv2-small:</h2>
+<p>Upper-air fields are z (geopotential), r (relative humidity), t (temperature), u (U component of wind), and v (V component of wind) on the following pressure levels: 1000hPa, 925hPa, 850hPa, 700hPa, 600hPa, 500hPa, 400hP, 300hPa, 250hPa, 200hPa, 150hPa, 100hPa and 50hPa</p>
+<p>The single-level fields are msl (mean sea level pressure), sp (surface pressure), 10u (10 metre U wind component), 10v (10 metre U wind component), 100u (100 metre U wind component), 100v (100 metre V wind component, 2t (2 metre temperature) and tcwv (total column vertically-integrated water vapour).</p>
+<h2 id="graphcast">Graphcast:</h2>
+<p>Upper-air fields are z (geopotential), q (specific humidity), t (temperature), u (U component of wind), v (V component of wind), w (vertical wind component) on the following pressure levels: 1000hPa, 925hPa, 850hPa, 700hPa, 600hPa, 500hPa, 400hP, 300hPa, 250hPa, 200hPa, 150hPa, 100hPa and 50hPa</p>
+<p>The single-level fields are msl (mean sea level pressure), 10u (10 metre U wind component), 10v (10 metre U wind component), and 2t (2 metre temperature).</p>
+<h2 id="pangu-weather">Pangu-Weather:</h2>
+<p>Upper-air fields are z (geopotential), q (specific humidity), t (temperature), u (U component of wind), and v (V component of wind) on the following pressure levels: 1000hPa, 925hPa, 850hPa, 700hPa, 600hPa, 500hPa, 400hPa, 300hPa, 250hPa, 200hPa, 150hPa, 100hPa and 50hPa</p>
+<p>The single-level fields are msl (mean sea level pressure), 10u (10 metre U wind component), 10v (10 metre U wind component) and 2t (2 metre temperature).</p>
+<h1 id="hands-on">Hands-on</h1>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/aifs-blog">ECMWF | AIFS Blog</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/run-ai-models-yourself-ecmwf-open-data">ECMWF | 2024 Run AI models yourself from ECMWF open data</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/data-driven-regional-modelling">ECMWF | 2024 Data-driven regional modelling</a>
+<ul>
+<li>some great work for limited-area modelling with Neural-LAM (Oskarsson et al. 2023).</li>
+<li>In contrast to Neural-LAM, the approach we are currently testing keeps a global model. Over the domain where high-resolution data are available, here the Nordics, a finer-resolution graph is used in the model, to be able to ingest and output data from high-resolution regional analysis, reanalysis or forecast datasets.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/enter-ensembles">ECMWF | 2024 Enter the ensembles</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/forecasts/dataset/machine-learning-model-data">ECMWF | 2023 Machine Learning model data</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/NWP/ML/" class="category-chain-item">ML</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI for Numerical Weather Prediction (NWP)</div>
+      <div>https://waipangsze.github.io/2024/10/09/AI-for-Numerical-Weather-Prediction-NWP/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 9, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>October 10, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/10/ncview/" title="WRF | ncview/ncvis -- a NetCDF visual browser">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">WRF | ncview/ncvis -- a NetCDF visual browser</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/08/reduce-wrfout-size/" title="WRF | Reduce the amount of wrfout data">
+                        <span class="hidden-mobile">WRF | Reduce the amount of wrfout data</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
