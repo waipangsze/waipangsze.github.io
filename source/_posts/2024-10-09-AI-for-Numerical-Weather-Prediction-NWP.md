@@ -246,6 +246,10 @@ Upper-air fields are z (geopotential), q (specific humidity), t (temperature), u
 
 The single-level fields are msl (mean sea level pressure), 10u (10 metre U wind component), 10v (10 metre U wind component) and 2t (2 metre temperature).
 
+# Hands-on
+
+
+
 # References
 
 1. [ECMWF | AIFS Blog](https://www.ecmwf.int/en/about/media-centre/aifs-blog)

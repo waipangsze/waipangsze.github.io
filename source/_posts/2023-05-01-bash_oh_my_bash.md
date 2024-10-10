@@ -11,17 +11,20 @@ banner_img: https://i.imgur.com/WZjshPy.png
 # Bash & Oh-My-Bash
 
 Ref:
+
 1. [配置安装oh-my-bash](https://www.cnblogs.com/nbtech/p/oh-my-bash.html)
 2. <https://github.com/ohmybash/oh-my-bash>
 3. [plugins](https://github.com/ohmybash/oh-my-bash/tree/master/plugins)
 4. [Themes](https://github.com/ohmybash/oh-my-bash/wiki/Themes)
 
 *Oh My Bash* works best on macOS and Linux.
+
 > Unix-like operating system (macOS or Linux)\
 > curl or wget should be installed\
 > git should be installed
 
 ## Check $SHELL used
+
 ```sh
 cat /etc/shells
 ## /etc/shells: valid login shells
@@ -38,6 +41,7 @@ echo $SHELL
 ```
 
 To change your shell.
+
 ```sh
 chsh -s /bin/bash ## change to bash ##
 # or
@@ -100,6 +104,7 @@ How can I display the absolute path in bash prompt?
 # PS1=[\u@\h ]\$PWD$
 PS1="$(clock_prompt)$python_venv${hostname}:${_omb_prompt_bold_teal}\${PWD} $(scm_prompt_char_info)${ret_status}$ ${_omb_prompt_normal}"
 ```
+
 The key here is **\w** gives the full path while **\W** gives only the directory.
 
 ## conda initialize 
