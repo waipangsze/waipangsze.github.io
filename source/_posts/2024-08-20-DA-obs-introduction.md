@@ -6,8 +6,8 @@ tags: [DA, NWP, MPAS, WRF]
 author: wpsze
 mathjax: true
 mathjax_autoNumber: true
-index_img: https://imgur.com/vBbREN9
-banner_img: https://imgur.com/iwgcpCE
+index_img: https://www.hko.gov.hk/en/education/images/fig_00479_1e.png
+banner_img: https://www.hko.gov.hk/en/education/images/fig_00479_2e.png
 ---
 
 # Meteorological Data Encoding 
@@ -25,6 +25,10 @@ Currently, most meteorological observations are being produced and transmitted i
 - Table-Driven Code Forms (TDCF) 表格驅動代碼
  
 as promulgated by WMO. Both TAC and TDCF are ways of representing meteorological data intended for international exchange in real-time.
+
+![Decoded TAC Information](https://www.hko.gov.hk/en/education/images/fig_00479_1e.png)
+
+![Decoded BUFR Information](https://www.hko.gov.hk/en/education/images/fig_00479_2e.png)
 
 ## BUFR
 
