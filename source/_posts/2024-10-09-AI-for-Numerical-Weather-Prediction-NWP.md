@@ -1,10 +1,8 @@
 ---
 layout: post
 title: AI for Numerical Weather Prediction (NWP)
-categories: 
-- ML
-- AI
-tags: [NWP, ML]
+categories: ML
+tags: [NWP, ML, AI]
 author: wpsze
 date: 2024-10-09 21:00:00
 math: true

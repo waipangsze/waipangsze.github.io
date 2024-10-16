@@ -4,7 +4,7 @@ title: Linux | Terminal Command
 categories: [Terminal]
 tags: [HPC]
 author: wpsze
-date: 2024-10-10 9:00:00
+date: 2024-10-15 16:00:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
@@ -12,6 +12,8 @@ mermaid: true
 index_img: 
 banner_img: 
 ---
+
+Linux
 
 ```sh
 
