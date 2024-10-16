@@ -1,0 +1,1008 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Cold Start&#x2F;Warm Start NCAR  NCAR | Real-Time Four-Dimensional Data Assimilation (RT-FDDA)               Simulation is initialized using a &#39;cold start&#39; methodology. This means that they start with no c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | MPAS | Cold Start&#x2F;Spin up&#x2F;Warm Start">
+<meta property="og:url" content="https://waipangsze.github.io/2024/10/16/wrf-spin-up-cold-start/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Cold Start&#x2F;Warm Start NCAR  NCAR | Real-Time Four-Dimensional Data Assimilation (RT-FDDA)               Simulation is initialized using a &#39;cold start&#39; methodology. This means that they start with no c">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/RwpxULg.png">
+<meta property="article:published_time" content="2024-10-16T02:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-16T08:29:05.956Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/RwpxULg.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | MPAS | Cold Start/Spin up/Warm Start - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitor</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | MPAS | Cold Start/Spin up/Warm Start"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-16 10:00" pubdate>
+          October 16, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | MPAS | Cold Start/Spin up/Warm Start</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="cold-startwarm-start">Cold Start/Warm Start</h1>
+<h2 id="ncar">NCAR</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ral.ucar.edu/solutions/products/real-time-four-dimensional-data-assimilation-rt-fdda">NCAR | Real-Time Four-Dimensional Data Assimilation (RT-FDDA)</a></li>
+</ul>
+<div class="note note-warning">
+            <p>Simulation is initialized using a <strong>'cold start'</strong> methodology. This means that they <strong>start with no cloud and precipitation systems, or local thermally-driven circulations</strong>.</p>
+          </div>
+<p>Therefore, a certain amount of model <strong>'spin up' time</strong> is required for the atmosphere to begin responding to the mesoscale forcing resulting from variations in the local complex physiography.</p>
+<h2 id="wrf-code">WRF code</h2>
+<p>For use with <strong>cold start (zero cloud fields)</strong>,</p>
+<p>WRF/run/README.namelist</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs text">&amp;physics<br> insert_init_cloud                   = .false., ! Default<br>                                     = .true.,  ! For use with cold start (zero cloud fields), this option will<br>                                                  use the icloud=3 scheme to produce initial cloud water and cloud<br>                                                  ice fields as well as ensure initial water vapor field matches<br>                                                  saturation, which retains clouds beyond the first few timesteps.<br></code></pre></td></tr></table></figure>
+<h2 id="developing-spin-up-time-framework-...">2023 | Developing spin-up time framework ...</h2>
+<ol type="1">
+<li>Liu, Y., Zhuo, L., &amp; Han, D. (2023). <strong>Developing spin-up time framework for WRF extreme precipitation simulations</strong>. Journal of Hydrology, 620, 129443.
+<ol type="1">
+<li>In fact, the length of spin-up <strong>depends on the quality of initial inputs and the soil conditions</strong> because the soil moisture content and latent heat flux will influence precipitation processes</li>
+<li>For example, <strong>soil moisture responds much slower</strong> than atmospheric variables to dynamical and thermo-dynamical processes</li>
+<li>In WRF extreme precipitation simulations, spin-up time allows the model to adjust from the IC to a state that is consistent with its own numerics and physics and to develop appropriate large-scale circulations</li>
+<li>Therefore, spin-up time is the required execution time that allows the WRF to reach a physical equilibrium state following the path defined by the BC, while forgetting about the IC</li>
+<li>The greater the inconsistencies between IC and model physics, the longer the spin-up time required</li>
+</ol></li>
+</ol>
+<h2 id="forecast-of-low-clouds-...">2021 | Forecast of Low Clouds ...</h2>
+<ul>
+<li>Hagman, M., Svensson, G., &amp; Angevine, W. M. (2021). Forecast of Low Clouds over a Snow Surface in the Arctic Using the WRF Model. Monthly Weather Review, 149(8), 2559-2579. https://doi.org/10.1175/MWR-D-20-0396.1</li>
+</ul>
+<p>The model is <strong>cold-started</strong> for every simulation...Our experiments show that the problems arise in the initialization of the model. When the SAF WRF forecast begins,</p>
+<ul>
+<li>it is initialized with specific humidity, winds, temperature and skin temperature from IFS HRES, <strong>but no cloud information is passed from the host model</strong>.</li>
+<li>When low clouds are present in reality, they increase the downwelling longwave radiation to the surface. This energy source at the surface is especially important in a stably stratified environment with sharp surface inversions as it affects the energy budget at the surface, which, in turn, sets the skin temperature and temperature in the lowest layer of the atmosphere.</li>
+<li><strong>When no cloud information is available at the initial time in WRF</strong>, this energy is lacking during the first hours when <strong>WRF has to spin up its own clouds from the initialized humidity, a slow process in winter at high latitudes</strong>. With less downwelling longwave radiation, the deficit of energy at the surface leads to a <strong>rapid, unphysical drop in the skin temperature</strong>. Drops of 20°C in 20 s (one time step) have been noted.</li>
+</ul>
+<h2 id="sensitivity-of-initialcondition-and-cloud-microphysics-...">2018 | Sensitivity of initial‐condition and cloud microphysics ...</h2>
+<ul>
+<li>Sikder, M. S., &amp; Hossain, F. (2018). Sensitivity of initial‐condition and cloud microphysics to the forecasting of monsoon rainfall in South Asia. Meteorological Applications, 25(4), 493-509.</li>
+</ul>
+<p>Besides the sensitivity test of the MP schemes in the WRF forecast, the performance of <strong>four different WRF model initialization techniques</strong> was tested in this study.</p>
+<ul>
+<li>In the first experiment case, the <strong>traditional “cold-start” technique</strong> was used to initiate the WRF model using the GFS forecast (e.g. Givati et al., 2012). The IC of the WRF model was directly taken from the GFS forecast in this case.</li>
+<li>The second case was also a <strong>cold-start set-up, but the first-hour GFS forecast data were replaced by the GFS-FNL data</strong> which are expected to represent a more accurate IC given the higher number of assimilated observations. Thus, the IC of the model is derived from the GFS-FNL and simulation was continued using the GFS forecast data as the model boundary.</li>
+</ul>
+<div class="note note-warning">
+            <p><strong>Exclusion of the first 6 hr</strong> simulation output of a cold-start model is a common practice used to eliminate the model “spin-up” time error.</p>
+          </div>
+<p>Although the first two cases involved cold-start initialization, the spin-up effect was not considered in this study to evaluate the advantages of other initialization techniques.</p>
+<p>The next two cases were based on a <strong>“warm start”</strong> (<strong>often called a “hot start”</strong>) approach (e.g. Jankov et al., 2007).</p>
+<ul>
+<li>The output of a <strong>one-day pre-simulated WRF model</strong> was used to initiate the WRF forecast model in these cases. In this way, the uncertainty related to model instability during the so-called spin-up time is expected to be reduced. The GFS-FNL data were used as the initial and boundary condition for this one-day pre-simulation (i.e. hindcast), since they contain more observed data than the operational GFS. <strong>Thereafter, the WRF forecast model was initiated with the restart generated from this hindcast model, and continued with the GFS forecast data as the boundary condition</strong> in the third experiment case.</li>
+<li>The last experimental case was almost similar to the third experimental case. The only difference was <strong>the first-hour GFS forecast data were replaced by the GFS-FNL data in the WRF forecast simulation</strong>. Therefore, the last case is the fusion of the second and third experimental cases.</li>
+</ul>
+<p>These four experiment cases are denoted here by IC and a serial number denoting the experimental case. Hereafter, the IC1 means the first experiment case to initiate the WRF model; and IC2, IC3 and IC4 the second, third and fourth experimental cases, respectively.</p>
+<h2 id="wrfda-point-of-view">WRFDA point of view</h2>
+<h3 id="cycling-wrf-and-wrfda">Cycling WRF and WRFDA</h3>
+<ul>
+<li>Q1: What is "cycling" exactly? How do I set up cycling for WRF and WRFDA?
+<ul>
+<li>A1: "Cycling" is the process by which the output of a previous WRF forecast is used to initialize a new WRF forecast, rather than taking the initial conditions from some other analysis/forecast through WPS/real. This is usually done in the context of real-time forecast You can find detailed instructions on cycling with WRF/WRFDA in the <a target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/users/wrfda/Docs/user_guide_V3.9/users_guide_chap6.htm#_Cycling_with_WRF_1%3C/a">relevant section of the Users Guide</a></li>
+</ul></li>
+<li>Q2: What is the difference between <strong>"warm-start"</strong> and <strong>"cold-start"</strong> forecasts?
+<ul>
+<li>A2: These terms are widely used in the field of atmospheric modeling and data assimilation, however, to quote this site from <a target="_blank" rel="noopener" href="http://www.oc.nps.edu/nom/modeling/initial.html">the Naval Postgraduate School</a>, "The terms cold start and warm start may mean slightly different things to different people." In the context of WRF and WRFDA, a <strong>"cold-start" forecast is when the first guess (fg) file</strong> provided to WRFDA is a wrfinput file from WPS/real, while a <strong>"warm-start" forecast is one where the first guess is a WRF forecast file (wrfout)</strong>.</li>
+</ul></li>
+</ul>
+<p>Because of the ambiguity in what constitutes a cold-start or warm-start, we try to avoid using these terms in the official documentation.</p>
+<h2 id="wrf-mpas-a-support-forum">WRF &amp; MPAS-A Support Forum</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/when-should-i-consider-spin-up-for-wrf-predictions.13821/">When should I consider spin-up for WRF predictions?</a>
+<ul>
+<li><strong>Usually 9-12 hours of spin-up time will be sufficient</strong>. Note that WRF is under strong constraints of lateral forcing and changes in surface static data could be more important for long-term climate simulation.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/long-term-wrf-run.5241/">long-term WRF run</a>
+<ul>
+<li>I don't believe the length of the run should make a difference. <strong>The spin-up time is simply to ensure that the model has had ample time to stabilize so that the results can become reliable</strong>, and are not just simply based on the initial and boundary conditions. Once this happens, the model can go forward to generate estimations for forecasting purposes.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/long-time-wrf-simulation.10067/">Long-time WRF simulation</a>
+<ul>
+<li>Q: I want to do a 1-year WRF simulation with analysis nudging using ERA5 hourly reanalysis data. Take 2019 for example, should I run WRF from Dec,2018 to Dec,2019, taking Dec in 2018 as spin-up period? If so, does nudging set in Dec,2018?</li>
+<li>A: <strong>You shouldn't need more than about 24-48 hours for spin-up</strong>, so if you're interested in the data from 1 Jan 2019, you can just start it Dec 30 or 31 and it should be okay.</li>
+<li><strong>Nudging is beneficial throughout the whole simulation</strong>, especially for larger/continental sized domains. It's less necessary for smaller domains that are more constrained by the boundaries.</li>
+<li><strong>As for long simulations, the only other thing that comes to mind is to make sure you have some additional SST input data</strong>. The GFS provides SST data with their files, but the resolution is temporally coarse. You will want something with higher temporal resolution. You may already have some, or a resource for it, but if you need additional resources, you can see slide 6 from this <a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/202101/werner_data_util_pp.pdf">presentation</a>.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/altering-mpass-initial-conditions.13680/">Altering MPAS's initial conditions</a>
+<ul>
+<li>Q: I am now considering changing initial conditions for the global MPAS run (60-3km mesh). Do you have any idea about the approximate spin-up time for changing different initial variables? For non-change run, I will spin up for about 6 hours and timestep is about 15 seconds. If I change the vegation type (say vegetation fraction), do I need to increase my spin-up time, e.g., a few hours more or even several days?</li>
+<li>A: Based on our experience with WRF model, 9-12 hours of spin-up time is sufficient. Note that WRF is a limited-area model under constraints of large scale forcing. The spin-up time for MPAS global model could be different. A few papers have mentioned the spin-up issue for MPAS. For example, the spin-up time is set to 24h in the <a target="_blank" rel="noopener" href="https://macmaq.aqrc.ucdavis.edu/sites/g/files/dgvnsk6036/files/inline-files/Kemal%20Gurer_Poster.pdf">study</a>. Please refer to the literature for more information.</li>
+</ul></li>
+</ul>
+<h1 id="spin-up-time">Spin-Up Time</h1>
+<p>In numerical weather prediction (NWP), <strong>spin-up time</strong> refers to the period required for a model to <strong>adjust from its initial state to a more stable and representative equilibrium state</strong>. This adjustment is crucial for achieving accurate forecasts, as it allows the model to correct any discrepancies in the initial conditions and dynamics.</p>
+<h2 id="key-characteristics-of-spin-up-time">Key Characteristics of Spin-Up Time</h2>
+<h3 id="dynamic-and-thermal-adjustments">Dynamic and Thermal Adjustments</h3>
+<ul>
+<li><p><strong>Initial Phase</strong>: During the spin-up phase, the model undergoes significant dynamic and thermal adjustments. These adjustments are necessary for the model to align with the physical processes governing atmospheric behavior.</p></li>
+<li><p><strong>Duration</strong>: Spin-up time can vary widely depending on the type of model and its configuration. For short-term weather forecast models, spin-up times typically range from several hours to about a dozen hours. In contrast, climate models may require spin-up periods extending from months to even decades.</p></li>
+</ul>
+<h3 id="impact-on-forecast-accuracy">Impact on Forecast Accuracy</h3>
+<ul>
+<li><strong>Forecast Reliability</strong>: The forecasts produced during the spin-up phase are often considered unreliable. Many studies recommend disregarding results from this period when evaluating model performance[1]. This is due to potential inaccuracies caused by transient phenomena, such as spurious gravity waves, which can lead to increased errors in forecast variables.</li>
+<li><strong>Computational Resources</strong>: Extended spin-up times can consume significant computational resources, particularly in climate models or ocean models. Reducing spin-up time is therefore essential for improving efficiency and forecast accuracy.</li>
+</ul>
+<h3 id="factors-influencing-spin-up-time">Factors Influencing Spin-Up Time</h3>
+<ul>
+<li><strong>Model Type</strong>: Different models exhibit varying spin-up characteristics based on their design and purpose. For instance, global climate models generally have longer spin-up times compared to regional models.</li>
+<li><strong>Initial Conditions</strong>: The quality of initial conditions derived from observational data or reanalysis influences how quickly a model can reach equilibrium. Models initialized with better data tend to have shorter spin-up periods.</li>
+</ul>
+<p>In summary, spin-up time in NWP is a critical aspect that affects the accuracy and reliability of weather forecasts. Understanding and optimizing this period is essential for enhancing model performance and resource efficiency.</p>
+<h2 id="spin-up-characteristics-...">2021 Spin-up characteristics ...</h2>
+<ul>
+<li>Ma, Z., Zhao, C., Gong, J., Zhang, J., Li, Z., Sun, J., Liu, Y., Chen, J., and Jiang, Q.: Spin-up characteristics with three types of initial fields and the restart effects on forecast accuracy in the GRAPES global forecast system, Geosci. Model Dev., 14, 205–221, <a target="_blank" rel="noopener" href="https://doi.org/10.5194/gmd-14-205-2021" class="uri">https://doi.org/10.5194/gmd-14-205-2021</a>, 2021.</li>
+<li><a target="_blank" rel="noopener" href="https://gmd.copernicus.org/articles/14/205/2021/gmd-14-205-2021.pdf" class="uri">https://gmd.copernicus.org/articles/14/205/2021/gmd-14-205-2021.pdf</a></li>
+</ul>
+<p>This process is called the spin-up in numerical modeling, and</p>
+<ul>
+<li>the time required to reach a new equilibrium state is called the spin-up time (Wolcott and Warner, 1981; Kasahara et al., 1992; Séférian et al., 2016; Sheng et al., 2006; Liu et al., 2008; Xue et al., 2017).</li>
+<li>During the dynamic and thermal adjustment in the spin-up, spurious gravity waves can be triggered, causing a rapid increase in the root-mean-square error of the forecast variables in the model and an underestimation of the forecast precipitation (Wehbe et al., 2019; Qian et al., 2003). It leads to unreliable forecast results during the spin-up.</li>
+<li>Therefore, many studies generally do not consider the forecast results during the spin-up when evaluating the model forecasts (Lo et al., 2008; Kleczke et al., 2014; Xie et al., 2013; Zhao et al., 2012).</li>
+<li>If the spin-up time is too long in the operational model, it would inevitably affect the forecast accuracy of the model.</li>
+<li>In addition, the overlong spin-up in the climate model or the ocean model can consume excessive computing resources (Duben et al., 2014).</li>
+<li>Therefore, studying the spin-up characteristics and reducing the spin-up time are of great significance for improving the model forecast and saving computing resources.</li>
+</ul>
+<h2 id="關於數值模式spin-up的一些說明">關於數值模式spin up的一些說明</h2>
+<ul>
+<li>From <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4osE0V9fxZO695N8AifxmA" class="uri">https://mp.weixin.qq.com/s/4osE0V9fxZO695N8AifxmA</a></li>
+</ul>
+<p>由於難以得到理想的準確的初始場，模式初始場各變數之間，或與外部條件之間存在不平衡或不匹配。因此模式啟動後，需要運行一段時間，以達到所需的「平衡狀態」。而達到這個狀態所需的時間，稱為spin up time（起轉時間）。在完成spin up之前，模式的輸出結果往往是不可信的。</p>
+<p>對於不同的研究對像或不同模式，其spin up所關注的重點與所需的時間是不一樣的。</p>
+<p>對於中小尺度氣像模式，例如WRF，初始場各變數特別是濕度場，往往過於平滑，使得模式的初始時刻的輻散場、非絕熱加熱與濕度場之間缺乏一致性，動力、熱力過程與水分循環不協調。<strong>且中小尺度模式一般是由無雲初始場開始的，所以開始需要一定的時間產生相應的雲水信息，冷啟動之後往往需要若干小時才能產生符合實際的雲水信息</strong>。</p>
+<p>一般認為，WRF模式在6小時即可完成spin up（也許更短，6小時是一個比較保守的估計）。由於spin up的存在，限制了數值模式在短臨預報的應用。因此有不少資料同化的工作，追求盡可能同化雲水相關的觀測訊息，縮短模式spin up時間。</p>
+<p>而在氣候模擬中，spin up的時間更長。例如在CMIP6的高解析度模式比較計劃 （HighResMIP）中，其第二層級 （Tier-2）試驗為1950—2050 年的百年耦合試驗。為了在試驗前盡可能達到海-氣準平衡態，HighResMIP工作小組建議先進行約 50年的spin up，之後再以「熱啟動」(restart) 的方式完成該段試驗。大氣的回饋過程較快，而海洋的狀態調整和回饋相對較慢。在海洋模式中，spin-up需要的時間更久。海洋模型需要多長時間才能達到平衡？ 與所關注的研究對象和使用的模型密切相關。</p>
+<p>在海盆尺度和全球尺度的海洋環流模式中，模式要達到平衡狀態較難，可能需要數百年的時間。海洋模型以目前的海洋狀態（氣候態）初始化，並向前積分，直到環流結構和密度場等平衡匹配。深海海洋需要數百年的適應，上層海洋只需要大約50年左右。例如要研究上層海洋過程（如厄爾尼諾），則一般只需上層海洋（在主溫躍層之上）達到平衡狀態。</p>
+<p>實際上，spin up時間尺度是第一和第二模態的長羅斯貝波（大規模行星波）從東到西穿過盆地、影響水流並最終影響水團特性所需的時間。沿著赤道，第一模態斜壓羅斯貝波橫渡太平洋約需9個月；然而，第二模態的長羅斯貝波斜壓性更強，傳播得更慢。因此，在赤道中需要spin up幾年時間才能達到平衡。</p>
+<p>在中緯度地區，長波傳播得更慢。羅斯貝波橫渡太平洋大約需要 11 年。對於全球海洋模型，需要幾十年才能在海洋上層達到平衡。如果只考慮正壓模式，或者模型是二維的，那麼spin up調整時間會更快，大約幾天，因為正壓波傳播得更快。</p>
+<p>如果想縮短spin up時間，還可以透過資料同化（nudge）的方式，使得模式狀態不斷逼近觀測。例如在正壓模型中，可以使用海表面高度資料（SSH）。</p>
+<p>此外，如果只關心風力驅動的水循環，例如由 Ekman 抽吸引起的海面斜坡產生的流動，那麼幾天的spin up時間可能就足夠了。</p>
+<h1 id="atmospheric-kinetic-energy-spectra----spinup-time">** Atmospheric Kinetic Energy Spectra --&gt; spinup time</h1>
+<ul>
+<li><strong>The KE spectrum has a canonical structure characterized by different slopes at various wavenumbers</strong>. <strong>Initially, higher-wavenumber components have low energy, which gradually increases as the model spins up</strong>. This adjustment is essential for accurately representing atmospheric dynamics, particularly for phenomena like monsoon rainfall</li>
+<li>The KE spectra in numerical simulations typically require a spin-up period of 12 to 18 hours to stabilize, as indicated by previous studies. This time is crucial for the model to adjust its initial conditions and reach a more representative state.</li>
+<li><strong>During the spin-up phase, spurious gravity waves may be generated</strong>, leading to increased errors in forecast variables and underestimations of precipitation. The KE spectra help identify these discrepancies by showing how energy cascades through different scales, which can affect forecast reliability.</li>
+<li><strong>Atmospheric kinetic energy spectra provide valuable insights into the spin-up issue by illustrating how energy transitions through various scales during initialization</strong>. This understanding is vital for improving forecast accuracy and optimizing model configurations in NWP systems.</li>
+</ul>
+<p>The paper is,</p>
+<ul>
+<li>Skamarock, W. C., Park, S., Klemp, J. B., &amp; Snyder, C. (2014). Atmospheric Kinetic Energy Spectra from Global High-Resolution Nonhydrostatic Simulations. Journal of the Atmospheric Sciences, 71(11), 4369-4381. https://doi.org/10.1175/JAS-D-14-0114.1</li>
+</ul>
+<figure>
+<img src="https://journals.ametsoc.org/view/journals/atsc/71/11/full-jas-d-14-0114.1-f8.jpg" srcset="/img/loading.gif" lazyload alt="Fig. 8. Tropospheric and stratospheric kinetic energy spectra for the 3-km MPAS simulations at simulation times 0, 6, 12, and 18 h. The day 5–15 averages are plotted for reference." /><figcaption>Fig. 8. Tropospheric and stratospheric kinetic energy spectra for the 3-km MPAS simulations at simulation times 0, 6, 12, and 18 h. The day 5–15 averages are plotted for reference.</figcaption>
+</figure>
+<ul>
+<li>Atmospheric prediction systems are designed and configured in part based on an understanding of these dynamics that, for example, have implications for forecast error growth and spinup time scales and filtering and subfilter-scale physics</li>
+<li>The KE spectra reveal that the MPAS configuration produces an effective model resolution (filter scale) of approximately 6Δx</li>
+<li>The spinup time is found to be somewhat less than a day, consistent with MPAS results presented in Fig. 8</li>
+<li>The spinup time should be comparable to an eddy turnover time.</li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li>Wolcott, S. W., &amp; Warner, T. T. (1981). A moisture analysis procedure utilizing surface and satellite data. Monthly Weather Review, 109(9), 1989-1998.</li>
+<li>Kasahara, A., Mizzi, A. P., &amp; Donner, L. J. (1992). Impact of cumulus initialization on the <strong>spinup</strong> of precipitation forecasts in the tropics. Monthly weather review, 120(7), 1360-1380.</li>
+<li>Séférian, R., Gehlen, M., Bopp, L., Resplandy, L., Orr, J. C., Marti, O., ... &amp; Romanou, A. (2016). Inconsistent strategies to <strong>spin up</strong> models in CMIP5: Implications for ocean biogeochemical model performance assessment. Geoscientific Model Development, 9(5), 1827-1851.</li>
+<li>Sheng, C., Pu, Y., and Gao, S.: Effect of Chinese Doppler radar data on nowcasting output of mesoscale model, Chin. J. Atmos. Sci., 30, 93–107, 2006 (in Chinese).</li>
+<li>Liu, S., Jiang, H., Hu, F., Zhang, C., Liu, H., Liang, F., Xin, G., and Wang, J.: Research of <strong>spin-up processes</strong> of land surface model of RAMs for different initial soil parameters, Acta Meteorol. Sin., 66, 351–358, 2008 (in Chinese).</li>
+<li>Xue, C., Chen, X., Wu, Y., Xu, X., and Gao, Y.: Application of radar assimilation in local severe convective weather forecast, Chin. J. Atmos. Sci., 41, 673–690, 2017 (in Chinese).</li>
+<li>Wehbe, Y., Temimi, M., Weston, M., Chaouch, N., Branch, O., Schwitalla, T., ... &amp; Al Mandous, A. (2019). Analysis of an extreme weather event in a hyper-arid region using WRF-Hydro coupling, station, and satellite data. Natural Hazards and Earth System Sciences, 19(6), 1129-1149.</li>
+<li>Qian, J. H., Seth, A., &amp; Zebiak, S. (2003). Reinitialized versus continuous simulations for regional climate downscaling. Monthly Weather Review, 131(11), 2857-2874.</li>
+<li>Lo, J. C. F., Yang, Z. L., &amp; Pielke Sr, R. A. (2008). Assessment of three dynamical climate downscaling methods using the Weather Research and Forecasting (WRF) model. Journal of Geophysical Research: Atmospheres, 113(D9).</li>
+<li>Weiss, S. J., Pyle, M. E., Janjic, Z., Bright, D. R., Kain, J. S., &amp; DiMego, G. J. (2008, October). The operational high resolution window WRF model runs at NCEP: Advantages of multiple model runs for severe convective weather forecasting. In Preprints, 24th Conf. on Severe Local Storms, Savannah, GA, Amer. Meteor. Soc. P (Vol. 10).</li>
+<li>Branch, O., Schwitalla, T., Temimi, M., Fonseca, R., Nelli, N., Weston, M., ... &amp; Wulfmeyer, V. (2020). Seasonal and diurnal performance of daily forecasts with WRF-NOAHMP V3. 8.1 over the United Arab Emirates. Geoscientific Model Development Discussions, 2020, 1-40.
+<ol type="1">
+<li>The first 6 h of each forecast (18:00 to 00:00 UTC) were then discarded from the analysis. <strong>The 6 h allows time for the atmosphere to spin up after each cold start – in particular for the residual boundary layer to develop and dissipate before the convective boundary layer starts to develop after sunrise (∼ 06:00 LT), and for potential cloud development</strong>.</li>
+</ol></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | MPAS | Cold Start/Spin up/Warm Start</div>
+      <div>https://waipangsze.github.io/2024/10/16/wrf-spin-up-cold-start/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 16, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>October 16, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/15/Linux-terminal/" title="Linux | Terminal Command">
+                        <span class="hidden-mobile">Linux | Terminal Command</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
