@@ -9,7 +9,7 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
+index_img: https://i.imgur.com/WZjshPy.png
 banner_img: 
 ---
 
