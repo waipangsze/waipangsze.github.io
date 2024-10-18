@@ -22,11 +22,11 @@ date: 2024-10-06 12:55:11
 
 # AI for NWP
 
-- ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models
+- ECMWF | [Scores of forecasts of upper-air parameters by experimental machine learning models](https://charts.ecmwf.int/products/plwww_3m_fc_aimodels_wp_mean?area=Northern%20Extra-tropics&parameter=Geopotential%20500hPa&score=Root%20mean%20square%20error)
 
-{% gi 4 2-2 %}
+<!-- {% gi 4 2-2 %}
 ![1](https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png)
 ![2](https://charts.ecmwf.int/streaming/20241009-0710/e3/ps2png-worker-commands-76f744c54b-rk8tn-6fe5cac1a363ec1525f54343b6cc9fd8-ue79gh2y.png)
 ![3](https://charts.ecmwf.int/streaming/20241009-0820/27/ps2png-worker-commands-76f744c54b-sgsp8-6fe5cac1a363ec1525f54343b6cc9fd8-ccvm8iij.png)
 ![4](https://charts.ecmwf.int/streaming/20241009-0130/fb/ps2png-worker-commands-76f744c54b-r2bdp-6fe5cac1a363ec1525f54343b6cc9fd8-o3sdzb7o.png)
-{% endgi %}
+{% endgi %} -->
