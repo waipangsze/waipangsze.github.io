@@ -4,12 +4,13 @@ title: ML | Gaussian-Process (GP)
 categories: [ML]
 tags: [ML, AI, PINN, DeepONet]
 author: wpsze
+date: 2024-10-21 10:00:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://upload.wikimedia.org/wikipedia/commons/7/7f/Gaussian_Process_Regression.png
+banner_img: https://upload.wikimedia.org/wikipedia/commons/7/7f/Gaussian_Process_Regression.png
 ---
 
 In probability theory and statistics, a Gaussian process is a stochastic process (a collection of random variables indexed by time or space), such that every finite collection of those random variables has a multivariate normal distribution. The distribution of a Gaussian process is the joint distribution of all those (infinitely many) random variables, and as such, it is a distribution over functions with a continuous domain, e.g. time or space.
