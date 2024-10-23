@@ -19,16 +19,16 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="PINN Physics-informed neural networks (PINNs) are a type of universal function approximators that can embed the knowledge of any physical laws that govern a given data-set in the learning process, and">
+    <meta name="description" content="PINN Physics-informed neural networks (PINNs) represent a significant advancement in the integration of machine learning with physical laws, particularly in the context of solving differential equatio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Physics-informed neural networks (PINN)">
 <meta property="og:url" content="https://waipangsze.github.io/2024/06/26/PINN/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="PINN Physics-informed neural networks (PINNs) are a type of universal function approximators that can embed the knowledge of any physical laws that govern a given data-set in the learning process, and">
+<meta property="og:description" content="PINN Physics-informed neural networks (PINNs) represent a significant advancement in the integration of machine learning with physical laws, particularly in the context of solving differential equatio">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/9/90/Physics-informed_nerural_networks.png">
-<meta property="article:published_time" content="2024-06-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-08T08:25:00.505Z">
+<meta property="article:published_time" content="2024-06-26T06:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-23T02:29:56.240Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="PINN">
 <meta property="article:tag" content="AI">
@@ -283,8 +283,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-06-26 00:00" pubdate>
-          June 26, 2024 am
+        <time datetime="2024-06-26 14:00" pubdate>
+          June 26, 2024 pm
         </time>
       </span>
     
@@ -295,7 +295,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          18 words
+          345 words
         
       </span>
     
@@ -306,7 +306,7 @@
         
         
         
-          1 mins
+          3 mins
         
       </span>
     
@@ -358,12 +358,80 @@
               <div class="markdown-body">
                 
                 <h1 id="pinn">PINN</h1>
-<p>Physics-informed neural networks (PINNs) are a type of universal function approximators that can embed the knowledge of any physical laws that govern a given data-set in the learning process, and can be described by partial differential equations (PDEs).</p>
+<p>Physics-informed neural networks (PINNs) represent a significant advancement in the integration of machine learning with physical laws, particularly in the context of solving differential equations. They combine traditional neural network approaches with the constraints provided by known physics, enabling more accurate modeling and predictions in various scientific fields.</p>
 <figure>
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Physics-informed_nerural_networks.png" srcset="/img/loading.gif" lazyload alt="PINN" /><figcaption>PINN</figcaption>
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Physics-informed_nerural_networks.png" srcset="/img/loading.gif" lazyload alt="PINN" width="500" /><figcaption>PINN</figcaption>
 </figure>
-<h2 id="physics-informed-machine-learning">Physics-informed machine learning</h2>
-<p><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s42254-021-00314-5.">Karniadakis, George Em, et al. "Physics-informed machine learning." Nature Reviews Physics 3.6 (2021): 422-440.</a></p>
+<h1 id="universal-approximation-theorem">Universal Approximation Theorem</h1>
+<p><strong>Definition</strong></p>
+<p>The theorem states that for <strong>any continuous function</strong> $ f: ^n  $ defined on a compact subset of $ ^n $, there exists a neural network $ g $ such that the difference between $ f $ and $ g $ can be made arbitrarily small. Formally, for any $ &gt; 0 $, there exists a neural network with a finite number of neurons such that:</p>
+<p><span class="math display">\[
+| f(x) - g(x) | &lt; \epsilon
+\]</span></p>
+<p>for all $ x $ in the domain of interest.</p>
+<p><strong>Historical Background</strong></p>
+<p>The theorem was independently proven by George Cybenko in 1989, who focused on networks using sigmoid activation functions, and later by Kurt Hornik in 1991, who generalized it to include other activation functions like ReLU (Rectified Linear Unit).</p>
+<p><strong>Implications</strong></p>
+<p>It has profound implications for the design and understanding of neural networks:</p>
+<ul>
+<li><strong>Expressive Power</strong>: It guarantees that neural networks can model complex relationships in data, making them suitable for tasks like image classification, function approximation, and more.</li>
+<li><strong>Architecture Design</strong>: The theorem informs users about the necessary architecture (e.g., number of layers and neurons) required to achieve desired approximations.</li>
+</ul>
+<p><strong>Limitations</strong></p>
+<p>While the UAT provides a theoretical foundation, it does not address practical aspects such as:</p>
+<ul>
+<li><strong>Generalization</strong>: The ability of a network to perform well on unseen data is not guaranteed by the theorem alone. Techniques like regularization and cross-validation are necessary to improve generalization.</li>
+<li><strong>Computational Feasibility</strong>: The theorem does not specify how to construct the network or find the optimal parameters effectively. In practice, training methods like backpropagation are used, but they may not always reach the global optimum.</li>
+</ul>
+<p><strong>Reading</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.deep-mind.org/2023/03/26/the-universal-approximation-theorem/">The Universal Approximation Theorem</a></li>
+<li><a target="_blank" rel="noopener" href="https://mitliagkas.github.io/ift6085-2020/ift-6085-lecture-10-notes.pdf">Expressivity and Universal Approximation Theorems Part 1</a></li>
+</ul>
+<h2 id="for-function-alone">For function alone,</h2>
+<ul>
+<li>Chen, T., &amp; Chen, H. (1993). Approximations of continuous functionals by neural networks with application to dynamic systems. IEEE Transactions on Neural networks, 4(6), 910-918.</li>
+</ul>
+<p>Theorem 2: Suppose that <span class="math inline">\(U\)</span> is a compact set in <span class="math inline">\(C[a,b]\)</span>, <span class="math inline">\(f\)</span> is a continuous functional defined on <span class="math inline">\(U\)</span>, and <span class="math inline">\(\sigma (x)\)</span> is a bounded generalized sigmoidal function, then for any <span class="math inline">\(\epsilon &gt; 0\)</span>, there exist <span class="math inline">\(m+1\)</span> points $ a = x_0 &lt;...&lt; x_m = b$, a positive integer <span class="math inline">\(N\)</span> and constants <span class="math inline">\(c_{ij}, \theta_{ij}, \xi_{ij}\)</span>, <span class="math inline">\(i=1,...,N\)</span>, <span class="math inline">\(j=0,1,...,m\)</span>, such that</p>
+<p><span class="math display">\[
+| f(u) - \sum_{i=1}^N c_i g ( \sum_{j=0}^m \xi_{ij} u(x_{j}) + \theta_i) | &lt; \epsilon, \qquad \forall u \in U 
+\]</span></p>
+<p>or</p>
+<p><span class="math display">\[
+| f(u) - \sum_{i=1}^N c_i g (\mathbf{\omega_j} \cdot \mathbf{x} + \theta_i) | &lt; \epsilon, \qquad \forall u \in U
+\]</span></p>
+<h2 id="for-operator">For operator,</h2>
+<ul>
+<li>Chen, T., &amp; Chen, H. (1995). Universal approximation to nonlinear operators by neural networks with arbitrary activation functions and its application to dynamical systems. IEEE transactions on neural networks, 6(4), 911-917.</li>
+</ul>
+<p>Theorem 5: Suppose that <span class="math inline">\(g\in (TW)\)</span>, <span class="math inline">\(X\)</span> is a Banach Space, <span class="math inline">\(K_1 X, K_2 R^n\)</span> are two compact sets in <span class="math inline">\(X\)</span> and <span class="math inline">\(R^n\)</span> respectively, <span class="math inline">\(V\)</span> is a compace set in <span class="math inline">\(C(K_1)\)</span>, <span class="math inline">\(G\)</span> is a nonlinear continuous operator, which maps <span class="math inline">\(V\)</span> into <span class="math inline">\(C(K_2)\)</span>, then for any $&gt;0 $, there are positive integers <span class="math inline">\(M, N, m\)</span> constants <span class="math inline">\(c_i^k, \zeta_k, \xi_{ij}^k \in R^n\)</span>, <span class="math inline">\(x_j \in K_1, i=1,...,M, k=1,...,N, j=1,...,m\)</span>, such that</p>
+<p><span class="math display">\[
+| G(u)(y) - \sum_{k=1}^N \sum_{i=1}^M c_i^k g( \sum_{j=1}^m \xi_{ij} u(x_{j}) + \theta_i^k) g(\omega_k \cdot y + \xi_k)| &lt; \epsilon, \qquad \forall u \in U 
+\]</span></p>
+<h1 id="definition-and-functionality">Definition and Functionality</h1>
+<p>PINNs are a type of <strong>universal function approximator</strong> that incorporates physical laws directly into the training process of neural networks. This is achieved by embedding governing equations, typically expressed as partial differential equations (PDEs), into the loss function of the network. By doing so, PINNs ensure that the solutions generated are consistent with these physical laws, which enhances the robustness and accuracy of the model even when data availability is limited</p>
+<p><strong>Training Mechanism</strong></p>
+<p>The training of a PINN involves two main components:</p>
+<ol type="1">
+<li><strong>Data Loss</strong>: The standard supervised learning approach minimizes the mean squared error (MSE) between <strong>predicted outputs and actual data</strong>.</li>
+<li><strong>Physics Loss</strong>: An additional term is introduced to the loss function that quantifies <strong>how well the predicted outputs satisfy the governing physical equations</strong>. This is done by computing gradients (<strong>using automatic differentiation</strong>) at sampled points in space and time, allowing for the evaluation of residuals from the PDEs.</li>
+</ol>
+<p>This dual approach allows PINNs to <strong>leverage both empirical data and theoretical knowledge</strong>, making them particularly effective for problems where data is scarce or noisy.</p>
+<h2 id="challenges-and-future-directions">Challenges and Future Directions</h2>
+<p>Despite their advantages, PINNs also face challenges:</p>
+<ul>
+<li><strong>Computational Cost</strong>: Training PINNs can be computationally intensive, especially when dealing with <strong>complex geometries</strong> or <strong>high-dimensional problems</strong>.</li>
+<li><p><strong>Generalization Limitations</strong>: Regular PINNs typically require <strong>retraining for different geometries or boundary conditions</strong>, which can limit their efficiency in practical applications.</p></li>
+<li><p>Steve Brunton</p></li>
+</ul>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-zrY7P2dVC4?si=u64XUih1hSEUEv6o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<h1 id="references">References</h1>
+<ol type="1">
+<li>Raissi, M., Perdikaris, P., &amp; Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. Journal of Computational physics, 378, 686-707.</li>
+<li>Karniadakis, G. E., Kevrekidis, I. G., Lu, L., Perdikaris, P., Wang, S., &amp; Yang, L. (2021). Physics-informed machine learning. Nature Reviews Physics, 3(6), 422-440.</li>
+<li>Lu, L., Jin, P., Pang, G., Zhang, Z., &amp; Karniadakis, G. E. (2021). Learning nonlinear operators via DeepONet based on the universal approximation theorem of operators. Nature machine intelligence, 3(3), 218-229.</li>
+</ol>
 
                 
               </div>
@@ -430,7 +498,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 8, 2024</div>
+          <div>October 23, 2024</div>
         </div>
       
       
