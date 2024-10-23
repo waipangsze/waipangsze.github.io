@@ -4,7 +4,7 @@ title: ML | Automatic Differentiation
 categories: [ML]
 tags: [ML, AI, PINN, DeepONet]
 author: wpsze
-date: 2024-10-21 10:00:00
+date: 2024-10-22 14:00:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
