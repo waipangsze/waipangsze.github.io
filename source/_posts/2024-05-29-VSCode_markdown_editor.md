@@ -219,6 +219,8 @@ It is [GNU Compiler Collection (GCC)](https://en.wikipedia.org/wiki/GNU_Compiler
 
 2. Close the file.
 
+![Tux, the Linux mascot](https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/150px-Tux.svg.png){width=50}
+
 ## In Fluid theme,
 
 ### 便签

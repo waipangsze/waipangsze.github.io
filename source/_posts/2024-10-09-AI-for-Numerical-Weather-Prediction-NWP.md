@@ -24,11 +24,11 @@ AI technologies, particularly machine learning algorithms, excel at analyzing la
 {% endnote %}
 
 - [Scores of forecasts of upper-air parameters by AIFS - experimental machine learning model](https://charts.ecmwf.int/products/plwww_3m_fc_aifs_wp_mean?area=Northern%20Extra-tropics&parameter=Geopotential%20500hPa&score=Root%20mean%20square%20error)
-- [Scores of forecasts of upper-air parameters by experimental machine learning models](https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png)
+<!-- - [Scores of forecasts of upper-air parameters by experimental machine learning models](https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png)
 
 ![ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models **(Higher is better)**](https://charts.ecmwf.int/streaming/20241009-0750/81/ps2png-worker-commands-76f744c54b-4xnd6-6fe5cac1a363ec1525f54343b6cc9fd8-zisedq81.png)
 
-![ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models **(Lower is better)**](https://charts.ecmwf.int/streaming/20241009-0710/e3/ps2png-worker-commands-76f744c54b-rk8tn-6fe5cac1a363ec1525f54343b6cc9fd8-ue79gh2y.png)
+![ECMWF | Scores of forecasts of upper-air parameters by experimental machine learning models **(Lower is better)**](https://charts.ecmwf.int/streaming/20241009-0710/e3/ps2png-worker-commands-76f744c54b-rk8tn-6fe5cac1a363ec1525f54343b6cc9fd8-ue79gh2y.png) -->
 
 # Run AI models yourself from ECMWF open data
 
@@ -248,7 +248,14 @@ The single-level fields are msl (mean sea level pressure), 10u (10 metre U wind 
 
 # Hands-on
 
+# GNN for Limited Area Modeling
 
+- Oskarsson, J., Landelius, T., & Lindsten, F. (2023). Graph-based Neural Weather Prediction for Limited Area Modeling. [arXiv preprint arXiv:2309.17370](https://arxiv.org/pdf/2309.17370).
+  - <https://github.com/mllam/neural-lam>
+  - adapt the graph-based NeurWP approach to the limited area setting and propose a multi-scale hierarchical model extension
+  - utilize Graph Neural Networks (GNNs) to produce forecasts 
+  - Global: GraphCast model
+  - Hierarchical Graph Neural Networks (MultiScale MeshGraphNets: <https://arxiv.org/pdf/2210.00612>)
 
 # References
 

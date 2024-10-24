@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Bash datetime (manipulate)
+title: Bash | datetime (manipulate)
 categories: [Linux]
 tags: [bash]
 author: wpsze
@@ -53,6 +53,15 @@ Next_day=$(date +%Y-%m-%d_%H:%M:%S -d "$YYYYMMDD + 1 day + 1 hour + 1 min + 1 se
 YYYYMMDD="2017-01-19 00:05:01"
 Next_day=$(date +%Y-%m-%d_%H:%M:%S -d "$YYYYMMDD + 1 day + 1 hour + 1 min + 1 second")
 # 2017-01-20_08:06:02
+```
+
+## for loop
+```sh
+YYYYMMDD="2024-06-02"
+for gfsfile in $(seq 0 1 28); do
+    next_day=$(date +%Y%m%d%H -d "$YYYYMMDD + ${gfsfile} day")
+    echo $next_day
+done
 ```
 
 ## To seperate 
