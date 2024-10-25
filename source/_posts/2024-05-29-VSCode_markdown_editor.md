@@ -114,7 +114,20 @@ int main() {
 
 ## Table
 
-<https://discourse.devontechnologies.com/t/css-for-markdown-styling-tables/71369>
+- <https://discourse.devontechnologies.com/t/css-for-markdown-styling-tables/71369>
+- <https://stackoverflow.com/questions/72751703/unable-to-style-a-table-correctly-using-css>
+
+You first have to understand table structure: a `table` element consists of a head and a body (`thead` and `tbody`). Both of them in turn are made up of row (`tr`) elements. And every row consists of `th` (for a table head) or `td` elements which are finally defining the table cells themselves.
+
+One detail many people want are lines dividing the columns and rows. That, however, is not something you can set for the whole table. Instead, you have to specify a `border` for the `td` and `th` cells:
+
+```css
+table :is(td, th) {
+  border: 1px solid black;
+  padding: 0.3em;
+}
+```
+Here,  `table :is(td.th)` is an abbreviation for `table td, table th`.
 
 | Syntax | Description |
 | ----------- | ----------- |
@@ -138,9 +151,30 @@ int main() {
 <https://nabeelvalley.co.za/blog/2021/23-03/custom-styles-in-markdown/>
 
 <style>
+
+table {
+  /*width: 80%;*/
+  border-collapse: collapse;
+  text-align: center;
+  margin: auto;
+}
+
+th{
+        background-color: #7e7e7e;
+        /* sets table header cell background colour */
+        border: 3px solid black;
+        color: #ffffff!important;
+}
+
+th, td {
+  border: .4rem solid #999;
+  padding: .2em;
+
+}
+
 tr:nth-child(even) {
   background-color: #b2b2b2!important;
-  color: #f4f4f4!important;
+  color: #000000!important;
 }
 </style>
 
@@ -492,7 +526,6 @@ $$
       y_n
     \end{array} \right)
 \end{align*}
-\tag{3}
 $$
 
 $$
