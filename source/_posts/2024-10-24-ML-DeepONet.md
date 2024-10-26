@@ -82,11 +82,9 @@ While the UAT provides a theoretical foundation, it does not address practical a
 Theorem 5: Suppose that $g\in (TW)$, $X$ is a Banach Space, $K_1 X, K_2 R^n$ are two compact sets in $X$ and $R^n$ respectively, $V$ is a compace set in $C(K_1)$, $G$ is a nonlinear continuous operator, which maps $V$ into $C(K_2)$, then for any $\epsilon >0 $, there are positive integers $M, N, m$ constants $c_i^k, \zeta_k, \xi_{ij}^k \in R^n$, $x_j \in K_1, i=1,...,M, k=1,...,N, j=1,...,m$, such that
 
 $$
-\begin{equation}
 \begin{align*} 
 | G(u)(y) - \sum_{k=1}^N \sum_{i=1}^M c_i^k g( \sum_{j=1}^m \xi_{ij}^k u(x_{j}) + \theta_i^k) g(\omega_k \cdot y + \xi_k)| < \epsilon, \qquad \forall u \in U 
-\end{align*} 
-\end{equation}
+\end{align*}
 $$
 
 More details,
@@ -94,33 +92,27 @@ More details,
 ![DeepONet](https://media.springernature.com/m685/springer-static/image/art%3A10.1038%2Fs42256-021-00302-5/MediaObjects/42256_2021_302_Fig1_HTML.png)
 
 $$
-\begin{equation}
 \begin{align*} 
 G(u)(y) &= G(u) \otimes (y) \\
 &= \sum_{k=1}^p b_k t_k \\
 &= \sum_{k=1}^p b_k \sigma(w_k \cdot y + \zeta_k) \\
 &= \sum_{k=1}^p \sum_{i=1}^n c_i^k  \sigma(\sum_{j=1}^m \xi_{ij}^k u(x_j) + \theta_i^k) \sigma(w_k \cdot y + \zeta_k) \\
 \end{align*} 
-\end{equation}
 $$
 
 For a trunk net,
 
 $$
-\begin{equation}
 \begin{align*} 
 t_k &= \sigma(w_k \cdot y + \zeta_k) \in \mathbb{R} \\
 \{t_k\}_{k=1,...,p} &= \{\sigma(w_k \cdot y + \zeta_k)\} \in \mathbb{R}^p \\
 \end{align*} 
-\end{equation}
 $$
 
 For one branch net (num of neuron = $n$) , all coefficients are dependent on $k$,
 
 $$
-\begin{equation}
 \begin{align*} 
 b_k = \sum_{i=1}^n c_i^k  \sigma(\sum_{j=1}^m \xi_{ij}^k u(x_j) + \theta_i^k) \in \mathbb{R}
 \end{align*} 
-\end{equation}
 $$
