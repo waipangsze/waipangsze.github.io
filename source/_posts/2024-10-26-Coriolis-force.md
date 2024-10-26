@@ -122,7 +122,7 @@ The second term $- 2 m \mathbf{\omega} \times \mathbf{v_r}$ called the **Corioli
 The third term $- m \mathbf{\omega} \times (\mathbf{\omega} \times \mathbf{r})$ is **centrifugal force** that $| m \mathbf{\omega} \times (\mathbf{\omega} \times \mathbf{r})| = mr \omega^2 \sin \theta$. he negative sign indicates
 that the centrifugal force is directed away from the centre of rotation. It is not a real force, but a fictitious one. It is present only if we refer to moving coordinates in space.
 
-# Rossby number
+# Coriolis parameter & Rossby number
 The time, space, and velocity scales are important in determining the importance of the Coriolis force. Whether rotation is important in a system can be determined by its Rossby number, which is the ratio of the **velocity**, $U$, of a system to the product of the **Coriolis parameter**,
 
 {% note primary %}
