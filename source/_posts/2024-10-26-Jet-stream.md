@@ -28,8 +28,11 @@ The first indications of this phenomenon came from American professor Elias Loom
 
 - **極地高空急流**一般出現在大氣層250百帕，即海拔7至12公里（23,000至39,000呎）處。
 - 更弱的**亞熱帶高空急流**的高度更高，海拔10至16公里（33,000至52,000呎）。夏季，北半球極地急流偏北；冬季，北半球極地急流偏南。高空急流的寬度為數百公里，厚度小於5公里。
+
+{% note primary %}
 - All these facts are consequences of the **thermal wind** relation. The balance of forces acting on an atmospheric air parcel in the vertical direction is primarily between the gravitational force acting on the mass of the parcel and the buoyancy force, or the difference in pressure between the top and bottom surfaces of the parcel.
 - **極地到赤道溫度梯度相關的熱成風**是形成對流層上層急流的主要物理解釋
+{% endnote %}
 
 # Videoes
 

@@ -42,3 +42,18 @@ ldd xxx
 
 rename IMG img IMG* # IMG001.jpg to img001.jpg
 ```
+
+# Find & Delete
+
+```sh
+# Find files smaller than 100M: -print or -delete
+find . -type f -name "*.nc" -size -100M -print
+find . -type f -name "*.nc" -size -100M -delete
+
+# Find files larger than 100M: -print or -delete
+find . -type f -name "*.nc" -size +100M -print
+find . -type f -name "*.nc" -size +100M -delete
+
+# if your "find" does not support delete:
+find . -type f ! -name '*.mp3' ! -name '*.mp4' -size +1M -exec rm {} \;
+```

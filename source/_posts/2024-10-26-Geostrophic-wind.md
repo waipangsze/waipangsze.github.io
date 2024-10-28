@@ -43,6 +43,8 @@ $$
 $$
 Here $U$ is the velocity field of the air, $\Omega$ is the angular velocity vector of the planet, $\rho$ is the density of the air, $P$ is the air pressure, $F_r$ is the friction, $g$ is the acceleration vector due to gravity and ⁠$\dfrac{D}{Dt}$ is the material derivative.
 
+Why use $\dfrac{D}{Dt}$ instead of partial derivative? Becuase the veloctiy of air mass can be zero that we move along with this air mass and feel no velocity change, in other words, kinetic energy is conserved. In contrast, partial derivative consider a fixed point in space that velocity of this fixed point can be varied. 
+
 Locally this can be expanded in Cartesian coordinates, with a positive $u$ representing an eastward direction and a positive $v$ representing a northward direction. Neglecting friction and vertical motion.
 
 $$
