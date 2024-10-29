@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/lGIE5ba.png">
 <meta property="article:published_time" content="2024-10-10T01:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-15T00:55:37.623Z">
+<meta property="article:modified_time" content="2024-10-29T06:28:16.116Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -227,6 +227,22 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
                     <i class="iconfont icon-plan"></i>
                     <span>Meteorology</span>
@@ -296,7 +312,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          168 words
+          232 words
         
       </span>
     
@@ -420,10 +436,21 @@ scale_factor = (dataMax - dataMin) / (2^n - 1)</p>
 <div class="note note-warning">
             <p>In order for ncvis to run the resources directory must be in the same folder as ncvis or the NCVIS_RESOURCE_DIR environment variable must be set to the path of the ncvis resources folder. This directory is where ncvis stores <strong>fonts</strong>, <strong>colormaps</strong> and <strong>shapefiles</strong>.</p>
           </div>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda install conda-forge::ncvis<br></code></pre></td></tr></table></figure>
 <figure>
 <img src="https://user-images.githubusercontent.com/5330916/187129223-b9d47718-fff3-4fd9-8efb-4f71bd86d3e2.png" srcset="/img/loading.gif" lazyload alt="ncvis" /><figcaption>ncvis</figcaption>
 </figure>
+<h2 id="from-source-code">from source code</h2>
+<ul>
+<li>https://github.com/SEATStandards/ncvis</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda create -n ncvis -c conda-forge wxwidgets libnetcdf<br>conda activate ncvis<br>conda install conda-forge::cxx-compiler<br>conda install -c anaconda libxxf86vm-cos6-x86_64<br></code></pre></td></tr></table></figure>
+<p>Then,</p>
+<ul>
+<li>soft-link micromamba/envs/ncvis-v1/x86_64-conda_cos6-linux-gnu/sysroot/usr/lib64/libXxf86vm.so.1 to /home/wpsze/micromamba/envs/ncvis-v1/lib</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ sh ./build.sh<br><span class="hljs-comment"># check</span><br>$ ldd ncvis |grep not<br><span class="hljs-comment"># set</span><br><span class="hljs-built_in">alias</span> ncvis=/home/wpsze/share/ncvis/ncvis<br></code></pre></td></tr></table></figure>
+<p>Use the following flags for linking -static</p>
+<p>Use the following flags for linking -static -static-libgcc -static-libstdc++ Use these three flags to link against the static versions of all dependencies (assuming gcc). Note, that in certain situation you don't necessarily need all three flags, but they don't "hurt" either. Therefore just turn on all three. -bash: git: command not found</p>
 
                 
               </div>
@@ -492,7 +519,7 @@ scale_factor = (dataMax - dataMin) / (2^n - 1)</p>
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 15, 2024</div>
+          <div>October 29, 2024</div>
         </div>
       
       
