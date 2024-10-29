@@ -5,10 +5,12 @@ categories: [MPAS]
 tags: [WRF,NWP]
 author: wpsze
 date: 2024-10-28 14:52:00
+math: true
 mathjax: true
 mathjax_autoNumber: true
-index_img: 
-banner_img: 
+mermaid: true
+index_img: https://mpas-dev.github.io/atmosphere/MPAS-var-res_mesh.png
+banner_img: https://mpas-dev.github.io/atmosphere/MPAS-var-res_mesh.png
 ---
 
 # MPAS-A
