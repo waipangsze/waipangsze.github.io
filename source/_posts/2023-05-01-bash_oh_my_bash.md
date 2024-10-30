@@ -160,6 +160,10 @@ OMB_DIRECTORIES_CD_USE_PUSHD=true #false
 ```
 Set as **ture**
 
+If it is client's node and don't want to modify the terminal config, then just add a function on .bashrc,
+
+- <https://waipangsze.github.io/2024/10/15/Linux-terminal/>
+
 ## autojump - a faster way to navigate your filesystem
 [Git autojump](https://github.com/wting/autojump)
 
