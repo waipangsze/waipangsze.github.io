@@ -54,4 +54,3 @@ $ ls
 'gshhs(1).rim'  'gshhs(3).rim'  'rangs(0).cat'  'rangs(1).cel'  'rangs(2).zip'  'rangs(4).cat'
 'gshhs(1).zip'  'gshhs(3).zip'  'rangs(0).cel'  'rangs(1).zip'  'rangs(3).cat'  'rangs(4).cel'
 ```
-
