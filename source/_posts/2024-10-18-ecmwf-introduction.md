@@ -47,3 +47,10 @@ After the introduction of  Cy48r1 in Spring 2023 the:
 - is run once daily, base time 00 UTC, producing a 46 day forecast (Day0 to Day46).
   - has **horizontal resolution of 36 km** and vertical resolution of **137** model levels.  
   - has **100 members** plus an unperturbed control member.
+
+# ECMWF IFS 9km computing resource requirements (2024)
+
+- <https://mp.weixin.qq.com/s/Qu8JSdAMSJywmlCJM6QDzw>
+  - 根据ECMWF官网“How to optimise the computing aspects of numerical weather forecasts”文章, IFS 9km模式预报15天需要大约50个计算节点
+  - 推算IFS预报一天能够在3.6分钟墙钟时间内完成。
+  - IFS运行计算机应该是博洛尼亚计算中心机器，每个计算节点为128核心，总计算资源数大概在6784核左右。

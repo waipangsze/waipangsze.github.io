@@ -1,0 +1,48 @@
+---
+layout: post
+title: WRF | topo-wind
+categories: [WRF]
+tags: [WRF,MPAS,NWP]
+author: wpsze
+date: 2024-11-02 13:34:00
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/cOWLDX0.png
+banner_img: https://i.imgur.com/cOWLDX0.png
+---
+
+The Weather Research and Forecasting (WRF)model (Skamarock et al. 2008) has presented a **high surface wind speed bias over land** since the early versions of the model (Cheng and Steenburgh 2005). The bias still persists in more recent versions (e.g., Bernardet et al. 2005; Roux et al. 2009; Mass and Ovens 2010, 2011) and represents a limitation for the high demand of accurate surface wind estimations by different sectors such as wind-energy applications or air-quality studies.
+
+- The wind speed is higher in plains and valleys,
+- The wind speed is lower in mountains and hills.
+
+WRF模式對風速變化趨勢模擬較好，但是風速值偏差較大，主要是因為 WRF 沒有對次網格地形阻力進行參數化，致使
+
+{% note primary %}
+- 平原和山谷風速偏大，
+- 高山和丘陵風速偏小。
+{% endnote %}
+
+從WRFv3.4開始，WRF提供了與YSU PBL方案相關聯的TopoWind模式，以改善地形對近地面風的影響。 YSU PBL方案共有三種方案：
+
+- topo_wind = 0，在近地面風計算中不包括TopoWind模式的附加地形效應；
+- topo_wind = 1，將亞柵格尺度地形的標準差納入近地面風計算；
+- topo_wind = 2，採用與topowind = 1 相同的方法計算近地面風，但同時透過加入亞格點地形變化加強了摩擦速度的計算。
+
+# WRF 
+
+- topo-wind=1 → varsso (Jimenez 2011)
+- topo-wind=2 → var/var2d (Mass 2012)
+
+# Jiménez 2011
+
+- Jiménez, P. A., & Dudhia, J. (2012). Improving the representation of resolved and unresolved topographic effects on surface wind in the WRF model. Journal of Applied Meteorology and Climatology, 51(2), 300-316.
+
+- u = stands for the zonal wind component at the first model level
+
+![The differentiation has been accomplished by applying the following operator to the topographic field $h$](https://i.imgur.com/JrR5M9h.png){width=600}
+![](https://i.imgur.com/3r4P6Uh.png){width=600}
+![](https://i.imgur.com/1lSVGvw.png){width=600}
+![](https://i.imgur.com/4F3m0BK.png){width=600}
