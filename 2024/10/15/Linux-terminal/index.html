@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/WZjshPy.png">
 <meta property="article:published_time" content="2024-10-15T08:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-30T03:32:52.096Z">
+<meta property="article:modified_time" content="2024-11-02T02:19:30.790Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta name="twitter:card" content="summary_large_image">
@@ -310,7 +310,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          309 words
+          433 words
         
       </span>
     
@@ -321,7 +321,7 @@
         
         
         
-          3 mins
+          4 mins
         
       </span>
     
@@ -377,6 +377,12 @@
 <h1 id="find-delete">Find &amp; Delete</h1>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Find files smaller than 100M: -print or -delete</span><br>find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.nc&quot;</span> -size -100M -<span class="hljs-built_in">print</span><br>find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.nc&quot;</span> -size -100M -delete<br><br><span class="hljs-comment"># Find files larger than 100M: -print or -delete</span><br>find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.nc&quot;</span> -size +100M -<span class="hljs-built_in">print</span><br>find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.nc&quot;</span> -size +100M -delete<br><br><span class="hljs-comment"># if your &quot;find&quot; does not support delete:</span><br>find . -<span class="hljs-built_in">type</span> f ! -name <span class="hljs-string">&#x27;*.mp3&#x27;</span> ! -name <span class="hljs-string">&#x27;*.mp4&#x27;</span> -size +1M -<span class="hljs-built_in">exec</span> <span class="hljs-built_in">rm</span> &#123;&#125; \;<br></code></pre></td></tr></table></figure>
 <h1 id="for-client-node">For client node,</h1>
+<ul>
+<li>create a file <code>.info</code> on home directory</li>
+<li>copy all below into <code>.info</code></li>
+<li>drectly <code>source .info</code> or write <code>source .info</code>
+into <code>.bashrc</code></li>
+</ul>
 <h2 id="how-can-i-display-the-absolute-path-in-bash-prompt">How can I
 display the absolute path in bash prompt?</h2>
 <ul>
@@ -385,6 +391,8 @@ target="_blank" rel="noopener" href="https://superuser.com/questions/202212/how-
 class="uri">https://superuser.com/questions/202212/how-can-i-display-the-absolute-path-in-bash-prompt</a></li>
 </ul>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">export</span> <span class="hljs-attribute">PS1</span>=<span class="hljs-string">&quot;\[\`if [[ \$? = &quot;</span>0&quot; ]]; then echo <span class="hljs-string">&#x27;\e[32m\h\e[0m&#x27;</span>; <span class="hljs-keyword">else</span> echo <span class="hljs-string">&#x27;\e[31m\h\e[0m&#x27;</span> ; fi\`:\`pwd\`\n\$ <span class="hljs-string">&quot;</span><br></code></pre></td></tr></table></figure>
+<p>better is,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># set a fancy prompt (non-color, unless we know we &quot;want&quot; color)</span><br><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;<span class="hljs-variable">$TERM</span>&quot;</span> <span class="hljs-keyword">in</span><br>    xterm-color|*-256color) color_prompt=<span class="hljs-built_in">yes</span>;;<br><span class="hljs-keyword">esac</span><br><br><span class="hljs-comment"># uncomment for a colored prompt, if the terminal has the capability; turned</span><br><span class="hljs-comment"># off by default to not distract the user: the focus in a terminal window</span><br><span class="hljs-comment"># should be on the output of commands, not on the prompt</span><br><span class="hljs-comment">#force_color_prompt=yes</span><br><br><span class="hljs-keyword">if</span> [ -n <span class="hljs-string">&quot;<span class="hljs-variable">$force_color_prompt</span>&quot;</span> ]; <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">if</span> [ -x /usr/bin/tput ] &amp;&amp; tput setaf 1 &gt;&amp;/dev/null; <span class="hljs-keyword">then</span><br>	<span class="hljs-comment"># We have color support; assume it&#x27;s compliant with Ecma-48</span><br>	<span class="hljs-comment"># (ISO/IEC-6429). (Lack of such support is extremely rare, and such</span><br>	<span class="hljs-comment"># a case would tend to support setf rather than setaf.)</span><br>	color_prompt=<span class="hljs-built_in">yes</span><br>    <span class="hljs-keyword">else</span><br>	color_prompt=<br>    <span class="hljs-keyword">fi</span><br><span class="hljs-keyword">fi</span><br><br><span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;<span class="hljs-variable">$color_prompt</span>&quot;</span> = <span class="hljs-built_in">yes</span> ]; <span class="hljs-keyword">then</span><br>    PS1=<span class="hljs-string">&#x27;$&#123;debian_chroot:+($debian_chroot)&#125;\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]$PWD\[\033[00m\]\n\$ &#x27;</span><br><span class="hljs-keyword">else</span><br>    PS1=<span class="hljs-string">&#x27;$&#123;debian_chroot:+($debian_chroot)&#125;\u@\h:\w\$ &#x27;</span><br><span class="hljs-keyword">fi</span><br><span class="hljs-built_in">unset</span> color_prompt force_color_prompt<br><br><span class="hljs-comment"># If this is an xterm set the title to user@host:dir</span><br><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;<span class="hljs-variable">$TERM</span>&quot;</span> <span class="hljs-keyword">in</span><br>xterm*|rxvt*)<br>    PS1=<span class="hljs-string">&quot;\[\e]0;<span class="hljs-variable">$&#123;debian_chroot:+($debian_chroot)&#125;</span>\u@\h: \w\a\]<span class="hljs-variable">$PS1</span>&quot;</span><br>    ;;<br>*)<br>    ;;<br><span class="hljs-keyword">esac</span><br></code></pre></td></tr></table></figure>
 <h2 id="is-there-a-directory-history-for-bash">** Is there a directory
 history for bash?</h2>
 <ul>
@@ -466,7 +474,7 @@ class="uri">https://superuser.com/questions/299694/is-there-a-directory-history-
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 30, 2024</div>
+          <div>November 2, 2024</div>
         </div>
       
       
