@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/cOWLDX0.png">
 <meta property="article:published_time" content="2024-11-02T05:34:00.000Z">
-<meta property="article:modified_time" content="2024-11-02T14:38:34.461Z">
+<meta property="article:modified_time" content="2024-11-04T14:49:52.800Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -312,7 +312,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          301 words
+          964 words
         
       </span>
     
@@ -323,7 +323,7 @@
         
         
         
-          3 mins
+          9 mins
         
       </span>
     
@@ -450,14 +450,112 @@ PBL方案共有三種方案：</p>
 representation of resolved and unresolved topographic effects on surface
 wind in the WRF model. Journal of Applied Meteorology and Climatology,
 51(2), 300-316.</p></li>
-<li><p>u = stands for the zonal wind component at the first model
-level</p></li>
+<li><p>u = stands for the zonal wind component <strong>at the first
+model level</strong></p></li>
 </ul>
 <p><img src="https://i.imgur.com/JrR5M9h.png" srcset="/img/loading.gif" lazyload width="600"
 alt="The differentiation has been accomplished by applying the following operator to the topographic field h" />
 <img src="https://i.imgur.com/3r4P6Uh.png" srcset="/img/loading.gif" lazyload width="600" /> <img
 src="https://i.imgur.com/1lSVGvw.png" srcset="/img/loading.gif" lazyload width="600" /> <img
 src="https://i.imgur.com/4F3m0BK.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h1 id="mass-and-ovens-2012">Mass and Ovens 2012</h1>
+<p>topo_wind=2 (TWIND2; Mass and Ovens 2012)</p>
+<ul>
+<li>Fixing WRF's High Speed Wind Bias: A New Subgrid Scale Drag
+Parameterization and the Role of Detailed Verification (91st American
+Meteorological Society Annual Meeting)
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://ams.confex.com/ams/91Annual/webprogram/Paper180011.html"
+class="uri">https://ams.confex.com/ams/91Annual/webprogram/Paper180011.html</a></li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/workshops/WS2010/presentations/session%204/4-1_WRFworkshop2010Final.pdf"
+class="uri">https://www2.mmm.ucar.edu/wrf/users/workshops/WS2010/presentations/session%204/4-1_WRFworkshop2010Final.pdf</a></li>
+</ul>
+<h1 id="wrf-code">WRF code</h1>
+<ul>
+<li>WRF/dyn_em/start_em.F</li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!</span><br><span class="hljs-comment">! paj: computes ct and ct2 for topo_wind</span><br><span class="hljs-comment">!</span><br>       grid%ctopo=<span class="hljs-number">1.</span><br>       grid%ctopo2=<span class="hljs-number">1.</span><br><span class="hljs-comment">!</span><br>       <span class="hljs-keyword">if</span> (config_flags%topo_wind.eq<span class="hljs-number">.1</span>) <span class="hljs-keyword">then</span><br>         <span class="hljs-keyword">DO</span> j = jts,<span class="hljs-built_in">min</span>(jte,jde-<span class="hljs-number">1</span>)<br>         <span class="hljs-keyword">DO</span> i = its, <span class="hljs-built_in">min</span>(ite,ide-<span class="hljs-number">1</span>)<br>            <span class="hljs-keyword">if</span>(grid%xland(i,j).lt<span class="hljs-number">.1</span><span class="hljs-number">.5</span>)grid%ctopo(i,j)=<span class="hljs-built_in">sqrt</span>(grid%var_sso(i,j))<br>            <span class="hljs-keyword">if</span> (grid%ctopo(i,j).le<span class="hljs-number">.2</span><span class="hljs-number">.718</span>) <span class="hljs-keyword">then</span><br>            grid%ctopo(i,j)=<span class="hljs-number">1.</span><br>            <span class="hljs-keyword">else</span><br>            grid%ctopo(i,j)=<span class="hljs-built_in">alog</span>(grid%ctopo(i,j))<br>            <span class="hljs-keyword">endif</span><br><span class="hljs-comment">!</span><br>            <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.gt.</span>-<span class="hljs-number">10.</span>) <span class="hljs-keyword">then</span><br>              grid%ctopo(i,j)=grid%ctopo(i,j)<br>            <span class="hljs-keyword">else</span><br>               <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.ge.</span>-<span class="hljs-number">20</span>) <span class="hljs-keyword">then</span><br>                 alpha=(grid%lap_hgt(i,j)+<span class="hljs-number">20.</span>)/<span class="hljs-number">10.</span><br>                 grid%ctopo(i,j)=alpha*grid%ctopo(i,j)+(<span class="hljs-number">1</span>-alpha)<br>               <span class="hljs-keyword">else</span><br>                  <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.ge.</span>-<span class="hljs-number">30.</span>) <span class="hljs-keyword">then</span><br>                  grid%ctopo(i,j)=(grid%lap_hgt(i,j)+<span class="hljs-number">30.</span>)/<span class="hljs-number">10.</span><br>                  grid%ctopo2(i,j)=(grid%lap_hgt(i,j)+<span class="hljs-number">30.</span>)/<span class="hljs-number">10.</span><br>                  <span class="hljs-keyword">else</span><br>                  grid%ctopo(i,j)=<span class="hljs-number">0.</span><br>                  grid%ctopo2(i,j)=<span class="hljs-number">0.</span><br>                  <span class="hljs-keyword">endif</span><br>               <span class="hljs-keyword">endif</span><br>            <span class="hljs-keyword">endif</span><br>         <span class="hljs-keyword">ENDDO</span><br>         <span class="hljs-keyword">ENDDO</span><br><span class="hljs-comment">!       if topo_wind==2 (D.Ovens, C.Mass)</span><br>       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (config_flags%topo_wind.eq<span class="hljs-number">.2</span>) <span class="hljs-keyword">then</span><br>         <span class="hljs-keyword">DO</span> j = jts,<span class="hljs-built_in">min</span>(jte,jde-<span class="hljs-number">1</span>)<br>         <span class="hljs-keyword">DO</span> i = its, <span class="hljs-built_in">min</span>(ite,ide-<span class="hljs-number">1</span>)<br>           <span class="hljs-keyword">if</span> (grid%xland(i,j).lt<span class="hljs-number">.1</span><span class="hljs-number">.5</span>) <span class="hljs-keyword">then</span><br>              vfac = <span class="hljs-built_in">amin1</span>(<span class="hljs-number">1.575</span>,(grid%var2d(i,j)*<span class="hljs-number">0.4</span>/<span class="hljs-number">200.</span>+<span class="hljs-number">1.175</span>))<br>              vfac = vfac * vfac<br>           <span class="hljs-keyword">else</span>                      <span class="hljs-comment">! over water, leave it alone</span><br>              vfac = <span class="hljs-number">1.</span><br>           <span class="hljs-keyword">endif</span><br><span class="hljs-comment">!          print *, j,i,grid%ctopo(i,j),vfac</span><br>           grid%ctopo(i,j)=grid%ctopo(i,j)*vfac<br>         <span class="hljs-keyword">ENDDO</span><br>         <span class="hljs-keyword">ENDDO</span><br>       <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>Versions of WPS prior to V3.4 did not include VAR_SSO static data.
+This is necessary for running the topo_wind option in WRF (also
+introduced in version 3.4). <a
+target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/pull/10">link</a></li>
+<li>Remark, <strong>ctopo2 = 1</strong> in topo_wind2.</li>
+</ul>
+<div class="note note-primary">
+            <p>u10, v10 (no modify in topo_wind=2)<br />Modify u10, v10 ⇒ Effective in topo_wind=1 only<br />In topo_wind=2, No Modify u10, v10</p>
+          </div>
+<h2 id="convective-velocity-and-pbl-height">convective velocity and PBL
+height</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/pull/116"
+class="uri">https://github.com/wrf-model/WRF/pull/116</a></li>
+<li>WRFv3.8.1 and before, don't consider convective velocity and PBL
+height</li>
+<li>It is found that this scheme can improve the simulated surface
+winds, especially at night, <strong>but it can underestimate the winds
+during daytime.</strong>
+<ul>
+<li>Lorente-Plazas, R., Jiménez, P. A., Dudhia, J., &amp; Montávez, J.
+P. (2016). Evaluating and Improving the Impact of the Atmospheric
+Stability and Orography on Surface Winds in the WRF Model. Monthly
+Weather Review, 144(7), 2685-2693. <a
+target="_blank" rel="noopener" href="https://doi.org/10.1175/MWR-D-15-0449.1"
+class="uri">https://doi.org/10.1175/MWR-D-15-0449.1</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/mwre/144/7/mwr-d-15-0449.1.xml"
+class="uri">https://journals.ametsoc.org/view/journals/mwre/144/7/mwr-d-15-0449.1.xml</a></li>
+</ul></li>
+<li>In the daytime,
+<ul>
+<li>if higher PBLH, then consider less ctopo effect</li>
+<li>new_topo ~ off_ctopo in daytime</li>
+</ul></li>
+<li>Uses convective velocity and PBL height to determine
+instability</li>
+<li>Extra code is added to compute tke, hybrid PBL height and convective
+velocity within the YSU PBL</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs text">TYPE: enhancement<br><br>KEYWORDS: topo_wind=1, diurnal cycle improvement, YSU PBL only<br><br>SOURCE: internal + Raquel Lorente (formerly RAL) and Pedro Jimenez (RAL)<br><br>PURPOSE: To improve diurnal behavior of surface wind when topo_wind=1 is<br>activated. This replaces the topo_wind=1 and is not a new option.<br><br>DESCRIPTION OF CHANGES:<br><br>Follows paper Lorente-Plazas et al. (2016, MWR) by decreasing effects of<br>topo_wind=1 option when unstable boundary-layer conditions prevail. Uses<br>convective velocity and PBL height to determine instability. PBL height uses a<br>hybrid tke-theta method copied from the MYNN PBL, but for YSU tke is computed<br>diagnostically.<br>Extra code is added to compute tke, hybrid PBL height and convective velocity<br>within the YSU PBL, so this is the only module affected.<br><br>LIST OF MODIFIED FILES :<br><br>M phys/module_bl_ysu.F<br></code></pre></td></tr></table></figure>
+<h2 id="module_bl_ysu.f">module_bl_ysu.F</h2>
+<ul>
+<li><p><a
+target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/v4.5/phys/module_bl_ysu.F"
+class="uri">https://github.com/wrf-model/WRF/blob/v4.5/phys/module_bl_ysu.F</a></p></li>
+<li><p>! paj: ctopo=1 if topo_wind=0 (default)</p></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">real</span>(<span class="hljs-keyword">kind</span>=kind_phys),     <span class="hljs-keyword">dimension</span>( its: )                               , &amp;<br>          <span class="hljs-keyword">optional</span>                                                        , &amp;<br>          <span class="hljs-keyword">intent</span>(<span class="hljs-keyword">in</span>   )   ::                                         ctopo, &amp;<br>                                                                    ctopo2<br></code></pre></td></tr></table></figure>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!--- end of paj tke</span><br><span class="hljs-comment">! compute vconv</span><br><span class="hljs-comment">!      Use Beljaars over land</span><br>        <span class="hljs-keyword">if</span> (xland(i).lt<span class="hljs-number">.1</span><span class="hljs-number">.5</span>) <span class="hljs-keyword">then</span><br>        fluxc = <span class="hljs-built_in">max</span>(sflux(i),<span class="hljs-number">0.0</span>)<br>        vconvc=<span class="hljs-number">1.</span><br>        VCONV = vconvc*(g/thvx(i,<span class="hljs-number">1</span>)*pblh_ysu(i)*fluxc)**<span class="hljs-number">.33</span><br>        <span class="hljs-keyword">else</span><br><span class="hljs-comment">! for water there is no topo effect so vconv not needed</span><br>        VCONV = <span class="hljs-number">0.</span><br>        <span class="hljs-keyword">endif</span><br>        vconvfx(i) = vconv<br><span class="hljs-comment">!raquel</span><br><span class="hljs-comment">!ctopo stability correction</span><br>      fric(i,<span class="hljs-number">1</span>)=ust(i)**<span class="hljs-number">2</span>/wspd1(i)*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2         &amp;<br>        *(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>      <span class="hljs-keyword">if</span>(<span class="hljs-built_in">present</span>(ctopo)) <span class="hljs-keyword">then</span><br>        vconvnew=<span class="hljs-number">0.9</span>*vconvfx(i)+<span class="hljs-number">1.5</span>*(<span class="hljs-built_in">max</span>((pblh_ysu(i)-<span class="hljs-number">500</span>)/<span class="hljs-number">1000.0</span>,<span class="hljs-number">0.0</span>))<br>        vconvlim = <span class="hljs-built_in">min</span>(vconvnew,<span class="hljs-number">1.0</span>)<br>        ad(i,<span class="hljs-number">1</span>) = <span class="hljs-number">1.</span>+fric(i,<span class="hljs-number">1</span>)*vconvlim+ctopo(i)*fric(i,<span class="hljs-number">1</span>)*(<span class="hljs-number">1</span>-vconvlim)<br>        ad(i,<span class="hljs-number">1</span>) = ad(i,<span class="hljs-number">1</span>) - bepswitch*frc_urb1d(i)* &amp;<br>                     (fric(i,<span class="hljs-number">1</span>)*vconvlim+ctopo(i)*fric(i,<span class="hljs-number">1</span>)*(<span class="hljs-number">1</span>-vconvlim))<br><span class="hljs-comment">!       ad(i,1) = 1.+(1.-bepswitch*frc_urb1d(i))* &amp;</span><br><span class="hljs-comment">!                    (fric(i,1)*vconvlim+ctopo(i)*fric(i,1)*(1-vconvlim))</span><br>      <span class="hljs-keyword">else</span><br>        ad(i,<span class="hljs-number">1</span>) = <span class="hljs-number">1.</span>+fric(i,<span class="hljs-number">1</span>)<br>      <span class="hljs-keyword">endif</span><br>     f1(i,<span class="hljs-number">1</span>) = ux(i,<span class="hljs-number">1</span>)+uoxl(i)*ust(i)**<span class="hljs-number">2</span>*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2/wspd1(i)*(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>     f2(i,<span class="hljs-number">1</span>) = vx(i,<span class="hljs-number">1</span>)+voxl(i)*ust(i)**<span class="hljs-number">2</span>*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2/wspd1(i)*(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>   <span class="hljs-keyword">enddo</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>ux=u3d(ims,kms,j),vx=v3d(ims,kms,j)</li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!</span><br><span class="hljs-comment">! paj: ctopo2=1 if topo_wind=0 (default)</span><br><span class="hljs-comment">!</span><br>   <span class="hljs-keyword">do</span> i = its,ite<br>     <span class="hljs-keyword">if</span>(<span class="hljs-built_in">present</span>(ctopo)<span class="hljs-keyword">.and.</span><span class="hljs-built_in">present</span>(ctopo2)) <span class="hljs-keyword">then</span> <span class="hljs-comment">! mchen for NMM</span><br>       u10(i) = ctopo2(i)*u10(i)+(<span class="hljs-number">1</span>-ctopo2(i))*ux(i,<span class="hljs-number">1</span>)<br>       v10(i) = ctopo2(i)*v10(i)+(<span class="hljs-number">1</span>-ctopo2(i))*vx(i,<span class="hljs-number">1</span>)<br>     <span class="hljs-keyword">endif</span> <span class="hljs-comment">!mchen</span><br>   <span class="hljs-keyword">enddo</span><br></code></pre></td></tr></table></figure>
+<h1 id="references">References</h1>
+<ol type="1">
+<li>Topo Wind Intercomparison
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://dtcenter.ucar.edu/eval/meso_mod/topo_wind/"
+class="uri">https://dtcenter.ucar.edu/eval/meso_mod/topo_wind/</a></li>
+<li>Topo Wind Intercomparsion Test</li>
+<li>Statistically/Practically Significant Table Reports</li>
+<li>Publications
+<ol type="1">
+<li>Investigating the impact of surface parameterization schemes
+available in WRF on surface winds</li>
+<li>Investigating seasonal and regional differences if the WRF-ARW HIRES
+Window physics suite</li>
+</ol></li>
+</ol></li>
+<li>Lorente-Plazas, R., Jiménez, P. A., Dudhia, J., &amp; Montávez, J.
+P. (2016). Evaluating and Improving the Impact of the Atmospheric
+Stability and Orography on Surface Winds in the WRF Model. Monthly
+Weather Review, 144(7), 2685-2693. <a
+target="_blank" rel="noopener" href="https://doi.org/10.1175/MWR-D-15-0449.1"
+class="uri">https://doi.org/10.1175/MWR-D-15-0449.1</a></li>
+</ol>
 
                 
               </div>
@@ -526,7 +624,7 @@ src="https://i.imgur.com/4F3m0BK.png" srcset="/img/loading.gif" lazyload width="
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 2, 2024</div>
+          <div>November 4, 2024</div>
         </div>
       
       
