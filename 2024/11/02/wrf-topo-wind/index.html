@@ -1,0 +1,972 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Introduction  The Developmental Testbed Center WRFv3.4.1+ Surface Drag Parameterization Sensitivity Test Plan Points of Contact: Hongli Jiang, Michelle Harrold and Jamie Wolff November 28, 2012  It is">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WRF | topo-wind">
+<meta property="og:url" content="https://waipangsze.github.io/2024/11/02/wrf-topo-wind/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Introduction  The Developmental Testbed Center WRFv3.4.1+ Surface Drag Parameterization Sensitivity Test Plan Points of Contact: Hongli Jiang, Michelle Harrold and Jamie Wolff November 28, 2012  It is">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/cOWLDX0.png">
+<meta property="article:published_time" content="2024-11-02T05:34:00.000Z">
+<meta property="article:modified_time" content="2024-11-07T02:57:57.491Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/cOWLDX0.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WRF | topo-wind - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitor</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/cOWLDX0.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WRF | topo-wind"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-02 13:34" pubdate>
+          November 2, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WRF | topo-wind</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="introduction">Introduction</h1>
+<ul>
+<li>The Developmental Testbed Center WRFv3.4.1+ Surface Drag Parameterization Sensitivity Test Plan Points of Contact: Hongli Jiang, Michelle Harrold and Jamie Wolff November 28, 2012</li>
+</ul>
+<p>It is widely acknowledged that the Weather Research and Forecasting (WRF) model has a high surface wind speed bias, especially over plains and valleys. In recent versions of WRF, two new surface drag parameterization schemes, <strong>both associated with the Yonsei University (YSU) planetary boundary layer (PBL) scheme</strong>, have been developed. The Developmental Testbed Center (DTC) will be performing testing and evaluation of three WRF model configurations with the Advanced Research WRF (ARW) core (Skamarock et al. 2008). The baseline configuration will be run with the physics suite being used in the ARW High-Resolution Window (HIRESW) forecast system being run operationally at the National Centers for Environmental Prediction (NCEP). The two comparative configurations will be testing the effects of the surface drag parameterization scheme namelist option, topo_wind, which aims to correct the high wind bias seen in WRF. One configuration will be run with <strong>topo_wind=1 (TWIND1; Jimenez and Dudhia 2011)</strong>, which is based on the concept of a momentum sink term and makes use of the standard deviation of the subgrid-scale orography as well as the Laplacian of the topographic field. The second configuration will be run with <strong>topo_wind=2 (TWIND2; Mass and Ovens 2012)</strong>, which determines the subgrid terrain variance and makes the surface drag or roughness used in the model dependent on it; it also includes additional consideration for stability and wind speed. The baseline configuration will have <strong>topo_wind=0 (turned off)</strong>. These runs will be cold start cases initialized every 36 hours and run out to 48 hours for one full year.</p>
+<p>The Weather Research and Forecasting (WRF)model (Skamarock et al. 2008) has presented a <strong>high surface wind speed bias over land</strong> since the early versions of the model (Cheng and Steenburgh 2005). The bias still persists in more recent versions (e.g., Bernardet et al. 2005; Roux et al. 2009; Mass and Ovens 2010, 2011) and represents a limitation for the high demand of accurate surface wind estimations by different sectors such as wind-energy applications or air-quality studies.</p>
+<ul>
+<li>The wind speed is higher in plains and valleys,</li>
+<li>The wind speed is lower in mountains and hills.</li>
+</ul>
+<p>WRF模式對風速變化趨勢模擬較好，但是風速值偏差較大，主要是因為 WRF 沒有對次網格地形阻力進行參數化，致使</p>
+<div class="note note-primary">
+            <ul><li>平原和山谷風速偏大，</li><li>高山和丘陵風速偏小。</li></ul>
+          </div>
+<p>從WRFv3.4開始，WRF提供了與YSU PBL方案相關聯的TopoWind模式，以改善地形對近地面風的影響。 YSU PBL方案共有三種方案：</p>
+<ul>
+<li>topo_wind = 0，在近地面風計算中不包括TopoWind模式的附加地形效應；</li>
+<li>topo_wind = 1，將亞柵格尺度地形的標準差納入近地面風計算；</li>
+<li>topo_wind = 2，採用與topowind = 1 相同的方法計算近地面風，但同時透過加入亞格點地形變化加強了摩擦速度的計算。</li>
+</ul>
+<h1 id="wrf">WRF</h1>
+<ul>
+<li>topo-wind=1 → varsso (Jimenez 2011)</li>
+<li>topo-wind=2 → var/var2d (Mass 2012)</li>
+</ul>
+<p>and geog data,</p>
+<ul>
+<li>varsso=0.924km (0.5m)</li>
+<li>varsso_2m=3.7km</li>
+<li>varsso_5m=9.25km</li>
+<li>varsso_10m=18.5km</li>
+</ul>
+<h1 id="jiménez-2011">Jiménez 2011</h1>
+<ul>
+<li>Jiménez, P. A., &amp; Dudhia, J. (2012). Improving the representation of resolved and unresolved topographic effects on surface wind in the WRF model. Journal of Applied Meteorology and Climatology, 51(2), 300-316.
+<ul>
+<li>The proposed parameterization is based on the concept of a momentum sink term and makes use of the <strong>standard deviation of the subgrid-scale orography</strong> as well as the <strong>Laplacian of the topographic field</strong>.</li>
+<li>u = stands for the zonal wind component <strong>at the first model level</strong></li>
+<li>Figure 4 shows the <strong>standard deviation of the subgrid-scale orography</strong> <span class="math inline">\(\sigma_{sso}\)</span> within each grid cell (2 km). The standard deviation provides an idea of the variability and, thus, the complexity of the terrain.</li>
+</ul></li>
+</ul>
+<p><img src="https://i.imgur.com/JrR5M9h.png" srcset="/img/loading.gif" lazyload alt="The differentiation has been accomplished by applying the following operator to the topographic field h" width="600" /> <img src="https://i.imgur.com/3r4P6Uh.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/1lSVGvw.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/4F3m0BK.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h1 id="mass-and-ovens-2012">Mass and Ovens 2012</h1>
+<p>topo_wind=2 (TWIND2; Mass and Ovens 2012)</p>
+<ul>
+<li>Fixing WRF's High Speed Wind Bias: A New Subgrid Scale Drag Parameterization and the Role of Detailed Verification (91st American Meteorological Society Annual Meeting)
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ams.confex.com/ams/91Annual/webprogram/Paper180011.html" class="uri">https://ams.confex.com/ams/91Annual/webprogram/Paper180011.html</a></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/workshops/WS2010/presentations/session%204/4-1_WRFworkshop2010Final.pdf" class="uri">https://www2.mmm.ucar.edu/wrf/users/workshops/WS2010/presentations/session%204/4-1_WRFworkshop2010Final.pdf</a></li>
+</ul>
+<h1 id="wrf-code">WRF code</h1>
+<ul>
+<li>WRF/dyn_em/start_em.F</li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!</span><br><span class="hljs-comment">! paj: computes ct and ct2 for topo_wind</span><br><span class="hljs-comment">!</span><br>       grid%ctopo=<span class="hljs-number">1.</span><br>       grid%ctopo2=<span class="hljs-number">1.</span><br><span class="hljs-comment">!</span><br>       <span class="hljs-keyword">if</span> (config_flags%topo_wind.eq<span class="hljs-number">.1</span>) <span class="hljs-keyword">then</span><br>         <span class="hljs-keyword">DO</span> j = jts,<span class="hljs-built_in">min</span>(jte,jde-<span class="hljs-number">1</span>)<br>         <span class="hljs-keyword">DO</span> i = its, <span class="hljs-built_in">min</span>(ite,ide-<span class="hljs-number">1</span>)<br>            <span class="hljs-keyword">if</span>(grid%xland(i,j).lt<span class="hljs-number">.1</span><span class="hljs-number">.5</span>)grid%ctopo(i,j)=<span class="hljs-built_in">sqrt</span>(grid%var_sso(i,j))<br>            <span class="hljs-keyword">if</span> (grid%ctopo(i,j).le<span class="hljs-number">.2</span><span class="hljs-number">.718</span>) <span class="hljs-keyword">then</span><br>            grid%ctopo(i,j)=<span class="hljs-number">1.</span><br>            <span class="hljs-keyword">else</span><br>            grid%ctopo(i,j)=<span class="hljs-built_in">alog</span>(grid%ctopo(i,j))<br>            <span class="hljs-keyword">endif</span><br><span class="hljs-comment">!</span><br>            <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.gt.</span>-<span class="hljs-number">10.</span>) <span class="hljs-keyword">then</span><br>              grid%ctopo(i,j)=grid%ctopo(i,j)<br>            <span class="hljs-keyword">else</span><br>               <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.ge.</span>-<span class="hljs-number">20</span>) <span class="hljs-keyword">then</span><br>                 alpha=(grid%lap_hgt(i,j)+<span class="hljs-number">20.</span>)/<span class="hljs-number">10.</span><br>                 grid%ctopo(i,j)=alpha*grid%ctopo(i,j)+(<span class="hljs-number">1</span>-alpha)<br>               <span class="hljs-keyword">else</span><br>                  <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.ge.</span>-<span class="hljs-number">30.</span>) <span class="hljs-keyword">then</span><br>                  grid%ctopo(i,j)=(grid%lap_hgt(i,j)+<span class="hljs-number">30.</span>)/<span class="hljs-number">10.</span><br>                  grid%ctopo2(i,j)=(grid%lap_hgt(i,j)+<span class="hljs-number">30.</span>)/<span class="hljs-number">10.</span><br>                  <span class="hljs-keyword">else</span><br>                  grid%ctopo(i,j)=<span class="hljs-number">0.</span><br>                  grid%ctopo2(i,j)=<span class="hljs-number">0.</span><br>                  <span class="hljs-keyword">endif</span><br>               <span class="hljs-keyword">endif</span><br>            <span class="hljs-keyword">endif</span><br>         <span class="hljs-keyword">ENDDO</span><br>         <span class="hljs-keyword">ENDDO</span><br><span class="hljs-comment">!       if topo_wind==2 (D.Ovens, C.Mass)</span><br>       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (config_flags%topo_wind.eq<span class="hljs-number">.2</span>) <span class="hljs-keyword">then</span><br>         <span class="hljs-keyword">DO</span> j = jts,<span class="hljs-built_in">min</span>(jte,jde-<span class="hljs-number">1</span>)<br>         <span class="hljs-keyword">DO</span> i = its, <span class="hljs-built_in">min</span>(ite,ide-<span class="hljs-number">1</span>)<br>           <span class="hljs-keyword">if</span> (grid%xland(i,j).lt<span class="hljs-number">.1</span><span class="hljs-number">.5</span>) <span class="hljs-keyword">then</span><br>              vfac = <span class="hljs-built_in">amin1</span>(<span class="hljs-number">1.575</span>,(grid%var2d(i,j)*<span class="hljs-number">0.4</span>/<span class="hljs-number">200.</span>+<span class="hljs-number">1.175</span>))<br>              vfac = vfac * vfac<br>           <span class="hljs-keyword">else</span>                      <span class="hljs-comment">! over water, leave it alone</span><br>              vfac = <span class="hljs-number">1.</span><br>           <span class="hljs-keyword">endif</span><br><span class="hljs-comment">!          print *, j,i,grid%ctopo(i,j),vfac</span><br>           grid%ctopo(i,j)=grid%ctopo(i,j)*vfac<br>         <span class="hljs-keyword">ENDDO</span><br>         <span class="hljs-keyword">ENDDO</span><br>       <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>Versions of WPS prior to V3.4 did not include VAR_SSO static data. This is necessary for running the topo_wind option in WRF (also introduced in version 3.4). <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/pull/10">link</a></li>
+<li>Remark, <strong>ctopo2 = 1</strong> in topo_wind2.</li>
+</ul>
+<div class="note note-primary">
+            <p>u10, v10 (no modify in topo_wind=2)<br />Modify u10, v10 ⇒ Effective in topo_wind=1 only<br />In topo_wind=2, No Modify u10, v10</p>
+          </div>
+<h2 id="convective-velocity-and-pbl-height">convective velocity and PBL height</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/pull/116" class="uri">https://github.com/wrf-model/WRF/pull/116</a></li>
+<li><strong>WRFv3.8.1 and before, don't consider convective velocity and PBL height</strong></li>
+<li>It is found that this scheme can improve the simulated surface winds, especially at night, <strong>but it can underestimate the winds during daytime.</strong>
+<ul>
+<li>Lorente-Plazas, R., Jiménez, P. A., Dudhia, J., &amp; Montávez, J. P. (2016). Evaluating and Improving the Impact of the Atmospheric Stability and Orography on Surface Winds in the WRF Model. Monthly Weather Review, 144(7), 2685-2693. <a target="_blank" rel="noopener" href="https://doi.org/10.1175/MWR-D-15-0449.1" class="uri">https://doi.org/10.1175/MWR-D-15-0449.1</a></li>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/mwre/144/7/mwr-d-15-0449.1.xml" class="uri">https://journals.ametsoc.org/view/journals/mwre/144/7/mwr-d-15-0449.1.xml</a></li>
+</ul></li>
+<li>In the daytime,
+<ul>
+<li>if higher PBLH, then consider less ctopo effect</li>
+<li>new_topo ~ off_ctopo in daytime</li>
+</ul></li>
+<li>Uses convective velocity and PBL height to determine instability</li>
+<li>Extra code is added to compute tke, hybrid PBL height and convective velocity within the YSU PBL</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs text">TYPE: enhancement<br><br>KEYWORDS: topo_wind=1, diurnal cycle improvement, YSU PBL only<br><br>SOURCE: internal + Raquel Lorente (formerly RAL) and Pedro Jimenez (RAL)<br><br>PURPOSE: To improve diurnal behavior of surface wind when topo_wind=1 is<br>activated. This replaces the topo_wind=1 and is not a new option.<br><br>DESCRIPTION OF CHANGES:<br><br>Follows paper Lorente-Plazas et al. (2016, MWR) by decreasing effects of<br>topo_wind=1 option when unstable boundary-layer conditions prevail. Uses<br>convective velocity and PBL height to determine instability. PBL height uses a<br>hybrid tke-theta method copied from the MYNN PBL, but for YSU tke is computed<br>diagnostically.<br>Extra code is added to compute tke, hybrid PBL height and convective velocity<br>within the YSU PBL, so this is the only module affected.<br><br>LIST OF MODIFIED FILES :<br><br>M phys/module_bl_ysu.F<br></code></pre></td></tr></table></figure>
+<h2 id="module_bl_ysu.f">module_bl_ysu.F</h2>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/v4.5/phys/module_bl_ysu.F" class="uri">https://github.com/wrf-model/WRF/blob/v4.5/phys/module_bl_ysu.F</a></p></li>
+<li><p>! paj: ctopo=1 if topo_wind=0 (default)</p></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">real</span>(<span class="hljs-keyword">kind</span>=kind_phys),     <span class="hljs-keyword">dimension</span>( its: )                               , &amp;<br>          <span class="hljs-keyword">optional</span>                                                        , &amp;<br>          <span class="hljs-keyword">intent</span>(<span class="hljs-keyword">in</span>   )   ::                                         ctopo, &amp;<br>                                                                    ctopo2<br></code></pre></td></tr></table></figure>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!--- end of paj tke</span><br><span class="hljs-comment">! compute vconv</span><br><span class="hljs-comment">!      Use Beljaars over land</span><br>        <span class="hljs-keyword">if</span> (xland(i).lt<span class="hljs-number">.1</span><span class="hljs-number">.5</span>) <span class="hljs-keyword">then</span><br>        fluxc = <span class="hljs-built_in">max</span>(sflux(i),<span class="hljs-number">0.0</span>)<br>        vconvc=<span class="hljs-number">1.</span><br>        VCONV = vconvc*(g/thvx(i,<span class="hljs-number">1</span>)*pblh_ysu(i)*fluxc)**<span class="hljs-number">.33</span><br>        <span class="hljs-keyword">else</span><br><span class="hljs-comment">! for water there is no topo effect so vconv not needed</span><br>        VCONV = <span class="hljs-number">0.</span><br>        <span class="hljs-keyword">endif</span><br>        vconvfx(i) = vconv<br><span class="hljs-comment">!raquel</span><br><span class="hljs-comment">!ctopo stability correction</span><br>      fric(i,<span class="hljs-number">1</span>)=ust(i)**<span class="hljs-number">2</span>/wspd1(i)*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2         &amp;<br>        *(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>      <span class="hljs-keyword">if</span>(<span class="hljs-built_in">present</span>(ctopo)) <span class="hljs-keyword">then</span><br>        vconvnew=<span class="hljs-number">0.9</span>*vconvfx(i)+<span class="hljs-number">1.5</span>*(<span class="hljs-built_in">max</span>((pblh_ysu(i)-<span class="hljs-number">500</span>)/<span class="hljs-number">1000.0</span>,<span class="hljs-number">0.0</span>))<br>        vconvlim = <span class="hljs-built_in">min</span>(vconvnew,<span class="hljs-number">1.0</span>)<br>        ad(i,<span class="hljs-number">1</span>) = <span class="hljs-number">1.</span>+fric(i,<span class="hljs-number">1</span>)*vconvlim+ctopo(i)*fric(i,<span class="hljs-number">1</span>)*(<span class="hljs-number">1</span>-vconvlim)<br>        ad(i,<span class="hljs-number">1</span>) = ad(i,<span class="hljs-number">1</span>) - bepswitch*frc_urb1d(i)* &amp;<br>                     (fric(i,<span class="hljs-number">1</span>)*vconvlim+ctopo(i)*fric(i,<span class="hljs-number">1</span>)*(<span class="hljs-number">1</span>-vconvlim))<br><span class="hljs-comment">!       ad(i,1) = 1.+(1.-bepswitch*frc_urb1d(i))* &amp;</span><br><span class="hljs-comment">!                    (fric(i,1)*vconvlim+ctopo(i)*fric(i,1)*(1-vconvlim))</span><br>      <span class="hljs-keyword">else</span><br>        ad(i,<span class="hljs-number">1</span>) = <span class="hljs-number">1.</span>+fric(i,<span class="hljs-number">1</span>)<br>      <span class="hljs-keyword">endif</span><br>     f1(i,<span class="hljs-number">1</span>) = ux(i,<span class="hljs-number">1</span>)+uoxl(i)*ust(i)**<span class="hljs-number">2</span>*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2/wspd1(i)*(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>     f2(i,<span class="hljs-number">1</span>) = vx(i,<span class="hljs-number">1</span>)+voxl(i)*ust(i)**<span class="hljs-number">2</span>*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2/wspd1(i)*(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>   <span class="hljs-keyword">enddo</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>ux=u3d(ims,kms,j),vx=v3d(ims,kms,j)</li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!</span><br><span class="hljs-comment">! paj: ctopo2=1 if topo_wind=0 (default)</span><br><span class="hljs-comment">!</span><br>   <span class="hljs-keyword">do</span> i = its,ite<br>     <span class="hljs-keyword">if</span>(<span class="hljs-built_in">present</span>(ctopo)<span class="hljs-keyword">.and.</span><span class="hljs-built_in">present</span>(ctopo2)) <span class="hljs-keyword">then</span> <span class="hljs-comment">! mchen for NMM</span><br>       u10(i) = ctopo2(i)*u10(i)+(<span class="hljs-number">1</span>-ctopo2(i))*ux(i,<span class="hljs-number">1</span>)<br>       v10(i) = ctopo2(i)*v10(i)+(<span class="hljs-number">1</span>-ctopo2(i))*vx(i,<span class="hljs-number">1</span>)<br>     <span class="hljs-keyword">endif</span> <span class="hljs-comment">!mchen</span><br>   <span class="hljs-keyword">enddo</span><br></code></pre></td></tr></table></figure>
+<h1 id="references">References</h1>
+<ol type="1">
+<li>Topo Wind Intercomparison
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://dtcenter.ucar.edu/eval/meso_mod/topo_wind/" class="uri">https://dtcenter.ucar.edu/eval/meso_mod/topo_wind/</a></li>
+<li>Topo Wind Intercomparsion Test</li>
+<li>Statistically/Practically Significant Table Reports</li>
+<li>Publications
+<ol type="1">
+<li>Investigating the impact of surface parameterization schemes available in WRF on surface winds</li>
+<li>Investigating seasonal and regional differences if the WRF-ARW HIRES Window physics suite</li>
+</ol></li>
+</ol></li>
+<li>Lee, J., Shin, H. H., Hong, S. Y., Jiménez, P. A., Dudhia, J., &amp; Hong, J. (2015). Impacts of subgrid‐scale orography parameterization on simulated surface layer wind and monsoonal precipitation in the high‐resolution WRF model. Journal of Geophysical Research: Atmospheres, 120(2), 644-653.
+<ol type="1">
+<li>For accurate surface wind simulations, the subgrid-scale (SGS) orography parameterization scheme was employed. It was found that the simulated surface wind showed negative (positive) bias over mountainous (flat) regions when the SGS orography parameterization was excluded.</li>
+<li>After inclusion of the SGS orography parameterization, <strong>wind speed</strong> over mountainous (flat) regions increased (decreased), implying that the bias was mitigated. <strong>Moisture divergence (convergence)</strong> over the mountains (on the leeward side of the mountains) was induced, and <strong>surface latent heat flux</strong> increased along the mountain ranges following the improvement in the representation of the surface wind by the inclusion of the SGS orography parameterization.</li>
+<li>ventually, excessive <strong>precipitation</strong> simulated over mountainous areas of East Asia, which is a feature commonly observed in numerical model studies, was alleviated because of the moisture divergence and increased surface latent heat flux.</li>
+</ol></li>
+<li>Lorente-Plazas, R., Jiménez, P. A., Dudhia, J., &amp; Montávez, J. P. (2016). Evaluating and Improving the Impact of the Atmospheric Stability and Orography on Surface Winds in the WRF Model. Monthly Weather Review, 144(7), 2685-2693. <a target="_blank" rel="noopener" href="https://doi.org/10.1175/MWR-D-15-0449.1" class="uri">https://doi.org/10.1175/MWR-D-15-0449.1</a></li>
+<li>杨鹏武, 王学锋, 王麟, &amp; 朱勇. (2016). WRF_TopoWind 模式对中国低纬高原高山风速模拟的适用性研究. 云南大学学报 (自然科学版), 38(5), 766-772.
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="http://www.yndxxb.ynu.edu.cn/yndxxbzrkxb/en/article/pdf/preview/10.7540/j.ynu.20160060.pdf" class="uri">http://www.yndxxb.ynu.edu.cn/yndxxbzrkxb/en/article/pdf/preview/10.7540/j.ynu.20160060.pdf</a></li>
+</ol></li>
+<li>刘郁珏, 苗世光, 刘磊, 胡非. 修正WRF次网格地形方案及其对风速模拟的影响. 应用气象学报, 2019, 30(1): 70-81.
+<ol type="1">
+<li>复杂地形区域风场模拟的准确率一直是风能研究领域的难点和重点。WRF模式是目前风能评估领域应用最广泛的天气数值模式之一，<strong>但该模式在复杂地形区域存在对平原、山谷风速高估且对山顶风速低估的系统性误差</strong>，并有研究建立次网格地形方案以订正误差。而次网格地形方案在不同水平分辨率下常出现错误的修正结果，该文基于高精度地形高程数据分析了方案失效的主要原因，发现其方程组中判断山体形态特征的阈值-20在过低和过高水平分辨率下均失去参考性。针对这一原因，将方案中影响关键参数Ct的地形高度算子与模式水平分辨率进行拟合，形成地形高度算子与水平分辨率相依赖的线性关系，获得不同分辨率下更适合的山体形态阈值。通过与自动气象站10 m风速对比分析了修正前后WRF对低层风速的模拟效果，结果显示：修正后的次网格地形方案能够分别在较低和较高分辨率下，部分矫正原方案错误的订正结果，使低层风速模拟更接近实况。修正后的次网格地形方案可为复杂地形区域开展高分辨率风场模拟提供参考。</li>
+</ol></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WRF | topo-wind</div>
+      <div>https://waipangsze.github.io/2024/11/02/wrf-topo-wind/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 2, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>November 7, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/30/WPS-draw-domain-WRFDomainWizard/" title="WRF | WPS | WRFDomainWizard">
+                        <span class="hidden-mobile">WRF | WPS | WRFDomainWizard</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
