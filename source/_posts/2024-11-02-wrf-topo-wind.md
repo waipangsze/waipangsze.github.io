@@ -53,8 +53,9 @@ and geog data,
 # Jiménez 2011
 
 - Jiménez, P. A., & Dudhia, J. (2012). Improving the representation of resolved and unresolved topographic effects on surface wind in the WRF model. Journal of Applied Meteorology and Climatology, 51(2), 300-316.
-
-- u = stands for the zonal wind component **at the first model level**
+  - The proposed parameterization is based on the concept of a momentum sink term and makes use of the **standard deviation of the subgrid-scale orography** as well as the **Laplacian of the topographic field**.
+  - u = stands for the zonal wind component **at the first model level**
+  - Figure 4 shows the **standard deviation of the subgrid-scale orography** $\sigma_{sso}$ within each grid cell (2 km). The standard deviation provides an idea of the variability and, thus, the complexity of the terrain.
 
 ![The differentiation has been accomplished by applying the following operator to the topographic field $h$](https://i.imgur.com/JrR5M9h.png){width=600}
 ![](https://i.imgur.com/3r4P6Uh.png){width=600}
@@ -137,7 +138,7 @@ In topo_wind=2, No Modify u10, v10
 ## convective velocity and PBL height
 
 - <https://github.com/wrf-model/WRF/pull/116>
-- WRFv3.8.1 and before, don't consider convective velocity and PBL height
+- **WRFv3.8.1 and before, don't consider convective velocity and PBL height**
 - It is found that this scheme can improve the simulated surface winds, especially at night, **but it can underestimate the winds during daytime.** 
   - Lorente-Plazas, R., Jiménez, P. A., Dudhia, J., & Montávez, J. P. (2016). Evaluating and Improving the Impact of the Atmospheric Stability and Orography on Surface Winds in the WRF Model. Monthly Weather Review, 144(7), 2685-2693. <https://doi.org/10.1175/MWR-D-15-0449.1>
   - <https://journals.ametsoc.org/view/journals/mwre/144/7/mwr-d-15-0449.1.xml>
@@ -241,4 +242,12 @@ M phys/module_bl_ysu.F
    4. Publications
       1. Investigating the impact of surface parameterization schemes available in WRF on surface winds
       2. Investigating seasonal and regional differences if the WRF-ARW HIRES Window physics suite
-2. Lorente-Plazas, R., Jiménez, P. A., Dudhia, J., & Montávez, J. P. (2016). Evaluating and Improving the Impact of the Atmospheric Stability and Orography on Surface Winds in the WRF Model. Monthly Weather Review, 144(7), 2685-2693. <https://doi.org/10.1175/MWR-D-15-0449.1>
+2. Lee, J., Shin, H. H., Hong, S. Y., Jiménez, P. A., Dudhia, J., & Hong, J. (2015). Impacts of subgrid‐scale orography parameterization on simulated surface layer wind and monsoonal precipitation in the high‐resolution WRF model. Journal of Geophysical Research: Atmospheres, 120(2), 644-653.
+   1. For accurate surface wind simulations, the subgrid-scale (SGS) orography parameterization scheme was employed. It was found that the simulated surface wind showed negative (positive) bias over mountainous (flat) regions when the SGS orography parameterization was excluded. 
+   2. After inclusion of the SGS orography parameterization, **wind speed** over mountainous (flat) regions increased (decreased), implying that the bias was mitigated. **Moisture divergence (convergence)** over the mountains (on the leeward side of the mountains) was induced, and **surface latent heat flux** increased along the mountain ranges following the improvement in the representation of the surface wind by the inclusion of the SGS orography parameterization.
+   3. ventually, excessive **precipitation** simulated over mountainous areas of East Asia, which is a feature commonly observed in numerical model studies, was alleviated because of the moisture divergence and increased surface latent heat flux.
+3. Lorente-Plazas, R., Jiménez, P. A., Dudhia, J., & Montávez, J. P. (2016). Evaluating and Improving the Impact of the Atmospheric Stability and Orography on Surface Winds in the WRF Model. Monthly Weather Review, 144(7), 2685-2693. <https://doi.org/10.1175/MWR-D-15-0449.1>
+4. 杨鹏武, 王学锋, 王麟, & 朱勇. (2016). WRF_TopoWind 模式对中国低纬高原高山风速模拟的适用性研究. 云南大学学报 (自然科学版), 38(5), 766-772.
+   1. <http://www.yndxxb.ynu.edu.cn/yndxxbzrkxb/en/article/pdf/preview/10.7540/j.ynu.20160060.pdf>
+5. 刘郁珏, 苗世光, 刘磊, 胡非. 修正WRF次网格地形方案及其对风速模拟的影响. 应用气象学报, 2019, 30(1): 70-81.
+   1. 复杂地形区域风场模拟的准确率一直是风能研究领域的难点和重点。WRF模式是目前风能评估领域应用最广泛的天气数值模式之一，**但该模式在复杂地形区域存在对平原、山谷风速高估且对山顶风速低估的系统性误差**，并有研究建立次网格地形方案以订正误差。而次网格地形方案在不同水平分辨率下常出现错误的修正结果，该文基于高精度地形高程数据分析了方案失效的主要原因，发现其方程组中判断山体形态特征的阈值-20在过低和过高水平分辨率下均失去参考性。针对这一原因，将方案中影响关键参数Ct的地形高度算子与模式水平分辨率进行拟合，形成地形高度算子与水平分辨率相依赖的线性关系，获得不同分辨率下更适合的山体形态阈值。通过与自动气象站10 m风速对比分析了修正前后WRF对低层风速的模拟效果，结果显示：修正后的次网格地形方案能够分别在较低和较高分辨率下，部分矫正原方案错误的订正结果，使低层风速模拟更接近实况。修正后的次网格地形方案可为复杂地形区域开展高分辨率风场模拟提供参考。
