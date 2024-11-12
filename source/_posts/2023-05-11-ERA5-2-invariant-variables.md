@@ -2,10 +2,14 @@
 layout: post
 title: "ERA5 dataset (2) contains invariant variables"
 categories: [NWP]
-tags: [IC/BC, grib, ERA5, WRF, WPS]
+tags: [WRF,WPS,MPAS,IC/BC,ERA5,ECMWF]
 author: wpsze
-index_img: 
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://www.ecmwf.int/sites/default/files/flags-council-chamber-650px.jpg
+banner_img: https://www.ecmwf.int/sites/default/files/flags-council-chamber-650px.jpg
 ---
 
 # ERA5 dataset (2) contains invariant variables

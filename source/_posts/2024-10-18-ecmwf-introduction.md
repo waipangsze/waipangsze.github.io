@@ -2,7 +2,7 @@
 layout: post
 title: NWP | ECMWF
 categories: [NWP]
-tags: [NWP, MPAS, WRF, ML, AI]
+tags: [NWP, MPAS, WRF, ML, AI, ECMWF]
 author: wpsze
 math: true
 mathjax: true
