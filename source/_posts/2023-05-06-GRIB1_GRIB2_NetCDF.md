@@ -3,7 +3,6 @@ layout: post
 title: WRF | GRIB1, GRIB2, NetCDF
 categories: [WRF]
 tags: [WRF,WPS,HPC,MPAS]
-mathjax: true
 author: wpsze
 math: true
 mathjax: true
