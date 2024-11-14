@@ -4,8 +4,12 @@ title: "WRF | WRF: Why domains should be at least 100x100 grid spaces?"
 categories: [WRF]
 tags: [WRF]
 author: wpsze
-index_img: 
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png
 ---
 
 # [Why domains should be at least 100x100 grid spaces?](https://forum.mmm.ucar.edu/threads/why-domains-should-be-at-least-100x100-grid-spaces.16793/)

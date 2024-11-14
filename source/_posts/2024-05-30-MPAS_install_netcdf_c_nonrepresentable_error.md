@@ -4,6 +4,10 @@ title: MPAS | netcdf-c-4.7.4 final link failed - nonrepresentable section on out
 categories: [MPAS]
 tags: [netcdf-c, Installation]
 author: wpsze
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
 index_img: 
 banner_img: 
 ---

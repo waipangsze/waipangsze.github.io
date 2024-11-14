@@ -4,8 +4,12 @@ title: WRF | WPS geo data and binary tile files
 categories: [WRF]
 tags: [tile files, WPS, WRF, MPAS]
 author: wpsze
-index_img: 
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png
 ---
 
 # Binary files in the geog folder

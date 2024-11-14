@@ -10,7 +10,7 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 index_img: https://i.imgur.com/RwpxULg.png
-banner_img: 
+banner_img: https://i.imgur.com/RwpxULg.png
 ---
 
 # Cold Start/Warm Start

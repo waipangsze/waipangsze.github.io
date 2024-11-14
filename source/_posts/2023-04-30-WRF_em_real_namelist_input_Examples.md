@@ -4,8 +4,12 @@ title: WRF | WRF em_real namelist.input Examples
 categories: [WRF]
 tags: [WRF,namelist.input]
 author: wpsze
-index_img: 
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png
 ---
 
 # WRF em_real namelist.input Examples

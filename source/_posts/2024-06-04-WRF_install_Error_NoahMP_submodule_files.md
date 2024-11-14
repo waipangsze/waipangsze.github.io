@@ -4,10 +4,12 @@ title: WRF | Error Error Error NoahMP submodule files not populating WRF directo
 categories: [WRF]
 tags: [Installation]
 author: wpsze
+math: true
 mathjax: true
 mathjax_autoNumber: true
-index_img: 
-banner_img: 
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png
 ---
 
 # Issue

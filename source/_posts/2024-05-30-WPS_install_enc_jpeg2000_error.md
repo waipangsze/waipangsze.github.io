@@ -4,8 +4,12 @@ title:  WRF | error - jas_image_t aka struct anonymous has no member named inmem
 categories: [WRF]
 tags: [WPS, Installation]
 author: wpsze
-index_img: 
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png
 ---
 
 # Issue

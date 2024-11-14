@@ -5,8 +5,12 @@ categories: [WRF]
 tags: [WRF,WPS,HPC,MPAS]
 mathjax: true
 author: wpsze
-index_img: 
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png 
 ---
 
 # GRIB1, GRIB2, NetCDF

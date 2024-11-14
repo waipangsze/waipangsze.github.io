@@ -4,8 +4,12 @@ title: WRF | make -- time No such file or directory
 categories: [WRF]
 tags: [WRF, Installation]
 author: wpsze
-index_img: 
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png 
 ---
 
 # Issue

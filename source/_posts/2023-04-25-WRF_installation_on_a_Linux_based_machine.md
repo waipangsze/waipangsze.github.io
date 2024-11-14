@@ -3,10 +3,13 @@ layout: post
 title: WRF | WRF installation on a Linux-based machine
 categories: [WRF]
 tags: [NWP,WRF,WPS,Installation,gnu,gcc]
-mathjax: true
 author: wpsze
-index_img: https://wiki.cima.fcen.uba.ar/mediawiki/images/f/f9/CDXWRF_domain_test.png
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png
 ---
 
 # WRF

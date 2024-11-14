@@ -4,8 +4,12 @@ title: WRF | WPS build up domain
 categories: [WRF]
 tags: [WRF,WPS,NWP,domain,ncl]
 author: wpsze
-index_img: 
-banner_img: 
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/RwpxULg.png
+banner_img: https://i.imgur.com/RwpxULg.png
 ---
 
 # WPS build up domain
