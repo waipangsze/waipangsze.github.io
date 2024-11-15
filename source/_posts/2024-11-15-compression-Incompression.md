@@ -9,8 +9,8 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2024-11-15 10:32:00
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/rDx2DHd.png
+banner_img: https://i.imgur.com/rDx2DHd.png
 ---
 
 # Governing Equations
@@ -37,7 +37,7 @@ $$
 Equation of state,
 $$
 \begin{align*}
-P &= P(\rho, T) \qquad (e.g. PV &= nRT) \tag{3}\\
+P &= P(\rho, T) \qquad (e.g. PV = nRT) \tag{3}\\
 \end{align*}
 $$
 
@@ -91,7 +91,7 @@ This immediately implies that **the volume of a co-moving fluid element is a con
 
 A compressible flow is a flow in which the fluid density $\rho$ varies significantly within the flowfield. Therefore, $\rho(x, y, z)$ must now be treated as a field variable rather than simply a constant. Typically, significant density variations start to appear when the flow Mach number exceeds 0.3 or so. The effects become especially large when the Mach number approaches and exceeds unity.
 
-In incompressible flow the density ρ does not change.
+In incompressible flow the density $\rho$ does not change.
 
 ![](https://i.imgur.com/rDx2DHd.png){width=600}
 
