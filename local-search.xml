@@ -4,6 +4,101 @@
   
   
   <entry>
+    <title>CFD | Incompressible and Compressible</title>
+    <link href="/2024/11/15/compression-Incompression/"/>
+    <url>/2024/11/15/compression-Incompression/</url>
+    
+    <content type="html"><![CDATA[<h1 id="governing-equations">Governing Equations</h1><p>The equations that govern the fluid flow are based on the conservation laws of a fluid’s physical properties. The basic equations are the three laws of conservation1:</p><ul><li>Conservation of Mass: <strong>Continuity Equation</strong></li><li>Conservation of Momentum: <strong>Navier Stokes Equation</strong></li><li><strong>Equation of state</strong></li><li>Conservation of Energy: First Law of Thermodynamics or <strong>Energy Equation</strong><ul><li>An additional enthalpy equation from thermodynamics is required that includes a dissipation term and accounts for temperature changes during flow when heat or any other energy exchange is involved.Convective and conjugate heat transfer simulations involve thermal energy transfers for accurate CFD analysis. Stress-strain relations for compressible fluids can further complicate equations of compressible flow.</li></ul></li></ul><h2 id="equations">Equations</h2><p>Conservation of Mass and Momentum, <span class="math display">\[\begin{align*}\frac{D(\,)}{Dt} &amp;= \frac{\partial(\,)}{\partial t}+V\cdot\nabla(\,) \tag{0} \\\dfrac{D \rho}{D t} + \rho (\nabla \cdot \vec{v}) &amp;= 0 \tag{1}\\\rho \dfrac{D\vec{v}}{D t} &amp;= -\nabla p + \mu \nabla^2 \vec{v} + \rho \vec{g}  \tag{2}\\\end{align*}\]</span></p><p>Equation of state, <span class="math display">\[\begin{align*}P &amp;= P(\rho, T) \qquad (e.g. PV &amp;= nRT) \tag{3}\\\end{align*}\]</span></p><p>Energy Equation, <span class="math display">\[\begin{align*}dE_t &amp; = dQ + dW \tag{4}\\\end{align*}\]</span></p><p>where <span class="math inline">\(dQ\)</span> is the heat added to the system, <span class="math inline">\(dW\)</span> is the work done on the system, and <span class="math inline">\(dE_t\)</span> is the increment in the total energy of the system. One of the common types of energy equation is:</p><p><span class="math display">\[\begin{align*}\displaystyle \dfrac{D{\cal E}}{Dt} &amp;= - \frac{p}{\rho}\,\nabla\cdot{\bf v} + \frac{\chi}{\rho} +\frac{\nabla\!\cdot( \kappa\,\nabla T)}{\rho} \tag{5} \\\displaystyle \chi &amp;= \frac{\partial v_i}{\partial x_j} d_{ij} = 2 \mu \left(e_{ij} e_{ij} - \dfrac{1}{3} e_{ii} e_{jj} \right) = \mu \left( \dfrac{\partial v_i}{\partial x_j}\dfrac{\partial v_i}{\partial x_j} + \dfrac{\partial v_i}{\partial x_j}\dfrac{\partial v_j}{\partial x_i} - \dfrac{2}{3} \dfrac{\partial v_i}{\partial x_i}\dfrac{\partial v_j}{\partial x_j} \right)\end{align*}\]</span></p><p>According to the previous equation, the internal energy per unit mass of a co-moving fluid element evolves in time as a consequence of work done on the element by pressure as its volume changes, viscous heat generation due to flow shear, and heat conduction.</p><h1 id="incompressible-flow">Incompressible flow</h1><p>In most situations of general interest, the flow of a conventional liquid, such as water, is incompressible to a high degree of accuracy. A fluid is said to be incompressible when the mass density of a co-moving volume element does not change appreciably as the element moves through regions of varying pressure. In other words, <strong>for an incompressible fluid, the rate of change of $ $ following the motion is zero</strong>: that is,</p><p><span class="math display">\[\displaystyle \frac{D\rho}{Dt} = 0\]</span></p><p>In this case, the continuity equation reduces to <span class="math display">\[\displaystyle \nabla\cdot{\bf v} = 0\]</span></p><p>We conclude that, as a <strong>consequence of mass conservation</strong>,</p><div class="note note-primary">            <p>An <strong>incompressible fluid must have a divergence-free</strong>, or solenoidal, velocity field.</p>          </div><p>This immediately implies that <strong>the volume of a co-moving fluid element is a constant of the motion</strong>. In most practical situations, the initial density distribution in an incompressible fluid is uniform in space. Hence, it follows from Equation (1.76) that the density distribution remains uniform in space and constant in time. In other words, we can generally treat the density, $ $ , as a uniform constant in incompressible fluid flow problems.</p><p><img src="https://i.imgur.com/XwL79J8.png" width="600" /> <img src="https://i.imgur.com/zaf58vA.png" width="600" /> <img src="https://i.imgur.com/GkV6pMK.png" width="600" /> <img src="https://i.imgur.com/6FStEBC.png" width="600" /> <img src="https://i.imgur.com/iznmeSr.png" width="600" /> <img src="https://i.imgur.com/RjdjunO.png" width="600" /></p><h1 id="compressible-flow">Compressible flow</h1><p>A compressible flow is a flow in which the fluid density <span class="math inline">\(\rho\)</span> varies significantly within the flowfield. Therefore, <span class="math inline">\(\rho(x, y, z)\)</span> must now be treated as a field variable rather than simply a constant. Typically, significant density variations start to appear when the flow Mach number exceeds 0.3 or so. The effects become especially large when the Mach number approaches and exceeds unity.</p><p>In incompressible flow the density ρ does not change.</p><p><img src="https://i.imgur.com/rDx2DHd.png" width="600" /></p><p>A perfect gas is one whose individual molecules interact only via direct collisions, with no other intermolecular forces present. For such a perfect gas, the properties <span class="math inline">\(P, V, \rho\)</span>, and the temperature <span class="math inline">\(T\)</span> are related by the following <strong>equation of state</strong>,</p><p><span class="math display">\[PV = nRT\]</span></p><p>where <span class="math inline">\(R\)</span> is the specific gas constant. For air, $R = 287 J⋅kg^{−1}⋅K $.</p><p>The appearance of the temperature <span class="math inline">\(T\)</span> in the equation of state means that it must vary within the flowfield. Therefore, <span class="math inline">\(T(x, y, z)\)</span> must be treated as a new field variable in addition to <span class="math inline">\(\rho(x, y, z)\)</span>. n the moving Control Volume (CV) scenario above, the change in the CV’s volume is not only accompanied by a change in density, but by a change in temperature as well.</p><p>The appearance of the temperature also means that thermodynamics will need to be addressed. So in addition to the <strong>conservation of mass and momentum</strong> which were employed in low speed flows, we will now also need to consider the <strong>conservation of energy</strong>. The following table compares the variables and equations which come into play in the two cases.</p><p><img src="https://i.imgur.com/qeDj31C.png" width="600" /></p><h2 id="mach-number-馬赫數">Mach number 馬赫數</h2><p>儘管氣體是可壓縮的，但在低速時它們所經歷的密度變化可能並不顯著。以空氣為例。圖顯示了以馬赫數為函數的密度變化圖。密度變化表示為 <span class="math inline">\(\rho/\rho_0\)</span>，其中 <span class="math inline">\(\rho_0\)</span> 是零速度（即，零馬赫數）時的空氣密度。</p><figure><img src="https://i.imgur.com/dND1Epn.png" alt="以空氣為例。圖顯示了以馬赫數為函數的密度變化圖" width="400" /><figcaption>以空氣為例。圖顯示了以馬赫數為函數的密度變化圖</figcaption></figure><div class="note note-primary">            <p>對於<strong>不可壓縮流動，溫度通常保持恆定</strong>。但在<strong>可壓縮流動中，可能會發生顯著的溫度變化，導致能量模式之間的交換</strong> (在計算可壓縮流動時，<strong>必須考慮能量方程式</strong>)</p>          </div><p>對於馬赫數高達0.3的情況，密度變化在 <span class="math inline">\(\rho_0\)</span> 的5%以內。因此，在這個範圍內，實際上可以忽略密度變化，並將流動視為不可壓縮的。但是，當馬赫數超過0.3時，變化確實變得顯著，並且在馬赫數為1時，密度變化達到了36.5%。在馬赫數為2時，密度變化高達77%。不可壓縮流和可壓縮流之間的另一個重要區別是由於溫度變化引起的。對於<strong>不可壓縮流動，溫度通常保持恆定</strong>。但在<strong>可壓縮流動中，可能會發生顯著的溫度變化，導致能量模式之間的交換</strong>。這些事實的直接後果是，在計算可壓縮流動時，<strong>必須考慮能量方程式</strong>（這在不可壓縮流動中沒有進行）。此外，為了處理能量模式的交換，就必須理解流動的熱力學。熱力學是一個涵蓋許多主題的龐大主題。</p><h2 id="openfoam案例可壓縮流體模擬"><a href="https://mp.weixin.qq.com/s/Z0K06ziGHhbbhVNLpTv2cg">openFOAM案例：可壓縮流體模擬</a></h2><ul><li>可壓縮流體的求解要點</li></ul><p>物體在可接近音速或超音速飛行的時候，由於速度非常快，空氣就會因為運動被壓縮，它的密度就會改變，也變成了可壓縮流體。與不可壓縮流體相比，可壓縮流體在CFD模擬上有些差異，首先我們來看控制方程式：</p><p><img src="https://i.imgur.com/HL8RfHp.png" width="400" /></p><div class="note note-primary">            <p>可壓縮流體的控制方程式和我們之前遇到的方程式相比，<strong>最大的特性就是它的密度就不再是常數</strong>了。既然密度成為了一個變量，<strong>為了讓方程組封閉。我們就需要一個方程式對密度的變化來描述</strong>，而這個方程式就是<strong>狀態方程式</strong>。狀態方程式就是物質密度隨溫度壓力變化的關係。那麼由於狀態方程式裡又牽涉到溫度了。<strong>描述溫度就需要一個能量方程式</strong>。所以我們求解可壓縮流體都是要同時求解能量方程式。</p>          </div><p>求解可壓縮流體的方程，最簡單的一個思路就是採用和先前提到的<strong>不可壓縮流體演算法類似</strong>的方法來求解。例如之前提到的 <code>simple</code> 或 <code>piso</code> 演算法，先解<strong>動量方程得</strong>到 U，再將動量方程與壓力方程式變換，再得到<strong>壓力方程</strong>，得到 P。再透過壓力<strong>修正方程式校正U</strong>，不斷迭代得到求解。與不可壓縮流體相比，可壓縮流體的密度是可變的，我們透過狀態方程式引入這種變化就可以了。<strong>這裡速度與壓力的求解是分開的所以叫分離式求解</strong>，而且推導出來的是壓力方程，因此叫<strong>基於壓力的求解</strong>。</p><p><img src="https://i.imgur.com/3s6rOru.png" width="600" /></p><p>還有一種方法是<strong>基於密度的求解</strong>，<strong>把狀態方程帶入動量方程，把壓力項變成密度項</strong>。這樣就可以直接把連續性方程式與動量方程式連結起來同時求解。所以這就叫<strong>耦合求解，求解出來的是速度場和密度場</strong>，所以又叫基於密度的求解。把速度場與密度場求出來以後，<strong>再用狀態方程式把壓力場求出來</strong>就可以了。</p><p><img src="https://i.imgur.com/fuChsqX.png" width="600" /></p><p><strong>openfoam</strong> 裡，基於密度的解算器是 <code>rhoCentralFoam</code> ，基於壓力的解算器是 <code>rhoPimpleFoam</code> 。從數學角度而言兩種解算器原理上都可以求解可壓縮流體流動，但由於演算法與離散格式上的區別，二者的使用範圍稍有不同。兩種解算器基於壓力的解算器，更接近不可壓縮流體的解方式，適宜低馬赫數的流體。基於密度的求解器，適用於高馬赫數的流體。現在隨著演算法與離散方式的進步，二者解馬赫數的範圍都在擴大。</p><h1 id="references">References</h1><ol type="1"><li><a href="https://web.mit.edu/16.unified/www/SPRING/fluids/Spring2008/LectureNotes/f11.pdf">Fluids – Lecture 11 Notes</a></li><li><a href="https://ocw.mit.edu/courses/2-29-numerical-marine-hydrodynamics-13-024-spring-2003/01e395bcab50dc4cd8f82ebaa045aca3_lecture_notes.pdf">13.024-Numerical Methods in Incompressible Fluid Mechanics</a></li><li><a href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node11.html">Convective Time Derivative</a></li><li><a href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node14.html">Energy Conservation</a></li><li><a href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node15.html">Equations of Incompressible Fluid Flow</a></li><li><a href="https://www.simscale.com/docs/simwiki/cfd-computational-fluid-dynamics/compressible-flow-vs-incompressible-flow/">Compressible Flow vs Incompressible Flow</a></li><li><a href="https://mp.weixin.qq.com/s/_OwJGqOovMjfy8ax42ANOA">针对昨天压力悖论的解释</a><ol type="1"><li>为什么我们会陷入这个悖论？我想很多做不可压缩流体模拟的朋友，平时常用的就四组方程：一个连续性方程，三个动量方程。连续性方程里面有一个密度和三个速度，带来四个未知量；三个动量方程带来一个新的未知量——压力。四个方程，五个未知量，怎么求解？所以我们通常会给定密度。这样方程组就封闭了。但是昨天我跟你说，要考虑状态方程，这就多了一个方程，但是你还是认为没有多出任何未知量（温度、密度都给定）。这样方程组就超定了，于是产生矛盾。实际上，加入状态方程后，密度就不能再认为恒定了。所以这可能是一个思维定势的坑。</li></ol></li><li><a href="https://mp.weixin.qq.com/s/Z0K06ziGHhbbhVNLpTv2cg">openFOAM案例：可压缩流体模拟</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>CFD</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Southwest monsoon | 西南季風</title>
+    <link href="/2024/11/14/southwest-monsoon/"/>
+    <url>/2024/11/14/southwest-monsoon/</url>
+    
+    <content type="html"><![CDATA[<h1 id="西南季風">西南季風</h1><p>亞洲南部的季風，主要是由信風帶的季節移動而引起的，但也有<strong>海陸熱力差異的影響</strong>，以印度季風為例，冬季信風帶南移，赤道低壓移到南半球，亞洲大陸冷高壓強大，高壓南部的東北風就成為亞洲南部的冬季風。夏季信風帶北移，赤道低壓移到北半球，再加上大陸熱力因子的作用，低壓中心出現在印度半島。而此時正是南半球的冬季，澳大利亞是一個低温高壓區，氣壓梯度由南向北，南來氣流跨越赤道後，受北半球地轉偏向力的作用，形成西南風，這就是南亞的夏季風。</p><p>在季風的影響下，南亞也是冬幹夏濕，但是它和<strong>東亞季風</strong>有一個明顯差別，即<strong>南亞夏季風</strong>比冬季風強。這是因為冬季亞洲南部遠離蒙古-西伯利亞高壓中心，並有西藏高原的阻擋，再加上印度半島面積較小，緯度較低，海陸之間的氣壓梯度較弱，因此冬季風不強。相反，夏季印度半島氣温特別高，是熱低壓中心所在，它與南半球副高之間的氣壓梯度大，因此南亞的夏季風強於冬季風。</p><p><strong>西南季風，屬季風亞洲中的一個季風</strong>。主要盛行於6～8月。盛行於南亞、東南亞及部分東亞一帶，為風向西南的夏季季風。西南季風來<strong>自於低空的越赤道氣流</strong>。這種氣流在亞洲被稱為「西南季風」。西南季風的到來，代表着季節的轉換，由冬季正式轉為夏季。</p><p>夏季時，西南季風北上為東亞和東南亞國家帶來豐富的降水，造成許多國家的主要水資源來源為西南季風，如 造成東南亞的菲律賓群島及中南半島的熱帶季風氣候，也因此造成水患。</p><p>位在南亞的印度及孟加拉因地形影響形成地形雨，在印度德干高原西部和喜馬拉雅山南部降下豪大雨，造成印度乞拉朋吉為全球降水量最多的地區之一。 於東亞的臺灣也受此季風對每年5～6月的梅雨季造成影響。</p><ul><li>西南季風的源頭是東非馬達加斯加島附近的索馬利亞噴流，空間尺度橫跨印度洋一直到太平洋西部，範圍非常大而且持續的時間是以月來計算的。</li></ul><p><img src="https://i.imgur.com/3qu9wAZ.png" width="600" /></p><h2 id="北半球夏季西南季風-建立的時間點">北半球夏季西南季風 建立的時間點</h2><p>北半球夏季西南季風 建立的時間點，<strong>因為西南季風的建立不但代表了季節的轉換，由冬天型態正式轉變成夏天型態</strong>，西南季風建立後會夾帶大量的暖濕水氣北上進入亞洲陸地，對於台灣的梅雨降雨狀況具有關鍵性的影響。所謂的「季風」是因為地球表面海洋和陸地的比熱不同，加上太陽直射地球表面的區域隨著地球公轉而出現季節性的南北移動，而形成大範圍的海陸溫度差，因此導致大尺度範圍空氣流動的結果。</p><p>西南季風達到正式的「ON-SET」有一個比較明確的定義型態，<strong>共有3支氣流共同合成西南季風</strong>。最主要的一支就是前面提到的，</p><ul><li>遠從東非的索馬利亞噴流跨過赤道以及北印度洋後，再傳播到中南半島以及南海的大尺度氣流，</li><li>另外兩支較小的氣流分別是來自印尼附近的跨赤道氣流以及菲律賓東方順著太平洋高壓邊緣北上的氣流，</li></ul><p><strong>當這3支氣流到齊的時候，就是西南季風正式建立的時間點</strong>。</p><p><img src="https://i.imgur.com/BO29vIu.png" /></p><h2 id="南亞夏季季風是如何形成的">南亞夏季季風是如何形成的？</h2><ul><li>位於<strong>南半球的南印度洋副熱帶高壓</strong>（「馬斯克林高壓」）[A]隨著季節向北移近赤道。馬斯克林高壓的低層氣流會以逆時針方向流出，結合了「南印度洋東南信風」 [B]之後，便穿過赤道，形成「過赤道流」[C]。</li><li>由於南亞季風區的西邊是非洲大陸，過赤道流受到東非地形的影響，被侷限在東非以東，於是形成流速極快的「<strong>索馬利噴流</strong>」。這股索馬利噴流因為受到科氏力影響，會進而轉成西南風，這就是印度半島的「<strong>西南季風</strong>」[D]。正因為此處的西南季風來自強勁的索馬利噴流，所以南亞的夏季季風相當旺盛。</li><li>印度半島的北方是高聳的青康藏高原，高原不但阻擋了來自北邊的其他天氣系統，使它們無法影響印度半島夏季的氣候，也使得西南季風無法往北延伸，僅止於高原以南。<strong>青康藏高原的存在，正是造成南亞季風區西南季風風向穩定不受影響的原因</strong>。</li><li>青康藏高原高層地表的溫度較鄰近地區的氣溫高出許多，因而在高層形成「<strong>南亞高壓</strong>」[E]。<strong>南亞高壓的存在代表高層的輻散，有利於維持高原南邊的低層低壓。低層的低壓槽吸引了大範圍由南向北的氣流，在經科氏力的作用轉成西南風，這就是西南季風存在的原因之一</strong>。西南季風從南方的海洋帶來充分的水汽，造成南亞地區夏季大量的降水，也就是雨季的來臨。降水的過程會釋放大量潛熱，加熱高層大氣，更有助於高壓的維特。</li><li>印度半島的高層大氣因北邊南亞高壓的存在，輻散的北風受科氏力影響而轉為東風，形成強盛的熱帶東風噴流。</li></ul><p><img src="https://i.imgur.com/wAkWQde.png" width="400" /></p><h2 id="東亞夏季季風是如何形成的">東亞夏季季風是如何形成的？</h2><ul><li>位於南半球的南太平洋副熱帶高壓（「<strong>澳大利亞高壓</strong>」）[O]隨著季節向北移近赤道。澳大利亞高壓的低層氣流同樣會以逆時針方向流出，結合「南太平洋東南信風」[P]，穿過赤道，形成「過赤道流」[Q]，流向亞洲大陸的低壓槽。過赤道流受科氏力的影響，會轉為西南風，形成東亞夏季季風區的西南季風[R]。因為澳大利亞高壓並沒有南亞的馬斯克林高壓那麼強，加上東亞的西邊沒有類似東非的地形，所以東亞的過赤道氣流並沒有南亞的索馬利噴流那麼強，這也是<strong>東亞夏季季風不如南亞夏季季風強盛的原因之一</strong>。</li><li>由於陸地東面有個規模不小的「西太平洋副熱帶高壓」[S]，由於西太平洋高壓的存在，東亞季風區東部的風向不單單只有西南風，也常伴隨由太平洋高壓西南方下沈的偏東南風，因此東亞季風不似南亞季風穩定。</li><li>在東亞夏季季風區，海洋位在大陸的東邊和南邊，而且此區地形大為緩和，並沒有類似青康藏高原這種地形的屏障。因此，北方的「中緯度氣團」[T]會南下影響季風區的氣候，造成西南季風和中緯度氣團間形成「梅雨鋒帶」[U]，帶來梅雨，所以此區的降雨情形非常多變化，不似南亞季風區單純──印度半島並沒有梅雨鋒的存在。</li><li>東亞季風區的高層也存在熱帶東風噴流，不過由於沒有青康藏高原持續加熱的影響，高層的熱帶東風噴流也沒有像南亞地區的熱帶東風噴流那麼強。</li></ul><p><img src="https://i.imgur.com/e5AarLw.png" width="400" /></p><h1 id="西南季風爆發"><a href="https://www.mmets.org/?p=1274">「西南季風」爆發 ?!</a></h1><p>到了夏半年，太陽強烈照射亞洲大陸，地面溫度”熱”，空氣隨之上升，形成大型的低壓區，而海洋則較陸地”涼”，氣壓較高。空氣從海洋(高氣壓)流向陸地(低氣壓)，這種海陸熱力差異形成澳門夏季的「西南季風」。</p><p>很多時候，雨量多不多，取決於“水”，而「西南季風」爆發的重要性就是“水汽突然增多”。氣象學上，南海「西南季風」爆發是季節變化的一個轉折點，代表水汽輸送帶進入南海，此時「西南季風」控制南海及華南，華南地區的雲量和降雨都會”明顯”增多。一般來說，「西南季風」在 5 月的第 4、5 候(註：氣候上，1候代表5日；5月第1候，即5月1-5日)進入南海到達華南沿岸。</p><p>「西南季風」和它的水汽輸送帶是一步一步形成的，整個西南季風系統的形成分為 3 個階段，如下：</p><ul><li>南半球的東南信風越過赤道，但受到東非高山地形阻擋，氣流速度增加，進入印度西南面。阿拉伯海可能會出現熱帶氣旋。</li><li>氣流繼續向東推進，進入印度東南面，此時孟加拉灣很大機會出現熱帶氣旋；隨後氣流會進一步接近中南半島後，緬甸、泰國、馬來西亞等進入雨季。</li><li>隨着籠罩華南及南海的副熱帶高壓逐漸“退場”，「西南季風」便可進入南海，到達華南，而它的水汽輸送帶正是澳門降雨的主要水汽來源。</li></ul><p>跟着上述的 3 步曲，大家就可以大概知道「西南季風」爆發時間。若澳門受到低壓槽影響，而「西南季風」同時為低壓槽送上源源不絕的水汽，此時雨量會十分可觀，甚至出現大暴雨。我們必須做好準備、注意防範 !</p><p><img src="https://i.imgur.com/zfpj5zI.png" /></p><h1 id="西南季風-hko"><a href="https://www.hko.gov.hk/tc/education/climate/climate-change/00261-onset-of-southwest-monsoon-end-of-the-fog-season-and-start-of-the-rain-season.html">西南季風 | HKO</a></h1><ul><li>西南季候風<ul><li>季候風形成的主因是大範圍海洋與陸地之間的溫差。踏入四月，太陽逐漸北移，北半球的日照會增多，亞洲大陸上的空氣會比相鄰海洋上的空氣升溫較快。陸地的空氣因而會變得較輕及上升，最終在大陸上形成低壓中心。海洋上的暖濕氣流便會大致流向該低壓中心，導致西南季候風的爆發。圖一為1971至2000年橫瀾島的月平均盛行風向，清楚顯示本港的風向會<strong>在五、六月之間由偏東風轉為西南風</strong>。</li><li><img src="https://i.imgur.com/ispYSwO.png" alt="圖一 1971- 2000年橫瀾島月平均盛行風向" /></li></ul></li><li>霧季的終結<ul><li>香港的<strong>霧季一般由二月開始直至四月左右結束</strong>。溫暖潮濕的海洋空氣平流流經近岸較涼的海面上，氣溫會逐漸降至露點， 水汽便凝結為微小水點而形成霧（一般稱此為平流霧）。由於海水較涼，而其上的空氣較暖，大氣相對穩定，有助將水汽限制於大氣的最低層。隨着季節變化，海水亦慢慢變暖，海面上的大氣變得較不穩定，容易產生對流活動。因此，五月西南季候風的爆發通常亦標誌着霧季的結束。圖二為1971至2000年香港天文台平均每月觀測到有霧的日數，可見五月出現霧的日子並不多，平均少於0.2日。</li><li><img src="https://i.imgur.com/E39hmpo.png" alt="圖二 1971-2000年香港天文台平均每月觀測到有霧的日數。" /></li></ul></li><li>雨季的開始<ul><li>由於西南季候風會<strong>帶來溫暖潮濕的空氣，加上海水升溫，有利對流活動的發展</strong>。若然配合其他有利的氣象條件，如低層輻合或高層輻散，西南季候風有時引致大雨。圖三為1971至2000年香港天文台錄得的月平均雨量，顯示五月份雨量明顯增加，跟西南季候風爆發的時間相互吻合。</li><li><img src="https://i.imgur.com/1Umv5Pn.png" title="fig:" alt="圖三 1971-2000年香港天文台錄得的月平均雨量" /></li></ul></li></ul><h1 id="references">References</h1><ol type="1"><li><a href="https://www.hko.gov.hk/tc/education/climate/climate-change/00261-onset-of-southwest-monsoon-end-of-the-fog-season-and-start-of-the-rain-season.html">西南季候風的爆發:霧季的終結及雨季的開始 | HKO</a></li><li><a href="https://blog.weatherrisk.com/index.php/13-weatherrisk/media/the-news/weather-talk/74-southwest-monsoon-is-big-weapon">西南季風－梅雨鋒面的強大武器</a></li><li><a href="https://www.mmets.org/?p=1274">「西南季風」爆發 ?!</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Meteorology</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Trough Line | 槽線</title>
+    <link href="/2024/11/14/trough-line/"/>
+    <url>/2024/11/14/trough-line/</url>
+    
+    <content type="html"><![CDATA[<h1 id="槽線">槽線</h1><p>槽線是低壓槽內氣流水平輻合最強的地區。通常在槽線附近的天氣變化比較明顯，這種特徵使它在天氣預報中佔據著非常重要的位置。槽線識別方法包括人工識別和自動識別。</p><p>一般來說等壓面上的等位勢高度線（也就是常簡稱的等高線）是這樣的分佈的話，那就說這個區域存在一個低壓槽。</p><p><img src="https://i.imgur.com/zOCTflV.png" width="300" /> <img src="https://i.imgur.com/77Z6L2B.png" /></p><ul><li>當低氣壓呈延長狀，稱為<strong>低壓槽</strong>。在天氣圖上，它會<strong>伴隨著一條槽線</strong>。槽線上的氣壓會較其兩旁氣壓為低。</li></ul><p><img src="https://i.imgur.com/pQQieMF.png" /></p><h1 id="gradient-wind-balance">Gradient Wind Balance</h1><p><img src="https://i.imgur.com/ztlxJHa.png" /></p><p><img src="https://i.imgur.com/bCulgOr.png" /></p><h1 id="references">References</h1><ol type="1"><li><a href="https://www.hko.gov.hk/tc/education/weather/wind-and-pressure/00117-introduction-to-air-pressure-part-ii.html">氣壓的基本知識（二） | HKO</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Meteorology</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Trough | 低壓槽</title>
+    <link href="/2024/11/14/trough/"/>
+    <url>/2024/11/14/trough/</url>
+    
+    <content type="html"><![CDATA[<h2 id="低壓槽">低壓槽</h2><p>低壓槽 (Trough）是從低壓中心延伸出來的狹長區域，經常與鋒伴隨出現。</p><p>受地理環境、季節變化等因素影響，<strong>地面氣壓分佈一般並不均勻</strong>。氣壓較四週為低的地區，稱為低壓區。從<strong>低壓區延伸出來的狹長區域，稱為低壓槽</strong>。有鋒性的槽﹝槽的兩邊有冷暖氣團的差異﹞，視乎槽的移動方向，稱為冷鋒、暖鋒或靜止鋒。在華北地區，尤其在冬季，低壓槽通常以冷鋒形式出現，由東北向西南伸展，自西向東移動。在華南地區，低壓槽通常為東西走向，自北向南移動，推向南海北部。冬天鋒性較強，在天氣圖上多以冷鋒形態出現。到春天及初夏鋒性較弱，五、六月便是華南低壓槽的旺季。這些月份，夏天西南季候風正向北進入中國內陸，其前沿的位置往往就是在槽線上，<strong>故這時候的低壓槽也被稱為季風槽（monsoon trough）</strong>。</p><p>人望高處，水向低流。空氣則朝氣壓低的地區走。不同的氣流在低壓槽上匯聚，空氣被迫上升，空氣中的水汽凝結成雲及雨。在適當條件下更可能有雷暴發展。</p><p>低壓槽伸延數百公里，但惡劣天氣主要是來自當中面積數十平方公里的<strong>對流細胞（convective cells）</strong>，這些細胞的生命史只有短短數小時。故此暴雨警告的有效時間通常不會太長，不像熱帶氣旋警告訊號一掛整天。但如果低壓槽移動緩慢，其盤踞的地區便會經常受新發展的對流細胞影響，惡劣天氣便持續不散，大雨連場，即如六月底七月初香港經歷的情況一樣。</p><p>隨著季節轉換，每逢四至六月，北面(冷)大陸氣團與南面(暖)海洋氣團不時會出現對峙的情況，好像拔河一樣，交界的位置上空氣匯聚上升，大量水汽凝結成雲和雨，地面氣壓低，所以稱為「低壓槽」。如果「低壓槽」移動緩慢或一直停留，就可能造成暴雨。</p><p><img src="https://i.imgur.com/gNhCQU9.png" width="600" /></p><ul><li>低壓槽像一個峽長的山谷</li></ul><figure><img src="https://i.imgur.com/rGYeYlW.png" alt="低壓槽像一個峽長的山谷" width="600" /><figcaption>低壓槽像一個峽長的山谷</figcaption></figure><h1 id="低壓槽與冷鋒">低壓槽與冷鋒</h1><p><strong>低壓槽與冷鋒相似，但冷鋒是由冷暖氣團相遇形成，有明顯的溫度差，而低壓槽南北兩側的溫度差未必明顯</strong>。冷鋒通常穩定向南移動，因此影響香港的惡劣天氣比較短暫，但低壓槽有時移動緩慢。當低壓槽徘徊於某地區時，往往帶來持續降雨，釀成水災。</p><p>春季開始，來自陸地的冷空氣減弱，來自海洋的溫暖潮濕空氣變得活躍並進入內陸，兩者相遇形成低壓槽。空氣由四周流入低壓槽，在低壓槽內上升，由於上升時氣壓下降，空氣膨脹降溫，空氣內的水汽凝結形成棉花般的積雲。當積雲向上發展至對流層頂時，稱為積雨雲。</p><ul><li><strong>當低壓槽在內陸時</strong>，香港天氣溫暖潮濕，吹和緩南至西南風。隨著低壓槽迫近，風勢轉為清勁，離岸及高地可能達強風以上，天文台需要發出強烈季候風信號。</li><li><strong>當低壓槽橫過香港時</strong>，天色轉暗，風向由南至西南轉為西北並出現猛烈陣風，可將貨櫃等大型物件吹倒。漁民把這種現象稱為「西北石湖」或「打石湖」，對海面漁船及小艇構成危險。狂風過後，氣溫明顯下降，並開始有雨。</li></ul><p>假如上升氣流非常活躍，暖空氣上升至大氣高層時，由於氣溫低於0度，空氣中的水汽結成冰晶。冰晶由於重量而下墜，但被上升氣流再次推到大氣高層，更多的水汽凝結，冰晶體積增大變成冰粒。這個過程不斷重覆，直至上升氣流消失或無法承受冰粒的重量時，冰粒便降到地面，稱為雹。</p><h1 id="examples">Examples</h1><h2 id="低壓槽本周後期殺到-料為港帶來今年第一場雷暴-2023-03-22"><a href="https://std.stheadline.com/realtime/article/1913756/%E5%8D%B3%E6%99%82-%E6%B8%AF%E8%81%9E-%E4%BD%8E%E5%A3%93%E6%A7%BD%E6%9C%AC%E5%91%A8%E5%BE%8C%E6%9C%9F%E6%AE%BA%E5%88%B0-%E6%96%99%E7%82%BA%E6%B8%AF%E5%B8%B6%E4%BE%86%E4%BB%8A%E5%B9%B4%E7%AC%AC%E4%B8%80%E5%A0%B4%E9%9B%B7%E6%9A%B4">低壓槽本周後期殺到 料為港帶來今年第一場雷暴 2023-03-22</a></h2><p>天文台指低壓槽將於本周後期殺到，料為港帶來今年第一場雷暴。</p><p>踏入春季，低壓槽開始變活躍，不時影響華南地區。除了帶來驟雨，有時更可能觸發狂風雷暴等強對流天氣。天文台今日（22日）發表一篇題為「低壓槽靠近，天氣不穩定」的天氣隨筆，指最新預測顯示，位於華南北部的低壓槽會在本周後期移向華南沿岸，廣東地區天氣會漸趨不穩定，該低壓槽亦有機會為本港帶來今年第一場雷暴。</p><p>文章中提到，從預報圖看到，與低壓槽相關的雨區會在周五（24日）逐漸靠近廣東沿岸。按照現時電腦模式顯示，預計周五的雨區主要集中在華南內陸。然而春季低壓槽的前沿偶有颮線形成。即使低壓槽仍在較為內陸的位置，在其前沿發展的颮線有可能已經提前抵達沿岸地區。倘若情況如此，本港周五稍後可能會受狂風雷暴影響。</p><p><img src="https://i.imgur.com/a8s16YX.png" /></p><ul><li>電腦模式預測星期五（3月24日）的天氣圖，預測與 <strong>低壓槽(藍色粗線)</strong> 相關的降雨主要集中在內陸地區。</li><li>天文台又預料低壓槽會在周六進一步靠近沿岸地區，屆時本港出現「顯著降雨」的概率為「高」，<strong>屆時若來自北方的冷空氣較強，低壓槽有機會發展為一道微弱冷鋒</strong>。受隨後的東北季候風影響，本港下周初氣溫稍為下降，仍然有雨。</li></ul><h2 id="季風低壓和熱帶氣旋-hko"><a href="https://www.hko.gov.hk/tc/education/weather/meteorology-basics/00491-monsoon-lows-and-tropical-cyclones.html">季風低壓和熱帶氣旋 | HKO</a></h2><p><strong>當地面天氣圖出現一個氣壓數值較四周低的區域，而能夠分析出閉合的等壓線，該區域便能稱為低壓區</strong>。低壓區可以按其特徵再加以分類，如<strong>季風低壓</strong>、<strong>鋒面低壓</strong>等。今期便和大家談一談季風低壓。</p><p>季風低壓原本是形容夏季影響北印度洋及孟加拉灣的低壓系統，其覆蓋範圍一般較大，閉合等壓線的直徑可達 1000 公里。結構方面，季風低壓最大風速的區域一般位於其外圍。受其他位於附近的天氣系統影響，大風區域可能只集中在季風低壓的某個方向，且風速可達烈風程度。至於在季風低壓中心附近的風速和對流發展相對較弱。季風低壓這個用語其後擴展至形容其他地區(如南海、西北太平洋和澳洲)有相似特徵的低壓系統。</p><p>當季風低壓的中心開始出現持續的對流活動和風速上升的情況，便有機會發展為熱帶氣旋。需要留意：<strong>並不是所有季風低壓都具備發展為熱帶氣旋的條件，如周圍的水氣供應不足，又或遇上強烈的垂直風切變(即大氣高層和低層的風向或風速出現明顯差異)，季風低壓便難以發展為熱帶氣旋</strong>。</p><p>在<strong>北半球的夏季</strong>，衛星雲圖上有時會出現一條滿佈深厚雲團、連綿數千公里長的帶狀區域（附圖黃色虛線圈），氣象學上稱為「<strong>熱帶輻合帶</strong>」，而位於南海至印度洋的一段又叫做「<strong>季風槽</strong>」。由於南北兩側分別吹著西南季風及東北信風這兩支「對頭風」（見圖藍色箭頭），季風槽上容易爆發對流活動，並發展成低壓區，統稱為季風低壓。</p><p>雖然季風低壓與成熟熱帶氣旋兩者都有旋轉環流，但結構上有明顯差別（附表）。至於前者會否演變成後者的問題，就要視乎大氣環境（垂直風場差異、水氣輸送、海水溫度、高空輻散等）是否配合。2016年8月17日早上在廣東西部沿岸海域生成的熱帶低氣壓便是一個成功演變的例子。</p><p><img src="https://i.imgur.com/w5S5PKr.png" /> <img src="https://i.imgur.com/DhvkFg1.png" width="400" /></p><h2 id="當東北季候風遇上廣闊低壓槽-hko-星期六-2024年9月21日"><a href="https://www.hko.gov.hk/tc/%E5%A4%A9%E6%B0%A3%E9%9A%A8%E7%AD%86/108944/%E7%95%B6%E6%9D%B1%E5%8C%97%E5%AD%A3%E5%80%99%E9%A2%A8%E9%81%87%E4%B8%8A%E5%BB%A3%E9%97%8A%E4%BD%8E%E5%A3%93%E6%A7%BD">當東北季候風遇上廣闊低壓槽 | HKO | 星期六, 2024年9月21日</a></h2><p>本港經歷有記錄以來最熱的中秋節後，這兩日迎來了明顯的天氣變化。</p><ul><li>天氣圖顯示一道廣闊低壓槽正影響南海北部至台灣以東海域一帶（圖一），</li><li>而低壓槽上出現多個低壓區。</li><li>其中一個低壓區今日向西橫過本港北部（圖二），</li><li>但其中心風力及對流較弱，並未達到熱帶氣旋強度。</li></ul><p>受與該低壓區相關的雨帶影響，大美督曾短暫吹東北強風，中午前後本港亦有大驟雨及狂風雷暴，多處地區錄得超過50毫米雨量，港島部分地區雨量超過70毫米，天文台亦先後發出黃色及紅色暴雨警告信號。</p><p><img src="https://i.imgur.com/aKUEoYH.png" alt="圖一 9月21日8時地面天氣圖顯示一道廣闊低壓槽正影響南海北部至台灣以東海域一帶。而華中有相當緊密的氣壓梯度。" width="600" /> <img src="https://i.imgur.com/czXPlSE.png" alt="圖二 雷達圖像顯示一個較弱的低壓區今早向西橫過本港北部，其相關雨帶在中午前後為本港帶來大驟雨及狂風雷暴。" width="600" /> <img src="https://i.imgur.com/QDHVYSW.png" alt="圖三 不同電腦模式預測9月23日下午8時的地面天氣圖。" width="600" /></p><h1 id="references">References</h1><ol type="1"><li><a href="https://www.metwarn.com/news/posts/2021/02/%E8%A5%BF%E9%A2%A8%E6%A7%BD%E4%B8%8D%E6%98%AF%E5%A4%A9%E6%B0%A3%E5%A0%B1%E5%91%8A%E6%8F%90%E5%88%B0%E7%9A%84%E4%BD%8E%E5%A3%93%E6%A7%BD%EF%BC%81/">西風槽不是天氣報告提到的低壓槽！</a></li><li><a href="https://www.hko.gov.hk/tc/education/weather/meteorology-basics/00001-what-is-a-trough.html">低壓槽 | HKO</a></li><li><a href="https://www.mmets.org/?p=992">低壓槽是甚麼?</a></li><li><a href="https://www.hko.gov.hk/tc/blog/00000142.htm">季風低壓知多少? | HKO</a></li><li><a href="https://www.weather.org.hk/news/%E4%BD%8E%E5%A3%93%E6%A7%BD%E8%88%87%E5%A4%A9%E6%B0%A3/">低壓槽與天氣</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Meteorology</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Westerly Trough | 西風槽</title>
+    <link href="/2024/11/14/westerly-trough/"/>
+    <url>/2024/11/14/westerly-trough/</url>
+    
+    <content type="html"><![CDATA[<h1 id="西風槽">西風槽</h1><ul><li>Westerlies 西風帶</li><li>westerly trough 西風槽</li><li>westerly ridge 西風脊</li></ul><p>首先我們要知道，地球上的空氣並不是靜止的，而是不停地流動。空氣流動的速度並不平均，流動方向亦會隨著時間及地點而改變。<strong>高空擾動是大氣高層氣流方向出現顯著變化的區域</strong>。</p><p>由於地球近赤道地區空氣受熱膨脹上升繼而流向兩極，加上地球自轉所產生的科里奧利力（Coriolis force）使在北半球移動的空氣向右偏移（在南半球移動的空氣則向左偏移），中緯度地區上空普遍吹西風（稱為西風帶），即是高空的氣流大致由西向東流動。 - 這些氣流有時彎曲地流動， - 在北半球沿氣流方向向左拐的地方便是「槽」，或稱為「<strong>西風槽</strong>」。 - 相反，向右拐的地方便是「脊」，或「<strong>西風脊</strong>」。</p><p>圖一顯示2015年11月21日上午8時約離地面五公里的高空觀測數據。藍線顯示高空流線，沿氣流方向向左拐彎突轉向(由藍色箭咀至黃色箭咀)的地方便是西風槽的槽軸（紅色虛線顯示）。西風槽的前方（黃色陰影顯示）普遍吹西南風，其後方普遍吹西北風（藍色箭咀顯示）。從與圖一相同時間的可見光及紅外光合併衛星雲圖可見（圖二），位於西風槽的前方水汽相對較多，雲團較為厚實，而槽後方的雲層則相對稀薄。一般而言，西風槽的前方有利低層空氣往上升，該區的大氣相對不穩定，較易產生雲和雨，甚至是雷暴，而槽的後方空氣由高空往下沉，大氣相對穩定，有利出現晴朗的天氣。</p><figure><img src="https://i.imgur.com/U6AMW53.png" alt="圖一 2015年11月21日上午8時在500百帕的高空觀測數據" width="400" /><figcaption>圖一 2015年11月21日上午8時在500百帕的高空觀測數據</figcaption></figure><p>受到不同大小的天氣系統影響，大氣的流動可以非常複雜，高空擾動有時亦會發生在地球較低緯度上空的偏東氣流中（特別在夏季）。一般來說，高空擾動代表附近有機會出現不穩定的天氣，所以分析高空擾動及估計其動向對預測天氣尤為重要。</p><figure><img src="https://i.imgur.com/udPgc1w.png" alt="圖二 跟圖一相同時間的可見光及紅外光合併衛星雲圖" width="400" /><figcaption>圖二 跟圖一相同時間的可見光及紅外光合併衛星雲圖</figcaption></figure><figure><img src="https://i.imgur.com/foKhfuJ.png" alt="高空擾動對大氣環流的影響。藍色曲線代表西風帶的流線，其向南的大幅波動稱為西風槽，而紅色虛線標示槽軸的位置。槽軸前（以東）的風速較高，氣流不穩定甚至會形成急流，有利該區下方空氣向上抬升。至於槽軸後（以西）的區域，一般會出現下沉氣流。" /><figcaption>高空擾動對大氣環流的影響。藍色曲線代表西風帶的流線，其向南的大幅波動稱為西風槽，而紅色虛線標示槽軸的位置。槽軸前（以東）的風速較高，氣流不穩定甚至會形成急流，有利該區下方空氣向上抬升。至於槽軸後（以西）的區域，一般會出現下沉氣流。</figcaption></figure><h1 id="西風槽低壓槽">西風槽/低壓槽</h1><p>西風槽不是天氣報告提到的低壓槽！大氣中層的西風槽與天氣報告經常提到的低壓槽不同，西風槽必定會順著西風帶自西向東移動，地面則未必出現兩股氣流匯聚，可以是受單一氣流影響。</p><p>西風槽向東南移動時代表正在增強，向東北移動時則代表減弱，向東移動代表強度維持。西風槽槽軸左邊是下沉氣流，代表好天區域，而西風槽槽軸右邊則代表上升氣流，有利對流發展。</p><p>而低壓槽則代表兩股氣流匯聚，對流主要在兩股氣流輻合之處發展。另外，低壓槽可以向西移動，移動規律與西風槽有分別。西風槽或低壓槽任何一個出現已可導致對流發展，不過兩者同時出現時對流發展會更為旺盛。</p><h2 id="低壓槽">低壓槽</h2><h1 id="references">References</h1><ol type="1"><li><a href="https://www.hko.gov.hk/tc/education/weather/meteorology-basics/00478-what-is-upperair-disturbance.html">甚麼是高空擾動？| HKO</a></li><li><a href="https://www.hko.gov.hk/tc/education/weather/rain/00549-rainstorm-development-mechanisms.html">淺談香港的暴雨產生機制 | HKO</a></li><li><a href="https://www.metwarn.com/news/posts/2021/02/%E8%A5%BF%E9%A2%A8%E6%A7%BD%E4%B8%8D%E6%98%AF%E5%A4%A9%E6%B0%A3%E5%A0%B1%E5%91%8A%E6%8F%90%E5%88%B0%E7%9A%84%E4%BD%8E%E5%A3%93%E6%A7%BD%EF%BC%81/">西風槽不是天氣報告提到的低壓槽！</a></li><li><a href="https://www.hko.gov.hk/tc/education/weather/meteorology-basics/00001-what-is-a-trough.html">低壓槽 | HKO</a></li><li><a href="https://www.mmets.org/?p=992">低壓槽是甚麼?</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Meteorology</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>WRF | MPAS Output for WRF IC/BC</title>
     <link href="/2024/11/13/WRF-MPAS-as-ICBC/"/>
     <url>/2024/11/13/WRF-MPAS-as-ICBC/</url>
@@ -1161,9 +1256,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>gnu</tag>
+      
+      <tag>Installation</tag>
       
       <tag>DA</tag>
       
@@ -1377,11 +1472,11 @@
     
     <tags>
       
-      <tag>Spack</tag>
-      
       <tag>MPAS</tag>
       
       <tag>DA</tag>
+      
+      <tag>Spack</tag>
       
       <tag>Spack-Stack</tag>
       
@@ -1408,15 +1503,15 @@
     
     <tags>
       
-      <tag>ecFlow</tag>
-      
-      <tag>Spack</tag>
+      <tag>Installation</tag>
       
       <tag>Micromamba</tag>
       
-      <tag>Conda</tag>
+      <tag>Spack</tag>
       
-      <tag>Installation</tag>
+      <tag>ecFlow</tag>
+      
+      <tag>Conda</tag>
       
     </tags>
     
@@ -1466,9 +1561,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
       <tag>Pnetcdf</tag>
       
@@ -1597,11 +1692,11 @@
     
     <tags>
       
-      <tag>Spack</tag>
-      
       <tag>Installation</tag>
       
       <tag>MPAS</tag>
+      
+      <tag>Spack</tag>
       
       <tag>Intel</tag>
       
@@ -1716,7 +1811,7 @@
   
   
   <entry>
-    <title>The orographic gravity wave drag (GWDO)</title>
+    <title>NWP | The orographic gravity wave drag (GWDO)</title>
     <link href="/2024/05/31/NWP_gwdo/"/>
     <url>/2024/05/31/NWP_gwdo/</url>
     
@@ -1786,9 +1881,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -1813,9 +1908,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -1923,9 +2018,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -1950,9 +2045,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -1977,9 +2072,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -2004,9 +2099,9 @@
     
     <tags>
       
-      <tag>Micromamba</tag>
-      
       <tag>conda</tag>
+      
+      <tag>Micromamba</tag>
       
     </tags>
     
@@ -3040,8 +3135,6 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>NWP</tag>
       
       <tag>gnu</tag>
@@ -3051,6 +3144,8 @@
       <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     

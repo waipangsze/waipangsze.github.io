@@ -1,0 +1,948 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Governing Equations The equations that govern the fluid flow are based on the conservation laws of a fluid’s physical properties. The basic equations are the three laws of conservation1:  Conservation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CFD | Incompressible and Compressible">
+<meta property="og:url" content="https://waipangsze.github.io/2024/11/15/compression-Incompression/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Governing Equations The equations that govern the fluid flow are based on the conservation laws of a fluid’s physical properties. The basic equations are the three laws of conservation1:  Conservation">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/XwL79J8.png">
+<meta property="og:image" content="https://i.imgur.com/zaf58vA.png">
+<meta property="og:image" content="https://i.imgur.com/GkV6pMK.png">
+<meta property="og:image" content="https://i.imgur.com/6FStEBC.png">
+<meta property="og:image" content="https://i.imgur.com/iznmeSr.png">
+<meta property="og:image" content="https://i.imgur.com/RjdjunO.png">
+<meta property="og:image" content="https://i.imgur.com/rDx2DHd.png">
+<meta property="og:image" content="https://i.imgur.com/qeDj31C.png">
+<meta property="og:image" content="https://i.imgur.com/dND1Epn.png">
+<meta property="og:image" content="https://i.imgur.com/HL8RfHp.png">
+<meta property="og:image" content="https://i.imgur.com/3s6rOru.png">
+<meta property="og:image" content="https://i.imgur.com/fuChsqX.png">
+<meta property="article:published_time" content="2024-11-15T02:32:00.000Z">
+<meta property="article:modified_time" content="2024-11-15T09:09:41.459Z">
+<meta property="article:author" content="wpsze">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/XwL79J8.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CFD | Incompressible and Compressible - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitor</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CFD | Incompressible and Compressible"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-11-15 10:32" pubdate>
+          November 15, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CFD | Incompressible and Compressible</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="governing-equations">Governing Equations</h1>
+<p>The equations that govern the fluid flow are based on the conservation laws of a fluid’s physical properties. The basic equations are the three laws of conservation1:</p>
+<ul>
+<li>Conservation of Mass: <strong>Continuity Equation</strong></li>
+<li>Conservation of Momentum: <strong>Navier Stokes Equation</strong></li>
+<li><strong>Equation of state</strong></li>
+<li>Conservation of Energy: First Law of Thermodynamics or <strong>Energy Equation</strong>
+<ul>
+<li>An additional enthalpy equation from thermodynamics is required that includes a dissipation term and accounts for temperature changes during flow when heat or any other energy exchange is involved.Convective and conjugate heat transfer simulations involve thermal energy transfers for accurate CFD analysis. Stress-strain relations for compressible fluids can further complicate equations of compressible flow.</li>
+</ul></li>
+</ul>
+<h2 id="equations">Equations</h2>
+<p>Conservation of Mass and Momentum, <span class="math display">\[
+\begin{align*}
+\frac{D(\,)}{Dt} &amp;= \frac{\partial(\,)}{\partial t}+V\cdot\nabla(\,) \tag{0} \\
+\dfrac{D \rho}{D t} + \rho (\nabla \cdot \vec{v}) &amp;= 0 \tag{1}\\
+\rho \dfrac{D\vec{v}}{D t} &amp;= -\nabla p + \mu \nabla^2 \vec{v} + \rho \vec{g}  \tag{2}\\
+\end{align*}
+\]</span></p>
+<p>Equation of state, <span class="math display">\[
+\begin{align*}
+P &amp;= P(\rho, T) \qquad (e.g. PV &amp;= nRT) \tag{3}\\
+\end{align*}
+\]</span></p>
+<p>Energy Equation, <span class="math display">\[
+\begin{align*}
+dE_t &amp; = dQ + dW \tag{4}\\
+\end{align*}
+\]</span></p>
+<p>where <span class="math inline">\(dQ\)</span> is the heat added to the system, <span class="math inline">\(dW\)</span> is the work done on the system, and <span class="math inline">\(dE_t\)</span> is the increment in the total energy of the system. One of the common types of energy equation is:</p>
+<p><span class="math display">\[
+\begin{align*}
+\displaystyle \dfrac{D{\cal E}}{Dt} &amp;= - \frac{p}{\rho}\,\nabla\cdot{\bf v} + \frac{\chi}{\rho} +\frac{\nabla\!\cdot( \kappa\,\nabla T)}{\rho} \tag{5} \\
+\displaystyle \chi &amp;= \frac{\partial v_i}{\partial x_j} d_{ij} = 2 \mu \left(e_{ij} e_{ij} - \dfrac{1}{3} e_{ii} e_{jj} \right) = \mu \left( \dfrac{\partial v_i}{\partial x_j}\dfrac{\partial v_i}{\partial x_j} + \dfrac{\partial v_i}{\partial x_j}\dfrac{\partial v_j}{\partial x_i} - \dfrac{2}{3} \dfrac{\partial v_i}{\partial x_i}\dfrac{\partial v_j}{\partial x_j} \right)
+\end{align*}
+\]</span></p>
+<p>According to the previous equation, the internal energy per unit mass of a co-moving fluid element evolves in time as a consequence of work done on the element by pressure as its volume changes, viscous heat generation due to flow shear, and heat conduction.</p>
+<h1 id="incompressible-flow">Incompressible flow</h1>
+<p>In most situations of general interest, the flow of a conventional liquid, such as water, is incompressible to a high degree of accuracy. A fluid is said to be incompressible when the mass density of a co-moving volume element does not change appreciably as the element moves through regions of varying pressure. In other words, <strong>for an incompressible fluid, the rate of change of $ $ following the motion is zero</strong>: that is,</p>
+<p><span class="math display">\[
+\displaystyle \frac{D\rho}{Dt} = 0
+\]</span></p>
+<p>In this case, the continuity equation reduces to <span class="math display">\[
+\displaystyle \nabla\cdot{\bf v} = 0
+\]</span></p>
+<p>We conclude that, as a <strong>consequence of mass conservation</strong>,</p>
+<div class="note note-primary">
+            <p>An <strong>incompressible fluid must have a divergence-free</strong>, or solenoidal, velocity field.</p>
+          </div>
+<p>This immediately implies that <strong>the volume of a co-moving fluid element is a constant of the motion</strong>. In most practical situations, the initial density distribution in an incompressible fluid is uniform in space. Hence, it follows from Equation (1.76) that the density distribution remains uniform in space and constant in time. In other words, we can generally treat the density, $ $ , as a uniform constant in incompressible fluid flow problems.</p>
+<p><img src="https://i.imgur.com/XwL79J8.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/zaf58vA.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/GkV6pMK.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/6FStEBC.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/iznmeSr.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/RjdjunO.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h1 id="compressible-flow">Compressible flow</h1>
+<p>A compressible flow is a flow in which the fluid density <span class="math inline">\(\rho\)</span> varies significantly within the flowfield. Therefore, <span class="math inline">\(\rho(x, y, z)\)</span> must now be treated as a field variable rather than simply a constant. Typically, significant density variations start to appear when the flow Mach number exceeds 0.3 or so. The effects become especially large when the Mach number approaches and exceeds unity.</p>
+<p>In incompressible flow the density ρ does not change.</p>
+<p><img src="https://i.imgur.com/rDx2DHd.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<p>A perfect gas is one whose individual molecules interact only via direct collisions, with no other intermolecular forces present. For such a perfect gas, the properties <span class="math inline">\(P, V, \rho\)</span>, and the temperature <span class="math inline">\(T\)</span> are related by the following <strong>equation of state</strong>,</p>
+<p><span class="math display">\[
+PV = nRT
+\]</span></p>
+<p>where <span class="math inline">\(R\)</span> is the specific gas constant. For air, $R = 287 J⋅kg^{−1}⋅K $.</p>
+<p>The appearance of the temperature <span class="math inline">\(T\)</span> in the equation of state means that it must vary within the flowfield. Therefore, <span class="math inline">\(T(x, y, z)\)</span> must be treated as a new field variable in addition to <span class="math inline">\(\rho(x, y, z)\)</span>. n the moving Control Volume (CV) scenario above, the change in the CV’s volume is not only accompanied by a change in density, but by a change in temperature as well.</p>
+<p>The appearance of the temperature also means that thermodynamics will need to be addressed. So in addition to the <strong>conservation of mass and momentum</strong> which were employed in low speed flows, we will now also need to consider the <strong>conservation of energy</strong>. The following table compares the variables and equations which come into play in the two cases.</p>
+<p><img src="https://i.imgur.com/qeDj31C.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h2 id="mach-number-馬赫數">Mach number 馬赫數</h2>
+<p>儘管氣體是可壓縮的，但在低速時它們所經歷的密度變化可能並不顯著。以空氣為例。圖顯示了以馬赫數為函數的密度變化圖。密度變化表示為 <span class="math inline">\(\rho/\rho_0\)</span>，其中 <span class="math inline">\(\rho_0\)</span> 是零速度（即，零馬赫數）時的空氣密度。</p>
+<figure>
+<img src="https://i.imgur.com/dND1Epn.png" srcset="/img/loading.gif" lazyload alt="以空氣為例。圖顯示了以馬赫數為函數的密度變化圖" width="400" /><figcaption>以空氣為例。圖顯示了以馬赫數為函數的密度變化圖</figcaption>
+</figure>
+<div class="note note-primary">
+            <p>對於<strong>不可壓縮流動，溫度通常保持恆定</strong>。但在<strong>可壓縮流動中，可能會發生顯著的溫度變化，導致能量模式之間的交換</strong> (在計算可壓縮流動時，<strong>必須考慮能量方程式</strong>)</p>
+          </div>
+<p>對於馬赫數高達0.3的情況，密度變化在 <span class="math inline">\(\rho_0\)</span> 的5%以內。因此，在這個範圍內，實際上可以忽略密度變化，並將流動視為不可壓縮的。但是，當馬赫數超過0.3時，變化確實變得顯著，並且在馬赫數為1時，密度變化達到了36.5%。在馬赫數為2時，密度變化高達77%。不可壓縮流和可壓縮流之間的另一個重要區別是由於溫度變化引起的。對於<strong>不可壓縮流動，溫度通常保持恆定</strong>。但在<strong>可壓縮流動中，可能會發生顯著的溫度變化，導致能量模式之間的交換</strong>。這些事實的直接後果是，在計算可壓縮流動時，<strong>必須考慮能量方程式</strong>（這在不可壓縮流動中沒有進行）。此外，為了處理能量模式的交換，就必須理解流動的熱力學。熱力學是一個涵蓋許多主題的龐大主題。</p>
+<h2 id="openfoam案例可壓縮流體模擬"><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Z0K06ziGHhbbhVNLpTv2cg">openFOAM案例：可壓縮流體模擬</a></h2>
+<ul>
+<li>可壓縮流體的求解要點</li>
+</ul>
+<p>物體在可接近音速或超音速飛行的時候，由於速度非常快，空氣就會因為運動被壓縮，它的密度就會改變，也變成了可壓縮流體。與不可壓縮流體相比，可壓縮流體在CFD模擬上有些差異，首先我們來看控制方程式：</p>
+<p><img src="https://i.imgur.com/HL8RfHp.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<div class="note note-primary">
+            <p>可壓縮流體的控制方程式和我們之前遇到的方程式相比，<strong>最大的特性就是它的密度就不再是常數</strong>了。既然密度成為了一個變量，<strong>為了讓方程組封閉。我們就需要一個方程式對密度的變化來描述</strong>，而這個方程式就是<strong>狀態方程式</strong>。狀態方程式就是物質密度隨溫度壓力變化的關係。那麼由於狀態方程式裡又牽涉到溫度了。<strong>描述溫度就需要一個能量方程式</strong>。所以我們求解可壓縮流體都是要同時求解能量方程式。</p>
+          </div>
+<p>求解可壓縮流體的方程，最簡單的一個思路就是採用和先前提到的<strong>不可壓縮流體演算法類似</strong>的方法來求解。例如之前提到的 <code>simple</code> 或 <code>piso</code> 演算法，先解<strong>動量方程得</strong>到 U，再將動量方程與壓力方程式變換，再得到<strong>壓力方程</strong>，得到 P。再透過壓力<strong>修正方程式校正U</strong>，不斷迭代得到求解。與不可壓縮流體相比，可壓縮流體的密度是可變的，我們透過狀態方程式引入這種變化就可以了。<strong>這裡速度與壓力的求解是分開的所以叫分離式求解</strong>，而且推導出來的是壓力方程，因此叫<strong>基於壓力的求解</strong>。</p>
+<p><img src="https://i.imgur.com/3s6rOru.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<p>還有一種方法是<strong>基於密度的求解</strong>，<strong>把狀態方程帶入動量方程，把壓力項變成密度項</strong>。這樣就可以直接把連續性方程式與動量方程式連結起來同時求解。所以這就叫<strong>耦合求解，求解出來的是速度場和密度場</strong>，所以又叫基於密度的求解。把速度場與密度場求出來以後，<strong>再用狀態方程式把壓力場求出來</strong>就可以了。</p>
+<p><img src="https://i.imgur.com/fuChsqX.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<p><strong>openfoam</strong> 裡，基於密度的解算器是 <code>rhoCentralFoam</code> ，基於壓力的解算器是 <code>rhoPimpleFoam</code> 。從數學角度而言兩種解算器原理上都可以求解可壓縮流體流動，但由於演算法與離散格式上的區別，二者的使用範圍稍有不同。兩種解算器基於壓力的解算器，更接近不可壓縮流體的解方式，適宜低馬赫數的流體。基於密度的求解器，適用於高馬赫數的流體。現在隨著演算法與離散方式的進步，二者解馬赫數的範圍都在擴大。</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://web.mit.edu/16.unified/www/SPRING/fluids/Spring2008/LectureNotes/f11.pdf">Fluids – Lecture 11 Notes</a></li>
+<li><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/2-29-numerical-marine-hydrodynamics-13-024-spring-2003/01e395bcab50dc4cd8f82ebaa045aca3_lecture_notes.pdf">13.024-Numerical Methods in Incompressible Fluid Mechanics</a></li>
+<li><a target="_blank" rel="noopener" href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node11.html">Convective Time Derivative</a></li>
+<li><a target="_blank" rel="noopener" href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node14.html">Energy Conservation</a></li>
+<li><a target="_blank" rel="noopener" href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node15.html">Equations of Incompressible Fluid Flow</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.simscale.com/docs/simwiki/cfd-computational-fluid-dynamics/compressible-flow-vs-incompressible-flow/">Compressible Flow vs Incompressible Flow</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/_OwJGqOovMjfy8ax42ANOA">针对昨天压力悖论的解释</a>
+<ol type="1">
+<li>为什么我们会陷入这个悖论？我想很多做不可压缩流体模拟的朋友，平时常用的就四组方程：一个连续性方程，三个动量方程。连续性方程里面有一个密度和三个速度，带来四个未知量；三个动量方程带来一个新的未知量——压力。四个方程，五个未知量，怎么求解？所以我们通常会给定密度。这样方程组就封闭了。但是昨天我跟你说，要考虑状态方程，这就多了一个方程，但是你还是认为没有多出任何未知量（温度、密度都给定）。这样方程组就超定了，于是产生矛盾。实际上，加入状态方程后，密度就不能再认为恒定了。所以这可能是一个思维定势的坑。</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Z0K06ziGHhbbhVNLpTv2cg">openFOAM案例：可压缩流体模拟</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CFD | Incompressible and Compressible</div>
+      <div>https://waipangsze.github.io/2024/11/15/compression-Incompression/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 15, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>November 15, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/14/southwest-monsoon/" title="Southwest monsoon | 西南季風">
+                        <span class="hidden-mobile">Southwest monsoon | 西南季風</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
