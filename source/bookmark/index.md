@@ -21,16 +21,17 @@ date: 2024-09-30 21:26:27
 
 ## 天氣
 
+- [2024 臺大數值天氣預報課程 WRF區域模式實作 (推薦)](https://rain.as.ntu.edu.tw/course_wrf.html)
 - [興趣使然的天氣分析 Mahoshojo](https://www.pixnet.net/pcard/Mahoshojo?utm_source=PIXNET&utm_medium=post_card&utm_term&utm_content=359914739)
 - [风中飞舞](https://blog.perillaroc.wang/)
   - An operations engineer for meteorological information at CEMC/CMA.
 - [香港天文台 天氣隨筆](https://www.hko.gov.hk/tc/forecaster_blog/index.htm)
 - [香港天文台職員編寫的報告及短文](https://www.hko.gov.hk/tc/publica/pubpaper.htm)
-- [香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)
 - [WRF & MPAS-A Support Forum](https://forum.mmm.ucar.edu/)
 - [CUHK Atmospheric Dynamics Group](https://atmosphericdynamicsgroup.github.io/)
 
 - [3‧3 氣團和鋒面](https://www.openclass.chc.edu.tw/storage/53/112/%E8%AA%B2%E7%A8%8B%E8%B3%87%E6%96%99.pdf/4C3VihbySO8GtN9cW21cTbki5D2cQnaVqPRQgaM6.pdf#page=0.00)
+- [香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)
 
 ## CFD
 
@@ -45,6 +46,7 @@ date: 2024-09-30 21:26:27
 ## 數值天氣預報
 
 - [WRF-ARW Modeling System](https://github.com/wrf-model/WRF)
+  - [WRF 使用手冊](https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/overview.html)
 - [The Model for Prediction Across Scales (MPAS)](https://mpas-dev.github.io/)
   - MPAS was developed to augment WRF by providing a more effective modeling system for global applications. 
 - [mesh_tools](https://mpas-dev.github.io/MPAS-Tools/stable/mesh_creation.html)
