@@ -118,3 +118,140 @@ integer, parameter :: max_dictionary_size = 82000
 ```
 
 After changing the value of these constants, **metgrid must be recompiled**.
+
+# Hands-on
+
+## MPAS output nc files
+
+File name format of MPAS* and static.nc are,
+
+```console
+MPAS.2024-05-01_00.nc  MPAS.2024-05-01_09.nc  MPAS.2024-05-01_18.nc
+MPAS.2024-05-01_01.nc  MPAS.2024-05-01_10.nc  MPAS.2024-05-01_19.nc
+MPAS.2024-05-01_02.nc  MPAS.2024-05-01_11.nc  MPAS.2024-05-01_20.nc
+MPAS.2024-05-01_03.nc  MPAS.2024-05-01_12.nc  MPAS.2024-05-01_21.nc
+MPAS.2024-05-01_04.nc  MPAS.2024-05-01_13.nc  MPAS.2024-05-01_22.nc
+MPAS.2024-05-01_05.nc  MPAS.2024-05-01_14.nc  MPAS.2024-05-01_23.nc
+MPAS.2024-05-01_06.nc  MPAS.2024-05-01_15.nc  MPAS.2024-05-02_00.nc
+MPAS.2024-05-01_07.nc  MPAS.2024-05-01_16.nc  static.nc
+MPAS.2024-05-01_08.nc  MPAS.2024-05-01_17.nc  
+```
+
+{% note primary %}
+**MPAS.2024-05-01_00.nc**
+{% endnote %}
+
+## WRF metgrid
+
+```namelist
+&metgrid
+ constants_name = 'mpas:static.nc',
+ fg_name = 'mpas:MPAS',
+ io_form_metgrid = 2, 
+ opt_metgrid_tbl_path = './'
+/
+```
+
+Note: There is no ungrid part.
+
+In WPS,
+
+- [WPS/metgrid/src/process_domain_module.F](https://github.com/wrf-model/WPS/blob/335c76a111f84503e8b963abaf273ea8053645bb/metgrid/src/process_domain_module.F#L764)
+
+```fortran
+         if (index(input_name, 'mpas:') == 1) then
+            call process_mpas_fields(input_name, do_const_processing, temp_date, fg_data, got_this_field, &
+                                     landmask, process_bdy_width, &
+                                     u_field, v_field, &
+                                     dom_dx, dom_dy, ...... )
+```
+
+e.g. log file
+
+```log
+Processing domain 1 of 2
+    mpas:static.nc
+ Processing 2024-05-01_00
+    mpas:MPAS
+ Processing 2024-05-01_03
+    mpas:MPAS
+ Processing 2024-05-01_06
+    mpas:MPAS
+Processing domain 2 of 2
+    mpas:static.nc
+ Processing 2024-05-01_00
+    mpas:MPAS
+ Processing 2024-05-01_03
+    mpas:MPAS
+ Processing 2024-05-01_06
+    mpas:MPAS
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!  Successful completion of metgrid.  !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+```
+
+## WRF real/wrf
+
+- SIZE MISMATCH: num_metgrid_levels --> 56 (default of MPAS)
+
+```log
+d01 2024-05-01_00:00:00  Yes, this special data is acceptable to use: OUTPUT FROM METGRID V4.3
+d01 2024-05-01_00:00:00  Input data is acceptable to use: met_em.d01.2024-05-01_00:00:00.nc
+ metgrid input_wrf.F first_date_input = 2024-05-01_00:00:00
+ metgrid input_wrf.F first_date_nml = 2024-05-01_00:00:00
+d01 2024-05-01_00:00:00  input_wrf.F: SIZE MISMATCH:  namelist num_metgrid_levels           =           34
+d01 2024-05-01_00:00:00  input_wrf.F: SIZE MISMATCH:  input file BOTTOM-TOP_GRID_DIMENSION  =           56
+```
+
+- p_top_requested < grid%p_top
+
+```log
+rsl.error.0020:25:p_top_requested < grid%p_top possible from data
+rsl.out.0016:31: p_top_requested =    1000.00000    
+rsl.out.0016:32: allowable grid%p_top in data   =    1281.68921    
+rsl.out.0016:35:p_top_requested < grid%p_top possible from data
+
+-------------- FATAL CALLED ---------------
+FATAL CALLED FROM FILE:  <stdin>  LINE:    1219
+p_top_requested < grid%p_top possible from data
+-------------------------------------------
+```
+
+How? try to set `p_top_requested = 1300`. (leave homework)
+
+### (done) `wrf.exe` gives 
+
+```log
+d01 2024-05-01_06:00:00 real_em: SUCCESS COMPLETE REAL_EM INIT
+```
+
+### wrf.exe 
+
+- Segmentation fault - invalid memory reference
+
+```log
+==> rsl.out.0025 <==
+d01 2024-05-01_00:00:00  Input data is acceptable to use:
+ Tile Strategy is not specified. Assuming 1D-Y
+WRF TILE   1 IS      1 IE     20 JS     84 JE    100
+WRF NUMBER OF TILES =   1
+ Flerchinger USEd in NEW version. Iterations=          10
+ Flerchinger USEd in NEW version. Iterations=          10
+
+==> rsl.error.0028 <==
+d01 2024-05-01_00:00:00  Input data is acceptable to use:
+ Tile Strategy is not specified. Assuming 1D-Y
+WRF TILE   1 IS     61 IE     80 JS     84 JE    100
+WRF NUMBER OF TILES =   1
+
+Program received signal SIGSEGV: Segmentation fault - invalid memory reference.
+
+Backtrace for this error:
+#0  0x1488066c7b4f in ???
+
+==> rsl.out.0000 <==
+d01 2024-05-01_00:00:00        14241  points exceeded w_critical_cfl in domain d01 at time 2024-05-01_00:00:00 hours
+d01 2024-05-01_00:00:00 Max   W:     74     24      2 W: *******  w-cfl:     Inf  dETA:    0.01
+```
+
+Note: Be aware of the stability (here, MPAS-480km mesh is used).

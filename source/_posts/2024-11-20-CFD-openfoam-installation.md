@@ -27,11 +27,25 @@ OpenFOAM是一個CFD軟體。它包括一系列應用程序，這些應用程式
 
 特別的，OpenFOAM-11還有一個foamMultiRun求解器，它可以接受兩個或更多域區域，並為每個區域應用不同的求解器模組。例如，它可以將一個或多個流體和固體的模組耦合起來，典型的引用就是多區域傳熱流動。
 
+- [OpenFOAM-11，OpenFOAM-v2306 | Jul 13, 2023 | CFD中文网](https://cfd-china.com/topic/6484/openfoam-11-openfoam-v2306), [openFoam-11 | CFD中文网](https://cfd-china.com/topic/7189/openfoam-11)
+  - ESI以及基金会纷纷推出OpenFOAM-v2306以及OpenFOAM-v11。后者改动尤其巨大。求解器模块化，比如之前的icoFoam是个求解器，但目前被处理成了一个库。OpenFOAM-v11比之前，在多物理场耦合方面，更加友好。但更加增加了使用难度。
+  - 尤其是对于OpenFOAM-11这面。OpenFOAM这面几个大改动，一个是OpenFOAM-3.0，一个是OpenFOAM-11。这个OpenFOAM-11改的，改的相当大。
+  - 是。。。OpeNFOAM11改动很大.. 我开始用了都发蒙
+  - 你就用paraFoam -buildin也行，我自己也用这个（如果不看做拉格朗日粒子的话）
+
+# Binary/Source Package
+
 - [OpenFOAM Binary/Source Package Repository](https://dl.openfoam.org/)
   - source/	Source Code Packs for Compiling OpenFOAM (v1.7.0-12) on Linux
   - third-party/	Source Code Packs of Third Party Software supporting OpenFOAM (v1.7.0-12) on Linux
 
 # [Software for Compilation](https://openfoam.org/download/source/software-for-compilation/)
+
+
+{% note primary %}
+[Intel OneAPI installation](https://waipangsze.github.io/2023/05/06/Intel_OneAPI/
+)
+{% endnote %}
 
 原理：OpenFOAM編譯需要一些軟體和函式庫，像是 `flex`, `zlib` 之類
 
@@ -56,6 +70,14 @@ Empty environment created at prefix: /EM/wpsze/micromamba/envs/cfd_env
  $ micromamba install conda-forge::bison
  $ micromamba install conda-forge::cgal
  $ micromamba install anaconda::metis
+
+(not install below)
+ $ micromamba install paraview
+ $ micromamba install dsdale24::qt5
+ $ micromamba install qt
+ $ micromamba install conda-forge::libgl
+ $ micromamba install conda-forge::xorg-libxcursor
+ $ micromamba install conda-forge::libxcb  
 ```
 
 ## 載入環境
@@ -281,6 +303,71 @@ echo $MPI_ROOT
 ./Allwmake -j 16 | tee Allwmake.log
 ```
 
+# [ParaView（後處理工具）安裝](http://dyfluid.com/install.html#paraview)
+
+安裝OpenFOAM之後，還需要安裝ParaView。主要用於對OpenFOAM算例進行後處理。 Paraview的安裝有倆種方式。
+
+- 一種是安裝原版paraivew，
+- 一種是在OpenFOAM環境中編譯paraFoam。
+
+{% note primary %}
+注意，原版ParaView不能顯示拉格朗日粒子，但處理大網格算例較快。可按照所需進行選擇。也可兩者同時安裝。
+{% endnote %}
+
+原版ParaView：可用透過下面的指令來安裝：
+```sh
+sudo apt install paraview
+```
+在使用的過程中，可以在OpenFOAM算例下建立一個空檔案並命名為case.foam，然後在終端機鍵入paraview即可運作。運行後，用ParaView打開case.foam即可。
+
+編譯版paraFoam：一次複製下面所有內容到終端機：
+```sh
+cd $HOME/OpenFOAM/ThirdParty-11 &&
+sudo apt-get install git cmake build-essential libgl1-mesa-dev libxt-dev libqt5x11extras5-dev libqt5help5 qttools5-dev qtxmlpatterns5-dev-tools libqt5svg5-devm-py3335-m​​im-pyon ninja-build qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools &&
+./makeParaView &&
+wmRefresh &&
+cd $FOAM_UTILITIES/postProcessing/graphics/PVReaders &&
+./Allwclean &&
+./Allwmake
+```
+
+其會自動下載 `ParaView` 並開始編譯，編譯過程較長。然後鍵入 `paraFoam` 即可運行，其會自動建立一個後綴為 `.OpenFOAM` 的文件，並自動掛載。
+
+##
+
+在資料夾中新增一個 `.foam` 的空文件，如
+
+```console
+$ touch test.foam
+```
+
+使用 `paraview` 開啟 `test.foam`，即可查看執行結果。
+
+# OpenFOAM多版本共存
+不同大廠的OpenFOAM版本各有特性，因此使用者可能有多版本OpenFOAM共存的需求。多版本OpenFOAM共存非常簡單。舉例說明：如果使用者打算在Ubuntu系統上安裝OpenFOAM-11以及OpenFOAM-8，
+
+```sh
+alias of11="source ~/OpenFOAM/OpenFOAM-11/etc/bashrc"
+alias of8="source ~/OpenFOAM/OpenFOAM-8/etc/bashrc"
+```
+
+# Scalability
+
+- Model name:            Intel(R) Xeon Phi(TM) CPU 7250 @ 1.40GHz
+  - cpu cores	: 68
+
+```console
+# cores   Wall time (s):
+------------------------
+68 266.42
+48 403.87
+24 562.83
+16 825.56
+8 1090.35
+4 2084.06
+2 3610.03
+1 6573.22
+```
 
 # References
 
