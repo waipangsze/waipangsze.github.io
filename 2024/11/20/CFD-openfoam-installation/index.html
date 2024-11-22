@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-11-20T08:21:00.000Z">
-<meta property="article:modified_time" content="2024-11-21T10:01:21.326Z">
+<meta property="article:modified_time" content="2024-11-22T09:36:15.206Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -311,7 +311,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          2.3k words
         
       </span>
     
@@ -322,7 +322,7 @@
         
         
         
-          14 mins
+          19 mins
         
       </span>
     
@@ -383,6 +383,16 @@
 <p>然而<strong>OpenFOAM-11引進了模組化求解器，其為一個重大的改進</strong>。應用程式解算器被單一foamRun求解器取代，foamRun是一個框架性求解器。 foamRun可以載入一個求解器模組，該模組繼續呼叫對應的流動類型。例如之前simpleFoam以及pisoFoam的算例，都採用foamRun求解器來運作。在foamRun求解器程式碼中，會依據對應的演算法進行調整。這在程式碼層次的改動是相當大的。 OpenFOAM-11可以認為是一次徹底的改變。官方將這次改動的原因解釋為更加的貼近多物理場的特性，對於多物理場的耦合更加的成熟。當然這裡面也存在商業上的原因。</p>
 <p>特別的，OpenFOAM-11還有一個foamMultiRun求解器，它可以接受兩個或更多域區域，並為每個區域應用不同的求解器模組。例如，它可以將一個或多個流體和固體的模組耦合起來，典型的引用就是多區域傳熱流動。</p>
 <ul>
+<li><a target="_blank" rel="noopener" href="https://cfd-china.com/topic/6484/openfoam-11-openfoam-v2306">OpenFOAM-11，OpenFOAM-v2306 | Jul 13, 2023 | CFD中文网</a>, <a target="_blank" rel="noopener" href="https://cfd-china.com/topic/7189/openfoam-11">openFoam-11 | CFD中文网</a>
+<ul>
+<li>ESI以及基金会纷纷推出OpenFOAM-v2306以及OpenFOAM-v11。后者改动尤其巨大。求解器模块化，比如之前的icoFoam是个求解器，但目前被处理成了一个库。OpenFOAM-v11比之前，在多物理场耦合方面，更加友好。但更加增加了使用难度。</li>
+<li>尤其是对于OpenFOAM-11这面。OpenFOAM这面几个大改动，一个是OpenFOAM-3.0，一个是OpenFOAM-11。这个OpenFOAM-11改的，改的相当大。</li>
+<li>是。。。OpeNFOAM11改动很大.. 我开始用了都发蒙</li>
+<li>你就用paraFoam -buildin也行，我自己也用这个（如果不看做拉格朗日粒子的话）</li>
+</ul></li>
+</ul>
+<h1 id="binarysource-package">Binary/Source Package</h1>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://dl.openfoam.org/">OpenFOAM Binary/Source Package Repository</a>
 <ul>
 <li>source/ Source Code Packs for Compiling OpenFOAM (v1.7.0-12) on Linux</li>
@@ -390,6 +400,9 @@
 </ul></li>
 </ul>
 <h1 id="software-for-compilation"><a target="_blank" rel="noopener" href="https://openfoam.org/download/source/software-for-compilation/">Software for Compilation</a></h1>
+<div class="note note-primary">
+            <p><a href="https://waipangsze.github.io/2023/05/06/Intel_OneAPI/">Intel OneAPI installation</a></p>
+          </div>
 <p>原理：OpenFOAM編譯需要一些軟體和函式庫，像是 <code>flex</code>, <code>zlib</code> 之類</p>
 <p>Repository and compilation software:</p>
 <ul>
@@ -403,7 +416,7 @@
 <li><code>OpenMPI</code> message passing interface for parallel computation.</li>
 <li><code>ParaView</code> can be installed as a system package, in which case its dependencies do not need to be installed. However, in order to compile its reader modules within OpenFOAM, all its dependencies need to be installed including the development environments of QT, graphics (GL), data formats, etc</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ micromamba <span class="hljs-built_in">env</span> create -n cfd_env<br>Empty environment created at prefix: /EM/wpsze/micromamba/envs/cfd_env<br> $ micromamba install conda-forge::zlib<br> $ micromamba install anaconda::cmake<br> $ micromamba install conda-forge::flex<br> $ micromamba install conda-forge::bison<br> $ micromamba install conda-forge::cgal<br> $ micromamba install anaconda::metis<br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ micromamba <span class="hljs-built_in">env</span> create -n cfd_env<br>Empty environment created at prefix: /EM/wpsze/micromamba/envs/cfd_env<br> $ micromamba install conda-forge::zlib<br> $ micromamba install anaconda::cmake<br> $ micromamba install conda-forge::flex<br> $ micromamba install conda-forge::bison<br> $ micromamba install conda-forge::cgal<br> $ micromamba install anaconda::metis<br><br>(not install below)<br> $ micromamba install paraview<br> $ micromamba install dsdale24::qt5<br> $ micromamba install qt<br> $ micromamba install conda-forge::libgl<br> $ micromamba install conda-forge::xorg-libxcursor<br> $ micromamba install conda-forge::libxcb  <br></code></pre></td></tr></table></figure>
 <h2 id="載入環境">載入環境</h2>
 <p>安裝需要載入 Intel 編譯環境和 gcc 環境，且 gcc 環境不應高於 Intel 編譯器環境</p>
 <h2 id="environment-variables">Environment variables</h2>
@@ -464,6 +477,33 @@
 <p>進入到OpenFOAM 的安裝目錄，執行 <code>./Allwmake -j</code> 以開始編譯，<code>-j</code> 這一參數的意思是調用起所有的CPU核心來並行編譯，當然，如果不希望調用起這麼多核，也可以指定核心數，例如 .<code>/Allwmake -j 8</code> ，只使用8 個核心</p>
 <p>編譯過程十分漫長，如果編譯中途報錯說無法建立xx目錄，手動建立即可，然後重新執行 <code>./Allwmake -j</code> 會從中斷處開始編譯而不是重新從頭開始編譯。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">source</span> /home/wpsze/openfoam/openfoam11/openfoam_env.sh<br><br><span class="hljs-built_in">source</span> /home/wpsze/openfoam/openfoam11/OpenFOAM-11/etc/bashrc<br><span class="hljs-built_in">cd</span> /home/wpsze/openfoam/openfoam11/OpenFOAM-11<br><br><span class="hljs-built_in">pwd</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$MPI_ROOT</span><br><br>./Allclean<br>./Allwmake -j 16 | <span class="hljs-built_in">tee</span> Allwmake.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure>
+<h1 id="paraview後處理工具安裝"><a target="_blank" rel="noopener" href="http://dyfluid.com/install.html#paraview">ParaView（後處理工具）安裝</a></h1>
+<p>安裝OpenFOAM之後，還需要安裝ParaView。主要用於對OpenFOAM算例進行後處理。 Paraview的安裝有倆種方式。</p>
+<ul>
+<li>一種是安裝原版paraivew，</li>
+<li>一種是在OpenFOAM環境中編譯paraFoam。</li>
+</ul>
+<div class="note note-primary">
+            <p>注意，原版ParaView不能顯示拉格朗日粒子，但處理大網格算例較快。可按照所需進行選擇。也可兩者同時安裝。</p>
+          </div>
+<p>原版ParaView：可用透過下面的指令來安裝： <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> apt install paraview<br></code></pre></td></tr></table></figure> 在使用的過程中，可以在OpenFOAM算例下建立一個空檔案並命名為case.foam，然後在終端機鍵入paraview即可運作。運行後，用ParaView打開case.foam即可。</p>
+<p>編譯版paraFoam：一次複製下面所有內容到終端機： <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> <span class="hljs-variable">$HOME</span>/OpenFOAM/ThirdParty-11 &amp;&amp;<br><span class="hljs-built_in">sudo</span> apt-get install git cmake build-essential libgl1-mesa-dev libxt-dev libqt5x11extras5-dev libqt5help5 qttools5-dev qtxmlpatterns5-dev-tools libqt5svg5-devm-py3335-m​​im-pyon ninja-build qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools &amp;&amp;<br>./makeParaView &amp;&amp;<br>wmRefresh &amp;&amp;<br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$FOAM_UTILITIES</span>/postProcessing/graphics/PVReaders &amp;&amp;<br>./Allwclean &amp;&amp;<br>./Allwmake<br></code></pre></td></tr></table></figure></p>
+<p>其會自動下載 <code>ParaView</code> 並開始編譯，編譯過程較長。然後鍵入 <code>paraFoam</code> 即可運行，其會自動建立一個後綴為 <code>.OpenFOAM</code> 的文件，並自動掛載。</p>
+<h2 id="section"></h2>
+<p>在資料夾中新增一個 <code>.foam</code> 的空文件，如</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">touch</span> test.foam</span><br></code></pre></td></tr></table></figure>
+<p>使用 <code>paraview</code> 開啟 <code>test.foam</code>，即可查看執行結果。</p>
+<h1 id="openfoam多版本共存">OpenFOAM多版本共存</h1>
+<p>不同大廠的OpenFOAM版本各有特性，因此使用者可能有多版本OpenFOAM共存的需求。多版本OpenFOAM共存非常簡單。舉例說明：如果使用者打算在Ubuntu系統上安裝OpenFOAM-11以及OpenFOAM-8，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">alias</span> of11=<span class="hljs-string">&quot;source ~/OpenFOAM/OpenFOAM-11/etc/bashrc&quot;</span><br><span class="hljs-built_in">alias</span> of8=<span class="hljs-string">&quot;source ~/OpenFOAM/OpenFOAM-8/etc/bashrc&quot;</span><br></code></pre></td></tr></table></figure>
+<h1 id="scalability">Scalability</h1>
+<ul>
+<li>Model name: Intel(R) Xeon Phi(TM) CPU 7250 @ 1.40GHz
+<ul>
+<li>cpu cores : 68</li>
+</ul></li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>68 266.42<br>48 403.87<br>24 562.83<br>16 825.56<br>8 1090.35<br>4 2084.06<br>2 3610.03<br>1 6573.22<br></code></pre></td></tr></table></figure>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_49181094/article/details/107345305">使用Intel编译器编译OpenFOAM</a></li>
@@ -547,7 +587,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 21, 2024</div>
+          <div>November 22, 2024</div>
         </div>
       
       

@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/647EQap.png">
 <meta property="article:published_time" content="2024-11-13T03:52:00.000Z">
-<meta property="article:modified_time" content="2024-11-13T05:54:30.407Z">
+<meta property="article:modified_time" content="2024-11-22T09:00:07.827Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="WPS">
@@ -313,7 +313,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          378 words
+          733 words
         
       </span>
     
@@ -324,7 +324,7 @@
         
         
         
-          4 mins
+          7 mins
         
       </span>
     
@@ -403,6 +403,41 @@
 <p>Also, in cases of large MPAS meshes, it may be necessary to increase the value of two constants in the metgrid code that <strong>are used to statically allocate several data structures used in the computation of remapping weights from the MPAS mesh to the WRF domain</strong>. These two constants, shown below, are located in the <code>WPS/src/metgrid/remapper.F</code> file.</p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">! should be at least (earth circumference / minimum grid distance)</span><br><span class="hljs-keyword">integer</span>, <span class="hljs-keyword">parameter</span> :: max_queue_length    = <span class="hljs-number">2700</span><br><br><span class="hljs-comment">! should be at least (nCells/32)</span><br><span class="hljs-keyword">integer</span>, <span class="hljs-keyword">parameter</span> :: max_dictionary_size = <span class="hljs-number">82000</span>  <br></code></pre></td></tr></table></figure>
 <p>After changing the value of these constants, <strong>metgrid must be recompiled</strong>.</p>
+<h1 id="hands-on">Hands-on</h1>
+<h2 id="mpas-output-nc-files">MPAS output nc files</h2>
+<p>File name format of MPAS* and static.nc are,</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs console">MPAS.2024-05-01_00.nc  MPAS.2024-05-01_09.nc  MPAS.2024-05-01_18.nc<br>MPAS.2024-05-01_01.nc  MPAS.2024-05-01_10.nc  MPAS.2024-05-01_19.nc<br>MPAS.2024-05-01_02.nc  MPAS.2024-05-01_11.nc  MPAS.2024-05-01_20.nc<br>MPAS.2024-05-01_03.nc  MPAS.2024-05-01_12.nc  MPAS.2024-05-01_21.nc<br>MPAS.2024-05-01_04.nc  MPAS.2024-05-01_13.nc  MPAS.2024-05-01_22.nc<br>MPAS.2024-05-01_05.nc  MPAS.2024-05-01_14.nc  MPAS.2024-05-01_23.nc<br>MPAS.2024-05-01_06.nc  MPAS.2024-05-01_15.nc  MPAS.2024-05-02_00.nc<br>MPAS.2024-05-01_07.nc  MPAS.2024-05-01_16.nc  static.nc<br>MPAS.2024-05-01_08.nc  MPAS.2024-05-01_17.nc  <br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <p><strong>MPAS.2024-05-01_00.nc</strong></p>
+          </div>
+<h2 id="wrf-metgrid">WRF metgrid</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs namelist">&amp;metgrid<br> constants_name = &#x27;mpas:static.nc&#x27;,<br> fg_name = &#x27;mpas:MPAS&#x27;,<br> io_form_metgrid = 2, <br> opt_metgrid_tbl_path = &#x27;./&#x27;<br>/<br></code></pre></td></tr></table></figure>
+<p>Note: There is no ungrid part.</p>
+<p>In WPS,</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WPS/blob/335c76a111f84503e8b963abaf273ea8053645bb/metgrid/src/process_domain_module.F#L764">WPS/metgrid/src/process_domain_module.F</a></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">index</span>(input_name, <span class="hljs-string">&#x27;mpas:&#x27;</span>) == <span class="hljs-number">1</span>) <span class="hljs-keyword">then</span><br>   <span class="hljs-keyword">call</span> process_mpas_fields(input_name, do_const_processing, temp_date, fg_data, got_this_field, &amp;<br>                            landmask, process_bdy_width, &amp;<br>                            u_field, v_field, &amp;<br>                            dom_dx, dom_dy, ...... )<br></code></pre></td></tr></table></figure>
+<p>e.g. log file</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs log">Processing domain 1 of 2<br>    mpas:static.nc<br> Processing 2024-05-01_00<br>    mpas:MPAS<br> Processing 2024-05-01_03<br>    mpas:MPAS<br> Processing 2024-05-01_06<br>    mpas:MPAS<br>Processing domain 2 of 2<br>    mpas:static.nc<br> Processing 2024-05-01_00<br>    mpas:MPAS<br> Processing 2024-05-01_03<br>    mpas:MPAS<br> Processing 2024-05-01_06<br>    mpas:MPAS<br>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br>!  Successful completion of metgrid.  !<br>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!<br></code></pre></td></tr></table></figure>
+<h2 id="wrf-realwrf">WRF real/wrf</h2>
+<ul>
+<li>SIZE MISMATCH: num_metgrid_levels --&gt; 56 (default of MPAS)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs log">d01 2024-05-01_00:00:00  Yes, this special data is acceptable to use: OUTPUT FROM METGRID V4.3<br>d01 2024-05-01_00:00:00  Input data is acceptable to use: met_em.d01.2024-05-01_00:00:00.nc<br> metgrid input_wrf.F first_date_input = 2024-05-01_00:00:00<br> metgrid input_wrf.F first_date_nml = 2024-05-01_00:00:00<br>d01 2024-05-01_00:00:00  input_wrf.F: SIZE MISMATCH:  namelist num_metgrid_levels           =           34<br>d01 2024-05-01_00:00:00  input_wrf.F: SIZE MISMATCH:  input file BOTTOM-TOP_GRID_DIMENSION  =           56<br></code></pre></td></tr></table></figure>
+<ul>
+<li>p_top_requested &lt; grid%p_top</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs log">rsl.error.0020:25:p_top_requested &lt; grid%p_top possible from data<br>rsl.out.0016:31: p_top_requested =    1000.00000    <br>rsl.out.0016:32: allowable grid%p_top in data   =    1281.68921    <br>rsl.out.0016:35:p_top_requested &lt; grid%p_top possible from data<br><br>-------------- FATAL CALLED ---------------<br>FATAL CALLED FROM FILE:  &lt;stdin&gt;  LINE:    1219<br>p_top_requested &lt; grid%p_top possible from data<br>-------------------------------------------<br></code></pre></td></tr></table></figure>
+<p>How? try to set <code>p_top_requested = 1300</code>. (leave homework)</p>
+<h3 id="done-wrf.exe-gives">(done) <code>wrf.exe</code> gives</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log">d01 2024-05-01_06:00:00 real_em: SUCCESS COMPLETE REAL_EM INIT<br></code></pre></td></tr></table></figure>
+<h3 id="wrf.exe">wrf.exe</h3>
+<ul>
+<li>Segmentation fault - invalid memory reference</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs log">==&gt; rsl.out.0025 &lt;==<br>d01 2024-05-01_00:00:00  Input data is acceptable to use:<br> Tile Strategy is not specified. Assuming 1D-Y<br>WRF TILE   1 IS      1 IE     20 JS     84 JE    100<br>WRF NUMBER OF TILES =   1<br> Flerchinger USEd in NEW version. Iterations=          10<br> Flerchinger USEd in NEW version. Iterations=          10<br><br>==&gt; rsl.error.0028 &lt;==<br>d01 2024-05-01_00:00:00  Input data is acceptable to use:<br> Tile Strategy is not specified. Assuming 1D-Y<br>WRF TILE   1 IS     61 IE     80 JS     84 JE    100<br>WRF NUMBER OF TILES =   1<br><br>Program received signal SIGSEGV: Segmentation fault - invalid memory reference.<br><br>Backtrace for this error:<br>#0  0x1488066c7b4f in ???<br><br>==&gt; rsl.out.0000 &lt;==<br>d01 2024-05-01_00:00:00        14241  points exceeded w_critical_cfl in domain d01 at time 2024-05-01_00:00:00 hours<br>d01 2024-05-01_00:00:00 Max   W:     74     24      2 W: *******  w-cfl:     Inf  dETA:    0.01<br></code></pre></td></tr></table></figure>
+<p>Note: Be aware of the stability (here, MPAS-480km mesh is used).</p>
 
                 
               </div>
@@ -473,7 +508,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 13, 2024</div>
+          <div>November 22, 2024</div>
         </div>
       
       
