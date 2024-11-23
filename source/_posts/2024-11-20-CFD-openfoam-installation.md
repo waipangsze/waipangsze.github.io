@@ -70,14 +70,6 @@ Empty environment created at prefix: /EM/wpsze/micromamba/envs/cfd_env
  $ micromamba install conda-forge::bison
  $ micromamba install conda-forge::cgal
  $ micromamba install anaconda::metis
-
-(not install below)
- $ micromamba install paraview
- $ micromamba install dsdale24::qt5
- $ micromamba install qt
- $ micromamba install conda-forge::libgl
- $ micromamba install conda-forge::xorg-libxcursor
- $ micromamba install conda-forge::libxcb  
 ```
 
 ## 載入環境
@@ -333,7 +325,7 @@ cd $FOAM_UTILITIES/postProcessing/graphics/PVReaders &&
 
 其會自動下載 `ParaView` 並開始編譯，編譯過程較長。然後鍵入 `paraFoam` 即可運行，其會自動建立一個後綴為 `.OpenFOAM` 的文件，並自動掛載。
 
-##
+## Create a empty file as `.foam`
 
 在資料夾中新增一個 `.foam` 的空文件，如
 
@@ -342,6 +334,59 @@ $ touch test.foam
 ```
 
 使用 `paraview` 開啟 `test.foam`，即可查看執行結果。
+
+## Remote paraview (Recommend)
+
+- [[High performance computing] How to connect to a remote ParaView server](https://youtu.be/-jFw9jVHJgs)
+
+### Remote side (HPC),
+
+- create a conda env
+
+```console
+ $ micromamba env create -n paraview
+ $ micromamba activate paraview 
+ $ micromamba install paraview
+```
+
+- open a server with define port number
+
+```console
+$ cd /Case-dir/
+$ touch case.foam
+$ pvserver --server-port=5566
+Waiting for client...
+Connection URL: cs://node.HPC.com:5566
+Accepting connection(s): node.HPC.com:5566
+```
+
+### Local PC,
+
+- Open a new terminal, `ssh -N -L 5566:localhost:5566 username@remote-ip`
+- Download the same version of paraview. [link](https://www.paraview.org/download/)
+- Open paraview, file --> connect (setup)
+  
+![](https://i.imgur.com/9szKnJ7.png){width=600}
+
+{% note primary %}
+Remark: Please re-build `$ pvserver --server-port=5566` after disconnect. (pvserver is Exited automatically.)
+{% endnote %}
+
+{% gi 9 3-3-3 %}
+![1](https://i.imgur.com/hcUDTWH.png)
+![2](https://i.imgur.com/4MPm2zG.png)
+![3](https://i.imgur.com/r3k8rJn.png)
+![4](https://i.imgur.com/UgIhObW.png)
+![5](https://i.imgur.com/QNfj62G.png)
+![6](https://i.imgur.com/6YJTJWr.png)
+![7](https://i.imgur.com/G2WTB6I.png)
+![8](https://i.imgur.com/ICAoNxU.png)
+![9](https://i.imgur.com/O6Pq9ar.png)
+{% endgi %}
+
+{% note primary %}
+Remark: "Display is not acessible on the server side. ......" may be login/multiple nodes issue. But, the connection is  **Done**.
+{% endnote %}
 
 # OpenFOAM多版本共存
 不同大廠的OpenFOAM版本各有特性，因此使用者可能有多版本OpenFOAM共存的需求。多版本OpenFOAM共存非常簡單。舉例說明：如果使用者打算在Ubuntu系統上安裝OpenFOAM-11以及OpenFOAM-8，
@@ -353,7 +398,11 @@ alias of8="source ~/OpenFOAM/OpenFOAM-8/etc/bashrc"
 
 # Scalability
 
+[200万网格并行算力测试（OpenFOAM版本）](https://www.cfd-china.com/topic/3988/200%E4%B8%87%E7%BD%91%E6%A0%BC%E5%B9%B6%E8%A1%8C%E7%AE%97%E5%8A%9B%E6%B5%8B%E8%AF%95-openfoam%E7%89%88%E6%9C%AC?_=1603587871660&lang=en-US)
+
 - Model name:            Intel(R) Xeon Phi(TM) CPU 7250 @ 1.40GHz
+  - cpu MHz		: 1500.915
+  - Socket(s) :  1
   - cpu cores	: 68
 
 ```console
@@ -367,7 +416,47 @@ alias of8="source ~/OpenFOAM/OpenFOAM-8/etc/bashrc"
 4 2084.06
 2 3610.03
 1 6573.22
+
+# cores   Wall time (s):
+------------------------
+272 274.09
+204 313.6
+136 277.26
+68 266.53
+34 420.95
+17 592.87
 ```
+
+- model name	: Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+  - cpu MHz		: 3500.000
+  - Socket(s) :  2
+  - cpu cores	: 24
+  - siblings	: 48
+
+```console
+# cores   Wall time (s):
+------------------------
+48 55.82
+24 92.98
+16 132.98
+8 175.14
+4 348.56
+2 554.62
+1 920.68
+```
+
+{% note warning %}
+[高性能计算最佳实践](http://dyfluid.com/HPC.html)
+{% endnote %}
+
+## [性能测试CFD标准算例](http://dyfluid.com/standard.html)
+
+- 200万网格/OpenFOAM
+  - 适用于机器内存大于16G的机器
+- 2000万网格/OpenFOAM
+  - 适用于机器内存大于70G的机器
+- 2亿网格/OpenFOAM
+  - 适用于机器内存大于512G的机器
 
 # References
 

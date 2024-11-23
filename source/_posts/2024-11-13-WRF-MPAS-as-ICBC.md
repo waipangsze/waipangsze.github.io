@@ -217,15 +217,15 @@ p_top_requested < grid%p_top possible from data
 -------------------------------------------
 ```
 
-How? try to set `p_top_requested = 1300`. (leave homework)
+How? try to set `p_top_requested = 5000`. (leave homework)
 
-### (done) `wrf.exe` gives 
+### `real.exe`
 
 ```log
 d01 2024-05-01_06:00:00 real_em: SUCCESS COMPLETE REAL_EM INIT
 ```
 
-### wrf.exe 
+### `wrf.exe `
 
 - Segmentation fault - invalid memory reference
 
@@ -255,3 +255,14 @@ d01 2024-05-01_00:00:00 Max   W:     74     24      2 W: *******  w-cfl:     Inf
 ```
 
 Note: Be aware of the stability (here, MPAS-480km mesh is used).
+
+Successful,
+
+```console
+ $ ls wrf*
+wrfbdy_d01  wrf.exe  wrfinput_d01  wrfout_d01_2024-05-01_00:00:00  wrfrst_d01_2024-05-01_06:00:0
+
+==> rsl. <==
+Timing for Writing restart for domain        1:   14.65449 elapsed seconds
+d01 2024-05-01_06:00:00 wrf: SUCCESS COMPLETE WRF
+```
