@@ -127,6 +127,7 @@ table :is(td, th) {
   padding: 0.3em;
 }
 ```
+
 Here,  `table :is(td.th)` is an abbreviation for `table td, table th`.
 
 | Syntax | Description |

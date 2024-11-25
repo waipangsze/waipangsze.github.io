@@ -103,7 +103,11 @@ fin.close()
 **It is worth noting that the use of native MPAS output with metgrid.exe has not been thoroughly tested for parallel (i.e., “dmpar”) builds of the WPS; it is therefore recommended to run metgrid.exe in serial when processing MPAS datasets.**
 {% endnote %}
 
-- TODO: checking 'dmpar' and 'serial' of metgrid.exe
+**Please use 1 core (serial) to run metgrid.exe.** Otherwise, the wrfout will be fail even (dmpar) of metgrid seems to be done.
+
+{% note danger %}
+**sbatch -N 1 -n 1 run_metgrid.sh**
+{% endnote %}
 
 # For large MPAS meshes
 
