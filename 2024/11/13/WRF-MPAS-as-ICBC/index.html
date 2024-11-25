@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/647EQap.png">
 <meta property="article:published_time" content="2024-11-13T03:52:00.000Z">
-<meta property="article:modified_time" content="2024-11-22T09:00:07.827Z">
+<meta property="article:modified_time" content="2024-11-25T06:49:38.125Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="WPS">
@@ -244,6 +244,14 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
                     <i class="iconfont icon-plan"></i>
                     <span>Meteorology</span>
@@ -313,7 +321,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          733 words
+          761 words
         
       </span>
     
@@ -396,9 +404,10 @@
 <div class="note note-warning">
             <p><strong>It is worth noting that the use of native MPAS output with metgrid.exe has not been thoroughly tested for parallel (i.e., “dmpar”) builds of the WPS; it is therefore recommended to run metgrid.exe in serial when processing MPAS datasets.</strong></p>
           </div>
-<ul>
-<li>TODO: checking 'dmpar' and 'serial' of metgrid.exe</li>
-</ul>
+<p><strong>Please use 1 core (serial) to run metgrid.exe.</strong> Otherwise, the wrfout will be fail even (dmpar) of metgrid seems to be done.</p>
+<div class="note note-danger">
+            <p><strong>sbatch -N 1 -n 1 run_metgrid.sh</strong></p>
+          </div>
 <h1 id="for-large-mpas-meshes">For large MPAS meshes</h1>
 <p>Also, in cases of large MPAS meshes, it may be necessary to increase the value of two constants in the metgrid code that <strong>are used to statically allocate several data structures used in the computation of remapping weights from the MPAS mesh to the WRF domain</strong>. These two constants, shown below, are located in the <code>WPS/src/metgrid/remapper.F</code> file.</p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">! should be at least (earth circumference / minimum grid distance)</span><br><span class="hljs-keyword">integer</span>, <span class="hljs-keyword">parameter</span> :: max_queue_length    = <span class="hljs-number">2700</span><br><br><span class="hljs-comment">! should be at least (nCells/32)</span><br><span class="hljs-keyword">integer</span>, <span class="hljs-keyword">parameter</span> :: max_dictionary_size = <span class="hljs-number">82000</span>  <br></code></pre></td></tr></table></figure>
@@ -429,15 +438,17 @@
 <li>p_top_requested &lt; grid%p_top</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs log">rsl.error.0020:25:p_top_requested &lt; grid%p_top possible from data<br>rsl.out.0016:31: p_top_requested =    1000.00000    <br>rsl.out.0016:32: allowable grid%p_top in data   =    1281.68921    <br>rsl.out.0016:35:p_top_requested &lt; grid%p_top possible from data<br><br>-------------- FATAL CALLED ---------------<br>FATAL CALLED FROM FILE:  &lt;stdin&gt;  LINE:    1219<br>p_top_requested &lt; grid%p_top possible from data<br>-------------------------------------------<br></code></pre></td></tr></table></figure>
-<p>How? try to set <code>p_top_requested = 1300</code>. (leave homework)</p>
-<h3 id="done-wrf.exe-gives">(done) <code>wrf.exe</code> gives</h3>
+<p>How? try to set <code>p_top_requested = 5000</code>. (leave homework)</p>
+<h3 id="real.exe"><code>real.exe</code></h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log">d01 2024-05-01_06:00:00 real_em: SUCCESS COMPLETE REAL_EM INIT<br></code></pre></td></tr></table></figure>
-<h3 id="wrf.exe">wrf.exe</h3>
+<h3 id="wrf.exe"><code>wrf.exe</code></h3>
 <ul>
 <li>Segmentation fault - invalid memory reference</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs log">==&gt; rsl.out.0025 &lt;==<br>d01 2024-05-01_00:00:00  Input data is acceptable to use:<br> Tile Strategy is not specified. Assuming 1D-Y<br>WRF TILE   1 IS      1 IE     20 JS     84 JE    100<br>WRF NUMBER OF TILES =   1<br> Flerchinger USEd in NEW version. Iterations=          10<br> Flerchinger USEd in NEW version. Iterations=          10<br><br>==&gt; rsl.error.0028 &lt;==<br>d01 2024-05-01_00:00:00  Input data is acceptable to use:<br> Tile Strategy is not specified. Assuming 1D-Y<br>WRF TILE   1 IS     61 IE     80 JS     84 JE    100<br>WRF NUMBER OF TILES =   1<br><br>Program received signal SIGSEGV: Segmentation fault - invalid memory reference.<br><br>Backtrace for this error:<br>#0  0x1488066c7b4f in ???<br><br>==&gt; rsl.out.0000 &lt;==<br>d01 2024-05-01_00:00:00        14241  points exceeded w_critical_cfl in domain d01 at time 2024-05-01_00:00:00 hours<br>d01 2024-05-01_00:00:00 Max   W:     74     24      2 W: *******  w-cfl:     Inf  dETA:    0.01<br></code></pre></td></tr></table></figure>
 <p>Note: Be aware of the stability (here, MPAS-480km mesh is used).</p>
+<p>Successful,</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash"><span class="hljs-built_in">ls</span> wrf*</span><br>wrfbdy_d01  wrf.exe  wrfinput_d01  wrfout_d01_2024-05-01_00:00:00  wrfrst_d01_2024-05-01_06:00:0<br><br>==&gt; rsl. &lt;==<br>Timing for Writing restart for domain        1:   14.65449 elapsed seconds<br>d01 2024-05-01_06:00:00 wrf: SUCCESS COMPLETE WRF<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -508,7 +519,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 22, 2024</div>
+          <div>November 25, 2024</div>
         </div>
       
       

@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-11-20T08:21:00.000Z">
-<meta property="article:modified_time" content="2024-11-22T09:36:15.206Z">
+<meta property="article:modified_time" content="2024-11-25T04:00:23.373Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -242,6 +242,14 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
                     <i class="iconfont icon-plan"></i>
                     <span>Meteorology</span>
@@ -311,7 +319,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k words
+          2.4k words
         
       </span>
     
@@ -322,7 +330,7 @@
         
         
         
-          19 mins
+          21 mins
         
       </span>
     
@@ -416,7 +424,7 @@
 <li><code>OpenMPI</code> message passing interface for parallel computation.</li>
 <li><code>ParaView</code> can be installed as a system package, in which case its dependencies do not need to be installed. However, in order to compile its reader modules within OpenFOAM, all its dependencies need to be installed including the development environments of QT, graphics (GL), data formats, etc</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ micromamba <span class="hljs-built_in">env</span> create -n cfd_env<br>Empty environment created at prefix: /EM/wpsze/micromamba/envs/cfd_env<br> $ micromamba install conda-forge::zlib<br> $ micromamba install anaconda::cmake<br> $ micromamba install conda-forge::flex<br> $ micromamba install conda-forge::bison<br> $ micromamba install conda-forge::cgal<br> $ micromamba install anaconda::metis<br><br>(not install below)<br> $ micromamba install paraview<br> $ micromamba install dsdale24::qt5<br> $ micromamba install qt<br> $ micromamba install conda-forge::libgl<br> $ micromamba install conda-forge::xorg-libxcursor<br> $ micromamba install conda-forge::libxcb  <br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ micromamba <span class="hljs-built_in">env</span> create -n cfd_env<br>Empty environment created at prefix: /EM/wpsze/micromamba/envs/cfd_env<br> $ micromamba install conda-forge::zlib<br> $ micromamba install anaconda::cmake<br> $ micromamba install conda-forge::flex<br> $ micromamba install conda-forge::bison<br> $ micromamba install conda-forge::cgal<br> $ micromamba install anaconda::metis<br></code></pre></td></tr></table></figure>
 <h2 id="載入環境">載入環境</h2>
 <p>安裝需要載入 Intel 編譯環境和 gcc 環境，且 gcc 環境不應高於 Intel 編譯器環境</p>
 <h2 id="environment-variables">Environment variables</h2>
@@ -489,21 +497,79 @@
 <p>原版ParaView：可用透過下面的指令來安裝： <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">sudo</span> apt install paraview<br></code></pre></td></tr></table></figure> 在使用的過程中，可以在OpenFOAM算例下建立一個空檔案並命名為case.foam，然後在終端機鍵入paraview即可運作。運行後，用ParaView打開case.foam即可。</p>
 <p>編譯版paraFoam：一次複製下面所有內容到終端機： <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> <span class="hljs-variable">$HOME</span>/OpenFOAM/ThirdParty-11 &amp;&amp;<br><span class="hljs-built_in">sudo</span> apt-get install git cmake build-essential libgl1-mesa-dev libxt-dev libqt5x11extras5-dev libqt5help5 qttools5-dev qtxmlpatterns5-dev-tools libqt5svg5-devm-py3335-m​​im-pyon ninja-build qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools &amp;&amp;<br>./makeParaView &amp;&amp;<br>wmRefresh &amp;&amp;<br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$FOAM_UTILITIES</span>/postProcessing/graphics/PVReaders &amp;&amp;<br>./Allwclean &amp;&amp;<br>./Allwmake<br></code></pre></td></tr></table></figure></p>
 <p>其會自動下載 <code>ParaView</code> 並開始編譯，編譯過程較長。然後鍵入 <code>paraFoam</code> 即可運行，其會自動建立一個後綴為 <code>.OpenFOAM</code> 的文件，並自動掛載。</p>
-<h2 id="section"></h2>
+<h2 id="create-a-empty-file-as-.foam">Create a empty file as <code>.foam</code></h2>
 <p>在資料夾中新增一個 <code>.foam</code> 的空文件，如</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">touch</span> test.foam</span><br></code></pre></td></tr></table></figure>
 <p>使用 <code>paraview</code> 開啟 <code>test.foam</code>，即可查看執行結果。</p>
+<h2 id="remote-paraview-recommend">Remote paraview (Recommend)</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://youtu.be/-jFw9jVHJgs">[High performance computing] How to connect to a remote ParaView server</a></li>
+</ul>
+<h3 id="remote-side-hpc">Remote side (HPC),</h3>
+<ul>
+<li>create a conda env</li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">micromamba <span class="hljs-built_in">env</span> create -n paraview</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">micromamba activate paraview</span> <br><span class="hljs-meta prompt_">$ </span><span class="language-bash">micromamba install paraview</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>open a server with define port number</li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> /Case-<span class="hljs-built_in">dir</span>/</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">touch</span> case.foam</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">pvserver --server-port=5566</span><br>Waiting for client...<br>Connection URL: cs://node.HPC.com:5566<br>Accepting connection(s): node.HPC.com:5566<br></code></pre></td></tr></table></figure>
+<h3 id="local-pc">Local PC,</h3>
+<ul>
+<li>Open a new terminal, <code>ssh -N -L 5566:localhost:5566 username@remote-ip</code></li>
+<li>Download the same version of paraview. <a target="_blank" rel="noopener" href="https://www.paraview.org/download/">link</a></li>
+<li>Open paraview, file --&gt; connect (setup)</li>
+</ul>
+<p><img src="https://i.imgur.com/9szKnJ7.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<div class="note note-primary">
+            <p>Remark: Please re-build <code>$ pvserver --server-port=5566</code> after disconnect. (pvserver is Exited automatically.)</p>
+          </div>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/hcUDTWH.png" srcset="/img/loading.gif" lazyload alt="1" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/4MPm2zG.png" srcset="/img/loading.gif" lazyload alt="2" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/r3k8rJn.png" srcset="/img/loading.gif" lazyload alt="3" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/UgIhObW.png" srcset="/img/loading.gif" lazyload alt="4" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/QNfj62G.png" srcset="/img/loading.gif" lazyload alt="5" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/6YJTJWr.png" srcset="/img/loading.gif" lazyload alt="6" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/G2WTB6I.png" srcset="/img/loading.gif" lazyload alt="7" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/ICAoNxU.png" srcset="/img/loading.gif" lazyload alt="8" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/O6Pq9ar.png" srcset="/img/loading.gif" lazyload alt="9" /></div></div></div>
+<div class="note note-primary">
+            <p>Remark: "Display is not acessible on the server side. ......" may be login/multiple nodes issue. But, the connection is <strong>Done</strong>.</p>
+          </div>
 <h1 id="openfoam多版本共存">OpenFOAM多版本共存</h1>
 <p>不同大廠的OpenFOAM版本各有特性，因此使用者可能有多版本OpenFOAM共存的需求。多版本OpenFOAM共存非常簡單。舉例說明：如果使用者打算在Ubuntu系統上安裝OpenFOAM-11以及OpenFOAM-8，</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">alias</span> of11=<span class="hljs-string">&quot;source ~/OpenFOAM/OpenFOAM-11/etc/bashrc&quot;</span><br><span class="hljs-built_in">alias</span> of8=<span class="hljs-string">&quot;source ~/OpenFOAM/OpenFOAM-8/etc/bashrc&quot;</span><br></code></pre></td></tr></table></figure>
 <h1 id="scalability">Scalability</h1>
+<p><a target="_blank" rel="noopener" href="https://www.cfd-china.com/topic/3988/200%E4%B8%87%E7%BD%91%E6%A0%BC%E5%B9%B6%E8%A1%8C%E7%AE%97%E5%8A%9B%E6%B5%8B%E8%AF%95-openfoam%E7%89%88%E6%9C%AC?_=1603587871660&amp;lang=en-US">200万网格并行算力测试（OpenFOAM版本）</a></p>
 <ul>
 <li>Model name: Intel(R) Xeon Phi(TM) CPU 7250 @ 1.40GHz
 <ul>
+<li>cpu MHz : 1500.915</li>
+<li>Socket(s) : 1</li>
 <li>cpu cores : 68</li>
 </ul></li>
 </ul>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>68 266.42<br>48 403.87<br>24 562.83<br>16 825.56<br>8 1090.35<br>4 2084.06<br>2 3610.03<br>1 6573.22<br></code></pre></td></tr></table></figure>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>68 266.42<br>48 403.87<br>24 562.83<br>16 825.56<br>8 1090.35<br>4 2084.06<br>2 3610.03<br>1 6573.22<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>272 274.09<br>204 313.6<br>136 277.26<br>68 266.53<br>34 420.95<br>17 592.87<br></code></pre></td></tr></table></figure>
+<ul>
+<li>model name : Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
+<ul>
+<li>cpu MHz : 3500.000</li>
+<li>Socket(s) : 2</li>
+<li>cpu cores : 24</li>
+<li>siblings : 48</li>
+</ul></li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>48 55.82<br>24 92.98<br>16 132.98<br>8 175.14<br>4 348.56<br>2 554.62<br>1 920.68<br></code></pre></td></tr></table></figure>
+<div class="note note-warning">
+            <p><a target="_blank" rel="noopener" href="http://dyfluid.com/HPC.html">高性能计算最佳实践</a></p>
+          </div>
+<h2 id="性能测试cfd标准算例"><a target="_blank" rel="noopener" href="http://dyfluid.com/standard.html">性能测试CFD标准算例</a></h2>
+<ul>
+<li>200万网格/OpenFOAM
+<ul>
+<li>适用于机器内存大于16G的机器</li>
+</ul></li>
+<li>2000万网格/OpenFOAM
+<ul>
+<li>适用于机器内存大于70G的机器</li>
+</ul></li>
+<li>2亿网格/OpenFOAM
+<ul>
+<li>适用于机器内存大于512G的机器</li>
+</ul></li>
+</ul>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_49181094/article/details/107345305">使用Intel编译器编译OpenFOAM</a></li>
@@ -587,7 +653,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 22, 2024</div>
+          <div>November 25, 2024</div>
         </div>
       
       
@@ -617,6 +683,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/11/25/wps-in-parallel-or-in-serial/" title="WRF | WPS in parallel or in serial">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">WRF | WPS in parallel or in serial</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
