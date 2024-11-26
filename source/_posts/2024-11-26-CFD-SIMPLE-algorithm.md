@@ -43,7 +43,7 @@ $$
 
 其中：
 
-- $p$ 為運動壓力（dynamic pressure），
+- $p$ 為壓力（pressure），
 - $\mu$ 為運動黏度（dynamic viscosity），
 - $\rho$ 為流體密度，
 - $\mathbf{f}$ 為體積力，例如重力或外加力。
