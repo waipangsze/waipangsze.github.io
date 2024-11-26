@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-11-20T08:21:00.000Z">
-<meta property="article:modified_time" content="2024-11-25T04:00:23.373Z">
+<meta property="article:modified_time" content="2024-11-26T02:15:26.234Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -319,7 +319,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.4k words
+          2.5k words
         
       </span>
     
@@ -330,7 +330,7 @@
         
         
         
-          21 mins
+          22 mins
         
       </span>
     
@@ -485,6 +485,16 @@
 <p>進入到OpenFOAM 的安裝目錄，執行 <code>./Allwmake -j</code> 以開始編譯，<code>-j</code> 這一參數的意思是調用起所有的CPU核心來並行編譯，當然，如果不希望調用起這麼多核，也可以指定核心數，例如 .<code>/Allwmake -j 8</code> ，只使用8 個核心</p>
 <p>編譯過程十分漫長，如果編譯中途報錯說無法建立xx目錄，手動建立即可，然後重新執行 <code>./Allwmake -j</code> 會從中斷處開始編譯而不是重新從頭開始編譯。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">source</span> /home/wpsze/openfoam/openfoam11/openfoam_env.sh<br><br><span class="hljs-built_in">source</span> /home/wpsze/openfoam/openfoam11/OpenFOAM-11/etc/bashrc<br><span class="hljs-built_in">cd</span> /home/wpsze/openfoam/openfoam11/OpenFOAM-11<br><br><span class="hljs-built_in">pwd</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$MPI_ROOT</span><br><br>./Allclean<br>./Allwmake -j 16 | <span class="hljs-built_in">tee</span> Allwmake.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure>
+<h2 id="配置運作環境">配置運作環境</h2>
+<p>設定與編譯時相同的 MPI 編譯環境 - 將 OpenFOAM-x.0 裡面的 bin和platforms/linux64IccDPInt32Opt/bin 加入 PATH - 將 OpenFOAM-x.0 裡面的 platforms/linux64IccDPInt32Opt/lib 及其子目錄加入 LD_LIBRARY_PATH - 將 ThirdParty-x.0 裡面的 platforms/linux64IccDPInt32/lib 及其子目錄加入 LD_LIBRARY_PATH</p>
+<h2 id="測試openfoam">測試OpenFOAM</h2>
+<ul>
+<li>新建一個測試目錄，將內容複製進去，然後執行OpenFOAM指令測試，如下：</li>
+<li>cp -r OpenFoam-x.0/tutorials/incompressible/simpleFoam/pitzDaily .</li>
+<li>cd pitzDaily</li>
+<li>blockMesh</li>
+<li>simpleFoam</li>
+</ul>
 <h1 id="paraview後處理工具安裝"><a target="_blank" rel="noopener" href="http://dyfluid.com/install.html#paraview">ParaView（後處理工具）安裝</a></h1>
 <p>安裝OpenFOAM之後，還需要安裝ParaView。主要用於對OpenFOAM算例進行後處理。 Paraview的安裝有倆種方式。</p>
 <ul>
@@ -541,7 +551,7 @@
 <li>cpu cores : 68</li>
 </ul></li>
 </ul>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>68 266.42<br>48 403.87<br>24 562.83<br>16 825.56<br>8 1090.35<br>4 2084.06<br>2 3610.03<br>1 6573.22<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>272 274.09<br>204 313.6<br>136 277.26<br>68 266.53<br>34 420.95<br>17 592.87<br></code></pre></td></tr></table></figure>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>68 266.42<br>48 403.87<br>24 562.83<br>16 825.56<br>8 1090.35<br>4 2084.06<br>2 3610.03<br>1 6573.22<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>204 248.78<br>136 206.09<br>68 212.28<br></code></pre></td></tr></table></figure>
 <ul>
 <li>model name : Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
 <ul>
@@ -653,7 +663,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 25, 2024</div>
+          <div>November 26, 2024</div>
         </div>
       
       
