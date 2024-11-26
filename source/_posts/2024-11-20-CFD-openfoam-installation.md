@@ -295,6 +295,21 @@ echo $MPI_ROOT
 ./Allwmake -j 16 | tee Allwmake.log
 ```
 
+## 配置運作環境
+
+設定與編譯時相同的 MPI 編譯環境
+- 將 OpenFOAM-x.0 裡面的 bin和platforms/linux64IccDPInt32Opt/bin 加入 PATH
+- 將 OpenFOAM-x.0 裡面的 platforms/linux64IccDPInt32Opt/lib 及其子目錄加入 LD_LIBRARY_PATH
+- 將 ThirdParty-x.0 裡面的 platforms/linux64IccDPInt32/lib 及其子目錄加入 LD_LIBRARY_PATH
+
+## 測試OpenFOAM
+
+- 新建一個測試目錄，將內容複製進去，然後執行OpenFOAM指令測試，如下：
+- cp -r OpenFoam-x.0/tutorials/incompressible/simpleFoam/pitzDaily .
+- cd pitzDaily
+- blockMesh
+- simpleFoam
+
 # [ParaView（後處理工具）安裝](http://dyfluid.com/install.html#paraview)
 
 安裝OpenFOAM之後，還需要安裝ParaView。主要用於對OpenFOAM算例進行後處理。 Paraview的安裝有倆種方式。
@@ -419,12 +434,9 @@ alias of8="source ~/OpenFOAM/OpenFOAM-8/etc/bashrc"
 
 # cores   Wall time (s):
 ------------------------
-272 274.09
-204 313.6
-136 277.26
-68 266.53
-34 420.95
-17 592.87
+204 248.78
+136 206.09
+68 212.28
 ```
 
 - model name	: Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz

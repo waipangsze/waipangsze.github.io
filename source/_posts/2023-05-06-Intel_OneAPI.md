@@ -355,15 +355,20 @@ wrf_install/WPS-4.4/ungrib.exe -> ungrib/src/ungrib.exe*
 # References
 
 1. [How to install Intel OneAPI Base and HPC Toolkits](https://kb.brightcomputing.com/knowledge-base/how-to-install-intel-oneapi-base-and-hpc-toolkits/#installing-the-intel-oneapi-hpc-toolkit)
-2. [Intel oneAPI toolkits 介绍和安装](https://cloud.tencent.com/developer/article/2148549)
+2. [Ubuntu20.04 安装 INTEL 编译器和 Gcc 编译器](https://blog.qiql.net/archives/intelgcc)
+   1. 先安装Base Toolkit，再安装 HPC Toolkit
+   2. 安装gcc5.4编译器
+   3. 安装module
+   4. 编写 modulefile
+3. [Intel oneAPI toolkits 介绍和安装](https://cloud.tencent.com/developer/article/2148549)
    1. 对于气象中的应用，主流数值模式基本都是以Fortran编写的，为了追求更高的计算速度，我们尽量使用的intel编译器
    2. ifort编译的程序运行速度比gfortran要高一些。尽管高的不是非常多，但对于模式长时间的积分，节省的时间还是非常可观的
    3. 对于我们的使用需求，只需安装Intel® oneAPI Base Toolkit 和 Intel® oneAPI HPC Toolkit 就满足了
-3. [Install Intel oneAPI | lenovo](https://hpc.lenovo.com/lico/downloads/7.1/Install_Intel_oneAPI.html)
-4. [oneAPI资源和安装](https://www.xiaoledeng.com/2021/07/19/oneapi-resource-install/)
-5. [Intel学生许可过期后，安装 Intel® oneAPI Base Toolkit 和 Intel® oneAPI HPC来替代](https://zhuanlan.zhihu.com/p/358928837)
+4. [Install Intel oneAPI | lenovo](https://hpc.lenovo.com/lico/downloads/7.1/Install_Intel_oneAPI.html)
+5. [oneAPI资源和安装](https://www.xiaoledeng.com/2021/07/19/oneapi-resource-install/)
+6. [Intel学生许可过期后，安装 Intel® oneAPI Base Toolkit 和 Intel® oneAPI HPC来替代](https://zhuanlan.zhihu.com/p/358928837)
    1. 之前的Intel Parallel Studio XE用邮箱申请了学生许可，已经过期，发现不能再续期，官网竟然出了免费版本！
-6. [A Historic Moment for The Intel® Fortran Compiler Classic (ifort)](https://community.intel.com/t5/Blogs/Tech-Innovation/Tools/A-Historic-Moment-for-The-Intel-Fortran-Compiler-Classic-ifort/post/1614625)
+7. [A Historic Moment for The Intel® Fortran Compiler Classic (ifort)](https://community.intel.com/t5/Blogs/Tech-Innovation/Tools/A-Historic-Moment-for-The-Intel-Fortran-Compiler-Classic-ifort/post/1614625)
 
 | oneAPI Package Version |  ifx version | ifort version |
 |------------------------|--------------|---------------|
