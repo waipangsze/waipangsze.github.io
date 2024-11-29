@@ -110,106 +110,14 @@ SIMPLE（Semi-Implicit Method for Pressure-Linked Equations）演算法是針對
 
 壓力 Poisson 方程的解法通常基於離散化數值技術，例如有限差分法、有限體積法等，通過求解壓力校正場 $p'$ 來逐步逼近最終滿足 $\nabla \cdot \mathbf{u} = 0$ 的速度場。
 
-SIMPLE (Semi-Implicit Method for Pressure Linked Equations) 是一種數值方法，用於解決不可壓縮Navier-Stokes方程中的速度和壓力耦合問題。以下是SIMPLE演算法的詳細步驟：
-
----
-
-### 1. 初始條件設定
-
-- 設定初始的速度場 $\mathbf{u}^0$ 和壓力場 $p^0$。
-- 設定收斂條件，例如速度或壓力的殘差限值。
-
----
-
-### 2. 解動量方程（假設初始壓力場）
-利用上一迭代的壓力場 $p^0$ 或初始壓力場，解動量方程以得到暫時速度場（intermediate velocity field） $\mathbf{u}^*$：
-
-$$
-[A] \mathbf{u}^* = \mathbf{b} - \nabla p^0
-$$
-
-其中：
-
-- $[A]$ 是動量方程離散化後的係數矩陣；
-- $\mathbf{b}$ 包含外力和非線性項（如對流項）的源項。
-
-由於使用的壓力場 $p^0$ 是近似的，解出的速度場 $\mathbf{u}^*$ 不一定滿足不可壓縮條件 $\nabla \cdot \mathbf{u} = 0$。
-
----
-
-### 3. 壓力校正方程
-
-引入壓力校正項 $p' = p - p^0$，修正壓力場為：
-$$
-p = p^0 + p'
-$$
-
-修正後的速度場為：
-
-$$
-\mathbf{u} = \mathbf{u}^* + \mathbf{u}'
-$$
-
-將校正速度場代入連續性方程（$\nabla \cdot \mathbf{u} = 0$），得到壓力校正方程：
-
-$$
-\nabla^2 p' = \frac{\rho}{\Delta t} \nabla \cdot \mathbf{u}^*
-$$
-
-這是一個泊松方程，描述壓力修正項 $p'$ 與暫時速度場 $\mathbf{u}^*$ 的關係。
-
----
-
-### 4. 壓力場更新
-
-用壓力校正項 $p'$ 修正壓力場：
-
-$$
-p^{n+1} = p^n + \alpha_p p'
-$$
-
-其中，$\alpha_p$ 是 **壓力欠鬆弛因子** （通常取值範圍為 $0.2 - 0.5$），用於提高收斂穩定性。
-
----
-
-### 5. 速度場更新
-
-用壓力校正項 $p'$ 修正暫時速度場 $\mathbf{u}^*$：
-
-$$
-\mathbf{u}^{n+1} = \mathbf{u}^* + \beta_u \nabla p'
-$$
-
-其中，$\beta_u$ 是速度欠鬆弛因子。
-
----
-
-### 6. 檢查收斂
-
-計算速度場和壓力場的殘差，例如：
-
-- 速度殘差：$\|\nabla \cdot \mathbf{u}\|$
-- 壓力殘差：$\|p^{n+1} - p^n\|$
-
-如果殘差小於設定的閾值，演算法結束，否則返回第2步繼續迭代。
-
----
-
-### 簡化的流程圖
-
-1. 初始值設置：$\mathbf{u}^0, p^0$
-2. 解動量方程，得到暫時速度場 $\mathbf{u}^*$
-3. 解壓力校正泊松方程，得到 $p'$
-4. 更新壓力場：$p = p^0 + p'$
-5. 更新速度場：$\mathbf{u} = \mathbf{u}^* + \mathbf{u}'$
-6. 檢查收斂，若未收斂，重複迭代。
+SIMPLE (Semi-Implicit Method for Pressure Linked Equations) 是一種數值方法，用於解決不可壓縮Navier-Stokes方程中的速度和壓力耦合問題。
 
 ---
 
 ### 注意事項
 
 1. **欠鬆弛因子的作用**  
-   欠鬆弛因子（$\alpha_p, \beta_u$）在每次迭代中減小更新幅度，防止發散，提高算法穩定性。
+   欠鬆弛因子在每次迭代中減小更新幅度，防止發散，提高算法穩定性。
 
 2. **網格選擇**  
    壓力和速度的網格離散化需滿足 **交錯網格法（staggered grid）**，以避免數值擴散或壓力震盪問題。
@@ -219,7 +127,40 @@ $$
 
 SIMPLE 是一種穩健且簡單的方法，適合處理**穩態不可壓縮流體問題**，但在處理瞬態或高雷諾數流體時，可能需要改進版本，如 SIMPLEC 或 PISO。
 
+---
+
+SIMPLE演算法求解過程總結為如下4步：
+
+1. 由給定的初始壓力或上一迭代步壓力求解動量方程，但是求得的速度變數並不一定滿足連續性方程。
+2. 根據壓力泊松方程式求解得到壓力。
+3. 利用求得的壓力修正速度，使之能滿足連續性方程式.
+4. 若速度不滿足動量方程，請回到步驟（1）重複循環，直到滿足為止。
+
+那其他的標量方程式怎麼辦？例如能量方程式、湍流方程式 $k$ 方程式及 $\epsilon$ 方程式等。這些方程式也可以放到上數求解循環中，只要放到速度修正方程式後依序求解即可。
+
+![SIMPLE](https://i.imgur.com/QoJMran.png){width=600}
+
+PISO演算法是在SIMPLE以後發展出來，最初為 **瞬態** **不可壓縮流動** 設計的一種演算法。 PISO演算法與SIMPLE演算法的差異在於速度場由速度修正方程修正後，並沒有直接回到如下動量方程進行迭代循環，而是直接進行更新H矩陣，求解壓力泊松方程，因此動量方程只是初始迭代使用過一次，此後便不再使用，因此相比 SIMPLE 演算法計算量減少，速度更快。
+
+{% note danger %}
+由於有方程式的**時間導數項**，**PISO演算法在瞬態流動計算時候比較穩定**。**當時間步長比較小時，時間導數項會遠大於動量方程式對流項、擴散項、源項等其他項，而由於時間倒數項會出現矩陣對角陣上，因此小的時間步長就會使矩陣對角佔優，這種矩陣特性會使方程式的解更加穩定，花費較少的迭代步達到收斂**。
+
+$$
+\dfrac{\partial U}{\partial t} = \dfrac{U_p^{i+1} - U_p^{i}}{\Delta t}
+$$
+{% endnote %}
+
+當然從另一方面來說，由於穩態流動沒有時間導數項，因此若簡單使用SIMPLE演算法就不如PISO演算法穩定，**因此SIMPLE演算法會以使用鬆弛因子的方式人工增加對角矩陣係數，使方程式求解更加穩定**，具體細節這裡就不再多說了。
+
+總的來說吧，PISO演算法比較適合瞬態不可壓縮流體。當時間步長足夠小時（庫朗數<1）時，就不需要人工增加對角矩陣係數，使其對角佔優，只需要做一次動量方程式求解，然後對壓力方程式及速度修正方程式進行迭代循環即可收斂。
+
+![PISO](https://i.imgur.com/2NqUqHH.png){width=600}
+
 # References
 
-1. [OpenFOAM编程案例 | 14 SIMPLE算法](https://mp.weixin.qq.com/s/vEoW0lTb5QbfTFs7FZwGQQ)
-2. [[CFD] The SIMPLE Algorithm (to solve incompressible Navier-Stokes)](https://www.youtube.com/watch?v=OOILoJ1zuiw&ab_channel=FluidMechanics101)
+1. [第6章 回流问题流动－传热 耦合计算的数值方法](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.0.pdf)
+2. [6.4 原始变量顺序求解流场的 压力修正方法](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf)
+3. [OpenFOAM编程案例 | 14 SIMPLE算法](https://mp.weixin.qq.com/s/vEoW0lTb5QbfTFs7FZwGQQ)
+4. [[CFD] The SIMPLE Algorithm (to solve incompressible Navier-Stokes)](https://www.youtube.com/watch?v=OOILoJ1zuiw&ab_channel=FluidMechanics101)
+5. [什么是SIMPLE及PISO算法？](https://zhuanlan.zhihu.com/p/126368311?utm_psn=1845836334389919744)
+6. [SIMPLE algorithm description](https://www.cfdsupport.com/OpenFOAM-Training-by-CFD-Support/node199.html)
