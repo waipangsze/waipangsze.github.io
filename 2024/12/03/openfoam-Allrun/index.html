@@ -19,25 +19,27 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="The wave stress of orography gravity wave drag scheme \[ \frac{\partial U}{\partial t} &#x3D; - \frac{1}{\rho} \frac{\partial \tau_x}{\partial z} \] GWDO The gravity-wave drag parameterization \[ \tau_{GWD">
+    <meta name="description" content="Allrun All OpenFOAM tutorials have Allrun and Allclean scripts which call some mysterious RunFunctions from even more mysterious sources. Source OpenFOAM first,              source &#x2F;home&#x2F;wpsze&#x2F;openfoa">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NWP | The orographic gravity wave drag (GWDO)">
-<meta property="og:url" content="https://waipangsze.github.io/2024/05/31/NWP_gwdo/index.html">
+<meta property="og:title" content="CFD | OpenFOAM | Allrun">
+<meta property="og:url" content="https://waipangsze.github.io/2024/12/03/openfoam-Allrun/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="The wave stress of orography gravity wave drag scheme \[ \frac{\partial U}{\partial t} &#x3D; - \frac{1}{\rho} \frac{\partial \tau_x}{\partial z} \] GWDO The gravity-wave drag parameterization \[ \tau_{GWD">
+<meta property="og:description" content="Allrun All OpenFOAM tutorials have Allrun and Allclean scripts which call some mysterious RunFunctions from even more mysterious sources. Source OpenFOAM first,              source &#x2F;home&#x2F;wpsze&#x2F;openfoa">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-05-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-15T01:55:24.892Z">
+<meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
+<meta property="article:published_time" content="2024-12-03T04:49:00.000Z">
+<meta property="article:modified_time" content="2024-12-03T07:14:54.530Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="GWDO">
-<meta property="article:tag" content="Parametrization">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="OpenFOAM">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/fFT42Yk.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>NWP | The orographic gravity wave drag (GWDO) - wpsze</title>
+  <title>CFD | OpenFOAM | Allrun - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -288,13 +290,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/fFT42Yk.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="NWP | The orographic gravity wave drag (GWDO)"></span>
+            <span id="subtitle" data-typed-text="CFD | OpenFOAM | Allrun"></span>
           
         </div>
 
@@ -305,8 +307,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-05-31 00:00" pubdate>
-          May 31, 2024 am
+        <time datetime="2024-12-03 12:49" pubdate>
+          December 3, 2024 pm
         </time>
       </span>
     
@@ -317,7 +319,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          121 words
+          154 words
         
       </span>
     
@@ -374,32 +376,71 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">NWP | The orographic gravity wave drag (GWDO)</h1>
+            <h1 id="seo-header">CFD | OpenFOAM | Allrun</h1>
             
             
               <div class="markdown-body">
                 
-                <p>The wave stress of orography gravity wave drag scheme</p>
-<p><span class="math display">\[
-\frac{\partial U}{\partial t} = - \frac{1}{\rho} \frac{\partial \tau_x}{\partial z}
-\]</span></p>
-<h1 id="gwdo">GWDO</h1>
-<h2 id="the-gravity-wave-drag-parameterization">The gravity-wave drag parameterization</h2>
-<p><span class="math display">\[
-\tau_{GWD} = \rho_0 E \frac{m}{\lambda_{eff}} G \frac{|U_0|^3}{N_0} 
-\]</span></p>
-<h2 id="the-blocked-layer-drag-parameterization">The blocked-layer drag parameterization</h2>
-<p><span class="math display">\[
-\tau_{BLD} = \frac{1}{2} \rho_0 \frac{m}{\Delta_x^2} C_d \Delta_x^{\perp} L_x^{\perp} h_B |U_0|^2
-\]</span></p>
+                <h1 id="allrun">Allrun</h1>
+<p>All OpenFOAM tutorials have <code>Allrun</code> and <code>Allclean</code> scripts which call some mysterious RunFunctions from even more mysterious sources.</p>
+<p>Source OpenFOAM first,</p>
+<div class="note note-danger">
+            <p>source /home/wpsze/openfoam/openfoam8/source_openfoam.sh</p>
+          </div>
+<h2 id="the-manual-way">The Manual Way</h2>
+<p>To be honest, one could easily get along without those functions. Just call <code>OpenFOAM</code> applications by their name:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br> <br><span class="hljs-comment"># background mesh for Snappy</span><br>blockMesh &gt; log.blockMesh<br> <br><span class="hljs-comment"># decompose and mesh</span><br>decomposePar -force &gt; log.decomposePar<br>mpirun -np 4 snappyHexMesh -overwrite &gt; log.snappyHexMesh<br>mpirun -np 4 checkMesh &gt; log.checkMesh<br>mpirun -np 4 renumberMesh -overwrite &gt; log.renumberMesh<br> <br><span class="hljs-comment"># see an explanation below</span><br><span class="hljs-built_in">rm</span> -r 0<br><span class="hljs-built_in">cp</span> -r 0.orig 0<br> <br><span class="hljs-comment"># run the solver</span><br>mpirun -np 4 simpleFoam<br></code></pre></td></tr></table></figure>
+<p>As you can see, it works just fine, but it does get a little verbose and repetitive. And if you decide to change the number of processors, you have to edit <code>system/decomposeParDict</code> and every parallel-running application call in all your scripts.</p>
+<h2 id="runfunctions-to-the-rescue"><code>RunFunctions</code> to the Rescue</h2>
+<p>These functions are defined in <code>$WM_PROJECT_DIR/bin/tools/RunFunctions</code> so if you want to use them, you have to tell Bash where they are (<strong>mind the dot at the beginning</strong>):</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/shs</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;0%/*&#125;</span> || <span class="hljs-built_in">exit</span> 1    <span class="hljs-comment"># run from this directory</span><br><br>. <span class="hljs-variable">$&#123;WM_PROJECT_DIR:?&#125;</span>/bin/tools/RunFunctions<br> <br><span class="hljs-comment"># background mesh for Snappy</span><br>runApplication blockMesh<br> <br><span class="hljs-comment"># decompose and mesh</span><br>runApplication decomposePar -force<br>runParallel snappyHexMesh -overwrite<br>runParallel checkMesh<br>runParallel renumberMesh -overwrite<br> <br><span class="hljs-comment"># restore 0/ directory</span><br>restore0Dir<br> <br><span class="hljs-comment"># run the solver</span><br>runParallel $(getApplication)<br></code></pre></td></tr></table></figure>
+<h3 id="runapplication">runApplication</h3>
+<p><code>runApplication</code> will, as the name suggests, run the specified application.</p>
+<ul>
+<li><strong>It will redirect the app’s output to a log file.</strong></li>
+<li><strong>Also, if the log exists, it will not run!</strong></li>
+<li>If you don’t care about existing logs, you can overwrite it with <code>-o</code> option:
+<ul>
+<li><code>runApplication -o decomposePar -force</code></li>
+</ul></li>
+<li>If you run the app multiple times and want the same log, append to an existing one with <code>-a</code> option:
+<ul>
+<li><code>runApplication -a decomposePar -force</code></li>
+</ul></li>
+</ul>
+<h3 id="runparallel">runParallel</h3>
+<p>The same as runApplication but it will first <strong>read</strong> <code>system/decomposeParDict</code> to get number of processors. It will then run your app in parallel with MPI. The same logging options apply as to runApplication.</p>
+<h3 id="getapplication">getApplication</h3>
+<p>This will <strong>read</strong> <code>system/controlDict</code>.application and return that command. You will usually need this just to avoid hard-coding solvers. According to DRY principle, <strong>it is already specified in controlDict and that should be enough</strong>.</p>
+<p>Instead, feed getApplication’s output to runApplication / runParallel:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">runApplication $(getApplication)<br></code></pre></td></tr></table></figure>
+<p>That saves you quite some steps:</p>
+<ul>
+<li>Matching decomposeParDict.numberOfSubdomains</li>
+<li>Matching controlDict.application</li>
+<li>Invoking MPI</li>
+<li>Keeping log files and whatsit.</li>
+</ul>
+<h3 id="restore0dir">restore0Dir</h3>
+<p>If you run <code>potentialFoam</code>, <code>setFields</code> and similar apps, they <strong>will overwrite boundary conditions</strong> that you meticulously prepared in your <code>0/</code> directory.</p>
+<p>To prevent that from happening, it is wise to keep your boundary conditions in a directory where solvers can’t touch them and copy them to <code>0/</code> just before runs. It’s easy to do that by hand but <code>restore0Dir</code> will also take care of some other stuff (<code>#include</code> directives, parallel runs, …).</p>
+<p>Anyway, a line saved is a line less to maintain.</p>
+<h1 id="cleanfunctions">CleanFunctions</h1>
+<p>There are more goodies that come in hand with RunFunctions! Type this into shell:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> <span class="hljs-variable">$WM_PROJECT_DIR</span>/bin/tools/CleanFunctions<br></code></pre></td></tr></table></figure>
+<p>and take a scroll through the output to find commands such as:</p>
+<ul>
+<li>cleanDynamicCode</li>
+<li>cleanSnappyFiles</li>
+<li>cleanPostProcessing</li>
+<li>cleanCase</li>
+<li>cleanCase0</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;0%/*&#125;</span> || <span class="hljs-built_in">exit</span> 1    <span class="hljs-comment"># run from this directory</span><br><br><span class="hljs-comment"># Source tutorial clean functions</span><br>. <span class="hljs-variable">$WM_PROJECT_DIR</span>/bin/tools/CleanFunctions<br><br>cleanCase<br></code></pre></td></tr></table></figure>
 <h1 id="references">References</h1>
 <ol type="1">
-<li>Choi, H.-J., and S.-Y. Hong (2015), An updated subgrid orographic parameterization for global atmospheric forecast models, J. Geophys. Res. Atmos., 120,12,445–12,457, doi:10.1002/ 2015JD024230.</li>
+<li><a target="_blank" rel="noopener" href="https://damogranlabs.com/2020/10/runfunctions-a-quick-cheatsheet/">RunFunctions: a Quick Cheatsheet</a></li>
 <li></li>
-</ol>
-<h1 id="applications">Applications</h1>
-<ol type="1">
-<li>张涵斌, 史永强, 卢冰, 等. 2024. 尺度适应重力波拖曳方案在高分辨率数值预报中的应用研究[J]. 大气科学, 48(2): 789−802. DOI: 10.3878/j.issn.1006-9895.2304.22235</li>
 </ol>
 
                 
@@ -419,7 +460,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
   
   
 
@@ -434,9 +475,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/GWDO/" class="print-no-link">#GWDO</a>
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
       
-        <a href="/tags/Parametrization/" class="print-no-link">#Parametrization</a>
+        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
       
     </div>
   
@@ -448,8 +489,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>NWP | The orographic gravity wave drag (GWDO)</div>
-      <div>https://waipangsze.github.io/2024/05/31/NWP_gwdo/</div>
+      <div>CFD | OpenFOAM | Allrun</div>
+      <div>https://waipangsze.github.io/2024/12/03/openfoam-Allrun/</div>
     </div>
     <div class="license-meta">
       
@@ -461,13 +502,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>May 31, 2024</div>
+          <div>December 3, 2024</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 15, 2024</div>
+          <div>December 3, 2024</div>
         </div>
       
       
@@ -498,18 +539,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/05/31/MPAS_installation_more/" title="MPAS | MPAS Installation (More)">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MPAS | MPAS Installation (More)</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/05/30/MPAS_install_netcdf_c_nonrepresentable_error/" title="MPAS | netcdf-c-4.7.4 final link failed - nonrepresentable section on output">
-                        <span class="hidden-mobile">MPAS | netcdf-c-4.7.4 final link failed - nonrepresentable section on output</span>
+                      <a href="/2024/12/02/ffmpeg/" title="Linux | ffmpeg ">
+                        <span class="hidden-mobile">Linux | ffmpeg </span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

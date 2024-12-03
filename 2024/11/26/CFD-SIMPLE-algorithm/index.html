@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-11-26T05:36:00.000Z">
-<meta property="article:modified_time" content="2024-11-26T09:44:46.475Z">
+<meta property="article:modified_time" content="2024-12-02T01:05:41.621Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -319,7 +319,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k words
+          1.7k words
         
       </span>
     
@@ -330,7 +330,7 @@
         
         
         
-          13 mins
+          14 mins
         
       </span>
     
@@ -451,86 +451,47 @@
 </ul>
 <hr />
 <p>壓力 Poisson 方程的解法通常基於離散化數值技術，例如有限差分法、有限體積法等，通過求解壓力校正場 <span class="math inline">\(p&#39;\)</span> 來逐步逼近最終滿足 <span class="math inline">\(\nabla \cdot \mathbf{u} = 0\)</span> 的速度場。</p>
-<p>SIMPLE (Semi-Implicit Method for Pressure Linked Equations) 是一種數值方法，用於解決不可壓縮Navier-Stokes方程中的速度和壓力耦合問題。以下是SIMPLE演算法的詳細步驟：</p>
-<hr />
-<h3 id="初始條件設定">1. 初始條件設定</h3>
-<ul>
-<li>設定初始的速度場 <span class="math inline">\(\mathbf{u}^0\)</span> 和壓力場 <span class="math inline">\(p^0\)</span>。</li>
-<li>設定收斂條件，例如速度或壓力的殘差限值。</li>
-</ul>
-<hr />
-<h3 id="解動量方程假設初始壓力場">2. 解動量方程（假設初始壓力場）</h3>
-<p>利用上一迭代的壓力場 <span class="math inline">\(p^0\)</span> 或初始壓力場，解動量方程以得到暫時速度場（intermediate velocity field） <span class="math inline">\(\mathbf{u}^*\)</span>：</p>
-<p><span class="math display">\[
-[A] \mathbf{u}^* = \mathbf{b} - \nabla p^0
-\]</span></p>
-<p>其中：</p>
-<ul>
-<li><span class="math inline">\([A]\)</span> 是動量方程離散化後的係數矩陣；</li>
-<li><span class="math inline">\(\mathbf{b}\)</span> 包含外力和非線性項（如對流項）的源項。</li>
-</ul>
-<p>由於使用的壓力場 <span class="math inline">\(p^0\)</span> 是近似的，解出的速度場 <span class="math inline">\(\mathbf{u}^*\)</span> 不一定滿足不可壓縮條件 <span class="math inline">\(\nabla \cdot \mathbf{u} = 0\)</span>。</p>
-<hr />
-<h3 id="壓力校正方程">3. 壓力校正方程</h3>
-<p>引入壓力校正項 <span class="math inline">\(p&#39; = p - p^0\)</span>，修正壓力場為： <span class="math display">\[
-p = p^0 + p&#39;
-\]</span></p>
-<p>修正後的速度場為：</p>
-<p><span class="math display">\[
-\mathbf{u} = \mathbf{u}^* + \mathbf{u}&#39;
-\]</span></p>
-<p>將校正速度場代入連續性方程（<span class="math inline">\(\nabla \cdot \mathbf{u} = 0\)</span>），得到壓力校正方程：</p>
-<p><span class="math display">\[
-\nabla^2 p&#39; = \frac{\rho}{\Delta t} \nabla \cdot \mathbf{u}^*
-\]</span></p>
-<p>這是一個泊松方程，描述壓力修正項 <span class="math inline">\(p&#39;\)</span> 與暫時速度場 <span class="math inline">\(\mathbf{u}^*\)</span> 的關係。</p>
-<hr />
-<h3 id="壓力場更新">4. 壓力場更新</h3>
-<p>用壓力校正項 <span class="math inline">\(p&#39;\)</span> 修正壓力場：</p>
-<p><span class="math display">\[
-p^{n+1} = p^n + \alpha_p p&#39;
-\]</span></p>
-<p>其中，<span class="math inline">\(\alpha_p\)</span> 是 <strong>壓力欠鬆弛因子</strong> （通常取值範圍為 <span class="math inline">\(0.2 - 0.5\)</span>），用於提高收斂穩定性。</p>
-<hr />
-<h3 id="速度場更新">5. 速度場更新</h3>
-<p>用壓力校正項 <span class="math inline">\(p&#39;\)</span> 修正暫時速度場 <span class="math inline">\(\mathbf{u}^*\)</span>：</p>
-<p><span class="math display">\[
-\mathbf{u}^{n+1} = \mathbf{u}^* + \beta_u \nabla p&#39;
-\]</span></p>
-<p>其中，<span class="math inline">\(\beta_u\)</span> 是速度欠鬆弛因子。</p>
-<hr />
-<h3 id="檢查收斂">6. 檢查收斂</h3>
-<p>計算速度場和壓力場的殘差，例如：</p>
-<ul>
-<li>速度殘差：<span class="math inline">\(\|\nabla \cdot \mathbf{u}\|\)</span></li>
-<li>壓力殘差：<span class="math inline">\(\|p^{n+1} - p^n\|\)</span></li>
-</ul>
-<p>如果殘差小於設定的閾值，演算法結束，否則返回第2步繼續迭代。</p>
-<hr />
-<h3 id="簡化的流程圖">簡化的流程圖</h3>
-<ol type="1">
-<li>初始值設置：<span class="math inline">\(\mathbf{u}^0, p^0\)</span></li>
-<li>解動量方程，得到暫時速度場 <span class="math inline">\(\mathbf{u}^*\)</span></li>
-<li>解壓力校正泊松方程，得到 <span class="math inline">\(p&#39;\)</span></li>
-<li>更新壓力場：<span class="math inline">\(p = p^0 + p&#39;\)</span></li>
-<li>更新速度場：<span class="math inline">\(\mathbf{u} = \mathbf{u}^* + \mathbf{u}&#39;\)</span></li>
-<li>檢查收斂，若未收斂，重複迭代。</li>
-</ol>
+<p>SIMPLE (Semi-Implicit Method for Pressure Linked Equations) 是一種數值方法，用於解決不可壓縮Navier-Stokes方程中的速度和壓力耦合問題。</p>
 <hr />
 <h3 id="注意事項">注意事項</h3>
 <ol type="1">
 <li><p><strong>欠鬆弛因子的作用</strong><br />
-欠鬆弛因子（<span class="math inline">\(\alpha_p, \beta_u\)</span>）在每次迭代中減小更新幅度，防止發散，提高算法穩定性。</p></li>
+欠鬆弛因子在每次迭代中減小更新幅度，防止發散，提高算法穩定性。</p></li>
 <li><p><strong>網格選擇</strong><br />
 壓力和速度的網格離散化需滿足 <strong>交錯網格法（staggered grid）</strong>，以避免數值擴散或壓力震盪問題。</p></li>
 <li><p><strong>收斂條件</strong><br />
 選擇合適的殘差範圍和迭代次數限制，確保結果的準確性和計算效率。</p></li>
 </ol>
 <p>SIMPLE 是一種穩健且簡單的方法，適合處理<strong>穩態不可壓縮流體問題</strong>，但在處理瞬態或高雷諾數流體時，可能需要改進版本，如 SIMPLEC 或 PISO。</p>
+<hr />
+<p>SIMPLE演算法求解過程總結為如下4步：</p>
+<ol type="1">
+<li>由給定的初始壓力或上一迭代步壓力求解動量方程，但是求得的速度變數並不一定滿足連續性方程。</li>
+<li>根據壓力泊松方程式求解得到壓力。</li>
+<li>利用求得的壓力修正速度，使之能滿足連續性方程式.</li>
+<li>若速度不滿足動量方程，請回到步驟（1）重複循環，直到滿足為止。</li>
+</ol>
+<p>那其他的標量方程式怎麼辦？例如能量方程式、湍流方程式 <span class="math inline">\(k\)</span> 方程式及 <span class="math inline">\(\epsilon\)</span> 方程式等。這些方程式也可以放到上數求解循環中，只要放到速度修正方程式後依序求解即可。</p>
+<figure>
+<img src="https://i.imgur.com/QoJMran.png" srcset="/img/loading.gif" lazyload alt="SIMPLE" width="600" /><figcaption>SIMPLE</figcaption>
+</figure>
+<p>PISO演算法是在SIMPLE以後發展出來，最初為 <strong>瞬態</strong> <strong>不可壓縮流動</strong> 設計的一種演算法。 PISO演算法與SIMPLE演算法的差異在於速度場由速度修正方程修正後，並沒有直接回到如下動量方程進行迭代循環，而是直接進行更新H矩陣，求解壓力泊松方程，因此動量方程只是初始迭代使用過一次，此後便不再使用，因此相比 SIMPLE 演算法計算量減少，速度更快。</p>
+<div class="note note-danger">
+            <p>由於有方程式的<strong>時間導數項</strong>，<strong>PISO演算法在瞬態流動計算時候比較穩定</strong>。<strong>當時間步長比較小時，時間導數項會遠大於動量方程式對流項、擴散項、源項等其他項，而由於時間倒數項會出現矩陣對角陣上，因此小的時間步長就會使矩陣對角佔優，這種矩陣特性會使方程式的解更加穩定，花費較少的迭代步達到收斂</strong>。</p><p><span class="math display">\[\dfrac{\partial U}{\partial t} = \dfrac{U_p^{i+1} - U_p^{i}}{\Delta t}\]</span></p>
+          </div>
+<p>當然從另一方面來說，由於穩態流動沒有時間導數項，因此若簡單使用SIMPLE演算法就不如PISO演算法穩定，<strong>因此SIMPLE演算法會以使用鬆弛因子的方式人工增加對角矩陣係數，使方程式求解更加穩定</strong>，具體細節這裡就不再多說了。</p>
+<p>總的來說吧，PISO演算法比較適合瞬態不可壓縮流體。當時間步長足夠小時（庫朗數&lt;1）時，就不需要人工增加對角矩陣係數，使其對角佔優，只需要做一次動量方程式求解，然後對壓力方程式及速度修正方程式進行迭代循環即可收斂。</p>
+<figure>
+<img src="https://i.imgur.com/2NqUqHH.png" srcset="/img/loading.gif" lazyload alt="PISO" width="600" /><figcaption>PISO</figcaption>
+</figure>
 <h1 id="references">References</h1>
 <ol type="1">
+<li><a target="_blank" rel="noopener" href="http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.0.pdf">第6章 回流问题流动－传热 耦合计算的数值方法</a></li>
+<li><a target="_blank" rel="noopener" href="http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf">6.4 原始变量顺序求解流场的 压力修正方法</a></li>
 <li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/vEoW0lTb5QbfTFs7FZwGQQ">OpenFOAM编程案例 | 14 SIMPLE算法</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=OOILoJ1zuiw&amp;ab_channel=FluidMechanics101">[CFD] The SIMPLE Algorithm (to solve incompressible Navier-Stokes)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/126368311?utm_psn=1845836334389919744">什么是SIMPLE及PISO算法？</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cfdsupport.com/OpenFOAM-Training-by-CFD-Support/node199.html">SIMPLE algorithm description</a></li>
 </ol>
 
                 
@@ -598,7 +559,7 @@ p^{n+1} = p^n + \alpha_p p&#39;
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 26, 2024</div>
+          <div>December 2, 2024</div>
         </div>
       
       
@@ -628,6 +589,12 @@ p^{n+1} = p^n + \alpha_p p&#39;
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/12/02/ffmpeg/" title="Linux | ffmpeg ">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux | ffmpeg </span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
