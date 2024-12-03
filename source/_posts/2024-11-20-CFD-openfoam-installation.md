@@ -43,8 +43,7 @@ OpenFOAM是一個CFD軟體。它包括一系列應用程序，這些應用程式
 
 
 {% note primary %}
-[Intel OneAPI installation](https://waipangsze.github.io/2023/05/06/Intel_OneAPI/
-)
+[Intel OneAPI installation](https://waipangsze.github.io/2023/05/06/Intel_OneAPI/)
 {% endnote %}
 
 原理：OpenFOAM編譯需要一些軟體和函式庫，像是 `flex`, `zlib` 之類
@@ -437,6 +436,12 @@ alias of8="source ~/OpenFOAM/OpenFOAM-8/etc/bashrc"
 204 248.78
 136 206.09
 68 212.28
+
+# cores   Wall time (s):
+------------------------
+204 251.24
+136 207.51
+68 207.64
 ```
 
 - model name	: Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
