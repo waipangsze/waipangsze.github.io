@@ -20,6 +20,19 @@ date: 2024-10-06 12:55:11
 
 ![The daily AO index and its forecasts using GFS and Ensemble mean forecast data are shown for the previous 120 days as indicated. Each daily value has been standardized by the standard deviation of the monthly AO index from 1979-2000.](https://www.cpc.ncep.noaa.gov/products/precip/CWlink/daily_ao_index/ao.gefs.fcst.png)
 
+# 南方濤動振盪指標/Southern Oscillation Index
+
+- <https://www.longpaddock.qld.gov.au/soi/>
+- The Southern Oscillation Index or SOI is a standardised index of the barometric pressures over Darwin, Australia and Tahiti. Climate scientists use the SOI to assess the **strength of the El Niño Southern Oscillation phenomenon (or ENSO)**, which in Queensland accounts for nearly 25 per cent of our year-to-year rainfall variability.
+- Note: The SOI values are expressed as an index (i.e. no units) and are derived from the 1887–1989 base period. This information is updated daily. The new data are typically available by 7:00pm (AEST).
+- SOI指標是**南方濤動振盪指標(Southern Oscillation Index)**的縮寫，用於衡量太平洋區域大氣和海洋之間的交互作用。該指標主要是通過比較遠東太平洋地區的氣壓和澳大利亞/印尼地區的氣壓來計算。
+- SOI指標的變化可以提供關於聖嬰和反聖嬰現象的信息，這些現象對全球氣候和天氣模式產生重大影響。當SOI指數持續高於 7 時，通常表示反聖嬰現象。
+- [厄爾尼諾與香港的降水 | HKO ](https://www.hko.gov.hk/hko/publica/reprint/r284.pdf)
+- [聖嬰現象(El Niño)來了沒？動手算算看！](http://www.geostory.tw/enso-elnino-math-soi/)
+
+![](https://data.longpaddock.qld.gov.au/SeasonalClimateOutlook/SouthernOscillationIndex/SOIGraph/2024.gif){width=600}
+
+
 # AI for NWP
 
 - ECMWF | [Scores of forecasts of upper-air parameters by experimental machine learning models](https://charts.ecmwf.int/products/plwww_3m_fc_aimodels_wp_mean?area=Northern%20Extra-tropics&parameter=Geopotential%20500hPa&score=Root%20mean%20square%20error)
