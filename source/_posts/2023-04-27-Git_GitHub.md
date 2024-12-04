@@ -143,3 +143,7 @@ This means that .gitignore is a tracked file.... so you changed it, so it shows 
 # *.[oa]
 # *~
 ```
+
+# References
+
+1. [日常开发场景Git使用技巧记录](https://mp.weixin.qq.com/s/YhTDnBKXC1ENbu8i6-1pJw)

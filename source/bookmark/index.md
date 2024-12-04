@@ -38,6 +38,7 @@ date: 2024-09-30 21:26:27
 - [东岳流体 CFD-OpenFOAM | 数据驱动](http://www.dyfluid.com/)
   - [CFD: 公式速查/教材推荐](http://www.dyfluid.com/tensors.html)
   - [OpenFOAM Releases](https://openfoam.org/download/history/)
+-  [筆記/部落格列表](https://waipangsze.github.io/2024/12/04/openfoam-notes/)
 
 ## 生物信息學分析
 

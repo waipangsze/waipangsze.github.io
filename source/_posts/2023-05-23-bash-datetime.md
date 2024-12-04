@@ -1,11 +1,16 @@
 ---
 layout: post
 title: Bash | datetime (manipulate)
-categories: [Linux]
-tags: [bash]
+categories: [Bash]
+tags: [Linux, Bash]
 author: wpsze
-index_img: 
-banner_img: 
+date: 2023-05-23 12:49:00
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/HkcQn5a.jpeg
+banner_img: https://i.imgur.com/HkcQn5a.jpeg
 ---
 
 # Bash datetime (manipulate)

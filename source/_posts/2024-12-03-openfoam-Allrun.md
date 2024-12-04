@@ -144,4 +144,6 @@ cleanCase
 # References
 
 1. [RunFunctions: a Quick Cheatsheet](https://damogranlabs.com/2020/10/runfunctions-a-quick-cheatsheet/)
-2. 
+2. [3 ways to run tutorials in OpenFOAM](https://ml-cfd.com/openfoam/basic/2020/06/12/3-ways-to-run-tutorials-in-OpenFOAM.html)
+3. [3.2 Running applications in parallel](https://www.openfoam.com/documentation/user-guide/3-running-applications/3.2-running-applications-in-parallel)
+4. [Build OpenFOAM using Spack](https://www.amd.com/zh-tw/developer/zen-software-studio/applications/spack/hpc-applications-openfoam.html)
