@@ -481,10 +481,29 @@ fi
 
 # For MPASv6.3 and before
 
+{% note danger %}
 Install cmake, curl and unzip !!! 
-{:.warning}
+{% endnote %}
 
 ```sh
 source /home/wpsze/micromamba/etc/profile.d/micromamba.sh # install cmake
 micromamba activate mpas_env
 ```
+
+# References
+
+1. [Notably the iolib_installation.sh script](https://www2.mmm.ucar.edu/people/duda/files/mpas/sources/)
+   1. [   ]	hdf5-1.10.5.tar.bz2	2019-07-11 19:36	8.3M	 
+   2. [   ]	iolib_installation.sh	2019-11-08 21:05	3.9K	 
+   3. [   ]	mpich-3.3.1.tar.gz	2019-07-11 19:36	26M	 
+   4. [   ]	netcdf-c-4.6.3.tar.gz	2019-11-09 01:48	17M	 
+   5. [   ]	netcdf-c-4.7.0.tar.gz	2019-07-11 19:36	18M	 
+   6. [   ]	netcdf-fortran-4.4.5..>	2019-07-11 19:36	1.3M	 
+   7. [   ]	netcdf-fortran-4.5.2..>	2019-11-09 01:48	1.0M	 
+   8. [   ]	openmpi-4.0.1.tar.bz2	2019-11-09 01:50	9.4M	 
+   9. [   ]	pnetcdf-1.11.2.tar.gz	2019-07-11 19:36	2.1M	 
+   10. [   ]	zlib-1.2.11.tar.gz	2019-07-11 19:36	593K	 
+2. [Setting the environment for for MPAS installation](https://forum.mmm.ucar.edu/threads/setting-the-environment-for-for-mpas-installation.10192/)
+3. [Compiling MPAS-Atmosphere with Compass Conda Environment](https://forum.mmm.ucar.edu/threads/compiling-mpas-atmosphere-with-compass-conda-environment.14553/#post-37460)
+4. [Issue Running MPAS-A from Restart File](https://forum.mmm.ucar.edu/threads/issue-running-mpas-a-from-restart-file.17596/#post-42923)
+5. [An error occurred during the installation of libraries for MPAS7.0](https://forum.mmm.ucar.edu/threads/an-error-occurred-during-the-installation-of-libraries-for-mpas7-0.20102/#post-48844)

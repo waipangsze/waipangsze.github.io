@@ -155,18 +155,50 @@ On completion, a set of subdirectories will have been created, one for each proc
 
 ```sh
 #!/bin/sh
-cd ${0%/*} || exit 1    # run from this directory
+cd ${0%/*} || exit 1    # Run from this directory
 
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
-xxx
+# Copy motorbike surface from resources directory
+cp $FOAM_TUTORIALS/resources/geometry/motorBike.obj.gz constant/triSurface/
+runApplication surfaceFeatures
+
+runApplication blockMesh
+
+runApplication decomposePar -copyZero
+runParallel snappyHexMesh -overwrite
+
+runParallel patchSummary
+runParallel potentialFoam
+runParallel $(getApplication)
+
+runApplication reconstructParMesh -constant
+runApplication reconstructPar -latestTime
 ```
 
 and outputs are,
 
 ```console
-xxx
+
+Cleaning /EM/wpsze/openfoam/openfoam8/run/motorBike case
+Running surfaceFeatures on /EM/wpsze/openfoam/openfoam8/run/motorBike
+Running blockMesh on /EM/wpsze/openfoam/openfoam8/run/motorBike
+Running decomposePar on /EM/wpsze/openfoam/openfoam8/run/motorBike
+Running snappyHexMesh in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
+Running patchSummary in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
+Running potentialFoam in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
+Running simpleFoam in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
+Running reconstructParMesh on /EM/wpsze/openfoam/openfoam8/run/motorBike
+Running reconstructPar on /EM/wpsze/openfoam/openfoam8/run/motorBike
+
+real	5m5.399s
+user	27m17.537s
+sys	0m22.050s
+=====================
+Total of 311 seconds elapsed for process
+Total of 5 minutes elapsed for process
+=====================
 ```
 
 # Post-processing parallel processed cases
@@ -198,5 +230,6 @@ Executing `reconstructPar` without any additional options will process all store
 # References
 
 1. [3.2 Running applications in parallel](https://www.openfoam.com/documentation/user-guide/3-running-applications/3.2-running-applications-in-parallel)
-2. [Build OpenFOAM using Spack](https://www.amd.com/zh-tw/developer/zen-software-studio/applications/spack/hpc-applications-openfoam.html)
-3. [The decomposeParDict | OpenFOAM: User Guide](https://www.openfoam.com/documentation/guides/latest/doc/openfoam-guide-parallel.html)
+2. [Instructions_for_OpenFOAM_2024_spring](https://hprc.tamu.edu/files/training/2024/Spring/Instructions_for_OpenFOAM_2024_spring.pdf)
+3. [Build OpenFOAM using Spack](https://www.amd.com/zh-tw/developer/zen-software-studio/applications/spack/hpc-applications-openfoam.html)
+4. [The decomposeParDict | OpenFOAM: User Guide](https://www.openfoam.com/documentation/guides/latest/doc/openfoam-guide-parallel.html)
