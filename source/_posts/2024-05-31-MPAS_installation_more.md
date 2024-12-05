@@ -57,7 +57,7 @@ executables
 For mpich,
 - see https://www.mpich.org/static/downloads/4.2.0/mpich-4.2.0-installguide.pdf
 
-# For MPASv7.0 and above,
+# For MPASv7.0,
 
 ```sh
 #!/bin/bash
@@ -478,6 +478,16 @@ if [[ $compile_all == True ]]; then
 	
 fi
 ```
+
+# For MPASv8.0,
+
+{% note danger %}
+It includes Noah-MP, so have to download Noah-MP Geographical Input Data (soilgrids).
+{% endnote %}
+
+- <https://www2.mmm.ucar.edu/wrf/users/download/get_sources_wps_geog.html>
+- NoahMP Tar File
+  - soilgrids
 
 # For MPASv6.3 and before
 
