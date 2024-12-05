@@ -19,25 +19,27 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="In WRF, WRF Model Version 3.8: UPDATES Add a new namelist, use_mp_re, to control the interaction between effective radii computed in some microphysics with RRTMG radiation. {:.info} use_mp_re &#x3D; 1 ! wh">
+    <meta name="description" content="OpenFOAM三維網格生成器 snappyHexMesh（SHM）是OpenFOAM軟體的三維結構化網格生成模組，功能比較強大，設定靈活，表面處理貼合功能非常強健並且可以並行運算。 SHM能夠透過使用者自訂參數（如細化參數castellatedMeshControls、切合參數snapControls等）對預先載入的幾何體檔案（通常為&#39;.stl&#39;檔案）自動實現三維網格生成、加密(castella">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MPAS | use_mp_re&#x2F;config_microp_re -- use effective radii computed in mp schemes in RRTMG">
-<meta property="og:url" content="https://waipangsze.github.io/2024/06/04/MPAS_config_microp_re/index.html">
+<meta property="og:title" content="CFD | OpenFOAM | STL file | 網格生成">
+<meta property="og:url" content="https://waipangsze.github.io/2024/12/05/openfoam-stl-mesh-generation/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="In WRF, WRF Model Version 3.8: UPDATES Add a new namelist, use_mp_re, to control the interaction between effective radii computed in some microphysics with RRTMG radiation. {:.info} use_mp_re &#x3D; 1 ! wh">
+<meta property="og:description" content="OpenFOAM三維網格生成器 snappyHexMesh（SHM）是OpenFOAM軟體的三維結構化網格生成模組，功能比較強大，設定靈活，表面處理貼合功能非常強健並且可以並行運算。 SHM能夠透過使用者自訂參數（如細化參數castellatedMeshControls、切合參數snapControls等）對預先載入的幾何體檔案（通常為&#39;.stl&#39;檔案）自動實現三維網格生成、加密(castella">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-06-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-08T08:24:26.673Z">
+<meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
+<meta property="article:published_time" content="2024-12-05T08:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-05T09:17:46.145Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="WRF">
-<meta property="article:tag" content="Parametrization">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="OpenFOAM">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/fFT42Yk.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>MPAS | use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG - wpsze</title>
+  <title>CFD | OpenFOAM | STL file | 網格生成 - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -288,13 +290,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/fFT42Yk.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="MPAS | use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG"></span>
+            <span id="subtitle" data-typed-text="CFD | OpenFOAM | STL file | 網格生成"></span>
           
         </div>
 
@@ -305,8 +307,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-06-04 00:00" pubdate>
-          June 4, 2024 am
+        <time datetime="2024-12-05 16:00" pubdate>
+          December 5, 2024 pm
         </time>
       </span>
     
@@ -317,7 +319,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          310 words
+          1.3k words
         
       </span>
     
@@ -328,7 +330,7 @@
         
         
         
-          3 mins
+          11 mins
         
       </span>
     
@@ -374,38 +376,109 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">MPAS | use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG</h1>
+            <h1 id="seo-header">CFD | OpenFOAM | STL file | 網格生成</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="in-wrf">In WRF,</h1>
-<p>WRF Model Version 3.8: UPDATES</p>
-<p>Add a new namelist, use_mp_re, to control the interaction between effective radii computed in some microphysics with RRTMG radiation. {:.info}</p>
-<p>use_mp_re = 1 ! whether to use effective radii computed in mp schemes in RRTMG - 0: do not use; - 1: use effective radii - (The mp schemes that compute effective radii are 3,4,6,7,8,10,14,16,18,24,26,28,50-53,55)</p>
-<h1 id="in-mpas-version-7.0">In MPAS Version 7.0,</h1>
-<p>A fix for the communication of effective radii between the WSM6 and RRTMG schemes when config_microp_re=true. {:.info}</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;re_cloud&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;m&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;effective radius of cloud water droplets&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;mp_thompson_in;mp_wsm6_in&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;re_ice&quot;</span>  <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span>  <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;m&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;effective radius of cloud ice crystals&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;mp_thompson_in;mp_wsm6_in&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;re_snow&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span>  <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;m&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;effective radius of snow crystals&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;mp_thompson_in;mp_wsm6_in&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rre_cloud&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;microns&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;effective radius of cloud water droplets calculated in RRTMG radiation&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rre_ice&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;microns&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;effective radius of cloud ice crystals calculated in RRTMG radiation&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rre_snow&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;microns&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;effective radius of snow crystals calculated in RRTMG radiation&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
-<h1 id="references">References</h1>
-<p>1.<a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/workshops/WS2022/full_presentations/session4.wong.pdf">Comparison of WRF and Regional MPAS: Ensuring Consistent Physics Configurations, 2022</a></p>
-<h1 id="papers">Papers</h1>
+                <h1 id="openfoam三維網格生成器">OpenFOAM三維網格生成器</h1>
+<p>snappyHexMesh（SHM）是OpenFOAM軟體的三維結構化網格生成模組，功能比較強大，設定靈活，表面處理貼合功能非常強健並且可以並行運算。 SHM能夠透過使用者自訂參數（如細化參數castellatedMeshControls、切合參數snapControls等）對預先載入的幾何體檔案（通常為'.stl'檔案）自動實現三維網格生成、加密(castellatedMesh)、切合（snap ）和新增邊界層（addLayers）等操作。</p>
+<p>SHM產生OpenFOAM網格流程如圖1所示:</p>
+<figure>
+<img src="https://i.imgur.com/oggvctr.png" srcset="/img/loading.gif" lazyload alt="圖1 基於snappyHexMesh的OpenFOAM網格生成流程圖" width="600" /><figcaption>圖1 基於snappyHexMesh的OpenFOAM網格生成流程圖</figcaption>
+</figure>
+<p>需提供以下三個文件：</p>
 <ol type="1">
-<li><ol start="1994" type="1">
-<li>Kiehl, J. T. <a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/94JD01117">Sensitivity of a GCM climate simulation to differences in continental versus maritime cloud drop size. Journal of Geophysical Research: Atmospheres, 99(D11), 23107-23115.</a></li>
-</ol></li>
+<li>STL檔案格式的幾何檔案（binary或ascii格式，儲存在 <code>constant/triSurface</code> 子字典中）；</li>
+<li>背景六面體網格（用於定義計算域範圍和背景網格，一般由 <code>blockMesh</code> 生成，也可由外部網格生成器生成）；</li>
+<li><code>snappyHexMeshDict</code> 字典（提供生成網格的必要信息，位於 <code>system</code> 子資料夾下）。</li>
 </ol>
-<p>Extensive observations indicate a distinct difference between maritime and continental effective drop size, <span class="math inline">\(r_e\)</span>, for warm clouds. The latest version of the NCAR Community Climate Model (CCM2) is used to explore the sensitivity of differentiating between continental and maritime <span class="math inline">\(r_e\)</span> on the simulated climate. <strong>The results of this study indicate that the smaller drop size over continents leads to a reduction of surface-absorbed solar radiation from 20 to 60 <span class="math inline">\(W m^{−2}\)</span>. This reduction in surface solar flux leads to a cooling of the continents by up to −3.5 K. The reduction in surface solar flux and temperature also leads to a reduction in latent heat flux and precipitation over land.</strong> In the January simulation, there is a significant shift in tropical precipitation associated with the Australian monsoon. This shift leads to a response in the extra tropical geopotential height field over the western United States. All of these changes reduce biases in the current version of CCM2. {:.info}</p>
-<ol start="2" type="1">
-<li><ol start="1994" type="1">
-<li>J.T. Kiehl. <a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/api/citations/19960000201/downloads/19960000201.pdf">Cloud Formation and Radiative Modeling in the NCAR CCM2: The Present and Future</a>, National Center for Atmospheric Research, U.S.A.</li>
-</ol></li>
-</ol>
-<p>Although the CCM2 is generally an improvement over CCM1, there are stilt biases in CCM2. These are: (1) northern summer continents that are too warm, (2) excessive precipitation over land, and (3) a weak Northern Hemisphere winter stationary wave pattern in the Pacific Northwest. It is believed that to a large degree these biases are related to cloud properties.</p>
-<p><strong>Observations indicate that over continents the warm cloud'-drop effective radius is approximately 5 <span class="math inline">\(\mu m\)</span>, while over oceans the drop size is more like 10 <span class="math inline">\(\mu m\)</span></strong>. A sensitivity study has been carried out (Kiehl, 1994) where the distinction is made between continental and maritime drop size. This simulation was compared to a control where the effective drop size was set to 10 <span class="math inline">\(\mu m\)</span> everywhere. <strong>The smaller drop size over continents led to higher cloud albedos over land regions. This, in turn, led to less solar radiation absorbed at the surface, which led to a reduction of surface temperature (maximum reduction of around 5 K)</strong>. Furthermore, the latent heat flux over land decreased, which led to a decrease in local precipitation. Thus, adopting a more realistic cloud-drop size for land and ocean led to an improved climate simulation. In January, there was an improvement in the Australian monsoon simulation, with a. displacement of the maximum precipitation in the northeast. This shift in tropical heating led to a shift in the Northern Hemisphere planetary wave structure, which again decreased the known bias in the control model.</p>
-<p>CCM2 employs a prescribFa zonally symmetric in-cloud liquid-water path (Kiehl et al., 1994). Hack and Kiehl (1994) have recently replaced this with a local diagnostic for in-cloud liquid water. This new approach to in-cloud liquid water leads to further improvements in the summer land-surface temperature bias. This approach also vastly improves the shortwave cloud forcing over the North Atlantic storm track region.</p>
-<p>The conclusion of these studies is that improvements in the diagnosis of cloud microphysical properties (drop size and liquid water content) leads to a significant improvement in the simulated climate of CCM2. Future research in the area will focus on implementation of a prognostic formulation for cloud water and ice concentration.</p>
-<ol start="3" type="1">
-<li>Kiehl, J. T., Hack, J. J., Bonan, G. B., Boville, B. A., Williamson, D. L., &amp; Rasch, P. J. (1998). <a target="_blank" rel="noopener" href="https://doi.org/10.1175/1520-0442(1998)011%3C1131:TNCFAR%3E2.0.CO;2">The National Center for Atmospheric Research Community Climate Model: CCM3. Journal of Climate, 11(6), 1131-1149.</a></li>
+<h2 id="什麼是-stl-檔案">什麼是 STL 檔案？</h2>
+<p>STL 是一種常用於 3D 列印和電腦輔助設計 (CAD) 的檔案格式。縮寫名稱 STL 代表「光固化立體成型」(<strong>Stereolithography</strong>)，一種熱門的 3D 列印技術。此外，這種檔案也稱作「標準三角語言」(<strong>Standard Triangle Language</strong>) 或「標準曲面細分語言」(<strong>Standard Tessellation Language</strong>)。 STL 檔案是由一系列相連的三角形構成，這些三角形可用於描繪 3D 模型或物件的表面幾何圖形。設計越複雜，使用的三角形數量就越多，解析度也隨之提高。您可以透過副檔名 .stl 以及缺乏色彩與紋理的特點來辨識 STL 格式影像。</p>
+<p>無論列印 3D 模型的目的是純粹好玩還是製作實務原型，您都必須建立 STL 檔案來儲存設計。請先在 CAD 軟體程式中繪製模型，然後將完成的設計以 STL 檔案格式匯出並儲存至電腦。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://vr.me.ncku.edu.tw/courses/cg110/sites/vr.me.ncku.edu.tw.courses.cg110/files/STL.pdf">STL 檔案資料結構</a></li>
+<li><a target="_blank" rel="noopener" href="https://3dlabstore.com.hk/blog/3d-software/popular-stl-editiors?srsltid=AfmBOoqL1Z-brQRzPgIC-kvSjG7SpBiql9WLuug-r5hypwAlAFvT-CNE">幾個常用的修改STL模型軟件</a>
+<ul>
+<li><strong>MeshLab</strong>
+<ul>
+<li>MeshLab是一個開源、便攜且可擴展的系統，用於處理和編輯3D三角形網格。這個系統於2005年年底發佈，旨在幫助用戶進行3D掃描、編輯、清理、修復、檢查、呈現和轉換等操作。MeshLab用途廣泛，它可以用於各種學術和研究中，如文化遺產、表面重建、古生物學等。涉及到3D網格模型處理的，都可以用這款軟件來處理。</li>
+</ul></li>
+<li>MeshMixer
+<ul>
+<li>MeshMixer適合許多需要修改STL模型的使用者，初學者或是經驗豐富的設計人員皆適用。</li>
+</ul></li>
+<li>ZBrushCoreMini
+<ul>
+<li>ZBrushCoreMini適合對雕刻方面感興趣的人群，此款軟件操作時類似使用畫筆一樣去編輯。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="d打印的stl和obj格式有什麼區別修改起來一樣麼">3D打印的STL和OBJ格式有什麼區別？修改起來一樣麼？</h3>
+<p>STL文件格式是由3D SYSTEMS 公司於1988 年制定的一種爲快速原型製造技術服務的三維圖形文件格式。STL文件不同於其他一些基於特徵的實體模型，STL用三角形網格來表現3D CAD模型，只能描述三維物體的幾何信息，不支持顏色材質等信息。正因爲數據簡化，格式簡單，STL普及很快應用廣泛。</p>
+<p>OBJ文件是Alias|Wavefront公司爲它的一套基於工作站的3D建模和動畫軟件”Advanced Visualizer”開發的一種標準3D模型文件格式，很適合用於3D軟件模型之間的數據交換，能支持顏色等信息。</p>
+<p>兩者在修改上相差不多，都是需要導入到相關的模型修改軟件中進行。</p>
+<h1 id="applications">Applications</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ppfocus.com/0/ed40c27be.html">SnappyHexMesh網格劃分實例詳解</a>
+<ul>
+<li>使用surfaceCheck檢查proeller.stl, <code>surfaceCheck constant/propeller.stl</code></li>
+</ul></li>
+</ul>
+<h1 id="blender-gis-to-stl">Blender GIS to stl</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/domlysz/BlenderGIS" class="uri">https://github.com/domlysz/BlenderGIS</a></li>
+</ul>
+<div class="note note-danger">
+            <p>GIS datafile import : Import in Blender most commons GIS data format : <code>Shapefile vector</code>, <code>raster image</code>, <code>geotiff DEM</code>, <code>OpenStreetMap xml</code>.</p>
+          </div>
+<h2 id="google-gis-srtm-30m-to-stl">Google GIS (SRTM 30m) to stl</h2>
+<ul>
+<li>Note : Since 2022, the OpenTopography web service requires an API key. Please register to opentopography.org and request a key. This service is still free.</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/s3CBmtM.png" srcset="/img/loading.gif" lazyload alt="1" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/Sgvffp8.png" srcset="/img/loading.gif" lazyload alt="2" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/1EBJ21x.png" srcset="/img/loading.gif" lazyload alt="3" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/Sk7Oeev.png" srcset="/img/loading.gif" lazyload alt="4" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/11gtygg.png" srcset="/img/loading.gif" lazyload alt="5" /></div></div></div>
+<h2 id="openstreetmap-xml-to-stl">OpenStreetMap xml to stl</h2>
+<h3 id="download-osm-file">Download osm file</h3>
+<p><img src="https://i.imgur.com/POleA9W.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h3 id="import-osm-file">Import osm file</h3>
+<p><img src="https://i.imgur.com/POvvxOu.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h3 id="export-stl-file">export stl file</h3>
+<ul>
+<li>meshlab</li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/bvsHeZV.png" srcset="/img/loading.gif" lazyload alt="Open by meshlab" width="400" /><figcaption>Open by <strong>meshlab</strong></figcaption>
+</figure>
+<ul>
+<li>admesh</li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/SVTBUsh.png" srcset="/img/loading.gif" lazyload alt="Check by admesh" width="400" /><figcaption>Check by <strong>admesh</strong></figcaption>
+</figure>
+<h1 id="osm">OSM</h1>
+<p><strong>OpenStreetMap</strong> 是一个庞大的地理信息数据库，而且是完全开放和免费的。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.openstreetmap.org/#map=13/22.2868/114.2492" class="uri">https://www.openstreetmap.org/#map=13/22.2868/114.2492</a></li>
+<li>export --&gt; <code>map.osm</code></li>
+</ul>
+<p><code>.osm</code> 文件格式是 OpenStreetMap 所特有的。你不会在其他地方遇到它。如果你曾经使用 JOSM 下载过数据并将其保存为文件，你可能已经注意到文件的扩展名是 <code>.osm</code> 。如果你是一个GIS用户，你可能也注意到，使用QGIS等软件打开这些文件并不容易。</p>
+<p><img src="https://i.imgur.com/lqqINf9.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h1 id="shapefile">Shapefile</h1>
+<p><strong>shapefile</strong> 是一种广泛使用的矢量地理数据存储格式。它是由 ESRI 公司开发的，该公司制造了 ArcGIS ，这是一套流行的地理信息系统应用程序。</p>
+<p>Shapefile 实际上是几个不同文件的集合。例如，一个包含建筑数据的shapefile可能有以下扩展名的文件。</p>
+<ul>
+<li>buildings.shp</li>
+<li>buildings.shx</li>
+<li>buildings.dbf</li>
+</ul>
+<p>shapefiles 通常也会有包含其他信息的附加文件。</p>
+<p>一个 shapefile 只能容纳一种类型的特征（点、线或多边形），每个特征的属性都包含在一个表中。与 OpenStreetMap 系统不同的是，在 OpenStreetMap 系统中，每个对象都可以拥有无限数量的标签，shapefile 中的特征属性必须适合 shapefile 定义的表格结构。</p>
+<p>OpenStreetMap数据可以转换为shapefiles。各种网站提供了从OSM数据转换而来的shapefiles。</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.wolfdynamics.com/wiki/meshing_OF_SHM.pdf">Mesh generation using snappyHexMesh (<strong>recommend</strong>)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.fangzhenxiu.com/post/7273888/?uri=473_83g6eo3r4s1">解锁新技能：OpenFOAM三维网格生成器</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.adobe.com/hk_zh/creativecloud/file-types/image/vector/stl-file.html">STL 檔案</a></li>
 </ol>
 
                 
@@ -425,7 +498,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
   
   
 
@@ -440,9 +513,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
       
-        <a href="/tags/Parametrization/" class="print-no-link">#Parametrization</a>
+        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
       
     </div>
   
@@ -454,8 +527,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>MPAS | use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG</div>
-      <div>https://waipangsze.github.io/2024/06/04/MPAS_config_microp_re/</div>
+      <div>CFD | OpenFOAM | STL file | 網格生成</div>
+      <div>https://waipangsze.github.io/2024/12/05/openfoam-stl-mesh-generation/</div>
     </div>
     <div class="license-meta">
       
@@ -467,13 +540,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>June 4, 2024</div>
+          <div>December 5, 2024</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 8, 2024</div>
+          <div>December 5, 2024</div>
         </div>
       
       
@@ -504,18 +577,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/06/05/WRF-install-pnetcdf/" title="WRF | WRF uses Pnetcdf">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">WRF | WRF uses Pnetcdf</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/06/04/WRF_install_Error_NoahMP_submodule_files/" title="WRF | Error Error Error NoahMP submodule files not populating WRF directories">
-                        <span class="hidden-mobile">WRF | Error Error Error NoahMP submodule files not populating WRF directories</span>
+                      <a href="/2024/12/05/maths-p-value/" title="Maths | p-value">
+                        <span class="hidden-mobile">Maths | p-value</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-12-04T07:42:00.000Z">
-<meta property="article:modified_time" content="2024-12-04T10:08:32.930Z">
+<meta property="article:modified_time" content="2024-12-05T01:02:08.661Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -319,7 +319,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          500 words
+          580 words
         
       </span>
     
@@ -485,9 +485,9 @@
 <ul>
 <li><code>./Allrun</code></li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;0%/*&#125;</span> || <span class="hljs-built_in">exit</span> 1    <span class="hljs-comment"># run from this directory</span><br><br><span class="hljs-comment"># Source tutorial run functions</span><br>. <span class="hljs-variable">$WM_PROJECT_DIR</span>/bin/tools/RunFunctions<br><br>xxx<br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;0%/*&#125;</span> || <span class="hljs-built_in">exit</span> 1    <span class="hljs-comment"># Run from this directory</span><br><br><span class="hljs-comment"># Source tutorial run functions</span><br>. <span class="hljs-variable">$WM_PROJECT_DIR</span>/bin/tools/RunFunctions<br><br><span class="hljs-comment"># Copy motorbike surface from resources directory</span><br><span class="hljs-built_in">cp</span> <span class="hljs-variable">$FOAM_TUTORIALS</span>/resources/geometry/motorBike.obj.gz constant/triSurface/<br>runApplication surfaceFeatures<br><br>runApplication blockMesh<br><br>runApplication decomposePar -copyZero<br>runParallel snappyHexMesh -overwrite<br><br>runParallel patchSummary<br>runParallel potentialFoam<br>runParallel $(getApplication)<br><br>runApplication reconstructParMesh -constant<br>runApplication reconstructPar -latestTime<br></code></pre></td></tr></table></figure>
 <p>and outputs are,</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">xxx<br></code></pre></td></tr></table></figure>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs console"><br>Cleaning /EM/wpsze/openfoam/openfoam8/run/motorBike case<br>Running surfaceFeatures on /EM/wpsze/openfoam/openfoam8/run/motorBike<br>Running blockMesh on /EM/wpsze/openfoam/openfoam8/run/motorBike<br>Running decomposePar on /EM/wpsze/openfoam/openfoam8/run/motorBike<br>Running snappyHexMesh in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes<br>Running patchSummary in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes<br>Running potentialFoam in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes<br>Running simpleFoam in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes<br>Running reconstructParMesh on /EM/wpsze/openfoam/openfoam8/run/motorBike<br>Running reconstructPar on /EM/wpsze/openfoam/openfoam8/run/motorBike<br><br>real	5m5.399s<br>user	27m17.537s<br>sys	0m22.050s<br>=====================<br>Total of 311 seconds elapsed for process<br>Total of 5 minutes elapsed for process<br>=====================<br></code></pre></td></tr></table></figure>
 <h1 id="post-processing-parallel-processed-cases">Post-processing parallel processed cases</h1>
 <p>When post-processing cases that have been run in parallel the user can:</p>
 <ul>
@@ -512,6 +512,7 @@
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://www.openfoam.com/documentation/user-guide/3-running-applications/3.2-running-applications-in-parallel">3.2 Running applications in parallel</a></li>
+<li><a target="_blank" rel="noopener" href="https://hprc.tamu.edu/files/training/2024/Spring/Instructions_for_OpenFOAM_2024_spring.pdf">Instructions_for_OpenFOAM_2024_spring</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.amd.com/zh-tw/developer/zen-software-studio/applications/spack/hpc-applications-openfoam.html">Build OpenFOAM using Spack</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.openfoam.com/documentation/guides/latest/doc/openfoam-guide-parallel.html">The decomposeParDict | OpenFOAM: User Guide</a></li>
 </ol>
@@ -581,7 +582,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 4, 2024</div>
+          <div>December 5, 2024</div>
         </div>
       
       
@@ -611,6 +612,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/12/05/maths-p-value/" title="Maths | p-value">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Maths | p-value</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
