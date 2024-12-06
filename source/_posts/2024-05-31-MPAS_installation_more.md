@@ -479,12 +479,27 @@ if [[ $compile_all == True ]]; then
 fi
 ```
 
-# For MPASv8.0,
+# For MPASv8.2.0,
+
+- <https://github.com/MPAS-Dev/MPAS-Model/releases>
+
+MPAS Version 8.2.0 This release of MPAS introduces several significant changes to MPAS-Atmosphere.
+
+- New physics
+  - The **Noah-MP v5.0.1** land-surface model is now available by setting
+  - `config_lsm_scheme = 'sf_noahmp'` in the `&physics namelist group`.
+- New static files that include the **soilcomp, soilcl1, soilcl2, soilcl3, and soilcl4** fields are required when activating **Noah-MP** in
+the model.
+- The **aerosol-aware Thompson microphysics (as in WRF v4.1.4)** is available by setting `config_microp_scheme = 'mp_thompson_aerosols'` in the `&physics namelist group`.
+
+An aerosol climatology file (QNWFA_QNIFA_SIGMA_MONTHLY.dat) is used when running the init_atmosphere_model program to produce initial and lateral boundary conditions for `nifa` and `nwfa`.
 
 {% note danger %}
 It includes Noah-MP, so have to download Noah-MP Geographical Input Data (soilgrids).
 {% endnote %}
 
+- [Static geographical datasets](https://www2.mmm.ucar.edu/projects/mpas/mpas_static.tar.bz2)
+- [Monthly climatological aerosol dataset (QNWFA_QNIFA_SIGMA_MONTHLY.dat)](https://www2.mmm.ucar.edu/projects/mpas/QNWFA_QNIFA_SIGMA_MONTHLY.dat)
 - <https://www2.mmm.ucar.edu/wrf/users/download/get_sources_wps_geog.html>
 - NoahMP Tar File
   - soilgrids

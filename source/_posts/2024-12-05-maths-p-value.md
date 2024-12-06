@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Maths | p-value
+title: Maths | p-value | Statistical Significance
 categories: [Maths]
 tags: [NWP, AI, ML]
 author: wpsze
@@ -60,6 +60,23 @@ The Wilcoxon signed-rank test is a **non-parametric rank test** for statistical 
 - [配对样本Wilcoxon符号秩检验(Paired Samples Wilcoxon Signed Rank Test)——Python软件实现](https://mengte.online/archives/12555)
 - [兩組成對資料Wilcoxon signed-rank檢定 (Wilcoxon signed-rank test for paired samples，non-parametric)](https://statistics-using-python.blogspot.com/2019/08/wilcoxon-signed-rank-wilcoxon-signed.html)
 
+# Applications
+
+- [Significance of changes in medium-range forecast scores | ECMWF | 2015 ](https://www.ecmwf.int/en/elibrary/78783-significance-changes-medium-range-forecast-scores)
+  - By making an independent realisation of the null distribution used in the hypothesis testing, using 1,885 paired forecasts (about 2.5 years of testing), it is possible to construct an alternative significance test that makes no statistical assumptions about the data.
+  - A main issue is that **chaotic error growth** leads to large differences in skill between any two forecasts.
+  - This study focuses on medium-range (day 3 to day 10 here) extratropical forecast scores of which the quintessential example is the **root-mean-square (RMS) error in 500 hPa geopotential height**.
+  - The RMS error as a function of lead-time (Fig. 2) illustrates the rapid baroclinic error growth in midlatitudes.
+  - As mentioned, **the usual basis of significance testing** is to create a **population of paired differences** in scores between an experiment and a control (e.g. Wilks, 2006).
+  - ** It can also be used to create an entirely **non-parametric significance test, i.e. one that makes no assumptions on the distributions of forecast scores**.
+  - The solution (Fisher, 1998; Wilks, 2006) is to look at the paired differences,
+  - The time-autocorrelation between paired differences at day-5 is 0.15 for base times separated by 12 h and 0.07 for separations of 24 h. Autocorrelation is essentially zero for any longer period.
+  - However, for now we will assume that **taking paired differences** has created a statistical population that has sufficiently little autocorrelation that a normal t-test can be used to test for statistical significance.
+- [Improved two-metre temperature forecasts in the 2024 upgrade | ECMWF | 2024](https://www.ecmwf.int/en/newsletter/178/earth-system-science/improved-two-metre-temperature-forecasts-2024-upgrade) 
+  - The grey rectangles show 95% confidence intervals
+
+![](https://www.ecmwf.int/sites/default/files/styles/wide/public/2024-01/NL-178-M2-Ingleby-Figure-7.jpg?itok=b-FTGlu4)
+
 # References
 
 1. [T-Tests and P-Values](https://notebook.community/therealAJ/python-sandbox/data-science/learning/ud1/DataScience/TTest)
@@ -71,3 +88,4 @@ The Wilcoxon signed-rank test is a **non-parametric rank test** for statistical 
 4. [看電影學統計: p值的陷阱](https://blog.udn.com/nilnimest/844041900)
 5. [統計學:大家都喜歡問的系列-p值是什麼](https://chih-sheng-huang821.medium.com/%E7%B5%B1%E8%A8%88%E5%AD%B8-%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%96%9C%E6%AD%A1%E5%95%8F%E7%9A%84%E7%B3%BB%E5%88%97-p%E5%80%BC%E6%98%AF%E4%BB%80%E9%BA%BC-2c03dbe8fddf)
 6. [t 檢定](https://www.jmp.com/zh_tw/statistics-knowledge-portal/t-test.html)
+7. Wilks, D. S. (2006, 2011). Statistical methods in the atmospheric sciences. Academic press.
