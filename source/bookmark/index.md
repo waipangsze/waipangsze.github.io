@@ -51,7 +51,7 @@ date: 2024-09-30 21:26:27
 - [WRF-ARW Modeling System](https://github.com/wrf-model/WRF)
   - [WRF 使用手冊](https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/overview.html)
 - [The Model for Prediction Across Scales (MPAS)](https://mpas-dev.github.io/)
-  - MPAS was developed to augment WRF by providing a more effective modeling system for global applications. 
+  - [MPAS-A Tutorial Agenda | Boulder2023](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Boulder2023/agenda.html)
 - [mesh_tools](https://mpas-dev.github.io/MPAS-Tools/stable/mesh_creation.html)
   - The most basic tool for creating an MPAS mesh
 - [Geo2Grid](https://www.ssec.wisc.edu/software/geo2grid/)
