@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Partial_func_eg.svg/1280px-Partial_func_eg.svg.png">
 <meta property="article:published_time" content="2024-10-25T03:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-25T07:43:29.927Z">
+<meta property="article:modified_time" content="2024-12-09T06:37:10.966Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="AI">
@@ -321,7 +321,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          361 words
+          1k words
         
       </span>
     
@@ -332,7 +332,7 @@
         
         
         
-          4 mins
+          9 mins
         
       </span>
     
@@ -484,6 +484,25 @@ Au_{xx} + Bu_{xy} + Cu_{yy} + Du_x + Eu_y + Fu +G= 0
 </tr>
 </tbody>
 </table>
+<h2 id="navier-stokes-equations-ns-equations"><strong>Navier-Stokes equations (NS equations)</strong></h2>
+<p>The <strong>Navier-Stokes equations (NS equations)</strong>, which describe the motion of fluid substances (like liquids and gases), are a set of nonlinear partial differential equations (PDEs). Their type depends on how they're applied and simplified for specific contexts. Here’s a breakdown:</p>
+<h3 id="classification-based-on-context">1. <strong>Classification Based on Context</strong></h3>
+<p>PDEs are classified as <strong>elliptic</strong>, <strong>parabolic</strong>, or <strong>hyperbolic</strong>, depending on the system's properties. The Navier-Stokes equations can exhibit any of these behaviors depending on the conditions.</p>
+<h4 id="a-parabolic-type-diffusion-dominated">a) <strong>Parabolic Type</strong> (Diffusion-Dominated)</h4>
+<ul>
+<li>When viscous (diffusive) terms dominate over inertial terms (<span class="math inline">\((\mathbf{u} \cdot \nabla) \mathbf{u}\)</span>) in low Reynolds number (<span class="math inline">\(Re\)</span>) flows.</li>
+<li>Example: Slow, creeping flows like those governed by the <strong>Stokes equation</strong> (a simplification of Navier-Stokes for very low <span class="math inline">\(Re\)</span>).</li>
+</ul>
+<h4 id="b-elliptic-type-steady-state-solutions">b) <strong>Elliptic Type</strong> (Steady-State Solutions)</h4>
+<ul>
+<li>For steady flows (<span class="math inline">\(\partial \mathbf{u} / \partial t = 0\)</span>), the Navier-Stokes equations can become elliptic.</li>
+<li>Pressure fields are determined elliptically in incompressible flows due to the coupling of velocity and pressure.</li>
+</ul>
+<h4 id="c-hyperbolic-type-advection-dominated-or-compressible-regimes">c) <strong>Hyperbolic Type</strong> (Advection-Dominated) or compressible regimes</h4>
+<ul>
+<li>For high Reynolds number flows, where inertial terms dominate viscous terms, the flow becomes advection-dominated.</li>
+<li>Inviscid (frictionless) Navier-Stokes equations reduce to the <strong>Euler equations</strong>, which are hyperbolic.</li>
+</ul>
 <h2 id="properties-of-different-types-of-pdes">Properties of different types of PDEs</h2>
 <ul>
 <li><code>Elliptic</code>
@@ -509,6 +528,161 @@ Au_{xx} + Bu_{xy} + Cu_{yy} + Du_x + Eu_y + Fu +G= 0
 <li><strong>Information about local change of boundary condition travels through space with finite speed.</strong></li>
 </ul></li>
 </ul>
+<h3 id="local-changes-and-their-effects">Local Changes and Their Effects</h3>
+<p>Local modifications to boundary data can influence solutions in several ways, depending on the type of PDE:</p>
+<ul>
+<li><code>Elliptic PDEs</code>, such as Laplace's equation, are characterized by their boundary conditions being prescribed over the entire boundary of the domain. The effects of local changes in boundary conditions on elliptic equations are profound:
+<ul>
+<li><strong>Immediate Influence</strong>: A local change in boundary data will affect the solution throughout the entire domain immediately. This is due to the smoothing properties of elliptic equations, where solutions tend to be continuous and smooth across the domain. For instance, if a Dirichlet boundary condition is altered at one point, the solution will adjust in a way that reflects this change throughout the entire region.</li>
+<li><strong>No Propagation Delay</strong>: Unlike hyperbolic equations, there is no wave propagation; thus, changes do not require time to influence distant points in the domain. Instead, they affect all points instantaneously.</li>
+</ul></li>
+<li><code>Parabolic PDEs</code>, such as the heat equation, exhibit different characteristics regarding local changes in boundary conditions:
+<ul>
+<li><strong>Temporal Influence</strong>: Changes to boundary conditions will affect the solution at all spatial locations but only at future times. This means that while a local alteration might not immediately impact distant points, over time, these changes will propagate through the domain.</li>
+<li><strong>Initial Conditions Matter</strong>: In parabolic problems, both initial conditions and boundary conditions are crucial. A local change can lead to an evolution of the solution that reflects this change as time progresses. For example, if the temperature at a boundary is increased, it will eventually influence the temperature distribution throughout the domain as heat diffuses.</li>
+</ul></li>
+<li><code>Hyperbolic PDEs</code>, such as wave equations, have unique properties concerning local changes:
+<ul>
+<li><strong>Directional Propagation</strong>: Local changes in boundary conditions can influence solutions through wave propagation. The effects of such changes are constrained by the speed of waves; thus, alterations at one boundary may take time to reach other parts of the domain depending on their distance and direction.</li>
+<li><strong>Reflection and Interaction</strong>: Waves can reflect off boundaries, which means that local changes can create complex interactions within the domain as waves bounce back and forth. This can lead to intricate patterns in the solution that depend on both initial and boundary conditions.</li>
+</ul></li>
+</ul>
+<div class="note note-danger">
+            <p>The effects of local changes in boundary data on PDE solutions vary significantly across different types of equations.</p><ul><li>Elliptic equations respond instantaneously throughout the domain,</li><li>Parabolic equations show temporal propagation effects, and</li><li>Hyperbolic equations exhibit directional influence based on wave behavior.</li></ul><p>Understanding these dynamics is essential for accurately modeling physical phenomena described by PDEs and for ensuring stability and reliability in numerical simulations.</p>
+          </div>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://math.stackexchange.com/questions/3937288/information-propagation-rate-in-2nd-order-pdes">Information propagation rate in 2nd-order PDEs</a>
+<ul>
+<li>Propagation of information generally refers to how local changes in the initial/boundary data is reflected in the corresponding solution.</li>
+<li>In the elliptic and parabolic cases, local changes to initial/boundary data can change the solution at every point, which is what we mean by infinite speed of propagation.</li>
+<li>For wave equations this is not the case however, and changes to initial data is propagates along a 'wave cone.'</li>
+<li>Why would some systems result in finite information propagation rate and others necessarily have infinite information propagation rate?</li>
+</ul></li>
+</ol>
+<h3 id="information-propagation-in-the-heat-equation">Information Propagation in the Heat Equation</h3>
+<p>The heat equation, a fundamental parabolic partial differential equation, describes how heat diffuses through a medium over time. Its mathematical formulation is typically given as:</p>
+<p><span class="math display">\[
+\frac{\partial T}{\partial t} = \alpha \frac{\partial^2 T}{\partial x^2}
+\]</span></p>
+<p>where $ T(x, t) $ is the temperature at position $ x $ and time $ t $, and $ $ is the thermal diffusivity constant. Understanding how information propagates in this context is key to grasping the equation's implications in physical scenarios.</p>
+<h4 id="key-characteristics-of-information-propagation"><strong>Key Characteristics of Information Propagation</strong></h4>
+<ol type="1">
+<li><strong>Infinite Speed of Propagation</strong>:
+<ul>
+<li>Unlike hyperbolic equations (e.g., the wave equation), which have a finite speed of propagation, the heat equation exhibits an <strong>infinite speed of propagation</strong>. This means that changes in temperature at any point in the medium affect all other points instantaneously. For example, if a sudden change occurs at one point, the entire domain feels this change immediately, leading to a smoothing effect across the temperature distribution.
+<ul>
+<li>Intuitively, <strong>Brownian motion</strong> has infinite propagation speed, as it has a <strong>non-zero probability of reaching any point in any arbitrarily short time</strong>. This is due to the fact that the probability density of the normal distribution is strictly greater than zero over the entire space.</li>
+</ul></li>
+</ul></li>
+<li><strong>Smoothing Effect</strong>:
+<ul>
+<li>The heat equation inherently smooths out temperature distributions over time. Initially sharp changes or discontinuities in temperature will become less pronounced as time progresses. This behavior can be observed in the solution to the heat equation, where initial conditions are represented by a Dirac delta function, leading to solutions that spread and flatten out over time.</li>
+</ul></li>
+<li><strong>Loss of Information</strong>:
+<ul>
+<li>As time progresses, information about the initial temperature distribution gradually dissipates. The solution approaches a steady state where temperature differences diminish, reflecting a loss of information about the initial conditions. This contrasts with hyperbolic equations where information is preserved along characteristic lines.</li>
+</ul></li>
+<li><strong>Mathematical Representation</strong>:
+<ul>
+<li>The fundamental solution (or heat kernel) for the heat equation illustrates these properties mathematically. In one dimension, it can be expressed as:</li>
+</ul>
+<p><span class="math display">\[
+S(x, t) = \frac{1}{\sqrt{4\pi \alpha t}} e^{-\frac{x^2}{4\alpha t}}
+\]</span></p>
+<p>This solution shows that as $ t $ increases, the peak of the Gaussian becomes flatter and approaches zero for fixed $ x $, indicating that localized heat effects spread out and diminish over time.</p></li>
+</ol>
+<h4 id="implications-of-infinite-propagation-speed"><strong>Implications of Infinite Propagation Speed</strong></h4>
+<p>The notion of infinite speed of propagation can be counterintuitive:</p>
+<ul>
+<li><strong>Physical Interpretation</strong>: While it might seem that changes propagate instantaneously, this does not imply actual physical movement at infinite speeds. Instead, it reflects how thermal energy diffuses uniformly across the medium due to local interactions at the molecular level.</li>
+<li><strong>Practical Considerations</strong>: In real-world applications, such as heat conduction in solids or fluids, this model simplifies analysis but may not account for delays due to physical constraints or material properties.</li>
+</ul>
+<h4 id="conclusion"><strong>Conclusion</strong></h4>
+<p>The heat equation's characteristics—specifically its infinite speed of propagation and smoothing effect—highlight its unique role among PDEs. Understanding these properties is crucial for modeling thermal processes accurately and recognizing how initial conditions influence long-term behavior in systems governed by diffusion phenomena.</p>
+<h3 id="chatgpt">ChatGPT</h3>
+<p>The statement "heat equation exhibits infinite speed of propagation" refers to a mathematical property of the classical <strong>heat equation</strong>, which describes how heat diffuses through a medium over time. The heat equation is typically written as:</p>
+<p><span class="math display">\[
+\frac{\partial u}{\partial t} = \alpha \nabla^2 u
+\]</span></p>
+<p>where:</p>
+<ul>
+<li>$ u = u(x,t) $ is the temperature distribution,</li>
+<li><span class="math inline">\(\alpha &gt; 0\)</span> is the thermal diffusivity,</li>
+<li><span class="math inline">\(\nabla^2\)</span> is the Laplacian operator.</li>
+</ul>
+<h4 id="meaning-of-infinite-speed-of-propagation">Meaning of Infinite Speed of Propagation</h4>
+<p>In the heat equation, even if the initial temperature distribution <span class="math inline">\(u(x,0)\)</span> has compact support (nonzero only in a finite region of space), the solution <span class="math inline">\(u(x,t)\)</span> for <span class="math inline">\(t &gt; 0\)</span> becomes nonzero everywhere, even arbitrarily far from the initial region. This means that information about the temperature change "propagates" instantaneously to all parts of the medium, albeit with exponentially small magnitude at large distances.</p>
+<h4 id="why-does-this-happen">Why Does This Happen?</h4>
+<p>This property arises from the mathematical nature of the heat equation:</p>
+<ol type="1">
+<li>The heat equation is a <strong>parabolic partial differential equation</strong>.</li>
+<li>Parabolic equations do not have a finite propagation speed for disturbances because they involve second-order spatial derivatives without any mechanism limiting the spread of effects.</li>
+</ol>
+<h4 id="physical-implications">Physical Implications</h4>
+<p>In real-world systems, the infinite speed of propagation predicted by the classical heat equation is not physically realistic because no physical process can propagate at infinite speed. <strong>The discrepancy arises because the heat equation is a continuum approximation and does not account for physical constraints such as the finite speed of thermal energy transport at the atomic or molecular level</strong>.</p>
+<h4 id="modified-theories">Modified Theories</h4>
+<p>To address this issue, <strong>hyperbolic heat equations</strong> or <strong>Cattaneo's equation</strong> are sometimes used. These models incorporate a finite speed of propagation by introducing a relaxation time for heat flux. For example, Cattaneo's equation modifies the heat equation to include a delay effect:</p>
+<p><span class="math display">\[
+\tau \frac{\partial q}{\partial t} + q = -k \nabla u
+\]</span></p>
+<p>where <span class="math inline">\(\tau\)</span> is the relaxation time, <span class="math inline">\(q\)</span> is the heat flux, and <span class="math inline">\(k\)</span> is the thermal conductivity. This modification ensures finite propagation speed.</p>
+<h4 id="if-heat-equation-exhibits-infinite-speed-of-propagation-how-can-we-apply-finite-difference-method">If heat equation exhibits infinite speed of propagation , how can we apply finite difference method?</h4>
+<p>Applying the finite difference method (FDM) to the heat equation is possible and commonly done, even though the equation exhibits infinite speed of propagation. This works because the infinite speed of propagation is a mathematical idealization that does not directly affect numerical methods. Here's why FDM can still be applied effectively:</p>
+<h4 id="key-considerations-for-fdm-and-infinite-speed-of-propagation">Key Considerations for FDM and Infinite Speed of Propagation</h4>
+<ol type="1">
+<li><strong>Locality of Computation</strong>:
+<ul>
+<li>In FDM, the temperature at a grid point is updated based on values from neighboring points within a small finite region (e.g., using a stencil in space and time).</li>
+<li>Although the theoretical solution predicts nonzero values everywhere, these values are often exponentially small and do not significantly affect computation beyond a finite domain.</li>
+</ul></li>
+<li><strong>Truncation of the Domain</strong>:
+<ul>
+<li>In practice, computations are performed on a finite spatial domain, often with boundary conditions applied to simulate the effects of the surrounding infinite domain.</li>
+<li>Any influence from distant points outside the computational domain is negligible due to the rapid decay of the solution in space.</li>
+</ul></li>
+<li><strong>Temporal Resolution</strong>:
+<ul>
+<li>The FDM uses small time steps to advance the solution, which aligns with the localized propagation of numerical updates.</li>
+<li>Even though theoretically, information propagates instantaneously, the numerical scheme respects the finite time step, ensuring stable and accurate progression.</li>
+</ul></li>
+<li><strong>Stability and Convergence</strong>:
+<ul>
+<li>Stability conditions, such as the <strong>CFL condition</strong> (Courant-Friedrichs-Lewy), are enforced to ensure that the numerical solution behaves well.</li>
+<li>For the explicit FDM for the heat equation, the time step size <span class="math inline">\(\Delta t\)</span> and spatial grid size <span class="math inline">\(\Delta x\)</span> must satisfy the condition: <span class="math display">\[
+\Delta t \leq \frac{\Delta x^2}{2\alpha}
+\]</span> This condition limits the temporal and spatial resolution, mitigating issues from infinite propagation speed.</li>
+</ul></li>
+<li><strong>Practical Approximations</strong>:
+<ul>
+<li>In numerical simulations, small initial perturbations may diffuse quickly, but their contributions are bounded by the numerical resolution and truncation errors.</li>
+<li>The numerical approximation only captures behavior within the computational grid and time resolution, effectively ignoring the infinite speed aspect.</li>
+</ul></li>
+</ol>
+<h4 id="how-fdm-works-in-practice">How FDM Works in Practice</h4>
+<p>To solve the 1D heat equation:</p>
+<p><span class="math display">\[
+\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2},
+\]</span></p>
+<p>we discretize it using finite difference approximations:</p>
+<ul>
+<li><strong>Time derivative</strong>: <span class="math inline">\(\frac{\partial u}{\partial t} \approx \frac{u_i^{n+1} - u_i^n}{\Delta t}\)</span>,</li>
+<li><strong>Second spatial derivative</strong>: <span class="math inline">\(\frac{\partial^2 u}{\partial x^2} \approx \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n}{\Delta x^2}\)</span>.</li>
+</ul>
+<p>Substituting these into the equation gives:</p>
+<p><span class="math display">\[
+\frac{u_i^{n+1} - u_i^n}{\Delta t} = \alpha \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n}{\Delta x^2}.
+\]</span></p>
+<p>Rearranging, we obtain the update rule:</p>
+<p><span class="math display">\[
+u_i^{n+1} = u_i^n + \frac{\alpha \Delta t}{\Delta x^2} (u_{i+1}^n - 2u_i^n + u_{i-1}^n).
+\]</span></p>
+<h4 id="handling-infinite-propagation-numerically">Handling Infinite Propagation Numerically</h4>
+<ul>
+<li>The numerical scheme is inherently local, updating <span class="math inline">\(u_i^{n+1}\)</span> based only on immediate neighbors (<span class="math inline">\(u_{i-1}^n\)</span>, <span class="math inline">\(u_i^n\)</span>, <span class="math inline">\(u_{i+1}^n\)</span>).</li>
+<li>The effects of distant changes are limited by the numerical grid and do not cause instability or spurious results if the scheme is stable.</li>
+</ul>
+<h4 id="conclusion-1">Conclusion</h4>
+<p>The infinite speed of propagation in the heat equation is a theoretical concern that does not prevent FDM from being applied. Numerical schemes operate on a discretized version of the problem, which respects finite grid and time step sizes. With appropriate domain size, boundary conditions, and stability checks, FDM provides accurate solutions for practical problems involving the heat equation.</p>
 <h2 id="generalizing-to-higher-dimensions">Generalizing to Higher Dimensions</h2>
 <p>If there are n independent variables x1, x2 , …, xn, a general linear partial differential equation of second order has the form,</p>
 <p><span class="math display">\[
@@ -524,6 +698,27 @@ L u =\sum_{i=1}^n\sum_{j=1}^n a_{i,j} \frac{\partial^2 u}{\partial x_i \partial 
 <li><code>Ultrahyperbolic</code>: there is more than one positive eigenvalue and more than one negative eigenvalue, and there are no zero eigenvalues.</li>
 </ul>
 <p>However, the classification only depends on linearity of the second-order terms and is therefore applicable to semi- and quasilinear PDEs as well.</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.ljll.fr/frey/cours/UdC/ma691/ma691_ch3.pdf">Partial differential equations</a></li>
+<li><a href="http://www.fluid.tuwien.ac.at/322042?action=AttachFile&amp;do=get&amp;target=Classification_v2.pdf">Classification of PDEs</a></li>
+<li><a target="_blank" rel="noopener" href="https://cns.gatech.edu/~predrag/courses/PHYS-6124-12/StGoChap6.pdf">Chapter 6 Partial Differential Equations</a>
+<ol type="1">
+<li>domain of influence</li>
+<li>domain of dependence</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://web.math.sinica.edu.tw/media/pdf/d172/17201.pdf">丘成桐院士演講: 偏微分方程的方法 (<strong>推薦</strong>)</a>
+<ol type="1">
+<li>探討了偏微分方程在動態和靜態問題中的應用，特別是如何利用這些方程來理解系統的行為</li>
+<li>引入了「極限環」的概念，描述當時間足夠長時，系統會趨近於某一穩定軌道</li>
+<li>當系統慢慢接近這一軌道時，可以得到一個與時間無關的方程，這個方程在機率上僅與 $ f $ 本身有關</li>
+<li>研究如<strong>熱方程</strong>和<strong>波動方程</strong>等工具的重要性，以便更好地理解 <strong>Laplace 方程</strong>及其解的整體行為</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://www.ljll.fr/frey/ftp/finite-differences.pdf">The finite difference method</a>
+<ol type="1">
+<li>It is well-known that solving the initial-value problem for the heat equation forward in time takes a discontinuous initial temperature <span class="math inline">\(u\)</span> at time <span class="math inline">\(t_0\)</span> into a temperature which is instantly smooth as soon as the times <span class="math inline">\(t &gt; t_0\)</span> . This may not be physically possible, since there would then be information propagation at infinite speed, which is in contradiction with the <strong>causality</strong> principle. Therefore this is a theoretical property of the mathematical equation.</li>
+</ol></li>
+</ol>
 
                 
               </div>
@@ -594,7 +789,7 @@ L u =\sum_{i=1}^n\sum_{j=1}^n a_{i,j} \frac{\partial^2 u}{\partial x_i \partial 
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 25, 2024</div>
+          <div>December 9, 2024</div>
         </div>
       
       
