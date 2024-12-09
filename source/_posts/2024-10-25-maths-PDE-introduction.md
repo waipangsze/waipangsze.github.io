@@ -81,6 +81,30 @@ From the numerical point of view,
 | Initial Value Problem  | Time evolution  | Parabolic or Hyperbolic | **Stability**             |
 | Boundary Value Problem | Static solution | Elliptic                | **Efficiency**            |
 
+## **Navier-Stokes equations (NS equations)**
+
+The **Navier-Stokes equations (NS equations)**, which describe the motion of fluid substances (like liquids and gases), are a set of nonlinear partial differential equations (PDEs). Their type depends on how they're applied and simplified for specific contexts. Here’s a breakdown:
+
+### 1. **Classification Based on Context**
+
+PDEs are classified as **elliptic**, **parabolic**, or **hyperbolic**, depending on the system's properties. The Navier-Stokes equations can exhibit any of these behaviors depending on the conditions.
+
+#### a) **Parabolic Type** (Diffusion-Dominated)
+
+- When viscous (diffusive) terms dominate over inertial terms ($(\mathbf{u} \cdot \nabla) \mathbf{u}$) in low Reynolds number ($Re$) flows.
+- Example: Slow, creeping flows like those governed by the **Stokes equation** (a simplification of Navier-Stokes for very low $Re$).
+
+#### b) **Elliptic Type** (Steady-State Solutions)
+
+- For steady flows ($\partial \mathbf{u} / \partial t = 0$), the Navier-Stokes equations can become elliptic.
+- Pressure fields are determined elliptically in incompressible flows due to the coupling of velocity and pressure.
+
+#### c) **Hyperbolic Type** (Advection-Dominated) or compressible regimes
+
+- For high Reynolds number flows, where inertial terms dominate viscous terms, the flow becomes advection-dominated.
+- Inviscid (frictionless) Navier-Stokes equations reduce to the **Euler equations**, which are hyperbolic.
+
+
 ## Properties of different types of PDEs
 
 - `Elliptic`
@@ -168,9 +192,106 @@ The notion of infinite speed of propagation can be counterintuitive:
 - **Physical Interpretation**: While it might seem that changes propagate instantaneously, this does not imply actual physical movement at infinite speeds. Instead, it reflects how thermal energy diffuses uniformly across the medium due to local interactions at the molecular level.
 - **Practical Considerations**: In real-world applications, such as heat conduction in solids or fluids, this model simplifies analysis but may not account for delays due to physical constraints or material properties.
 
-### **Conclusion**
+#### **Conclusion**
 
 The heat equation's characteristics—specifically its infinite speed of propagation and smoothing effect—highlight its unique role among PDEs. Understanding these properties is crucial for modeling thermal processes accurately and recognizing how initial conditions influence long-term behavior in systems governed by diffusion phenomena.
+
+### ChatGPT 
+
+The statement "heat equation exhibits infinite speed of propagation" refers to a mathematical property of the classical **heat equation**, which describes how heat diffuses through a medium over time. The heat equation is typically written as:
+
+$$
+\frac{\partial u}{\partial t} = \alpha \nabla^2 u
+$$
+
+where:
+
+- $ u = u(x,t) $ is the temperature distribution,
+- $\alpha > 0$ is the thermal diffusivity,
+- $\nabla^2$ is the Laplacian operator.
+
+#### Meaning of Infinite Speed of Propagation
+In the heat equation, even if the initial temperature distribution $u(x,0)$ has compact support (nonzero only in a finite region of space), the solution $u(x,t)$ for $t > 0$ becomes nonzero everywhere, even arbitrarily far from the initial region. This means that information about the temperature change "propagates" instantaneously to all parts of the medium, albeit with exponentially small magnitude at large distances.
+
+#### Why Does This Happen?
+This property arises from the mathematical nature of the heat equation:
+
+1. The heat equation is a **parabolic partial differential equation**.
+2. Parabolic equations do not have a finite propagation speed for disturbances because they involve second-order spatial derivatives without any mechanism limiting the spread of effects.
+
+#### Physical Implications
+In real-world systems, the infinite speed of propagation predicted by the classical heat equation is not physically realistic because no physical process can propagate at infinite speed. **The discrepancy arises because the heat equation is a continuum approximation and does not account for physical constraints such as the finite speed of thermal energy transport at the atomic or molecular level**.
+
+#### Modified Theories
+To address this issue, **hyperbolic heat equations** or **Cattaneo's equation** are sometimes used. These models incorporate a finite speed of propagation by introducing a relaxation time for heat flux. For example, Cattaneo's equation modifies the heat equation to include a delay effect:
+
+$$
+\tau \frac{\partial q}{\partial t} + q = -k \nabla u
+$$
+
+where $\tau$ is the relaxation time, $q$ is the heat flux, and $k$ is the thermal conductivity. This modification ensures finite propagation speed.
+
+#### If heat equation exhibits infinite speed of propagation , how can we apply finite difference method?
+
+Applying the finite difference method (FDM) to the heat equation is possible and commonly done, even though the equation exhibits infinite speed of propagation. This works because the infinite speed of propagation is a mathematical idealization that does not directly affect numerical methods. Here's why FDM can still be applied effectively:
+
+#### Key Considerations for FDM and Infinite Speed of Propagation
+
+1. **Locality of Computation**:
+   - In FDM, the temperature at a grid point is updated based on values from neighboring points within a small finite region (e.g., using a stencil in space and time).
+   - Although the theoretical solution predicts nonzero values everywhere, these values are often exponentially small and do not significantly affect computation beyond a finite domain.
+
+2. **Truncation of the Domain**:
+   - In practice, computations are performed on a finite spatial domain, often with boundary conditions applied to simulate the effects of the surrounding infinite domain.
+   - Any influence from distant points outside the computational domain is negligible due to the rapid decay of the solution in space.
+
+3. **Temporal Resolution**:
+   - The FDM uses small time steps to advance the solution, which aligns with the localized propagation of numerical updates.
+   - Even though theoretically, information propagates instantaneously, the numerical scheme respects the finite time step, ensuring stable and accurate progression.
+
+4. **Stability and Convergence**:
+   - Stability conditions, such as the **CFL condition** (Courant-Friedrichs-Lewy), are enforced to ensure that the numerical solution behaves well.
+   - For the explicit FDM for the heat equation, the time step size $\Delta t$ and spatial grid size $\Delta x$ must satisfy the condition:
+     $$
+     \Delta t \leq \frac{\Delta x^2}{2\alpha}
+     $$
+     This condition limits the temporal and spatial resolution, mitigating issues from infinite propagation speed.
+
+5. **Practical Approximations**:
+   - In numerical simulations, small initial perturbations may diffuse quickly, but their contributions are bounded by the numerical resolution and truncation errors.
+   - The numerical approximation only captures behavior within the computational grid and time resolution, effectively ignoring the infinite speed aspect.
+
+#### How FDM Works in Practice
+
+To solve the 1D heat equation:
+
+$$
+\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2},
+$$
+
+we discretize it using finite difference approximations:
+
+- **Time derivative**: $\frac{\partial u}{\partial t} \approx \frac{u_i^{n+1} - u_i^n}{\Delta t}$,
+- **Second spatial derivative**: $\frac{\partial^2 u}{\partial x^2} \approx \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n}{\Delta x^2}$.
+
+Substituting these into the equation gives:
+
+$$
+\frac{u_i^{n+1} - u_i^n}{\Delta t} = \alpha \frac{u_{i+1}^n - 2u_i^n + u_{i-1}^n}{\Delta x^2}.
+$$
+
+Rearranging, we obtain the update rule:
+
+$$
+u_i^{n+1} = u_i^n + \frac{\alpha \Delta t}{\Delta x^2} (u_{i+1}^n - 2u_i^n + u_{i-1}^n).
+$$
+
+#### Handling Infinite Propagation Numerically
+- The numerical scheme is inherently local, updating $u_i^{n+1}$ based only on immediate neighbors ($u_{i-1}^n$, $u_i^n$, $u_{i+1}^n$).
+- The effects of distant changes are limited by the numerical grid and do not cause instability or spurious results if the scheme is stable.
+
+#### Conclusion
+The infinite speed of propagation in the heat equation is a theoretical concern that does not prevent FDM from being applied. Numerical schemes operate on a discretized version of the problem, which respects finite grid and time step sizes. With appropriate domain size, boundary conditions, and stability checks, FDM provides accurate solutions for practical problems involving the heat equation.
 
 ## Generalizing to Higher Dimensions
 
@@ -203,3 +324,5 @@ However, the classification only depends on linearity of the second-order terms 
    2. 引入了「極限環」的概念，描述當時間足夠長時，系統會趨近於某一穩定軌道
    3. 當系統慢慢接近這一軌道時，可以得到一個與時間無關的方程，這個方程在機率上僅與 $ f $ 本身有關
    4. 研究如**熱方程**和**波動方程**等工具的重要性，以便更好地理解 **Laplace 方程**及其解的整體行為
+5. [The finite difference method](https://www.ljll.fr/frey/ftp/finite-differences.pdf)
+   1. It is well-known that solving the initial-value problem for the heat equation forward in time takes a discontinuous initial temperature $u$ at time $t_0$ into a temperature which is instantly smooth as soon as the times $t > t_0$ . This may not be physically possible, since there would then be information propagation at infinite speed, which is in contradiction with the **causality** principle. Therefore this is a theoretical property of the mathematical equation.
