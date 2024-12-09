@@ -100,6 +100,78 @@ From the numerical point of view,
   - Boundary conditions are required in space, initial condition in time
   - **Information about local change of boundary condition travels through space with finite speed.**
 
+### Local Changes and Their Effects
+
+Local modifications to boundary data can influence solutions in several ways, depending on the type of PDE:
+
+- `Elliptic PDEs`, such as Laplace's equation, are characterized by their boundary conditions being prescribed over the entire boundary of the domain. The effects of local changes in boundary conditions on elliptic equations are profound:
+  - **Immediate Influence**: A local change in boundary data will affect the solution throughout the entire domain immediately. This is due to the smoothing properties of elliptic equations, where solutions tend to be continuous and smooth across the domain. For instance, if a Dirichlet boundary condition is altered at one point, the solution will adjust in a way that reflects this change throughout the entire region.
+  - **No Propagation Delay**: Unlike hyperbolic equations, there is no wave propagation; thus, changes do not require time to influence distant points in the domain. Instead, they affect all points instantaneously.
+- `Parabolic PDEs`, such as the heat equation, exhibit different characteristics regarding local changes in boundary conditions:
+  - **Temporal Influence**: Changes to boundary conditions will affect the solution at all spatial locations but only at future times. This means that while a local alteration might not immediately impact distant points, over time, these changes will propagate through the domain.
+  - **Initial Conditions Matter**: In parabolic problems, both initial conditions and boundary conditions are crucial. A local change can lead to an evolution of the solution that reflects this change as time progresses. For example, if the temperature at a boundary is increased, it will eventually influence the temperature distribution throughout the domain as heat diffuses.
+- `Hyperbolic PDEs`, such as wave equations, have unique properties concerning local changes:
+  - **Directional Propagation**: Local changes in boundary conditions can influence solutions through wave propagation. The effects of such changes are constrained by the speed of waves; thus, alterations at one boundary may take time to reach other parts of the domain depending on their distance and direction.
+  - **Reflection and Interaction**: Waves can reflect off boundaries, which means that local changes can create complex interactions within the domain as waves bounce back and forth. This can lead to intricate patterns in the solution that depend on both initial and boundary conditions.
+
+{% note danger %}
+The effects of local changes in boundary data on PDE solutions vary significantly across different types of equations. 
+
+- Elliptic equations respond instantaneously throughout the domain, 
+- Parabolic equations show temporal propagation effects, and 
+- Hyperbolic equations exhibit directional influence based on wave behavior. 
+
+Understanding these dynamics is essential for accurately modeling physical phenomena described by PDEs and for ensuring stability and reliability in numerical simulations.
+{% endnote %}
+
+1. [Information propagation rate in 2nd-order PDEs](https://math.stackexchange.com/questions/3937288/information-propagation-rate-in-2nd-order-pdes)
+   - Propagation of information generally refers to how local changes in the initial/boundary data is reflected in the corresponding solution.
+   - In the elliptic and parabolic cases, local changes to initial/boundary data can change the solution at every point, which is what we mean by infinite speed of propagation.
+   - For wave equations this is not the case however, and changes to initial data is propagates along a 'wave cone.'
+   - Why would some systems result in finite information propagation rate and others necessarily have infinite information propagation rate?
+
+### Information Propagation in the Heat Equation
+
+The heat equation, a fundamental parabolic partial differential equation, describes how heat diffuses through a medium over time. Its mathematical formulation is typically given as:
+
+$$
+\frac{\partial T}{\partial t} = \alpha \frac{\partial^2 T}{\partial x^2}
+$$
+
+where $ T(x, t) $ is the temperature at position $ x $ and time $ t $, and $ \alpha $ is the thermal diffusivity constant. Understanding how information propagates in this context is key to grasping the equation's implications in physical scenarios.
+
+#### **Key Characteristics of Information Propagation**
+
+1. **Infinite Speed of Propagation**:
+   - Unlike hyperbolic equations (e.g., the wave equation), which have a finite speed of propagation, the heat equation exhibits an **infinite speed of propagation**. This means that changes in temperature at any point in the medium affect all other points instantaneously. For example, if a sudden change occurs at one point, the entire domain feels this change immediately, leading to a smoothing effect across the temperature distribution.
+     - Intuitively, **Brownian motion** has infinite propagation speed, as it has a **non-zero probability of reaching any point in any arbitrarily short time**. This is due to the fact that the probability density of the normal distribution is strictly greater than zero over the entire space.
+
+2. **Smoothing Effect**:
+   - The heat equation inherently smooths out temperature distributions over time. Initially sharp changes or discontinuities in temperature will become less pronounced as time progresses. This behavior can be observed in the solution to the heat equation, where initial conditions are represented by a Dirac delta function, leading to solutions that spread and flatten out over time. 
+
+3. **Loss of Information**:
+   - As time progresses, information about the initial temperature distribution gradually dissipates. The solution approaches a steady state where temperature differences diminish, reflecting a loss of information about the initial conditions. This contrasts with hyperbolic equations where information is preserved along characteristic lines.
+
+4. **Mathematical Representation**:
+   - The fundamental solution (or heat kernel) for the heat equation illustrates these properties mathematically. In one dimension, it can be expressed as:
+
+   $$
+   S(x, t) = \frac{1}{\sqrt{4\pi \alpha t}} e^{-\frac{x^2}{4\alpha t}}
+   $$
+
+   This solution shows that as $ t $ increases, the peak of the Gaussian becomes flatter and approaches zero for fixed $ x $, indicating that localized heat effects spread out and diminish over time.
+
+#### **Implications of Infinite Propagation Speed**
+
+The notion of infinite speed of propagation can be counterintuitive:
+
+- **Physical Interpretation**: While it might seem that changes propagate instantaneously, this does not imply actual physical movement at infinite speeds. Instead, it reflects how thermal energy diffuses uniformly across the medium due to local interactions at the molecular level.
+- **Practical Considerations**: In real-world applications, such as heat conduction in solids or fluids, this model simplifies analysis but may not account for delays due to physical constraints or material properties.
+
+### **Conclusion**
+
+The heat equation's characteristics—specifically its infinite speed of propagation and smoothing effect—highlight its unique role among PDEs. Understanding these properties is crucial for modeling thermal processes accurately and recognizing how initial conditions influence long-term behavior in systems governed by diffusion phenomena.
+
 ## Generalizing to Higher Dimensions
 
 If there are n independent variables x1, x2 , …, xn, a general linear partial differential equation of second order has the form,
@@ -118,3 +190,16 @@ The classification depends upon the signature of the eigenvalues of the coeffici
 - `Ultrahyperbolic`: there is more than one positive eigenvalue and more than one negative eigenvalue, and there are no zero eigenvalues.
 
 However, the classification only depends on linearity of the second-order terms and is therefore applicable to semi- and quasilinear PDEs as well. 
+
+# References
+
+1. [Partial differential equations](https://www.ljll.fr/frey/cours/UdC/ma691/ma691_ch3.pdf)
+2. [Classification of PDEs](http://www.fluid.tuwien.ac.at/322042?action=AttachFile&do=get&target=Classification_v2.pdf)
+3. [Chapter 6 Partial Differential Equations](https://cns.gatech.edu/~predrag/courses/PHYS-6124-12/StGoChap6.pdf)
+   1. domain of influence
+   2. domain of dependence
+4. [丘成桐院士演講: 偏微分方程的方法 (**推薦**)](https://web.math.sinica.edu.tw/media/pdf/d172/17201.pdf)
+   1. 探討了偏微分方程在動態和靜態問題中的應用，特別是如何利用這些方程來理解系統的行為
+   2. 引入了「極限環」的概念，描述當時間足夠長時，系統會趨近於某一穩定軌道
+   3. 當系統慢慢接近這一軌道時，可以得到一個與時間無關的方程，這個方程在機率上僅與 $ f $ 本身有關
+   4. 研究如**熱方程**和**波動方程**等工具的重要性，以便更好地理解 **Laplace 方程**及其解的整體行為

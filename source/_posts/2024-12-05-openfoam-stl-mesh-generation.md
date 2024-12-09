@@ -128,3 +128,7 @@ OpenStreetMap数据可以转换为shapefiles。各种网站提供了从OSM数据
 1. [Mesh generation using snappyHexMesh (**recommend**)](https://www.wolfdynamics.com/wiki/meshing_OF_SHM.pdf)
 2. [解锁新技能：OpenFOAM三维网格生成器](https://www.fangzhenxiu.com/post/7273888/?uri=473_83g6eo3r4s1)
 3. [STL 檔案](https://www.adobe.com/hk_zh/creativecloud/file-types/image/vector/stl-file.html)
+4. [Urban Wind Flow Modeling with PINNs (**recommend**)](https://blog.iaac.net/urban-wind-flow-modeling-with-pinns/?utm_source=perplexity)
+   1. Data Sources
+      1. Real-Time Wind Data: `OpenWeatherMap` wind conditions.
+      2. 3D Building Models: `OpenStreetMap (OSM)` data using Overpass API.

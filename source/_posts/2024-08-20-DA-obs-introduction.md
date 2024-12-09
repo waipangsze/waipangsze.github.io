@@ -18,6 +18,7 @@ banner_img: https://www.hko.gov.hk/en/education/images/fig_00479_2e.png
 - [BUFR: A METEOROLOGICAL CODE FOR THE 21ST CENTURY (2010)](https://web.archive.org/web/20180215023559/https://www.eumetsat.int/website/wcm/idc/idcplg?IdcService=GET_FILE&dDocName=PDF_CONF_P57_S5_01_KARHILA_V&RevisionSelectionMethod=LatestReleased&Rendition=Web)
 - [中央氣象局新格式氣象觀測資料作業系統介紹 (2014)](https://photino.cwb.gov.tw/rdcweb/lib/cd/cd01conf/dissertation/2014WAF/A1/A1-23.pdf)
 - [Migration TAC to TDCF](https://community.wmo.int/en/activity-areas/operational-information-service/migration-tac-tdcf)
+- [气象编程 | 读取气象BUFR、PREPBUFR数据](https://mp.weixin.qq.com/s/qiowYgEHHdQhC4TPbcjMVw)
 
 Currently, most meteorological observations are being produced and transmitted in special formats known as 
 

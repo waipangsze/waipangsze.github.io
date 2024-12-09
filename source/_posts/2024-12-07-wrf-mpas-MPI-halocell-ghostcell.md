@@ -114,6 +114,18 @@ $$
 
 ![](https://i.imgur.com/82xzzGC.png){width=600}
 
+### [Tutorial Notes: WRF Software 2.1](http://danida.vnu.edu.vn/cpis/files/Refs/WRF/WRF%20Software.pdf)
+
+- WRF can be run serially or as a parallel job 
+- WRF uses **domain decomposition** to divide total amount of work over parallel processes • Since the process model has two levels (heavy-weight and light-weight = MPI and OpenMP), the decomposition of the application over processes has two levels:
+  - The **domain** is first broken up into rectangular pieces that are assigned to heavy-weight processes. These pieces are called **patches**
+  - The **patches** may be further subdivided into smaller rectangular pieces that are called **tiles**, and these are assigned to **threads** within the process.
+- Model domains are decomposed for parallelism on two-levels 
+  - **Patch**: section of model domain  a located to a **distributed memory  node**, this is the scope of a mediation layer solver or physics driver. 
+  - **Tile**: section of a patch allocated to a **shared-memory processor** within a node; this is also the scope of a model layer subroutine. 
+  - Distributed memory parallelism is over patches; shared memory parallelism is over tiles within patches
+
+
 # MPAS
 
 ## [An overview of the structure of MPAS meshes | Boulder2023](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Boulder2023/lectures/mesh_structure.pdf)

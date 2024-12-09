@@ -13,9 +13,12 @@ index_img: https://i.imgur.com/GkV6pMK.png
 banner_img: https://i.imgur.com/GkV6pMK.png
 ---
 
-# 筆記/部落格列表
+# Notes/Blogs 筆記/部落格列表
 
 1. [CFD study and method development for air intake systems using OpenFOAM 2020 | GIOVANNI CALZOLARI](https://www.diva-portal.org/smash/get/diva2:1458913/FULLTEXT01.pdf)
    1. KTH ROYAL INSTITUTE OF TECHNOLOGY SCHOOL OF ENGINEERING SCIENCES
-
-
+2. [Urban Wind Flow Modeling with PINNs](https://blog.iaac.net/urban-wind-flow-modeling-with-pinns/?utm_source=perplexity)
+   1. Data Sources
+      1. Real-Time Wind Data: `OpenWeatherMap` wind conditions.
+      2. 3D Building Models: `OpenStreetMap (OSM)` data using Overpass API.
+   2. `NVIDIA Modulus` and `PyTorch` are employed
