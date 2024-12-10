@@ -20,6 +20,10 @@ date: 2024-09-30 21:26:27
 - [數學傳播](https://web.math.sinica.edu.tw/mathmedia/)
 - [苏剑林 | BoJone，科学空间博主](https://spaces.ac.cn/)
 
+## 資料科學 (Data science)
+
+- [我是好豪 | 台灣 | 資料科學家](https://haosquare.com/category/data-science/)
+
 ## 天氣
 
 - [2024 臺大數值天氣預報課程 WRF區域模式實作 (推薦)](https://rain.as.ntu.edu.tw/course_wrf.html)

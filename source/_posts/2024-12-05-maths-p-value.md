@@ -80,12 +80,13 @@ The Wilcoxon signed-rank test is a **non-parametric rank test** for statistical 
 # References
 
 1. [T-Tests and P-Values](https://notebook.community/therealAJ/python-sandbox/data-science/learning/ud1/DataScience/TTest)
-2. [使用 Python 进行 T检验](https://www.cnblogs.com/IvyWong/p/10134012.html)
+2. [(**推薦**)| t 檢定與中央極限定理：你真的懂常態分佈嗎？](https://haosquare.com/normal-distribution-central-limit-theorem-t-test/)
+3. [使用 Python 进行 T检验](https://www.cnblogs.com/IvyWong/p/10134012.html)
    1. 单样本T检验(ttest_1samp)
    2. 两独立样本T检验(ttest_ind)
    3. 配对样本T检验(ttest_rel)
-3. [【學習筆記】獨立樣本t檢定-理論+Python實作](https://medium.com/@jason8410271027/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-%E7%8D%A8%E7%AB%8B%E6%A8%A3%E6%9C%ACt%E6%AA%A2%E5%AE%9A-%E7%90%86%E8%AB%96-python%E5%AF%A6%E4%BD%9C-146699cf0bd9)
-4. [看電影學統計: p值的陷阱](https://blog.udn.com/nilnimest/844041900)
-5. [統計學:大家都喜歡問的系列-p值是什麼](https://chih-sheng-huang821.medium.com/%E7%B5%B1%E8%A8%88%E5%AD%B8-%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%96%9C%E6%AD%A1%E5%95%8F%E7%9A%84%E7%B3%BB%E5%88%97-p%E5%80%BC%E6%98%AF%E4%BB%80%E9%BA%BC-2c03dbe8fddf)
-6. [t 檢定](https://www.jmp.com/zh_tw/statistics-knowledge-portal/t-test.html)
-7. Wilks, D. S. (2006, 2011). Statistical methods in the atmospheric sciences. Academic press.
+4. [【學習筆記】獨立樣本t檢定-理論+Python實作](https://medium.com/@jason8410271027/%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-%E7%8D%A8%E7%AB%8B%E6%A8%A3%E6%9C%ACt%E6%AA%A2%E5%AE%9A-%E7%90%86%E8%AB%96-python%E5%AF%A6%E4%BD%9C-146699cf0bd9)
+5. [看電影學統計: p值的陷阱](https://blog.udn.com/nilnimest/844041900)
+6. [統計學:大家都喜歡問的系列-p值是什麼](https://chih-sheng-huang821.medium.com/%E7%B5%B1%E8%A8%88%E5%AD%B8-%E5%A4%A7%E5%AE%B6%E9%83%BD%E5%96%9C%E6%AD%A1%E5%95%8F%E7%9A%84%E7%B3%BB%E5%88%97-p%E5%80%BC%E6%98%AF%E4%BB%80%E9%BA%BC-2c03dbe8fddf)
+7. [t 檢定](https://www.jmp.com/zh_tw/statistics-knowledge-portal/t-test.html)
+8. Wilks, D. S. (2006, 2011). Statistical methods in the atmospheric sciences. Academic press.

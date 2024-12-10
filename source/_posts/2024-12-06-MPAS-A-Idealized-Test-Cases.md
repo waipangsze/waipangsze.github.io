@@ -308,3 +308,14 @@ the run is done and shows,
  Plot,
 
  ![](https://i.imgur.com/ZZHlHFq.gif){width=600}
+
+# References
+
+1. Skamarock, W. C., Klemp, J. B., Duda, M. G., Fowler, L. D., Park, S., & Ringler, T. D. (2012). A Multiscale Nonhydrostatic Atmospheric Model Using Centroidal Voronoi Tesselations and C-Grid Staggering. Monthly Weather Review, 140(9), 3090-3105. <https://doi.org/10.1175/MWR-D-11-00215.1>
+   1. Test cases: Nonhydrostatic flows on Cartesian planes
+      1. 2D Scha¨r test case
+      2. 2D density current
+      3. Supercell simulation
+   2. Test cases: Large-scale flow on the sphere
+      1.  Dry baroclinic wave simulations
+      2.  Unfiltered baroclinic wave simulations
