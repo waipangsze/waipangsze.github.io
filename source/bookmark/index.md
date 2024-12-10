@@ -23,6 +23,7 @@ date: 2024-09-30 21:26:27
 ## 資料科學 (Data science)
 
 - [我是好豪 | 台灣 | 資料科學家](https://haosquare.com/category/data-science/)
+- [seeing-theory.brown.edu](https://seeing-theory.brown.edu/)
 
 ## 天氣
 
