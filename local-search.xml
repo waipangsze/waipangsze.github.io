@@ -4,7 +4,38 @@
   
   
   <entry>
-    <title>NWP | ML | GNN Graph Neural Network Model</title>
+    <title>ML | U-Net</title>
+    <link href="/2024/12/13/ML-Unet/"/>
+    <url>/2024/12/13/ML-Unet/</url>
+    
+    <content type="html"><![CDATA[<h1 id="u-net">U-Net</h1><p>The <code>U-Net</code> architecture follows an <strong>encoder-decoder cascade structure</strong>, where the encoder gradually compresses information into a <strong>lower-dimensional representation</strong>. Then the decoder decodes this information back to the original image dimension. Owing to this, the architecture gets an overall U-shape, which leads to the name U-Net.</p><p><strong>U-Net is a convolutional neural network that was developed for image segmentation</strong>. The network is based on a <a href="https://openaccess.thecvf.com/content_cvpr_2015/papers/Long_Fully_Convolutional_Networks_2015_CVPR_paper.pdf">fully convolutional neural network</a> whose architecture was modified and extended to work with fewer training images and to yield more precise segmentation.</p><p><img src="https://i.imgur.com/eKOoRN9.png" width="600" /></p><p>U-Net is a prominent deep learning architecture primarily used for <strong>semantic segmentation</strong> in computer vision tasks, particularly in the biomedical field. Developed by <a href="https://www.academia.edu/download/80140288/1505.pdf">Olaf Ronneberger and colleagues in 2015</a>, U-Net was designed to perform well even with limited training data, making it particularly useful in medical imaging where annotated datasets are scarce.</p><figure><img src="https://i.imgur.com/l2LtVgl.png" alt="Fig. 1. U-net architecture (example for 32x32 pixels in the lowest resolution). Each blue box corresponds to a multi-channel feature map. The number of channels is denoted on top of the box. The x-y-size is provided at the lower left edge of the box. White boxes represent copied feature maps. The arrows denote the different operations. ( Source: Ronneberger, O., Fischer, P., &amp; Brox, T. (2015). U-net: Convolutional networks for biomedical image segmentation." width="600" /><figcaption>Fig. 1. U-net architecture (example for 32x32 pixels in the lowest resolution). Each blue box corresponds to a multi-channel feature map. The number of channels is denoted on top of the box. The x-y-size is provided at the lower left edge of the box. White boxes represent copied feature maps. The arrows denote the different operations. ( Source: Ronneberger, O., Fischer, P., &amp; Brox, T. (2015). U-net: Convolutional networks for biomedical image segmentation.</figcaption></figure><h2 id="architecture-overview">Architecture Overview</h2><p>U-Net features a distinctive <strong>U-shaped architecture</strong> that consists of two main paths: the <strong>contracting path</strong> (encoder) and the <strong>expansive path</strong> (decoder).</p><ul><li><p><strong>Contracting Path (Encoder)</strong>: This part of the network captures context from the input image. It consists of several convolutional layers followed by max pooling operations, which progressively reduce the spatial dimensions while increasing the depth of feature maps. The encoder extracts high-level features from the input image, similar to other convolutional networks.</p></li><li><p><strong>Expansive Path (Decoder)</strong>: The decoder's role is to upsample the feature maps obtained from the encoder back to the original image size. This is achieved through transposed convolutions (deconvolutions) and concatenation with corresponding feature maps from the encoder via <strong>skip connections</strong>. These skip connections help preserve spatial information that might be lost during downsampling, allowing for more precise localization of features in the output segmentation map.</p></li></ul><h3 id="key-features">Key Features</h3><ul><li><strong>Skip Connections</strong>: These connections between corresponding layers in the encoder and decoder allow the model to retain spatial information, which is crucial for accurate segmentation.</li><li><strong>Fully Convolutional Network</strong>: U-Net is a fully convolutional network, meaning it does not rely on fully connected layers, making it more efficient for image processing tasks.</li><li><strong>Effective with Limited Data</strong>: U-Net's design enables it to perform well even when trained on small datasets, which is a significant advantage in fields like medical imaging where data acquisition can be challenging.</li></ul><h2 id="applications">Applications</h2><p>U-Net has been widely adopted for various applications beyond biomedical image segmentation, including:</p><ul><li><strong>Medical Imaging</strong>: Segmenting organs or tumors in MRI and CT scans.</li><li><strong>Satellite Image Analysis</strong>: Identifying land use or changes in land cover.</li><li><strong>Autonomous Vehicles</strong>: Assisting in scene understanding by segmenting objects within images.</li></ul><p>In summary, U-Net's innovative architecture and effective use of skip connections have made it a foundational model in semantic segmentation tasks across various domains, particularly where data scarcity poses challenges.</p><h1 id="references">References</h1><ol type="1"><li><a href="https://openaccess.thecvf.com/content_cvpr_2015/papers/Long_Fully_Convolutional_Networks_2015_CVPR_paper.pdf">Long, J., Shelhamer, E., &amp; Darrell, T. (2015). <strong>Fully convolutional networks for semantic segmentation</strong>. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 3431-3440).</a></li><li><a href="https://www.academia.edu/download/80140288/1505.pdf">Ronneberger, O., Fischer, P., &amp; Brox, T. (2015). <strong>U-net: Convolutional networks for biomedical image segmentation</strong>. In Medical image computing and computer-assisted intervention–MICCAI 2015: 18th international conference, Munich, Germany, October 5-9, 2015, proceedings, part III 18 (pp. 234-241). Springer International Publishing.</a></li><li><a href="https://martin12345m.medium.com/3d-unet-%E5%B0%8F%E7%B0%A1%E4%BB%8B-%E6%9E%B6%E6%A7%8B-1-%E5%BE%9E2d%E9%96%8B%E5%A7%8B-669cacd2f813">3D Unet 小簡介：架構(1) — 從2D開始</a></li><li><a href="https://pyimagesearch.com/2021/11/08/u-net-training-image-segmentation-models-in-pytorch/">U-Net: Training Image Segmentation Models in PyTorch</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>ML</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
+      
+      <tag>pytorch</tag>
+      
+      <tag>U-Net</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ML | NWP | GNN Graph Neural Network Model</title>
     <link href="/2024/12/12/NWP-ML-GNN/"/>
     <url>/2024/12/12/NWP-ML-GNN/</url>
     
@@ -1803,9 +1834,9 @@
     
     <tags>
       
-      <tag>gnu</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>gnu</tag>
       
       <tag>DA</tag>
       
@@ -2019,11 +2050,11 @@
     
     <tags>
       
+      <tag>Spack</tag>
+      
       <tag>MPAS</tag>
       
       <tag>DA</tag>
-      
-      <tag>Spack</tag>
       
       <tag>Spack-Stack</tag>
       
@@ -2050,15 +2081,15 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
-      <tag>Micromamba</tag>
+      <tag>ecFlow</tag>
       
       <tag>Spack</tag>
       
-      <tag>ecFlow</tag>
+      <tag>Micromamba</tag>
       
       <tag>Conda</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -2108,9 +2139,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Pnetcdf</tag>
       
@@ -2239,11 +2270,11 @@
     
     <tags>
       
+      <tag>Spack</tag>
+      
       <tag>Installation</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>Spack</tag>
       
       <tag>Intel</tag>
       
@@ -2428,9 +2459,9 @@
     
     <tags>
       
-      <tag>WPS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WPS</tag>
       
     </tags>
     
@@ -2455,9 +2486,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -2565,9 +2596,9 @@
     
     <tags>
       
-      <tag>WPS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WPS</tag>
       
     </tags>
     
@@ -2592,9 +2623,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -2619,9 +2650,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -2646,9 +2677,9 @@
     
     <tags>
       
-      <tag>conda</tag>
-      
       <tag>Micromamba</tag>
+      
+      <tag>conda</tag>
       
     </tags>
     
@@ -3517,39 +3548,6 @@
   
   
   <entry>
-    <title>GFS/FNL dataset</title>
-    <link href="/2023/04/27/GFS_FNL/"/>
-    <url>/2023/04/27/GFS_FNL/</url>
-    
-    <content type="html"><![CDATA[<h1 id="news-2024-july">News (2024 July)</h1><p><strong>RDA Data Services Unavailable July 30, 2024</strong></p><p>New setup goes to</p><p><a href="https://waipangsze.github.io/2024/08/16/GFS_FNL_RDA_upgrade/" class="uri">https://waipangsze.github.io/2024/08/16/GFS_FNL_RDA_upgrade/</a></p><h1 id="gfs">GFS</h1><p>The Global Forecast System (GFS)<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[GFS Data Access](https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast)">[1]</span></a></sup> is a National Centers for Environmental Prediction (NCEP) weather forecast model that generates data for dozens of atmospheric and land-soil variables, including temperatures, winds, precipitation, soil moisture, and atmospheric ozone concentration. The system couples four separate models (atmosphere, ocean model, land/soil model, and sea ice) that work together to accurately depict weather conditions.</p><h2 id="specifications">Specifications</h2><p>The GFS<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[GFS home page](https://www.emc.ncep.noaa.gov/emc/pages/numerical_forecast_systems/gfs.php)">[2]</span></a></sup> <sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[Global Models Verification](https://www.emc.ncep.noaa.gov/users/verification/global/)">[3]</span></a></sup> is run four times a day, producing forecasts up to 16 days in advance. The forecast component uses the Finite Volume Cubed (FV3) model with a resolution of ~13 km, with the atmosphere coupled to the NCEP Global Wave Model. In the vertical, the model is divided into 127 vertical layers. It produces hourly forecast output for the first 120 hours, then 3 hourly for days 5-16. Details on the June 2019 implementation of the initial FV3 version of the GFS (GFSv15) and the March 2021 implementation of GFSv16 can be found in the links listed below.</p><h2 id="download">Download</h2><p>NCEP GFS 0.25 Degree Global Forecast Grids Historical Archive ds084.1 | DOI: 10.5065/D65D8PWK &gt; https://rda.ucar.edu/datasets/ds084.1/ &gt; The NCEP operational Global Forecast System analysis and forecast grids are on a 0.25 by 0.25 global latitude longitude grid. Grids include analysis and forecast time steps at a 3 hourly interval from 0 to 240, and a 12 hourly interval from 240 to 384. Model forecast runs occur at 00, 06, 12, and 18 UTC daily.</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-comment"># Csh Script (wpsze: to sh script) to retrieve 34 online Data files of &#x27;ds084.1&#x27;,</span><br><span class="hljs-comment"># total 7.16G. This script uses &#x27;wget&#x27; to download data.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Highlight this script by Select All, Copy and Paste it into a file;</span><br><span class="hljs-comment"># make the file executable and run it on command line.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># You need pass in your password as a parameter to execute</span><br><span class="hljs-comment"># this script; or you can set an environment variable RDAPSWD</span><br><span class="hljs-comment"># if your Operating System supports it.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Contact rdahelp@ucar.edu (RDA help desk) for further assistance.</span><br><span class="hljs-comment">#################################################################</span><br><br>wget --no-check-certificate -O \<br>Authentication.<span class="hljs-built_in">log</span> --save-cookies auth.rda_ucar_edu \<br>--article-data=<span class="hljs-string">&quot;email=**xxx@gmail.com**&amp;passwd=**xxx**&amp;action=login&quot;</span> https://rda.ucar.edu/cgi-bin/login<br><br>yyyy=<span class="hljs-string">&#x27;2023&#x27;</span><br>mm=<span class="hljs-string">&#x27;03&#x27;</span><br><span class="hljs-built_in">dd</span>=<span class="hljs-string">&#x27;19&#x27;</span><br>hh=<span class="hljs-string">&#x27;00&#x27;</span><br>yyyymm=<span class="hljs-variable">$&#123;yyyy&#125;</span><br><br><span class="hljs-keyword">for</span> gfsfile <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 0 3 12); <span class="hljs-keyword">do</span> <span class="hljs-comment"># Forecast time = 12, 24, 36, 48, 60, 72, 84, 96, 108, 130, 142, 154</span><br>tmp=$(<span class="hljs-built_in">printf</span> <span class="hljs-string">&quot;%03d&quot;</span> <span class="hljs-variable">$&#123;gfsfile&#125;</span>)<br>tmp=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;yyyy&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>/gfs.0p25.<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span><span class="hljs-variable">$&#123;hh&#125;</span>.f<span class="hljs-variable">$&#123;tmp&#125;</span>.grib2&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;tmp&#125;</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;downloading ...&quot;</span><br>wget --no-check-certificate -N --load-cookies auth.rda_ucar_edu https://rda.ucar.edu/data/ds084.1/<span class="hljs-variable">$&#123;tmp&#125;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure><h2 id="rename-gfs-files-by-soft-link">Rename GFS files by soft-link</h2><p>If your operational process needs the format of GFS files like as &gt; gfs_20170724_0000_0p25_000</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><br>old_gfs=`<span class="hljs-built_in">ls</span> ./*.grib2`<br><br><span class="hljs-keyword">for</span> eachfile <span class="hljs-keyword">in</span> <span class="hljs-variable">$&#123;old_gfs&#125;</span><br><span class="hljs-keyword">do</span><br>   <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;eachfile&#125;</span><br>   <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;eachfile:11:8&#125;</span>, <span class="hljs-variable">$&#123;eachfile:19:2&#125;</span>, <span class="hljs-variable">$&#123;eachfile:23:3&#125;</span><br>   <span class="hljs-built_in">echo</span> gfs_<span class="hljs-variable">$&#123;eachfile:11:8&#125;</span>_00<span class="hljs-variable">$&#123;eachfile:19:2&#125;</span>_0p25_<span class="hljs-variable">$&#123;eachfile:23:3&#125;</span><br>   <span class="hljs-built_in">ln</span> -s <span class="hljs-variable">$&#123;eachfile&#125;</span> gfs_<span class="hljs-variable">$&#123;eachfile:11:8&#125;</span>_00<span class="hljs-variable">$&#123;eachfile:19:2&#125;</span>_0p25_<span class="hljs-variable">$&#123;eachfile:23:3&#125;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure><h2 id="usage-of-gfs-on-wrfnwp">Usage of GFS on WRF/NWP</h2><p>GFS Data &gt; https://www2.mmm.ucar.edu/wrf/OnLineTutorial/DATA/GFS/gfs.php &gt; GFS (Global Forecast System) is a model product from NCEP. &gt; Type: GRIB1 / GRIB2 data</p><p>Resolution: &gt; 0.25 deg global data &gt; Output frequency 3 hourly &gt; 34 pressure levels</p><p>Availability: &gt; From NCAR's RDA site: https://rda.ucar.edu/datasets/ds084.1/</p><p>Vtable: <strong>Vtable.GFS</strong></p><h3 id="namelist.wps">namelist.wps</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Edit namelist.wps</span><br>start_date = <span class="hljs-string">&#x27;2019-11-29_12:00:00&#x27;</span>,<br>end_date = <span class="hljs-string">&#x27;2019-12-01_00:00:00&#x27;</span>,<br>interval_seconds = 10800,<br>prefix = <span class="hljs-string">&#x27;FILE&#x27;</span>,<br></code></pre></td></tr></table></figure><h3 id="script">Script</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Notes on running UNGRIB for this data</span><br><span class="hljs-comment"># Examine the GRIB files, e.g.,</span><br><span class="hljs-comment"># ./util/g2print.exe ../DATA/co_blizzard/gfs.0p25.2019112912.f000.grib2</span><br><br><span class="hljs-built_in">ln</span> -sf ungrib/Variable_Tables/Vtable.GFS Vtable<br>./link_grib.csh ../DATA/co_blizzard/gfs.0p25.2019<br><br>./ungrib.exe<br><span class="hljs-comment"># This will create an ungrib.log for your records.</span><br><br><span class="hljs-comment"># Examine the intermediate files, e.g.,</span><br><span class="hljs-comment"># ./util/rd_intermediate.exe FILE:2019-11-29_12</span><br><span class="hljs-comment"># ncl /util/plotfmt_ncl &#x27;filename=&quot;FILE:2019-11-29_12&quot;&#x27;</span><br></code></pre></td></tr></table></figure><h2 id="usage-of-fnl-on-wrfnwp">Usage of FNL on WRF/NWP</h2><p>The NCEP FNL (Final) Operational Global Analysis<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[FNL more](https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/more.html)">[4]</span></a></sup> <sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[GFS vs FNL](https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/FNLvGFS.pdf)">[5]</span></a></sup> <sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[Analysis,  reanalysis, forecast—what’s the difference?](https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/Analysis.pdf)">[6]</span></a></sup> is on 1x1 degree grids are available every six hours. The analyses are from the NCEP Final Analyses (FNL). These were operationally prepared by NCEP, but are available for download from NCAR/RDA.</p><p>This product is from the Global Data Assimilation System (GDAS), which continuously collects observational data from the Global Telecommunications System (GTS), and other sources, for many analyses. The FNLs are made with the same model which NCEP uses in the Global Forecast System (GFS), <strong>but the FNLs are prepared about an hour or so after the GFS is initialized. The FNLs are delayed so that more observational data can be used</strong>. <em>The GFS is run earlier in support of time critical forecast needs, and uses the FNL from the previous 6 hour cycle as part of its initialization</em>.</p><p>FNL数据集和GFS数据集虽有联系，但在同一资料同化和预报系统中却有不同的产品。它们共享相同的基础模型和数据同化技术。它们包含相同的数据源——<strong>但是在gfs和fnl的初始条件中吸收的“真实”数据的数量有细微的差别</strong>。即使有ncep的巨大计算资源，运行一个全球nwp模型也需要时间。因此，他们需要尽早启动gfs来获得预报而不是后报。fnl是最终的分析结果，比gfs稍晚一些，以便能包括所有可用的观测数据。通常，fnl比gfs多摄取约10%的观察结果。虽然开始时间较晚，但仍有足够的时间，因此6小时的fnl6小时预报可作为下一个gfs资料同化周期的背景场例如，如果你想要00z的气球数据，你必须等待气球上升穿过大气层。对于能够到达平流层的大型氦气箱来说，这可能需要多达90分钟。然后气球的数据需要从世界各地传送到美国马里兰州的ncep中心。如果你想要00z的卫星数据，你必须等待卫星经过一个地面站，这样它才能下载数据。地面站然后通过陆地或海底电缆(如果有的话)传送数据，或者通过另一颗(通信)卫星传送数据。<sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[FNL再分析数据和GFS数据之间的区别和联系](http://www.ihamodel.com/?p=17426)">[7]</span></a></sup></p><p>For further information about the FNL archives at NCAR: See, http://rda.ucar.edu/datasets/ds083.2.</p><p>Type: &gt; GRIB2 data</p><p>Resolution: &gt; 1deg global data &gt; Output frequency 6 hourly &gt; 34 pressure levels</p><p>Availability: &gt; http://rda.ucar.edu/datasets/ds083.2 &gt; Follow the tab to "Data Access -&gt; Internet Download". You must register (it is free) to access the data.</p><p>Vtable: <strong>Vtable.GFS</strong></p><h3 id="namelist.wps-1">namelist.wps</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">Edit namelist.wps<br>start_date = <span class="hljs-string">&#x27;2019-11-25_12:00:00&#x27;</span>,<br>end_date = <span class="hljs-string">&#x27;2019-11-27_00:00:00&#x27;</span>,<br>interval_seconds = 21600,<br>prefix = <span class="hljs-string">&#x27;FILE&#x27;</span>,<br></code></pre></td></tr></table></figure><h3 id="script-1">Script</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Notes on running UNGRIB for this data</span><br><span class="hljs-comment"># Examine the GRIB files, e.g.,</span><br><span class="hljs-comment"># ./util/g2print.exe ../DATA/boulder_snow/fnl_20191125_12_00.grib2</span><br><span class="hljs-built_in">ln</span> -sf ungrib/Variable_Tables/Vtable.GFS Vtable<br><br>./link_grib.csh ../DATA/boulder_snow/fnl_2019<br><br>./ungrib.exe<br><span class="hljs-comment"># This will create an ungrib.log for your records.</span><br><br><span class="hljs-comment"># Examine the intermediate files, e.g.,</span><br><span class="hljs-comment"># ./util/rd_intermediate.exe FILE:2019-11-25_12</span><br><span class="hljs-comment"># ncl /util/plotfmt.ncl &#x27;filename=&quot;FILE:2019-11-25_12&quot;&#x27;</span><br></code></pre></td></tr></table></figure><h2 id="read-and-plot-grib2-files">Read and Plot grib2 files</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">import xarray as xr<br>ds = xr.open_dataset(<span class="hljs-string">&#x27;./fnl_20191125_12_00.grib2&#x27;</span>,engine=<span class="hljs-string">&#x27;pynio&#x27;</span>)<br>ds<br></code></pre></td></tr></table></figure><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a href="https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast">GFS Data Access</a> <a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a href="https://www.emc.ncep.noaa.gov/emc/pages/numerical_forecast_systems/gfs.php">GFS home page</a> <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a href="https://www.emc.ncep.noaa.gov/users/verification/global/">Global Models Verification</a> <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a href="https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/more.html">FNL more</a> <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:5" class="footnote-text"><span><a href="https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/FNLvGFS.pdf">GFS vs FNL</a> <a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:6" class="footnote-text"><span><a href="https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/Analysis.pdf">Analysis, reanalysis, forecast—what’s the difference?</a> <a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:7" class="footnote-text"><span><a href="http://www.ihamodel.com/?p=17426">FNL再分析数据和GFS数据之间的区别和联系</a> <a href="#fnref:7" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>]]></content>
-    
-    
-    <categories>
-      
-      <category>NWP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>WRF</tag>
-      
-      <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
-      
-      <tag>IC/BC</tag>
-      
-      <tag>NCEP</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Git/Github</title>
     <link href="/2023/04/27/Git_GitHub/"/>
     <url>/2023/04/27/Git_GitHub/</url>
@@ -3575,6 +3573,39 @@
       <tag>git commit</tag>
       
       <tag>git conflicts</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>GFS/FNL dataset</title>
+    <link href="/2023/04/27/GFS_FNL/"/>
+    <url>/2023/04/27/GFS_FNL/</url>
+    
+    <content type="html"><![CDATA[<h1 id="news-2024-july">News (2024 July)</h1><p><strong>RDA Data Services Unavailable July 30, 2024</strong></p><p>New setup goes to</p><p><a href="https://waipangsze.github.io/2024/08/16/GFS_FNL_RDA_upgrade/" class="uri">https://waipangsze.github.io/2024/08/16/GFS_FNL_RDA_upgrade/</a></p><h1 id="gfs">GFS</h1><p>The Global Forecast System (GFS)<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[GFS Data Access](https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast)">[1]</span></a></sup> is a National Centers for Environmental Prediction (NCEP) weather forecast model that generates data for dozens of atmospheric and land-soil variables, including temperatures, winds, precipitation, soil moisture, and atmospheric ozone concentration. The system couples four separate models (atmosphere, ocean model, land/soil model, and sea ice) that work together to accurately depict weather conditions.</p><h2 id="specifications">Specifications</h2><p>The GFS<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[GFS home page](https://www.emc.ncep.noaa.gov/emc/pages/numerical_forecast_systems/gfs.php)">[2]</span></a></sup> <sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[Global Models Verification](https://www.emc.ncep.noaa.gov/users/verification/global/)">[3]</span></a></sup> is run four times a day, producing forecasts up to 16 days in advance. The forecast component uses the Finite Volume Cubed (FV3) model with a resolution of ~13 km, with the atmosphere coupled to the NCEP Global Wave Model. In the vertical, the model is divided into 127 vertical layers. It produces hourly forecast output for the first 120 hours, then 3 hourly for days 5-16. Details on the June 2019 implementation of the initial FV3 version of the GFS (GFSv15) and the March 2021 implementation of GFSv16 can be found in the links listed below.</p><h2 id="download">Download</h2><p>NCEP GFS 0.25 Degree Global Forecast Grids Historical Archive ds084.1 | DOI: 10.5065/D65D8PWK &gt; https://rda.ucar.edu/datasets/ds084.1/ &gt; The NCEP operational Global Forecast System analysis and forecast grids are on a 0.25 by 0.25 global latitude longitude grid. Grids include analysis and forecast time steps at a 3 hourly interval from 0 to 240, and a 12 hourly interval from 240 to 384. Model forecast runs occur at 00, 06, 12, and 18 UTC daily.</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-comment"># Csh Script (wpsze: to sh script) to retrieve 34 online Data files of &#x27;ds084.1&#x27;,</span><br><span class="hljs-comment"># total 7.16G. This script uses &#x27;wget&#x27; to download data.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Highlight this script by Select All, Copy and Paste it into a file;</span><br><span class="hljs-comment"># make the file executable and run it on command line.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># You need pass in your password as a parameter to execute</span><br><span class="hljs-comment"># this script; or you can set an environment variable RDAPSWD</span><br><span class="hljs-comment"># if your Operating System supports it.</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Contact rdahelp@ucar.edu (RDA help desk) for further assistance.</span><br><span class="hljs-comment">#################################################################</span><br><br>wget --no-check-certificate -O \<br>Authentication.<span class="hljs-built_in">log</span> --save-cookies auth.rda_ucar_edu \<br>--article-data=<span class="hljs-string">&quot;email=**xxx@gmail.com**&amp;passwd=**xxx**&amp;action=login&quot;</span> https://rda.ucar.edu/cgi-bin/login<br><br>yyyy=<span class="hljs-string">&#x27;2023&#x27;</span><br>mm=<span class="hljs-string">&#x27;03&#x27;</span><br><span class="hljs-built_in">dd</span>=<span class="hljs-string">&#x27;19&#x27;</span><br>hh=<span class="hljs-string">&#x27;00&#x27;</span><br>yyyymm=<span class="hljs-variable">$&#123;yyyy&#125;</span><br><br><span class="hljs-keyword">for</span> gfsfile <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 0 3 12); <span class="hljs-keyword">do</span> <span class="hljs-comment"># Forecast time = 12, 24, 36, 48, 60, 72, 84, 96, 108, 130, 142, 154</span><br>tmp=$(<span class="hljs-built_in">printf</span> <span class="hljs-string">&quot;%03d&quot;</span> <span class="hljs-variable">$&#123;gfsfile&#125;</span>)<br>tmp=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;yyyy&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>/gfs.0p25.<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span><span class="hljs-variable">$&#123;hh&#125;</span>.f<span class="hljs-variable">$&#123;tmp&#125;</span>.grib2&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;tmp&#125;</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;downloading ...&quot;</span><br>wget --no-check-certificate -N --load-cookies auth.rda_ucar_edu https://rda.ucar.edu/data/ds084.1/<span class="hljs-variable">$&#123;tmp&#125;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure><h2 id="rename-gfs-files-by-soft-link">Rename GFS files by soft-link</h2><p>If your operational process needs the format of GFS files like as &gt; gfs_20170724_0000_0p25_000</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><br>old_gfs=`<span class="hljs-built_in">ls</span> ./*.grib2`<br><br><span class="hljs-keyword">for</span> eachfile <span class="hljs-keyword">in</span> <span class="hljs-variable">$&#123;old_gfs&#125;</span><br><span class="hljs-keyword">do</span><br>   <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;eachfile&#125;</span><br>   <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;eachfile:11:8&#125;</span>, <span class="hljs-variable">$&#123;eachfile:19:2&#125;</span>, <span class="hljs-variable">$&#123;eachfile:23:3&#125;</span><br>   <span class="hljs-built_in">echo</span> gfs_<span class="hljs-variable">$&#123;eachfile:11:8&#125;</span>_00<span class="hljs-variable">$&#123;eachfile:19:2&#125;</span>_0p25_<span class="hljs-variable">$&#123;eachfile:23:3&#125;</span><br>   <span class="hljs-built_in">ln</span> -s <span class="hljs-variable">$&#123;eachfile&#125;</span> gfs_<span class="hljs-variable">$&#123;eachfile:11:8&#125;</span>_00<span class="hljs-variable">$&#123;eachfile:19:2&#125;</span>_0p25_<span class="hljs-variable">$&#123;eachfile:23:3&#125;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure><h2 id="usage-of-gfs-on-wrfnwp">Usage of GFS on WRF/NWP</h2><p>GFS Data &gt; https://www2.mmm.ucar.edu/wrf/OnLineTutorial/DATA/GFS/gfs.php &gt; GFS (Global Forecast System) is a model product from NCEP. &gt; Type: GRIB1 / GRIB2 data</p><p>Resolution: &gt; 0.25 deg global data &gt; Output frequency 3 hourly &gt; 34 pressure levels</p><p>Availability: &gt; From NCAR's RDA site: https://rda.ucar.edu/datasets/ds084.1/</p><p>Vtable: <strong>Vtable.GFS</strong></p><h3 id="namelist.wps">namelist.wps</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Edit namelist.wps</span><br>start_date = <span class="hljs-string">&#x27;2019-11-29_12:00:00&#x27;</span>,<br>end_date = <span class="hljs-string">&#x27;2019-12-01_00:00:00&#x27;</span>,<br>interval_seconds = 10800,<br>prefix = <span class="hljs-string">&#x27;FILE&#x27;</span>,<br></code></pre></td></tr></table></figure><h3 id="script">Script</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Notes on running UNGRIB for this data</span><br><span class="hljs-comment"># Examine the GRIB files, e.g.,</span><br><span class="hljs-comment"># ./util/g2print.exe ../DATA/co_blizzard/gfs.0p25.2019112912.f000.grib2</span><br><br><span class="hljs-built_in">ln</span> -sf ungrib/Variable_Tables/Vtable.GFS Vtable<br>./link_grib.csh ../DATA/co_blizzard/gfs.0p25.2019<br><br>./ungrib.exe<br><span class="hljs-comment"># This will create an ungrib.log for your records.</span><br><br><span class="hljs-comment"># Examine the intermediate files, e.g.,</span><br><span class="hljs-comment"># ./util/rd_intermediate.exe FILE:2019-11-29_12</span><br><span class="hljs-comment"># ncl /util/plotfmt_ncl &#x27;filename=&quot;FILE:2019-11-29_12&quot;&#x27;</span><br></code></pre></td></tr></table></figure><h2 id="usage-of-fnl-on-wrfnwp">Usage of FNL on WRF/NWP</h2><p>The NCEP FNL (Final) Operational Global Analysis<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[FNL more](https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/more.html)">[4]</span></a></sup> <sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[GFS vs FNL](https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/FNLvGFS.pdf)">[5]</span></a></sup> <sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[Analysis,  reanalysis, forecast—what’s the difference?](https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/Analysis.pdf)">[6]</span></a></sup> is on 1x1 degree grids are available every six hours. The analyses are from the NCEP Final Analyses (FNL). These were operationally prepared by NCEP, but are available for download from NCAR/RDA.</p><p>This product is from the Global Data Assimilation System (GDAS), which continuously collects observational data from the Global Telecommunications System (GTS), and other sources, for many analyses. The FNLs are made with the same model which NCEP uses in the Global Forecast System (GFS), <strong>but the FNLs are prepared about an hour or so after the GFS is initialized. The FNLs are delayed so that more observational data can be used</strong>. <em>The GFS is run earlier in support of time critical forecast needs, and uses the FNL from the previous 6 hour cycle as part of its initialization</em>.</p><p>FNL数据集和GFS数据集虽有联系，但在同一资料同化和预报系统中却有不同的产品。它们共享相同的基础模型和数据同化技术。它们包含相同的数据源——<strong>但是在gfs和fnl的初始条件中吸收的“真实”数据的数量有细微的差别</strong>。即使有ncep的巨大计算资源，运行一个全球nwp模型也需要时间。因此，他们需要尽早启动gfs来获得预报而不是后报。fnl是最终的分析结果，比gfs稍晚一些，以便能包括所有可用的观测数据。通常，fnl比gfs多摄取约10%的观察结果。虽然开始时间较晚，但仍有足够的时间，因此6小时的fnl6小时预报可作为下一个gfs资料同化周期的背景场例如，如果你想要00z的气球数据，你必须等待气球上升穿过大气层。对于能够到达平流层的大型氦气箱来说，这可能需要多达90分钟。然后气球的数据需要从世界各地传送到美国马里兰州的ncep中心。如果你想要00z的卫星数据，你必须等待卫星经过一个地面站，这样它才能下载数据。地面站然后通过陆地或海底电缆(如果有的话)传送数据，或者通过另一颗(通信)卫星传送数据。<sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="[FNL再分析数据和GFS数据之间的区别和联系](http://www.ihamodel.com/?p=17426)">[7]</span></a></sup></p><p>For further information about the FNL archives at NCAR: See, http://rda.ucar.edu/datasets/ds083.2.</p><p>Type: &gt; GRIB2 data</p><p>Resolution: &gt; 1deg global data &gt; Output frequency 6 hourly &gt; 34 pressure levels</p><p>Availability: &gt; http://rda.ucar.edu/datasets/ds083.2 &gt; Follow the tab to "Data Access -&gt; Internet Download". You must register (it is free) to access the data.</p><p>Vtable: <strong>Vtable.GFS</strong></p><h3 id="namelist.wps-1">namelist.wps</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">Edit namelist.wps<br>start_date = <span class="hljs-string">&#x27;2019-11-25_12:00:00&#x27;</span>,<br>end_date = <span class="hljs-string">&#x27;2019-11-27_00:00:00&#x27;</span>,<br>interval_seconds = 21600,<br>prefix = <span class="hljs-string">&#x27;FILE&#x27;</span>,<br></code></pre></td></tr></table></figure><h3 id="script-1">Script</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Notes on running UNGRIB for this data</span><br><span class="hljs-comment"># Examine the GRIB files, e.g.,</span><br><span class="hljs-comment"># ./util/g2print.exe ../DATA/boulder_snow/fnl_20191125_12_00.grib2</span><br><span class="hljs-built_in">ln</span> -sf ungrib/Variable_Tables/Vtable.GFS Vtable<br><br>./link_grib.csh ../DATA/boulder_snow/fnl_2019<br><br>./ungrib.exe<br><span class="hljs-comment"># This will create an ungrib.log for your records.</span><br><br><span class="hljs-comment"># Examine the intermediate files, e.g.,</span><br><span class="hljs-comment"># ./util/rd_intermediate.exe FILE:2019-11-25_12</span><br><span class="hljs-comment"># ncl /util/plotfmt.ncl &#x27;filename=&quot;FILE:2019-11-25_12&quot;&#x27;</span><br></code></pre></td></tr></table></figure><h2 id="read-and-plot-grib2-files">Read and Plot grib2 files</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">import xarray as xr<br>ds = xr.open_dataset(<span class="hljs-string">&#x27;./fnl_20191125_12_00.grib2&#x27;</span>,engine=<span class="hljs-string">&#x27;pynio&#x27;</span>)<br>ds<br></code></pre></td></tr></table></figure><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a href="https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast">GFS Data Access</a> <a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a href="https://www.emc.ncep.noaa.gov/emc/pages/numerical_forecast_systems/gfs.php">GFS home page</a> <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a href="https://www.emc.ncep.noaa.gov/users/verification/global/">Global Models Verification</a> <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a href="https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/more.html">FNL more</a> <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:5" class="footnote-text"><span><a href="https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/FNLvGFS.pdf">GFS vs FNL</a> <a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:6" class="footnote-text"><span><a href="https://rda.ucar.edu/OS/web/datasets/ds083.2/docs/Analysis.pdf">Analysis, reanalysis, forecast—what’s the difference?</a> <a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:7" class="footnote-text"><span><a href="http://www.ihamodel.com/?p=17426">FNL再分析数据和GFS数据之间的区别和联系</a> <a href="#fnref:7" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>]]></content>
+    
+    
+    <categories>
+      
+      <category>NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WRF</tag>
+      
+      <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>IC/BC</tag>
+      
+      <tag>NCEP</tag>
       
     </tags>
     
@@ -3684,6 +3715,8 @@
     
     <tags>
       
+      <tag>Installation</tag>
+      
       <tag>NWP</tag>
       
       <tag>gnu</tag>
@@ -3693,8 +3726,6 @@
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>Installation</tag>
       
     </tags>
     

@@ -19,27 +19,29 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Issue After moving to new cluster, a error appear when I reinstalled WRF. It is  make[3]: time: No such file or directory  Or,  make[3]: time: No such file or directory make[3]: [makefile:42: module_i">
+    <meta name="description" content="U-Net The U-Net architecture follows an encoder-decoder cascade structure, where the encoder gradually compresses information into a lower-dimensional representation. Then the decoder decodes this inf">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WRF | make -- time No such file or directory">
-<meta property="og:url" content="https://waipangsze.github.io/2024/05/29/WRF_install_time_error/index.html">
+<meta property="og:title" content="ML | U-Net">
+<meta property="og:url" content="https://waipangsze.github.io/2024/12/13/ML-Unet/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="Issue After moving to new cluster, a error appear when I reinstalled WRF. It is  make[3]: time: No such file or directory  Or,  make[3]: time: No such file or directory make[3]: [makefile:42: module_i">
+<meta property="og:description" content="U-Net The U-Net architecture follows an encoder-decoder cascade structure, where the encoder gradually compresses information into a lower-dimensional representation. Then the decoder decodes this inf">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/RwpxULg.png">
-<meta property="article:published_time" content="2024-05-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-15T01:55:24.892Z">
+<meta property="og:image" content="https://i.imgur.com/l2LtVgl.png">
+<meta property="article:published_time" content="2024-12-13T07:01:00.000Z">
+<meta property="article:modified_time" content="2024-12-13T09:53:48.271Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="Installation">
-<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="ML">
+<meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="U-Net">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i.imgur.com/RwpxULg.png">
+<meta name="twitter:image" content="https://i.imgur.com/l2LtVgl.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>WRF | make -- time No such file or directory - wpsze</title>
+  <title>ML | U-Net - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -290,13 +292,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://i.imgur.com/RwpxULg.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/l2LtVgl.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="WRF | make -- time No such file or directory"></span>
+            <span id="subtitle" data-typed-text="ML | U-Net"></span>
           
         </div>
 
@@ -307,8 +309,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-05-29 00:00" pubdate>
-          May 29, 2024 am
+        <time datetime="2024-12-13 15:01" pubdate>
+          December 13, 2024 pm
         </time>
       </span>
     
@@ -319,7 +321,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          144 words
+          150 words
         
       </span>
     
@@ -376,27 +378,46 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">WRF | make -- time No such file or directory</h1>
+            <h1 id="seo-header">ML | U-Net</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="issue">Issue</h1>
-<p>After moving to new cluster, a error appear when I reinstalled WRF. It is</p>
-<blockquote>
-<p>make[3]: time: No such file or directory</p>
-</blockquote>
-<p>Or,</p>
-<blockquote>
-<p>make[3]: time: No such file or directory make[3]: [makefile:42: module_io_int_idx.o] Error 127 (ignored)</p>
-</blockquote>
-<p>On WRFv450, v440, v433, v430</p>
-<h1 id="workaround">Workaround</h1>
-<p>Reference: <a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/compiling-wrf-4-2-on-centos7-failed-problems-building-executables-look-for-errors-in-the-build-log.12864/">compiling wrf 4.2 on centos7 failed---&gt;Problems building executables, look for errors in the build log</a></p>
-<p>'time' is a simple linux command that is typically included with your operating system. I believe, ultimately, the issue is that you're using a very old version of GNU to compile a newer version of WRF. GNU is free software, so can you try to install the latest version of GNU to see if that makes any difference in your compile? If you aren't sure how to do this, seek the help of a systems administrator (IT) at your institution. Once you install the new GNU version, you'll need to rebuild NetCDF and your MPI installation with the updated GNU, as well.</p>
-<p>If you do that, and still run into the above error regarding the 'time' command, you can try a couple things: 1) Ask a systems admin for assistance in getting this command installed on your system. 'time' is a very simple linux command and typically comes readily available with the OS. 2) You can try modifying the configure.wrf file. After issuing <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">./clean -a<br>./configure<br></code></pre></td></tr></table></figure> 3) , and reconfiguring, open your configure.wrf file and look for this line: <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">FC        = <span class="hljs-built_in">time</span> $(DM_FC)<br></code></pre></td></tr></table></figure> 4) Remove 'time' from the line so that it now reads as <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">FC</span>        =  $(DM_FC)<br></code></pre></td></tr></table></figure> Save the configure.wrf with the change and try recompiling. <figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima">./<span class="hljs-built_in">compile</span> -j <span class="hljs-number">8</span> em_real <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> | tee <span class="hljs-built_in">compile</span>.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure></p>
-<p>or</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#cp -r WRF-4.5.1-raw WRFV4.5.1</span><br><br><span class="hljs-built_in">cd</span> WRFV4.5.1/<br><br>./clean -a<br>./configure <br><span class="hljs-comment">##  34 (dmpar) GNU [gfortran/gcc]</span><br><br><span class="hljs-comment">## rewrite: The character class \s will match the whitespace characters &lt;tab&gt; and &lt;space&gt;.</span><br><span class="hljs-comment">## and don&#x27;t include $(DM_FC) </span><br>sed -i <span class="hljs-string">&quot;s/\s\stime\s//g&quot;</span> configure.wrf<br><span class="hljs-comment">#sed -i &quot;s/-DNMM_CORE=$(WRF_NMM_CORE)/-DNMM_CORE=$(WRF_NMM_CORE)\s-DLANDREAD_STUB/g&quot; configure.wrf</span><br><br>./compile -j 4 em_real 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> compile.log<br></code></pre></td></tr></table></figure>
+                <h1 id="u-net">U-Net</h1>
+<p>The <code>U-Net</code> architecture follows an <strong>encoder-decoder cascade structure</strong>, where the encoder gradually compresses information into a <strong>lower-dimensional representation</strong>. Then the decoder decodes this information back to the original image dimension. Owing to this, the architecture gets an overall U-shape, which leads to the name U-Net.</p>
+<p><strong>U-Net is a convolutional neural network that was developed for image segmentation</strong>. The network is based on a <a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2015/papers/Long_Fully_Convolutional_Networks_2015_CVPR_paper.pdf">fully convolutional neural network</a> whose architecture was modified and extended to work with fewer training images and to yield more precise segmentation.</p>
+<p><img src="https://i.imgur.com/eKOoRN9.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<p>U-Net is a prominent deep learning architecture primarily used for <strong>semantic segmentation</strong> in computer vision tasks, particularly in the biomedical field. Developed by <a target="_blank" rel="noopener" href="https://www.academia.edu/download/80140288/1505.pdf">Olaf Ronneberger and colleagues in 2015</a>, U-Net was designed to perform well even with limited training data, making it particularly useful in medical imaging where annotated datasets are scarce.</p>
+<figure>
+<img src="https://i.imgur.com/l2LtVgl.png" srcset="/img/loading.gif" lazyload alt="Fig. 1. U-net architecture (example for 32x32 pixels in the lowest resolution). Each blue box corresponds to a multi-channel feature map. The number of channels is denoted on top of the box. The x-y-size is provided at the lower left edge of the box. White boxes represent copied feature maps. The arrows denote the different operations. ( Source: Ronneberger, O., Fischer, P., &amp; Brox, T. (2015). U-net: Convolutional networks for biomedical image segmentation." width="600" /><figcaption>Fig. 1. U-net architecture (example for 32x32 pixels in the lowest resolution). Each blue box corresponds to a multi-channel feature map. The number of channels is denoted on top of the box. The x-y-size is provided at the lower left edge of the box. White boxes represent copied feature maps. The arrows denote the different operations. ( Source: Ronneberger, O., Fischer, P., &amp; Brox, T. (2015). U-net: Convolutional networks for biomedical image segmentation.</figcaption>
+</figure>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<p>U-Net features a distinctive <strong>U-shaped architecture</strong> that consists of two main paths: the <strong>contracting path</strong> (encoder) and the <strong>expansive path</strong> (decoder).</p>
+<ul>
+<li><p><strong>Contracting Path (Encoder)</strong>: This part of the network captures context from the input image. It consists of several convolutional layers followed by max pooling operations, which progressively reduce the spatial dimensions while increasing the depth of feature maps. The encoder extracts high-level features from the input image, similar to other convolutional networks.</p></li>
+<li><p><strong>Expansive Path (Decoder)</strong>: The decoder's role is to upsample the feature maps obtained from the encoder back to the original image size. This is achieved through transposed convolutions (deconvolutions) and concatenation with corresponding feature maps from the encoder via <strong>skip connections</strong>. These skip connections help preserve spatial information that might be lost during downsampling, allowing for more precise localization of features in the output segmentation map.</p></li>
+</ul>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>Skip Connections</strong>: These connections between corresponding layers in the encoder and decoder allow the model to retain spatial information, which is crucial for accurate segmentation.</li>
+<li><strong>Fully Convolutional Network</strong>: U-Net is a fully convolutional network, meaning it does not rely on fully connected layers, making it more efficient for image processing tasks.</li>
+<li><strong>Effective with Limited Data</strong>: U-Net's design enables it to perform well even when trained on small datasets, which is a significant advantage in fields like medical imaging where data acquisition can be challenging.</li>
+</ul>
+<h2 id="applications">Applications</h2>
+<p>U-Net has been widely adopted for various applications beyond biomedical image segmentation, including:</p>
+<ul>
+<li><strong>Medical Imaging</strong>: Segmenting organs or tumors in MRI and CT scans.</li>
+<li><strong>Satellite Image Analysis</strong>: Identifying land use or changes in land cover.</li>
+<li><strong>Autonomous Vehicles</strong>: Assisting in scene understanding by segmenting objects within images.</li>
+</ul>
+<p>In summary, U-Net's innovative architecture and effective use of skip connections have made it a foundational model in semantic segmentation tasks across various domains, particularly where data scarcity poses challenges.</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2015/papers/Long_Fully_Convolutional_Networks_2015_CVPR_paper.pdf">Long, J., Shelhamer, E., &amp; Darrell, T. (2015). <strong>Fully convolutional networks for semantic segmentation</strong>. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 3431-3440).</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.academia.edu/download/80140288/1505.pdf">Ronneberger, O., Fischer, P., &amp; Brox, T. (2015). <strong>U-net: Convolutional networks for biomedical image segmentation</strong>. In Medical image computing and computer-assisted intervention–MICCAI 2015: 18th international conference, Munich, Germany, October 5-9, 2015, proceedings, part III 18 (pp. 234-241). Springer International Publishing.</a></li>
+<li><a target="_blank" rel="noopener" href="https://martin12345m.medium.com/3d-unet-%E5%B0%8F%E7%B0%A1%E4%BB%8B-%E6%9E%B6%E6%A7%8B-1-%E5%BE%9E2d%E9%96%8B%E5%A7%8B-669cacd2f813">3D Unet 小簡介：架構(1) — 從2D開始</a></li>
+<li><a target="_blank" rel="noopener" href="https://pyimagesearch.com/2021/11/08/u-net-training-image-segmentation-models-in-pytorch/">U-Net: Training Image Segmentation Models in PyTorch</a></li>
+</ol>
 
                 
               </div>
@@ -415,7 +436,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  <a href="/categories/ML/" class="category-chain-item">ML</a>
   
   
 
@@ -430,9 +451,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Installation/" class="print-no-link">#Installation</a>
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+        <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+        <a href="/tags/pytorch/" class="print-no-link">#pytorch</a>
+      
+        <a href="/tags/U-Net/" class="print-no-link">#U-Net</a>
       
     </div>
   
@@ -444,8 +469,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>WRF | make -- time No such file or directory</div>
-      <div>https://waipangsze.github.io/2024/05/29/WRF_install_time_error/</div>
+      <div>ML | U-Net</div>
+      <div>https://waipangsze.github.io/2024/12/13/ML-Unet/</div>
     </div>
     <div class="license-meta">
       
@@ -457,13 +482,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>May 29, 2024</div>
+          <div>December 13, 2024</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 15, 2024</div>
+          <div>December 13, 2024</div>
         </div>
       
       
@@ -494,18 +519,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/05/29/WRF_install_landread_error/" title="WRF | fatal error - rpc/types.h - No such file or directory">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">WRF | fatal error - rpc/types.h - No such file or directory</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/02/Conda_Micromamba/" title="Conda/Micromamba">
-                        <span class="hidden-mobile">Conda/Micromamba</span>
+                      <a href="/2024/12/12/NWP-ML-GNN/" title="ML | NWP | GNN Graph Neural Network Model">
+                        <span class="hidden-mobile">ML | NWP | GNN Graph Neural Network Model</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
