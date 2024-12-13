@@ -4,6 +4,72 @@
   
   
   <entry>
+    <title>NWP | ML | GNN Graph Neural Network Model</title>
+    <link href="/2024/12/12/NWP-ML-GNN/"/>
+    <url>/2024/12/12/NWP-ML-GNN/</url>
+    
+    <content type="html"><![CDATA[<h1 id="overview-of-graph-neural-networks-gnns">Overview of Graph Neural Networks (GNNs)</h1><p>Graph Neural Networks (GNNs) are a specialized type of neural network designed to process and analyze graph-structured data. Unlike traditional neural networks that operate on structured data (like images or text), GNNs can directly handle the complex relationships represented in graphs, making them particularly useful for tasks where data is interconnected.</p><h2 id="what-is-a-graph">What is a Graph?</h2><p>A graph is a mathematical structure consisting of <strong>nodes</strong> (or vertices) and <strong>edges</strong> (connections between nodes). Formally, a graph $ G $ can be defined as $ G = (V, E) $, where $ V $ is the set of nodes and $ E $ is the set of edges. Graphs can represent various types of data, such as social networks, molecular structures, and transportation systems.</p><h2 id="how-gnns-work">How GNNs Work</h2><p>GNNs utilize a process called <strong>message passing</strong>, where information is exchanged between neighboring nodes. Each node updates its state by aggregating information from its neighbors, allowing the network to learn representations that capture the structure and features of the graph. The final output for each node is known as its <strong>embedding</strong>, which encapsulates the node's information in relation to its neighbors. (Message passing layers are permutation-equivariant layers mapping a graph into an updated representation of the same graph.)</p><h2 id="types-of-gnns">Types of GNNs</h2><p>There are several variations of GNNs, each suited for different applications:</p><ul><li><strong>Graph Convolutional Networks (GCNs)</strong>: These networks extend convolutional neural networks (CNNs) to graph data by learning features from neighboring nodes through convolution-like operations.</li><li><strong>Recurrent Graph Neural Networks (RGNNs)</strong>: RGNNs are designed for handling temporal or sequential data on graphs, leveraging recurrent mechanisms to model dependencies over time.</li><li><strong>Gated Graph Neural Networks (GGNNs)</strong>: These networks introduce gating mechanisms to better manage long-range dependencies within graph structures.</li><li><strong>Graph Autoencoders</strong>: Used primarily for unsupervised learning tasks such as link prediction, these models encode graph data into lower-dimensional representations and then attempt to reconstruct the original graph.</li></ul><h2 id="applications-of-gnns">Applications of GNNs</h2><p>GNNs are versatile and can be applied in various domains:</p><ul><li><strong>Node Classification</strong>: Predicting labels for nodes in a graph, often used in social networks or citation networks.</li><li><strong>Link Prediction</strong>: Estimating the likelihood of connections between nodes, useful in recommendation systems.</li><li><strong>Graph Classification</strong>: Classifying entire graphs based on their structure and node features, applicable in molecular chemistry and bioinformatics.</li></ul><p><img src="https://i.imgur.com/9cs4ilH.png" width="600" /></p><h2 id="conclusion">Conclusion</h2><p>Graph Neural Networks represent a significant advancement in machine learning by enabling the analysis of complex relational data. Their ability to learn from the structure and features of graphs opens up new possibilities across numerous fields, from social sciences to biology and beyond. As research continues to evolve, GNNs are likely to become increasingly integral to understanding and leveraging interconnected data.</p><h1 id="a-gentle-introduction-to-graph-neural-networks-recommend"><a href="https://distill.pub/2021/gnn-intro/">A Gentle Introduction to Graph Neural Networks (<strong>Recommend</strong>)</a></h1><div class="note note-danger">            <p>A GNN is an optimizable transformation on all attributes of the graph (nodes, edges, global-context) that preserves graph symmetries (permutation invariances).</p>          </div><p>We’re going to build GNNs using the “message passing neural network” framework proposed by <a href="https://proceedings.mlr.press/v70/gilmer17a/gilmer17a.pdf">Gilmer et al.</a> using the Graph Nets architecture schematics introduced by <a href="https://www.researchgate.net/profile/Andrea-Tacchetti/publication/325557043_Relational_inductive_biases_deep_learning_and_graph_networks/links/5cd0ad38299bf14d957cca5c/Relational-inductive-biases-deep-learning-and-graph-networks.pdf">Battaglia et al.</a></p><p>GNNs adopt a <strong>“graph-in, graph-out” architecture</strong> meaning that these model types accept a graph as input, with information loaded into its nodes, edges and global-context, and progressively transform these embeddings, without changing the connectivity of the input graph.</p><ul><li>What types of problems have graph structured data?<ul><li>We have described some examples of graphs in the wild, but what tasks do we want to perform on this data? There are three general types of prediction tasks on graphs: <strong>graph-level, node-level, and edge-level</strong>.<ul><li>In a <code>graph-level task</code>, we predict a single property for a whole graph.</li><li>For a <code>node-level task</code>, we predict some property for each node in a graph.</li><li>For an <code>edge-level task</code>, we want to predict the property or presence of edges in a graph.</li></ul></li><li>For the three levels of prediction problems described above (graph-level, node-level, and edge-level), we will show that all of the following problems can be solved with a single model class, the GNN. But first, let’s take a tour through the three classes of graph prediction problems in more detail, and provide concrete examples of each.</li></ul></li></ul><p><img src="https://i.imgur.com/lTzKFu6.png" width="600" /> <img src="https://i.imgur.com/QzUIet1.png" width="600" /></p><p>However, it is not always so simple. For instance, you might have information in the graph stored in edges, but no information in nodes, but still need to make predictions on nodes. We need a way to collect information from edges and give them to nodes for prediction. We can do this by pooling. <code>Pooling proceeds</code> in two steps:</p><ol type="1"><li>For each item to be pooled, gather each of their embeddings and concatenate them into a matrix.</li><li>The gathered embeddings are then aggregated, usually via a sum operation.</li></ol><p>We represent the <strong>pooling operation</strong> by the letter <span class="math inline">\(\rho\)</span>, and denote that we are gathering information from edges to nodes as <span class="math inline">\(p_{E_n \to V_{n}}\)</span>.</p><p><img src="https://i.imgur.com/IuZEdeO.png" width="600" /></p><p><img src="https://i.imgur.com/SU2M541.png" width="600" /></p><h2 id="other-types-of-graphs-multigraphs-hypergraphs-hypernodes-hierarchical-graphs">Other types of graphs (multigraphs, hypergraphs, hypernodes, hierarchical graphs)</h2><p>We can also consider nested graphs, where for example a node represents a graph, also called a <a href="https://dl.acm.org/doi/pdf/10.1145/174608.174610">hypernode graph</a>. Nested graphs are useful for <strong>representing hierarchical information</strong>. For example, we can consider a network of molecules, where a node represents a molecule and an edge is shared between two molecules if we have a way (reaction) of transforming one to the other <a href="https://academic.oup.com/bioinformatics/article-pdf/34/13/i457/50316205/bioinformatics_34_13_i457.pdf">(1)</a>, <a href="https://www.nature.com/articles/s41467-020-19267-x.pdf">(2)</a>. In this case, we can learn on a nested graph by having a GNN that learns representations at the molecule level and another at the reaction network level, and alternate between them during training.</p><p><img src="https://i.imgur.com/36EVPAi.png" width="600" /></p><h1 id="regional-data-driven-weather-modeling-with-a-global-stretched-grid">Regional data-driven weather modeling with a global stretched-grid</h1><ul><li><a href="https://arxiv.org/pdf/2409.02891">Nipen, Thomas Nils, et al. "Regional data-driven weather modeling with a global stretched-grid." arXiv preprint arXiv:2409.02891 (2024).</a></li></ul><p><img src="https://i.imgur.com/4C4jXs3.png" width="600" /> <img src="https://i.imgur.com/KIhFwXW.png" width="600" /> <img src="https://i.imgur.com/cG9STZy.png" width="600" /></p><h1 id="references">References</h1><ol type="1"><li><a href="https://distill.pub/2021/gnn-intro/">A Gentle Introduction to Graph Neural Networks (<strong>Recommend</strong>)</a></li><li><a href="https://www.datacamp.com/tutorial/comprehensive-introduction-graph-neural-networks-gnns-tutorial">A Comprehensive Introduction to Graph Neural Networks (GNNs)</a></li><li><a href="https://www.kaggle.com/code/iogbonna/introduction-to-graph-neural-network-with-pytorch">Introduction to Graph Neural Network with Pytorch</a></li><li><a href="https://papers.baulab.info/papers/Scarselli-2009.pdf">Scarselli, F., Gori, M., Tsoi, A. C., Hagenbuchner, M., &amp; Monfardini, G. (2008). <strong>The graph neural network model</strong>. IEEE transactions on neural networks, 20(1), 61-80.</a></li><li><a href="https://arxiv.org/pdf/1810.00826">Xu, K., Hu, W., Leskovec, J., &amp; Jegelka, S. (2018). <strong>How powerful are graph neural networks?</strong>. arXiv preprint arXiv:1810.00826.</a></li><li><a href="https://www.sciencedirect.com/science/article/pii/S2666651021000012">Zhou, J., Cui, G., Hu, S., Zhang, Z., Yang, C., Liu, Z., ... &amp; Sun, M. (2020). <strong>Graph neural networks: A review of methods and applications</strong>. AI open, 1, 57-81.</a></li><li><a href="https://ieeexplore.ieee.org/ielaam/5962385/9312808/9046288-aam.pdf">Wu, Z., Pan, S., Chen, F., Long, G., Zhang, C., &amp; Philip, S. Y. (2020). <strong>A comprehensive survey on graph neural networks</strong>. IEEE transactions on neural networks and learning systems, 32(1), 4-24.</a></li><li><a href="http://proceedings.mlr.press/v70/gilmer17a/gilmer17a.pdf">Neural Message Passing for Quantum Chemistry J. Gilmer, S.S. Schoenholz, P.F. Riley, O. Vinyals, G.E. Dahl. Proceedings of the 34th International Conference on Machine Learning, Vol 70, pp. 1263--1272. PMLR. 2017.</a></li><li><a href="https://www.researchgate.net/profile/Andrea-Tacchetti/publication/325557043_Relational_inductive_biases_deep_learning_and_graph_networks/links/5cd0ad38299bf14d957cca5c/Relational-inductive-biases-deep-learning-and-graph-networks.pdf">Relational inductive biases, deep learning, and graph networks P.W. Battaglia, J.B. Hamrick, V. Bapst, A. Sanchez-Gonzalez, V. Zambaldi, M. Malinowski, A. Tacchetti, D. Raposo, A. Santoro, R. Faulkner, C. Gulcehre, F. Song, A. Ballard, J. Gilmer, G. Dahl, A. Vaswani, K. Allen, C. Nash, V. Langston, C. Dyer, N. Heess, D. Wierstra, P. Kohli, M. Botvinick, O. Vinyals, Y. Li, R. Pascanu. 2018.</a></li><li><a href="https://dl.acm.org/doi/pdf/10.1145/174608.174610">Poulovassilis, A., &amp; Levene, M. (1994). <strong>A nested-graph model for the representation and manipulation of complex objects</strong>. ACM Transactions on Information Systems (TOIS), 12(1), 35-68.</a></li><li><a href="https://academic.oup.com/bioinformatics/article-pdf/34/13/i457/50316205/bioinformatics_34_13_i457.pdf">Zitnik, M., Agrawal, M., &amp; Leskovec, J. (2018). <strong>Modeling polypharmacy side effects with graph convolutional networks</strong>. Bioinformatics, 34(13), i457-i466.</a></li><li><a href="https://www.nature.com/articles/s41467-020-19267-x.pdf">Stocker, S., Csanyi, G., Reuter, K., &amp; Margraf, J. T. (2020). <strong>Machine learning in chemical reaction space</strong>. Nature communications, 11(1), 5505.</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>ML</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
+      
+      <tag>pytorch</tag>
+      
+      <tag>GNN</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ML | PyTorch</title>
+    <link href="/2024/12/12/ML-pytorch/"/>
+    <url>/2024/12/12/ML-pytorch/</url>
+    
+    <content type="html"><![CDATA[<p>2017 年初由 Facebook 開源的另一套建立在 Torch 之上的深度學習框架 PyTorch 因其語法簡潔優雅、概念直觀和易上手的特性，甫推出便迅速走紅，儼然已成為瓜分深度學習市場的有力競爭者。</p><p>PyTorch is an optimized tensor library for deep learning using GPUs and CPUs. Automatic differentiation is done with a tape-based system at both a functional and neural network layer level. This functionality brings a high level of flexibility and speed as a deep learning framework and provides accelerated NumPy-like functionality.</p><p>To check if your GPU driver and CUDA/ROCm is enabled and accessible by PyTorch,</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-built_in">print</span>(torch.__version__)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.is_available() = &quot;</span>, torch.cuda.is_available())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.device_count() = &quot;</span>, torch.cuda.device_count())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.current_device() =&quot;</span>, torch.cuda.current_device())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.device(0) = &quot;</span>, torch.cuda.device(<span class="hljs-number">0</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.get_device_name(0) = &quot;</span>, torch.cuda.get_device_name(<span class="hljs-number">0</span>))<br></code></pre></td></tr></table></figure><p>General usage,</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 导⼊包和版本查询</span><br><span class="hljs-keyword">import</span> torch <br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn <br><span class="hljs-keyword">import</span> torchvision <br><br><span class="hljs-built_in">print</span>(torch.__version__) <br><span class="hljs-built_in">print</span>(torch.version.cuda) <br><span class="hljs-built_in">print</span>(torch.backends.cudnn.version()) <br><span class="hljs-built_in">print</span>(torch.cuda.get_device_name(<span class="hljs-number">0</span>))<br><br><br><span class="hljs-comment"># 可复现性在硬件设备（CPU、GPU）不同时，完全的可复现性⽆法保证，即使随机种⼦相同。但是，在同⼀个设备上，应该保证可复现性。具体做法是，在程序开始的时候固定torch的随机种⼦，同时也把numpy的随机种⼦固定。</span><br><br>np.random.seed(<span class="hljs-number">0</span>) <br>torch.manual_seed(<span class="hljs-number">0</span>) <br>torch.cuda.manual_seed_all(<span class="hljs-number">0</span>) <br>torch.backends.cudnn.deterministic = <span class="hljs-literal">True</span> <br>torch.backends.cudnn.benchmark = <span class="hljs-literal">False</span><br></code></pre></td></tr></table></figure><h1 id="references">References</h1><ol type="1"><li><a href="https://dev.to/hyperkai/check-pytorch-version-cpu-and-gpucuda-in-pytorch-6jk">Check PyTorch version, CPU and GPU(CUDA) in PyTorch</a></li><li><a href="https://mp.weixin.qq.com/s/bcIC27Xo_LAaLUegElzOsg">Pytorch 高频使用代码集锦</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>ML</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PINN</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
+      
+      <tag>pytorch</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Maths | ROC Curves</title>
     <link href="/2024/12/10/maths-ROC/"/>
     <url>/2024/12/10/maths-ROC/</url>
@@ -1737,9 +1803,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>gnu</tag>
+      
+      <tag>Installation</tag>
       
       <tag>DA</tag>
       
@@ -1953,11 +2019,11 @@
     
     <tags>
       
-      <tag>Spack</tag>
-      
       <tag>MPAS</tag>
       
       <tag>DA</tag>
+      
+      <tag>Spack</tag>
       
       <tag>Spack-Stack</tag>
       
@@ -1984,15 +2050,15 @@
     
     <tags>
       
-      <tag>ecFlow</tag>
-      
-      <tag>Spack</tag>
+      <tag>Installation</tag>
       
       <tag>Micromamba</tag>
       
-      <tag>Conda</tag>
+      <tag>Spack</tag>
       
-      <tag>Installation</tag>
+      <tag>ecFlow</tag>
+      
+      <tag>Conda</tag>
       
     </tags>
     
@@ -2042,9 +2108,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
       <tag>Pnetcdf</tag>
       
@@ -2173,11 +2239,11 @@
     
     <tags>
       
-      <tag>Spack</tag>
-      
       <tag>Installation</tag>
       
       <tag>MPAS</tag>
+      
+      <tag>Spack</tag>
       
       <tag>Intel</tag>
       
@@ -2362,9 +2428,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -2389,9 +2455,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -2454,87 +2520,6 @@
   
   
   <entry>
-    <title>WRF | unrecognized command line option ‘-f90=gfortran’ &amp; ungrib.exe compile error</title>
-    <link href="/2024/05/29/WPS_install_gfortran_error/"/>
-    <url>/2024/05/29/WPS_install_gfortran_error/</url>
-    
-    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>When compiling WPSv4.0/v4.2/v3.8.1</p><blockquote><p>gfortran: error: unrecognized command line option ‘-f90=gfortran’</p></blockquote><h1 id="solution">Solution</h1><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-comment"># Settings for    Linux x86_64 ppc64le, gfortran compiler with gcc   (dmpar)</span><br><span class="hljs-comment">#</span><br>DESCRIPTION     =       GNU ($SFC/$SCC)<br>DMPARALLEL      =        1<br>OMPCPP          =       <span class="hljs-comment"># -D_OPENMP</span><br>OMP             =       <span class="hljs-comment"># -fopenmp</span><br>OMPCC           =       <span class="hljs-comment"># -fopenmp</span><br>SFC             =       gfortran<br>SCC             =       gcc<br>CCOMP           =       gcc<br>DM_FC           =       mpif90 -f90=gfortran<br>DM_CC           =       mpicc -cc=<span class="hljs-variable">$(SCC)</span><br>FC              =       <span class="hljs-variable">$(DM_FC)</span><br>CC              =       <span class="hljs-variable">$(DM_CC)</span> -DFSEEKO64_OK <br>LD              =       <span class="hljs-variable">$(FC)</span><br></code></pre></td></tr></table></figure><p>modify DM_FC to</p><blockquote><p>DM_FC = mpif90</p></blockquote><p>without -f90-gfortran</p><p>Finally,</p><ol type="1"><li>geogrid.exe and metgrid.exe</li><li>link_grib.csh</li></ol><p>are generated.</p><p>But, <strong>no ungrib.exe !!!</strong></p><h2 id="error">Error</h2><blockquote><p>Error: Arguments of ‘iand’ have different kind type parameters at (1)</p></blockquote><p>References</p><ol type="1"><li><a href="https://forum.mmm.ucar.edu/threads/resolved-ungrib-exe-compile-error-arguments-of-%E2%80%98iand%E2%80%99-have-different-kind-type-parameters-at-1-ted.9409/">(RESOLVED) ungrib.exe compile error: Arguments of ‘iand’ have different kind type parameters at (1)ted</a><ul><li>To dd those two extra lines to ungrib/src/ngl/g2/intmath.f (based on <a href="https://github.com/wrf-model/WPS/pull/119" class="uri">https://github.com/wrf-model/WPS/pull/119</a>)</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/resolved-not-generating-ungrib-exe.9367/">(RESOLVED) Not generating ungrib.exe</a></li></ol><h3 id="solution-1">Solution</h3><p><a href="https://github.com/wrf-model/WPS/pull/119/files/74eb62b1bef320b453151e1eb749dae96616da97#diff-93d876794073a0c3c81a225075d33578e88a2d946b833ba92f0bbcd3d6be9c03">Fix mismatch integer kind in IAND intrinsic calls in g2 librar</a></p><p>ungrib/src/ngl/g2/intmath.f</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ilog2_2=<span class="hljs-number">0</span><br>i=i_in<br><span class="hljs-function"><span class="hljs-title">if</span><span class="hljs-params">(i&lt;=<span class="hljs-number">0</span>)</span></span> return<br><span class="hljs-function"><span class="hljs-title">if</span><span class="hljs-params">(iand(i,i-<span class="hljs-number">1</span>)</span></span>/=<span class="hljs-number">0</span>) then<br>   !<span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;iand i-1&#x27;</span><br>   ilog2_2=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure><p>to <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs stylus">      ilog2_2=<span class="hljs-number">0</span><br>      i=i_in<br>      <span class="hljs-built_in">if</span>(i&lt;=<span class="hljs-number">0</span>) return<br>! WPS modification <span class="hljs-keyword">for</span> the XL compiler<br>!      <span class="hljs-built_in">if</span>(<span class="hljs-built_in">iand</span>(<span class="hljs-selector-tag">i</span>,i-<span class="hljs-number">1</span>)/=<span class="hljs-number">0</span>) then<br>      <span class="hljs-built_in">if</span>(<span class="hljs-built_in">iand</span>(<span class="hljs-selector-tag">i</span>,i-<span class="hljs-number">1</span>_2)/=<span class="hljs-number">0</span>) then<br>         !<span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;iand i-1&#x27;</span><br>         ilog2_2=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure> And, <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ilog2_1=<span class="hljs-number">0</span><br>i=i_in<br><span class="hljs-function"><span class="hljs-title">if</span><span class="hljs-params">(i&lt;=<span class="hljs-number">0</span>)</span></span> return<br><span class="hljs-function"><span class="hljs-title">if</span><span class="hljs-params">(iand(i,i-<span class="hljs-number">1</span>)</span></span>/=<span class="hljs-number">0</span>) then<br>   !<span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;iand i-1&#x27;</span><br>   ilog2_1=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure> to <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs stylus">      ilog2_1=<span class="hljs-number">0</span><br>      i=i_in<br>      <span class="hljs-built_in">if</span>(i&lt;=<span class="hljs-number">0</span>) return<br>! WPS modification <span class="hljs-keyword">for</span> the XL compiler<br>!      <span class="hljs-built_in">if</span>(<span class="hljs-built_in">iand</span>(<span class="hljs-selector-tag">i</span>,i-<span class="hljs-number">1</span>)/=<span class="hljs-number">0</span>) then<br>      <span class="hljs-built_in">if</span>(<span class="hljs-built_in">iand</span>(<span class="hljs-selector-tag">i</span>,i-<span class="hljs-number">1</span>_1)/=<span class="hljs-number">0</span>) then<br>         !<span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;iand i-1&#x27;</span><br>         ilog2_1=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure></p><p><strong>Works!!!</strong></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>WRF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Installation</tag>
-      
-      <tag>WPS</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>WRF | fatal error - rpc/types.h - No such file or directory</title>
-    <link href="/2024/05/29/WRF_install_landread_error/"/>
-    <url>/2024/05/29/WRF_install_landread_error/</url>
-    
-    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>When compiling WRFv4.0.0,</p><blockquote><p>mpicc -cc=gcc -DFSEEKO64_OK -o landread.o -c -w -O3 -c -DDM_PARALLEL -DMAX_HISTORY=25 -DNMM_CORE=0 landread.c landread.c:68:10: fatal error: rpc/types.h: No such file or directory #include &lt;rpc/types.h&gt; ^~~~~~~~~~~~~ compilation terminated. make[2]: [../configure.wrf:372: landread.o] Error 1 (ignored)</p></blockquote><h1 id="reference">Reference</h1><p><a href="https://forum.mmm.ucar.edu/threads/resolved-problem-compiling-wrfv4-0-on-fedora-28-landread-error.61/">(RESOLVED) Problem Compiling WRFV4.0 on Fedora 28: landread error</a></p><h1 id="workaround-1">Workaround 1</h1><p>We've seen a few reports of this, and it seems to be specific to particular Linux systems. We have not been able to repeat this at NCAR on our Macs, our department Linux server, or on our Linux HPC, and therefore we haven't come up with a long-term solution yet. However, a work-around would be to do the following:</p><p>Issue a ‘clean -a’ and then reconfigure. Then go into your configure.wrf file and look for the line: <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">CFLAGS</span> = $(CFLAGS_LOCAL) -DDM_PARALLEL -DSTUBMPI \<br><span class="hljs-attr">-DMAX_HISTORY</span>=$(MAX_HISTORY) -DNMM_CORE=$(WRF_NMM_CORE)<br></code></pre></td></tr></table></figure></p><p>Onto the end of that, add -DLANDREAD_STUFF, so that it now looks like: <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">CFLAGS</span> = $(CFLAGS_LOCAL) -DDM_PARALLEL -DSTUBMPI \<br><span class="hljs-attr">-DMAX_HISTORY</span>=$(MAX_HISTORY) -DNMM_CORE=$(WRF_NMM_CORE) -DLANDREAD_STUB<br></code></pre></td></tr></table></figure> Then save that configure file and recompile. This should get your past the problem. Please let us know if that works for you. Thanks!</p><h3 id="wrfv4.0.0-works">WRFv4.0.0 Works !</h3><h2 id="what-is-landread_stub">What is LANDREAD_STUB?</h2><ol type="1"><li><p>The LANDREAD_STUB option removes the ability for a moving nest to horizontally interpolate high-resolution topography and landuse fields. Very few use this option, so this is typically a safe recourse.</p></li><li><p>For those who do need the capability of a moving nest with the high-resolution static fields, if the location of types.h is not found in /usr/include, the alternative would be to look in /usr/include/tirpc.</p></li></ol><p>We can put together a github pull request, but we will need a couple of users to verify that the proposed fix still provide code that works for us and additionally works for the those that have reported the build troubles with WRF.</p><ol start="3" type="1"><li>Would you please test this pull request: <a href="https://github.com/wrf-model/WRF/pull/1072" class="uri">https://github.com/wrf-model/WRF/pull/1072</a></li></ol><h1 id="workaround-2">Workaround 2</h1><ol type="1"><li><p>I am encountering a similar issue when compiling V3.9.1.1 and the above solution does not seem to work for me.</p></li><li><p>I had to Copy landread.c.dist to landread.c in share directory for WRFV3 and that solved the issue.</p></li><li><p>Just cd share/ and do cp landread.c.dist landread.c</p></li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>WRF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Installation</tag>
-      
-      <tag>WRF</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>WRF | make -- time No such file or directory</title>
-    <link href="/2024/05/29/WRF_install_time_error/"/>
-    <url>/2024/05/29/WRF_install_time_error/</url>
-    
-    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>After moving to new cluster, a error appear when I reinstalled WRF. It is</p><blockquote><p>make[3]: time: No such file or directory</p></blockquote><p>Or,</p><blockquote><p>make[3]: time: No such file or directory make[3]: [makefile:42: module_io_int_idx.o] Error 127 (ignored)</p></blockquote><p>On WRFv450, v440, v433, v430</p><h1 id="workaround">Workaround</h1><p>Reference: <a href="https://forum.mmm.ucar.edu/threads/compiling-wrf-4-2-on-centos7-failed-problems-building-executables-look-for-errors-in-the-build-log.12864/">compiling wrf 4.2 on centos7 failed---&gt;Problems building executables, look for errors in the build log</a></p><p>'time' is a simple linux command that is typically included with your operating system. I believe, ultimately, the issue is that you're using a very old version of GNU to compile a newer version of WRF. GNU is free software, so can you try to install the latest version of GNU to see if that makes any difference in your compile? If you aren't sure how to do this, seek the help of a systems administrator (IT) at your institution. Once you install the new GNU version, you'll need to rebuild NetCDF and your MPI installation with the updated GNU, as well.</p><p>If you do that, and still run into the above error regarding the 'time' command, you can try a couple things: 1) Ask a systems admin for assistance in getting this command installed on your system. 'time' is a very simple linux command and typically comes readily available with the OS. 2) You can try modifying the configure.wrf file. After issuing <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">./clean -a<br>./configure<br></code></pre></td></tr></table></figure> 3) , and reconfiguring, open your configure.wrf file and look for this line: <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">FC        = <span class="hljs-built_in">time</span> $(DM_FC)<br></code></pre></td></tr></table></figure> 4) Remove 'time' from the line so that it now reads as <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">FC</span>        =  $(DM_FC)<br></code></pre></td></tr></table></figure> Save the configure.wrf with the change and try recompiling. <figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima">./<span class="hljs-built_in">compile</span> -j <span class="hljs-number">8</span> em_real <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> | tee <span class="hljs-built_in">compile</span>.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure></p><p>or</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#cp -r WRF-4.5.1-raw WRFV4.5.1</span><br><br><span class="hljs-built_in">cd</span> WRFV4.5.1/<br><br>./clean -a<br>./configure <br><span class="hljs-comment">##  34 (dmpar) GNU [gfortran/gcc]</span><br><br><span class="hljs-comment">## rewrite: The character class \s will match the whitespace characters &lt;tab&gt; and &lt;space&gt;.</span><br><span class="hljs-comment">## and don&#x27;t include $(DM_FC) </span><br>sed -i <span class="hljs-string">&quot;s/\s\stime\s//g&quot;</span> configure.wrf<br><span class="hljs-comment">#sed -i &quot;s/-DNMM_CORE=$(WRF_NMM_CORE)/-DNMM_CORE=$(WRF_NMM_CORE)\s-DLANDREAD_STUB/g&quot; configure.wrf</span><br><br>./compile -j 4 em_real 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> compile.log<br></code></pre></td></tr></table></figure>]]></content>
-    
-    
-    <categories>
-      
-      <category>WRF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Installation</tag>
-      
-      <tag>WRF</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>VSCode with Markdown editor</title>
     <link href="/2024/05/29/VSCode_markdown_editor/"/>
     <url>/2024/05/29/VSCode_markdown_editor/</url>
@@ -2564,6 +2549,87 @@
   
   
   <entry>
+    <title>WRF | unrecognized command line option ‘-f90=gfortran’ &amp; ungrib.exe compile error</title>
+    <link href="/2024/05/29/WPS_install_gfortran_error/"/>
+    <url>/2024/05/29/WPS_install_gfortran_error/</url>
+    
+    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>When compiling WPSv4.0/v4.2/v3.8.1</p><blockquote><p>gfortran: error: unrecognized command line option ‘-f90=gfortran’</p></blockquote><h1 id="solution">Solution</h1><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-comment"># Settings for    Linux x86_64 ppc64le, gfortran compiler with gcc   (dmpar)</span><br><span class="hljs-comment">#</span><br>DESCRIPTION     =       GNU ($SFC/$SCC)<br>DMPARALLEL      =        1<br>OMPCPP          =       <span class="hljs-comment"># -D_OPENMP</span><br>OMP             =       <span class="hljs-comment"># -fopenmp</span><br>OMPCC           =       <span class="hljs-comment"># -fopenmp</span><br>SFC             =       gfortran<br>SCC             =       gcc<br>CCOMP           =       gcc<br>DM_FC           =       mpif90 -f90=gfortran<br>DM_CC           =       mpicc -cc=<span class="hljs-variable">$(SCC)</span><br>FC              =       <span class="hljs-variable">$(DM_FC)</span><br>CC              =       <span class="hljs-variable">$(DM_CC)</span> -DFSEEKO64_OK <br>LD              =       <span class="hljs-variable">$(FC)</span><br></code></pre></td></tr></table></figure><p>modify DM_FC to</p><blockquote><p>DM_FC = mpif90</p></blockquote><p>without -f90-gfortran</p><p>Finally,</p><ol type="1"><li>geogrid.exe and metgrid.exe</li><li>link_grib.csh</li></ol><p>are generated.</p><p>But, <strong>no ungrib.exe !!!</strong></p><h2 id="error">Error</h2><blockquote><p>Error: Arguments of ‘iand’ have different kind type parameters at (1)</p></blockquote><p>References</p><ol type="1"><li><a href="https://forum.mmm.ucar.edu/threads/resolved-ungrib-exe-compile-error-arguments-of-%E2%80%98iand%E2%80%99-have-different-kind-type-parameters-at-1-ted.9409/">(RESOLVED) ungrib.exe compile error: Arguments of ‘iand’ have different kind type parameters at (1)ted</a><ul><li>To dd those two extra lines to ungrib/src/ngl/g2/intmath.f (based on <a href="https://github.com/wrf-model/WPS/pull/119" class="uri">https://github.com/wrf-model/WPS/pull/119</a>)</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/resolved-not-generating-ungrib-exe.9367/">(RESOLVED) Not generating ungrib.exe</a></li></ol><h3 id="solution-1">Solution</h3><p><a href="https://github.com/wrf-model/WPS/pull/119/files/74eb62b1bef320b453151e1eb749dae96616da97#diff-93d876794073a0c3c81a225075d33578e88a2d946b833ba92f0bbcd3d6be9c03">Fix mismatch integer kind in IAND intrinsic calls in g2 librar</a></p><p>ungrib/src/ngl/g2/intmath.f</p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ilog2_2=<span class="hljs-number">0</span><br>i=i_in<br><span class="hljs-function"><span class="hljs-title">if</span><span class="hljs-params">(i&lt;=<span class="hljs-number">0</span>)</span></span> return<br><span class="hljs-function"><span class="hljs-title">if</span><span class="hljs-params">(iand(i,i-<span class="hljs-number">1</span>)</span></span>/=<span class="hljs-number">0</span>) then<br>   !<span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;iand i-1&#x27;</span><br>   ilog2_2=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure><p>to <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs stylus">      ilog2_2=<span class="hljs-number">0</span><br>      i=i_in<br>      <span class="hljs-built_in">if</span>(i&lt;=<span class="hljs-number">0</span>) return<br>! WPS modification <span class="hljs-keyword">for</span> the XL compiler<br>!      <span class="hljs-built_in">if</span>(<span class="hljs-built_in">iand</span>(<span class="hljs-selector-tag">i</span>,i-<span class="hljs-number">1</span>)/=<span class="hljs-number">0</span>) then<br>      <span class="hljs-built_in">if</span>(<span class="hljs-built_in">iand</span>(<span class="hljs-selector-tag">i</span>,i-<span class="hljs-number">1</span>_2)/=<span class="hljs-number">0</span>) then<br>         !<span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;iand i-1&#x27;</span><br>         ilog2_2=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure> And, <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ilog2_1=<span class="hljs-number">0</span><br>i=i_in<br><span class="hljs-function"><span class="hljs-title">if</span><span class="hljs-params">(i&lt;=<span class="hljs-number">0</span>)</span></span> return<br><span class="hljs-function"><span class="hljs-title">if</span><span class="hljs-params">(iand(i,i-<span class="hljs-number">1</span>)</span></span>/=<span class="hljs-number">0</span>) then<br>   !<span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;iand i-1&#x27;</span><br>   ilog2_1=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure> to <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs stylus">      ilog2_1=<span class="hljs-number">0</span><br>      i=i_in<br>      <span class="hljs-built_in">if</span>(i&lt;=<span class="hljs-number">0</span>) return<br>! WPS modification <span class="hljs-keyword">for</span> the XL compiler<br>!      <span class="hljs-built_in">if</span>(<span class="hljs-built_in">iand</span>(<span class="hljs-selector-tag">i</span>,i-<span class="hljs-number">1</span>)/=<span class="hljs-number">0</span>) then<br>      <span class="hljs-built_in">if</span>(<span class="hljs-built_in">iand</span>(<span class="hljs-selector-tag">i</span>,i-<span class="hljs-number">1</span>_1)/=<span class="hljs-number">0</span>) then<br>         !<span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;iand i-1&#x27;</span><br>         ilog2_1=<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure></p><p><strong>Works!!!</strong></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>WRF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WPS</tag>
+      
+      <tag>Installation</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>WRF | fatal error - rpc/types.h - No such file or directory</title>
+    <link href="/2024/05/29/WRF_install_landread_error/"/>
+    <url>/2024/05/29/WRF_install_landread_error/</url>
+    
+    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>When compiling WRFv4.0.0,</p><blockquote><p>mpicc -cc=gcc -DFSEEKO64_OK -o landread.o -c -w -O3 -c -DDM_PARALLEL -DMAX_HISTORY=25 -DNMM_CORE=0 landread.c landread.c:68:10: fatal error: rpc/types.h: No such file or directory #include &lt;rpc/types.h&gt; ^~~~~~~~~~~~~ compilation terminated. make[2]: [../configure.wrf:372: landread.o] Error 1 (ignored)</p></blockquote><h1 id="reference">Reference</h1><p><a href="https://forum.mmm.ucar.edu/threads/resolved-problem-compiling-wrfv4-0-on-fedora-28-landread-error.61/">(RESOLVED) Problem Compiling WRFV4.0 on Fedora 28: landread error</a></p><h1 id="workaround-1">Workaround 1</h1><p>We've seen a few reports of this, and it seems to be specific to particular Linux systems. We have not been able to repeat this at NCAR on our Macs, our department Linux server, or on our Linux HPC, and therefore we haven't come up with a long-term solution yet. However, a work-around would be to do the following:</p><p>Issue a ‘clean -a’ and then reconfigure. Then go into your configure.wrf file and look for the line: <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">CFLAGS</span> = $(CFLAGS_LOCAL) -DDM_PARALLEL -DSTUBMPI \<br><span class="hljs-attr">-DMAX_HISTORY</span>=$(MAX_HISTORY) -DNMM_CORE=$(WRF_NMM_CORE)<br></code></pre></td></tr></table></figure></p><p>Onto the end of that, add -DLANDREAD_STUFF, so that it now looks like: <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">CFLAGS</span> = $(CFLAGS_LOCAL) -DDM_PARALLEL -DSTUBMPI \<br><span class="hljs-attr">-DMAX_HISTORY</span>=$(MAX_HISTORY) -DNMM_CORE=$(WRF_NMM_CORE) -DLANDREAD_STUB<br></code></pre></td></tr></table></figure> Then save that configure file and recompile. This should get your past the problem. Please let us know if that works for you. Thanks!</p><h3 id="wrfv4.0.0-works">WRFv4.0.0 Works !</h3><h2 id="what-is-landread_stub">What is LANDREAD_STUB?</h2><ol type="1"><li><p>The LANDREAD_STUB option removes the ability for a moving nest to horizontally interpolate high-resolution topography and landuse fields. Very few use this option, so this is typically a safe recourse.</p></li><li><p>For those who do need the capability of a moving nest with the high-resolution static fields, if the location of types.h is not found in /usr/include, the alternative would be to look in /usr/include/tirpc.</p></li></ol><p>We can put together a github pull request, but we will need a couple of users to verify that the proposed fix still provide code that works for us and additionally works for the those that have reported the build troubles with WRF.</p><ol start="3" type="1"><li>Would you please test this pull request: <a href="https://github.com/wrf-model/WRF/pull/1072" class="uri">https://github.com/wrf-model/WRF/pull/1072</a></li></ol><h1 id="workaround-2">Workaround 2</h1><ol type="1"><li><p>I am encountering a similar issue when compiling V3.9.1.1 and the above solution does not seem to work for me.</p></li><li><p>I had to Copy landread.c.dist to landread.c in share directory for WRFV3 and that solved the issue.</p></li><li><p>Just cd share/ and do cp landread.c.dist landread.c</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>WRF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WRF</tag>
+      
+      <tag>Installation</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>WRF | make -- time No such file or directory</title>
+    <link href="/2024/05/29/WRF_install_time_error/"/>
+    <url>/2024/05/29/WRF_install_time_error/</url>
+    
+    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>After moving to new cluster, a error appear when I reinstalled WRF. It is</p><blockquote><p>make[3]: time: No such file or directory</p></blockquote><p>Or,</p><blockquote><p>make[3]: time: No such file or directory make[3]: [makefile:42: module_io_int_idx.o] Error 127 (ignored)</p></blockquote><p>On WRFv450, v440, v433, v430</p><h1 id="workaround">Workaround</h1><p>Reference: <a href="https://forum.mmm.ucar.edu/threads/compiling-wrf-4-2-on-centos7-failed-problems-building-executables-look-for-errors-in-the-build-log.12864/">compiling wrf 4.2 on centos7 failed---&gt;Problems building executables, look for errors in the build log</a></p><p>'time' is a simple linux command that is typically included with your operating system. I believe, ultimately, the issue is that you're using a very old version of GNU to compile a newer version of WRF. GNU is free software, so can you try to install the latest version of GNU to see if that makes any difference in your compile? If you aren't sure how to do this, seek the help of a systems administrator (IT) at your institution. Once you install the new GNU version, you'll need to rebuild NetCDF and your MPI installation with the updated GNU, as well.</p><p>If you do that, and still run into the above error regarding the 'time' command, you can try a couple things: 1) Ask a systems admin for assistance in getting this command installed on your system. 'time' is a very simple linux command and typically comes readily available with the OS. 2) You can try modifying the configure.wrf file. After issuing <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">./clean -a<br>./configure<br></code></pre></td></tr></table></figure> 3) , and reconfiguring, open your configure.wrf file and look for this line: <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">FC        = <span class="hljs-built_in">time</span> $(DM_FC)<br></code></pre></td></tr></table></figure> 4) Remove 'time' from the line so that it now reads as <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">FC</span>        =  $(DM_FC)<br></code></pre></td></tr></table></figure> Save the configure.wrf with the change and try recompiling. <figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima">./<span class="hljs-built_in">compile</span> -j <span class="hljs-number">8</span> em_real <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> | tee <span class="hljs-built_in">compile</span>.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure></p><p>or</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#cp -r WRF-4.5.1-raw WRFV4.5.1</span><br><br><span class="hljs-built_in">cd</span> WRFV4.5.1/<br><br>./clean -a<br>./configure <br><span class="hljs-comment">##  34 (dmpar) GNU [gfortran/gcc]</span><br><br><span class="hljs-comment">## rewrite: The character class \s will match the whitespace characters &lt;tab&gt; and &lt;space&gt;.</span><br><span class="hljs-comment">## and don&#x27;t include $(DM_FC) </span><br>sed -i <span class="hljs-string">&quot;s/\s\stime\s//g&quot;</span> configure.wrf<br><span class="hljs-comment">#sed -i &quot;s/-DNMM_CORE=$(WRF_NMM_CORE)/-DNMM_CORE=$(WRF_NMM_CORE)\s-DLANDREAD_STUB/g&quot; configure.wrf</span><br><br>./compile -j 4 em_real 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> compile.log<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>WRF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WRF</tag>
+      
+      <tag>Installation</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Conda/Micromamba</title>
     <link href="/2024/03/02/Conda_Micromamba/"/>
     <url>/2024/03/02/Conda_Micromamba/</url>
@@ -2580,9 +2646,9 @@
     
     <tags>
       
-      <tag>Micromamba</tag>
-      
       <tag>conda</tag>
+      
+      <tag>Micromamba</tag>
       
     </tags>
     
@@ -3618,8 +3684,6 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>NWP</tag>
       
       <tag>gnu</tag>
@@ -3629,6 +3693,8 @@
       <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
