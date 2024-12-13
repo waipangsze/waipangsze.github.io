@@ -27,12 +27,14 @@ date: 2024-09-30 21:26:27
 
 ## 天氣
 
-- [2024 臺大數值天氣預報課程 WRF區域模式實作 (推薦)](https://rain.as.ntu.edu.tw/course_wrf.html)
+- [香港天文台 | 天氣隨筆](https://www.hko.gov.hk/tc/forecaster_blog/index.htm)
+- [香港天文台職員編寫的報告及短文](https://www.hko.gov.hk/tc/publica/pubpaper.htm)
+- [2024 臺大數值天氣預報課程 WRF區域模式實作](https://rain.as.ntu.edu.tw/course_wrf.html)
+- [ECMWF | eLearning - online resources](https://learning.ecmwf.int/)
+  - [MOOC ML](https://learning.ecmwf.int/course/index.php?categoryid=1)
 - [興趣使然的天氣分析 Mahoshojo](https://www.pixnet.net/pcard/Mahoshojo?utm_source=PIXNET&utm_medium=post_card&utm_term&utm_content=359914739)
 - [风中飞舞](https://blog.perillaroc.wang/)
   - An operations engineer for meteorological information at CEMC/CMA.
-- [香港天文台 天氣隨筆](https://www.hko.gov.hk/tc/forecaster_blog/index.htm)
-- [香港天文台職員編寫的報告及短文](https://www.hko.gov.hk/tc/publica/pubpaper.htm)
 - [WRF & MPAS-A Support Forum](https://forum.mmm.ucar.edu/)
 - [CUHK Atmospheric Dynamics Group](https://atmosphericdynamicsgroup.github.io/)
 
