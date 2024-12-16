@@ -28,10 +28,10 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/raumO6Y.png">
 <meta property="article:published_time" content="2024-12-07T12:50:00.000Z">
-<meta property="article:modified_time" content="2024-12-07T14:59:57.800Z">
+<meta property="article:modified_time" content="2024-12-09T12:53:20.194Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="HPC">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="MPI">
@@ -324,7 +324,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          332 words
+          354 words
         
       </span>
     
@@ -529,6 +529,35 @@ src="https://i.imgur.com/EG86Edj.png" srcset="/img/loading.gif" lazyload alt="4"
 <li>Scalability Summary</li>
 </ul>
 <p><img src="https://i.imgur.com/82xzzGC.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h3 id="tutorial-notes-wrf-software-2.1"><a
+target="_blank" rel="noopener" href="http://danida.vnu.edu.vn/cpis/files/Refs/WRF/WRF%20Software.pdf">Tutorial
+Notes: WRF Software 2.1</a></h3>
+<ul>
+<li>WRF can be run serially or as a parallel job</li>
+<li>WRF uses <strong>domain decomposition</strong> to divide total
+amount of work over parallel processes • Since the process model has two
+levels (heavy-weight and light-weight = MPI and OpenMP), the
+decomposition of the application over processes has two levels:
+<ul>
+<li>The <strong>domain</strong> is first broken up into rectangular
+pieces that are assigned to heavy-weight processes. These pieces are
+called <strong>patches</strong></li>
+<li>The <strong>patches</strong> may be further subdivided into smaller
+rectangular pieces that are called <strong>tiles</strong>, and these are
+assigned to <strong>threads</strong> within the process.</li>
+</ul></li>
+<li>Model domains are decomposed for parallelism on two-levels
+<ul>
+<li><strong>Patch</strong>: section of model domain a located to a
+<strong>distributed memory node</strong>, this is the scope of a
+mediation layer solver or physics driver.</li>
+<li><strong>Tile</strong>: section of a patch allocated to a
+<strong>shared-memory processor</strong> within a node; this is also the
+scope of a model layer subroutine.</li>
+<li>Distributed memory parallelism is over patches; shared memory
+parallelism is over tiles within patches</li>
+</ul></li>
+</ul>
 <h1 id="mpas">MPAS</h1>
 <h2 id="an-overview-of-the-structure-of-mpas-meshes-boulder2023"><a
 target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Boulder2023/lectures/mesh_structure.pdf">An
@@ -609,9 +638,9 @@ target="_blank" rel="noopener" href="https://www.tropmet.res.in/introspect/prese
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
-      
         <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
@@ -652,7 +681,7 @@ target="_blank" rel="noopener" href="https://www.tropmet.res.in/introspect/prese
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 7, 2024</div>
+          <div>December 9, 2024</div>
         </div>
       
       
@@ -682,6 +711,12 @@ target="_blank" rel="noopener" href="https://www.tropmet.res.in/introspect/prese
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/12/10/MPAS-eddy-viscosity-in-the-Smagorinsky-turbulence-model/" title="MPAS | Smagorinsky turbulence model | Eddy viscosity">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | Smagorinsky turbulence model | Eddy viscosity</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
