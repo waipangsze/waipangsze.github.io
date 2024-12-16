@@ -93,4 +93,8 @@ date: 2024-09-30 21:26:27
   - 註冊帳號後，您的圖片會被長期保存（合法圖片）
 - [Meee](https://meee.com.tw/)
 
+# Self
+
+- [Self-2024](https://waipangsze.github.io/2024/12/16/Interview-Department-of-Health-Physicist/)
+
 </div>
