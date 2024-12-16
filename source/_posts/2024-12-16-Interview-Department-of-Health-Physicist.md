@@ -51,6 +51,15 @@ hide: true
   - <https://en.wikipedia.org/wiki/Ionization_chamber>
   - [Geiger Counter vs Ionization Chamber](https://www.nuclear-power.com/nuclear-engineering/radiation-detection/gaseous-ionization-detector/geiger-counter-vs-ionization-chamber/)
 
+面試自我評價表現, 
+
+1. 整體來說，表現整體消極，甚至可以說是不成功。
+2. 準備工作不充分，過於關注次要的技術細節，而忽視了對職位核心要求的理解。例如，對輻射防護原則和輻射條例相關法規的認識明顯不足。
+3. 未能有效表達我的物理專業背景在這個職位上的應用價值。未能清楚說明我的專業如何與職位要求相匹配，以及為什麼我能為該角色帶來貢獻。如何？為什麼？
+4. 在筆試中未能提出有力的論據，對「碘片」的用途不理解，未能展現專業水平。
+5. 面試時面試中的回答過於籠統，缺乏實質性內容，未能展現與職位相關的經驗，也未能建立我與該工作的真正聯繫。
+6. 在面試中無法清楚地解釋 Ionization Chamber 的原理及其區別，顯示專業技術知識不足。
+7. 對輻射條例的了解不足，暴露了在核心領域知識上的缺口。
 
 # References
 
