@@ -39,13 +39,17 @@ hide: true
 
 主要有關輻射防護及輻射條例
 
-- 早上8:30，有筆試共兩篇寫作，中英各一。格式為公眾來信詢問寫回信。半小時。英文寫有關X-Ray, CT掃描的相關。劑量。如何防護使用過檔？
-中文有關大灣區大亞灣核電廠及意外假設如何防護公眾如何保護措施？碘片有輻射防護功能？衛生署是否派發碘片的物資？食鹽含有點是否可輻射防護？
+- 早上8:30，有筆試共兩篇寫作，中英各一。格式為公眾來信詢問寫回信。半小時。
+- 英文寫有關X-Ray, CT掃描的相關。劑量。how to justify? how to ensure this justification? 如何防護使用過度？
+  - [診斷放射學的輻射防護指引](https://www.rhd.gov.hk/tc/pdf/Pub1_chinese.pdf)
+- 中文有關大灣區大亞灣核電廠及意外假設如何防護公眾如何保護措施？碘片有輻射防護功能？衛生署是否派發碘片的物資？食鹽含有點是否可輻射防護？
   - [大亞灣核電廠](https://www.sb.gov.hk/chi/special/nuclear/Station.html)
   - [給公眾的建議](https://www.sb.gov.hk/chi/special/nuclear/Advice.html)
   - 在輻射煙羽到臨前或到達數小時內服用甲狀腺封閉劑(即穩定碘片)，可有效阻隔甲狀腺吸收放射性碘，因而降低患上甲狀腺癌的風險。
 - 10-15分鐘面試詢問：為什麼你適合這個工作？GM counter, ionisation chamber 原理，有什麼分別？是否了解輻射條例？
-- Q & A: 這職位主要在於公眾防護輻射防護
+  - <https://en.wikipedia.org/wiki/Geiger_counter>
+  - <https://en.wikipedia.org/wiki/Ionization_chamber>
+  - [Geiger Counter vs Ionization Chamber](https://www.nuclear-power.com/nuclear-engineering/radiation-detection/gaseous-ionization-detector/geiger-counter-vs-ionization-chamber/)
 
 
 # References
