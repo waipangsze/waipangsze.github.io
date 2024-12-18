@@ -76,8 +76,8 @@ g_{\text {URANS }}\left(u_{j}\right)
 $$
 that characterizes LES or URANS depending on the closure model.
 
-{% danger note}
+
 One can deduce that the discrete equation (6) never implied a real application of a spatial filtering or an ensemble averaging. The only assessment is the spatial filtering implicitly induced by the discretization, a fact that is congruent to the LES assumption but not to the URANS one.
-{% endnote}
+
 
 The Eq.(6) must be well posed by the set of initial and boundary conditions. This point adds a distinction as they should be different for LES and URANS.
