@@ -19,25 +19,37 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="hi">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Categories - Spack">
-<meta property="og:url" content="https://waipangsze.github.io/categories/Spack/index.html">
+    <meta name="description" content="LES Consider the 1D Burgers equation in terms of the velocity field \(u(x, t)\) \[ \begin{equation*} \frac{\partial u}{\partial t}+\frac{\partial u^{2} &#x2F; 2}{\partial x}&#x3D;\frac{\partial}{\partial x}\lef">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CFD | RANS vs. URANS vs. LES">
+<meta property="og:url" content="https://waipangsze.github.io/2024/12/18/CFD-RANS-URANS-LES/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="hi">
+<meta property="og:description" content="LES Consider the 1D Burgers equation in terms of the velocity field \(u(x, t)\) \[ \begin{equation*} \frac{\partial u}{\partial t}+\frac{\partial u^{2} &#x2F; 2}{\partial x}&#x3D;\frac{\partial}{\partial x}\lef">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/GkV6pMK.png">
+<meta property="article:published_time" content="2024-12-18T08:06:00.000Z">
+<meta property="article:modified_time" content="2024-12-18T08:27:25.291Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="OpenFOAM">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/GkV6pMK.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Categories - Spack - wpsze</title>
+  <title>CFD | RANS vs. URANS vs. LES - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
 
 
 
@@ -98,7 +110,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -278,15 +290,64 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/GkV6pMK.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Categories - Spack"></span>
+            <span id="subtitle" data-typed-text="CFD | RANS vs. URANS vs. LES"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-18 16:06" pubdate>
+          December 18, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          282 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
 
         
       </div>
@@ -302,51 +363,78 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CFD | RANS vs. URANS vs. LES</h1>
+            
+            
+              <div class="markdown-body">
                 
+                <h1 id="les">LES</h1>
+<p>Consider the 1D Burgers equation in terms of the velocity field <span class="math inline">\(u(x, t)\)</span> <span class="math display">\[
+\begin{equation*}
+\frac{\partial u}{\partial t}+\frac{\partial u^{2} / 2}{\partial x}=\frac{\partial}{\partial x}\left(v \frac{\partial u}{\partial x}\right) \tag{1}
+\end{equation*}
+\]</span></p>
+<h1 id="les-1">LES</h1>
+<p>In the continuous LES approach the scale separation is obtained via low-pass filtering. The spatial filtering operation (no time-filtering is considered here) can be expressed as the convolution product between the unfiltered point-wise velocity field and some suitable filter function <span class="math inline">\(G\)</span>, that is <span class="math display">\[
+\begin{equation*}
+\bar{u}(x, t ; \Delta)=\int_{R} G\left(x-x^{\prime} ; \Delta\right) u\left(x^{\prime}, t\right) d x^{\prime} \tag{2}
+\end{equation*}
+\]</span> <span class="math inline">\(\Delta\)</span> being the characteristic filter width. The LES equation is obtained by applying (2) to each term of (1) <span class="math display">\[
+\begin{equation*}
+\frac{\partial \bar{u}}{\partial t}+\frac{\partial \bar{u}^{2} / 2}{\partial x}=\frac{\partial}{\partial x}\left(v \frac{\partial \bar{u}}{\partial x}\right)+\underbrace{\frac{\partial\left(\bar{u}^{2}-u^{2}\right) / 2}{\partial x}}_{\frac{\partial f(\bar{u}, u)}{\partial x}} \tag{3}
+\end{equation*}
+\]</span></p>
+<p>Commutation between filtering and derivative being applied</p>
+<h1 id="urans">URANS</h1>
+<p>As a counterpart, in the continuous URANS approach a statistical averaging is adopted. <span class="math display">\[
+\begin{equation*}
+\langle u\rangle(x, t)=\lim _{N \rightarrow \infty} \frac{1}{N} \sum_{k=1}^{N} u_{k}(x, t) \tag{4}
+\end{equation*}
+\]</span></p>
+<p><span class="math inline">\(N\)</span> being the number of sample of the ensemble averaging. The URANS equation is obtained by applying (4) to each term of (1)</p>
+<p><span class="math display">\[
+\begin{equation*}
+\frac{\partial\langle u\rangle}{\partial t}+\frac{\partial\langle u\rangle^{2} / 2}{\partial x}=\frac{\partial}{\partial x}\left(v \frac{\partial\langle u\rangle}{\partial x}\right)+\underbrace{\frac{\partial\left(\langle u\rangle^{2}-u^{2}\right) / 2}{\partial x}}_{\frac{\partial g(\langle u\rangle, u)}{\partial x}} \tag{5}
+\end{equation*}
+\]</span></p>
+<h1 id="close-equations">Close equations</h1>
+<p>In order to close Eqs.(3) and (5), suitable models are used, that is</p>
+<p><span class="math display">\[
+f(\bar{u}, u) \cong f_{\text {LES }}(\bar{u}), \qquad g(\langle u\rangle, u) \cong g_{\text {URANS }}(\langle u\rangle)
+\]</span></p>
+<h1 id="discretization">Discretization</h1>
+<p>If we consider now the practical solution, a discretization of the derivative is introduced. Assume the same discretization is adopted for the LES and URANS equations, so that we can write a unique equation <span class="math display">\[
+\frac{\delta u_{j}}{\delta t}+\frac{\delta u_{j}^{2} / 2}{\delta x}=\frac{\delta}{\delta x}\left(v \frac{\delta u_{j}}{\delta x}\right)+\frac{\delta}{\delta x}\left\{\begin{array}{c}
+f_{L E S}\left(u_{j}\right)  \tag{6}\\
+g_{\text {URANS }}\left(u_{j}\right)
+\end{array}\right.
+\]</span> that characterizes LES or URANS depending on the closure model.</p>
+<p>One can deduce that the discrete equation (6) never implied a real application of a spatial filtering or an ensemble averaging. The only assessment is the spatial filtering implicitly induced by the discretization, a fact that is congruent to the LES assumption but not to the URANS one.</p>
+<p>The Eq.(6) must be well posed by the set of initial and boundary conditions. This point adds a distinction as they should be different for LES and URANS.</p>
 
-<div class="list-group">
-  <p class="h4">3 posts in total</p>
-  <hr>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-  
-    <div class="row mx-auto index-card">
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
       
-      
-      <article class="col-12 col-md-12 mx-auto index-info">
-        <h2 class="index-header">
-          
-          <a href="/2024/08/13/spack_intel/" target="_self">
-            Spack and Intel OneAPI
-          </a>
-        </h2>
-  
-        
-        <a class="index-excerpt index-excerpt__noimg" href="/2024/08/13/spack_intel/" target="_self">
-          <div>
-            Spack Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large supercomputing
-          </div>
-        </a>
-  
-        <div class="index-btm post-metas">
-          
-            <div class="post-meta mr-3">
-              <i class="iconfont icon-date"></i>
-              <time datetime="2024-08-13 00:00" pubdate>
-                2024-08-13
-              </time>
-            </div>
-          
-          
-            <div class="post-meta mr-3 d-flex align-items-center">
-              <i class="iconfont icon-category"></i>
-              
 
 <span class="category-chains">
   
@@ -354,7 +442,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Spack/" class="category-chain-item">Spack</a>
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
   
   
 
@@ -363,161 +451,166 @@
   
 </span>
 
-            </div>
-          
-          
-            <div class="post-meta">
-              <i class="iconfont icon-tags"></i>
-              
-                <a href="/tags/Spack/">#Spack</a>
-              
-                <a href="/tags/Intel/">#Intel</a>
-              
-            </div>
-          
-        </div>
-      </article>
     </div>
   
-    <div class="row mx-auto index-card">
-      
-      
-      <article class="col-12 col-md-12 mx-auto index-info">
-        <h2 class="index-header">
-          
-          <a href="/2024/06/10/spack_stack_jedi_mpas/" target="_self">
-            Spack-Stack (MPAS-JEDI)
-          </a>
-        </h2>
   
-        
-        <a class="index-excerpt index-excerpt__noimg" href="/2024/06/10/spack_stack_jedi_mpas/" target="_self">
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CFD | RANS vs. URANS vs. LES</div>
+      <div>https://waipangsze.github.io/2024/12/18/CFD-RANS-URANS-LES/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 18, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>December 18, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
           <div>
-            spack-stack Spack-stack is a framework for installing software libraries to support NOAA's Unified Forecast System (UFS) applications and the Joint Effort for Data assimilation Integration (JEDI) coup
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
           </div>
-        </a>
-  
-        <div class="index-btm post-metas">
-          
-            <div class="post-meta mr-3">
-              <i class="iconfont icon-date"></i>
-              <time datetime="2024-06-10 00:00" pubdate>
-                2024-06-10
-              </time>
-            </div>
-          
-          
-            <div class="post-meta mr-3 d-flex align-items-center">
-              <i class="iconfont icon-category"></i>
-              
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Spack/" class="category-chain-item">Spack</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-            </div>
-          
-          
-            <div class="post-meta">
-              <i class="iconfont icon-tags"></i>
-              
-                <a href="/tags/MPAS/">#MPAS</a>
-              
-                <a href="/tags/DA/">#DA</a>
-              
-                <a href="/tags/Spack/">#Spack</a>
-              
-                <a href="/tags/Spack-Stack/">#Spack-Stack</a>
-              
-            </div>
-          
         </div>
-      </article>
+      
     </div>
-  
-    <div class="row mx-auto index-card">
-      
-      
-      <article class="col-12 col-md-12 mx-auto index-info">
-        <h2 class="index-header">
-          
-          <a href="/2024/06/07/spack/" target="_self">
-            Spack
-          </a>
-        </h2>
-  
-        
-        <a class="index-excerpt index-excerpt__noimg" href="/2024/06/07/spack/" target="_self">
-          <div>
-            Spack Spack is a package management tool designed to support multiple versions and configurations of software on a wide variety of platforms and environments. It was designed for large supercomputing
-          </div>
-        </a>
-  
-        <div class="index-btm post-metas">
-          
-            <div class="post-meta mr-3">
-              <i class="iconfont icon-date"></i>
-              <time datetime="2024-06-07 00:00" pubdate>
-                2024-06-07
-              </time>
-            </div>
-          
-          
-            <div class="post-meta mr-3 d-flex align-items-center">
-              <i class="iconfont icon-category"></i>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
               
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Spack/" class="category-chain-item">Spack</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-            </div>
-          
-          
-            <div class="post-meta">
-              <i class="iconfont icon-tags"></i>
-              
-                <a href="/tags/Spack/">#Spack</a>
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/15/ML-Diffusion-Models/" title="ML | Diffusion Models">
+                        <span class="hidden-mobile">ML | Diffusion Models</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
               
             </div>
-          
+
+            
+          </article>
         </div>
-      </article>
+      </div>
     </div>
-  
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
 </div>
 
 
 
 
 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
     
 
     
@@ -648,7 +741,145 @@
 
 
 
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
   <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 
