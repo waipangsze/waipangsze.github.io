@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Git_session.svg/1920px-Git_session.svg.png">
 <meta property="article:published_time" content="2023-04-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-18T07:57:53.541Z">
+<meta property="article:modified_time" content="2024-12-19T01:08:31.645Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="Github">
 <meta property="article:tag" content="git">
@@ -319,7 +319,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.3k words
+          3.5k words
         
       </span>
     
@@ -330,7 +330,7 @@
         
         
         
-          28 mins
+          30 mins
         
       </span>
     
@@ -490,6 +490,10 @@
 <ul>
 <li>請非常小心使用，因為 rebase 會改變歷史紀錄</li>
 </ul>
+<h1 id="updates-were-rejected">Updates were rejected</h1>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs console">To github.com:waipangsze/waipangsze.github.io.git<br> ! [rejected]            hexo -&gt; hexo (non-fast-forward)<br>error: failed to push some refs to &#x27;git@github.com:waipangsze/waipangsze.github.io.git&#x27;<br>hint: Updates were rejected because the tip of your current branch is behind<br>hint: its remote counterpart. Integrate the remote changes (e.g.<br>hint: &#x27;git pull ...&#x27;) before pushing again.<br>hint: See the &#x27;Note about fast-forwards&#x27; in &#x27;git push --help&#x27; for details.<br></code></pre></td></tr></table></figure>
+<p>這是因為遠端 repository 和我本地的 repository 衝突導致的; 但是卻沒有pull到本地。這樣就產生了版本衝突的問題。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">1. 使用强制push的方法<br>git push -u origin master -f<br>这样会使远程修改丢失&amp;#xff0c;一般是不可取的&amp;#xff0c;尤其是多人协作开发的时候。<br><br>2. push前先将远程repository修改pull下来<br>git pull origin master<br>git push -u origin master<br></code></pre></td></tr></table></figure>
 <h1 id="conflicts">Conflicts</h1>
 <p>Between your last push and the next push, if someone else pushes to update the remote database but you do not update your local database, your push will be rejected. At this time, you need to perform a merge operation to import other people's modification history,otherwise the push will be rejected.</p>
 <h2 id="resolve-conflict">Resolve conflict</h2>
@@ -618,7 +622,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 18, 2024</div>
+          <div>December 19, 2024</div>
         </div>
       
       
