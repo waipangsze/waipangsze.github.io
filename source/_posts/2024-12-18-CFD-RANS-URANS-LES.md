@@ -116,6 +116,12 @@ $$
 \end{equation*}
 $$
 
+## Question: URANS
+
+- URANS we basically insert the time derivative and ensemble-average the flow for a certain time step (see the picture, which is taken from the book of Ferzinger, 2020; left side is supposed to be RANS and right side is supposed to be URANS).
+- URANS is a Reynolds-Averaged equation. When you do this reynolds-averaging you assume that you average long enough so that you resolve the mean. That is, you assume you CAN actually find the average. If the flow time-scales and turbulent time-scales are similar and you don't average long enough the turbulent contribution will not be zero and you therefore get a mean-flow that is contaminated by turbulence statistics (which is not the true mean flow). This to me in a user-error and not a problem with URANS. If you don't sample long enough to get the correct statistics then you simply get the wrong statistics.[link](https://www.cfd-online.com/Forums/main/6519-rans-urans.html)
+- I think the definition of URANS is contentious for CFD theorists and therefore so is its applicability. In general, URANS isn't really defined very well. I've seen some try to define it in a similar way to LES in terms of how the energy spectrum is captured/modelled. I think this discussion really becomes important (useful) when developing hybrid resolving/modelling method (DES). Moreover, most if not all the commercial codes do not explain the foundation of how their URANS approuch is implimented. I'm sure it's usually just ensuring there's a time derivative in the transport equations. But agree with other posts here, for all intents and purposes, transient RANS ~ URANS. [link](https://www.reddit.com/r/CFD/comments/k40bit/difference_between_unsteady_rans_urans_and/)
+
 ## LES
 
 In the continuous **LES approach the scale separation is obtained via low-pass filtering**. The spatial filtering operation (no time-filtering is considered here) can be expressed as the convolution product between the unfiltered point-wise velocity field and some suitable filter function $G$, that is
@@ -183,3 +189,4 @@ The Eq.(6) must be well posed by the set of initial and boundary conditions. Thi
    2. [3turbulence_Scales_law_of_the_wall_wall_function (**recommend**)](http://www.dicat.unige.it/guerrero/turbulence2020/slides/3turbulence_Scales_law_of_the_wall_wall_function.pdf)
    3. [5governing_equations (**recommend**)](http://www.dicat.unige.it/guerrero/turbulence2020/slides/5governing_equations.pdf)
 2. [turbulence_2021_OF8 (**recommend**)](https://www.wolfdynamics.com/training/turbulence/OF2021/turbulence_2021_OF8.pdf)
+3. [URANS vs. LES](https://www.researchgate.net/profile/Filippo-Maria-Denaro/post/URANS-what-is-the-meaning-for-statistically-steady-flows-and-what-compared-to-LES/attachment/5b407d1e4cde265cb64d663d/AS%3A645677793165312%401530952990388/download/URANS+vs.+LES.pdf)

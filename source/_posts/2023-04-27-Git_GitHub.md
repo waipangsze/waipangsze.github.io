@@ -317,6 +317,30 @@ git rebase -i HEAD~3
 
 - 請非常小心使用，因為 rebase 會改變歷史紀錄
 
+# Updates were rejected
+
+```console
+To github.com:waipangsze/waipangsze.github.io.git
+ ! [rejected]            hexo -> hexo (non-fast-forward)
+error: failed to push some refs to 'git@github.com:waipangsze/waipangsze.github.io.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+這是因為遠端 repository 和我本地的 repository 衝突導致的; 但是卻沒有pull到本地。這樣就產生了版本衝突的問題。
+
+```sh
+1. 使用强制push的方法
+git push -u origin master -f
+这样会使远程修改丢失&#xff0c;一般是不可取的&#xff0c;尤其是多人协作开发的时候。
+
+2. push前先将远程repository修改pull下来
+git pull origin master
+git push -u origin master
+```
+
 # Conflicts
 Between your last push and the next push, if someone else pushes to update the remote database but you do not update your local database, your push will be rejected. At this time, you need to perform a merge operation to import other people's modification history,otherwise the push will be rejected.
 
