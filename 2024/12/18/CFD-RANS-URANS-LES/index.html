@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/GkV6pMK.png">
 <meta property="article:published_time" content="2024-12-18T08:06:00.000Z">
-<meta property="article:modified_time" content="2024-12-19T01:37:54.479Z">
+<meta property="article:modified_time" content="2024-12-20T09:54:38.453Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -319,7 +319,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          488 words
+          784 words
         
       </span>
     
@@ -330,7 +330,7 @@
         
         
         
-          5 mins
+          7 mins
         
       </span>
     
@@ -425,7 +425,7 @@
 </ul>
 <p><img src="https://i.imgur.com/yMpYzXN.png" srcset="/img/loading.gif" lazyload width="600" /></p>
 <p><img src="https://i.imgur.com/SrU2JMy.png" srcset="/img/loading.gif" lazyload width="600" /></p>
-<h1 id="reynolds-averaging">Reynolds Averaging</h1>
+<h1 id="reynolds-averaging-rans">Reynolds Averaging (RANS)</h1>
 <div class="note note-primary">
             <p><strong>Averaging the quantities (time average, spatial average or ensemble average)</strong></p>
           </div>
@@ -470,18 +470,48 @@
 \]</span></p>
 <h2 id="averaging-rules">Averaging rules</h2>
 <p><img src="https://i.imgur.com/l3vVmDc.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h2 id="question-urans">Question: URANS</h2>
+<ul>
+<li>URANS we basically insert the time derivative and ensemble-average the flow for a certain time step (see the picture, which is taken from the book of Ferzinger, 2020; left side is supposed to be RANS and right side is supposed to be URANS).</li>
+<li>URANS is a Reynolds-Averaged equation. When you do this reynolds-averaging you assume that you average long enough so that you resolve the mean. That is, you assume you CAN actually find the average. If the flow time-scales and turbulent time-scales are similar and you don't average long enough the turbulent contribution will not be zero and you therefore get a mean-flow that is contaminated by turbulence statistics (which is not the true mean flow). This to me in a user-error and not a problem with URANS. If you don't sample long enough to get the correct statistics then you simply get the wrong statistics.<a target="_blank" rel="noopener" href="https://www.cfd-online.com/Forums/main/6519-rans-urans.html">link</a></li>
+<li>I think the definition of URANS is contentious for CFD theorists and therefore so is its applicability. In general, URANS isn't really defined very well. I've seen some try to define it in a similar way to LES in terms of how the energy spectrum is captured/modelled. I think this discussion really becomes important (useful) when developing hybrid resolving/modelling method (DES). Moreover, most if not all the commercial codes do not explain the foundation of how their URANS approuch is implimented. I'm sure it's usually just ensuring there's a time derivative in the transport equations. But agree with other posts here, for all intents and purposes, transient RANS ~ URANS. <a target="_blank" rel="noopener" href="https://www.reddit.com/r/CFD/comments/k40bit/difference_between_unsteady_rans_urans_and/">link</a></li>
+<li>对于 <span class="math inline">\(\int_t^{t+\Delta t}\)</span> 的 <span class="math inline">\(\Delta t\)</span>，从理论上 URANS 这个<span class="math inline">\(\Delta t\)</span>是任意的，如果不考虑附加的湍流封闭模型如ke之类，<span class="math inline">\(\Delta t\)</span>足够的小，就变成了LES (<strong>LES can be applied spatial/temporal/both filtering</strong>)，<span class="math inline">\(\Delta t\)</span>足够的大，就变成了RANS。然而<span class="math inline">\(\Delta t\)</span> 并不需要显性的给定。所以对URANS取决定性的还是 <span class="math inline">\(\mu_t\)</span>. <a target="_blank" rel="noopener" href="https://cfd-china.com/topic/6517/rans-urans-des-les-vles/13">link</a>
+<ul>
+<li>类似的，URANS与LES从传输方程上区别也非常少，区别仅仅在与 <span class="math inline">\(\nu\)</span> 的模化，如果是LES的 <span class="math inline">\(\nu\)</span> ，那就是LES，如果是URANS的 <span class="math inline">\(\nu\)</span> ，那就是URANS。湍流理论会从底层特别深的地方，推导出来 <span class="math inline">\(\nu\)</span> 的不同，但是代码就是代码，不知道底层啥样的，到了代码这一层，只不过就是 <span class="math inline">\(\nu\)</span> 的大小不 同。</li>
+</ul></li>
+<li><strong>In below figure (right), let's define <span class="math inline">\(T_1 &lt;&lt; T &lt;&lt; T_2\)</span> for URANS.</strong></li>
+<li><strong>Question: What turbulence model does URANS use?</strong> 1) Same as RANS?</li>
+</ul>
+<p><img src="https://i.imgur.com/yMpYzXN.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h2 id="question-what-is-phase-averaging">Question: What is phase averaging?</h2>
+<h1 id="large-eddy-simulation-les">Large eddy simulation (LES)</h1>
+<p>Large eddy simulation (LES) is a mathematical model for turbulence used in computational fluid dynamics. It was initially proposed in <strong>1963 by Joseph Smagorinsky</strong> to simulate atmospheric air currents, and <strong>first explored by Deardorff (1970)</strong>.</p>
+<p>An LES filter can be applied to a spatial and temporal field $ (,t) $ and <strong>perform a spatial filtering operation</strong>, <strong>a temporal filtering operation</strong>, or <strong>both</strong>. The filtered field, denoted with a bar, is defined as</p>
+<p><span class="math display">\[
+\overline{\phi(\boldsymbol{x},t)} = \displaystyle{
+\int_{-\infty}^{\infty}} \int_{-\infty}^{\infty} \phi(\boldsymbol{r},\tau) G(\boldsymbol{x}-\boldsymbol{r},t - \tau) d\tau d \boldsymbol{r}
+\]</span></p>
+<p><span class="math display">\[
+\overline{\phi} = G \star \phi
+\]</span></p>
+<p><span class="math display">\[
+\phi = \bar{\phi} + \phi^{\prime}
+\]</span></p>
+<h2 id="smagorinskylilly-model">Smagorinsky–Lilly model</h2>
+<p>The first SGS model developed was the Smagorinsky–Lilly SGS model, which was developed by <strong>Joseph Smagorinsky</strong> and used in the <strong>first LES simulation by Deardorff</strong>. It models the eddy viscosity as:</p>
+<p><span class="math display">\[
+\nu_\mathrm{t} 
+= C \Delta^2\sqrt{2\bar{S}_{ij}\bar{S}_{ij}} 
+= C \Delta^2 \left| \bar{S} \right|
+\]</span></p>
+<p>where <span class="math inline">\(\Delta\)</span> is the <strong>grid size</strong> and <span class="math inline">\(C\)</span> is a constant.</p>
+<p>This method assumes that the energy production and dissipation of the small scales are in equilibrium.</p>
 <h1 id="ex-1d-burgers-equation">Ex: 1D Burgers equation</h1>
 <p>Consider the 1D Burgers equation in terms of the velocity field <span class="math inline">\(u(x, t)\)</span> <span class="math display">\[
 \begin{equation*}
 \frac{\partial u}{\partial t}+\frac{\partial u^{2} / 2}{\partial x}=\frac{\partial}{\partial x}\left(v \frac{\partial u}{\partial x}\right) \tag{1}
 \end{equation*}
 \]</span></p>
-<h2 id="question-urans">Question: URANS</h2>
-<ul>
-<li>URANS we basically insert the time derivative and ensemble-average the flow for a certain time step (see the picture, which is taken from the book of Ferzinger, 2020; left side is supposed to be RANS and right side is supposed to be URANS).</li>
-<li>URANS is a Reynolds-Averaged equation. When you do this reynolds-averaging you assume that you average long enough so that you resolve the mean. That is, you assume you CAN actually find the average. If the flow time-scales and turbulent time-scales are similar and you don't average long enough the turbulent contribution will not be zero and you therefore get a mean-flow that is contaminated by turbulence statistics (which is not the true mean flow). This to me in a user-error and not a problem with URANS. If you don't sample long enough to get the correct statistics then you simply get the wrong statistics.<a target="_blank" rel="noopener" href="https://www.cfd-online.com/Forums/main/6519-rans-urans.html">link</a></li>
-<li>I think the definition of URANS is contentious for CFD theorists and therefore so is its applicability. In general, URANS isn't really defined very well. I've seen some try to define it in a similar way to LES in terms of how the energy spectrum is captured/modelled. I think this discussion really becomes important (useful) when developing hybrid resolving/modelling method (DES). Moreover, most if not all the commercial codes do not explain the foundation of how their URANS approuch is implimented. I'm sure it's usually just ensuring there's a time derivative in the transport equations. But agree with other posts here, for all intents and purposes, transient RANS ~ URANS. <a target="_blank" rel="noopener" href="https://www.reddit.com/r/CFD/comments/k40bit/difference_between_unsteady_rans_urans_and/">link</a></li>
-</ul>
 <h2 id="les">LES</h2>
 <p>In the continuous <strong>LES approach the scale separation is obtained via low-pass filtering</strong>. The spatial filtering operation (no time-filtering is considered here) can be expressed as the convolution product between the unfiltered point-wise velocity field and some suitable filter function <span class="math inline">\(G\)</span>, that is <span class="math display">\[
 \begin{equation*}
@@ -598,7 +628,7 @@ g_{\text {URANS }}\left(u_{j}\right)
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 19, 2024</div>
+          <div>December 20, 2024</div>
         </div>
       
       
