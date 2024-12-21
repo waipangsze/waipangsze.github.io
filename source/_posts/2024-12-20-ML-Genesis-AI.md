@@ -28,19 +28,43 @@ Genesis is a physics platform designed for general purpose Robotics/Embodied AI/
 
 # micromamba
 
+## Try on CPU only,
+
 ```console
 micromamba env create -n genesis
 micromamba activate genesis
 micromamba install pytorch torchvision torchaudio cpuonly -c pytorch
 micromamba install anaconda::pip
+micromamba install conda-forge::libgl
 pip3 install git+https://github.com/cnr-isti-vclab/PyMeshLab
+pip install einops timm pillow
 pip install genesis-world 
 ```
 
-and,
+and testing,
+
+```console
+>>> import genesis as gs
+Failed to import pyrender. Rendering will not work.
+>>> gs.init(backend=gs.cpu)
+[Genesis] [14:56:47] [INFO] ╭─────────────────────────────────────────────────────────────────────────────────────╮
+[Genesis] [14:56:47] [INFO] │┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉ Genesis ┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉┈┉│
+[Genesis] [14:56:47] [INFO] ╰─────────────────────────────────────────────────────────────────────────────────────╯
+[Genesis] [14:56:47] [INFO] Running on [Intel Core Processor (Haswell, no TSX, IBRS)] with backend gs.cpu. Device memory: 62.39 GB.
+[Genesis] [14:56:48] [INFO] 🚀 Genesis initialized. 🔖 version: 0.2.0, 🌱 seed: None, 📏 precision: '32', 🐛 debug: False, 🎨 theme: 'dark'.
+>>> gs.generate("A drop of water falls on the window")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: module 'genesis' has no attribute 'generate'
+>>> 
+```
 
 ```python
-import genesis as gs
-gs.init(backend=gs.cpu)
-gs.generate("A drop of water falls on the window")
+scene = gs.Scene(show_viewer=True)
+NameError: name 'trimesh' is not defined
 ```
+
+export CONDA_INCLUDE_PATH=/EM/wpsze/micromamba/envs/genesis/include/
+cd ./ext/LuisaRender
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D PYTHON_VERSIONS=3.9 -D LUISA_COMPUTE_DOWNLOAD_NVCOMP=ON -D LUISA_COMPUTE_ENABLE_GUI=OFF -D ZLIB_INCLUDE_DIR=$CONDA_INCLUDE_PATH
+cmake --build build -j $(nproc)
