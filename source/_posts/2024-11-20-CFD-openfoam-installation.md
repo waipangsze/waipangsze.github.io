@@ -410,6 +410,11 @@ alias of11="source ~/OpenFOAM/OpenFOAM-11/etc/bashrc"
 alias of8="source ~/OpenFOAM/OpenFOAM-8/etc/bashrc"
 ```
 
+# Parallel execution
+
+- [decomposePar(1)](https://www.openfoam.com/documentation/guides/latest/man/decomposePar.html)
+- [DecomposePar](https://openfoamwiki.net/index.php/DecomposePar)
+
 # Scalability
 
 [200万网格并行算力测试（OpenFOAM版本）](https://www.cfd-china.com/topic/3988/200%E4%B8%87%E7%BD%91%E6%A0%BC%E5%B9%B6%E8%A1%8C%E7%AE%97%E5%8A%9B%E6%B5%8B%E8%AF%95-openfoam%E7%89%88%E6%9C%AC?_=1603587871660&lang=en-US)
