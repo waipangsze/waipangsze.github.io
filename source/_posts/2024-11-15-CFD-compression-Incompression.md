@@ -59,6 +59,26 @@ $$
 
 According to the previous equation, the internal energy per unit mass of a co-moving fluid element evolves in time as a consequence of work done on the element by pressure as its volume changes, viscous heat generation due to flow shear, and heat conduction.
 
+# Transport Equation
+
+- [What is Transport Equation?](https://www.simscale.com/docs/simwiki/numerics-background/what-is-the-transport-equation/)
+- [Generic scalar transport equation](https://www.cfd-online.com/Wiki/Generic_scalar_transport_equation)
+- [Transport Phenomena in Materials Engineering](https://ocw.mit.edu/courses/3-185-transport-phenomena-in-materials-engineering-fall-2003/resources/3_21/)
+
+The Transport equation describes how a scalar quantity is transported within a fluid and applies to many scalars, including **passive scalars**, **temperature** and **even momentum by component**. The general transport equation is as follows:
+
+$$
+\underbrace{\frac{\partial \rho \phi}{\partial t}}_{\substack{\text{unsteady} \\ \text{term}}} = \underbrace{\nabla \cdot (\rho \boldsymbol{u} \phi) \vphantom{\frac{\partial \phi}{\partial t}}}_{\substack{\text{Convection} \\ \text{term}}} \hspace{2mm} – \underbrace{\nabla \cdot (\Gamma \nabla \phi) \vphantom{\frac{\partial \phi}{\partial t}}}_{\substack{\text{Diffusion} \\ \text{term}}} + \underbrace{S \vphantom{\frac{\partial \phi}{\partial t}}}_{\substack{\text{Source} \\ \text{term}}} \tag{6}
+$$
+
+Where:
+
+- $\phi$ can be any scalar
+- $\boldsymbol{u}$ is the velocity vector (u, v, w)
+- $S$ is the source of a scalar
+
+From the mathematical point of view, the transport equation is also called the **convection-diffusion equation**. The convection-diffusion equation is the basis for the most common transportation models.
+
 # Incompressible flow
 
 In most situations of general interest, the flow of a conventional liquid, such as water, is incompressible to a high degree of accuracy. A fluid is said to be incompressible when the mass density of a co-moving volume element does not change appreciably as the element moves through regions of varying pressure. In other words, **for an incompressible fluid, the rate of change of $ \rho$ following the motion is zero**: that is,
@@ -78,7 +98,7 @@ We conclude that, as a **consequence of mass conservation**,
 An **incompressible fluid must have a divergence-free**, or solenoidal, velocity field. 
 {% endnote %}
 
-This immediately implies that **the volume of a co-moving fluid element is a constant of the motion**. In most practical situations, the initial density distribution in an incompressible fluid is uniform in space. Hence, it follows from Equation (1.76) that the density distribution remains uniform in space and constant in time. In other words, we can generally treat the density, $ \rho$ , as a uniform constant in incompressible fluid flow problems.
+This immediately implies that **the volume of a co-moving fluid element is a constant of the motion**. In most practical situations, the initial density distribution in an incompressible fluid is uniform in space. Hence, it follows from Equation (1.76) that the density distribution remains uniform in space and constant in time. In other words, we can generally treat the density, $\rho$ , as a uniform constant in incompressible fluid flow problems.
 
 ![](https://i.imgur.com/XwL79J8.png){width=600}
 ![](https://i.imgur.com/zaf58vA.png){width=600}
@@ -89,7 +109,7 @@ This immediately implies that **the volume of a co-moving fluid element is a con
 
 # Compressible flow
 
-A compressible flow is a flow in which the fluid density $\rho$ varies significantly within the flowfield. Therefore, $\rho(x, y, z)$ must now be treated as a field variable rather than simply a constant. Typically, significant density variations start to appear when the flow Mach number exceeds 0.3 or so. The effects become especially large when the Mach number approaches and exceeds unity.
+A compressible flow is a flow in which the fluid density $\rho$ varies significantly within the flowfield. Therefore, $\rho(x, y, z)$ must now be treated as a field variable rather than simply a constant. Typically, significant density variations start to appear when the **flow Mach number exceeds 0.3**. The effects become especially large when the Mach number approaches and exceeds unity.
 
 In incompressible flow the density $\rho$ does not change.
 
@@ -147,11 +167,12 @@ The appearance of the temperature also means that thermodynamics will need to be
 
 1. [Fluids – Lecture 11 Notes](https://web.mit.edu/16.unified/www/SPRING/fluids/Spring2008/LectureNotes/f11.pdf)
 2. [13.024-Numerical Methods in Incompressible Fluid Mechanics](https://ocw.mit.edu/courses/2-29-numerical-marine-hydrodynamics-13-024-spring-2003/01e395bcab50dc4cd8f82ebaa045aca3_lecture_notes.pdf)
-3. [Convective Time Derivative](https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node11.html)
-4. [Energy Conservation](https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node14.html)
-5. [Equations of Incompressible Fluid Flow](https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node15.html)
-6. [Compressible Flow vs Incompressible Flow](https://www.simscale.com/docs/simwiki/cfd-computational-fluid-dynamics/compressible-flow-vs-incompressible-flow/)
-7. [针对昨天压力悖论的解释](https://mp.weixin.qq.com/s/_OwJGqOovMjfy8ax42ANOA)
+3. [Constant density vs Incompressible](https://www.physicsforums.com/threads/constant-density-vs-incompressible.902510/)
+1. [Convective Time Derivative](https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node11.html)
+2. [Energy Conservation](https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node14.html)
+3. [Equations of Incompressible Fluid Flow](https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node15.html)
+4. [Compressible Flow vs Incompressible Flow](https://www.simscale.com/docs/simwiki/cfd-computational-fluid-dynamics/compressible-flow-vs-incompressible-flow/)
+5. [针对昨天压力悖论的解释](https://mp.weixin.qq.com/s/_OwJGqOovMjfy8ax42ANOA)
    1. 为什么我们会陷入这个悖论？我想很多做不可压缩流体模拟的朋友，平时常用的就四组方程：一个连续性方程，三个动量方程。连续性方程里面有一个密度和三个速度，带来四个未知量；三个动量方程带来一个新的未知量——压力。四个方程，五个未知量，怎么求解？所以我们通常会给定密度。这样方程组就封闭了。但是昨天我跟你说，要考虑状态方程，这就多了一个方程，但是你还是认为没有多出任何未知量（温度、密度都给定）。这样方程组就超定了，于是产生矛盾。实际上，加入状态方程后，密度就不能再认为恒定了。所以这可能是一个思维定势的坑。
-8. [openFOAM案例：可压缩流体模拟](https://mp.weixin.qq.com/s/Z0K06ziGHhbbhVNLpTv2cg)
+6. [openFOAM案例：可压缩流体模拟](https://mp.weixin.qq.com/s/Z0K06ziGHhbbhVNLpTv2cg)
 
