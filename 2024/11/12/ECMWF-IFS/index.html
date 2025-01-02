@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.ecmwf.int/sites/default/files/flags-council-chamber-650px.jpg">
 <meta property="article:published_time" content="2024-11-12T02:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-18T09:04:14.413Z">
+<meta property="article:modified_time" content="2025-01-02T02:35:03.224Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="WPS">
@@ -323,7 +323,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k words
+          1.4k words
         
       </span>
     
@@ -334,7 +334,7 @@
         
         
         
-          11 mins
+          12 mins
         
       </span>
     
@@ -471,13 +471,17 @@
 <li><a target="_blank" rel="noopener" href="https://rda.ucar.edu/datasets/d113001/#" class="uri">https://rda.ucar.edu/datasets/d113001/#</a></li>
 <li>ECMWF Operational 6-hourly atmospheric surface forecast</li>
 </ul>
+<h1 id="download-script">Download script</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-comment"># https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p25/oper/</span><br><span class="hljs-comment"># https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p25/oper/20241117000000-114h-oper-fc.grib2</span><br><span class="hljs-comment">#################################################################</span><br><br>yyyy=<span class="hljs-string">&#x27;2024&#x27;</span><br>mm=<span class="hljs-string">&#x27;11&#x27;</span><br><span class="hljs-built_in">dd</span>=<span class="hljs-string">&#x27;17&#x27;</span><br>hh=<span class="hljs-string">&#x27;00&#x27;</span><br>yyyymm=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><br>yyyymmddhh=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span><span class="hljs-variable">$&#123;hh&#125;</span><br><br>tmp_dir=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>&quot;</span><br><span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Current <span class="hljs-variable">$&#123;tmp_dir&#125;</span>&quot;</span><br><br>limit_cpu_core=15<br>count_cpu_core=1<br><br><span class="hljs-keyword">for</span> ifsfile <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 0 3 6); <span class="hljs-keyword">do</span> <span class="hljs-comment"># Forecast time = 12, 24, 36, 48, 60, 72, 84, 96, 108, 130, 142, 154</span><br><br>    tmp_ifs_fname=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;yyyymmddhh&#125;</span>0000-<span class="hljs-variable">$&#123;ifsfile&#125;</span>h-oper-fc.grib2&quot;</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Now, <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span> ... &quot;</span><br>    <br>    <span class="hljs-keyword">if</span> [[ ! -f <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>&quot;</span> ]]; <span class="hljs-keyword">then</span>	<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Downloading ... <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>&quot;</span><br>		wget --no-check-certificate https://data.ecmwf.int/forecasts/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>/<span class="hljs-variable">$&#123;hh&#125;</span>z/ifs/0p25/oper/<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span><br>	<span class="hljs-keyword">else</span><br>	    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span> exists ... &quot;</span><br>    <span class="hljs-keyword">fi</span><br>    <br>	res=$(( <span class="hljs-variable">$&#123;count_cpu_core&#125;</span> % <span class="hljs-variable">$&#123;limit_cpu_core&#125;</span> ))<br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;res&#125;</span> == 0 ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;please wait <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>, <span class="hljs-variable">$&#123;count_cpu_core&#125;</span>, <span class="hljs-variable">$&#123;res&#125;</span>.&quot;</span><br>		<span class="hljs-built_in">wait</span><br>	<span class="hljs-keyword">fi</span><br>    <br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<p>read_grib2.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/bin/python</span><br><span class="hljs-keyword">import</span> pygrib<br><br>grib_file = <span class="hljs-string">&quot;/home/wpsze/IFS/202411/20241117/20241117000000-0h-oper-fc.grib2&quot;</span><br>grbs = pygrib.<span class="hljs-built_in">open</span>(grib_file)<br><span class="hljs-keyword">for</span> grb <span class="hljs-keyword">in</span> grbs:<br>    <span class="hljs-built_in">print</span>(grb) <span class="hljs-comment"># long list</span><br></code></pre></td></tr></table></figure>
 <h1 id="run-as-icbc">Run as ICBC</h1>
 <p>I recognised that the Vtable.ECMWF you have mentioned was not suitable for the IFS forecast data, due to the data form of the IFS was grib2. But the Vtable.ECMWF was for grib.</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WPS/blob/master/ungrib/Variable_Tables/Vtable.ECMWF" class="uri">https://github.com/wrf-model/WPS/blob/master/ungrib/Variable_Tables/Vtable.ECMWF</a></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/ecmwf-open-data-0p25-grib2-vtable.16523/">ECMWF open data 0p25 grib2 Vtable?</a>
 <ul>
-<li>Do we have Vtable suitable for ungribbing this new dataset? <a target="_blank" rel="noopener" href="https://data.ecmwf.int/forecasts/%3CYYYYMMDD" class="uri">https://data.ecmwf.int/forecasts/&lt;YYYYMMDD</a>/00z/ifs/0p25/oper/&gt;</li>
+<li>Do we have Vtable suitable for ungribbing this new dataset? <strong>https://data.ecmwf.int/forecasts/YYYYMMDD/00z/ifs/0p25/oper/</strong></li>
 <li>I'm not sure if the existing Vtables (perhaps Vtable.ECMWF?) are suitable. If you'd like to test them out and let us know, that would be great! If they don't work, you can try contacting the input data support group to see if they are able to help. You can also use the utilities, such as g2print.exe and g1print.exe to look at the codes given in the new data type, which can help you to modify an existing Vtable. If you are able to find one that works, feel free to share it so that it may help other users who are trying to use these data.</li>
 <li>Provided Vtable.ECMWF unfortunatelly doesn't work as it expects grib1 format. I tried to convert grib2 to grib1 with cnvgrib but it fails too. I hoped that someone already has new Vtable, but ok, it looks I will need to create new one using tools you mentioned. Thank you anyway. If I succeed I will post here working solution later.</li>
 <li>if g2print cannot process this dataset, it implies that the ECPDS data cannot be recognized by WPS. You will have to explore this data, create Vtable for it, and I guess it may be necessary to modify codes like ungrib.F and rd_grib2.F, etc.</li>
@@ -581,7 +585,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 18, 2024</div>
+          <div>January 2, 2025</div>
         </div>
       
       

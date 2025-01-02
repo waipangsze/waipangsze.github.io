@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-11-20T08:21:00.000Z">
-<meta property="article:modified_time" content="2024-12-03T07:14:27.201Z">
+<meta property="article:modified_time" content="2025-01-02T01:24:45.299Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -541,6 +541,11 @@
 <h1 id="openfoam多版本共存">OpenFOAM多版本共存</h1>
 <p>不同大廠的OpenFOAM版本各有特性，因此使用者可能有多版本OpenFOAM共存的需求。多版本OpenFOAM共存非常簡單。舉例說明：如果使用者打算在Ubuntu系統上安裝OpenFOAM-11以及OpenFOAM-8，</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">alias</span> of11=<span class="hljs-string">&quot;source ~/OpenFOAM/OpenFOAM-11/etc/bashrc&quot;</span><br><span class="hljs-built_in">alias</span> of8=<span class="hljs-string">&quot;source ~/OpenFOAM/OpenFOAM-8/etc/bashrc&quot;</span><br></code></pre></td></tr></table></figure>
+<h1 id="parallel-execution">Parallel execution</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.openfoam.com/documentation/guides/latest/man/decomposePar.html">decomposePar(1)</a></li>
+<li><a target="_blank" rel="noopener" href="https://openfoamwiki.net/index.php/DecomposePar">DecomposePar</a></li>
+</ul>
 <h1 id="scalability">Scalability</h1>
 <p><a target="_blank" rel="noopener" href="https://www.cfd-china.com/topic/3988/200%E4%B8%87%E7%BD%91%E6%A0%BC%E5%B9%B6%E8%A1%8C%E7%AE%97%E5%8A%9B%E6%B5%8B%E8%AF%95-openfoam%E7%89%88%E6%9C%AC?_=1603587871660&amp;lang=en-US">200万网格并行算力测试（OpenFOAM版本）</a></p>
 <ul>
@@ -551,7 +556,7 @@
 <li>cpu cores : 68</li>
 </ul></li>
 </ul>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>68 266.42<br>48 403.87<br>24 562.83<br>16 825.56<br>8 1090.35<br>4 2084.06<br>2 3610.03<br>1 6573.22<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>204 248.78<br>136 206.09<br>68 212.28<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>204 251.24<br>136 207.51<br>68 207.64<br></code></pre></td></tr></table></figure>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>68 215.05<br>64 240.74<br>48 290.68<br>32 298.58<br>24 365.3<br>16 544.95<br>8 721.1<br>4 1366.75<br>2 2382.85<br>1 4529.38<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>204 248.78<br>136 206.09<br>68 212.28<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">cores   Wall time (s):</span><br>------------------------<br>204 251.24<br>136 207.51<br>68 207.64<br></code></pre></td></tr></table></figure>
 <ul>
 <li>model name : Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz
 <ul>
@@ -663,7 +668,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 3, 2024</div>
+          <div>January 2, 2025</div>
         </div>
       
       

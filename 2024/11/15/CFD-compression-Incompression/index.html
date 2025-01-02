@@ -22,13 +22,13 @@
     <meta name="description" content="Governing Equations The equations that govern the fluid flow are based on the conservation laws of a fluid’s physical properties. The basic equations are the three laws of conservation1:  Conservation">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CFD | Incompressible and Compressible">
-<meta property="og:url" content="https://waipangsze.github.io/2024/11/15/compression-Incompression/index.html">
+<meta property="og:url" content="https://waipangsze.github.io/2024/11/15/CFD-compression-Incompression/index.html">
 <meta property="og:site_name" content="wpsze">
 <meta property="og:description" content="Governing Equations The equations that govern the fluid flow are based on the conservation laws of a fluid’s physical properties. The basic equations are the three laws of conservation1:  Conservation">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/rDx2DHd.png">
 <meta property="article:published_time" content="2024-11-15T02:32:00.000Z">
-<meta property="article:modified_time" content="2024-11-15T09:17:06.363Z">
+<meta property="article:modified_time" content="2025-01-02T01:24:45.299Z">
 <meta property="article:author" content="wpsze">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/rDx2DHd.png">
@@ -317,7 +317,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          1.8k words
         
       </span>
     
@@ -416,6 +416,23 @@ dE_t &amp; = dQ + dW \tag{4}\\
 \end{align*}
 \]</span></p>
 <p>According to the previous equation, the internal energy per unit mass of a co-moving fluid element evolves in time as a consequence of work done on the element by pressure as its volume changes, viscous heat generation due to flow shear, and heat conduction.</p>
+<h1 id="transport-equation">Transport Equation</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.simscale.com/docs/simwiki/numerics-background/what-is-the-transport-equation/">What is Transport Equation?</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cfd-online.com/Wiki/Generic_scalar_transport_equation">Generic scalar transport equation</a></li>
+<li><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/3-185-transport-phenomena-in-materials-engineering-fall-2003/resources/3_21/">Transport Phenomena in Materials Engineering</a></li>
+</ul>
+<p>The Transport equation describes how a scalar quantity is transported within a fluid and applies to many scalars, including <strong>passive scalars</strong>, <strong>temperature</strong> and <strong>even momentum by component</strong>. The general transport equation is as follows:</p>
+<p><span class="math display">\[
+\underbrace{\frac{\partial \rho \phi}{\partial t}}_{\substack{\text{unsteady} \\ \text{term}}} = \underbrace{\nabla \cdot (\rho \boldsymbol{u} \phi) \vphantom{\frac{\partial \phi}{\partial t}}}_{\substack{\text{Convection} \\ \text{term}}} \hspace{2mm} – \underbrace{\nabla \cdot (\Gamma \nabla \phi) \vphantom{\frac{\partial \phi}{\partial t}}}_{\substack{\text{Diffusion} \\ \text{term}}} + \underbrace{S \vphantom{\frac{\partial \phi}{\partial t}}}_{\substack{\text{Source} \\ \text{term}}} \tag{6}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\phi\)</span> can be any scalar</li>
+<li><span class="math inline">\(\boldsymbol{u}\)</span> is the velocity vector (u, v, w)</li>
+<li><span class="math inline">\(S\)</span> is the source of a scalar</li>
+</ul>
+<p>From the mathematical point of view, the transport equation is also called the <strong>convection-diffusion equation</strong>. The convection-diffusion equation is the basis for the most common transportation models.</p>
 <h1 id="incompressible-flow">Incompressible flow</h1>
 <p>In most situations of general interest, the flow of a conventional liquid, such as water, is incompressible to a high degree of accuracy. A fluid is said to be incompressible when the mass density of a co-moving volume element does not change appreciably as the element moves through regions of varying pressure. In other words, <strong>for an incompressible fluid, the rate of change of $ $ following the motion is zero</strong>: that is,</p>
 <p><span class="math display">\[
@@ -428,10 +445,10 @@ dE_t &amp; = dQ + dW \tag{4}\\
 <div class="note note-primary">
             <p>An <strong>incompressible fluid must have a divergence-free</strong>, or solenoidal, velocity field.</p>
           </div>
-<p>This immediately implies that <strong>the volume of a co-moving fluid element is a constant of the motion</strong>. In most practical situations, the initial density distribution in an incompressible fluid is uniform in space. Hence, it follows from Equation (1.76) that the density distribution remains uniform in space and constant in time. In other words, we can generally treat the density, $ $ , as a uniform constant in incompressible fluid flow problems.</p>
+<p>This immediately implies that <strong>the volume of a co-moving fluid element is a constant of the motion</strong>. In most practical situations, the initial density distribution in an incompressible fluid is uniform in space. Hence, it follows from Equation (1.76) that the density distribution remains uniform in space and constant in time. In other words, we can generally treat the density, <span class="math inline">\(\rho\)</span> , as a uniform constant in incompressible fluid flow problems.</p>
 <p><img src="https://i.imgur.com/XwL79J8.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/zaf58vA.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/GkV6pMK.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/6FStEBC.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/iznmeSr.png" srcset="/img/loading.gif" lazyload width="600" /> <img src="https://i.imgur.com/RjdjunO.png" srcset="/img/loading.gif" lazyload width="600" /></p>
 <h1 id="compressible-flow">Compressible flow</h1>
-<p>A compressible flow is a flow in which the fluid density <span class="math inline">\(\rho\)</span> varies significantly within the flowfield. Therefore, <span class="math inline">\(\rho(x, y, z)\)</span> must now be treated as a field variable rather than simply a constant. Typically, significant density variations start to appear when the flow Mach number exceeds 0.3 or so. The effects become especially large when the Mach number approaches and exceeds unity.</p>
+<p>A compressible flow is a flow in which the fluid density <span class="math inline">\(\rho\)</span> varies significantly within the flowfield. Therefore, <span class="math inline">\(\rho(x, y, z)\)</span> must now be treated as a field variable rather than simply a constant. Typically, significant density variations start to appear when the <strong>flow Mach number exceeds 0.3</strong>. The effects become especially large when the Mach number approaches and exceeds unity.</p>
 <p>In incompressible flow the density <span class="math inline">\(\rho\)</span> does not change.</p>
 <p><img src="https://i.imgur.com/rDx2DHd.png" srcset="/img/loading.gif" lazyload width="600" /></p>
 <p>A perfect gas is one whose individual molecules interact only via direct collisions, with no other intermolecular forces present. For such a perfect gas, the properties <span class="math inline">\(P, V, \rho\)</span>, and the temperature <span class="math inline">\(T\)</span> are related by the following <strong>equation of state</strong>,</p>
@@ -469,6 +486,7 @@ PV = nRT
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://web.mit.edu/16.unified/www/SPRING/fluids/Spring2008/LectureNotes/f11.pdf">Fluids – Lecture 11 Notes</a></li>
 <li><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/2-29-numerical-marine-hydrodynamics-13-024-spring-2003/01e395bcab50dc4cd8f82ebaa045aca3_lecture_notes.pdf">13.024-Numerical Methods in Incompressible Fluid Mechanics</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.physicsforums.com/threads/constant-density-vs-incompressible.902510/">Constant density vs Incompressible</a></li>
 <li><a target="_blank" rel="noopener" href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node11.html">Convective Time Derivative</a></li>
 <li><a target="_blank" rel="noopener" href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node14.html">Energy Conservation</a></li>
 <li><a target="_blank" rel="noopener" href="https://farside.ph.utexas.edu/teaching/336L/Fluidhtml/node15.html">Equations of Incompressible Fluid Flow</a></li>
@@ -518,7 +536,7 @@ PV = nRT
   <div class="license-box my-3">
     <div class="license-title">
       <div>CFD | Incompressible and Compressible</div>
-      <div>https://waipangsze.github.io/2024/11/15/compression-Incompression/</div>
+      <div>https://waipangsze.github.io/2024/11/15/CFD-compression-Incompression/</div>
     </div>
     <div class="license-meta">
       
@@ -536,7 +554,7 @@ PV = nRT
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 15, 2024</div>
+          <div>January 2, 2025</div>
         </div>
       
       
