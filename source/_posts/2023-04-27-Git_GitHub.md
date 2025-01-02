@@ -128,9 +128,13 @@ $ git pull --rebase
 
 ```
 # 建議使用restore指令
-git restore file
-# 也可以使用checkout
-git checkout -- file
+git restore <file>
+# revert all local change
+git restore .
+# Warning this will reset all of your unpushed commits to master!:
+git reset
+# To remove untracked files and untracked directories (e.g., new files, generated files):
+git clean -fd
 ```
 
 # stash 暫存修改內容
