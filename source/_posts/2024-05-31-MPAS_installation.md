@@ -459,7 +459,7 @@ micromamba activate mpas_env
 source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
 micromamba activate mpas_env
 
-export libs_DIR=/EM/wpsze/MPAS-A/modules_library/Library/
+export libs_DIR=/home/wpsze/MPAS-A/modules_library/Library/
 
 # GCC env
 export PATH=/home/wpsze/GNU_GCC/Library/gcc-v9.3.0/bin:$PATH

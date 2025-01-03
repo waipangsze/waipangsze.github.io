@@ -517,7 +517,7 @@ If copy whole **mpas_bundle_v2** (e.g. local PC) that includes **build** and **c
 Reference error:
 ```sh
 CMake Error: The current CMakeCache.txt directory /xxx/mpas_bundle_v2_temp/build/CMakeCache.txt is different than the directory /home/wpsze/mpas_bundle_v2/build where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
-CMake Error: The source "/EM/wpsze/cpas/CPAS-MPAS-JEDI/DA-obs2ioda-EM/mpas_bundle_v2_temp/code/CMakeLists.txt" does not match the source "/home/wpsze/mpas_bundle_v2/code/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.
+CMake Error: The source "/home/wpsze/MPAS/MPAS-MPAS-JEDI/DA-obs2ioda-EM/mpas_bundle_v2_temp/code/CMakeLists.txt" does not match the source "/home/wpsze/mpas_bundle_v2/code/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.
 CMake Error: The current CMakeCache.txt directory /xxx/mpas_bundle_v2_temp/build/_deps/mpas_data-subbuild/CMakeCache.txt is different than the directory /home/wpsze/mpas_bundle_v2/build/_deps/mpas_data-subbuild where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
 ```
 

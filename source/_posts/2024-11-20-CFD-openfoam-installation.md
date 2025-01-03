@@ -62,7 +62,7 @@ Software for `OpenFOAM` (and `ParaView`):
 
 ```sh
  $ micromamba env create -n cfd_env
-Empty environment created at prefix: /EM/wpsze/micromamba/envs/cfd_env
+Empty environment created at prefix: /home/wpsze/micromamba/envs/cfd_env
  $ micromamba install conda-forge::zlib
  $ micromamba install anaconda::cmake
  $ micromamba install conda-forge::flex
@@ -247,7 +247,7 @@ mpirun -np 4 echo "hello"
 
 
 ```sh
-source /EM/wpsze/openfoam/openfoam11/openfoam_env.sh
+source /home/wpsze/openfoam/openfoam11/openfoam_env.sh
 
 source /home/wpsze/openfoam/openfoam11/OpenFOAM-11/etc/bashrc
 cd /home/wpsze/openfoam/openfoam11/ThirdParty-11

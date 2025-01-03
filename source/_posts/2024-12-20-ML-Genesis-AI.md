@@ -64,7 +64,7 @@ scene = gs.Scene(show_viewer=True)
 NameError: name 'trimesh' is not defined
 ```
 
-export CONDA_INCLUDE_PATH=/EM/wpsze/micromamba/envs/genesis/include/
+export CONDA_INCLUDE_PATH=/home/wpsze/micromamba/envs/genesis/include/
 cd ./ext/LuisaRender
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D PYTHON_VERSIONS=3.9 -D LUISA_COMPUTE_DOWNLOAD_NVCOMP=ON -D LUISA_COMPUTE_ENABLE_GUI=OFF -D ZLIB_INCLUDE_DIR=$CONDA_INCLUDE_PATH
 cmake --build build -j $(nproc)

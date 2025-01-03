@@ -17,7 +17,7 @@ banner_img: https://i.imgur.com/RwpxULg.png
 While compiling WPSv3.8.1,
 
 ```
- 17 gcc -c  -D_UNDERSCORE -DBYTESWAP -DLINUX -DIO_NETCDF -DBIT32 -DNO_SIGNAL -D_MPI -I/EM/wpsze/WRF/WRFv440/Library/include/ -DUSE_JPEG2000 -DUSE_PNG -D__64BIT__ enc_jp    eg2000.c
+ 17 gcc -c  -D_UNDERSCORE -DBYTESWAP -DLINUX -DIO_NETCDF -DBIT32 -DNO_SIGNAL -D_MPI -I/home/wpsze/WRF/WRFv440/Library/include/ -DUSE_JPEG2000 -DUSE_PNG -D__64BIT__ enc_jp    eg2000.c
  18 enc_jpeg2000.c: In function ‘enc_jpeg2000_’:
  19 enc_jpeg2000.c:141:10: error: ‘jas_image_t’ {aka ‘struct <anonymous>’} has no member named ‘inmem_’
  20   141 |     image.inmem_=1;

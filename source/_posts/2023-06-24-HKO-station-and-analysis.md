@@ -161,7 +161,7 @@ df_hko_obs
 df_combine = pd.merge(df_select_mpas, df_hko_obs)
 #=========================================== HKO wind ==============================================
 obs_file = []
-for file in glob.glob(f"/em/home/wpsze/hk_data/{select_year}*/{file_name_wind}*"):
+for file in glob.glob(f"/home/home/wpsze/hk_data/{select_year}*/{file_name_wind}*"):
     obs_file.append(file)
 print(obs_file)
 df = pd.concat((pd.read_csv(f, header = 0, na_values=['nan'], keep_default_na=True) for f in obs_file))

@@ -166,9 +166,9 @@ mpirun --version
 which mpif90 & mpif90 --version
 which mpif77
 
-export LDFLAGS=-L/EM/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/lib
-export LD_LIBRARY_PATH=/EM/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/lib:$LD_LIBRARY_PATH
-export CPPFLAGS=-I/EM/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/include
+export LDFLAGS=-L/home/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/lib
+export LD_LIBRARY_PATH=/home/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/lib:$LD_LIBRARY_PATH
+export CPPFLAGS=-I/home/wpsze/WRF/WRF4-elec/wrf_install/boxmg4wrf/include
 echo ${LD_LIBRARY_PATH}
 
 export BOXMG_MPI=yes

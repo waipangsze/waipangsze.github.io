@@ -181,16 +181,16 @@ and outputs are,
 
 ```console
 
-Cleaning /EM/wpsze/openfoam/openfoam8/run/motorBike case
-Running surfaceFeatures on /EM/wpsze/openfoam/openfoam8/run/motorBike
-Running blockMesh on /EM/wpsze/openfoam/openfoam8/run/motorBike
-Running decomposePar on /EM/wpsze/openfoam/openfoam8/run/motorBike
-Running snappyHexMesh in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
-Running patchSummary in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
-Running potentialFoam in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
-Running simpleFoam in parallel on /EM/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
-Running reconstructParMesh on /EM/wpsze/openfoam/openfoam8/run/motorBike
-Running reconstructPar on /EM/wpsze/openfoam/openfoam8/run/motorBike
+Cleaning /home/wpsze/openfoam/openfoam8/run/motorBike case
+Running surfaceFeatures on /home/wpsze/openfoam/openfoam8/run/motorBike
+Running blockMesh on /home/wpsze/openfoam/openfoam8/run/motorBike
+Running decomposePar on /home/wpsze/openfoam/openfoam8/run/motorBike
+Running snappyHexMesh in parallel on /home/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
+Running patchSummary in parallel on /home/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
+Running potentialFoam in parallel on /home/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
+Running simpleFoam in parallel on /home/wpsze/openfoam/openfoam8/run/motorBike using 6 processes
+Running reconstructParMesh on /home/wpsze/openfoam/openfoam8/run/motorBike
+Running reconstructPar on /home/wpsze/openfoam/openfoam8/run/motorBike
 
 real	5m5.399s
 user	27m17.537s

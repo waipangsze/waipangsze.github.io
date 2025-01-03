@@ -113,7 +113,7 @@ master
 
 $ git checkout master
 Updating files: 100% (43/43), done.
-Previous HEAD position was c1d75b7 Merge "CPAS Benchmark System - added GFS support to scorecard"
+Previous HEAD position was c1d75b7 Merge "MPAS Benchmark System - added GFS support to scorecard"
 Switched to branch 'master'
 Your branch is up to date with 'origin/master'.
 

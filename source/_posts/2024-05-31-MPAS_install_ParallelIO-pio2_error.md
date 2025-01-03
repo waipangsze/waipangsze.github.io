@@ -58,23 +58,23 @@ where ./ is PIO directory.
 
 ```
 568 Install the project...
-569 /EM/wpsze/micromamba/envs/mpas_env/bin/cmake -P cmake_install.cmake
+569 /home/wpsze/micromamba/envs/mpas_env/bin/cmake -P cmake_install.cmake
 570 -- Install configuration: ""
-571 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/lib/libpio.settings
-572 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/lib/libpioc.a
-573 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pio.h
-574 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/uthash.h
-575 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/lib/libpiof.a
-576 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pio.mod
-577 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pio_nf.mod
-578 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pio_types.mod
-579 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/piolib_mod.mod
-580 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pionfget_mod.mod
-581 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pio_kinds.mod
-582 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pio_support.mod
-583 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/piodarray.mod
-584 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pionfatt_mod.mod
-585 -- Installing: /EM/wpsze/MPAS-A/modules_library/Library/include/pionfput_mod.mod
+571 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/lib/libpio.settings
+572 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/lib/libpioc.a
+573 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio.h
+574 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/uthash.h
+575 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/lib/libpiof.a
+576 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio.mod
+577 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio_nf.mod
+578 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio_types.mod
+579 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/piolib_mod.mod
+580 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pionfget_mod.mod
+581 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio_kinds.mod
+582 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio_support.mod
+583 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/piodarray.mod
+584 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pionfatt_mod.mod
+585 -- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pionfput_mod.mod
 ```
 
 Output files are,
