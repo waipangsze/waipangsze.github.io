@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-11-20T08:21:00.000Z">
-<meta property="article:modified_time" content="2025-01-02T01:24:45.299Z">
+<meta property="article:modified_time" content="2025-01-03T06:53:26.574Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -424,7 +424,7 @@
 <li><code>OpenMPI</code> message passing interface for parallel computation.</li>
 <li><code>ParaView</code> can be installed as a system package, in which case its dependencies do not need to be installed. However, in order to compile its reader modules within OpenFOAM, all its dependencies need to be installed including the development environments of QT, graphics (GL), data formats, etc</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ micromamba <span class="hljs-built_in">env</span> create -n cfd_env<br>Empty environment created at prefix: /EM/wpsze/micromamba/envs/cfd_env<br> $ micromamba install conda-forge::zlib<br> $ micromamba install anaconda::cmake<br> $ micromamba install conda-forge::flex<br> $ micromamba install conda-forge::bison<br> $ micromamba install conda-forge::cgal<br> $ micromamba install anaconda::metis<br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ micromamba <span class="hljs-built_in">env</span> create -n cfd_env<br>Empty environment created at prefix: /home/wpsze/micromamba/envs/cfd_env<br> $ micromamba install conda-forge::zlib<br> $ micromamba install anaconda::cmake<br> $ micromamba install conda-forge::flex<br> $ micromamba install conda-forge::bison<br> $ micromamba install conda-forge::cgal<br> $ micromamba install anaconda::metis<br></code></pre></td></tr></table></figure>
 <h2 id="載入環境">載入環境</h2>
 <p>安裝需要載入 Intel 編譯環境和 gcc 環境，且 gcc 環境不應高於 Intel 編譯器環境</p>
 <h2 id="environment-variables">Environment variables</h2>
@@ -478,7 +478,7 @@
 <p>然後執行 <code>./Allclean</code> 進行清理，再執行 <code>./Allwmake</code> 進行編譯</p>
 <p>如果發生報錯：本目錄不是 WM_THIRD_PARTY_DIR 目錄。說明 OpenFOAM 的 bashrc 檔案配置出現了問題，請確保 WM_THIRD_PARTY_DIR 所指定的目錄確定是ThirdParty目錄的上層目錄。</p>
 <p>編譯完成之後，在同一會話視窗下回到OpenFOAM的安裝目錄，然後開始編譯安裝OpenFOAM</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">source</span> /EM/wpsze/openfoam/openfoam11/openfoam_env.sh<br><br><span class="hljs-built_in">source</span> /home/wpsze/openfoam/openfoam11/OpenFOAM-11/etc/bashrc<br><span class="hljs-built_in">cd</span> /home/wpsze/openfoam/openfoam11/ThirdParty-11<br><br><span class="hljs-built_in">pwd</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$MPI_ROOT</span><br><br>./Allclean<br>./Allwmake | <span class="hljs-built_in">tee</span> Allwmake.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">source</span> /home/wpsze/openfoam/openfoam11/openfoam_env.sh<br><br><span class="hljs-built_in">source</span> /home/wpsze/openfoam/openfoam11/OpenFOAM-11/etc/bashrc<br><span class="hljs-built_in">cd</span> /home/wpsze/openfoam/openfoam11/ThirdParty-11<br><br><span class="hljs-built_in">pwd</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$PATH</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$MPI_ROOT</span><br><br>./Allclean<br>./Allwmake | <span class="hljs-built_in">tee</span> Allwmake.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure>
 <p>output:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">========================================<br>Build Metis decomposition<br>    optional component Metis was not found<br>========================================<br>Build Zoltan decomposition<br>    optional component Zoltan was not found<br><br>========================================<br>Done ThirdParty Allwmake<br>========================================<br></code></pre></td></tr></table></figure>
 <h2 id="編譯安裝-openfoam">編譯安裝 OpenFOAM</h2>
@@ -668,7 +668,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 2, 2025</div>
+          <div>January 3, 2025</div>
         </div>
       
       

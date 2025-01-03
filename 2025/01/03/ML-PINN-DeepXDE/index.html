@@ -19,27 +19,30 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Running applications in parallel              Both domain decomposition and reconstruction processes can only be done on a single core.            This section describes how to run OpenFOAM in paralle">
+    <meta name="description" content="DeepXDE DeepXDE 是一款开源且高度模块化的科学计算工具，以深度学习为核心，提供多种数据、物理机理及数理融合的模型，如PINN、DeepONet、MFNN等，同时支持多种类型微分方程，如常微分方程、偏微分方程的定义及求解，可有效解决复杂科学计算问题。 基于所提供的深度学习求解模型，DeepXDE具备以下典型的功能特点：  高度模块化：DeepXDE提供多种支持调用、组合的模块，如计算域">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CFD | OpenFOAM | In parallel">
-<meta property="og:url" content="https://waipangsze.github.io/2024/12/04/openfoam-in-parallel/index.html">
+<meta property="og:title" content="ML | PINN | DeepXDE">
+<meta property="og:url" content="https://waipangsze.github.io/2025/01/03/ML-PINN-DeepXDE/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="Running applications in parallel              Both domain decomposition and reconstruction processes can only be done on a single core.            This section describes how to run OpenFOAM in paralle">
+<meta property="og:description" content="DeepXDE DeepXDE 是一款开源且高度模块化的科学计算工具，以深度学习为核心，提供多种数据、物理机理及数理融合的模型，如PINN、DeepONet、MFNN等，同时支持多种类型微分方程，如常微分方程、偏微分方程的定义及求解，可有效解决复杂科学计算问题。 基于所提供的深度学习求解模型，DeepXDE具备以下典型的功能特点：  高度模块化：DeepXDE提供多种支持调用、组合的模块，如计算域">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
-<meta property="article:published_time" content="2024-12-04T07:42:00.000Z">
-<meta property="article:modified_time" content="2025-01-03T06:53:26.814Z">
+<meta property="og:image" content="https://i.imgur.com/PWLu96W.jpeg">
+<meta property="article:published_time" content="2025-01-03T01:30:00.000Z">
+<meta property="article:modified_time" content="2025-01-03T07:04:49.733Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="HPC">
-<meta property="article:tag" content="OpenFOAM">
+<meta property="article:tag" content="PINN">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="DeepONet">
+<meta property="article:tag" content="ML">
+<meta property="article:tag" content="DeepXDE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i.imgur.com/fFT42Yk.png">
+<meta name="twitter:image" content="https://i.imgur.com/PWLu96W.jpeg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>CFD | OpenFOAM | In parallel - wpsze</title>
+  <title>ML | PINN | DeepXDE - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -290,13 +293,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://i.imgur.com/fFT42Yk.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/PWLu96W.jpeg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CFD | OpenFOAM | In parallel"></span>
+            <span id="subtitle" data-typed-text="ML | PINN | DeepXDE"></span>
           
         </div>
 
@@ -307,8 +310,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-04 15:42" pubdate>
-          December 4, 2024 pm
+        <time datetime="2025-01-03 09:30" pubdate>
+          January 3, 2025 am
         </time>
       </span>
     
@@ -319,7 +322,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          580 words
+          656 words
         
       </span>
     
@@ -330,7 +333,7 @@
         
         
         
-          5 mins
+          6 mins
         
       </span>
     
@@ -376,146 +379,93 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CFD | OpenFOAM | In parallel</h1>
+            <h1 id="seo-header">ML | PINN | DeepXDE</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="running-applications-in-parallel">Running applications in parallel</h1>
-<div class="note note-danger">
-            <p>Both <strong>domain decomposition and reconstruction processes</strong> can only be done on a <strong>single core</strong>.</p>
-          </div>
-<p>This section describes how to run OpenFOAM in parallel on distributed processors.</p>
-<div class="note note-danger">
-            <p>The method of parallel computing used by OpenFOAM is known as <strong>domain decomposition</strong>, in which the geometry and associated fields are broken into pieces and allocated to separate processors for solution.</p>
-          </div>
-<p>The process of parallel computation involves: decomposition of mesh and fields; running the application in parallel; and, post-processing the decomposed case as described in the following sections. The parallel running uses the public domain <strong>openMPI</strong> implementation of the standard message passing interface (MPI).</p>
-<h2 id="decomposition-of-mesh-and-initial-field-data">Decomposition of mesh and initial field data</h2>
+                <h1 id="deepxde">DeepXDE</h1>
+<p>DeepXDE 是一款开源且高度模块化的科学计算工具，以深度学习为核心，提供多种数据、物理机理及数理融合的模型，如PINN、DeepONet、MFNN等，同时支持多种类型微分方程，如常微分方程、偏微分方程的定义及求解，可有效解决复杂科学计算问题。 基于所提供的深度学习求解模型，DeepXDE具备以下典型的功能特点：</p>
 <ul>
-<li>The mesh and fields are decomposed using the decomposePar utility.</li>
-<li>The geometry and fields are broken up according to a set of parameters specified in a dictionary named <code>decomposeParDict</code> that must be located in the <code>system</code> directory of the case of interest.</li>
+<li>高度模块化：DeepXDE提供多种支持调用、组合的模块，如计算域、边界条件、微分方程、神经网络、训练及预测等，方便用户组合构建物理系统；</li>
+<li>多类微分方程：支持自定义常微分方程、偏微分方程、积分微分方程等来描述具体问题；</li>
+<li>可扩展性：支持用户结合自身需求添加自定义的数值算法、模型或其他功能；</li>
+<li>可视化 ：提供一系列丰富的可视化工具，可以帮助用户直观地理解计算结果。</li>
 </ul>
-<p>An example <code>decomposeParDict</code> dictionary can be copied from the <code>interFoam/damBreak/damBreak</code> tutorial if the user requires one; the dictionary entries within it are reproduced below:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-number">17</span> numberOfSubdomains <span class="hljs-number">8</span>;<br><span class="hljs-number">18</span><br><span class="hljs-number">19</span> method          simple;<br><span class="hljs-number">20</span><br><span class="hljs-number">21</span> simpleCoeffs<br><span class="hljs-number">22</span> &#123;<br><span class="hljs-number">23</span>     <span class="hljs-built_in">n</span>           (<span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>);<br><span class="hljs-number">24</span> &#125;<br><span class="hljs-number">25</span><br><span class="hljs-number">26</span> <span class="hljs-comment">// ******************************* //</span><br></code></pre></td></tr></table></figure>
-<figure>
-<img src="https://i.imgur.com/rxTVXxT.png" srcset="/img/loading.gif" lazyload alt="&quot;simple&quot; geometric decomposition" width="600" /><figcaption>"simple" geometric decomposition</figcaption>
-</figure>
-<p>The user has a choice of four methods of decomposition, specified by the method keyword as described below.</p>
+<p>在科学计算领域，DeepXDE的强大功能与高精度求解能力，使其成为国内外知名的科学计算工具之一。截止目前，DeepXDE的下载量已超过40万次，并被全球70多所知名大学、科研机构和企业采用，比如MIT、Stanford、美国西北太平洋国家实验室、通用汽车等。在实际应用中，DeepXDE正在帮助用户快速解决复杂的科学计算问题，为各领域科学研究的进展作出了重要贡献。</p>
 <ul>
-<li><code>simple</code>
-<ul>
-<li>Simple geometric decomposition in which the domain is split into pieces by direction.</li>
-</ul></li>
-<li><code>hierarchical</code>
-<ul>
-<li>Hierarchical geometric decomposition which is the same as simple except the user specifies the order in which the directional split is done.</li>
-</ul></li>
-<li><code>scotch</code>
-<ul>
-<li>Scotch decomposition which requires no geometric input from the user and attempts to minimise the number of processor boundaries. The user can specify a weighting for the decomposition between processors, through an optional processorWeights keyword which can be useful on machines with differing performance between processors. There is also an optional keyword entry strategy that controls the decomposition strategy through a complex string supplied to Scotch. For more information, see the source code file: <code>$FOAM_SRC/parallel/decompose/scotchDecomp/scotchDecomp.C</code></li>
-</ul></li>
-<li><code>manual</code>
-<ul>
-<li>Manual decomposition, where the user directly specifies the allocation of each cell to a particular processor.</li>
-</ul></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/lululxvi/deepxde" class="uri">https://github.com/lululxvi/deepxde</a></li>
+<li><a target="_blank" rel="noopener" href="https://deepxde.readthedocs.io/en/latest/user/installation.html#" class="uri">https://deepxde.readthedocs.io/en/latest/user/installation.html#</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.paddlepaddle.org.cn/support/news?action=detail&amp;id=3315" class="uri">https://www.paddlepaddle.org.cn/support/news?action=detail&amp;id=3315</a></li>
 </ul>
-<p>For each method there are a set of coefficients specified in a sub-dictionary of <code>decompositionDict</code>, named <code>&lt;method&gt;Coeffs</code> as shown in the dictionary listing.</p>
-<h3 id="docs-and-github-code">Docs and github code:</h3>
+<h1 id="install">Install</h1>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs console">micromamba create -n deepxde <br>micromamba activate /home/wpsze/micromamba/envs/deepxde<br>micromamba install conda-forge::pytorch-gpu<br>micromamba install -c conda-forge deepxde<br></code></pre></td></tr></table></figure>
+<h1 id="run">Run</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/mamba.sh<br>micromamba activate deepxde<br><br><span class="hljs-comment"># Before running your code, run this shell command to tell torch that there are no GPUs:</span><br><span class="hljs-comment">#export CUDA_VISIBLE_DEVICES=&quot;&quot;</span><br><br>time DDE_BACKEND=pytorch python Helmholtz_equation_2D.py<br></code></pre></td></tr></table></figure>
+<h2 id="gpu">GPU</h2>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">nvidia-smi<br></code></pre></td></tr></table></figure>
 <ul>
-<li>Ref: <a target="_blank" rel="noopener" href="https://www.openfoam.com/documentation/guides/latest/doc/openfoam-guide-parallel.html">The decomposeParDict | OpenFOAM: User Guide</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/OpenFOAM/OpenFOAM-4.x/blob/master/applications/utilities/parallelProcessing/decomposePar/decomposeParDict">decomposeParDict code</a></li>
+<li>GPU usage,</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;--&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.memory_allocated: %fMB&quot;</span>%(torch.cuda.memory_allocated(<span class="hljs-number">0</span>)/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.memory_reserved: %fMB&quot;</span>%(torch.cuda.memory_reserved(<span class="hljs-number">0</span>)/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.max_memory_reserved: %fMB&quot;</span>%(torch.cuda.max_memory_reserved(<span class="hljs-number">0</span>)/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;--&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.memory_allocated: %fGB&quot;</span>%(torch.cuda.memory_allocated(<span class="hljs-number">0</span>)/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.memory_reserved: %fGB&quot;</span>%(torch.cuda.memory_reserved(<span class="hljs-number">0</span>)/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.max_memory_reserved: %fGB&quot;</span>%(torch.cuda.max_memory_reserved(<span class="hljs-number">0</span>)/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>/<span class="hljs-number">1024</span>))<br>device = torch.device(<span class="hljs-string">&#x27;cuda:0&#x27;</span>)<br>free, total = torch.cuda.mem_get_info(device)<br>mem_used_MB = (total - free) / <span class="hljs-number">1024</span> ** <span class="hljs-number">2</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;mem_used_MB = &quot;</span>, mem_used_MB)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;mem_used_GB = &quot;</span>, mem_used_MB/<span class="hljs-number">1024</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="cpu-only">CPU only</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Before running your code, run this shell command to tell torch that there are no GPUs:</span><br><span class="hljs-built_in">export</span> CUDA_VISIBLE_DEVICES=<span class="hljs-string">&quot;&quot;</span><br><br><span class="hljs-comment"># This will tell it to use only one GPU (the one with id 0) and so on:</span><br><span class="hljs-built_in">export</span> CUDA_VISIBLE_DEVICES=<span class="hljs-string">&quot;0&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="cpu-vs-gpu">CPU vs GPU</h2>
+<p>Test: <a target="_blank" rel="noopener" href="https://deepxde.readthedocs.io/en/latest/demos/pinn_forward/helmholtz.2d.neumann.hole.html">Helmholtz equation over a 2D square domain with a hole</a></p>
+<ul>
+<li>iterations = 10000</li>
+<li>num_dense_layers = 6</li>
+<li>num_dense_nodes = 1350</li>
 </ul>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;"><strong>Name</strong></th>
-<th style="text-align: left;"><strong>Class</strong></th>
+<th></th>
+<th>Cores</th>
+<th>Training Time</th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">none</td>
-<td style="text-align: left;">Foam::noDecomp</td>
+<td>CPU</td>
+<td>20</td>
+<td>5809s ~ 97min</td>
+<td></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">manual</td>
-<td style="text-align: left;">Foam::manualDecomp</td>
+<td>GPU</td>
+<td>10496</td>
+<td>227s ~ 3.78min</td>
+<td></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">simple</td>
-<td style="text-align: left;">Foam::simpleGeomDecomp</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">hierarchical</td>
-<td style="text-align: left;">Foam::hierarchGeomDecomp</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">kahip</td>
-<td style="text-align: left;">Foam::kahipDecomp</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">metis</td>
-<td style="text-align: left;">Foam::metisDecomp</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">scotch</td>
-<td style="text-align: left;">Foam::scotchDecomp</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">structured</td>
-<td style="text-align: left;">Foam::structuredDecomp</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">multiLevel</td>
-<td style="text-align: left;">Foam::multiLevelDecomp</td>
+<td>GPU/CPU</td>
+<td>524.8</td>
+<td>0.03907729385</td>
+<td>1/0.039 ~ 25.59</td>
 </tr>
 </tbody>
 </table>
-<p>If using metis,</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++">numberOfSubdomains   N;<br>method               metis;<br><br>metisCoeffs<br>&#123;<br>    method           k-way;  <span class="hljs-comment">// recursive or k-way</span><br>    <span class="hljs-built_in">options</span>          ( ...);<br>    <span class="hljs-built_in">processorWeights</span> ( ... );<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>error,</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">--&gt; </span><span class="language-bash">FOAM FATAL ERROR:</span> <br>You are trying to use metis but do not have the metisDecomp library loaded.<br>This message is from the dummy metisDecomp stub library instead.<br><br>Please install metis and make sure that libmetis.so is in your LD_LIBRARY_PATH.<br>The metisDecomp library can then be built from $FOAM_SRC/parallel/decompose/metisDecomp and dynamically loading or linking this library will add metis as a decomposition method.<br>Please be aware that there are license restrictions on using Metis.<br><br>    From function Foam::List&lt;signed int&gt; Foam::metisDecomp::decompose(const Foam::polyMesh &amp;, const Foam::Field&lt;Foam::Vector&lt;double&gt;&gt; &amp;, const Foam::Field&lt;double&gt; &amp;)<br>    in file dummyMetisDecomp.C at line 93.<br><br>FOAM exiting<br></code></pre></td></tr></table></figure>
-<h2 id="run.sh-script">run.sh script</h2>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">## Loading OpenFOAM environment</span><br><br><span class="hljs-comment"># NP=Number of cores available in the system.</span><br><span class="hljs-built_in">export</span> NP=$(<span class="hljs-built_in">nproc</span>)<br><br><span class="hljs-comment"># Create decomposeParDict file to support $NP number of processes.</span><br><span class="hljs-built_in">cp</span> system/decomposeParDict.6 system/decomposeParDict.<span class="hljs-variable">$&#123;NP&#125;</span><br><br><span class="hljs-comment"># Change the numberOfSubdomains in decomposeParDict to create $NP number of subdomains</span><br>sed -i <span class="hljs-string">&quot;s/numberOfSubdomains.*/numberOfSubdomains <span class="hljs-variable">$&#123;NP&#125;</span>;/&quot;</span> system/decomposeParDict.<span class="hljs-variable">$&#123;NP&#125;</span><br><br><span class="hljs-comment">#Change the grid size for $NP, here setting grid size for 192 core system (48*4*1)</span><br>sed -i <span class="hljs-string">&quot;s/ n           (3 2 1)/ n           (48 4 1);/&quot;</span> system/decomposeParDict.<span class="hljs-variable">$&#123;NP&#125;</span><br><br><span class="hljs-comment">#Default Mesh size is very small (0.35M cells), scaling up the Mesh size to 20M cells</span><br>sed -i <span class="hljs-string">&quot;s/(20 8 8)/(100 40 40)/&quot;</span> system/blockMeshDict<br><br><span class="hljs-comment">#To use the file &quot;system/decomposeParDict.$&#123;NP&#125;&quot; in Allrun (run script)</span><br>sed -i <span class="hljs-string">&quot;s#system/decomposeParDict.6#system/decomposeParDict.<span class="hljs-variable">$&#123;NP&#125;</span>#&quot;</span> Allrun<br><br><span class="hljs-comment">#To run the benchmark</span><br><span class="hljs-comment">#Allrun script executes a combination multiple steps</span><br><span class="hljs-comment">#like Mesh creation, Setting the initial fields, Running the application, Postprocessing etc.</span><br>./Allrun<br></code></pre></td></tr></table></figure>
-<h2 id="decomposepar"><code>decomposePar</code></h2>
-<p>The <code>decomposePar</code> utility is executed in the normal manner by typing</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">decomposePar<br></code></pre></td></tr></table></figure>
-<p>On completion, a set of subdirectories will have been created, one for each processor, in the case directory. The directories are named <code>processorN</code> represents a processor number and contains a time directory, containing the decomposed field descriptions, and a <code>constant/polyMesh</code> directory containing the decomposed mesh description.</p>
-<h2 id="example-motorbike">Example, <code>motorBike</code></h2>
 <ul>
-<li><code>./Allrun</code></li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;0%/*&#125;</span> || <span class="hljs-built_in">exit</span> 1    <span class="hljs-comment"># Run from this directory</span><br><br><span class="hljs-comment"># Source tutorial run functions</span><br>. <span class="hljs-variable">$WM_PROJECT_DIR</span>/bin/tools/RunFunctions<br><br><span class="hljs-comment"># Copy motorbike surface from resources directory</span><br><span class="hljs-built_in">cp</span> <span class="hljs-variable">$FOAM_TUTORIALS</span>/resources/geometry/motorBike.obj.gz constant/triSurface/<br>runApplication surfaceFeatures<br><br>runApplication blockMesh<br><br>runApplication decomposePar -copyZero<br>runParallel snappyHexMesh -overwrite<br><br>runParallel patchSummary<br>runParallel potentialFoam<br>runParallel $(getApplication)<br><br>runApplication reconstructParMesh -constant<br>runApplication reconstructPar -latestTime<br></code></pre></td></tr></table></figure>
-<p>and outputs are,</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs console"><br>Cleaning /home/wpsze/openfoam/openfoam8/run/motorBike case<br>Running surfaceFeatures on /home/wpsze/openfoam/openfoam8/run/motorBike<br>Running blockMesh on /home/wpsze/openfoam/openfoam8/run/motorBike<br>Running decomposePar on /home/wpsze/openfoam/openfoam8/run/motorBike<br>Running snappyHexMesh in parallel on /home/wpsze/openfoam/openfoam8/run/motorBike using 6 processes<br>Running patchSummary in parallel on /home/wpsze/openfoam/openfoam8/run/motorBike using 6 processes<br>Running potentialFoam in parallel on /home/wpsze/openfoam/openfoam8/run/motorBike using 6 processes<br>Running simpleFoam in parallel on /home/wpsze/openfoam/openfoam8/run/motorBike using 6 processes<br>Running reconstructParMesh on /home/wpsze/openfoam/openfoam8/run/motorBike<br>Running reconstructPar on /home/wpsze/openfoam/openfoam8/run/motorBike<br><br>real	5m5.399s<br>user	27m17.537s<br>sys	0m22.050s<br>=====================<br>Total of 311 seconds elapsed for process<br>Total of 5 minutes elapsed for process<br>=====================<br></code></pre></td></tr></table></figure>
-<h1 id="post-processing-parallel-processed-cases">Post-processing parallel processed cases</h1>
-<p>When post-processing cases that have been run in parallel the user can:</p>
+<li>CPU: (%CPU=2000)
 <ul>
-<li>reconstruct the mesh and field data to recreate the complete domain and fields, which can be post-processed as normal;</li>
-<li>post-process each segment of decomposed domain individually; or</li>
-<li>use ParaView via the option paraFoam -vtk and select the decomposedCase from the GUI whereby the case will be assembled internally</li>
-</ul>
-<h2 id="reconstructing-mesh-and-data">Reconstructing mesh and data</h2>
-<p>The <code>reconstructPar</code> utility performs such a reconstruction by executing the command:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">reconstructPar<br></code></pre></td></tr></table></figure>
-<p>Executing <code>reconstructPar</code> without any additional options will process all stored time directories.</p>
-<h1 id="issues">Issues</h1>
+<li>Intel(R) Xeon(R) Silver 4210R CPU @ 2.40GHz</li>
+<li>Core(s) per socket: 10</li>
+<li>Socket(s): 2</li>
+</ul></li>
+<li>GPU: 3090 (Volatile GPU util ~ 87%)
 <ul>
-<li><a target="_blank" rel="noopener" href="https://cfd-china.com/topic/3170/openfoam%E5%9C%A8%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97%E7%BB%93%E6%9D%9F%E5%90%8E-%E8%83%BD%E5%90%A6%E5%B9%B6%E8%A1%8Creconstructpar-%E6%88%96%E8%80%85%E6%9C%89%E6%B2%A1%E6%9C%89%E5%85%B6%E4%BB%96%E6%96%B9%E6%B3%95%E8%83%BD%E5%A4%9F%E5%8A%A0%E5%BF%ABreconstructpar">OpenFOAM在并行运算结束后 能否并行reconstructPar？或者有没有其他方法能够加快reconstructPar？</a>
-<ul>
-<li>最近跑了几个网格总数比较大的案例（大概500w~1000w），并行计算结束后，执行了reconstructPar进行重构，但是重构时间特别长。</li>
-<li>试试这个 <code>mpirun -np 2 redistributePar -reconstruct -parallel</code></li>
-<li>印象中以前看一个培训材料说分块和重构都只能单核</li>
-<li>openfoam的decomposePar、reconstructPar是个老大难。这个应该需要大幅度的fund他们才会解决。目前他们对这方面还没有迫切的处理需求。目前openfoam针对reconstructPar这面的处理方式是后处理也是并行来搞，paraview直接看decompose的数据，各种postProcess也都是并行来。针对decomposePar慢的问题，openfoam这面是画网格snappyHexMesh直接并行来。所以我这面尝试处理2个亿网格，从生成到计算，也还可以。但是如果是第三方生成的2个亿网格，需要decomposePar，那可就慢了</li>
+<li>CUDA cores: 10496</li>
 </ul></li>
 </ul>
-<h1 id="references">References</h1>
-<ol type="1">
-<li><a target="_blank" rel="noopener" href="https://www.openfoam.com/documentation/user-guide/3-running-applications/3.2-running-applications-in-parallel">3.2 Running applications in parallel</a></li>
-<li><a target="_blank" rel="noopener" href="https://hprc.tamu.edu/files/training/2024/Spring/Instructions_for_OpenFOAM_2024_spring.pdf">Instructions_for_OpenFOAM_2024_spring</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.amd.com/zh-tw/developer/zen-software-studio/applications/spack/hpc-applications-openfoam.html">Build OpenFOAM using Spack</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.openfoam.com/documentation/guides/latest/doc/openfoam-guide-parallel.html">The decomposeParDict | OpenFOAM: User Guide</a></li>
-</ol>
+<h1 id="reproducibility">Reproducibility</h1>
+<p>Completely reproducible results are not guaranteed across PyTorch releases, individual commits, or different platforms. Furthermore, results may not be reproducible between CPU and GPU executions, even when using identical seeds.</p>
+<p>However, there are some steps you can take to limit the number of sources of nondeterministic behavior for a specific platform, device, and PyTorch release. First, you can control sources of randomness that can cause multiple executions of your application to behave differently. Second, you can configure PyTorch to avoid using nondeterministic algorithms for some operations, so that multiple calls to those operations, given the same inputs, will produce the same result.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/notes/randomness.html" class="uri">https://pytorch.org/docs/stable/notes/randomness.html</a></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br>torch.manual_seed(<span class="hljs-number">0</span>)<br><br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br>np.random.seed(<span class="hljs-number">0</span>)<br><br><span class="hljs-keyword">import</span> random<br>random.seed(<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -534,7 +484,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  <a href="/categories/ML/" class="category-chain-item">ML</a>
   
   
 
@@ -549,9 +499,15 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+        <a href="/tags/PINN/" class="print-no-link">#PINN</a>
       
-        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/DeepONet/" class="print-no-link">#DeepONet</a>
+      
+        <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+        <a href="/tags/DeepXDE/" class="print-no-link">#DeepXDE</a>
       
     </div>
   
@@ -563,8 +519,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CFD | OpenFOAM | In parallel</div>
-      <div>https://waipangsze.github.io/2024/12/04/openfoam-in-parallel/</div>
+      <div>ML | PINN | DeepXDE</div>
+      <div>https://waipangsze.github.io/2025/01/03/ML-PINN-DeepXDE/</div>
     </div>
     <div class="license-meta">
       
@@ -576,7 +532,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>December 4, 2024</div>
+          <div>January 3, 2025</div>
         </div>
       
       
@@ -613,9 +569,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/12/05/maths-p-value/" title="Maths | p-value | Statistical Significance">
+                      <a href="/2025/01/03/CFD-Boussinesq-approximation-buoyancy/" title="CFD | Boussinesq approximation (buoyancy)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Maths | p-value | Statistical Significance</span>
+                        <span class="hidden-mobile">CFD | Boussinesq approximation (buoyancy)</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -623,8 +579,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/12/04/openfoam-notes/" title="CFD | OpenFOAM | Notes/Blogs">
-                        <span class="hidden-mobile">CFD | OpenFOAM | Notes/Blogs</span>
+                      <a href="/2025/01/02/NWP-Bias-Correction/" title="NWP | Bias Correction">
+                        <span class="hidden-mobile">NWP | Bias Correction</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
