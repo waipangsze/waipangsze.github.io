@@ -59,6 +59,9 @@ OBJ文件是Alias|Wavefront公司爲它的一套基於工作站的3D建模和動
 # Blender GIS to stl
 
 - <https://github.com/domlysz/BlenderGIS>
+- [BlenderGIS addon](https://blender-addons.org/blendergis-addon/)
+
+- **download**
 
 {% note danger %}
 GIS datafile import : Import in Blender most commons GIS data format : `Shapefile vector`, `raster image`, `geotiff DEM`, `OpenStreetMap xml`.
