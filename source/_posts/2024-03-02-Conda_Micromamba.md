@@ -71,6 +71,13 @@ micromamba env export -n oldenv > oldenv.yaml
 ```sh
 micromamba env create --name newenv --file oldenv.yaml
 ```
+
+### pip requirements file contain "@file"
+
+- [Why does the pip requirements file contain @file instead of version number?](https://stackoverflow.com/questions/62586878/why-does-the-pip-requirements-file-contain-file-instead-of-version-number)
+- <https://peps.python.org/pep-0440/#direct-references>
+- 
+
 ### Source and activate env
 ```sh
 $ source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
@@ -101,7 +108,12 @@ Instead, export the environment yaml and create a new environment using the --fi
 ## check/add channel
 
 ```sh
+$ micromamba info
+
+# or
+
 $ micromamba config list --sources
+
 channels:
   - conda-forge  # '~/.condarc'
 
