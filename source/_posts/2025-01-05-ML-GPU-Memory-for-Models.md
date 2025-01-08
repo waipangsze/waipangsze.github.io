@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/17nibPC.png
+banner_img: https://i.imgur.com/17nibPC.png
 ---
 
 # GPU Memory you need to serve any ML models
@@ -32,10 +32,13 @@ Overhead factor : This accounts for additional memory used during inference, suc
 
 以 Llama-2-7b-hf 為例
 
-- 因為全精度模型參數是float32類型, 佔用4 個位元組，粗略計算：1b(10億)個模型參數，約佔用4G顯存(實際大小：10^9 * 4 / 1024^3 ~= 3.725 GB) ，則LLaMA 的參數量為7b，那麼載入模型參數所需的顯存為：3.725 * 7 ~= 26.075 GB
+- 因為全精度模型參數是 float32 類型, 佔用 4 個位元組，粗略計算：1b(10億)個模型參數，約佔用4G顯存(實際大小：10^9 * 4 / 1024^3 ~= 3.725 GB) ，則LLaMA 的參數量為7b，那麼載入模型參數所需的顯存為：3.725 * 7 ~= 26.075 GB
 - 如果您的顯存不足 32GB，那麼可以設定半精度的 FP16/BF16 來加載，每個參數只佔 2 個字節，所需顯存就直接減半，只需要約 13GB。雖然模型效果會因精度損失而略微降低，但一般在可接受範圍。
 - 如果您的顯存不足 16GB，那麼可以採用 int8 量化後，顯存再減半，只需要約 6.5GB，但是模型效果會更差一些。
 - 如果您的顯存少於 8GB，那麼只能採用 int4 量化，顯示再減半，只需要約 3.26GB。
+
+
+我們來說 infrastructure，以7B模型而言，粗估要佔用 15GB~20GB 的GPU memory，也就是說如果你全參數訓練，一張A100（80GB GPU memory）只能開 Batch = 4，如果你想要 Batch = 64, 128，那麼必須先進行跨卡和跨機的訓練環境設置。
 
 ## torch.dtype
 
