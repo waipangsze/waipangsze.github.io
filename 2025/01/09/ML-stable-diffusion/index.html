@@ -19,16 +19,16 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="stable-diffusion-xl-base-1.0  https:&#x2F;&#x2F;huggingface.co&#x2F;stabilityai&#x2F;stable-diffusion-xl-base-1.0  The stable-diffusion-xl-base-1.0 is a text-to-image generative model developed by Stability AI.  Inputs">
+    <meta name="description" content="stable-diffusion-xl-base-1.0  https:&#x2F;&#x2F;huggingface.co&#x2F;stabilityai&#x2F;stable-diffusion-xl-base-1.0   The stable-diffusion-xl-base-1.0 is a text-to-image generative model developed by Stability AI.  Inputs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ML | stable-diffusion">
 <meta property="og:url" content="https://waipangsze.github.io/2025/01/09/ML-stable-diffusion/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="stable-diffusion-xl-base-1.0  https:&#x2F;&#x2F;huggingface.co&#x2F;stabilityai&#x2F;stable-diffusion-xl-base-1.0  The stable-diffusion-xl-base-1.0 is a text-to-image generative model developed by Stability AI.  Inputs">
+<meta property="og:description" content="stable-diffusion-xl-base-1.0  https:&#x2F;&#x2F;huggingface.co&#x2F;stabilityai&#x2F;stable-diffusion-xl-base-1.0   The stable-diffusion-xl-base-1.0 is a text-to-image generative model developed by Stability AI.  Inputs">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/imchHVz.png">
 <meta property="article:published_time" content="2025-01-09T06:04:00.000Z">
-<meta property="article:modified_time" content="2025-01-09T06:07:04.263Z">
+<meta property="article:modified_time" content="2025-01-09T07:29:41.145Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
@@ -323,7 +323,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          232 words
+          393 words
         
       </span>
     
@@ -334,7 +334,7 @@
         
         
         
-          2 mins
+          4 mins
         
       </span>
     
@@ -389,6 +389,7 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0" class="uri">https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0</a></li>
 </ul>
+<p><img src="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/pipeline.png" srcset="/img/loading.gif" lazyload width="500" /></p>
 <p>The <code>stable-diffusion-xl-base-1.0</code> is a text-to-image generative model developed by Stability AI.</p>
 <ul>
 <li>Inputs
@@ -412,6 +413,8 @@
 <li><code>+ pipe.enable_model_cpu_offload()</code></li>
 </ul></li>
 </ul>
+<p>The models are saved at,</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console">6.7G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-base-1.0<br>4.4G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-refiner-1.0<br></code></pre></td></tr></table></figure>
 <h2 id="base-model">base model</h2>
 <p>To just use the base model, you can run:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/bin/python</span><br><br><span class="hljs-keyword">from</span> diffusers <span class="hljs-keyword">import</span> DiffusionPipeline<br><span class="hljs-keyword">import</span> torch<br><br>pipe = DiffusionPipeline.from_pretrained(<span class="hljs-string">&quot;stabilityai/stable-diffusion-xl-base-1.0&quot;</span>, torch_dtype=torch.float16, use_safetensors=<span class="hljs-literal">True</span>, variant=<span class="hljs-string">&quot;fp16&quot;</span>)<br>pipe.to(<span class="hljs-string">&quot;cuda&quot;</span>)<br><br><span class="hljs-comment"># if using torch &lt; 2.0</span><br><span class="hljs-comment"># pipe.enable_xformers_memory_efficient_attention()</span><br><br>prompt = <span class="hljs-string">&quot;An astronaut riding a green horse&quot;</span><br><br>image = pipe(prompt=prompt).images[<span class="hljs-number">0</span>]<br><br>image.save(<span class="hljs-string">&quot;astronaut_rides_horse.png&quot;</span>) <span class="hljs-comment"># 1024 x 1024</span><br></code></pre></td></tr></table></figure>
@@ -428,6 +431,14 @@
 </ul></li>
 </ul>
 <div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/imchHVz.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/KKiwfNI.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h1 id="where-does-hugging-faces-transformers-save-models">Where does hugging face's transformers save models?</h1>
+<p>The cache location has changed again, and is now <code>~/.cache/huggingface/hub/</code></p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">du</span> -sh ~/.cache/huggingface/hub/*</span><br>6.3G	/home/wpsze/.cache/huggingface/hub/models--deepseek-ai--deepseek-vl2-tiny<br>414M	/home/wpsze/.cache/huggingface/hub/models--dslim--bert-base-NER<br>961M	/home/wpsze/.cache/huggingface/hub/models--ecmwf--aifs-single<br>1.7G	/home/wpsze/.cache/huggingface/hub/models--microsoft--DialoGPT-medium<br>172K	/home/wpsze/.cache/huggingface/hub/models--microsoft--Florence-2-large<br>6.7G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-base-1.0<br>4.4G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-refiner-1.0<br>4.0K	/home/wpsze/.cache/huggingface/hub/version.txt<br>4.0K	/home/wpsze/.cache/huggingface/hub/version_diffusers_cache.txt<br></code></pre></td></tr></table></figure>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://soulteary.com/2023/07/29/get-started-with-stability-ai-sdxl-1-0-release-using-docker.html">使用 Docker 快速上手 Stability AI 的 SDXL 1.0 正式版</a></li>
+<li><a target="_blank" rel="noopener" href="https://soulteary.com/2022/12/10/play-the-stable-diffusion-model-on-macbook-devices-with-m1-and-m2-chips.html">在搭载 M1 及 M2 芯片 MacBook设备上玩 Stable Diffusion 模型</a></li>
+</ol>
 
                 
               </div>

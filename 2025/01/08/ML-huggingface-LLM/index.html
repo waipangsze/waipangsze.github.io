@@ -26,9 +26,8 @@
 <meta property="og:site_name" content="wpsze">
 <meta property="og:description" content="Conda env 123456789# check CUDA Version:$ nvidia-smimicromamba env create -n huggingfacemicromamba activate huggingface micromamba install python&#x3D;&#x3D;3.10micromamba install pytorch torchvision torchaudio">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://tw.alphacamp.co/wp-content/uploads/2024/01/Hugging-Face-logo-with-title-1024x576.png">
 <meta property="article:published_time" content="2025-01-08T07:56:00.000Z">
-<meta property="article:modified_time" content="2025-01-09T06:06:23.722Z">
+<meta property="article:modified_time" content="2025-01-09T07:28:29.984Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
@@ -36,7 +35,6 @@
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="huggingface">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://tw.alphacamp.co/wp-content/uploads/2024/01/Hugging-Face-logo-with-title-1024x576.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -293,7 +291,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://tw.alphacamp.co/wp-content/uploads/2024/01/Hugging-Face-logo-with-title-1024x576.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -322,7 +320,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          246 words
+          123 words
         
       </span>
     
@@ -333,7 +331,7 @@
         
         
         
-          3 mins
+          2 mins
         
       </span>
     
@@ -386,50 +384,10 @@
                 
                 <h1 id="conda-env">Conda env</h1>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">check CUDA Version:</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">nvidia-smi</span><br><br>micromamba env create -n huggingface<br>micromamba activate huggingface <br>micromamba install python==3.10<br>micromamba install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia<br>micromamba install conda-forge::transformers<br>micromamba install git-lfs<br></code></pre></td></tr></table></figure>
+<h1 id="where-does-hugging-faces-transformers-save-models">Where does hugging face's transformers save models?</h1>
+<p>The cache location has changed again, and is now <code>~/.cache/huggingface/hub/</code></p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">du</span> -sh ~/.cache/huggingface/hub/*</span><br>6.3G	/home/wpsze/.cache/huggingface/hub/models--deepseek-ai--deepseek-vl2-tiny<br>414M	/home/wpsze/.cache/huggingface/hub/models--dslim--bert-base-NER<br>961M	/home/wpsze/.cache/huggingface/hub/models--ecmwf--aifs-single<br>1.7G	/home/wpsze/.cache/huggingface/hub/models--microsoft--DialoGPT-medium<br>172K	/home/wpsze/.cache/huggingface/hub/models--microsoft--Florence-2-large<br>6.7G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-base-1.0<br>4.4G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-refiner-1.0<br>4.0K	/home/wpsze/.cache/huggingface/hub/version.txt<br>4.0K	/home/wpsze/.cache/huggingface/hub/version_diffusers_cache.txt<br></code></pre></td></tr></table></figure>
 <h1 id="example">Example</h1>
-<h2 id="stable-diffusion-xl-base-1.0">stable-diffusion-xl-base-1.0</h2>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0" class="uri">https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0</a></li>
-</ul>
-<p>The <code>stable-diffusion-xl-base-1.0</code> is a text-to-image generative model developed by Stability AI.</p>
-<ul>
-<li>Inputs
-<ul>
-<li>Text prompt: A description of the desired image, such as "a beautiful sunset over a mountain landscape".</li>
-</ul></li>
-<li>Outputs
-<ul>
-<li>Generated image: An image that corresponds to the input text prompt, generated using the model's diffusion-based text-to-image capabilities.</li>
-</ul></li>
-</ul>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs console">micromamba env create -n SD<br>micromamba activate SD<br>micromamba install python==3.10<br>pip install diffusers --upgrade<br>pip install invisible_watermark transformers accelerate safetensors<br></code></pre></td></tr></table></figure>
-<ul>
-<li>When using torch &gt;= 2.0, you can improve the inference speed by 20-30% with torch.compile. Simple wrap the unet with torch compile before running the pipeline:
-<ul>
-<li><code>pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead", fullgraph=True)</code></li>
-</ul></li>
-<li>If you are limited by GPU VRAM, you can enable cpu offloading by calling pipe.enable_model_cpu_offload instead of .to("cuda"):
-<ul>
-<li><code>- pipe.to("cuda")</code></li>
-<li><code>+ pipe.enable_model_cpu_offload()</code></li>
-</ul></li>
-</ul>
-<h3 id="base-model">base model</h3>
-<p>To just use the base model, you can run:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/bin/python</span><br><br><span class="hljs-keyword">from</span> diffusers <span class="hljs-keyword">import</span> DiffusionPipeline<br><span class="hljs-keyword">import</span> torch<br><br>pipe = DiffusionPipeline.from_pretrained(<span class="hljs-string">&quot;stabilityai/stable-diffusion-xl-base-1.0&quot;</span>, torch_dtype=torch.float16, use_safetensors=<span class="hljs-literal">True</span>, variant=<span class="hljs-string">&quot;fp16&quot;</span>)<br>pipe.to(<span class="hljs-string">&quot;cuda&quot;</span>)<br><br><span class="hljs-comment"># if using torch &lt; 2.0</span><br><span class="hljs-comment"># pipe.enable_xformers_memory_efficient_attention()</span><br><br>prompt = <span class="hljs-string">&quot;An astronaut riding a green horse&quot;</span><br><br>image = pipe(prompt=prompt).images[<span class="hljs-number">0</span>]<br><br>image.save(<span class="hljs-string">&quot;astronaut_rides_horse.png&quot;</span>) <span class="hljs-comment"># 1024 x 1024</span><br></code></pre></td></tr></table></figure>
-<p>GPU: ~ 10GB</p>
-<h3 id="base-refiner-pipeline">base + refiner pipeline</h3>
-<p>To use the whole base + refiner pipeline as an ensemble of experts you can run:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> diffusers <span class="hljs-keyword">import</span> DiffusionPipeline<br><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-comment"># load both base &amp; refiner</span><br>base = DiffusionPipeline.from_pretrained(<br>    <span class="hljs-string">&quot;stabilityai/stable-diffusion-xl-base-1.0&quot;</span>, torch_dtype=torch.float16, variant=<span class="hljs-string">&quot;fp16&quot;</span>, use_safetensors=<span class="hljs-literal">True</span><br>)<br>base.to(<span class="hljs-string">&quot;cuda&quot;</span>)<br>refiner = DiffusionPipeline.from_pretrained(<br>    <span class="hljs-string">&quot;stabilityai/stable-diffusion-xl-refiner-1.0&quot;</span>,<br>    text_encoder_2=base.text_encoder_2,<br>    vae=base.vae,<br>    torch_dtype=torch.float16,<br>    use_safetensors=<span class="hljs-literal">True</span>,<br>    variant=<span class="hljs-string">&quot;fp16&quot;</span>,<br>)<br>refiner.to(<span class="hljs-string">&quot;cuda&quot;</span>)<br><br><span class="hljs-comment"># Define how many steps and what % of steps to be run on each experts (80/20) here</span><br>n_steps = <span class="hljs-number">40</span><br>high_noise_frac = <span class="hljs-number">0.8</span><br><br>prompt = <span class="hljs-string">&quot;A majestic lion jumping from a big stone at night&quot;</span><br><br><span class="hljs-comment"># run both experts</span><br>image = base(<br>    prompt=prompt,<br>    num_inference_steps=n_steps,<br>    denoising_end=high_noise_frac,<br>    output_type=<span class="hljs-string">&quot;latent&quot;</span>,<br>).images<br>image = refiner(<br>    prompt=prompt,<br>    num_inference_steps=n_steps,<br>    denoising_start=high_noise_frac,<br>    image=image,<br>).images[<span class="hljs-number">0</span>]<br><br>image.save(<span class="hljs-string">&quot;refiner.png&quot;</span>) <br></code></pre></td></tr></table></figure>
-<p>GPU: ~ 13GB</p>
-<h3 id="demo">Demo</h3>
-<ul>
-<li><p><strong>Left</strong>: Base model, <strong>Right</strong>: Base+refiner model</p>
-<ul>
-<li><strong>prompt = "An astronaut is doing Numerical Weather Prediction simulation on Space."</strong></li>
-</ul></li>
-</ul>
-<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/imchHVz.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/KKiwfNI.png" srcset="/img/loading.gif" lazyload /></div></div></div>
 
                 
               </div>
