@@ -1,35 +1,19 @@
 ---
 layout: post
-title: ML | huggingface
+title: ML | stable-diffusion
 categories: [ML]
-tags: [ML, AI, pytorch, huggingface, LLM]
+tags: [ML, AI, pytorch, huggingface, LLM, stable-diffusion]
 author: wpsze
-date: 2025-01-08 15:56:00
+date: 2025-01-09 14:04:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: https://tw.alphacamp.co/wp-content/uploads/2024/01/Hugging-Face-logo-with-title-1024x576.png
-banner_img: https://tw.alphacamp.co/wp-content/uploads/2024/01/Hugging-Face-logo-with-title-1024x576.png
+index_img: https://i.imgur.com/imchHVz.png
+banner_img: https://i.imgur.com/imchHVz.png
 ---
 
-# Conda env
-
-```console
-# check CUDA Version:
-$ nvidia-smi
-
-micromamba env create -n huggingface
-micromamba activate huggingface 
-micromamba install python==3.10
-micromamba install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
-micromamba install conda-forge::transformers
-micromamba install git-lfs
-```
-
-# Example
-
-## stable-diffusion-xl-base-1.0
+# stable-diffusion-xl-base-1.0
 
 - <https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0>
 
@@ -54,7 +38,7 @@ pip install invisible_watermark transformers accelerate safetensors
   - `- pipe.to("cuda")`
   - `+ pipe.enable_model_cpu_offload()`
 
-### base model
+## base model
 
 To just use the base model, you can run:
 
@@ -81,7 +65,7 @@ GPU: ~ 10GB
 
 
 
-### base + refiner pipeline
+## base + refiner pipeline
 
 To use the whole base + refiner pipeline as an ensemble of experts you can run:
 
@@ -129,7 +113,7 @@ image.save("refiner.png")
 
 GPU: ~ 13GB 
 
-### Demo
+## Demo
 
 - **Left**: Base model,    **Right**: Base+refiner model
 
