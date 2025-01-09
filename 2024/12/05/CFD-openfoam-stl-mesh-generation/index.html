@@ -1,0 +1,1033 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="OpenFOAM三維網格生成器 snappyHexMesh（SHM）是OpenFOAM軟體的三維結構化網格生成模組，功能比較強大，設定靈活，表面處理貼合功能非常強健並且可以並行運算。 SHM能夠透過使用者自訂參數（如細化參數castellatedMeshControls、切合參數snapControls等）對預先載入的幾何體檔案（通常為&#39;.stl&#39;檔案）自動實現三維網格生成、加密(castella">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CFD | OpenFOAM | STL file | 網格生成">
+<meta property="og:url" content="https://waipangsze.github.io/2024/12/05/CFD-openfoam-stl-mesh-generation/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="OpenFOAM三維網格生成器 snappyHexMesh（SHM）是OpenFOAM軟體的三維結構化網格生成模組，功能比較強大，設定靈活，表面處理貼合功能非常強健並且可以並行運算。 SHM能夠透過使用者自訂參數（如細化參數castellatedMeshControls、切合參數snapControls等）對預先載入的幾何體檔案（通常為&#39;.stl&#39;檔案）自動實現三維網格生成、加密(castella">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
+<meta property="article:published_time" content="2024-12-05T08:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-06T12:21:34.392Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="OpenFOAM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/fFT42Yk.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CFD | OpenFOAM | STL file | 網格生成 - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitor</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/fFT42Yk.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CFD | OpenFOAM | STL file | 網格生成"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-05 16:00" pubdate>
+          December 5, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CFD | OpenFOAM | STL file | 網格生成</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="openfoam三維網格生成器">OpenFOAM三維網格生成器</h1>
+<p>snappyHexMesh（SHM）是OpenFOAM軟體的三維結構化網格生成模組，功能比較強大，設定靈活，表面處理貼合功能非常強健並且可以並行運算。
+SHM能夠透過使用者自訂參數（如細化參數castellatedMeshControls、切合參數snapControls等）對預先載入的幾何體檔案（通常為'.stl'檔案）自動實現三維網格生成、加密(castellatedMesh)、切合（snap
+）和新增邊界層（addLayers）等操作。</p>
+<p>SHM產生OpenFOAM網格流程如圖1所示:</p>
+<figure>
+<img src="https://i.imgur.com/oggvctr.png" srcset="/img/loading.gif" lazyload width="600"
+alt="圖1 基於snappyHexMesh的OpenFOAM網格生成流程圖" />
+<figcaption aria-hidden="true">圖1
+基於snappyHexMesh的OpenFOAM網格生成流程圖</figcaption>
+</figure>
+<p>需提供以下三個文件：</p>
+<ol type="1">
+<li>STL檔案格式的幾何檔案（binary或ascii格式，儲存在
+<code>constant/triSurface</code> 子字典中）；</li>
+<li>背景六面體網格（用於定義計算域範圍和背景網格，一般由
+<code>blockMesh</code> 生成，也可由外部網格生成器生成）；</li>
+<li><code>snappyHexMeshDict</code> 字典（提供生成網格的必要信息，位於
+<code>system</code> 子資料夾下）。</li>
+</ol>
+<h2 id="什麼是-stl-檔案">什麼是 STL 檔案？</h2>
+<p>STL 是一種常用於 3D 列印和電腦輔助設計 (CAD) 的檔案格式。縮寫名稱 STL
+代表「光固化立體成型」(<strong>Stereolithography</strong>)，一種熱門的
+3D 列印技術。此外，這種檔案也稱作「標準三角語言」(<strong>Standard
+Triangle Language</strong>) 或「標準曲面細分語言」(<strong>Standard
+Tessellation Language</strong>)。 STL
+檔案是由一系列相連的三角形構成，這些三角形可用於描繪 3D
+模型或物件的表面幾何圖形。設計越複雜，使用的三角形數量就越多，解析度也隨之提高。您可以透過副檔名
+.stl 以及缺乏色彩與紋理的特點來辨識 STL 格式影像。</p>
+<p>無論列印 3D 模型的目的是純粹好玩還是製作實務原型，您都必須建立 STL
+檔案來儲存設計。請先在 CAD 軟體程式中繪製模型，然後將完成的設計以 STL
+檔案格式匯出並儲存至電腦。</p>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://vr.me.ncku.edu.tw/courses/cg110/sites/vr.me.ncku.edu.tw.courses.cg110/files/STL.pdf">STL
+檔案資料結構</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://3dlabstore.com.hk/blog/3d-software/popular-stl-editiors?srsltid=AfmBOoqL1Z-brQRzPgIC-kvSjG7SpBiql9WLuug-r5hypwAlAFvT-CNE">幾個常用的修改STL模型軟件</a>
+<ul>
+<li><strong>MeshLab</strong>
+<ul>
+<li>MeshLab是一個開源、便攜且可擴展的系統，用於處理和編輯3D三角形網格。這個系統於2005年年底發佈，旨在幫助用戶進行3D掃描、編輯、清理、修復、檢查、呈現和轉換等操作。MeshLab用途廣泛，它可以用於各種學術和研究中，如文化遺產、表面重建、古生物學等。涉及到3D網格模型處理的，都可以用這款軟件來處理。</li>
+</ul></li>
+<li>MeshMixer
+<ul>
+<li>MeshMixer適合許多需要修改STL模型的使用者，初學者或是經驗豐富的設計人員皆適用。</li>
+</ul></li>
+<li>ZBrushCoreMini
+<ul>
+<li>ZBrushCoreMini適合對雕刻方面感興趣的人群，此款軟件操作時類似使用畫筆一樣去編輯。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3
+id="d打印的stl和obj格式有什麼區別修改起來一樣麼">3D打印的STL和OBJ格式有什麼區別？修改起來一樣麼？</h3>
+<p>STL文件格式是由3D SYSTEMS 公司於1988
+年制定的一種爲快速原型製造技術服務的三維圖形文件格式。STL文件不同於其他一些基於特徵的實體模型，STL用三角形網格來表現3D
+CAD模型，只能描述三維物體的幾何信息，不支持顏色材質等信息。正因爲數據簡化，格式簡單，STL普及很快應用廣泛。</p>
+<p>OBJ文件是Alias|Wavefront公司爲它的一套基於工作站的3D建模和動畫軟件”Advanced
+Visualizer”開發的一種標準3D模型文件格式，很適合用於3D軟件模型之間的數據交換，能支持顏色等信息。</p>
+<p>兩者在修改上相差不多，都是需要導入到相關的模型修改軟件中進行。</p>
+<h1 id="applications">Applications</h1>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://ppfocus.com/0/ed40c27be.html">SnappyHexMesh網格劃分實例詳解</a>
+<ul>
+<li>使用surfaceCheck檢查proeller.stl,
+<code>surfaceCheck constant/propeller.stl</code></li>
+</ul></li>
+</ul>
+<h1 id="blender-gis-to-stl">Blender GIS to stl</h1>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/domlysz/BlenderGIS"
+class="uri">https://github.com/domlysz/BlenderGIS</a></p></li>
+<li><p><a target="_blank" rel="noopener" href="https://blender-addons.org/blendergis-addon/">BlenderGIS
+addon</a></p></li>
+<li><p><strong>download</strong></p></li>
+</ul>
+<div class="note note-danger">
+            <p>GIS datafile import : Import in Blender most commons GIS data format: <code>Shapefile vector</code>, <code>raster image</code>,<code>geotiff DEM</code>, <code>OpenStreetMap xml</code>.</p>
+          </div>
+<h2 id="google-gis-srtm-30m-to-stl">Google GIS (SRTM 30m) to stl</h2>
+<ul>
+<li>Note : Since 2022, the OpenTopography web service requires an API
+key. Please register to opentopography.org and request a key. This
+service is still free.</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/s3CBmtM.png" srcset="/img/loading.gif" lazyload alt="1" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/Sgvffp8.png" srcset="/img/loading.gif" lazyload alt="2" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/1EBJ21x.png" srcset="/img/loading.gif" lazyload alt="3" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/Sk7Oeev.png" srcset="/img/loading.gif" lazyload alt="4" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/11gtygg.png" srcset="/img/loading.gif" lazyload alt="5" /></div></div></div>
+<h2 id="openstreetmap-xml-to-stl">OpenStreetMap xml to stl</h2>
+<h3 id="download-osm-file">Download osm file</h3>
+<p><img src="https://i.imgur.com/POleA9W.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h3 id="import-osm-file">Import osm file</h3>
+<p><img src="https://i.imgur.com/POvvxOu.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h3 id="export-stl-file">export stl file</h3>
+<ul>
+<li>meshlab</li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/bvsHeZV.png" srcset="/img/loading.gif" lazyload width="400"
+alt="Open by meshlab" />
+<figcaption aria-hidden="true">Open by
+<strong>meshlab</strong></figcaption>
+</figure>
+<ul>
+<li>admesh</li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/SVTBUsh.png" srcset="/img/loading.gif" lazyload width="400"
+alt="Check by admesh" />
+<figcaption aria-hidden="true">Check by
+<strong>admesh</strong></figcaption>
+</figure>
+<h1 id="osm">OSM</h1>
+<p><strong>OpenStreetMap</strong>
+是一个庞大的地理信息数据库，而且是完全开放和免费的。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.openstreetmap.org/#map=13/22.2868/114.2492"
+class="uri">https://www.openstreetmap.org/#map=13/22.2868/114.2492</a></li>
+<li>export --&gt; <code>map.osm</code></li>
+</ul>
+<p><code>.osm</code> 文件格式是 OpenStreetMap
+所特有的。你不会在其他地方遇到它。如果你曾经使用 JOSM
+下载过数据并将其保存为文件，你可能已经注意到文件的扩展名是
+<code>.osm</code>
+。如果你是一个GIS用户，你可能也注意到，使用QGIS等软件打开这些文件并不容易。</p>
+<p><img src="https://i.imgur.com/lqqINf9.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h1 id="shapefile">Shapefile</h1>
+<p><strong>shapefile</strong>
+是一种广泛使用的矢量地理数据存储格式。它是由 ESRI
+公司开发的，该公司制造了 ArcGIS
+，这是一套流行的地理信息系统应用程序。</p>
+<p>Shapefile
+实际上是几个不同文件的集合。例如，一个包含建筑数据的shapefile可能有以下扩展名的文件。</p>
+<ul>
+<li>buildings.shp</li>
+<li>buildings.shx</li>
+<li>buildings.dbf</li>
+</ul>
+<p>shapefiles 通常也会有包含其他信息的附加文件。</p>
+<p>一个 shapefile
+只能容纳一种类型的特征（点、线或多边形），每个特征的属性都包含在一个表中。与
+OpenStreetMap 系统不同的是，在 OpenStreetMap
+系统中，每个对象都可以拥有无限数量的标签，shapefile 中的特征属性必须适合
+shapefile 定义的表格结构。</p>
+<p>OpenStreetMap数据可以转换为shapefiles。各种网站提供了从OSM数据转换而来的shapefiles。</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.wolfdynamics.com/wiki/meshing_OF_SHM.pdf">Mesh
+generation using snappyHexMesh (<strong>recommend</strong>)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.fangzhenxiu.com/post/7273888/?uri=473_83g6eo3r4s1">解锁新技能：OpenFOAM三维网格生成器</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.adobe.com/hk_zh/creativecloud/file-types/image/vector/stl-file.html">STL
+檔案</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://blog.iaac.net/urban-wind-flow-modeling-with-pinns/?utm_source=perplexity">Urban
+Wind Flow Modeling with PINNs (<strong>recommend</strong>)</a>
+<ol type="1">
+<li>Data Sources
+<ol type="1">
+<li>Real-Time Wind Data: <code>OpenWeatherMap</code> wind
+conditions.</li>
+<li>3D Building Models: <code>OpenStreetMap (OSM)</code> data using
+Overpass API.</li>
+</ol></li>
+</ol></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CFD | OpenFOAM | STL file | 網格生成</div>
+      <div>https://waipangsze.github.io/2024/12/05/CFD-openfoam-stl-mesh-generation/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 5, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>January 6, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/06/MPAS-A-Idealized-Test-Cases/" title="MPAS | MPAS-A Idealized Test Cases">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | MPAS-A Idealized Test Cases</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/05/maths-p-value/" title="Maths | p-value | Statistical Significance">
+                        <span class="hidden-mobile">Maths | p-value | Statistical Significance</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
