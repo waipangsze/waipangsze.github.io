@@ -17,6 +17,8 @@ banner_img: https://i.imgur.com/imchHVz.png
 
 - <https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0>
 
+![](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/pipeline.png){width=500}
+
 The `stable-diffusion-xl-base-1.0` is a text-to-image generative model developed by Stability AI.
 
 - Inputs
@@ -37,6 +39,13 @@ pip install invisible_watermark transformers accelerate safetensors
 - If you are limited by GPU VRAM, you can enable cpu offloading by calling pipe.enable_model_cpu_offload instead of .to("cuda"):
   - `- pipe.to("cuda")`
   - `+ pipe.enable_model_cpu_offload()`
+
+The models are saved at,
+
+```console
+6.7G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-base-1.0
+4.4G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-refiner-1.0
+```
 
 ## base model
 
@@ -123,3 +132,26 @@ GPU: ~ 13GB
 ![](https://i.imgur.com/imchHVz.png)
 ![](https://i.imgur.com/KKiwfNI.png)
 {% endgi %}
+
+# Where does hugging face's transformers save models?
+
+The cache location has changed again, and is now `~/.cache/huggingface/hub/`
+
+```console
+$ du -sh ~/.cache/huggingface/hub/*
+6.3G	/home/wpsze/.cache/huggingface/hub/models--deepseek-ai--deepseek-vl2-tiny
+414M	/home/wpsze/.cache/huggingface/hub/models--dslim--bert-base-NER
+961M	/home/wpsze/.cache/huggingface/hub/models--ecmwf--aifs-single
+1.7G	/home/wpsze/.cache/huggingface/hub/models--microsoft--DialoGPT-medium
+172K	/home/wpsze/.cache/huggingface/hub/models--microsoft--Florence-2-large
+6.7G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-base-1.0
+4.4G	/home/wpsze/.cache/huggingface/hub/models--stabilityai--stable-diffusion-xl-refiner-1.0
+4.0K	/home/wpsze/.cache/huggingface/hub/version.txt
+4.0K	/home/wpsze/.cache/huggingface/hub/version_diffusers_cache.txt
+```
+
+
+# References
+
+1. [使用 Docker 快速上手 Stability AI 的 SDXL 1.0 正式版](https://soulteary.com/2023/07/29/get-started-with-stability-ai-sdxl-1-0-release-using-docker.html)
+2. [在搭载 M1 及 M2 芯片 MacBook设备上玩 Stable Diffusion 模型](https://soulteary.com/2022/12/10/play-the-stable-diffusion-model-on-macbook-devices-with-m1-and-m2-chips.html)
