@@ -26,11 +26,13 @@
 <meta property="og:site_name" content="wpsze">
 <meta property="og:description" content="Introduction to SSH Tunnels Secure Shell, or SSH, is used to create a secure channel between a local and remote computer. While SSH is commonly used for secure terminal access and file transfers, it c">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img1.xenby.com/269/89b59f7b.png">
 <meta property="article:published_time" content="2024-07-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-08T08:25:04.541Z">
+<meta property="article:modified_time" content="2025-01-10T01:15:44.748Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="ssh">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img1.xenby.com/269/89b59f7b.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -316,7 +318,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          68 words
+          261 words
         
       </span>
     
@@ -327,7 +329,7 @@
         
         
         
-          1 mins
+          3 mins
         
       </span>
     
@@ -398,13 +400,55 @@
 </ul></li>
 </ul>
 <p><strong>Note that</strong> both the client and the SSH server can themselves be the target server. It does not mean that only three machines can be used for port forwarding!</p>
+<p><img src="https://img1.xenby.com/269/89b59f7b.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h2 id="常用的-ssh-指令參數">常用的 SSH 指令參數</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">sh -N -L 0.0.0.0:local-port:target-server:target-port username@proxy-server<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>-L</code>
+<ul>
+<li><strong>建立 Local forwarding</strong></li>
+</ul></li>
+<li><code>-N</code>
+<ul>
+<li><strong>不要執行任何遠端指令</strong>。沒有加這個參數時，建立 Port Forwarding 的同時也會開啟 Remote Shell，讓你可以對 SSH Server 下指令，而這個參數可以讓 Remote Shell 不要打開。</li>
+</ul></li>
+<li><code>-f</code>
+<ul>
+<li><strong>讓 ssh 指令在背景執行</strong>，讓你可以繼續用 Shell 做事情。通常會搭上面的 -N 使用。</li>
+</ul></li>
+<li><code>lsof -i -n | egrep '\&lt;ssh\&gt;'</code>
+<ul>
+<li>列出目前有的 SSH tunnel</li>
+</ul></li>
+</ul>
 <h2 id="local-port-forwarding">Local Port Forwarding</h2>
 <p>Local forwarding is used to forward a port from the client machine to the server machine.</p>
 <p>Quite a few organizations for all incoming SSH access through a single <strong>jump server</strong>. The server may be a standard Linux/Unix box, usually with some extra hardening, intrusion detection, and/or logging, or it may be a commercial jump server solution.</p>
 <p>To create a local port forward add the <strong>-L</strong> parameter to the ssh command line.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh -L 9090:localhost:8080 user@server-ip<br></code></pre></td></tr></table></figure>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh -L 9090:192.168.1.101:8080 user@server-ip<br></code></pre></td></tr></table></figure>
-<p>The 192.168.1.101 here is relative to user@server-ip, so it is the IP address of the server behind the firewall or VPN. Then, you can visit 192.168.1.101:9090</p>
+<p>The 192.168.1.101 (like Target server) here is relative to user@server-ip, so it is the IP address of the server behind the firewall or VPN. Then, you can visit 192.168.1.101:9090</p>
+<h3 id="client----ssh-server----target-server">Client -- SSH server -- Target server</h3>
+<ul>
+<li>Client
+<ul>
+<li>你的電腦</li>
+</ul></li>
+<li>SSH Server
+<ul>
+<li>防火牆後你的機器</li>
+<li>SSH Destination： user@server-ip</li>
+</ul></li>
+<li>Target Server
+<ul>
+<li>防火牆後的伺服器</li>
+<li>192.168.1.101:8080</li>
+</ul></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ssh -L 9090:192.168.1.101:8080 user@server-ip<br></code></pre></td></tr></table></figure>
+<h3 id="bind_address">bind_address</h3>
+<p>如果你沒有給 bind_address ，預設會 Bind 在 localhost 上。如果你想把 Port 9090 開放給所有人用：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh -L 0.0.0.0:9090:localhost:8080 user@server-ip<br></code></pre></td></tr></table></figure>
 <h2 id="remote-port-forwarding">Remote Port Forwarding</h2>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ssh -R 9090:localhost:8080 user@server-ip<br></code></pre></td></tr></table></figure>
 <h1 id="references">References</h1>
@@ -474,7 +518,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 8, 2024</div>
+          <div>January 10, 2025</div>
         </div>
       
       
