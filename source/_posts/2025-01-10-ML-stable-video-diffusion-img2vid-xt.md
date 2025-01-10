@@ -34,7 +34,7 @@ SVD系列模型包含2个版本，一个是可以生成 **14帧576x1024图像 �
 | Stable Video Diffusion      | 14帧     | 允许研究，不允许商用     |
 | Stable Video Diffusion - XT | 20帧     | 允许研究，不允许商用 |
 
-It’s entirely possible to run the `img2vid` and `img2vid-xt` models on a GTX 1080 with **8GB of VRAM**!
+It’s entirely possible to run the `img2vid` and `img2vid-xt` models on a GTX 1080 with **8GB of VRAM**! No, it is huge.
 
 
 - <https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt>
@@ -44,19 +44,7 @@ It’s entirely possible to run the `img2vid` and `img2vid-xt` models on a GTX 1
 micromamba env create -n SVD
 micromamba activate SVD
 micromamba install python==3.10
-micromamba install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
-pip install diffusers --upgrade
-pip install invisible_watermark transformers accelerate safetensors gradio
-micromamba install git-lfs
-
-
-git clone https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt
-
-git clone https://github.com/Stability-AI/generative-models.git
-cd generative-models/
-
-(xxx) micromamba install imageio einops fire omegaconf rembg
-
+pip3 install torch==2.0.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements/pt2.txt 
 pip install .
 pip3 install -e git+https://github.com/Stability-AI/datapipelines.git@main#egg=sdata
@@ -66,6 +54,8 @@ mkdir checkpoints
 cd checkpoints/
 ln -s ../../stable-video-diffusion-img2vid-xt/svd_xt* .
 ```
+
+where Why cu118/torch==2.0.1?
 
 Run,
 
@@ -88,6 +78,47 @@ We are releasing Stable Video Diffusion, an image-to-video model, for research p
 You can run the community-build gradio demo locally by running python -m scripts.demo.gradio_app.
 - We provide a **streamlit demo** `scripts/demo/video_sampling.py` and a **standalone python script** `scripts/sampling/simple_video_sample.py` for inference of both models.
 - Alongside the model, we release a technical report.
+
+# Error
+
+## ImportError: numpy.core.multiarray failed to import
+
+解决方法：
+
+- 这个错误是由于numpy版本与某个库文件包，比如opencv-python版本不匹配造成的
+- 系统原来不要有numpy这个包！！！如果你已经安装了，请先卸载numpy包，再安装opencv-python包
+
+## TypeError: randn_like(): argument 'input' (position 1) must be Tensor, not NoneType
+
+The error seems to be related to the fact that streamlet is trying to run the model before you uploaded the image.
+If you just ignore this error and upload an image, everything will work.
+
+When I switch from Edge browser to Chrome, it seems works fine.
+
+## RuntimeError: Numpy is not available
+
+This will be easily solved by upgrading numpy.... When I face this error, that time numpy version 1.22 was installed.... I update version to x.x.x using this command.
+
+## error: can't find Rust compiler
+
+- pip install transformers
+
+## OutOfMemoryError
+
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 4.43 GiB (GPU 0; 23.48 GiB total capacity; 17.83 GiB already allocated; 3.75 GiB free; 19.39 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+
+- Decode t frames at a time (set small if you are low on VRAM)
+
+## RuntimeError: Sizes of tensors must match except in dimension 1. Expected size 6 but got size 5 for tensor number 1 in the list.
+
+Make sure the size if the width/height is a 64 step (512, 576, 640...)
+
+## RuntimeError: image too small, should be larger than 256x256
+
+## TypeError: TiffWriter.write() got an unexpected keyword argument 'fps'
+
+- pip install imageio==2.19.3 (?)
+- pip install imageio-ffmpeg==0.4.7 (work!)
 
 # References
 
