@@ -33,6 +33,24 @@ For both local and remote port forwarding, there are three roles:
 
 **Note that** both the client and the SSH server can themselves be the target server. It does not mean that only three machines can be used for port forwarding!
 
+![](https://img1.xenby.com/269/89b59f7b.png){width=500}
+
+## 常用的 SSH 指令參數
+
+```sh
+sh -N -L 0.0.0.0:local-port:target-server:target-port username@proxy-server
+```
+
+- `-L`
+  - **建立 Local forwarding**
+- `-N`
+  - **不要執行任何遠端指令**。沒有加這個參數時，建立 Port Forwarding 的同時也會開啟 Remote Shell，讓你可以對 SSH Server 下指令，而這個參數可以讓 Remote Shell 不要打開。
+- `-f`
+  - **讓 ssh 指令在背景執行**，讓你可以繼續用 Shell 做事情。通常會搭上面的 -N 使用。
+- `lsof -i -n | egrep '\<ssh\>'`
+  - 列出目前有的 SSH tunnel
+
+
 ## Local Port Forwarding
 
 Local forwarding is used to forward a port from the client machine to the server machine. 
@@ -49,7 +67,32 @@ $ ssh -L 9090:localhost:8080 user@server-ip
 ```sh
 $ ssh -L 9090:192.168.1.101:8080 user@server-ip
 ```
-The 192.168.1.101 here is relative to user@server-ip, so it is the IP address of the server behind the firewall or VPN. Then, you can visit 192.168.1.101:9090
+The 192.168.1.101 (like Target server) here is relative to user@server-ip, so it is the IP address of the server behind the firewall or VPN. Then, you can visit 192.168.1.101:9090
+
+### Client -- SSH server -- Target server
+
+- Client
+  - 你的電腦
+- SSH Server
+  - 防火牆後你的機器
+  - SSH Destination： user@server-ip
+- Target Server
+  - 防火牆後的伺服器
+  - 192.168.1.101:8080
+
+```sh
+ssh -L 9090:192.168.1.101:8080 user@server-ip
+```
+
+### bind_address
+
+如果你沒有給 bind_address ，預設會 Bind 在 localhost 上。如果你想把 Port 9090 開放給所有人用：
+
+```sh
+$ ssh -L 0.0.0.0:9090:localhost:8080 user@server-ip
+```
+
+
 
 ## Remote Port Forwarding
 

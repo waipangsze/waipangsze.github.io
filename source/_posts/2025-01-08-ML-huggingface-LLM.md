@@ -45,3 +45,5 @@ $ du -sh ~/.cache/huggingface/hub/*
 ```
 
 # Example
+
+- <https://waipangsze.github.io/2025/01/09/ML-stable-diffusion/>

@@ -121,7 +121,7 @@ image = refiner(
 image.save("refiner.png") 
 ```
 
-GPU: ~ 13GB 
+GPU: ~ 14GB 
 
 ## Demo
 
