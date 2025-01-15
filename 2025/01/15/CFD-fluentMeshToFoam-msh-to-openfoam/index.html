@@ -1,0 +1,973 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Issue  一个可压缩超音速OpeNFOAM算例，想找个fluent大佬来设置一个  粘度： 0 湍流模型：无 二维算例，所有壁面都可以为滑移，或者零梯度边界 进口边界：静压：1e5、温度：400K、速度：1000m&#x2F;s 没有其他进口；右边是出口 稳态 网格数量：10000个                OpenFOAM计算大约3秒算完。最大压力 810000 。想看一下Fluent的最大压力">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CFD | OpenFOAM | fluentMeshToFoam .msh to openfoam">
+<meta property="og:url" content="https://waipangsze.github.io/2025/01/15/CFD-fluentMeshToFoam-msh-to-openfoam/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Issue  一个可压缩超音速OpeNFOAM算例，想找个fluent大佬来设置一个  粘度： 0 湍流模型：无 二维算例，所有壁面都可以为滑移，或者零梯度边界 进口边界：静压：1e5、温度：400K、速度：1000m&#x2F;s 没有其他进口；右边是出口 稳态 网格数量：10000个                OpenFOAM计算大约3秒算完。最大压力 810000 。想看一下Fluent的最大压力">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cfd-china.com/assets/uploads/files/1736863312130-%E6%8D%95%E8%8E%B7.jpg">
+<meta property="article:published_time" content="2025-01-15T06:45:00.000Z">
+<meta property="article:modified_time" content="2025-01-15T08:38:30.677Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="OpenFOAM">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="fluent">
+<meta property="article:tag" content="mesh">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cfd-china.com/assets/uploads/files/1736863312130-%E6%8D%95%E8%8E%B7.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CFD | OpenFOAM | fluentMeshToFoam .msh to openfoam - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitor</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CFD | OpenFOAM | fluentMeshToFoam .msh to openfoam"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-15 14:45" pubdate>
+          January 15, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CFD | OpenFOAM | fluentMeshToFoam .msh to openfoam</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="issue">Issue</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cfd-china.com/topic/7815/%E4%B8%80%E4%B8%AA%E5%8F%AF%E5%8E%8B%E7%BC%A9%E8%B6%85%E9%9F%B3%E9%80%9Fopenfoam%E7%AE%97%E4%BE%8B-%E6%83%B3%E6%89%BE%E4%B8%AAfluent%E5%A4%A7%E4%BD%AC%E6%9D%A5%E8%AE%BE%E7%BD%AE%E4%B8%80%E4%B8%AA?lang=en-US">一个可压缩超音速OpeNFOAM算例，想找个fluent大佬来设置一个</a>
+<ul>
+<li>粘度： 0</li>
+<li>湍流模型：无</li>
+<li>二维算例，所有壁面都可以为滑移，或者零梯度边界</li>
+<li>进口边界：静压：1e5、温度：400K、速度：1000m/s</li>
+<li>没有其他进口；右边是出口</li>
+<li>稳态</li>
+<li>网格数量：10000个</li>
+</ul></li>
+</ul>
+<div class="note note-primary">
+            <p>OpenFOAM计算大约3秒算完。最大压力 810000 。想看一下Fluent的最大压力多少。</p>
+          </div>
+<p><img src="https://cfd-china.com/assets/uploads/files/1736863312130-%E6%8D%95%E8%8E%B7.jpg" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="review-openfoam">Review OpenFOAM</h1>
+<p>In OpenFOAM, directories play a crucial role in organizing files and data for simulations. Here's an overview of common directories and their meanings:</p>
+<ol type="1">
+<li><p><strong>Case Directory</strong>: This is the main folder for a specific simulation case. It contains all the files related to that simulation.</p></li>
+<li><p><strong>0 (Zero Directory)</strong>: Contains initial conditions for the simulation. Files here specify the starting values for variables (e.g., velocity, pressure) at time zero.</p></li>
+<li><strong>constant Directory</strong>: Holds files related to the physical properties of the simulation. This includes:
+<ul>
+<li><strong>transportProperties</strong>: Defines fluid properties like viscosity and density.</li>
+<li><strong>turbulenceProperties</strong>: Specifies turbulence models and parameters.</li>
+</ul></li>
+<li><strong>system Directory</strong>: Contains files that control the simulation execution, including:
+<ul>
+<li><strong>controlDict</strong>: Manages the simulation time, output frequency, and solver settings.</li>
+<li><strong>fvSchemes</strong>: Defines numerical schemes for discretization.</li>
+<li><strong>fvSolution</strong>: Contains solver settings and tolerances.</li>
+</ul></li>
+<li><p><strong>Post-processing Directories</strong>: After running a simulation, results can be processed and visualized. Directories like <code>results</code> or <code>output</code> might be used for storing processed data.</p></li>
+<li><p><strong>Allrun and Allclean Scripts</strong>: Often found in the case directory, these scripts automate the running and cleaning processes for simulations.</p></li>
+</ol>
+<p>Understanding these directories is essential for effectively using OpenFOAM, as each serves a specific purpose in the overall workflow of setting up, running, and analyzing simulations.</p>
+<h1 id="fluentmeshtofoamfluent3dmeshtofoam">fluentMeshToFoam/fluent3DMeshToFoam</h1>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>fluentMeshToFoam/fluent3DMeshToFoam
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs console">Usage: fluentMeshToFoam [OPTIONS] &lt;Fluent mesh file&gt;<br>options:<br>  -2D &lt;thickness&gt;   use when converting a 2-D mesh (applied before scale)<br>  -case &lt;dir&gt;       specify alternate case directory, default is the cwd<br>  -fileHandler &lt;handler&gt;<br>                    override the fileHandler<br>  -libs &lt;(lib1 .. libN)&gt;<br>                    pre-load libraries<br>  -noFunctionObjects<br>                    do not execute functionObjects<br>  -scale &lt;factor&gt;   geometry scaling factor - default is 1<br>  -writeSets        write cell zones and patches as sets<br>  -writeZones       write cell zones as zones<br>  -srcDoc           display source code in browser<br>  -doc              display application documentation in browser<br>  -help             print the usage<br><br>Using: OpenFOAM-8 (see https://openfoam.org)<br>Build: 8<br><br><br>Usage: fluent3DMeshToFoam [OPTIONS] &lt;Fluent mesh file&gt;<br>options:<br>  -case &lt;dir&gt;       specify alternate case directory, default is the cwd<br>  -cubit            special parsing of (incorrect) cubit files<br>  -fileHandler &lt;handler&gt;<br>                    override the fileHandler<br>  -ignoreCellGroups &lt;names&gt;<br>                    specify cell groups to ignore<br>  -ignoreFaceGroups &lt;names&gt;<br>                    specify face groups to ignore<br>  -includedAngle &lt;angle&gt;<br>                    feature angle with which to split cyclics<br>  -libs &lt;(lib1 .. libN)&gt;<br>                    pre-load libraries<br>  -noFunctionObjects<br>                    do not execute functionObjects<br>  -scale &lt;factor&gt;   geometry scaling factor - default is 1<br>  -srcDoc           display source code in browser<br>  -doc              display application documentation in browser<br>  -help             print the usage<br><br>Using: OpenFOAM-8 (see https://openfoam.org)<br>Build: 8<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<p>Here's how to convert a .msh file to OpenFOAM format using fluentMeshToFoam:</p>
+<ol type="1">
+<li><p>Create a new empty directory for your case: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> supersonic<br><span class="hljs-built_in">cd</span> supersonic<br></code></pre></td></tr></table></figure></p></li>
+<li><p>Create the basic OpenFOAM directory structure: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> constant<br><span class="hljs-built_in">mkdir</span> system<br></code></pre></td></tr></table></figure> and prepare all requried files,</p></li>
+</ol>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-cc54d58a" role="button" aria-expanded="false" aria-controls="collapse-cc54d58a">
+        <div class="fold-arrow">▶</div>prepare
+      </div>
+      <div class="fold-collapse collapse" id="collapse-cc54d58a">
+        <div class="fold-content">
+          <p>I'll help you set up the necessary files for your case. Given your specifications, we'll set up a compressible flow case since you have temperature and pressure specified.</p><ol type="1"><li><p>First, create the <code>constant/thermophysicalProperties</code> file: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> -p constant<br><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; constant/thermophysicalProperties<br>/*--------------------------------*- C++ -*----------------------------------*\<br>| =========                 |                                                 |<br>| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |<br>|  \\    /   O peration     | Version:  v2306                                |<br>|   \\  /    A nd           | Website:  www.openfoam.com                     |<br>|    \\/     M anipulation  |                                                |<br>\*---------------------------------------------------------------------------*/<br>FoamFile<br>&#123;<br>    version     2.0;<br>    format      ascii;<br>    class       dictionary;<br>    object      thermophysicalProperties;<br>&#125;<br>// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //<br><br>thermoType<br>&#123;<br>    <span class="hljs-built_in">type</span>            hePsiThermo;<br>    mixture         pureMixture;<br>    transport       const;<br>    thermo         hConst;<br>    equationOfState perfectGas;<br>    specie         specie;<br>    energy         sensibleInternalEnergy;<br>&#125;<br><br>mixture<br>&#123;<br>    specie<br>    &#123;<br>        molWeight       28.9;<br>    &#125;<br>    thermodynamics<br>    &#123;<br>        Cp              1007;<br>        Hf              0;<br>    &#125;<br>    transport<br>    &#123;<br>        mu              0;<br>        Pr              1;<br>    &#125;<br>&#125;<br><br>// ************************************************************************* //<br>EOF<br></code></pre></td></tr></table></figure></p></li><li><p>Create the <code>system/controlDict</code> file: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> -p system<br><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; system/controlDict<br>/*--------------------------------*- C++ -*----------------------------------*\<br>| =========                 |                                                 |<br>| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |<br>|  \\    /   O peration     | Version:  v2306                                |<br>|   \\  /    A nd           | Website:  www.openfoam.com                     |<br>|    \\/     M anipulation  |                                                |<br>\*---------------------------------------------------------------------------*/<br>FoamFile<br>&#123;<br>    version     2.0;<br>    format      ascii;<br>    class       dictionary;<br>    object      controlDict;<br>&#125;<br>// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //<br><br>application     sonicFoam;<br><br>startFrom       startTime;<br><br>startTime       0;<br><br>stopAt          endTime;<br><br>endTime         1000;<br><br>deltaT          1e-5;<br><br>writeControl    timeStep;<br><br>writeInterval   100;<br><br>purgeWrite      0;<br><br>writeFormat     ascii;<br><br>writePrecision  6;<br><br>writeCompression off;<br><br>timeFormat      general;<br><br>timePrecision   6;<br><br>runTimeModifiable <span class="hljs-literal">true</span>;<br><br>// ************************************************************************* //<br>EOF<br></code></pre></td></tr></table></figure></p></li><li><p>Create the <code>system/fvSchemes</code> file: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; system/fvSchemes<br>/*--------------------------------*- C++ -*----------------------------------*\<br>| =========                 |                                                 |<br>| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |<br>|  \\    /   O peration     | Version:  v2306                                |<br>|   \\  /    A nd           | Website:  www.openfoam.com                     |<br>|    \\/     M anipulation  |                                                |<br>\*---------------------------------------------------------------------------*/<br>FoamFile<br>&#123;<br>    version     2.0;<br>    format      ascii;<br>    class       dictionary;<br>    object      fvSchemes;<br>&#125;<br>// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //<br><br>ddtSchemes<br>&#123;<br>    default         steadyState;<br>&#125;<br><br>gradSchemes<br>&#123;<br>    default         Gauss linear;<br>&#125;<br><br>divSchemes<br>&#123;<br>    default         none;<br>    div(phi,U)      Gauss limitedLinearV 1;<br>    div(phi,e)      Gauss limitedLinear 1;<br>    div(((rho*nuEff)*dev2(T(grad(U))))) Gauss linear;<br>&#125;<br><br>laplacianSchemes<br>&#123;<br>    default         Gauss linear corrected;<br>&#125;<br><br>interpolationSchemes<br>&#123;<br>    default         linear;<br>&#125;<br><br>snGradSchemes<br>&#123;<br>    default         corrected;<br>&#125;<br><br>// ************************************************************************* //<br>EOF<br></code></pre></td></tr></table></figure></p></li><li><p>Create the <code>system/fvSolution</code> file: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; system/fvSolution<br>/*--------------------------------*- C++ -*----------------------------------*\<br>| =========                 |                                                 |<br>| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |<br>|  \\    /   O peration     | Version:  v2306                                |<br>|   \\  /    A nd           | Website:  www.openfoam.com                     |<br>|    \\/     M anipulation  |                                                |<br>\*---------------------------------------------------------------------------*/<br>FoamFile<br>&#123;<br>    version     2.0;<br>    format      ascii;<br>    class       dictionary;<br>    object      fvSolution;<br>&#125;<br>// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //<br><br>solvers<br>&#123;<br>    p<br>    &#123;<br>        solver          PCG;<br>        preconditioner  DIC;<br>        tolerance       1e-06;<br>        relTol          0.01;<br>    &#125;<br><br>    U<br>    &#123;<br>        solver          PBiCGStab;<br>        preconditioner  DILU;<br>        tolerance       1e-05;<br>        relTol          0.1;<br>    &#125;<br><br>    e<br>    &#123;<br>        solver          PBiCGStab;<br>        preconditioner  DILU;<br>        tolerance       1e-05;<br>        relTol          0.1;<br>    &#125;<br>&#125;<br><br>SIMPLE<br>&#123;<br>    nNonOrthogonalCorrectors 0;<br>    rhoMin          0.1;<br>    rhoMax          1.0;<br>&#125;<br><br>relaxationFactors<br>&#123;<br>    fields<br>    &#123;<br>        p               0.3;<br>        rho             0.01;<br>    &#125;<br>    equations<br>    &#123;<br>        U               0.7;<br>        e               0.7;<br>    &#125;<br>&#125;<br><br>// ************************************************************************* //<br>EOF<br></code></pre></td></tr></table></figure></p></li><li><p>Create initial conditions in <code>0</code> directory: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> -p 0<br></code></pre></td></tr></table></figure></p></li></ol><p>Create <code>0/U</code> file: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; 0/U<br>/*--------------------------------*- C++ -*----------------------------------*\<br>| =========                 |                                                 |<br>| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |<br>|  \\    /   O peration     | Version:  v2306                                |<br>|   \\  /    A nd           | Website:  www.openfoam.com                     |<br>|    \\/     M anipulation  |                                                |<br>\*---------------------------------------------------------------------------*/<br>FoamFile<br>&#123;<br>    version     2.0;<br>    format      ascii;<br>    class       volVectorField;<br>    object      U;<br>&#125;<br>// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //<br><br>dimensions      [0 1 -1 0 0 0 0];<br><br>internalField   uniform (0 0 0);<br><br>boundaryField<br>&#123;<br>    inlet<br>    &#123;<br>        <span class="hljs-built_in">type</span>            fixedValue;<br>        value           uniform (1000 0 0);<br>    &#125;<br>    outlet<br>    &#123;<br>        <span class="hljs-built_in">type</span>            zeroGradient;<br>    &#125;<br>    walls<br>    &#123;<br>        <span class="hljs-built_in">type</span>            slip;<br>    &#125;<br>&#125;<br><br>// ************************************************************************* //<br>EOF<br></code></pre></td></tr></table></figure></p><p>Create <code>0/T</code> file: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; 0/T<br>/*--------------------------------*- C++ -*----------------------------------*\<br>| =========                 |                                                 |<br>| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |<br>|  \\    /   O peration     | Version:  v2306                                |<br>|   \\  /    A nd           | Website:  www.openfoam.com                     |<br>|    \\/     M anipulation  |                                                |<br>\*---------------------------------------------------------------------------*/<br>FoamFile<br>&#123;<br>    version     2.0;<br>    format      ascii;<br>    class       volScalarField;<br>    object      T;<br>&#125;<br>// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //<br><br>dimensions      [0 0 0 1 0 0 0];<br><br>internalField   uniform 300;<br><br>boundaryField<br>&#123;<br>    inlet<br>    &#123;<br>        <span class="hljs-built_in">type</span>            fixedValue;<br>        value           uniform 400;<br>    &#125;<br>    outlet<br>    &#123;<br>        <span class="hljs-built_in">type</span>            zeroGradient;<br>    &#125;<br>    walls<br>    &#123;<br>        <span class="hljs-built_in">type</span>            zeroGradient;<br>    &#125;<br>&#125;<br><br>// ************************************************************************* //<br>EOF<br></code></pre></td></tr></table></figure></p><p>Create <code>0/p</code> file: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; 0/p<br>/*--------------------------------*- C++ -*----------------------------------*\<br>| =========                 |                                                 |<br>| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |<br>|  \\    /   O peration     | Version:  v2306                                |<br>|   \\  /    A nd           | Website:  www.openfoam.com                     |<br>|    \\/     M anipulation  |                                                |<br>\*---------------------------------------------------------------------------*/<br>FoamFile<br>&#123;<br>    version     2.0;<br>    format      ascii;<br>    class       volScalarField;<br>    object      p;<br>&#125;<br>// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //<br><br>dimensions      [1 -1 -2 0 0 0 0];<br><br>internalField   uniform 1e5;<br><br>boundaryField<br>&#123;<br>    inlet<br>    &#123;<br>        <span class="hljs-built_in">type</span>            fixedValue;<br>        value           uniform 1e5;<br>    &#125;<br>    outlet<br>    &#123;<br>        <span class="hljs-built_in">type</span>            zeroGradient;<br>    &#125;<br>    walls<br>    &#123;<br>        <span class="hljs-built_in">type</span>            zeroGradient;<br>    &#125;<br>&#125;<br><br>// ************************************************************************* //<br>EOF<br></code></pre></td></tr></table></figure></p>
+        </div>
+      </div>
+    </div>
+<ol type="1">
+<li><p>Copy your .msh file to the case directory: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ file supersonic_injet-stead.msh <br>supersonic_injet-stead.msh: ASCII text<br><br><span class="hljs-built_in">cp</span> /path/to/your/supersonic_injet-stead.msh .<br></code></pre></td></tr></table></figure></p></li>
+<li><p>Run the conversion tool: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">fluent3DMeshToFoam supersonic_injet-stead.msh<br></code></pre></td></tr></table></figure></p></li>
+</ol>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c21ca059" role="button" aria-expanded="false" aria-controls="collapse-c21ca059">
+        <div class="fold-arrow">▶</div>fluent3DMeshToFoam results
+      </div>
+      <div class="fold-collapse collapse" id="collapse-c21ca059">
+        <div class="fold-content">
+          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs console">/*---------------------------------------------------------------------------*\<br>  =========                 |<br>  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox<br>   \\    /   O peration     | Website:  https://openfoam.org<br>    \\  /    A nd           | Version:  8<br>     \\/     M anipulation  |<br>\*---------------------------------------------------------------------------*/<br>Build  : 8<br>Exec   : fluent3DMeshToFoam supersonic_injet-stead.msh<br>Date   : Jan 15 2025<br>Time   : 15:10:16<br>Host   : &quot;xxx&quot;<br>PID    : 2856052<br>I/O    : uncollated<br>Case   : /home/wpsze/openfoam/simulation/supersonic<br>nProcs : 1<br>sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).<br>fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)<br>allowSystemOperations : Allowing user-supplied system call operations<br><br>// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //<br>Create time<br><br>Dimension of grid: 3<br>Number of points: 20850<br>Number of cells: 10180<br>Number of faces: 40964<br>PointGroup: 1 start: 0 end: 20849.  Reading points...done.<br>FaceGroup: 2 start: 0 end: 20115.  Reading mixed faces...done.<br>FaceGroup: 10 start: 20116 end: 20171.  Reading mixed faces...done.<br>FaceGroup: 11 start: 20172 end: 20173.  Reading mixed faces...done.<br>FaceGroup: 12 start: 20174 end: 20355.  Reading mixed faces...done.<br>FaceGroup: 13 start: 20356 end: 20411.  Reading mixed faces...done.<br>FaceGroup: 14 start: 20412 end: 20591.  Reading mixed faces...done.<br>FaceGroup: 15 start: 20592 end: 20603.  Reading mixed faces...done.<br>FaceGroup: 16 start: 20604 end: 40963.  Reading mixed faces...done.<br>CellGroup: 1 start: 0 end: 10179 type: 1<br>Zone: 1 name: fluid-1 type: fluid.  Reading zone data...done.<br>Zone: 2 name: interior-1 type: interior.  Reading zone data...done.<br>Zone: 10 name: inlet1 type: pressure-outlet.  Reading zone data...done.<br>Zone: 11 name: inlet2 type: pressure-outlet.  Reading zone data...done.<br>Zone: 12 name: top type: pressure-outlet.  Reading zone data...done.<br>Zone: 13 name: outlet type: pressure-outlet.  Reading zone data...done.<br>Zone: 14 name: bottom type: wall.  Reading zone data...done.<br>Zone: 15 name: obstacle type: wall.  Reading zone data...done.<br>Zone: 16 name: frontandback type: pressure-outlet.  Reading zone data...done.<br><br>FINISHED LEXING<br><br>Creating patch 0 for zone: 10 name: inlet1 type: pressure-outlet<br>Creating patch 1 for zone: 11 name: inlet2 type: pressure-outlet<br>Creating patch 2 for zone: 12 name: top type: pressure-outlet<br>Creating patch 3 for zone: 13 name: outlet type: pressure-outlet<br>Creating patch 4 for zone: 14 name: bottom type: wall<br>Creating patch 5 for zone: 15 name: obstacle type: wall<br>Creating patch 6 for zone: 16 name: frontandback type: pressure-outlet<br>Creating cellZone 0 name: fluid-1 type: fluid<br>Creating faceZone 0 name: interior-1 type: interior<br>faceZone from Fluent indices: 0 to: 20115 type: interior<br>patch 0 from Fluent indices: 20116 to: 20171 type: pressure-outlet<br>patch 1 from Fluent indices: 20172 to: 20173 type: pressure-outlet<br>patch 2 from Fluent indices: 20174 to: 20355 type: pressure-outlet<br>patch 3 from Fluent indices: 20356 to: 20411 type: pressure-outlet<br>patch 4 from Fluent indices: 20412 to: 20591 type: wall<br>patch 5 from Fluent indices: 20592 to: 20603 type: wall<br>patch 6 from Fluent indices: 20604 to: 40963 type: pressure-outlet<br><br>Writing mesh to &quot;constant/region0&quot;<br><br>End<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<ol start="5" type="1">
+<li>Check the mesh quality (optional but recommended): <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">checkMesh<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>After conversion, you'll have: - <code>constant/polyMesh/</code> directory containing the mesh files - Basic OpenFOAM mesh files: points, faces, cells, boundary, etc.</p>
+<h1 id="run">Run</h1>
+<p>After setting up these files:</p>
+<ol type="1">
+<li><p>Check your mesh: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">checkMesh<br></code></pre></td></tr></table></figure></p></li>
+<li><p>Run the solver (sonicFoam for compressible flow): <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sonicFoam<br></code></pre></td></tr></table></figure></p></li>
+</ol>
+<p>Note: Make sure the boundary names in the 0/* files match exactly with the boundary names in your mesh. You might need to check the boundary names after mesh conversion using: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">foamInfo constant/polyMesh/boundary<br></code></pre></td></tr></table></figure></p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://openfoamwiki.net/index.php/FluentMeshToFoam">FluentMeshToFoam | openfoamwiki</a></li>
+<li><a target="_blank" rel="noopener" href="https://openfoamwiki.net/index.php/Fluent3DMeshToFoam#Comparison_between_fluentMeshToFoam_and_fluent3DMeshToFoam">Fluent3DMeshToFoam | openfoamwiki</a>
+<ol type="1">
+<li>4 Comparison between fluentMeshToFoam and fluent3DMeshToFoam</li>
+<li>From the release notes for OpenFOAM 1.4.1:
+<ol type="1">
+<li>New fluent3DMeshToFoam converter for 3D meshes from Fluent format to OpenFOAM format including full support for all BCs, zones etc.;</li>
+</ol></li>
+<li>Comparing the source code for fluentMeshToFoam and fluent3DMeshToFoam in OpenFOAM 1.4.1 and 1.5, the following main differences can be found:
+<ol type="1">
+<li>fluentMeshToFoam supports 2D and 3D Fluent meshes, while fluent3DMeshToFoam only supports 3D.</li>
+<li>fluent3DMeshToFoam deals with hanging nodes.</li>
+<li>fluentMeshToFoam has the options to write sets and zones, while fluent3DMeshToFoam has the option to ignore a cell groups and face groups.</li>
+<li>fluentMeshToFoam can only handle the following 3D cell types: tet, hex, pyramid, prism</li>
+<li>fluent3DMeshToFoam can handle internal walls/patches, or at least it looks like it does. fluentMeshToFoam requires a workaround: Howto importing fluent mesh with internal walls</li>
+</ol></li>
+</ol></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/fluent/" class="print-no-link">#fluent</a>
+      
+        <a href="/tags/mesh/" class="print-no-link">#mesh</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CFD | OpenFOAM | fluentMeshToFoam .msh to openfoam</div>
+      <div>https://waipangsze.github.io/2025/01/15/CFD-fluentMeshToFoam-msh-to-openfoam/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 15, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>January 15, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/15/html-Visualization/" title="HTML | Visualization">
+                        <span class="hidden-mobile">HTML | Visualization</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

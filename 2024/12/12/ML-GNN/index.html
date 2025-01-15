@@ -21,15 +21,16 @@
   
     <meta name="description" content="Overview of Graph Neural Networks (GNNs) Graph Neural Networks (GNNs) are a specialized type of neural network designed to process and analyze graph-structured data. Unlike traditional neural networks">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ML | NWP | GNN Graph Neural Network Model">
-<meta property="og:url" content="https://waipangsze.github.io/2024/12/12/NWP-ML-GNN/index.html">
+<meta property="og:title" content="ML | GNN Graph Neural Network Model">
+<meta property="og:url" content="https://waipangsze.github.io/2024/12/12/ML-GNN/index.html">
 <meta property="og:site_name" content="wpsze">
 <meta property="og:description" content="Overview of Graph Neural Networks (GNNs) Graph Neural Networks (GNNs) are a specialized type of neural network designed to process and analyze graph-structured data. Unlike traditional neural networks">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/SU2M541.png">
 <meta property="article:published_time" content="2024-12-12T06:55:00.000Z">
-<meta property="article:modified_time" content="2024-12-13T06:57:41.269Z">
+<meta property="article:modified_time" content="2025-01-13T01:01:19.886Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="ECMWF">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
@@ -42,7 +43,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>ML | NWP | GNN Graph Neural Network Model - wpsze</title>
+  <title>ML | GNN Graph Neural Network Model - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -299,7 +300,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="ML | NWP | GNN Graph Neural Network Model"></span>
+            <span id="subtitle" data-typed-text="ML | GNN Graph Neural Network Model"></span>
           
         </div>
 
@@ -322,7 +323,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          387 words
+          1.8k words
         
       </span>
     
@@ -333,7 +334,7 @@
         
         
         
-          4 mins
+          16 mins
         
       </span>
     
@@ -379,7 +380,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">ML | NWP | GNN Graph Neural Network Model</h1>
+            <h1 id="seo-header">ML | GNN Graph Neural Network Model</h1>
             
             
               <div class="markdown-body">
@@ -438,6 +439,187 @@
 <h2 id="other-types-of-graphs-multigraphs-hypergraphs-hypernodes-hierarchical-graphs">Other types of graphs (multigraphs, hypergraphs, hypernodes, hierarchical graphs)</h2>
 <p>We can also consider nested graphs, where for example a node represents a graph, also called a <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/174608.174610">hypernode graph</a>. Nested graphs are useful for <strong>representing hierarchical information</strong>. For example, we can consider a network of molecules, where a node represents a molecule and an edge is shared between two molecules if we have a way (reaction) of transforming one to the other <a target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article-pdf/34/13/i457/50316205/bioinformatics_34_13_i457.pdf">(1)</a>, <a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41467-020-19267-x.pdf">(2)</a>. In this case, we can learn on a nested graph by having a GNN that learns representations at the molecule level and another at the reaction network level, and alternate between them during training.</p>
 <p><img src="https://i.imgur.com/36EVPAi.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h2 id="gnn-introduction"><a target="_blank" rel="noopener" href="https://web.stanford.edu/class/cs224w/index.html#content">GNN introduction</a></h2>
+<ul>
+<li>A graph G can be defined as G = (V, E), where V is the set of nodes, and E are the edges between them.</li>
+<li>If there are directional dependencies between nodes then edges are directed. If not, edges are undirected.</li>
+<li>A graph is often represented by A, an adjacency matrix.</li>
+<li>If a graph has n nodes, A has a dimension of (n × n).</li>
+<li>Sometimes the nodes have a set of features (for example, a user profile). If the node has f numbers of features, then the node feature matrix X has a dimension of (n × f).</li>
+</ul>
+<p><img src="https://i.imgur.com/0efkNVa.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<ul>
+<li>In graph theory, we implement the concept of Node Embedding. It means mapping nodes to a d- dimensional embedding space (low dimensional space rather than the actual dimension of the graph), so that similar nodes in the graph are embedded close to each other. Our goal is to map nodes so that similarity in the embedding space approximates similarity in the network.
+<ul>
+<li>Let’s define <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> as two nodes in a graph.</li>
+<li><span class="math inline">\(x_u\)</span> and <span class="math inline">\(x_v\)</span> are two feature vectors.</li>
+<li>Now we’ll define the encoder function Enc(u) and Enc(v), which convert the feature vectors to <span class="math inline">\(z_u\)</span> and <span class="math inline">\(z_v\)</span>.</li>
+<li>Note: the similarity function could be Euclidean distance.</li>
+</ul></li>
+<li>So the challenge now is how to come up with the encoder function?
+<ul>
+<li>The encoder function should be able to perform :
+<ul>
+<li>Locality (local network neighborhoods)</li>
+<li>Aggregate information</li>
+<li>Stacking multiple layers (computation)</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/NhNdI8o.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/OU2SPdQ.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/NFIF847.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/fKZQc9J.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/zT4XYSp.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<p>where <span class="math inline">\(h_v^k\)</span> is Hidden state of node <span class="math inline">\(v\)</span> on step <span class="math inline">\(k\)</span>.</p>
+<p>Now, to train the model we need to define a loss function on the embeddings.</p>
+<ul>
+<li>We can feed the embeddings into any loss function and run stochastic gradient descent to train the weight parameters.
+<ul>
+<li>Training can be unsupervised or supervised:
+<ul>
+<li><strong>Unsupervised training</strong>:
+<ul>
+<li>Use only the graph structure: similar nodes have similar embeddings. Unsupervised loss function can be a loss based on node proximity in the graph, or random walks. (Node clustering is a typical unsupervised learning task.)</li>
+</ul></li>
+<li><strong>Supervised training</strong>:
+<ul>
+<li>Train model for a supervised task like node classification, normal or anomalous node.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="note note-primary">
+            <p>和周圍位置的資訊一起收集，進到運算，然後傳到下一層，重複這個步驟…那不就是卷積神經網路(CNN)嗎?沒錯，在CNN裡，相鄰位置集結資訊的是圖片的畫素，而在這裡，GNN的訊息傳遞收集的是相鄰位置的端點/連結。差別在於：CNN有固定的規格，而訊息傳遞端看關聯性決定，比較有彈性。</p><p>我們再以端點的訊息傳遞為例。第一層的GNN，收集的是某個端點周圍，有直接關連性的端點的資訊。再堆疊一層之後，雖然重複這個步驟，但別忘了，它周圍那些端點，在上一層也跟他做過一樣的動作 — 蒐集周圍直接關聯性的資訊。所以在第二層，這個端點可以藉由只集結周圍有直接關聯性的端點的資訊，就收集到間接關聯性端點的資訊了。如此層層疊加，疊到一定層數的時候，一個端點可能可以囊括整個圖像一大部分，甚至是整體端點的資訊，只是所含資訊量的比重，隨端點關聯性遠近有所不同而已。</p>
+          </div>
+<h2 id="node-embeddings">Node embeddings</h2>
+<h3 id="graph-representation-learning">Graph Representation Learning</h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/ZxYLdMW.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/FHPzwuF.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<p>why embedding?</p>
+<ul>
+<li>Task: Map nodes into an embedding space
+<ul>
+<li>Similarity of embeddings between nodes indicates their similarity in the network. For example:</li>
+<li>Both nodes are close to each other (connected by an edge)</li>
+<li>Encode network information</li>
+<li>Potentially used for many downstream predictions</li>
+</ul></li>
+<li>Encoder + Decoder Framework</li>
+<li>We will now learn node similarity definition that uses <strong>random walks</strong>, and how to optimize embeddings for such a similarity measure.
+<ul>
+<li>This is <strong>unsupervised</strong>/self-supervised way of learning node embeddings.
+<ul>
+<li>We are <strong>not</strong> utilizing node labels</li>
+<li>We are <strong>not</strong> utilizing node features</li>
+<li>The goal is to directly estimate a set of coordinates(i.e., the embedding) of a node so that some aspect of the network structure (captured by DEC) is preserved.</li>
+<li>These embeddings are task independent</li>
+<li><strong>They are not trained for a specific task but can be used for any task</strong>.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><img src="https://i.imgur.com/f9iPbQC.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h3 id="a-zt-z">A = Z^T Z ?</h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/P93DVQz.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/RNoveXJ.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h3 id="singular-value-decomposition-svd">singular value decomposition (SVD)</h3>
+<p>In linear algebra, the singular value decomposition (SVD) is a factorization of a real or complex matrix into a rotation, followed by a rescaling followed by another rotation. It generalizes the eigendecomposition of a square normal matrix with an orthonormal eigenbasis to any ⁠<span class="math inline">\(m\times n\)</span>⁠ matrix. It is related to the polar decomposition.</p>
+<p><img src="https://i.imgur.com/GyTLhY3.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h3 id="eigendecomposition-of-a-matrix">Eigendecomposition of a matrix</h3>
+<p>like eigen-vector/eigen-values, take first d-dim values?</p>
+<p><img src="https://i.imgur.com/NSU9aE6.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h4 id="cholesky-decomposition-what-we-need">Cholesky decomposition (What we need!!)</h4>
+<p>The Cholesky decomposition of a Hermitian positive-definite matrix A,</p>
+<p><span class="math display">\[
+A = L L^*
+\]</span></p>
+<p><img src="https://i.imgur.com/CWYksHg.png" srcset="/img/loading.gif" lazyload width="500" /> <img src="https://i.imgur.com/AXe1taX.png" srcset="/img/loading.gif" lazyload data-widht="500" /></p>
+<p>But,</p>
+<div class="note note-primary">
+            <p>There are various methods for calculating the Cholesky decomposition. <strong>The computational complexity of commonly used algorithms is <span class="math inline">\(O(n^3)\)</span> in general</strong>.</p>
+          </div>
+<h3 id="graph-is-permutation-invariant">Graph is <em>permutation invariant</em></h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/DlVGg6t.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/F7ZSTtn.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/V2Z75Pk.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/SDAY91T.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<div class="note note-primary">
+            <p><strong>Graph neural networks consist of multiple permutation equivariant / invariant functions</strong></p>
+          </div>
+<ul>
+<li>This explains why the <strong>naïve MLP approach fails for graphs</strong></li>
+</ul>
+<div class="note note-primary">
+            <p>Next: Design graph neural networks that are permutation invariant / equivariant <strong>by passing and aggregating information from neighbors</strong>!</p>
+          </div>
+<h3 id="graph-convolutional-networks-massage-passing">Graph Convolutional Networks &amp; massage passing</h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/Z6UI3cN.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/j4A5H4S.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<ol type="1">
+<li>The rows of input node features and output embeddings are aligned</li>
+</ol>
+<div class="note note-primary">
+            <p>和周圍位置的資訊一起收集，進到運算，然後傳到下一層，重複這個步驟…那不就是卷積神經網路(CNN)嗎?沒錯，在CNN裡，相鄰位置集結資訊的是圖片的畫素，而在這裡，GNN的訊息傳遞收集的是相鄰位置的端點/連結。差別在於：CNN有固定的規格，而訊息傳遞端看關聯性決定，比較有彈性。</p><p>我們再以端點的訊息傳遞為例。第一層的GNN，收集的是某個端點周圍，有直接關連性的端點的資訊。再堆疊一層之後，雖然重複這個步驟，但別忘了，它周圍那些端點，在上一層也跟他做過一樣的動作 — 蒐集周圍直接關聯性的資訊。所以在第二層，這個端點可以藉由只集結周圍有直接關聯性的端點的資訊，就收集到間接關聯性端點的資訊了。如此層層疊加，疊到一定層數的時候，一個端點可能可以囊括整個圖像一大部分，甚至是整體端點的資訊，只是所含資訊量的比重，隨端點關聯性遠近有所不同而已。</p>
+          </div>
+<h3 id="training-model-loss-function">Training model: loss function?</h3>
+<ul>
+<li>How do we train the GCN to generate embeddings? Need to define a <strong>loss function</strong> on the embeddings.</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/UVUEGLk.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/veQIjnw.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/GtwlKjp.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/5aN9B9C.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/S7MPU0P.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/8jRfivB.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/yCUS4U7.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h3 id="capability">Capability</h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/U0OY62w.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/c4IAQhi.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/rGc3QZs.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h3 id="toy-model-interactive-visualiztion-of-gnn">Toy model: Interactive Visualiztion of GNN</h3>
+<p>GNN 101: Visual Learning of Graph Neural Networks in Your Web Browser</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://visual-intelligence-umn.github.io/GNN-101" class="uri">https://visual-intelligence-umn.github.io/GNN-101</a></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/3XObrn8.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/L9KMlJq.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h1 id="gnn-vs-cnn">GNN vs CNN</h1>
+<p><img src="https://i.imgur.com/BmgKRhE.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<ul>
+<li>CNN can be seen as a special GNN with fixed neighbor size and ordering:
+<ul>
+<li>The size of the filter is pre-defined for a CNN.</li>
+<li>The advantage of GNN is it processes arbitrary graphs with different degrees for each node.</li>
+</ul></li>
+<li>CNN is not permutation invariant/equivariant.
+<ul>
+<li>Switching the order of pixels leads to different outputs.</li>
+</ul></li>
+</ul>
+<div class="note note-primary">
+            <p>和周圍位置的資訊一起收集，進到運算，然後傳到下一層，重複這個步驟…那不就是卷積神經網路(CNN)嗎?沒錯，在CNN裡，相鄰位置集結資訊的是圖片的畫素，而在這裡，GNN的訊息傳遞收集的是相鄰位置的端點/連結。差別在於：CNN有固定的規格，而訊息傳遞端看關聯性決定，比較有彈性。</p><p>我們再以端點的訊息傳遞為例。第一層的GNN，收集的是某個端點周圍，有直接關連性的端點的資訊。再堆疊一層之後，雖然重複這個步驟，但別忘了，它周圍那些端點，在上一層也跟他做過一樣的動作 — 蒐集周圍直接關聯性的資訊。所以在第二層，這個端點可以藉由只集結周圍有直接關聯性的端點的資訊，就收集到間接關聯性端點的資訊了。如此層層疊加，疊到一定層數的時候，一個端點可能可以囊括整個圖像一大部分，甚至是整體端點的資訊，只是所含資訊量的比重，隨端點關聯性遠近有所不同而已。</p>
+          </div>
+<div class="note note-primary">
+            <ul><li><strong>GNN is a general architecture</strong><ul><li><strong>CNN can be viewed as a special GNN</strong></li></ul></li></ul>
+          </div>
+<h1 id="gnn-vs-transformer">GNN vs Transformer</h1>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/zAfVR5g.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/rR1efwk.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/7OObt20.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<ul>
+<li>A nice blog plot for this: <a target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-are-graph-neural-networks-bca9f75412aa" class="uri">https://towardsdatascience.com/transformers-are-graph-neural-networks-bca9f75412aa</a></li>
+</ul>
+<h1 id="gnn-framework">GNN Framework</h1>
+<h2 id="gnn-layer">GNN layer</h2>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/hsgTIGD.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/2gceJOo.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/lMJQzR8.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/1j3LoP2.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/Tzd7dkw.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h2 id="different-gnn-layer">Different GNN layer</h2>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/nfsUrA5.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/1vxH2wW.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/DkH1XRR.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/z6PE4z4.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/wAJktVl.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h2 id="some-practices-on-gnn-layer">Some Practices on GNN layer</h2>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/PiNqHRa.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/gMtJNND.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/MhV5wA0.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/rIERKYc.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/N1xN3NF.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h1 id="class-of-gnn">Class of GNN</h1>
+<figure>
+<img src="https://i.imgur.com/9QG4bGC.png" srcset="/img/loading.gif" lazyload alt="Chami, I., Abu-El-Haija, S., Perozzi, B., Ré, C., &amp; Murphy, K. (2022). Machine learning on graphs: A model and comprehensive taxonomy. Journal of Machine Learning Research, 23(89), 1-64." /><figcaption>Chami, I., Abu-El-Haija, S., Perozzi, B., Ré, C., &amp; Murphy, K. (2022). Machine learning on graphs: A model and comprehensive taxonomy. Journal of Machine Learning Research, 23(89), 1-64.</figcaption>
+</figure>
+<h1 id="laplacian-matrix">Laplacian matrix</h1>
+<p>In the mathematical field of graph theory, the Laplacian matrix, also called the graph Laplacian, admittance matrix, Kirchhoff matrix or discrete Laplacian, is a matrix representation of a graph. Named after Pierre-Simon Laplace, the graph Laplacian matrix can be viewed as a matrix form of the negative discrete Laplace operator on a graph approximating the negative continuous Laplacian obtained by the finite difference method.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://archwalker.github.io/blog/2019/06/16/GNN-Spectral-Graph.html">拉普拉斯矩阵, 谱分解, 图上的傅里叶变换</a></li>
+</ul>
+<p><img src="https://i.imgur.com/3BzmSWo.png" srcset="/img/loading.gif" lazyload width="800" /></p>
+<h2 id="laplacian-matrix-normalization">Laplacian matrix normalization</h2>
+<p><img src="https://i.imgur.com/Ium26nb.png" srcset="/img/loading.gif" lazyload width="800" /> <img src="https://i.imgur.com/1YSc7iN.png" srcset="/img/loading.gif" lazyload width="800" /></p>
+<h2 id="inductive-learning-transductive-learning">Inductive learning, Transductive learning</h2>
+<p>Inductive Inference 我們利用training data這五個點，得到一個function，再利用這個function去predict test data的label。</p>
+<p>Transductive Inference 在使用transductive inference的時候，除了training data以外，我們還可以得知test data的一些資訊。如在上圖中，我們可以得知test data的cluster情況，而藉此我們更可以正確判斷node是屬於哪一個category。</p>
+<p>Inductive Inference雖然不能利用到test data的資訊，但如果我們有夠多的training data，而且test data 和training data 是來自於同一個distribution，則Inductive Inference還是會有好的效果。而Inductive Inference最大的優點在於，當有新的test data時，可以套用從training data學到的同一個function來predict。相反的，Transductive Inference可以利用test data的資訊，這對於手邊沒有很多training data的情況很有幫助，但缺點就是當有新的test data進來時，我們需要重新訓練function，因為新的data會提供新的訊息。</p>
+<h1 id="further">Further</h1>
+<h2 id="computational-graphs">Computational graphs</h2>
+<h2 id="expressivity-power-of-gnn">Expressivity Power of GNN</h2>
+<h2 id="a-classical-expressivity-test-is-graph-isomorphism">A classical expressivity test is Graph isomorphism</h2>
+<h2 id="graph-transformers">Graph Transformers</h2>
+<h2 id="heterogeneous-graphs">Heterogeneous Graphs</h2>
+<h3 id="relational-gcn">Relational GCN</h3>
+<h2 id="knowledge-graphs">Knowledge Graphs</h2>
+<h2 id="gnns-for-recommender-systems">GNNs for recommender systems</h2>
 <h1 id="regional-data-driven-weather-modeling-with-a-global-stretched-grid">Regional data-driven weather modeling with a global stretched-grid</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2409.02891">Nipen, Thomas Nils, et al. "Regional data-driven weather modeling with a global stretched-grid." arXiv preprint arXiv:2409.02891 (2024).</a></li>
@@ -446,6 +628,11 @@
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://distill.pub/2021/gnn-intro/">A Gentle Introduction to Graph Neural Networks (<strong>Recommend</strong>)</a></li>
+<li><a target="_blank" rel="noopener" href="https://web.stanford.edu/class/cs224w/index.html#content">CS224W: Machine Learning with Graphs (<strong>Recommend</strong>)</a></li>
+<li><a target="_blank" rel="noopener" href="https://archwalker.github.io/blog/2019/06/16/GNN-Spectral-Graph.html">拉普拉斯矩阵, 谱分解, 图上的傅里叶变换 (<strong>Recommend</strong>)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/136521625?utm_psn=1861545495794683904">图神经网络从入门到入门</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/619400627">时空图神经网络综述</a></li>
+<li><a target="_blank" rel="noopener" href="https://tzuruey.medium.com/graphs-networks-636fc9fddd63">Graphs Networks 分類</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.datacamp.com/tutorial/comprehensive-introduction-graph-neural-networks-gnns-tutorial">A Comprehensive Introduction to Graph Neural Networks (GNNs)</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.kaggle.com/code/iogbonna/introduction-to-graph-neural-network-with-pytorch">Introduction to Graph Neural Network with Pytorch</a></li>
 <li><a target="_blank" rel="noopener" href="https://papers.baulab.info/papers/Scarselli-2009.pdf">Scarselli, F., Gori, M., Tsoi, A. C., Hagenbuchner, M., &amp; Monfardini, G. (2008). <strong>The graph neural network model</strong>. IEEE transactions on neural networks, 20(1), 61-80.</a></li>
@@ -491,6 +678,8 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
         <a href="/tags/ECMWF/" class="print-no-link">#ECMWF</a>
       
         <a href="/tags/AI/" class="print-no-link">#AI</a>
@@ -511,8 +700,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>ML | NWP | GNN Graph Neural Network Model</div>
-      <div>https://waipangsze.github.io/2024/12/12/NWP-ML-GNN/</div>
+      <div>ML | GNN Graph Neural Network Model</div>
+      <div>https://waipangsze.github.io/2024/12/12/ML-GNN/</div>
     </div>
     <div class="license-meta">
       
@@ -530,7 +719,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 13, 2024</div>
+          <div>January 13, 2025</div>
         </div>
       
       

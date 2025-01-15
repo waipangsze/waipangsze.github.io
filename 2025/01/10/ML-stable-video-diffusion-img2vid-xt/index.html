@@ -27,7 +27,7 @@
 <meta property="og:description" content="stable-video-diffusion-img2vid-xt Stable Video Diffusion (SVD) Image-to-Video is a diffusion model that takes in a still image as a conditioning frame, and generates a video from it. Stable Video Diff">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-01-10T03:50:00.000Z">
-<meta property="article:modified_time" content="2025-01-10T07:02:38.886Z">
+<meta property="article:modified_time" content="2025-01-13T01:01:19.898Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
@@ -321,7 +321,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          490 words
+          615 words
         
       </span>
     
@@ -332,7 +332,7 @@
         
         
         
-          5 mins
+          6 mins
         
       </span>
     
@@ -412,12 +412,13 @@
 </tr>
 </tbody>
 </table>
-<p>It’s entirely possible to run the <code>img2vid</code> and <code>img2vid-xt</code> models on a GTX 1080 with <strong>8GB of VRAM</strong>!</p>
+<p>It’s entirely possible to run the <code>img2vid</code> and <code>img2vid-xt</code> models on a GTX 1080 with <strong>8GB of VRAM</strong>! No, it is huge.</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt" class="uri">https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/Stability-AI/generative-models" class="uri">https://github.com/Stability-AI/generative-models</a></li>
 </ul>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs console">micromamba env create -n SVD<br>micromamba activate SVD<br>micromamba install python==3.10<br>micromamba install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia<br>pip install diffusers --upgrade<br>pip install invisible_watermark transformers accelerate safetensors gradio<br>micromamba install git-lfs<br><br><br>git clone https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt<br><br>git clone https://github.com/Stability-AI/generative-models.git<br>cd generative-models/<br><br>(xxx) micromamba install imageio einops fire omegaconf rembg<br><br>pip install -r requirements/pt2.txt <br>pip install .<br>pip3 install -e git+https://github.com/Stability-AI/datapipelines.git@main#egg=sdata<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">下载 safetensors 模型 (svd_xt.safetensors) ，放到 checkpoints 这个文件夹里。</span><br>mkdir checkpoints<br>cd checkpoints/<br>ln -s ../../stable-video-diffusion-img2vid-xt/svd_xt* .<br></code></pre></td></tr></table></figure>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs console">micromamba env create -n SVD<br>micromamba activate SVD<br>micromamba install python==3.10<br>pip3 install torch==2.0.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118<br>pip install -r requirements/pt2.txt <br>pip install .<br>pip3 install -e git+https://github.com/Stability-AI/datapipelines.git@main#egg=sdata<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">下载 safetensors 模型 (svd_xt.safetensors) ，放到 checkpoints 这个文件夹里。</span><br>mkdir checkpoints<br>cd checkpoints/<br>ln -s ../../stable-video-diffusion-img2vid-xt/svd_xt* .<br></code></pre></td></tr></table></figure>
+<p>where Why cu118/torch==2.0.1?</p>
 <p>Run,</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">输入下面的命令，启动界面。</span><br><span class="hljs-meta prompt_">$ </span><span class="language-bash">streamlit run scripts/demo/video_sampling.py</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">上述命令会自动打开一个新的网页。如果没有打开，看看 PowerShell 窗口的信息。找到本地可以打开的URL，应该是这样的：</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">http://localhost:8501</span> <br></code></pre></td></tr></table></figure>
 <h2 id="section"></h2>
@@ -428,6 +429,35 @@
 <li>SVD-XT: Same architecture as SVD but finetuned for 25 frame generation. You can run the community-build gradio demo locally by running python -m scripts.demo.gradio_app.</li>
 <li>We provide a <strong>streamlit demo</strong> <code>scripts/demo/video_sampling.py</code> and a <strong>standalone python script</strong> <code>scripts/sampling/simple_video_sample.py</code> for inference of both models.</li>
 <li>Alongside the model, we release a technical report.</li>
+</ul>
+<h1 id="error">Error</h1>
+<h2 id="importerror-numpy.core.multiarray-failed-to-import">ImportError: numpy.core.multiarray failed to import</h2>
+<p>解决方法：</p>
+<ul>
+<li>这个错误是由于numpy版本与某个库文件包，比如opencv-python版本不匹配造成的</li>
+<li>系统原来不要有numpy这个包！！！如果你已经安装了，请先卸载numpy包，再安装opencv-python包</li>
+</ul>
+<h2 id="typeerror-randn_like-argument-input-position-1-must-be-tensor-not-nonetype">TypeError: randn_like(): argument 'input' (position 1) must be Tensor, not NoneType</h2>
+<p>The error seems to be related to the fact that streamlet is trying to run the model before you uploaded the image. If you just ignore this error and upload an image, everything will work.</p>
+<p>When I switch from Edge browser to Chrome, it seems works fine.</p>
+<h2 id="runtimeerror-numpy-is-not-available">RuntimeError: Numpy is not available</h2>
+<p>This will be easily solved by upgrading numpy.... When I face this error, that time numpy version 1.22 was installed.... I update version to x.x.x using this command.</p>
+<h2 id="error-cant-find-rust-compiler">error: can't find Rust compiler</h2>
+<ul>
+<li>pip install transformers</li>
+</ul>
+<h2 id="outofmemoryerror">OutOfMemoryError</h2>
+<p>torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 4.43 GiB (GPU 0; 23.48 GiB total capacity; 17.83 GiB already allocated; 3.75 GiB free; 19.39 GiB reserved in total by PyTorch) If reserved memory is &gt;&gt; allocated memory try setting max_split_size_mb to avoid fragmentation. See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF</p>
+<ul>
+<li>Decode t frames at a time (set small if you are low on VRAM)</li>
+</ul>
+<h2 id="runtimeerror-sizes-of-tensors-must-match-except-in-dimension-1.-expected-size-6-but-got-size-5-for-tensor-number-1-in-the-list.">RuntimeError: Sizes of tensors must match except in dimension 1. Expected size 6 but got size 5 for tensor number 1 in the list.</h2>
+<p>Make sure the size if the width/height is a 64 step (512, 576, 640...)</p>
+<h2 id="runtimeerror-image-too-small-should-be-larger-than-256x256">RuntimeError: image too small, should be larger than 256x256</h2>
+<h2 id="typeerror-tiffwriter.write-got-an-unexpected-keyword-argument-fps">TypeError: TiffWriter.write() got an unexpected keyword argument 'fps'</h2>
+<ul>
+<li>pip install imageio==2.19.3 (?)</li>
+<li>pip install imageio-ffmpeg==0.4.7 (work!)</li>
 </ul>
 <h1 id="references">References</h1>
 <ol type="1">
@@ -507,7 +537,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 10, 2025</div>
+          <div>January 13, 2025</div>
         </div>
       
       
@@ -537,6 +567,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/01/13/ML-Time-Series/" title="ML | Time Series">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ML | Time Series</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
