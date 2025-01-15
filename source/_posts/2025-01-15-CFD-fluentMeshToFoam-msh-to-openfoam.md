@@ -119,7 +119,196 @@ mkdir system
 ```
 and prepare all requried files,
 
-{% fold info @prepare %}
+3. Copy your .msh file to the case directory:
+```bash
+$ file supersonic_injet-stead.msh 
+supersonic_injet-stead.msh: ASCII text
+
+cp /path/to/your/supersonic_injet-stead.msh .
+```
+
+4. Run the conversion tool:
+```bash
+fluent3DMeshToFoam supersonic_injet-stead.msh
+```
+
+{% fold info @fluent3DMeshToFoam results %}
+```console
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+Build  : 8
+Exec   : fluent3DMeshToFoam supersonic_injet-stead.msh
+Date   : Jan 15 2025
+Time   : 15:10:16
+Host   : "xxx"
+PID    : 2856052
+I/O    : uncollated
+Case   : /home/wpsze/openfoam/simulation/supersonic
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Dimension of grid: 3
+Number of points: 20850
+Number of cells: 10180
+Number of faces: 40964
+PointGroup: 1 start: 0 end: 20849.  Reading points...done.
+FaceGroup: 2 start: 0 end: 20115.  Reading mixed faces...done.
+FaceGroup: 10 start: 20116 end: 20171.  Reading mixed faces...done.
+FaceGroup: 11 start: 20172 end: 20173.  Reading mixed faces...done.
+FaceGroup: 12 start: 20174 end: 20355.  Reading mixed faces...done.
+FaceGroup: 13 start: 20356 end: 20411.  Reading mixed faces...done.
+FaceGroup: 14 start: 20412 end: 20591.  Reading mixed faces...done.
+FaceGroup: 15 start: 20592 end: 20603.  Reading mixed faces...done.
+FaceGroup: 16 start: 20604 end: 40963.  Reading mixed faces...done.
+CellGroup: 1 start: 0 end: 10179 type: 1
+Zone: 1 name: fluid-1 type: fluid.  Reading zone data...done.
+Zone: 2 name: interior-1 type: interior.  Reading zone data...done.
+Zone: 10 name: inlet1 type: pressure-outlet.  Reading zone data...done.
+Zone: 11 name: inlet2 type: pressure-outlet.  Reading zone data...done.
+Zone: 12 name: top type: pressure-outlet.  Reading zone data...done.
+Zone: 13 name: outlet type: pressure-outlet.  Reading zone data...done.
+Zone: 14 name: bottom type: wall.  Reading zone data...done.
+Zone: 15 name: obstacle type: wall.  Reading zone data...done.
+Zone: 16 name: frontandback type: pressure-outlet.  Reading zone data...done.
+
+FINISHED LEXING
+
+Creating patch 0 for zone: 10 name: inlet1 type: pressure-outlet
+Creating patch 1 for zone: 11 name: inlet2 type: pressure-outlet
+Creating patch 2 for zone: 12 name: top type: pressure-outlet
+Creating patch 3 for zone: 13 name: outlet type: pressure-outlet
+Creating patch 4 for zone: 14 name: bottom type: wall
+Creating patch 5 for zone: 15 name: obstacle type: wall
+Creating patch 6 for zone: 16 name: frontandback type: pressure-outlet
+Creating cellZone 0 name: fluid-1 type: fluid
+Creating faceZone 0 name: interior-1 type: interior
+faceZone from Fluent indices: 0 to: 20115 type: interior
+patch 0 from Fluent indices: 20116 to: 20171 type: pressure-outlet
+patch 1 from Fluent indices: 20172 to: 20173 type: pressure-outlet
+patch 2 from Fluent indices: 20174 to: 20355 type: pressure-outlet
+patch 3 from Fluent indices: 20356 to: 20411 type: pressure-outlet
+patch 4 from Fluent indices: 20412 to: 20591 type: wall
+patch 5 from Fluent indices: 20592 to: 20603 type: wall
+patch 6 from Fluent indices: 20604 to: 40963 type: pressure-outlet
+
+Writing mesh to "constant/region0"
+
+End
+```
+{% endfold %}
+
+5. Check the mesh quality (optional but recommended):
+```bash
+checkMesh
+```
+
+{% fold info @checkMesh results %}
+```console
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+Build  : 8
+Exec   : checkMesh
+Date   : Jan 15 2025
+Time   : 22:33:17
+Host   : "xxx"
+PID    : 2938734
+I/O    : uncollated
+Case   : /home/wpsze/openfoam/simulation/supersonic
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Create polyMesh for time = 0
+
+Time = 0
+
+Mesh stats
+    points:           20850
+    internal points:  0
+    faces:            40964
+    internal faces:   20116
+    cells:            10180
+    faces per cell:   6
+    boundary patches: 7
+    point zones:      0
+    face zones:       1
+    cell zones:       1
+
+Overall number of cells of each type:
+    hexahedra:     10180
+    prisms:        0
+    wedges:        0
+    pyramids:      0
+    tet wedges:    0
+    tetrahedra:    0
+    polyhedra:     0
+
+Checking topology...
+    Boundary definition OK.
+    Cell to face addressing OK.
+    Point usage OK.
+    Upper triangular ordering OK.
+    Face vertices OK.
+    Number of regions: 1 (OK).
+
+Checking patch topology for multiply connected surfaces...
+    Patch               Faces    Points   Surface topology                  
+    inlet1              56       114      ok (non-closed singly connected)  
+    inlet2              2        6        ok (non-closed singly connected)  
+    top                 182      366      ok (non-closed singly connected)  
+    outlet              56       114      ok (non-closed singly connected)  
+    bottom              180      364      ok (non-closed singly connected)  
+    obstacle            12       28       ok (non-closed singly connected)  
+    frontandback        20360    20850    ok (non-closed singly connected)  
+
+Checking geometry...
+    Overall domain bounding box (-1.33333 0 0) (3 1 1)
+    Mesh has 3 geometric (non-empty/wedge) directions (1 1 1)
+    Mesh has 3 solution (non-empty) directions (1 1 1)
+    Boundary openness (2.3102e-17 -4.76257e-17 4.86259e-16) OK.
+    Max cell openness = 1.0842e-16 OK.
+    Max aspect ratio = 62.3378 OK.
+    Minimum face area = 0.00026736. Maximum face area = 0.03.  Face area magnitudes OK.
+    Min volume = 0.00026736. Max volume = 0.00054.  Total volume = 4.32833.  Cell volumes OK.
+    Mesh non-orthogonality Max: 0 average: 0
+    Non-orthogonality check OK.
+    Face pyramids OK.
+    Max skewness = 5.92121e-14 OK.
+    Coupled point location match (average 0) OK.
+
+Mesh OK.
+
+End
+```
+{% endfold %}
+
+After conversion, you'll have:
+- `constant/polyMesh/` directory containing the mesh files
+- Basic OpenFOAM mesh files: points, faces, cells, boundary, etc.
+
+
+# Run
+
+{% fold info @prepare (not correct files) %}
 I'll help you set up the necessary files for your case. Given your specifications, we'll set up a compressible flow case since you have temperature and pressure specified.
 
 1. First, create the `constant/thermophysicalProperties` file:
@@ -493,106 +682,6 @@ boundaryField
 EOF
 ```
 {% endfold %}
-
-1. Copy your .msh file to the case directory:
-```bash
-$ file supersonic_injet-stead.msh 
-supersonic_injet-stead.msh: ASCII text
-
-cp /path/to/your/supersonic_injet-stead.msh .
-```
-
-4. Run the conversion tool:
-```bash
-fluent3DMeshToFoam supersonic_injet-stead.msh
-```
-
-{% fold info @fluent3DMeshToFoam results %}
-```console
-/*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  8
-     \\/     M anipulation  |
-\*---------------------------------------------------------------------------*/
-Build  : 8
-Exec   : fluent3DMeshToFoam supersonic_injet-stead.msh
-Date   : Jan 15 2025
-Time   : 15:10:16
-Host   : "xxx"
-PID    : 2856052
-I/O    : uncollated
-Case   : /home/wpsze/openfoam/simulation/supersonic
-nProcs : 1
-sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
-fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)
-allowSystemOperations : Allowing user-supplied system call operations
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-Create time
-
-Dimension of grid: 3
-Number of points: 20850
-Number of cells: 10180
-Number of faces: 40964
-PointGroup: 1 start: 0 end: 20849.  Reading points...done.
-FaceGroup: 2 start: 0 end: 20115.  Reading mixed faces...done.
-FaceGroup: 10 start: 20116 end: 20171.  Reading mixed faces...done.
-FaceGroup: 11 start: 20172 end: 20173.  Reading mixed faces...done.
-FaceGroup: 12 start: 20174 end: 20355.  Reading mixed faces...done.
-FaceGroup: 13 start: 20356 end: 20411.  Reading mixed faces...done.
-FaceGroup: 14 start: 20412 end: 20591.  Reading mixed faces...done.
-FaceGroup: 15 start: 20592 end: 20603.  Reading mixed faces...done.
-FaceGroup: 16 start: 20604 end: 40963.  Reading mixed faces...done.
-CellGroup: 1 start: 0 end: 10179 type: 1
-Zone: 1 name: fluid-1 type: fluid.  Reading zone data...done.
-Zone: 2 name: interior-1 type: interior.  Reading zone data...done.
-Zone: 10 name: inlet1 type: pressure-outlet.  Reading zone data...done.
-Zone: 11 name: inlet2 type: pressure-outlet.  Reading zone data...done.
-Zone: 12 name: top type: pressure-outlet.  Reading zone data...done.
-Zone: 13 name: outlet type: pressure-outlet.  Reading zone data...done.
-Zone: 14 name: bottom type: wall.  Reading zone data...done.
-Zone: 15 name: obstacle type: wall.  Reading zone data...done.
-Zone: 16 name: frontandback type: pressure-outlet.  Reading zone data...done.
-
-FINISHED LEXING
-
-Creating patch 0 for zone: 10 name: inlet1 type: pressure-outlet
-Creating patch 1 for zone: 11 name: inlet2 type: pressure-outlet
-Creating patch 2 for zone: 12 name: top type: pressure-outlet
-Creating patch 3 for zone: 13 name: outlet type: pressure-outlet
-Creating patch 4 for zone: 14 name: bottom type: wall
-Creating patch 5 for zone: 15 name: obstacle type: wall
-Creating patch 6 for zone: 16 name: frontandback type: pressure-outlet
-Creating cellZone 0 name: fluid-1 type: fluid
-Creating faceZone 0 name: interior-1 type: interior
-faceZone from Fluent indices: 0 to: 20115 type: interior
-patch 0 from Fluent indices: 20116 to: 20171 type: pressure-outlet
-patch 1 from Fluent indices: 20172 to: 20173 type: pressure-outlet
-patch 2 from Fluent indices: 20174 to: 20355 type: pressure-outlet
-patch 3 from Fluent indices: 20356 to: 20411 type: pressure-outlet
-patch 4 from Fluent indices: 20412 to: 20591 type: wall
-patch 5 from Fluent indices: 20592 to: 20603 type: wall
-patch 6 from Fluent indices: 20604 to: 40963 type: pressure-outlet
-
-Writing mesh to "constant/region0"
-
-End
-```
-{% endfold %}
-
-5. Check the mesh quality (optional but recommended):
-```bash
-checkMesh
-```
-
-After conversion, you'll have:
-- `constant/polyMesh/` directory containing the mesh files
-- Basic OpenFOAM mesh files: points, faces, cells, boundary, etc.
-
-
-# Run
 
 After setting up these files:
 
