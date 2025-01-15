@@ -374,6 +374,10 @@ Connection URL: cs://node.HPC.com:5566
 Accepting connection(s): node.HPC.com:5566
 ```
 
+If `pvserver: error while loading shared libraries: libcgns.so.3.4: cannot open shared object file: No such file or directory`,
+
+
+
 ### Local PC,
 
 - Open a new terminal, `ssh -N -L 5566:localhost:5566 username@remote-ip`
