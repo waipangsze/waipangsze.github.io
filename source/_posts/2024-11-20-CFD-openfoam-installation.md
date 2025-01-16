@@ -351,7 +351,8 @@ $ touch test.foam
 
 ## Remote paraview (Recommend)
 
-- [[High performance computing] How to connect to a remote ParaView server](https://youtu.be/-jFw9jVHJgs)
+- [Remote and parallel visualization](https://docs.paraview.org/en/latest/ReferenceManual/parallelDataVisualization.html)
+- [High performance computing: How to connect to a remote ParaView server](https://youtu.be/-jFw9jVHJgs)
 
 ### Remote side (HPC),
 
