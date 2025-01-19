@@ -40,3 +40,29 @@ banner_img:
 # Paper
 
 - [Mardani, Morteza, et al. "Residual corrective diffusion modeling for km-scale atmospheric downscaling." arXiv preprint arXiv:2309.15214 (2023).](https://arxiv.org/abs/2309.15214)
+
+Consider a specific region on Earth, mapped onto a two-dimensional grid. Our input $\mathbf{y} \in \mathbb{R} ^{c_\mathrm{in}\times m\times n}$ is a low-resolution meteorological data taken from a 25-km global reanalysis, or weather forecasting model (e.g., FourCastNet [46,36,7], or the Global Forecast System (GFS) [44]). Here, **$c_\mathrm{in}$ represents the number of input channels and $m,n$ represent the dimensions of a 2D subset of the globe**. **Our targets $\mathbf{x} \in \mathbb{R} ^{c_\mathrm{out}\times p\times q}$ come from corresponding data aligned in time $c_\mathrm{out}$ but having higher resolution, i.e., $p>m$ and $q>n.$**
+
+In our proof of concept we use the **ERA5 reanalysis as input**, over a subregion surrounding Taiwan, with $m=n=36,c_{in}=12$ and $c_\mathrm{out}=4.$ See Table S2 for details about the inputs and outputs. The target $\begin{array}{c}\text{data are 12.5 times higher resolution }(p=q=448)\end{array}$and **were produced using a radar-assimilating Weather Research and Forecasting (WRF) physical simulator [48] provided by the Central Weather Administration of Taiwan (CWA) [15] (i.e., CWA-WRF)**, which employs a dynamical downscaling approach. Though imperfect, WRF is a SOTA model for km-scale weather simulations and is used operationally by several national weather agencies.
+
+$$
+\begin{align*}
+\mbox{CorrDiff} : \mathbf{y} \in \mathbb{R} ^{c_\mathrm{in}\times m\times n} \longrightarrow \mathbf{x} \in \mathbb{R} ^{c_\mathrm{out}\times p\times q} \\
+p>m , q>n
+\end{align*}
+$$
+
+![](https://i.imgur.com/LgX4aZr.png){width=800}
+![](https://i.imgur.com/e9PX9n8.png){width=800}
+
+CorrDiff employs a two-step approach to effectively manage the complexities of multi-scale atmospheric data:
+
+- **UNet Prediction**: The first step involves using a UNet architecture to predict the *conditional mean of the atmospheric variables based on lower-resolution data*.
+- **Diffusion Correction**: The second step utilizes a correction diffusion model to predict the residuals, effectively refining the output by learning from the differences between the predicted mean and actual observations.
+- This method is **like to Reynolds decomposition in fluid dynamics**, allowing for a more manageable learning process by isolating generative learning to stochastic scales. 
+
+# Getting started
+
+To build custom CorrDiff versions, you can get started by training the **“Mini” version of CorrDiff**, which uses smaller training samples and a smaller network to reduce training costs from thousands of GPU hours to **around 10 hours on A100 GPUs** while still producing reasonable results. It also includes a simple data loader that can be used as a baseline for training CorrDiff on custom datasets.
+
+

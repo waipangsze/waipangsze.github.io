@@ -15,6 +15,21 @@ banner_img:
 
 # Diffusion Models
 
+Diffusion Models are **generative models**, meaning that they are used to generate data similar to the data on which they are trained. Fundamentally, **Diffusion Models work by destroying training data through the successive addition of Gaussian noise, and then learning to recover the data by reversing this noising process**. After training, we can use the Diffusion Model to generate data by simply passing randomly sampled noise through the learned denoising process.
+
+More specifically, a Diffusion Model is a **latent variable model** which maps to the latent space **using a fixed Markov chain**. This chain gradually adds noise to the data in order to obtain the approximate posterior $q(x_1:T|x_0)$, where $x_1, ..., x_T$ are the latent variables with the same dimensionality as $x_0$. In the figure below, we see such a Markov chain manifested for image data.
+
+Ultimately, the image is asymptotically transformed to pure Gaussian noise. The goal of training a diffusion model is to learn the **reverse process**. By traversing backwards along this chain, we can generate new data.
+
+![](https://i.imgur.com/BOHjnCW.png)
+![](https://i.imgur.com/ArrrokC.png)
+
+## Training
+
+- Loss function: **Kullback-Leibler (KL) Divergences**. The KL Divergence is an asymmetric statistical distance measure of how much one probability distribution P differs from a reference distribution Q.
+
+![](https://i.imgur.com/AGYXOQO.png)
+![](https://i.imgur.com/EslrwLZ.png)
 
 # References
 

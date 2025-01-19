@@ -114,8 +114,7 @@ int main() {
 
 ## Table
 
-- <https://discourse.devontechnologies.com/t/css-for-markdown-styling-tables/71369>
-- <https://stackoverflow.com/questions/72751703/unable-to-style-a-table-correctly-using-css>
+- [CSS筆記-如何用Table做出好看的表格](https://medium.com/%E8%B2%93%E7%A7%91%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E6%97%A5%E5%B8%B8/%E7%94%A8css-table%E5%81%9A%E5%87%BA%E5%A5%BD%E7%9C%8B%E7%9A%84%E8%A1%A8%E6%A0%BC-7ec639942fea)
 
 You first have to understand table structure: a `table` element consists of a head and a body (`thead` and `tbody`). Both of them in turn are made up of row (`tr`) elements. And every row consists of `th` (for a table head) or `td` elements which are finally defining the table cells themselves.
 
@@ -129,6 +128,51 @@ table :is(td, th) {
 ```
 
 Here,  `table :is(td.th)` is an abbreviation for `table td, table th`.
+
+{% note primary %}
+**Edit markdown.styl**
+{% endnote %}
+
+<style>
+.wrap{
+  overflow:hidden;
+  border-radius:10px 10px 0px 0px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+}
+
+table{
+  font-family: 'Oswald', sans-serif;
+  border-collapse:separate;
+
+}
+
+th{
+  background-color:#009879;
+  color:#ffffff;
+  width:25vw;
+  height:25px;
+}
+
+td{
+  background-color:#ffffff;
+  width:25vw;
+  height:25px;
+  text-align:left;
+}
+
+tr{
+  border-bottom: 1px solid #dddddd;
+}
+
+tr:nth-of-type(even) td{
+  background-color:#f3f3f3;
+}
+
+tr:hover td{
+  background-color:#ffe599;
+    transition: all 0.3s ease-in-out;
+}
+</style>
 
 | Syntax | Description |
 | ----------- | ----------- |
@@ -151,33 +195,6 @@ Here,  `table :is(td.th)` is an abbreviation for `table td, table th`.
 
 <https://nabeelvalley.co.za/blog/2021/23-03/custom-styles-in-markdown/>
 
-<style>
-
-table {
-  /*width: 80%;*/
-  border-collapse: collapse;
-  text-align: center;
-  margin: auto;
-}
-
-th{
-        background-color: #7e7e7e;
-        /* sets table header cell background colour */
-        border: 3px solid black;
-        color: #ffffff!important;
-}
-
-th, td {
-  border: .4rem solid #999;
-  padding: .2em;
-
-}
-
-tr:nth-child(even) {
-  background-color: #b2b2b2!important;
-  color: #000000!important;
-}
-</style>
 
 | <!-- -->      | <!-- -->        | <!-- -->      |
 |:-------------:|:---------------:|:-------------:|
