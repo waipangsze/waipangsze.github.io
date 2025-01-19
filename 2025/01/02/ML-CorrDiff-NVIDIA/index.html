@@ -26,14 +26,16 @@
 <meta property="og:site_name" content="wpsze">
 <meta property="og:description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（Corrector Diffusion）的生">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/LgX4aZr.png">
 <meta property="article:published_time" content="2025-01-02T02:01:00.000Z">
-<meta property="article:modified_time" content="2025-01-05T01:25:44.423Z">
+<meta property="article:modified_time" content="2025-01-18T09:08:27.187Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
 <meta property="article:tag" content="pytorch">
 <meta property="article:tag" content="NVIDIA">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/LgX4aZr.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -238,9 +240,25 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
                     <i class="iconfont icon-plan"></i>
                     <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
                   </a>
                 
                   
@@ -319,7 +337,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k words
+          1.7k words
         
       </span>
     
@@ -330,7 +348,7 @@
         
         
         
-          14 mins
+          15 mins
         
       </span>
     
@@ -435,6 +453,66 @@ learning）進行訓練，共同打磨出這款模型。</li>
 "Residual corrective diffusion modeling for km-scale atmospheric
 downscaling." arXiv preprint arXiv:2309.15214 (2023).</a></li>
 </ul>
+<p>Consider a specific region on Earth, mapped onto a two-dimensional
+grid. Our input <span class="math inline">\(\mathbf{y} \in \mathbb{R}
+^{c_\mathrm{in}\times m\times n}\)</span> is a low-resolution
+meteorological data taken from a 25-km global reanalysis, or weather
+forecasting model (e.g., FourCastNet [46,36,7], or the Global Forecast
+System (GFS) [44]). Here, <strong><span
+class="math inline">\(c_\mathrm{in}\)</span> represents the number of
+input channels and <span class="math inline">\(m,n\)</span> represent
+the dimensions of a 2D subset of the globe</strong>. <strong>Our targets
+<span class="math inline">\(\mathbf{x} \in \mathbb{R}
+^{c_\mathrm{out}\times p\times q}\)</span> come from corresponding data
+aligned in time <span class="math inline">\(c_\mathrm{out}\)</span> but
+having higher resolution, i.e., <span
+class="math inline">\(p&gt;m\)</span> and <span
+class="math inline">\(q&gt;n.\)</span></strong></p>
+<p>In our proof of concept we use the <strong>ERA5 reanalysis as
+input</strong>, over a subregion surrounding Taiwan, with <span
+class="math inline">\(m=n=36,c_{in}=12\)</span> and <span
+class="math inline">\(c_\mathrm{out}=4.\)</span> See Table S2 for
+details about the inputs and outputs. The target <span
+class="math inline">\(\begin{array}{c}\text{data are 12.5 times higher
+resolution }(p=q=448)\end{array}\)</span>and <strong>were produced using
+a radar-assimilating Weather Research and Forecasting (WRF) physical
+simulator [48] provided by the Central Weather Administration of Taiwan
+(CWA) [15] (i.e., CWA-WRF)</strong>, which employs a dynamical
+downscaling approach. Though imperfect, WRF is a SOTA model for km-scale
+weather simulations and is used operationally by several national
+weather agencies.</p>
+<p><span class="math display">\[
+\begin{align*}
+\mbox{CorrDiff} : \mathbf{y} \in \mathbb{R} ^{c_\mathrm{in}\times
+m\times n} \longrightarrow \mathbf{x} \in \mathbb{R}
+^{c_\mathrm{out}\times p\times q} \\
+p&gt;m , q&gt;n
+\end{align*}
+\]</span></p>
+<p><img src="https://i.imgur.com/LgX4aZr.png" srcset="/img/loading.gif" lazyload width="800" /> <img
+src="https://i.imgur.com/e9PX9n8.png" srcset="/img/loading.gif" lazyload width="800" /></p>
+<p>CorrDiff employs a two-step approach to effectively manage the
+complexities of multi-scale atmospheric data:</p>
+<ul>
+<li><strong>UNet Prediction</strong>: The first step involves using a
+UNet architecture to predict the <em>conditional mean of the atmospheric
+variables based on lower-resolution data</em>.</li>
+<li><strong>Diffusion Correction</strong>: The second step utilizes a
+correction diffusion model to predict the residuals, effectively
+refining the output by learning from the differences between the
+predicted mean and actual observations.</li>
+<li>This method is <strong>like to Reynolds decomposition in fluid
+dynamics</strong>, allowing for a more manageable learning process by
+isolating generative learning to stochastic scales.</li>
+</ul>
+<h1 id="getting-started">Getting started</h1>
+<p>To build custom CorrDiff versions, you can get started by training
+the <strong>“Mini” version of CorrDiff</strong>, which uses smaller
+training samples and a smaller network to reduce training costs from
+thousands of GPU hours to <strong>around 10 hours on A100 GPUs</strong>
+while still producing reasonable results. It also includes a simple data
+loader that can be used as a baseline for training CorrDiff on custom
+datasets.</p>
 
                 
               </div>
@@ -505,7 +583,7 @@ downscaling." arXiv preprint arXiv:2309.15214 (2023).</a></li>
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 5, 2025</div>
+          <div>January 18, 2025</div>
         </div>
       
       
