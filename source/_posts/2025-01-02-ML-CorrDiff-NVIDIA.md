@@ -73,4 +73,22 @@ Importantly, **兩步驟來先後訓練**
 
 To build custom CorrDiff versions, you can get started by training the **“Mini” version of CorrDiff**, which uses smaller training samples and a smaller network to reduce training costs from thousands of GPU hours to **around 10 hours on A100 GPUs** while still producing reasonable results. It also includes a simple data loader that can be used as a baseline for training CorrDiff on custom datasets.
 
+Start by installing Modulus (if not already installed) and copying this folder (examples/generative/corrdiff) to a system with a GPU available. Also download the CorrDiff-Mini dataset from [NGC](https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/resources/modulus_datasets-hrrr_mini).
 
+## NVIDIA Modulus
+
+- <https://github.com/NVIDIA/modulus>
+- `git clone https://github.com/NVIDIA/modulus.git`
+- <https://github.com/NVIDIA/modulus/tree/main/examples/generative/corrdiff>
+- [Modulus Overview | System Requirements](https://docs.nvidia.com/deeplearning/modulus/getting-started/index.html#system-requirements)
+- The **CorrDiff-Mini training dataset** of ERA5 (low-resolution) reanalysis and the corresponding HRRR (high-resolution) analysis fields at a resolution of approximately 3 km per pixel. It is intended to be used with the CorrDiff-Mini code in Modulus to enable training a lightweight CorrDiff version for educational and testing purposes and as a baseline for implementing custom versions of CorrDiff.
+  - <https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/resources/modulus_datasets-hrrr_mini>
+  - The data are collected from the **period 2018-2021 from the HRRR CONUS** domain covering the continental United States and some surrounding regions. The samples are **64x64 pixels in size**, with a spatial resolution of **approximately 3 km per pixel**.
+  - The ERA5 variables, intended to be used as the CorrDiff input, include **temperatures (t), geopotential height (z), west-east (u) and south-north (v) winds and specific humidities (q), each as 1000, 850, 500 and 250 hPa pressure levels, as well as the 10-meter winds, 2-meter temperature, total column water vapor, surface pressure and mean sea level pressure.** The HRRR variables, intended as the CorrDiff **output, include 10-meter winds, 2-meter temperature and total precipitation.**
+
+```console
+micromamba env create -n CorrDiff
+micromamba activate CorrDiff
+micromamba install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
+pip install nvidia-modulus nvidia-modulus-sym ???
+```
