@@ -19,20 +19,25 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Diffusion Models References  Introduction to Diffusion Models for Machine Learning 李宏毅 Hung-yi Lee is very famous on teaching machine learning course in taiwan 理解 Stable Diffusion UNet 网络">
+    <meta name="description" content="Diffusion Models Diffusion Models are generative models, meaning that they are used to generate data similar to the data on which they are trained. Fundamentally, Diffusion Models work by destroying t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ML | Diffusion Models">
 <meta property="og:url" content="https://waipangsze.github.io/2024/12/15/ML-Diffusion-Models/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="Diffusion Models References  Introduction to Diffusion Models for Machine Learning 李宏毅 Hung-yi Lee is very famous on teaching machine learning course in taiwan 理解 Stable Diffusion UNet 网络">
+<meta property="og:description" content="Diffusion Models Diffusion Models are generative models, meaning that they are used to generate data similar to the data on which they are trained. Fundamentally, Diffusion Models work by destroying t">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/BOHjnCW.png">
+<meta property="og:image" content="https://i.imgur.com/ArrrokC.png">
+<meta property="og:image" content="https://i.imgur.com/AGYXOQO.png">
+<meta property="og:image" content="https://i.imgur.com/EslrwLZ.png">
 <meta property="article:published_time" content="2024-12-15T03:55:00.000Z">
-<meta property="article:modified_time" content="2024-12-17T04:05:41.597Z">
+<meta property="article:modified_time" content="2025-01-20T00:39:15.012Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
 <meta property="article:tag" content="pytorch">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/BOHjnCW.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -237,9 +242,25 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
                     <i class="iconfont icon-plan"></i>
                     <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
                   </a>
                 
                   
@@ -318,7 +339,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9 words
+          41 words
         
       </span>
     
@@ -381,6 +402,15 @@
               <div class="markdown-body">
                 
                 <h1 id="diffusion-models">Diffusion Models</h1>
+<p>Diffusion Models are <strong>generative models</strong>, meaning that they are used to generate data similar to the data on which they are trained. Fundamentally, <strong>Diffusion Models work by destroying training data through the successive addition of Gaussian noise, and then learning to recover the data by reversing this noising process</strong>. After training, we can use the Diffusion Model to generate data by simply passing randomly sampled noise through the learned denoising process.</p>
+<p>More specifically, a Diffusion Model is a <strong>latent variable model</strong> which maps to the latent space <strong>using a fixed Markov chain</strong>. This chain gradually adds noise to the data in order to obtain the approximate posterior <span class="math inline">\(q(x_1:T|x_0)\)</span>, where <span class="math inline">\(x_1, ..., x_T\)</span> are the latent variables with the same dimensionality as <span class="math inline">\(x_0\)</span>. In the figure below, we see such a Markov chain manifested for image data.</p>
+<p>Ultimately, the image is asymptotically transformed to pure Gaussian noise. The goal of training a diffusion model is to learn the <strong>reverse process</strong>. By traversing backwards along this chain, we can generate new data.</p>
+<p><img src="https://i.imgur.com/BOHjnCW.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/ArrrokC.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="training">Training</h2>
+<ul>
+<li>Loss function: <strong>Kullback-Leibler (KL) Divergences</strong>. The KL Divergence is an asymmetric statistical distance measure of how much one probability distribution P differs from a reference distribution Q.</li>
+</ul>
+<p><img src="https://i.imgur.com/AGYXOQO.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/EslrwLZ.png" srcset="/img/loading.gif" lazyload /></p>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://www.assemblyai.com/blog/diffusion-models-for-machine-learning-introduction/">Introduction to Diffusion Models for Machine Learning</a></li>
@@ -455,7 +485,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 17, 2024</div>
+          <div>January 20, 2025</div>
         </div>
       
       

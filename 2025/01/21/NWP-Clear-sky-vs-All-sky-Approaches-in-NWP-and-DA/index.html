@@ -1,0 +1,952 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Clear-sky vs. All-sky Approaches in NWP and DA In the field of Numerical Weather Prediction (NWP) and Data Assimilation (DA), the clear-sky and all-sky approaches represent two different methodologies">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | Clear-sky vs. All-sky Approaches in NWP and DA">
+<meta property="og:url" content="https://waipangsze.github.io/2025/01/21/NWP-Clear-sky-vs-All-sky-Approaches-in-NWP-and-DA/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Clear-sky vs. All-sky Approaches in NWP and DA In the field of Numerical Weather Prediction (NWP) and Data Assimilation (DA), the clear-sky and all-sky approaches represent two different methodologies">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/tckuU85.png">
+<meta property="article:published_time" content="2025-01-21T05:29:00.000Z">
+<meta property="article:modified_time" content="2025-01-21T08:06:36.873Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="DA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/tckuU85.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | Clear-sky vs. All-sky Approaches in NWP and DA - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitor</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/tckuU85.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | Clear-sky vs. All-sky Approaches in NWP and DA"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-21 13:29" pubdate>
+          January 21, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | Clear-sky vs. All-sky Approaches in NWP and DA</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="clear-sky-vs.-all-sky-approaches-in-nwp-and-da">Clear-sky vs. All-sky Approaches in NWP and DA</h1>
+<p>In the field of Numerical Weather Prediction (NWP) and Data Assimilation (DA), the <strong>clear-sky</strong> and <strong>all-sky</strong> approaches represent two different methodologies for incorporating satellite observations into weather models.</p>
+<h2 id="clear-sky-approach">Clear-sky Approach</h2>
+<p>The <strong>clear-sky approach</strong> has been the traditional method used in NWP since the 1980s, <strong>where observations (obs) affected by clouds are typically excluded from the assimilation process</strong>. This exclusion arises from the challenges in accurately modeling cloud and precipitation conditions, which can significantly distort satellite measurements. As a result, only cloud-free observations are assimilated, limiting the amount of useful data incorporated into weather models. (<strong>其中受雲影響的觀測 (obs) 被排除在同化過程之外</strong>)</p>
+<ul>
+<li><strong>Limitations</strong>:
+<ul>
+<li>Excludes a large percentage of available satellite data, particularly in cloudy regions.</li>
+<li>Can lead to biases in model outputs due to lack of information about cloud dynamics and moisture distribution.</li>
+</ul></li>
+</ul>
+<h2 id="all-sky-approach">All-sky Approach</h2>
+<p>The <strong>all-sky approach</strong>, developed more recently, aims to utilize all available satellite observations, <strong>including those impacted by clouds and precipitation</strong>. This method has gained traction over the last decade as advancements in data assimilation techniques have improved the ability to handle cloud-affected data effectively.</p>
+<ul>
+<li><strong>Key Features</strong>:
+<ul>
+<li>Direct assimilation of satellite radiances in cloudy conditions, allowing for a more comprehensive use of available data.</li>
+<li>Enhances the analysis of atmospheric variables such as temperature, humidity, and wind speed by incorporating information from cloud structures.</li>
+<li>Aims to correct systematic errors in forecasts by using cloud-related observations to inform model adjustments.</li>
+</ul></li>
+</ul>
+<h2 id="benefits-of-all-sky-assimilation">Benefits of All-sky Assimilation</h2>
+<ol type="1">
+<li><strong>Increased Data Utilization</strong>: The all-sky approach allows for a more balanced assimilation of satellite observations across both clear and cloudy areas, overcoming previous biases towards clear conditions.</li>
+<li><strong>Improved Forecast Accuracy</strong>: Studies have shown that using all-sky data can lead to statistically significant reductions in forecast errors, particularly in regions where clouds are prevalent.</li>
+<li><strong>Enhanced Coverage</strong>: By including cloud-affected observations, the all-sky method improves coverage in meteorologically interesting areas that may otherwise be underrepresented in NWP models.</li>
+</ol>
+<h2 id="challenges-ahead">Challenges Ahead</h2>
+<p>Despite its advantages, <strong>the all-sky approach still faces challenges</strong>, particularly concerning observation error modeling and the complexities introduced by cloud dynamics. Ongoing research is necessary to refine these methods further and ensure their operational viability across various forecasting systems.</p>
+<p>In summary, while the clear-sky approach has served as a foundation for satellite data assimilation in NWP, the all-sky approach represents a significant evolution that seeks to leverage more comprehensive datasets for improved weather forecasting capabilities.</p>
+<h1 id="literature-review">Literature review</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.mdpi.com/2073-4433/11/6/599/pdf">Wang, Jingnan, et al. "Comparison of assimilating all-sky and clear-sky satellite radiance for Typhoon Chan-Hom and Nangka forecasts." Atmosphere 11.6 (2020): 599.</a>
+<ul>
+<li>In the past, the radiative transfer model was not able to represent the scattering properties of hydrometeors well. Furthermore, because of the poor understanding and predictability of clouds and precipitation, as well as the discontinuous, nonlinear nature of moist atmospheric processes [2], <strong>satellite observations are mainly assimilated under clear-sky conditions, discarding a large number of observations in clouds and precipitation area</strong>.</li>
+<li><strong>In infrared channels particularly, most data are rejected because of “cloud contamination”</strong> [3].</li>
+<li>The European Centre for Medium-Range Weather Forecasts (ECMWF) has applied all-sky satellite radiance assimilation, directly making use of observations of clouds and precipitation which provide clearly positive effects on short-term forecasts [13,14].</li>
+</ul></li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/tckuU85.png" srcset="/img/loading.gif" lazyload alt="Figure 2. Brightness temperature simulation for AMSR2 channel 10 after (a) clear-sky quality control and (b) all-sky quality control." width="600" /><figcaption>Figure 2. Brightness temperature simulation for AMSR2 channel 10 after (a) clear-sky quality control and (b) all-sky quality control.</figcaption>
+</figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/downloadpdf/view/journals/mwre/150/5/MWR-D-21-0273.1.pdf">Duncan, D. I., Bormann, N., Geer, A. J., &amp; Weston, P. (2022). Assimilation of AMSU-A in all-sky conditions. Monthly Weather Review, 150(5), 1023-1041.</a></li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/mItN9pH.png" srcset="/img/loading.gif" lazyload alt="First-guess departures for (top) all-sky and (bottom) clear-sky channel-5 observations assimilated during the 0000 UTC long window on 15 Sep 2019, normalized by the observation errors assigned. The National Hurricane Center (NHC) best track locations at 0000 UTC over the life of Humberto are given by a black ×, with a white circle showing the hurricane location on this date, just east of Florida. Data from all AMSU-A sensors are shown together. Departures are normalized by the assigned observation errors." width="600" /><figcaption>First-guess departures for (top) all-sky and (bottom) clear-sky channel-5 observations assimilated during the 0000 UTC long window on 15 Sep 2019, normalized by the observation errors assigned. The National Hurricane Center (NHC) best track locations at 0000 UTC over the life of Humberto are given by a black ×, with a white circle showing the hurricane location on this date, just east of Florida. Data from all AMSU-A sensors are shown together. Departures are normalized by the assigned observation errors.</figcaption>
+</figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00376-021-0401-y">Li, Yu, Keyi Chen, and Zhipeng Xian. "Evaluation of all-Sky assimilation of FY-3C/MWHS-2 on Mei-yu precipitation forecasts over the Yangtze-Huaihe river basin." Advances in Atmospheric Sciences 38 (2021): 1397-1414.</a>
+<ul>
+<li>采用晴天、多云、雨区等全天候条件下同化微波观测资料对提升与云雨相关的重大天气过程的预报水平有潜在的积极作用。本文选取2017年6月28日至7月3日一次典型的梅雨锋暴雨过程进行了同化及预报研究,基于中尺度WRF-ARW模式及其同化系统WRFDA,采用3D-Var同化方法,利用风云三号C星微波湿度计(FY-3C/MWHS-2)观测资料进行了晴空和全天候同化试验。其结果表明:<strong>全天候同化试验能更加充分的利用云雨区域的微波探测信息,其对FY-3C/MWHS-2的资料利用率比晴空同化试验高出10%</strong>。另外,全天候同化试验减小了约0.5%的湿度场预报误差,对强降水的预报产生了正面影响,但其对风场和温度场的预报总体呈中性的影响。虽然本文中使用的全天候同化算法只能调节湿度、风和温度有关的变量,不能直接获取云雨的信息,但是其对暴雨预报的积极影响在防灾减灾方面存在潜在的业务应用前景。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00376-020-0219-z">Xu, Dongmei, et al. "Assimilating all-sky infrared radiances from Himawari-8 using the 3DVar method for the prediction of a severe storm over North China." Advances in Atmospheric Sciences 38 (2021): 661-676.</a>
+<ul>
+<li>使用3DVar方法吸收来自Himawari-8的全天红外辐射，以预测华北地区的一场强风暴。尽管雷达观测以高时空分辨率捕获了暴风雨结构，但在降水形成后，它们仅限于暴风雨区域内。对地静止卫星数据覆盖了风暴和周围环境降水形成之前雷达网络中的空白。该研究探索了使用Himawari-8数据与天气研究和预报模型数据同化系统（WRFDA）融合从Himawari-8数据中吸收水汽通道辐射的效果，该辐射对华北地区发生了严重的暴雨。这项研究最初在WRFDA系统的框架中增强了用于高级Himawari成像仪（AHI）辐射的快速云检测方案。在进行数据同化之前，先进行偏差校正，晴空AHI辐射的云探测和多云辐射的观测误差建模。完全应用了所有AHI辐射观测值，而没有对全天候AHI辐射数据同化进行任何质量控制。结果表明，通过使用依赖于云的观测误差模型，模拟的全天空AHI辐射度更适合观测，从而进一步提高了云的高度。全天候的AHI辐射同化会调整所有类型的水凝物变量，尤其是云水和降水雪。事实证明，通过对雷达反射率进行验证，吸收全天候AHI数据可以改善水凝物规格。因此，与仅使用常规和AHI晴朗天空辐射率数据的实验相比，在全天条件下对AHI观测值的同化对降水位置和强度都有整体改善的影响。</li>
+</ul></li>
+</ul>
+<h1 id="clear-sky-vs.-all-sky-in-da">Clear-sky vs. All-sky in DA</h1>
+<p>The implementation of <strong>all-sky assimilation in the data assimilation (DA) process is generally considered more challenging than the clear-sky approach</strong>. Here are the main factors contributing to this complexity:</p>
+<h2 id="complexity-of-radiative-transfer-modeling">1. <strong>Complexity of Radiative Transfer Modeling</strong></h2>
+<p>All-sky assimilation involves dealing with the intricate effects of clouds on radiative transfer, which complicates the interpretation of satellite observations. The modeling of radiative transfer in cloudy conditions is inherently complex due to scattering effects caused by hydrometeors like ice, snow, and rain. This complexity makes it difficult to accurately interpret satellite observations, as the radiative signal can be significantly altered by cloud properties. Errors from scattering can lead to misinterpretation of temperature increments, complicating the assimilation process. Unlike clear-sky conditions, where the radiative signal is straightforward, clouds introduce scattering and absorption phenomena that must be accurately modeled to extract useful data from satellite observations.</p>
+<h2 id="observation-error-characterization">2. <strong>Observation Error Characterization</strong></h2>
+<p>In all-sky conditions, characterizing observation errors becomes more difficult due to the variability introduced by different cloud types and precipitation. This can lead to larger and correlated errors in observations, complicating the assimilation process and potentially degrading forecast accuracy if not properly managed.</p>
+<h2 id="data-volume-and-quality-management">3. <strong>Data Volume and Quality Management</strong></h2>
+<p>While all-sky assimilation can provide a greater volume of data (up to 65% more than clear-sky assimilation), the challenge lies in managing this increased data volume effectively. The added complexity of integrating cloud-affected observations requires sophisticated methods to ensure that the quality of assimilated data does not compromise forecast performance.</p>
+<h2 id="operational-implementation-challenges">4. <strong>Operational Implementation Challenges</strong></h2>
+<p>Despite its potential benefits, all-sky assimilation has not yet been widely adopted operationally due to concerns about whether it can consistently improve forecast scores compared to existing clear-sky systems. Operational centers often have well-established clear-sky assimilation frameworks, making it difficult to transition to all-sky methods without risking degradation in forecast quality.</p>
+<h2 id="balancing-signal-and-noise">5. <strong>Balancing Signal and Noise</strong></h2>
+<p>Incorporating cloud-affected observations requires careful balancing between meaningful signals and noise. The challenge is to ensure that the assimilation system does not overfit cloud observations, which can lead to inaccuracies in model initialization and subsequent forecasts.</p>
+<h2 id="zero-gradient-problem">6. <strong>Zero Gradient Problem</strong></h2>
+<p>The zero gradient problem arises when data assimilation systems struggle to incorporate cloud information effectively in the absence of clouds in the background state. This issue complicates the initialization of clouds and can hinder the overall performance of the assimilation system</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Overall, while all-sky assimilation offers significant advantages in utilizing a broader range of satellite data, its implementation is fraught with challenges that require advanced modeling techniques and careful management of observation errors. These complexities make it a more demanding process compared to clear-sky assimilation in the DA framework.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/DA/" class="print-no-link">#DA</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | Clear-sky vs. All-sky Approaches in NWP and DA</div>
+      <div>https://waipangsze.github.io/2025/01/21/NWP-Clear-sky-vs-All-sky-Approaches-in-NWP-and-DA/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 21, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>January 21, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/17/MPAS-UXarray/" title="MPAS | UXarray">
+                        <span class="hidden-mobile">MPAS | UXarray</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

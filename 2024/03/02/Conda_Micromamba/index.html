@@ -27,7 +27,7 @@
 <meta property="og:description" content="The easiest way to export a .yml file from a conda environment is to first activate your environment by running: 1conda activate myvenv And then run the following command that generated your .yml file">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-03-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-01-07T03:07:41.334Z">
+<meta property="article:modified_time" content="2025-01-21T07:14:34.077Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="conda">
 <meta property="article:tag" content="Micromamba">
@@ -236,9 +236,25 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
                     <i class="iconfont icon-plan"></i>
                     <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
                   </a>
                 
                   
@@ -317,7 +333,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          176 words
+          232 words
         
       </span>
     
@@ -379,7 +395,7 @@
             
               <div class="markdown-body">
                 
-                <p>The easiest way to export a .yml file from a conda environment is to first activate your environment by running: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda activate myvenv<br></code></pre></td></tr></table></figure> And then run the following command that generated your .yml file: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> <span class="hljs-built_in">export</span> &gt; list.yml<br></code></pre></td></tr></table></figure> Finally, you can create a new environment using the .yml file, like: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> create --name myvenv --file=list.yml<br></code></pre></td></tr></table></figure></p>
+                <p>The easiest way to export a .yml file from a conda environment is to first activate your environment by running: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda activate myvenv<br></code></pre></td></tr></table></figure> And then run the following command that generated your .yml file: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> <span class="hljs-built_in">export</span> &gt; list.yml<br><br><span class="hljs-comment">## win-64 and linux-64 have different label on version/number</span><br><span class="hljs-comment">## Export Conda Environment with minimized requirements</span><br>micromamba <span class="hljs-built_in">env</span> <span class="hljs-built_in">export</span> --from-history &gt; list.yml<br><br><span class="hljs-comment">## like</span><br>name: uxarray<br>channels:<br>- anaconda<br>- conda-forge<br>dependencies:<br>- conda-forge::basemap<br>- conda-forge::cartopy<br>- anaconda::ipykernel<br>- conda-forge::netcdf4<br>- scipy<br>- conda-forge::uxarray==2024.11.1<br>- conda-forge::wrf-python<br></code></pre></td></tr></table></figure> Finally, you can create a new environment using the .yml file, like: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> create --name myvenv --file=list.yml<br></code></pre></td></tr></table></figure></p>
 <p>or <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda <span class="hljs-built_in">env</span> <span class="hljs-built_in">export</span> | grep -v <span class="hljs-string">&quot;^prefix: &quot;</span> &gt; environment.yml<br>conda <span class="hljs-built_in">env</span> create -f environment.yml<br></code></pre></td></tr></table></figure></p>
 <p>Remove environment, <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">conda remove -n ENV_NAME --all<br></code></pre></td></tr></table></figure></p>
 <h1 id="micromamba">Micromamba</h1>
@@ -422,6 +438,13 @@
 </ol>
 <h2 id="checkadd-channel">check/add channel</h2>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ micromamba info<br><br><span class="hljs-comment"># or</span><br><br>$ micromamba config list --sources<br><br>channels:<br>  - conda-forge  <span class="hljs-comment"># &#x27;~/.condarc&#x27;</span><br><br>$ micromamba config append channels conda-forge<br></code></pre></td></tr></table></figure>
+<h2 id="cloning-an-environment">Cloning an environment</h2>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">micromamba env create --name my_clone --clone new_venv<br></code></pre></td></tr></table></figure>
+<h1 id="to-access-the-remote-machine-with-a-browser">To access the remote machine with a browser</h1>
+<p>To access the remote machine with a browser the notebook must listen on an external facing port <strong>(not localhost)</strong>. You will need the same invocation if want to run the Jupyter notebook on a container. In that case it is something like this:</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">jupyter-notebook --no-browser --port 11013 --ip=0.0.0.0<br></code></pre></td></tr></table></figure>
+<p>To listen <strong>only in localhost</strong> then you can omit the IP</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">jupyter notebook --no-browser --port=8080<br></code></pre></td></tr></table></figure>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://hpc.pku.edu.cn/ug/guide/soft/conda/#_3">北京大学高性能计算校级公共平台用户文档</a></li>
@@ -492,7 +515,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 7, 2025</div>
+          <div>January 21, 2025</div>
         </div>
       
       
