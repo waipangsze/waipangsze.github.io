@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Global map of Local Climate Zones (LCZ) 
+title: Map of Local Climate Zones (LCZs) 
 categories: [NWP]
-tags: [WRF, MPAS, Urban, UCM]
+tags: [WRF, MPAS, Urban, UCM, LCZ]
 author: wpsze
 math: true
 mathjax: true
@@ -12,7 +12,39 @@ index_img: https://i.imgur.com/5tUhQAG.png
 banner_img: https://i.imgur.com/5tUhQAG.png 
 ---
 
-# Global map of Local Climate Zones
+# Local Climate Zones (LCZs)
+
+Local Climate Zones (LCZs) are a classification system designed to characterize urban and natural environments based on their surface cover, structure, material, and human activity. **Developed by Stewart and Oke in 2012**, the LCZ framework includes **17 distinct classes**, with **10 specifically categorized as urban zones**. This system facilitates the study of **urban heat islands** and other climatic phenomena by 
+
+- providing a **standardized method** for observing and documenting urban temperature variations across different regions globally
+  
+![](https://i.imgur.com/NhJokqg.png){width=400}
+
+## Key Features of Local Climate Zones
+
+- **Uniformity**: Each LCZ represents areas with uniform characteristics, spanning hundreds of meters to several kilometers. This uniformity allows for effective comparisons between different urban settings.
+- **Classification Basis**: The classification is primarily based on properties such as building height, density, and surface cover types (pervious vs. impervious) which influence local climate conditions.
+- **Applications**: LCZs are utilized in various fields including urban planning, energy consumption studies, and assessments of urban thermal comfort. They serve as a critical tool for researchers aiming to understand the impacts of urbanization on local climates
+
+## Methods
+
+- In-Situ Measurements
+- Geographic Information System (GIS)-Based Methods
+- Remote Sensing Image-Based Methods
+
+### WUDAPT
+
+The [World Urban Database and Access Portal Tools (WUDAPT)](https://www.wudapt.org/wudapt/) plays a significant role in the classification of Local Climate Zones (LCZs) by providing a structured framework and tools for urban data collection and analysis. **WUDAPT enhances LCZ classification by providing a standardized methodology, facilitating data collection, offering analytical tools, fostering community involvement, and producing multi-level data products that support diverse applications in urban climate research.**
+
+## Literature review
+
+- [Han, Jie, et al. "Advancing the local climate zones framework: a critical review of methodological progress, persisting challenges, and future research prospects." Humanities and Social Sciences Communications 11.1 (2024): 1-18.](https://www.nature.com/articles/s41599-024-03072-8.pdf)
+
+![](https://i.imgur.com/COxJJaB.png){width=600}
+![](https://i.imgur.com/D37oEFf.png){width=600}
+![](https://i.imgur.com/kZ208oW.png){width=600}
+
+# 100m Global map of Local Climate Zones (WRF/Official)
 
 - <https://zenodo.org/records/8419340>
 
@@ -89,6 +121,31 @@ Same as 1., but presenting the raw LCZ map, **before applying the morphological 
 
 A probability layer (%) that identifies how often the modal LCZ was chosen per pixel (e.g. a probability of 60% means that the modal LCZ class was mapped 30 times out of 50 LCZ models). This is a pixel-based probability, derived from the lcz_v3.tif map.
 
+## LCZs For WRF
+
+- [Technical documentation for the hybrid 100-m global land cover dataset with Local Climate Zones for WRF](https://zenodo.org/records/7670792)
+  - Demuzere_etal_2023_TD_CGLC-MODIS-LCZ-dataset.pdf
+- This technical documentation describes the development of a hybrid 100-m global land cover dataset and its implementation in the state-of-the-art Weather Research and Forecasting **(WRF) model version 4.5**.
+- This hybrid CGLC-MODIS-LCZ dataset is based on 
+  - 1) the Copernicus Global Land Service Land Cover (CGLC) product resampled to MODIS IGBP classes (CGLC-MODIS), and 
+  - 2) the global map of Local Climate Zones (LCZ) that describes the heterogeneous urban land surface. Both the CGLC and LCZ products are available at a 100-m spatial resolution, are representative for the year 2018, and cover -180°W to 180°E and -60°S to 78°N. Remaining areas are filled with the MODIS land cover classes. 
+- This dataset has been implemented into the WRF Preprocessing System (WPS) as [tiled binary data files](https://www2.mmm.ucar.edu/wrf/users/download/get_sources_wps_geog.html) with [a new GEOGRID table entry](https://github.com/wrf-model/WPS/blob/develop/geogrid/GEOGRID.TBL.ARW_LCZ) to allow WRF/WPS users to flexibly use this dataset in their studies particularly relevant for urban modeling applications.
+
+![](https://i.imgur.com/lJsZzLv.png){width=500}
+![](https://i.imgur.com/rvG3Rgq.png){width=500}
+![](https://i.imgur.com/TteNH37.png){width=500}
+
+### Issues
+
+{% note primary %}
+100m CGLC-MODIS keep their "natural CGLC-MODIS" category value.
+{% endnote %}
+
+- If MODIS is wrong ?
+  - like no Hong Kong International Airport (HKIA) 3rd runway
+
+![](https://i.imgur.com/Awi17Na.png)
+
 # Convert tif to netcdf
 
 GDAL is a translator library for raster and vector geospatial data formats that is released under an MIT style Open Source License by the Open Source Geospatial Foundation
@@ -151,20 +208,20 @@ variables:
 }
 ```
 
-# Part of LCZ dataset
+# Some regional LCZ datasets
 
 Global tiff is large, and if we only consider a specific area like GBA/Tokyo/Houston.
 
 Fast and easy Local Climate Zone mapping
 
-https://lcz-generator.rub.de/
+<https://lcz-generator.rub.de/>
 
 - China, People's Republic of - Hong Kong-Macau-Guangdong Greater Bay Area:
-  - https://lcz-generator.rub.de/factsheets/c672ca892c88d1e078a81e7a085913396172f81c/c672ca892c88d1e078a81e7a085913396172f81c_factsheet.html 
+  - <https://lcz-generator.rub.de/factsheets/c672ca892c88d1e078a81e7a085913396172f81c/c672ca892c88d1e078a81e7a085913396172f81c_factsheet.html>
 - Japan - Tokyo:
-  - https://lcz-generator.rub.de/factsheets/67a3371158ad3ac12d720fde089622c259e8e400/67a3371158ad3ac12d720fde089622c259e8e400_factsheet.html 
+  - <https://lcz-generator.rub.de/factsheets/67a3371158ad3ac12d720fde089622c259e8e400/67a3371158ad3ac12d720fde089622c259e8e400_factsheet.html>
 - United States of America - Houston: 
-  - https://lcz-generator.rub.de/factsheets/037c80744fc1034b8472f594d829c53ce1cccfa7/037c80744fc1034b8472f594d829c53ce1cccfa7_factsheet.html 
+  - <https://lcz-generator.rub.de/factsheets/037c80744fc1034b8472f594d829c53ce1cccfa7/037c80744fc1034b8472f594d829c53ce1cccfa7_factsheet.html>
 
 
 ![]()
@@ -177,6 +234,23 @@ https://lcz-generator.rub.de/
 
 ![ncview](https://i.imgur.com/lGIE5ba.png)
 
+
+# W2W
+
+A python tool that ingests WUDAPT's Local Climate Zone information into WRF.
+
+- [w2w](https://pypi.org/project/w2w/)
+- [W2W: A Python package that injects WUDAPT's Local Climate Zone information in WRF | Paper](https://joss.theoj.org/papers/10.21105/joss.04432)
+
+```console
+pip install w2w
+```
+
+![](https://i.imgur.com/lugUZim.png){width=500}
+
+# Soil category ?
+
+Do we have to modify corresponding soil category?
 
 # References
 

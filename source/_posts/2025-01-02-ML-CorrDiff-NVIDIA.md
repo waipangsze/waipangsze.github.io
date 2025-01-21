@@ -24,7 +24,9 @@ banner_img:
   - 在氣象署提供的四年餘的RWRF資料中，前三年被用作為訓練資料，而後面的一年四個月則是驗證資料。
   - 由此設計可知，CorrDiff模型的目標是將較低解析度（約25公里）的全球天氣預報模式資料，提升解析度成為高解析度（兩公里）的資料，並在過程中獲得對區域劇烈天氣預報重要的氣象變數──最大雷達回波、地面氣溫與風速。
   - 就使用長期歷史資料建立模型而論，CorrDiff可說是一種進階（AI）版的統計降尺度；但它能得到高解析度網格資料而非觀測點上的資料，以目標與效果而言比較近似於動力降尺度技術。
-  - **CorrDiff模型採用兩步驟來完成降尺度的計算：第一步驟是先以常應用於影像處理、能有效獲取影像特徵的UNet回歸架構，進行資料樣本平均值的修正；第二步驟則利用生成式AI中的擴散（diffusion）演算法，強化資料的高解析度細節與極值。擴散演算法透過將圖像加入雜訊，再去除雜訊的循環過程來執行，過去常應用於圖片的去噪（denoising）、修補或超解析度成像等。**
+  - **CorrDiff模型採用兩步驟來完成降尺度的計算**：
+    - **第一步驟**是先以常應用於影像處理、能有效獲取影像特徵的UNet回歸架構，進行資料樣本平均值的修正；
+    - **第二步驟**則利用生成式AI中的擴散（diffusion）演算法，強化資料的高解析度細節與極值。擴散演算法透過將圖像加入雜訊，再去除雜訊的循環過程來執行，過去常應用於圖片的去噪（denoising）、修補或超解析度成像等。
   - 最後，CorrDiff模型的運算速度遠遠快於RWRF系統的數值天氣預報模式，後者需要在高速運算電腦上使用大量中央處理器（central processing unit, CPU）核心進行運算，而前者在單一圖形處理器（graphics processing unit, GPU）上即可用更短的時間完成運算，兩者的能源使用效率有天壤之別。
   - 參考預印本論文中所提，未來此技術可能有以下幾種不同的應用方式
     - 一、由傳統全球模式數值天氣預報資料，降尺度成為高解析度預報。
@@ -60,6 +62,12 @@ CorrDiff employs a two-step approach to effectively manage the complexities of m
 - **UNet Prediction**: The first step involves using a UNet architecture to predict the *conditional mean of the atmospheric variables based on lower-resolution data*.
 - **Diffusion Correction**: The second step utilizes a correction diffusion model to predict the residuals, effectively refining the output by learning from the differences between the predicted mean and actual observations.
 - This method is **like to Reynolds decomposition in fluid dynamics**, allowing for a more manageable learning process by isolating generative learning to stochastic scales. 
+
+Importantly, **兩步驟來先後訓練**
+
+- **CorrDiff模型採用兩步驟來完成降尺度的計算**：
+  - **第一步驟**是先以常應用於影像處理、能有效獲取影像特徵的UNet回歸架構，進行資料樣本平均值的修正；
+  - **第二步驟**則利用生成式AI中的擴散（diffusion）演算法，強化資料的高解析度細節與極值。擴散演算法透過將圖像加入雜訊，再去除雜訊的循環過程來執行，過去常應用於圖片的去噪（denoising）、修補或超解析度成像等。
 
 # Getting started
 
