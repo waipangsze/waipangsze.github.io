@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://i.imgur.com/LgX4aZr.png">
 <meta property="og:image" content="https://i.imgur.com/e9PX9n8.png">
 <meta property="article:published_time" content="2025-01-02T02:01:00.000Z">
-<meta property="article:modified_time" content="2025-01-21T05:46:48.467Z">
+<meta property="article:modified_time" content="2025-01-22T01:12:07.995Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
@@ -338,7 +338,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.9k words
+          2k words
         
       </span>
     
@@ -349,7 +349,7 @@
         
         
         
-          16 mins
+          17 mins
         
       </span>
     
@@ -464,6 +464,21 @@ p&gt;m , q&gt;n
 </ul>
 <h1 id="getting-started">Getting started</h1>
 <p>To build custom CorrDiff versions, you can get started by training the <strong>“Mini” version of CorrDiff</strong>, which uses smaller training samples and a smaller network to reduce training costs from thousands of GPU hours to <strong>around 10 hours on A100 GPUs</strong> while still producing reasonable results. It also includes a simple data loader that can be used as a baseline for training CorrDiff on custom datasets.</p>
+<p>Start by installing Modulus (if not already installed) and copying this folder (examples/generative/corrdiff) to a system with a GPU available. Also download the CorrDiff-Mini dataset from <a target="_blank" rel="noopener" href="https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/resources/modulus_datasets-hrrr_mini">NGC</a>.</p>
+<h2 id="nvidia-modulus">NVIDIA Modulus</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/NVIDIA/modulus" class="uri">https://github.com/NVIDIA/modulus</a></li>
+<li><code>git clone https://github.com/NVIDIA/modulus.git</code></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/NVIDIA/modulus/tree/main/examples/generative/corrdiff" class="uri">https://github.com/NVIDIA/modulus/tree/main/examples/generative/corrdiff</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/modulus/getting-started/index.html#system-requirements">Modulus Overview | System Requirements</a></li>
+<li>The <strong>CorrDiff-Mini training dataset</strong> of ERA5 (low-resolution) reanalysis and the corresponding HRRR (high-resolution) analysis fields at a resolution of approximately 3 km per pixel. It is intended to be used with the CorrDiff-Mini code in Modulus to enable training a lightweight CorrDiff version for educational and testing purposes and as a baseline for implementing custom versions of CorrDiff.
+<ul>
+<li><a target="_blank" rel="noopener" href="https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/resources/modulus_datasets-hrrr_mini" class="uri">https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/resources/modulus_datasets-hrrr_mini</a></li>
+<li>The data are collected from the <strong>period 2018-2021 from the HRRR CONUS</strong> domain covering the continental United States and some surrounding regions. The samples are <strong>64x64 pixels in size</strong>, with a spatial resolution of <strong>approximately 3 km per pixel</strong>.</li>
+<li>The ERA5 variables, intended to be used as the CorrDiff input, include <strong>temperatures (t), geopotential height (z), west-east (u) and south-north (v) winds and specific humidities (q), each as 1000, 850, 500 and 250 hPa pressure levels, as well as the 10-meter winds, 2-meter temperature, total column water vapor, surface pressure and mean sea level pressure.</strong> The HRRR variables, intended as the CorrDiff <strong>output, include 10-meter winds, 2-meter temperature and total precipitation.</strong></li>
+</ul></li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs console">micromamba env create -n CorrDiff<br>micromamba activate CorrDiff<br>micromamba install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia<br>pip install nvidia-modulus nvidia-modulus-sym ???<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -534,7 +549,7 @@ p&gt;m , q&gt;n
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 21, 2025</div>
+          <div>January 22, 2025</div>
         </div>
       
       
