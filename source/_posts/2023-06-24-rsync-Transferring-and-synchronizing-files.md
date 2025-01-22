@@ -28,6 +28,16 @@ rsync 參數 來源檔案 目的檔案
 1. 如果要讓 rsync 在傳輸檔案時可以即時顯示進度，可以加上 --progress 參數
 2. -P参数是--progress和--partial这两个参数的结合
 
+```console
+rsync -aP folder username@target-ip:/home/user/xxx/
+
+rsync -aP --exclude='*.txt' --exclude 'dir1/*' source/ destination
+rsync -aP --exclude={'*.txt', 'file1.txt','dir1/*'} source/ destination
+rsync -aP --exclude-from='exclude-file.txt' source/ destination/
+rsync -av --include="*.txt" --exclude='*' source/ destination
+```
+
+and,
 
 ```sh
 #!/bin/bash

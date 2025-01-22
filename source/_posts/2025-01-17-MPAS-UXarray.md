@@ -70,6 +70,12 @@ uxds["ivgtyp"].plot(coastline="10m", cmap="jet", clim=(1, 20), dynamic=True)
 # make a color map of fixed colors
 cmap = colors.ListedColormap(['white', 'green', 'red', 'blue', 'white'])
 uxds["ivgtyp"].plot(coastline="10m", cmap=cmap, clim=(11, 15), dynamic=True)
+
+# wind speed from u10 and v10
+tmp = uxds["u10"]
+tmp["u10"] = np.sqrt(uxds["u10"]**2 + uxds["v10"]**2)
+tmin, tmax = int(tmp["u10"].min().values), int(tmp["u10"].max().values)
+tmp["u10"].isel(Time=0).plot(coastline="10m", cmap="jet", clim=(tmin, tmax), dynamic=True)
 ```
 
 {% gi 5 2-2-1 %}

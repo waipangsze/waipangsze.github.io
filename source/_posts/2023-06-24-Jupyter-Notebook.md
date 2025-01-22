@@ -63,3 +63,16 @@ plt.show()
 plt.close()
 ```
 
+# To access the remote machine with a browser
+
+To access the remote machine with a browser the notebook must listen on an external facing port **(not localhost)**. You will need the same invocation if want to run the Jupyter notebook on a container. In that case it is something like this:
+
+```console
+jupyter-notebook --no-browser --port 11013 --ip=0.0.0.0
+```
+
+To listen **only in localhost** then you can omit the IP
+
+```console
+jupyter notebook --no-browser --port=8080
+```

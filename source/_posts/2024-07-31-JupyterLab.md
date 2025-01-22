@@ -55,7 +55,21 @@ micromamba install anaconda::ipykernel
 python -m ipykernel install --user --name=mnew-env-2 --display-name='Environment(new-env-2)'
 ```
 
-## Monitor resource usage with GPU Dashboard in Jupyter
+# To access the remote machine with a browser
+
+To access the remote machine with a browser the notebook must listen on an external facing port **(not localhost)**. You will need the same invocation if want to run the Jupyter notebook on a container. In that case it is something like this:
+
+```console
+jupyter-notebook --no-browser --port 11013 --ip=0.0.0.0
+```
+
+To listen **only in localhost** then you can omit the IP
+
+```console
+jupyter notebook --no-browser --port=8080
+```
+
+# Monitor resource usage with GPU Dashboard in Jupyter
 A GPU dashboard is available for JupyterLab for showing the resource usage of GPU in real time, side by side with cells in your notebook. It is particularly useful in identifying any bottleneck or issues during code development.
 
 You may activate your conda or python virtual environment for your kernel and run the following once to install the GPU dashboard.
