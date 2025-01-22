@@ -90,5 +90,62 @@ Start by installing Modulus (if not already installed) and copying this folder (
 micromamba env create -n CorrDiff
 micromamba activate CorrDiff
 micromamba install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
-pip install nvidia-modulus nvidia-modulus-sym ???
+pip install nvidia-modulus[all]
+pip install quadpy orthopy ndim gdown
+
+# OSError: CUDA_HOME environment variable is not set. Please set it to your CUDA install root.
+
+micromamba install -c conda-forge cudatoolkit-dev
+which nvcc
+nvcc --version
+echo $CUDA_HOME
+export CUDA_HOME=$CONDA_PREFIX
+echo $CUDA_HOME
+
+# Currently the pip installation does not support the tesselated geometry module in Modulus Sym
+# RuntimeError:
+#      The detected CUDA version (11.7) mismatches the version that was used to compile
+#      PyTorch (12.4). Please make sure to use the same CUDA versions.
+
+micromamba install conda-forge::cython
+pip install nvidia-modulus.sym --no-build-isolation
 ```
+
+- $ cat list.yml
+
+```yaml 
+name: CorrDiff
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - cudatoolkit-dev
+  - conda-forge::cython
+  - pytorch
+  - pytorch-cuda=12.4
+  - conda-forge::singularity <-- apply singularity at the end??
+  - torchaudio
+  - torchvision
+  - pip:
+    - Pint==0.19.2
+    - gdown==5.2.0
+    - ndim==0.1.27
+    - nvidia-modulus==0.9.0
+    - orthopy==0.9.12
+    - quadpy==0.17.21
+
+prefix: "/data/home/cpasss/micromamba/envs/CorrDiff"
+```
+
+conda install nvidia/label/cuda-12.4.0::cuda-toolkit ??
+
+### What is Modulus Symbolic?
+
+- <https://pypi.org/project/nvidia-modulus.sym/>
+
+Modulus Symbolic (Modulus Sym) repository is part of Modulus SDK and it provides algorithms and utilities to be used with Modulus core, to explicitly physics inform the model training. This includes utilities for explicitly integrating symbolic PDEs, domain sampling and computing PDE-based residuals using various gradient computing schemes.
+
+## Running examples
+
+
+
