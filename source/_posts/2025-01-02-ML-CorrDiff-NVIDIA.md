@@ -145,6 +145,32 @@ conda install nvidia/label/cuda-12.4.0::cuda-toolkit ??
 
 Modulus Symbolic (Modulus Sym) repository is part of Modulus SDK and it provides algorithms and utilities to be used with Modulus core, to explicitly physics inform the model training. This includes utilities for explicitly integrating symbolic PDEs, domain sampling and computing PDE-based residuals using various gradient computing schemes.
 
+## singularity
+
+- <https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/containers/modulus/tags>
+- `nvcr.io/nvidia/modulus/modulus:24.12`
+
+```console
+singularity build Modulus.sif docker://nvcr.io/nvidia/modulus/modulus:<tag> #24.12
+singularity run --writable --nv Modulus.sif
+
+2025/01/23 15:46:48  info unpack layer: sha256:a2d286ac9f2e054214a2097dbe3029a51572ab8e295c3fed336e98a0015bcfc3
+INFO:    Creating SIF file...
+INFO:    Build complete: Modulus.sif
+```
+
+and,
+
+```console
+$ singularity inspect Modulus.sif 
+org.label-schema.build-arch: amd64
+org.label-schema.build-date: Thursday_23_January_2025_15:46:48_HKT
+org.label-schema.schema-version: 1.0
+org.label-schema.usage.singularity.deffile.bootstrap: docker
+org.label-schema.usage.singularity.deffile.from: nvcr.io/nvidia/modulus/modulus:24.12
+org.label-schema.usage.singularity.version: 3.8.6
+```
+
 ## Running examples
 
 

@@ -131,6 +131,8 @@ A probability layer (%) that identifies how often the modal LCZ was chosen per p
   - 2) the global map of Local Climate Zones (LCZ) that describes the heterogeneous urban land surface. Both the CGLC and LCZ products are available at a 100-m spatial resolution, are representative for the year 2018, and cover -180°W to 180°E and -60°S to 78°N. Remaining areas are filled with the MODIS land cover classes. 
 - This dataset has been implemented into the WRF Preprocessing System (WPS) as [tiled binary data files](https://www2.mmm.ucar.edu/wrf/users/download/get_sources_wps_geog.html) with [a new GEOGRID table entry](https://github.com/wrf-model/WPS/blob/develop/geogrid/GEOGRID.TBL.ARW_LCZ) to allow WRF/WPS users to flexibly use this dataset in their studies particularly relevant for urban modeling applications.
 
+在WRFv4.4.2之前，LCZ1-10在WRF-UCM土地利用类型中主要对应31-41，但是这种分类方法与NLCD，即美国国家土地覆盖数据集重复，因此WRFv4.4.2版本之后，LCZ1-10在WRF-UCM土地利用类型中主要对应51-61。
+
 ![](https://i.imgur.com/lJsZzLv.png){width=500}
 ![](https://i.imgur.com/rvG3Rgq.png){width=500}
 ![](https://i.imgur.com/TteNH37.png){width=500}
