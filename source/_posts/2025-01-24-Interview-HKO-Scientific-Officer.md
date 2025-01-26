@@ -48,3 +48,12 @@ Duties:
   - (3) 負責提供香港的時間標準，並向公眾及企業提供地球物理、海洋、天文及氣候方面的資料與諮詢服務。
 
 天文台於 2023-24 財政年度的總支出為**四億四千四百八十萬元(實際)**，**總收入為一億五千三百四十萬元(實際)**。截至 2024 年 3 月 31 日，天文台的員工編制共有 372 人。
+
+
+# 氣象課程講義︰
+
+- [天氣觀測課程](https://www.hko.gov.hk/tc/education/edu03course/coursenotes/files/wx_obs_notes.pdf)
+- [地震及海嘯基礎課程](https://www.hko.gov.hk/tc/education/edu03course/coursenotes/files/earthquake_notes.pdf)
+- [數值天氣預報基礎課程](https://www.hko.gov.hk/tc/education/edu03course/coursenotes/files/nwp_notes.pdf)
+- [天氣雷達及衛星圖像基礎課程](https://www.hko.gov.hk/tc/education/edu03course/coursenotes/files/radar_satellite_notes.pdf)
+- [天氣圖解讀及天氣預報基礎課程](https://www.hko.gov.hk/tc/education/edu03course/coursenotes/files/wx_chart_forecasting_notes.pdf)
