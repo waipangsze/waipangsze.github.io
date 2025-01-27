@@ -1,0 +1,1102 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="WRF-UCM WRF-UCM refers to the Weather Research and Forecasting model (WRF) integrated with an Urban Canopy Model (UCM). This framework is designed to enhance the simulation of urban environments withi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WRF | MPAS | UCM and LCZs">
+<meta property="og:url" content="https://waipangsze.github.io/2025/01/27/WRF-MPAS-UCM-and-LCZs/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="WRF-UCM WRF-UCM refers to the Weather Research and Forecasting model (WRF) integrated with an Urban Canopy Model (UCM). This framework is designed to enhance the simulation of urban environments withi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/FqQXJNT.png">
+<meta property="article:published_time" content="2025-01-27T02:35:00.000Z">
+<meta property="article:modified_time" content="2025-01-27T09:35:46.470Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="UCM">
+<meta property="article:tag" content="LCZs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/FqQXJNT.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WRF | MPAS | UCM and LCZs - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/FqQXJNT.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WRF | MPAS | UCM and LCZs"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-27 10:35" pubdate>
+          January 27, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WRF | MPAS | UCM and LCZs</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="wrf-ucm">WRF-UCM</h1>
+<p>WRF-UCM refers to the Weather Research and Forecasting model (WRF) integrated with an Urban Canopy Model (UCM). This framework is designed to enhance the simulation of urban environments within meteorological models, allowing for more accurate predictions of weather patterns in urban areas.</p>
+<h2 id="urban-canopy-model-ucm">Urban Canopy Model (UCM):</h2>
+<p><strong>A single-layer model</strong> designed to represent urban environments. It incorporates simplified urban geometries and features such as building shadowing and heat exchange processes, improving the representation of lower boundary conditions in urban areas</p>
+<h2 id="bepbem">BEP+BEM</h2>
+<p>The <strong>Building Effect Parameterization (BEP) and Building Energy Model (BEM) scheme</strong> is an advanced modeling framework integrated within the Weather Research and Forecasting (WRF) model, designed to improve the simulation of urban climates.</p>
+<ul>
+<li>The BEM aspect incorporates building energy consumption factors, accounting for heating and cooling needs. This integration helps in assessing the urban heat budget more accurately by considering how energy use impacts local temperatures and climate conditions.</li>
+</ul>
+<h1 id="wrf-bug-fixupdated-ucm">WRF Bug-fix/updated UCM</h1>
+<h2 id="new-features-in-wrfv4.6">New features in WRFV4.6</h2>
+<ul>
+<li>Add two options (slucm_distributed_drag and distributed_ahe_opt) to WRF SLUCM (sf_urban_physics = 1) so that <strong>spatially varying urban morphological parameters (building height, plan area index, frontal area index, roughness length for momentum, and displacement height) can be considered</strong>. <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/3cadf04277ac3a050e65461efb6aa939349c60a8">Detail</a>
+<ul>
+<li>SOURCE: Do Ngoc Khanh (Tokyo Institute of Technology)</li>
+<li>This PR adds a new feature to WRF SLUCM by allowing consideration of <strong>spatially varying global distributed urban parameters and spatially hourly monthly varying anthropogenic heat</strong>.</li>
+</ul></li>
+</ul>
+<h3 id="bug-fixes-and-enhancement-in-wrfv4.6">Bug fixes and enhancement in WRFV4.6</h3>
+<ul>
+<li>Correct net long wave fluxes for application in modeling urban climate using Single Layer Urban Canopy Model (SLUCM). It slightly improved 2-m temperature in urban area. <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/01228e7dfc0c4c257a7511e028088eddf3dfb388">Details</a></li>
+</ul>
+<h1 id="wrf-bug-fixupdated-lczs">WRF Bug-fix/updated LCZs</h1>
+<h2 id="bug-fixes-and-enhancement-in-wrfv4.6-1">Bug fixes and enhancement in WRFV4.6</h2>
+<ul>
+<li>Fix a bug in Noah-MP for uninitialized leaf mass when LCZ is used. <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/554b12c81b081e068e24a0111ee360b528bb97b0">Detail</a></li>
+<li><strong>Update urban LCZ parameter table (URBPARM_LCZ.TBL) with more reasonable values</strong>. <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/6156b78dfd350e0514d2455badcd7eab9b7d2d31">Detail</a></li>
+<li>Make the Pleim-Xiu LSM compatible with MODIS LCZ. Also, effects of evaporation from transpiration, soil in both vegetated and non-veg parts and wet leaves on ground temperature all are considered. Previously only the effect from transpiration and evaporation from non-veg soil are considered. <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/b7f31dcde42beb4be468edb0541ec02f23b20455">Detail</a></li>
+</ul>
+<h2 id="wrf-version-4.5.1-bug-fix-release">WRF Version 4.5.1 (Bug-fix Release)</h2>
+<ul>
+<li><strong>Fix a bug in building height specification in the LCZ urban parameter table</strong>. <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/fb4be8f7b937283ee986db73690a9654bae70b4c">Details</a></li>
+</ul>
+<h2 id="wrf-version-v4.4.2-bug-fix-release">WRF Version v4.4.2 (Bug-fix Release)</h2>
+<ul>
+<li>Update urban local climate zone (LCZ) numbers in parameter tables to avoid overlap with existing NLCD land types. This update affects VEGPARM.TBL, LANDUSE.TBL, and MPTABLE.TBL. <strong>The LCZ numbers in WRF-urban are changed from 31-41 to 51-61</strong>. <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/61a1bde309838e2581a40e228b209ef418cd9cc2">Details</a></li>
+<li>Fix the units and unit conversions of several variables in subroutines CARBON and CARBON_CROP (NoahMP scheme); update urban pixel identification by including LCZ urban types in module_sf_noahmpdrv.F for surface variable initialization. <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/commit/75c5ddc0094a4630290bec58da8ff2609da1f2c0">Details</a></li>
+</ul>
+<h2 id="wrf-version-v4.3.1-release">WRF Version v4.3.1 Release</h2>
+<ul>
+<li><strong>Some of the urban parameter values for LCZ are changed to make them more generic</strong>.</li>
+</ul>
+<h2 id="wrf-version-4.3">WRF Version 4.3</h2>
+<ul>
+<li><strong>Implementation of Local Climate Zone (LCZ using WUDAPT (31-41) landuse classes, along with standard urban classes (31-33)</strong>. (Ref: Stewart, I.D. and Oke, T.R. (2012) Local Climate Zones for Urban Temperature Studies. Bulletin of the American Meteorological Society, 93, 1879-1900. <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1175/BAMS-D-11-00019.1" class="uri">http://dx.doi.org/10.1175/BAMS-D-11-00019.1</a>). More information can be found at <a target="_blank" rel="noopener" href="https://ral.ucar.edu/sites/default/files/public/product-tool/urban-canopy-model/WRF_urban_update_Readme_file_WRF4.3.pdf" class="uri">https://ral.ucar.edu/sites/default/files/public/product-tool/urban-canopy-model/WRF_urban_update_Readme_file_WRF4.3.pdf</a>. Data from <a target="_blank" rel="noopener" href="https://www.wudapt.org/" class="uri">https://www.wudapt.org/</a> is required. Note that the parameters in the new urban table, URBPARM_LCZ.TBL, may vary greatly from city to city. The default values are probably not appropriate for any given city. Users should adapt these values based on the city they are working with.</li>
+</ul>
+<div class="note note-primary">
+            <p><a href="https://waipangsze.github.io/2024/10/07/Global-LCZ-for-Urban/">Global-LCZ-for-Urban</a></p>
+          </div>
+<h1 id="w2w">W2W</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://joss.theoj.org/papers/10.21105/joss.04432.pdf">Demuzere, M., Argüeso, D., Zonato, A., &amp; Kittner, J. (2022). W2W: A Python package that injects WUDAPT's Local Climate Zone information in WRF. Journal of Open Source Software, 7(76), 4432.</a>
+<ul>
+<li>The Python-based WUDAPT-to-WRF (W2W) package is developed to translate Local Climate Zone (LCZ) maps into urban canopy parameters readable by WRF</li>
+</ul></li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"># </span><span class="language-bash">w2w.py</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">A WUDAPT-to-WRF python tool that injects WUDAPT<span class="hljs-string">&#x27;s Local Climate Zone information into WRF.</span></span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">Install</span></span><br>pip install w2w<br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">Install from GitHub:</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">pip install git+https://github.com/matthiasdemuzere/w2w</span></span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">Run the tool</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">Check out its help:</span></span><br>w2w --help<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">Try with the provided sample:</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">Sample data used here can be downloaded from the repository in the sample_data folder. After clicking on the file you can download it.</span></span><br>w2w ./sample_data lcz_zaragoza.tif geo_em.d04.nc<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">Deploy using your own data:</span></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash"><span class="hljs-string">w2w INPUT_DIRECTORY YOUR_LCZ.TIF YOUR_GEO_EM.d0X.NC</span></span><br></code></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/pUxBAbG.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h1 id="steps-to-run-ucm-on-wrf">Steps to Run UCM on WRF</h1>
+<h2 id="prepare-the-environment">1. Prepare the Environment</h2>
+<ul>
+<li>Ensure you have the WRF model installed and configured properly on your system.</li>
+<li>Download or prepare an <strong>urban land-use dataset</strong> if you want to use a specific urban area map. If not, you can use the default land-use map.</li>
+</ul>
+<h2 id="modify-the-configuration-files">2. Modify the Configuration Files</h2>
+<ul>
+<li><strong>Namelist Configuration</strong>:
+<ul>
+<li>Open the <code>namelist.input</code> file in your WRF directory.</li>
+<li>Set the <code>sf_urban_physics</code> option to <code>1</code> to enable UCM: <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">sf_urban_physics = 1<br></code></pre></td></tr></table></figure>
+<ul>
+<li>For LCZs, <code>“&amp; physics”</code> section of WRF namelist.input: <code>use_wudapt_lcz =1</code> (set to 0 by default).</li>
+</ul></li>
+<li>Ensure that you set this option for every domain you plan to run.</li>
+</ul></li>
+<li><strong>Registry Modifications</strong>:
+<ul>
+<li>Edit the <code>Registry.EM</code> file located in the <code>Registry/</code> directory. Add an 'h' in the appropriate column to enable output of urban canopy variables in your output files.</li>
+</ul></li>
+</ul>
+<h2 id="prepare-urban-parameters">3. Prepare Urban Parameters</h2>
+<ul>
+<li>Modify the <code>URBPARM.TBL</code> file located in the <code>run/</code> directory to adjust urban parameters according to your study area. This includes parameters like building height, surface albedo, and anthropogenic heat emissions.</li>
+</ul>
+<h2 id="error-warning-too-many-input-landuse-types">ERROR: Warning: too many input landuse types</h2>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs text">ERROR: ------------------------------ FATAL CALLED ------------------------------<br>ERROR: Warning: too many input landuse types<br>CRITICAL ERROR: MPAS core_physics abort<br><br>./MPAS/src/core_atmosphere/physics/physics_wrf/module_sf_noahlsm.F:2437:                     FATAL_ERROR( &#x27;Warning: too many input landuse types&#x27; )<br><br>open(land_unit,file=&#x27;LANDUSE.TBL&#x27;,action=&#x27;READ&#x27;,status=&#x27;OLD&#x27;,iostat=istat)<br><br>./MPAS/src/core_atmosphere/physics/mpas_atmphys_landuse.F:180:       read(unit=land_unit,fmt=*) lucats,luseas<br>./MPAS/src/core_atmosphere/physics/mpas_atmphys_landuse.F:183:          write(mess,*) &#x27;   landuse type = &#x27; // trim (lutype) // &#x27; found&#x27;, lucats, &amp;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>Renew your <code>*.TBL</code> for different version of WRF.</li>
+</ul>
+<h1 id="urbparm.tbl">URBPARM.TBL</h1>
+<ul>
+<li>The appropriate urban parameters are highly variable from city to city (e.g., some cities may have wide roads and short buildings, other cities may have narrow roads and tall buildings). For best use of the urban canopy models, these parameters should be tuned specifically for the city of interest.</li>
+<li><a target="_blank" rel="noopener" href="https://ral.ucar.edu/sites/default/files/public/images/product_tool/urbparm.html" class="uri">https://ral.ucar.edu/sites/default/files/public/images/product_tool/urbparm.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/run/URBPARM.TBL" class="uri">https://github.com/wrf-model/WRF/blob/master/run/URBPARM.TBL</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/run/URBPARM_LCZ.TBL" class="uri">https://github.com/wrf-model/WRF/blob/master/run/URBPARM_LCZ.TBL</a></li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-1ea9d76f" role="button" aria-expanded="false" aria-controls="collapse-1ea9d76f">
+        <div class="fold-arrow">▶</div>URBPARM.TBL
+      </div>
+      <div class="fold-collapse collapse" id="collapse-1ea9d76f">
+        <div class="fold-content">
+          <table><thead><tr class="header"><th>URBPARM.TBL</th><th></th></tr></thead><tbody><tr class="odd"><td>ZR</td><td>Roof level (building height) [m]</td></tr><tr class="even"><td>ROOF_WIDTH</td><td>Roof (i.e., building) width [m]</td></tr><tr class="odd"><td>ROAD_WIDTH</td><td>Road width [m]</td></tr><tr class="even"><td>AH</td><td>Anthropogenic heat [W m-2]</td></tr><tr class="odd"><td>FRC_URB</td><td>Fraction of the urban landscape which does not have natural vegetation. [Fraction]</td></tr><tr class="even"><td>CAPR</td><td>Heat capacity of roof [J m-3 K-1]</td></tr><tr class="odd"><td>CAPB</td><td>Heat capacity of building wall [ J m-3 K-1]</td></tr><tr class="even"><td>CAPG</td><td>Heat capacity of ground (road) [J m-3 K-1]</td></tr><tr class="odd"><td>AKSR</td><td>Thermal conductivity of roof [J m-1 s-1 K-1]</td></tr><tr class="even"><td>AKSB</td><td>Thermal conductivity of building wall [J m-1 s-1 K-1]</td></tr><tr class="odd"><td>AKSG</td><td>Thermal conductivity of ground (road) [J m-1 s-1 K-1]</td></tr><tr class="even"><td>ALBR</td><td>Surface albedo of roof [fraction]</td></tr><tr class="odd"><td>ALBB</td><td>Surface albedo of building wall [fraction]</td></tr><tr class="even"><td>ALBG</td><td>Surface albedo of ground (road) [fraction]</td></tr><tr class="odd"><td>EPSR</td><td>Surface emissivity of roof [-]</td></tr><tr class="even"><td>EPSB</td><td>Surface emissivity of building wall [-]</td></tr><tr class="odd"><td>EPSG</td><td>Surface emissivity of ground (road) [-]</td></tr><tr class="even"><td>Z0R</td><td>Roughness length for momentum, over roof [m]</td></tr><tr class="odd"><td>Z0B</td><td>Roughness length for momentum, over building wall [m] Only active for CH_SCHEME == 1</td></tr><tr class="even"><td>Z0G</td><td>Roughness length for momentum, over ground (road) [m] Only active for CH_SCHEME == 1</td></tr><tr class="odd"><td>CH_SCHEME</td><td>Ch of Wall and Road [1: M-O Similarity Theory, 2: Empirical Form of Narita et al., 1997 (recommended)]</td></tr><tr class="even"><td>TS_SCHEME</td><td>Surface and Layer Temperatures [1: 4-layer model, 2: Force-Restore method]</td></tr><tr class="odd"><td>AHOPTION</td><td>[0: No anthropogenic heating, 1: Anthropogenic heating will be added to sensible heat flux term]</td></tr><tr class="even"><td>AHDIUPRF</td><td>Anthropogenic Heating diurnal profile. Multiplication factor applied to AH (as defined in the table above) Hourly values ( 24 of them ), starting at 01 hours Local Time. For sub-hourly model time steps, value changes on the hour and is held constant until the next hour.</td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+<h1 id="anthropogenic-heating-ah">Anthropogenic Heating (AH)</h1>
+<p>The parameters for urban land surface are highly case-dependent. The default values given in WRF are based on a few observations and I don't think they are representative. One must adjust these values based on one's specific case. However, we don't have more information about how to specify the values. there is little publications discussing this issue. So they are more empirical. It is needed to <code>set AHOPTION and ALHOPTION to 1</code> if you want to activate anthropogenic heating. Again, note that these values are also case-dependent. They may not well apply to your case. You probably need to do lots of tuning.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1002/2015GL067628">Holst, Christopher Claus, Chi‐Yung Tam, and Johnny CL Chan. "Sensitivity of urban rainfall to anthropogenic heat flux: A numerical experiment." Geophysical Research Letters 43.5 (2016): 2240-2248.</a></li>
+</ul>
+<h1 id="roughness-length">Roughness length</h1>
+<p>The roughness length is a crucial parameter that influences the simulation of wind profiles and heat exchange in urban areas.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs text">#<br># Ch of Wall and Road [ 1: M-O Similarity Theory, 2: Empirical Form of Narita et al., 1997 (recommended) ]<br>#      (sf_urban_physics=1)<br>#<br><br>CH_SCHEME: 2<br><br>#<br># Z0B:  Roughness length for momentum, over building wall [ m ]<br>#       Only active for CH_SCHEME == 1<br>#      (sf_urban_physics=1)<br>#<br><br>Z0B: 0.0001, 0.0001, 0.0001<br><br>#<br># Z0G:  Roughness length for momentum, over ground (road) [ m ]<br>#       Only active for CH_SCHEME == 1<br>#      (sf_urban_physics=1,2,3)<br>#<br><br>Z0G: 0.01, 0.01, 0.01<br></code></pre></td></tr></table></figure>
+<p>Set <code>Roughness length</code> Only <code>active for CH_SCHEME == 1</code>,</p>
+<p>and, <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/d66e442fccc04111067e29274c9f9eaccc3cef28/phys/module_sf_urban.F#L83" class="uri">https://github.com/wrf-model/WRF/blob/d66e442fccc04111067e29274c9f9eaccc3cef28/phys/module_sf_urban.F#L83</a></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">!  CH_SCHEME [integer 1 or 2] : Sfc exchange scheme used for building wall and road<br>!                         [1: M-O Similarity Theory,  2: Empirical Form (recommend)]<br></code></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/the-surface-roughness-issue-in-ucm.11533/">The surface roughness issue in UCM</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/why-roughness-znt-of-urban-is-lower-than-croplands-in-ucm.11006/">Why roughness(ZNT) of Urban is lower than Croplands in UCM?</a>
+<ul>
+<li>I have tried to modify <code>module_sf_urban.F</code> to change the calculation of Z0C to find whether the calculation of surface roughness in the Urban Canopy Model would influence the output of ZNT from wrfout files. But I find that the change in Z0C will not impact the output of ZNT that ZNT in wrfout files kept about 0.12 no matter how Z0C change.</li>
+</ul></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/gQRdbHS.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/mkjsJYt.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/SBmM5A8.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/XZWd0rk.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<p>In above Figure 2,</p>
+<ul>
+<li>left is theta level is 83m, and 1st level is 166m</li>
+<li>right is theta level is ~23m, and 1st level is ~46m</li>
+</ul>
+<h2 id="papars">Papars</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://lbezone.hkust.edu.hk/pdfviewer/web/viewer.php?file=aHR0cHM6Ly9sYmV6b25lLmhrdXN0LmVkdS5oay9vYmovMS9vLzk5MTAxMjYzNDk2NzMwMzQxMi85OTEwMTI2MzQ5NjczMDM0MTIucGRm#page=1">Yeung, Pak Shing. Refinement of surface roughness length for the weather research and forecasting model. Diss. 2018.| HKUST</a></li>
+</ul>
+<h1 id="zdc-z0c-2m-is-larger-than-the-1st-wrf-level-stop-in-subroutine-urban---change-zdc-and-z0c">ZDC + Z0C + 2m is larger than the 1st WRF level Stop in subroutine urban - change ZDC and Z0C</h1>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!    ZDC [m]             : Zero plane displacement height (1/5 of ZR)</span><br><span class="hljs-comment">!    Z0C [m]             : Roughness length above canyon for momentum (1/10 of ZR)</span><br><span class="hljs-comment">!     ZA     [m]     : First atmospheric level</span><br><span class="hljs-comment">!                      as a lowest boundary condition</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>Calculate the following urban canyon geometry parameters following <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/abs/pii/S1352231097004032">Macdonald's (1998) formulations, Macdonald, R. W., Griffiths, R. F., &amp; Hall, D. J. (1998). An improved method for the estimation of surface roughness of obstacle arrays. Atmospheric environment, 32(11), 1857-1864</a>.</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">
+        <div class="fold-arrow">▶</div>module_sf_urban.F
+      </div>
+      <div class="fold-collapse collapse" id="collapse-738764b7">
+        <div class="fold-content">
+          <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">! Parameters derived from the morphological terms above.</span><br><span class="hljs-comment">! These parameters are computed in the code.</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!    HGT [-]             : normalized building height</span><br><span class="hljs-comment">!    SVF [-]             : sky view factor</span><br><span class="hljs-comment">!    R   [-]             : Normalized roof width (a.k.a. &quot;building coverage ratio&quot;)</span><br><span class="hljs-comment">!    RW  [-]             : = 1 - R</span><br><span class="hljs-comment">!    Z0C [m]             : Roughness length above canyon for momentum (1/10 of ZR)</span><br><span class="hljs-comment">!    Z0HC [m]            : Roughness length above canyon for heat (1/10 of Z0C)</span><br><span class="hljs-comment">!    ZDC [m]             : Zero plane displacement height (1/5 of ZR)</span><br><br>......<br><br>Cd         = <span class="hljs-number">1.2</span><br>alpha_macd = <span class="hljs-number">4.43</span><br>beta_macd  = <span class="hljs-number">1.0</span><br><br>......<br><br>      ZDC = ZR * ( <span class="hljs-number">1.0</span> + ( alpha_macd ** ( -R ) )  * ( R - <span class="hljs-number">1.0</span> ) )<br><br>      Z0C = ZR * ( <span class="hljs-number">1.0</span> - ZDC/ZR ) * &amp;<br>           <span class="hljs-built_in">exp</span> (-(<span class="hljs-number">0.5</span> * beta_macd * Cd / (VonK**<span class="hljs-number">2</span>) * ( <span class="hljs-number">1.0</span>-ZDC/ZR) * lambda_f )**(-<span class="hljs-number">0.5</span>))<br><br>   <span class="hljs-keyword">IF</span>( ZDC+Z0C+<span class="hljs-number">2.</span> &gt;= ZA) <span class="hljs-keyword">THEN</span><br>    <span class="hljs-keyword">CALL</span> wrf_error_fatal (<span class="hljs-string">&quot;ZDC + Z0C + 2m is larger than the 1st WRF level &quot;</span>// &amp;<br>                           <span class="hljs-string">&quot;Stop in subroutine urban - change ZDC and Z0C&quot;</span> ) <br>   <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br><br>......<br><br>      <span class="hljs-comment">! The following urban canyon geometry parameters are following Macdonald&#x27;s (1998) formulations</span><br>      <br>      <span class="hljs-comment">! Lambda_P :: Plan areal fraction, which corresponds to R for a 2-d canyon.</span><br>      <span class="hljs-comment">! Lambda_F :: Frontal area index, which corresponds to HGT for a 2-d canyon</span><br>      <span class="hljs-comment">! Cd       :: Drag coefficient ( 1.2 from Grimmond and Oke, 1998 )</span><br>      <span class="hljs-comment">! Alpha_macd :: Emperical coefficient ( 4.43 from Macdonald et al., 1998 )</span><br>      <span class="hljs-comment">! Beta_macd  :: Correction factor for the drag coefficient ( 1.0 from Macdonald et al., 1998 )</span><br><br>      Lambda_P = R_TBL(LC)<br>      Lambda_F = HGT_TBL(LC)<br>      Cd         = <span class="hljs-number">1.2</span><br>      alpha_macd = <span class="hljs-number">4.43</span> <br>      beta_macd  = <span class="hljs-number">1.0</span><br><br>......<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h1 id="how-is-10m-wind-speed-computed">How is 10m wind speed computed?</h1>
+<p>Generally 10m wind is computed based on the <code>Monin-Obukhov similarity theory</code>; however, please see <code>phys/module_sf_myjsfc.F</code> regarding the MYJ PBL. For the MM5 surface layer option, see <code>module_sf_sfclay.F</code>. The ARW Technical Note lists published papers that discuss this, if you are interested in reading more.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/how-is-10m-wind-speed-computed.75/" class="uri">https://forum.mmm.ucar.edu/threads/how-is-10m-wind-speed-computed.75/</a></li>
+</ul>
+<h1 id="applications-papers">Applications (papers)</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ams.confex.com/ams/pdfpapers/79765.pdf">Chen, Fei, et al. "<strong>Utilizing the coupled WRF/LSM/Urban modeling system with detailed urban classification</strong> to simulate the urban heat island phenomena over the Greater Houston area." Fifth Symposium on the Urban Environment. Vol. 25. American Meteorological Society Vancouver, BC, Canada, 2004.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jstage.jst.go.jp/article/jmsj/82/1/82_1_67/_pdf">Kusaka, Hiroyuki, and Fujio Kimura. "<strong>Coupling a single-layer urban canopy model with a simple atmospheric model</strong>: Impact on urban heat island simulation for an idealized case." Journal of the Meteorological Society of Japan. Ser. II 82.1 (2004): 67-80.</a></li>
+<li><a target="_blank" rel="noopener" href="https://pdxscholar.library.pdx.edu/cgi/viewcontent.cgi?article=1045&amp;context=mengin_fac">Chen, Fei, et al. "<strong>The integrated WRF/urban modeling system</strong>: development, evaluation, and applications to urban environmental problems." (2011).</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jstage.jst.go.jp/article/jmsj/90B/0/90B_2012-B03/_pdf">Kusaka, Hiroyuki, et al. "<strong>Numerical simulation of urban heat island effect by the WRF model with 4-km grid increment</strong>: An inter-comparison study between the urban canopy model and slab model." 気象集誌. 第 2 輯 90.0 (2012): 33-45.</a></li>
+<li><a target="_blank" rel="noopener" href="http://ir.lib.ncu.edu.tw:88/thesis/view_etd.asp?URN=103621004"><strong>利用 WRF/Urban Canopy Model 模擬探討台灣北部都市地區之熱島效應</strong>. 2016. PhD Thesis. National Central University.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Huidong-Li-3/publication/328053113_Quantifying_urban_heat_island_intensity_and_its_physical_mechanism_using_WRFUCM/links/616a2df6039ba26844489530/Quantifying-urban-heat-island-intensity-and-its-physical-mechanism-using-WRF-UCM.pdf">Li, Huidong, et al. "<strong>Quantifying urban heat island intensity</strong> and its physical mechanism using WRF/UCM." Science of the total environment 650 (2019): 3110-3119.</a></li>
+<li><a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1002/2017JD026702">Wang, Yi, et al. "Impact of <strong>land surface heterogeneity on urban heat island</strong> circulation and sea‐land breeze circulation in <strong>Hong Kong</strong>." Journal of Geophysical Research: Atmospheres 122.8 (2017): 4332-4352.</a></li>
+<li><a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2021JD035348">Kim, G., Cha, D. H., Song, C. K., &amp; Kim, H. (2021). <strong>Impacts of anthropogenic heat and building height</strong> on urban precipitation over the Seoul metropolitan area in regional climate modeling. Journal of Geophysical Research: Atmospheres, 126(23), e2021JD035348.</a></li>
+</ul>
+<h2 id="hkcu">HKCU</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://doi.org/10.1029/2024JD040915">Hu, C., C.-Y. Tam, Z. Li, J. Chen, Y. Li, K.K.W. Cheung, Z.-L. Yang, J.-E. Chu and T. N. Chow, 2024: <strong>Impacts of Urban Heat and Surface Roughness</strong> on Landfalling Tropical Cyclone Intensity: A Case Study based on TC Victor (1997) in Coastal South China, J. Geophys. Res., 129, e2024JD040915.</a>
+<ul>
+<li>urban surface roughness contributes to a decrease in postlandfall storm intensity through frictional energy dissipation</li>
+<li>the roughness of the city's surface also helped to weaken the storm because of the friction.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00376-024-4114-x">Hu, C., C.-Y. Tam and Z. Wang, 2024: <strong>Urbanization Impacts on South China Greater Bay Area Extreme Rainfall</strong> - Sensitivity to Synoptic Systems during Pre-monsoon Period Climate Dynamics, Adv. Atmos. Sci., https://doi.org/10.1007/s00376-024-4114-x</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-024-52193-2q">Hu, C., C.-Y. Tam, Z.-L. Yang and Z. Wang, 2024: <strong>Analyzing Urban Influence on Extreme Winter Precipitation</strong> through Observations and Numerical Simulation of Two South China Case Studies, Scientific Reports, https://www.nature.com/articles/s41598-024-52193-2q</a></li>
+</ul>
+<h2 id="hko">HKO</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/hko/publica/reprint/r923.pdf">Mok, Hing Yim, Man Chi Wu, and Cheuk Yin Cheng. "Spatial variation of the characteristics of urban heat island effect in Hong Kong." Journal of Civil Engineering and Architecture 5.9 (2011): 779-786.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.climatechange.edu.hk/cause-of-climate-change/7-3-zh-%E9%A6%99%E6%B8%AF%E7%9A%84%E6%B0%A3%E5%80%99%E8%AE%8A%E5%8C%96%E5%8F%88%E6%98%AF%E6%80%8E%E6%A8%A3%E5%91%A2%EF%B9%96/7-3-2-zh-%E5%9F%8E%E5%B8%82%E7%99%BC%E5%B1%95%E5%A6%82%E4%BD%95%E5%BD%B1%E9%9F%BF%E9%A6%99%E6%B8%AF%E7%9A%84%E6%B0%A3%E5%80%99/?lang=zh-hant">城市發展如何影響香港的氣候 | 城市熱島效應</a>
+<ul>
+<li>全球暖化及本地城市發展皆會影響香港的氣候，根據天文台的研究，城市發展對香港長期暖化趨勢的貢獻估計可達百分之五十。</li>
+<li>在香港，熱島效應基本上是夜間現象，它在冬季時較為顯著，尤其是在大氣穩定、微風及天朗氣清的日子最為明顯。</li>
+<li><strong>香港的高樓建築及高密度城市發展增加了地面的磨擦力及阻擋空氣流動，降低市區內部風速</strong>。圖3.7顯示1968至2015年間横瀾島的年均風速無明顯的趨勢，而位於市區的京士柏年均風速則明顯下降。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.climatechange.edu.hk/cause-of-climate-change/7-3-zh-%e9%a6%99%e6%b8%af%e7%9a%84%e6%b0%a3%e5%80%99%e8%ae%8a%e5%8c%96%e5%8f%88%e6%98%af%e6%80%8e%e6%a8%a3%e5%91%a2%ef%b9%96/7-3-3-zh-%e5%be%ae%e6%b0%a3%e5%80%99/?lang=zh-hant#source">微氣候</a></li>
+</ul>
+<h2 id="hk-planning-department">HK Planning Department</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.tpb.gov.hk/en/papers/TPB/1001-tpb_8972.pdf">Urban Climatic Map and Standards for Wind Environment | 2011</a>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.eeb.gov.hk/sites/default/files/susdev/html/en/council/SSCPaper02-12Att2e.pdf" class="uri">https://www.eeb.gov.hk/sites/default/files/susdev/html/en/council/SSCPaper02-12Att2e.pdf</a></li>
+<li></li>
+</ul></li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=89e976035880446f1e33a9f8492af4da05a2b011">Tewari, M., Chen, F., Kusaka, H., &amp; Miao, S. (2007). Coupled WRF/Unified Noah/urban-canopy modeling system. Ncar WRF Documentation, NCAR, Boulder, 122, 1-22.</a></li>
+<li><a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1002/2015JD024450">Barlage, Michael, Shiguang Miao, and Fei Chen. "Impact of physics parameterizations on high‐resolution weather prediction over two Chinese megacities." Journal of Geophysical Research: Atmospheres 121.9 (2016): 4487-4498.</a></li>
+<li><a target="_blank" rel="noopener" href="https://scholarsarchive.byu.edu/cgi/viewcontent.cgi?article=7694&amp;context=facpub">Smithson, C. L., White, N. J., Klomp, H. R., Monson, E. C., &amp; Adams, B. R. (2023). User Guide for Urban Canopy Modeling in WRF. Version 1.0.</a></li>
+<li><a target="_blank" rel="noopener" href="https://ral.ucar.edu/sites/default/files/public/product-tool/urban-canopy-model/WRF_urban_update_Readme_file_WRF4.3.pdf">Updates of WRF-urban in WRF 4.3: Local Climate Zones, Mitigation Strategies, building materials permeability and new buildings drag coefficient | March 24, 2021</a>
+<ol type="1">
+<li>implemented in WRF, allows now to incorporate 11 urban classes corresponding to the WUDAPT(<a target="_blank" rel="noopener" href="http://www.wudapt.org/" class="uri">http://www.wudapt.org/</a>) Local Climate Zones (LCZ)</li>
+<li><code>“&amp; physics”</code> section of WRF namelist.input: <code>use_wudapt_lcz =1</code> (set to 0 by default).</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://ral.ucar.edu/sites/default/files/public/product-tool/urban-canopy-model/README_BEP_BEM_MODIFICATIONS.pdf">The new version of the BEP+BEM scheme in WRF 4.3: Local Climate Zones, Mitigation Strategies, building materials permeability and new buildings drag coefficient | February 10, 2021</a>
+<ol type="1">
+<li>The new version of the <strong>BEP+BEM urban multilayer scheme</strong>, implemented in WRF, allows now to incorporate 10 urban classes corresponding to the WUDAPT (<a target="_blank" rel="noopener" href="http://www.wudapt.org/" class="uri">http://www.wudapt.org/</a>) Local Climate Zones (LCZ).</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/BIXCzU-QTBGkOVyBRJ8aEQ">城市气象模拟的1、2、3（上）| 朱浩楠 | 2016年09月30日</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/UCM/" class="print-no-link">#UCM</a>
+      
+        <a href="/tags/LCZs/" class="print-no-link">#LCZs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WRF | MPAS | UCM and LCZs</div>
+      <div>https://waipangsze.github.io/2025/01/27/WRF-MPAS-UCM-and-LCZs/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 27, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>January 27, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/01/27/WRF-Vertical-Levels-and-Heights/" title="WRF | Vertical Levels and Heights">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">WRF | Vertical Levels and Heights</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/26/ML-ResNet/" title="ML | ResNet">
+                        <span class="hidden-mobile">ML | ResNet</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

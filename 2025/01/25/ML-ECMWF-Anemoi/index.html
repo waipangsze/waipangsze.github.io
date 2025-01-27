@@ -1,0 +1,1026 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Anemoi Anemoi is a collaborative and open-source framework for developing machine learning weather forecasting models. Named after the Greek gods of the winds, the goal of Anemoi is to provide the key">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML | ECMWF | Anemoi">
+<meta property="og:url" content="https://waipangsze.github.io/2025/01/25/ML-ECMWF-Anemoi/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Anemoi Anemoi is a collaborative and open-source framework for developing machine learning weather forecasting models. Named after the Greek gods of the winds, the goal of Anemoi is to provide the key">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/iZNjOUN.png">
+<meta property="article:published_time" content="2025-01-25T06:59:00.000Z">
+<meta property="article:modified_time" content="2025-01-27T00:36:24.306Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="ECMWF">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="ML">
+<meta property="article:tag" content="Anemoi">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/iZNjOUN.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ML | ECMWF | Anemoi - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/iZNjOUN.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ML | ECMWF | Anemoi"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-25 14:59" pubdate>
+          January 25, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          503 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ML | ECMWF | Anemoi</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="anemoi">Anemoi</h1>
+<p><a target="_blank" rel="noopener" href="https://anemoi.ecmwf.int/">Anemoi</a> is a collaborative and open-source framework for developing machine learning weather forecasting models. Named after the Greek gods of the winds, the goal of Anemoi is to provide the key building blocks to train state‑of-the‑art data-driven weather forecasting models and run them in an operational context. As a framework it seeks to handle many of the complexities that meteorological organisations will share, allowing them to easily train models from existing recipes but with their own data.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://eurocc-austria.at/fileadmin/eurocc-main/events/Webinar_Weather_Climate_13.11.2024/4_Mariana_Clare_AIFS_a_data-driven_probabilistic_weather_forecasting_system_-2.pdf">AIFS: a data-driven probabilistic forecasting system | Slides | November 13, 2024</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.01465v1">AIFS - ECMWF’s data-driven forecasting system | arXiv | 03 Jun 2024</a></li>
+<li><a target="_blank" rel="noopener" href="https://charts.ecmwf.int/?facets=%7B%22Product%20type%22%3A%5B%22Experimental%3A%20AIFS%22%2C%22Experimental%3A%20Machine%20learning%20models%22%5D%7D">Experimental: AIFS, Experimental: Machine learning models | Charts</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/ecmwf">https://huggingface.co/ecmwf | ecmwf/aifs-single</a>
+<ul>
+<li>To generate a new forecast using AIFS, you can use <code>anemoi-inference</code>. In the following notebook, a step-by-step workflow is specified to run the AIFS using the HuggingFace model:</li>
+</ul></li>
+</ul>
+<h2 id="aifs">AIFS</h2>
+<p><strong>AIFS</strong> is based on a <strong>graph neural network (GNN) encoder and decoder</strong>, and a sliding window transformer processor, and is trained on ECMWF’s ERA5 re-analysis and ECMWF’s operational numerical weather prediction (NWP) analyses.</p>
+<ul>
+<li>AIFS training data, <a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/newsletter/178/news/aifs-new-ecmwf-forecasting-system">AIFS: a new ECMWF forecasting system</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/first-update-aifs">First update to the AIFS | 16 January 2024</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/news/2024/bringing-together-users-researchers-and-coders-ecmwfs-machine">Bringing together users, researchers and coders in ECMWF’s machine learning efforts | 15 May 2024</a>
+<ul>
+<li>“Because of the code adaptation we’ve done, we can easily expand parts of the AIFS and Anemoi to regional systems,”</li>
+</ul></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/GBcuV9S.png" srcset="/img/loading.gif" lazyload width="600" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/zHcuWYK.png" srcset="/img/loading.gif" lazyload width="600" /></div></div></div>
+<h2 id="webinar-anemoi---a-framework-for-building-the-aifs-and-other-data-driven-weather-forecasting-models-virtual-april-30-2024">Webinar: Anemoi - a framework for building the AIFS and other data-driven weather forecasting models | Virtual | April 30, 2024</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://events.ecmwf.int/event/409/" class="uri">https://events.ecmwf.int/event/409/</a></li>
+<li>Description
+<ul>
+<li>Last year ECMWF introduced the AIFS, building on a series of innovative papers which demonstrated the potential of machine learning in creating data-driven weather forecasting models.</li>
+<li>Machine learning models typically build on <strong>open-source frameworks, such as Tensorflow, PyTorch and JAX</strong> which allow communities to work together and build on one another's work. Weather forecasting brings its own challenges for machine learning, with large datasets and spatial-temporal problems.</li>
+<li>In this webinar, we will introduce Anemoi, the toolbox from which the AIFS is trained.</li>
+<li>We have been developing this toolbox with a view to many users both inside and outside of ECMWF to <strong>use the toolbox to train both global and local weather forecasting models</strong>. The toolbox aims to allow users to bring their own datasets and customise their ML models.</li>
+<li>We will introduce the toolbox, talk through the steps needed to train a data-driven model and explain how Anemoi helps with these tasks. Finally we will outline a roadmap for future Anemoi development.</li>
+</ul></li>
+<li>Additional utility tools exist in supporting repositories beyond these core modules. Anemoi builds on top of ECMWF’s Artificial Intelligence Forecasting System (AIFS), expanding that codebase to enable wider functionality for a greater range of users. <strong>Future AIFS models will be trained using Anemoi</strong>.</li>
+</ul>
+<h2 id="discover-anemoi-webinar-series-online-13-30-january-2025">Discover Anemoi: Webinar Series | Online | 13-30 January 2025</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://events.ecmwf.int/event/446/" class="uri">https://events.ecmwf.int/event/446/</a></li>
+</ul>
+<p>Discover Anemoi will feature six webinars, demonstrating the use of key components of the Anemoi ecosystem. The webinars will cover:</p>
+<ul>
+<li>An introduction to Anemoi</li>
+<li>Creating datasets</li>
+<li>Building graphs</li>
+<li>Training models</li>
+<li>Inference</li>
+<li>Contributing as a developer</li>
+</ul>
+<h1 id="high-resolution-inside-the-nordic">High resolution inside the Nordic</h1>
+<p>The AIFS is a global system, but work has also been going on in <strong>Anemoi to create regional (limited-area) ML systems</strong>. For example, <em>MET Norway</em> has created a regional model for Scandinavia (<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2409.02891v1">Nipen et al., 2024, arXiv:2409.02891</a>).</p>
+<p>The plot shows a 7-day forecast of 10 m wind speed (shading) and sea-level pressure (contours). The model has learned to forecast at high resolution (here ~10 km) inside the Nordic region, and at low resolution (here ~100 km) outside of this domain. The model successfully creates a higher-resolution structure over the Nordics.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2409.02891v1">Nipen, T. N., Haugen, H. H., Ingstad, M. S., Nordhagen, E. M., Salihi, A. F. S., Tedesco, P., ... &amp; Chantry, M. (2024). Regional data-driven weather modeling with a global stretched-grid. arXiv preprint arXiv:2409.02891.</a>
+<ul>
+<li>A <strong>data-driven model (DDM)</strong> suitable for regional weather forecasting applications is presented. The model extends the Artificial Intelligence Forecasting System by introducing a stretched-grid architecture that dedicates higher resolution over a regional area of interest and maintains a lower resolution elsewhere on the globe. The model is based on graph neural networks, which naturally affords arbitrary multi-resolution grid configurations.</li>
+<li>The model is pre-trained on 43 years of global <strong>ERA5</strong> data at 31 km resolution and is further refined using 3.3 years of <strong>2.5 km resolution operational analyses from the MetCoOp Ensemble Prediction System (MEPS)</strong>.</li>
+</ul></li>
+</ul>
+<p>The DDM was trained on compute nodes equipped with four AMD Instinct MI250X GPUs, each with 128 GB memory. To speed up training, we used <strong>data parallelism across 32 model instances for stages A–C</strong> and <strong>16 for stage D</strong>. For stages B–D, we used model parallelism to run one instance of the model on each node. This splits the nodes and edges of the graphs across multiple GPUs and is necessary for fitting the 31 km global and 2.5 km regional stretched-grid model within the available GPU memory</p>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/xHsB08i.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/yDB2LwN.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/i8uLpch.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/20hdCXS.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/zzSAUKE.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h1 id="build-anemoi">Build Anemoi</h1>
+<p><strong>Anemoi</strong> is a framework for developing machine learning weather forecasting models. It comprises of components or packages for</p>
+<ul>
+<li>preparing training datasets,</li>
+<li>conducting ML model training and</li>
+<li>a registry for datasets and trained models.</li>
+</ul>
+<p>Anemoi provides tools for operational inference, including interfacing to verification software. As a framework it seeks to handle many of the complexities that meteorological organisations will share, allowing them to easily train models from existing recipes but with their own data.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://anemoi.ecmwf.int/" class="uri">https://anemoi.ecmwf.int/</a></li>
+</ul>
+<p><img src="https://i.imgur.com/LqJLGkK.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">anemoi</span><br><span class="hljs-attr">channels:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">conda-forge</span><br><span class="hljs-attr">dependencies:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">python==3.10.15</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">cuda==12.4.1</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">kerchunk</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">h5py</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">s3fs</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">pip:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-utils[all]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-transform[all]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-datasets[create]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-models</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-graphs</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-training</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-inference</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-registry[all]</span><br></code></pre></td></tr></table></figure>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li>Arrows indicate dependencies between packages.</li>
+<li>Dashed lines indicate optional dependencies.</li>
+</ul>
+<p><img src="https://i.imgur.com/PIR32YC.png" srcset="/img/loading.gif" lazyload width="300" /></p>
+<h2 id="flow-of-data-in-inference">Flow of data in inference</h2>
+<p>The schema above is a high-level overview of the data flow in the <strong>inference process</strong> (click on the image for a larger version).</p>
+<p>Several key concepts are introduced:</p>
+<p>Input:</p>
+<ul>
+<li>Prognostic variables:</li>
+<li>Diagnostic variables:</li>
+</ul>
+<p>Output:</p>
+<ul>
+<li>Constant forcings:</li>
+<li>Dynamic forcings:</li>
+<li>Computed constants:</li>
+<li>Computed forcings:</li>
+</ul>
+<p><img src="https://i.imgur.com/69OpDZv.png" srcset="/img/loading.gif" lazyload width="700" /></p>
+<h2 id="hugging-face-aifs-single-via-anemoi">Hugging Face | AIFS-single via anemoi</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/ecmwf/aifs-single/tree/main">Download the Model's Checkpoint</a> from <a target="_blank" rel="noopener" href="https://huggingface.co/ecmwf/aifs-single">Hugging Face</a>
+<ul>
+<li>Note the aifs_single_v0.2.1.ckpt checkpoint just contains the model’s weights. That file does not contain any information about the optimizer states, lr-scheduler states, etc.</li>
+<li>Training Procedure</li>
+<li>Training Hyperparameters</li>
+<li>Speeds, Sizes, Times<br />
+</li>
+<li>Evaluation</li>
+<li>Known limitations</li>
+<li>Technical Specifications
+<ul>
+<li>Hardware</li>
+<li>Software
+<ul>
+<li>The model was developed and trained using the AnemoI framework.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/ecmwf/aifs-single/blob/main/run_AIFS_v0_2_1.ipynb">https://huggingface.co/ecmwf/aifs-single/blob/main/run_AIFS_v0_2_1.ipynb</a>
+<ul>
+<li>DATE = OpendataClient().latest()</li>
+</ul></li>
+</ul>
+<p><img src="https://i.imgur.com/rOuLVhs.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h3 id="save-input_state">save input_state</h3>
+<p>These functions are all that you need for saving and loading almost any object:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pickle <br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;saved_dictionary.pkl&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    pickle.dump(dictionary, f)<br>        <br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;saved_dictionary.pkl&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    loaded_dict = pickle.load(f)<br></code></pre></td></tr></table></figure>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/newsletter/178/news/aifs-new-ecmwf-forecasting-system">AIFS: a new ECMWF forecasting system | ECMWF | January 2024</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/news/2024/bringing-together-users-researchers-and-coders-ecmwfs-machine">Bringing together users, researchers and coders in ECMWF’s machine learning efforts | 15 May 2024</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/news/2024/machine-learning-play-growing-role-weather-forecasting-says-dg">Machine learning to play growing role in weather forecasting, says DG | ECMWF | 9 September 2024</a>
+<ol type="1">
+<li>Machine learning is well suited to weather forecasting due to the vast amounts of data that are used to determine the best possible initial conditions and to produce global forecasts.<br />
+</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/newsletter/181/editorial/machine-learning-ensembles">Machine learning ensembles | ECMWF | October 2024</a></li>
+<li><a target="_blank" rel="noopener" href="https://data.cma.cn/site/article/id/42435.html">欧洲中期天气预报中心联合多国共推人工智能天气预报计划 | CMA</a>
+<ol type="1">
+<li>目前，Anemoi吸引了西班牙国家气象局、丹麦气象研究所、德国气象局、芬兰气象研究所、意大利空军气象局、荷兰皇家气象研究所、挪威气象局、法国气象局、瑞士气象局和比利时皇家气象研究所的参与。一些国家基于Anemoi在机器学习模型的创建上取得了进展，如挪威气象局为斯堪的纳维亚创建了区域模型，德国气象局正利用其全球数值预报模式(ICON)数据开发一个名为AICON的数据驱动天气预报模型。</li>
+</ol></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ML/" class="category-chain-item">ML</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/ECMWF/" class="print-no-link">#ECMWF</a>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+        <a href="/tags/Anemoi/" class="print-no-link">#Anemoi</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ML | ECMWF | Anemoi</div>
+      <div>https://waipangsze.github.io/2025/01/25/ML-ECMWF-Anemoi/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 25, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>January 27, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/01/26/ML-VAE-Variational-Autoencoder/" title="ML | VAE Variational Auto-Encoder">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ML | VAE Variational Auto-Encoder</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/24/WRF-MPAS-README.physics_files/" title="WRF | MPAS | README.physics_files">
+                        <span class="hidden-mobile">WRF | MPAS | README.physics_files</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

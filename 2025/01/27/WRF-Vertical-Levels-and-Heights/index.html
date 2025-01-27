@@ -1,0 +1,959 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="WRF Users Guide documentation !!Development Team Announcements &gt; Frequently Asked Questions            Hybrid Vertical Coordinate WRF is a hybrid vertical coordinate (HVC) and at the s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WRF | Vertical Levels and Heights">
+<meta property="og:url" content="https://waipangsze.github.io/2025/01/27/WRF-Vertical-Levels-and-Heights/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="WRF Users Guide documentation !!Development Team Announcements &gt; Frequently Asked Questions            Hybrid Vertical Coordinate WRF is a hybrid vertical coordinate (HVC) and at the s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/oyjw9E5.png">
+<meta property="article:published_time" content="2025-01-27T06:19:00.000Z">
+<meta property="article:modified_time" content="2025-01-27T08:54:14.917Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="UCM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/oyjw9E5.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WRF | Vertical Levels and Heights - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/oyjw9E5.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WRF | Vertical Levels and Heights"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-27 14:19" pubdate>
+          January 27, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          721 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WRF | Vertical Levels and Heights</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <div class="note note-primary">
+            <ul><li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/index.html"><strong>WRF Users Guide documentation !!</strong></a></li><li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/forums/frequently-asked-questions.115/">Development Team Announcements &gt; <strong>Frequently Asked Questions</strong></a></li></ul>
+          </div>
+<h1 id="hybrid-vertical-coordinate">Hybrid Vertical Coordinate</h1>
+<p>WRF is a hybrid vertical coordinate (HVC) and at the surface, it is terrain-following - meaning the heights come from the static geographic data used in the WPS process. Additional details about the HVC can be found in the <a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/dynamics.html">Dynamics chapter</a> of the WRF Users Guide.</p>
+<ul>
+<li>Prior to WRFV4.0, the vertical coordinate defaulted to terrain-following. To convert back to that option, set <code>“hybrid_opt=0”</code> in the <code>&amp;dynamics</code> section of the namelist. real.exe and wrf.exe must both be run with the same <code>“hybrid_opt”</code> value.</li>
+<li>When using HVC output with post-processors, use either hydrostatic pressure (<code>P_HYD</code>) or total pressure (<code>PB + P</code>) for diagnostics and vertical interpolation.</li>
+<li>In wrfout, you can find variables <code>PH</code> and <code>PHB</code>, <code>(PH + PHB)/9.8</code> will <strong>give you the real altitude of each model level</strong>. You can do vertical interpolation to put the variables in any levels you want for calculation.</li>
+<li><code>PH</code> and <code>PHB</code> are geopotential, which is a physical variable defined in geoscience</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/3ECQSPE.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/v4MPzsr.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/oyjw9E5.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h1 id="determine-pressure-and-height-at-each-wrf-vertical-level">Determine pressure and height at each WRF vertical level</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/determine-pressure-and-height-at-each-wrf-vertical-level.114/">Determine pressure and height at each WRF vertical level</a></li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs text">They can be computed from:<br><br>(P + PB)*0.01 for pressure at half-sigma level, and<br><br>(PH + PHB)/9.81 for geopotential height at full level.<br><br>The model levels are not at constant pressure or height surfaces because they follow terrain.<br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <p>the result of (PH+PHB)/9.8 is the height above sea level that is not what you need to check.</p>
+          </div>
+<p>Above surface, (<code>HGT</code> is terrain height.)</p>
+<div class="note note-primary">
+            <p>(PH+PHB)/9.81-HGT</p>
+          </div>
+<p>The center height above surface, absolute altitude should be calculated by running average from the top and bottom:</p>
+<div class="note note-primary">
+            <p>(((PH(k)+PH(k+1)) / 2) + ((PHB(k)+(PHB(k+1)) / 2) / 9.81 – HGT,</p>
+          </div>
+<p>where PH and PHB are staggered in the vertical direction, meaning that they are at the tops and bottoms of grid cells. HGT is terrain height. This center height of grid cell is changing from model time to time based on definition of eta vertical coordinate system. You never get it fixed. So you cannot get the answer to your question by re-setting eta levels.</p>
+<h1 id="wrf離地度設定與計算">WRF離地⾼度設定與計算</h1>
+<p>WRF離地⾼度設定與計算, 簡單分享⼀個使⽤python計算wrfout中的離地⾼度程序，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> netCDF4 <span class="hljs-keyword">import</span> Dataset<br><span class="hljs-keyword">from</span> wrf <span class="hljs-keyword">import</span> getvar<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br>np.set_printoptions(suppress=<span class="hljs-literal">True</span>)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(<span class="hljs-params">file_nc</span>):<br>    nc = Dataset(file_nc)<br>    hgt = getvar(nc, <span class="hljs-string">&#x27;HGT&#x27;</span>)<br>    z = getvar(nc, <span class="hljs-string">&#x27;z&#x27;</span>)<br><br>    hei = z - hgt<br>    eta = getvar(nc, <span class="hljs-string">&#x27;ZNU&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;離地高度(m)為：&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(hei.mean(dim=[<span class="hljs-string">&#x27;south_north&#x27;</span>, <span class="hljs-string">&#x27;west_east&#x27;</span>]).values)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\neta值為：&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(eta.values)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    file_in = <span class="hljs-string">r&#x27;F:\WRF\wrfout\DaiBu1\test\wrfout_d02_2016-01-01_00_00_00&#x27;</span><br>    main(file_in)<br></code></pre></td></tr></table></figure>
+<p>其中 <code>HGT</code> 變數代表了地面海拔高度，在 geo_em 檔案中就存在了，而 <code>z</code> 代表了海平面高度，是一個診斷量，根據氣壓等值進行計算出來的。而ZNU代表了垂直方向上質量（Mass）格點的 eta 值，也就是可以在 namelist.input 中手動設定 eta_levels 後得到的，其中注意 <strong>eta_levels 為非交錯（Unstaggered）格點</strong>，數量比質量格點多1。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">eta=(P-Ptop)/(Pbot-Ptop)<br></code></pre></td></tr></table></figure>
+<p><code>P</code> 代表某一層的氣壓，也就是​​你需要研究的那一層， <code>Ptop</code> 代表模式頂層氣壓， <code>Pbot</code> 代表地面氣壓。 （WRF中好像是10hpa，不太確定）。從表達式可以看出，<strong>地面的eta值就是1，頂層就是0</strong>。這樣一來，無論某個地區的下墊面的海拔高度是多少，它的eta座標值都統一成1。</p>
+<p>Outputs,</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs console">離地高度(m)為：<br>[    4.6424522    30.92521      68.38203      99.607834    141.92523<br>   199.51625     257.37473     313.9709      663.8559     1213.3403<br>  1480.827      1592.7434     1732.3972     1928.7981     2228.9375<br>  2558.0645     2887.5166     3199.1963     3503.0833     3894.8406<br>  4270.9155     4674.8535     5122.3745     5496.455      5847.2725<br>  6315.642      6890.278      7477.73       7919.236      8284.508<br>  9007.295      9896.075     10943.57      12093.356     13241.985<br> 14453.84      15761.201     17026.54      17861.408     18336.861    ]<br><br>eta值為：<br>[0.9994     0.996      0.99115    0.9871     0.9816     0.9741<br> 0.96655    0.95914996 0.91314995 0.84099996 0.806      0.7915<br> 0.77349997 0.7485     0.71099997 0.671      0.6325     0.59749997<br> 0.565      0.5255     0.48950002 0.454      0.417      0.3885<br> 0.3635     0.333      0.2985     0.267      0.24499999 0.2285<br> 0.199      0.16600001 0.133      0.1015     0.0755     0.052<br> 0.0315     0.015      0.006      0.0015    ]<br></code></pre></td></tr></table></figure>
+<p>加密低層層數，總共設定了40層質量格點，對應的 <code>&amp;domains</code> 組中的 <code>eta_levels</code> 設定如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs namelist"> eta_levels  = 1.0000, 0.9988, 0.9932, 0.9891, 0.9851,<br>0.9781, 0.9701, 0.9630, 0.9553, 0.8710,<br>0.811, 0.801, 0.782, 0.765, 0.732,<br>0.690, 0.652, 0.613, 0.582, 0.548,<br>0.503, 0.476, 0.432, 0.402, 0.375,<br>0.352, 0.314, 0.283, 0.251, 0.239,<br>0.218, 0.180, 0.152, 0.114, 0.089,<br>0.062, 0<br></code></pre></td></tr></table></figure>
+<h1 id="choosing-an-appropriate-number-of-vertical-levels-e_vert">Choosing an appropriate number of vertical levels (e_vert)</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/choosing-an-appropriate-number-of-vertical-levels-e_vert.10682/">Choosing an appropriate number of vertical levels (e_vert)</a></li>
+</ul>
+<p>A better question for this is "what is the stretching rate I need to use?"</p>
+<p>See <a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/initialization.html#setting-model-vertical-levels">Setting Model Vertical Levels</a> in the WRF Users' Guide.</p>
+<p>A good procedure to follow may be:</p>
+<ol type="1">
+<li>Determine the model top pressure.</li>
+<li>Determine how thick your lowest layer is (50 m by default)</li>
+<li>Determine maximum thickness (1 km by default).</li>
+</ol>
+<p>Then based on your needs, the stretching rates can be chosen using the table in chapter 4 of UG (link above) as a guideline.</p>
+<ol type="1">
+<li>Choose the stretching rate(s) - larger if you want fewer levels but it’s not recommended that the rate be &gt; 1.3.</li>
+</ol>
+<ol start="2" type="1">
+<li>Find the minimum number of levels that works for that stretching factor by iterating running real and changing e_vert. The minimum is the one that gives the smoothest variation in DNW, which can also be viewed in wrfinput as part of the process</li>
+</ol>
+<p>It is worth mentioning that when one chooses this method, the real program prints out the thickness of the layer, and it can be very good information for making adjustments for the stretching parameters.</p>
+<p>*Additional Notes Smoothly varying vertical levels can be very important for model stability. Tests have shown that two different sets of vertical levels gives different numbers of CFL prints. For cases with dz &gt; dx (as can occur for dx &lt; 1 km at the top), tests have also shown that continuous stretching works through to the model top better than having many equal dz levels.</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/mapping-vertical-levels-to-physical-altitude.9906/">Mapping vertical levels to physical altitude</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/vertical-levels-adjustment.5638/">Vertical Levels Adjustment</a>
+<ol type="1">
+<li><ol type="1">
+<li>To increase vertical levels below a specific height, I would suggest you run REAL program first to create eta levels. Then you can manually increase the number of levels based on the automatically generated eta levels by REAL. For example , suppose you run REAL and get the following eta levels: <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs text">eta_levels =<br>1, 0.993, 0.983, 0.97, 0.954, 0.934, 0.909, 0.88,<br>....<br>....<br>/<br>You can then replace the first several eta levels by:<br>1, 0.999, 0.998, 0.996, 0.993, 0.990, 0.980. 0.970, 0.960, 0.950,<br>0.940, 0.930, 0.920, 0.910, 0.900, 0.890, 0.880, 0.870,<br></code></pre></td></tr></table></figure></li>
+</ol></li>
+<li>This is just an example to show how to add more levels within certain height</li>
+<li><ol start="2" type="1">
+<li>Once wrfinput is produced, you will find <code>PH</code> and <code>PHB</code> in wrfinput, and <strong>(PH=PHB) is the geopotential height</strong> corresponding to model levels.</li>
+</ol></li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/stretched-vertical-levels-information.14975/">Stretched vertical levels information?</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/does-the-real-program-generate-the-full-level-height-based-on-the-international-standard-atmosphere.16833/">Does the REAL program generate the Full level height based on the International Standard Atmosphere?</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/vertical-profile-of-wind.16348/">Vertical profile of Wind</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4txXV2kuYktlvasxkiKdeg">计算wrfout垂直层离地高度</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/UCM/" class="print-no-link">#UCM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WRF | Vertical Levels and Heights</div>
+      <div>https://waipangsze.github.io/2025/01/27/WRF-Vertical-Levels-and-Heights/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 27, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>January 27, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/27/WRF-MPAS-UCM-and-LCZs/" title="WRF | MPAS | UCM and LCZs">
+                        <span class="hidden-mobile">WRF | MPAS | UCM and LCZs</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
