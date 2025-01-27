@@ -96,9 +96,13 @@ An Auto-Encoder typically consists of three main components:
   
 這裡解釋下第二點。如下圖所示，我們用一張全月圖和一張半月圖去訓練一個AE，經過訓練，模型能夠很好地還原出這兩張圖片。接下來，我們在latent code上中間一點，即兩張圖片編碼點中間處任取一點，將這點交給解碼器進行解碼，直覺上我們會得到一張介於全月圖和半月圖之間的圖片（如陰影面積覆蓋3/4的樣子）。然而，實際上當你那這個點去decode的時候你會發現AE還原出來的圖片不僅模糊而且還是亂碼的。為什麼會出現這種現象？一個直觀上的解釋是AE的Encoder和Decoder都使用了 DNN，**DNN是一個非線性的變換過程，因此在latent space上點與點之間transform往往沒有規律可循**。
 
-如何解決這個問題呢？**一個想法就是引入噪聲**，擴大圖片的編碼區域，從而能夠覆蓋到失真的空白編碼區。其實說白了就是透過增加輸入的多樣性來增強輸出的魯棒性。當我們將輸入圖片編碼之前引入一點噪聲，使得每張圖片的編碼點出現在綠色箭頭範圍內，這樣一來所得到的latent space就能覆蓋到更多的編碼點。此時我們再從中間點抽取去還原便可以得到一個我們比較希望得到的輸出
+### 引入噪聲 (隨機性)
 
-雖然我們為輸入圖片增添了一些噪音使得latent space能夠覆蓋到比較多的區域，但是還是有不少地方沒有被覆蓋到，比如上圖右邊黃色的部分因為離得比較遠所以就沒編碼到。因此，我們是否可以嘗試利用更多的噪音，使得對於每一個輸入樣本，它的編碼都能夠覆蓋到整個編碼空間？只不過這裡我們需要保證的是，對於源編碼附近的編碼我們應該給定一個高的機率值，而對於距離原編碼點距離較遠的，我們應該給定一個低的機率值。沒錯，整體來說，**我們就是要將原先一個單點拉伸到整個編碼空間，即將離散的編碼點引申為一條連續的接近常態分佈的編碼曲線**。
+{% note primary %}
+如何解決這個問題呢？**一個想法就是引入噪聲**，擴大圖片的編碼區域，從而能夠覆蓋到失真的空白編碼區。其實說白了就是透過增加輸入的多樣性來增強輸出的魯棒性。當我們將輸入圖片編碼之前引入一點噪聲，使得每張圖片的編碼點出現在綠色箭頭範圍內，這樣一來所得到的latent space就能覆蓋到更多的編碼點。此時我們再從中間點抽取去還原便可以得到一個我們比較希望得到的輸出。
+{% endnote %}
+
+雖然我們為輸入圖片增添了一些噪音 (引入噪聲) 使得latent space能夠覆蓋到比較多的區域，但是還是有不少地方沒有被覆蓋到，比如上圖右邊黃色的部分因為離得比較遠所以就沒編碼到。因此，我們是否可以嘗試利用更多的噪音，使得對於每一個輸入樣本，它的編碼都能夠覆蓋到整個編碼空間？只不過這裡我們需要保證的是，對於源編碼附近的編碼我們應該給定一個高的機率值，而對於距離原編碼點距離較遠的，我們應該給定一個低的機率值。沒錯，整體來說，**我們就是要將原先一個單點拉伸到整個編碼空間，即將離散的編碼點引申為一條連續的接近常態分佈的編碼曲線**。
 
 {% gi 3 3 %}
 ![](https://i.imgur.com/WcjuQGm.png)
@@ -131,9 +135,9 @@ An Auto-Encoder typically consists of three main components:
 
 最後，再讓我們一起來討論下VAE的限制。雖然VAE比普通的AE模型訓練出來的效果要好得多，但是訓練過VAE模型的人都知道，它生成出來的圖片相對GANs那種直接利用對抗學習的方式會比較模糊，這是由於它是通過直接計算生成圖片和原始圖片之間的均方誤差，所以得到的是一張「平均圖像」。
 
-# Sampling
+# *** Sampling (引入噪聲)
 
-結構：VAE也是由編碼器和解碼器組成，**但它在編碼階段引入了一個機率模型**。編碼器輸出的是潛在空間的參數（平均值和變異數），而不是直接的潛在表示。解碼器則從這個潛在分佈中取樣產生資料。
+結構：VAE也是由編碼器和解碼器組成，**但它在編碼階段引入了一個機率模型 (引入噪聲)**。編碼器輸出的是潛在空間的參數（平均值和變異數），而不是直接的潛在表示。解碼器則從這個潛在分佈中取樣產生資料。
 
 目的：VAE的目標不僅是重構輸入數據，**還希望潛在空間的表示具有良好的性質，例如連續性和可解釋性。這使得 VAE 適合產生新數據**。
 
@@ -153,7 +157,34 @@ $$
 這裡，$\mu(x)$ 和 $\sigma(x)$ 是由編碼器網路產生的。這樣，$z$ 的值就是在**這個分佈中進行取樣**的。
 {% endnote %}
 
-## 重參數化技巧 (Reparameterization trick)
+{% note primary %}
+- 編碼器為每個輸入輸出一個多元正態分佈的參數（均值和方差）。從這個分佈中進行採樣可以生成新數據點，通過將這些採樣的潛在向量傳遞給解碼器，**有效地創建出與訓練數據相似但又不同的新實例**。
+- 採樣過程為模型**引入了隨機性**，這是捕捉數據變異性的關鍵。與傳統的自編碼器產生確定性輸出不同，VAE利用採樣中的隨機性確保從相同輸入生成不同的潛在向量，從而實現對數據的更豐富表示。**這種隨機性有助於從相似輸入中探索多樣化的輸出**。
+- **這確保了學習到的潛在空間是結構化的，並促進了數據點之間有意義的插值** (!!!)。
+- 訓練完成後，VAE不僅可以從學習到的後驗分佈中進行採樣，還可以從各種其他分佈中進行採樣。例如，它們可以從先驗分佈（通常是標準正態分佈）中進行採樣，**這可能導致生成多樣的新數據點。這種靈活性使得VAE能夠應用於各種上下文，例如生成圖像或填補缺失數據**。
+{% endnote %}
+
+{% note primary %}
+總之，VAE中的採樣對於其生成能力至關重要，引入了必要的隨機性，通過結構化潛在空間幫助正則化，利用重參數化等高效訓練技術，並提供了生成新數據實例的靈活性。
+{% endnote %}
+
+{% note primary %}
+**但如果**我們從這個分佈中取樣，那麼這個節點 $z$ 將是一個隨機節點，無法進行反向傳播 (不能微分)，這意味著無法進行優化。(為了在訓練過程中允許反向傳播，同時保持隨機採樣，VAE採用了一種稱為**重參數化技巧**的方法。)
+{% endnote %}
+
+# *** 重參數化技巧 (Reparameterization trick)
+
+![](https://i.imgur.com/LbEi0j8.png){width=600}
+
+{% note primary %}
+- **Random node z**  can not be done via Backpropagation !!! (直接從這個分佈採樣會導致梯度無法通過隨機節點回傳，因此 **重參數化技巧** 將 **採樣過程** 分解為 **確定性變換**。)
+- Then, introduce a **New External Noise Input** $\epsilon$ is $N(0,1)$ !!!
+- The $\epsilon$ is $N(0,1)$ and will be not involved into Backpropagation !!! (not on the our Chain Rule !!!)
+{% endnote %}
+
+{% note primary %}
+重參數化技巧是指將隨機變量的 **採樣過程轉** 換為一個 **確定性函數** 與 **隨機噪聲** 的組合。這樣做的目的是使得模型在訓練過程中可以進行有效的梯度反向傳播。
+{% endnote %}
 
 重參數化技巧：**為了使得 VAE 能夠進行有效的反向傳播**，使用了重參數化技巧。具體來說，我們將 $z$ 表達為：
 
@@ -164,10 +195,11 @@ $$
 其中 $\epsilon \sim N(0,1)$ 。
 
 {% note primary %}
-透過這種方式，**我們可以將隨機性從網路的前向傳播中分離出來，使得我們能夠透過標準的反向傳播演算法來訓練模型**。
+- 透過這種方式，**我們可以將隨機性從網路的前向傳播中分離出來，使得我們能夠透過標準的反向傳播演算法來訓練模型**。
+- 例如，如果 $q_{\phi}(z|x)$ 是均值為 $\mu$、方差為 $\sigma^2$ 的高斯分佈，可以從標準正態分佈 $N(0, I)$ 中採樣一個噪聲 $\epsilon$，然後計算 $z = \mu + \sigma \odot \epsilon$。這樣，**$z$ 的採樣就變成了均值和方差的函數，從而使得梯度可以通過 $z$ 回傳**。
 {% endnote %}
 
-## VAE生成的影像品質並不好
+# VAE生成的影像品質並不好
 
 目前在影像生成領域，除了VAE，還有GAN，Diffusion模型等，相較之下，VAE生成的影像品質並不好，通常比較模糊。但為什麼在StableDiffusion中，採用了VAE+diffusion的結構，效果就變得非常好了？
 
@@ -335,12 +367,23 @@ $$
 where $\mathbf{z}^{(l)}\sim q_{\boldsymbol{\phi}}(\mathbf{z}|\mathbf{x}^{(i)}).$ 
 This gradient estimator exhibits exhibits very high variance (see.g. [BJP12]) and is impractical for our purposes.
 
+{% gi 4 3-3 %}
+![](https://i.imgur.com/qjPqBwc.png)
+![](https://i.imgur.com/Q6DXjJP.png)
+![](https://i.imgur.com/gC1Dm6T.png)
+![](https://i.imgur.com/LbEi0j8.png)
+{% endgi %}
+
+- **Random node $z$** can not be done via Backpropagation!!!
+- The $\epsilon$ is $N(0,1)$ and will be not involved into Backpropagation!!
+
 # References
 
 1. [Variational Autoencoders | Generative AI Animated](https://www.youtube.com/watch?v=qJeaCHQ1k2w)
-2. [台大資訊 深度學習之應用 | ADL 10.3: Variational Auto-Encoder (VAE) 控制特徵的分布以生成用](https://www.youtube.com/watch?v=Dg0YcABQ_aU)
-3. [深度理解变分自编码器(VAE) | 从入门到精通](https://mp.weixin.qq.com/s/LwtwaPEkrhFMwazY3PfRew)
-4. [VAE原理及示例代码](https://mp.weixin.qq.com/s/ZjAK_Z7jvrPMGslKiYca_Q)
-5. [机器学习方法—优雅的模型（一）：变分自编码器（VAE）](https://zhuanlan.zhihu.com/p/348498294?utm_psn=1866895402294468608)
-6. [Autoencoders for Image Reconstruction in Python and Keras](https://stackabuse.com/autoencoders-for-image-reconstruction-in-python-and-keras/)
-7. [Diederik P. Kingma and Max Welling (2019), “An Introduction to Variational Autoencoders”, Foundations and Trends in Machine Learning: Vol. xx, No. xx, pp 1–18. DOI: 10.1561/XXXXXXXXX](https://arxiv.org/pdf/1906.02691)
+2. [Variational Autoencoder - Model, ELBO, loss function and maths explained easily! (**Recommend**)](https://www.youtube.com/watch?v=iwEzwTTalbg)
+3. [台大資訊 深度學習之應用 | ADL 10.3: Variational Auto-Encoder (VAE) 控制特徵的分布以生成用](https://www.youtube.com/watch?v=Dg0YcABQ_aU)
+4. [深度理解变分自编码器(VAE) | 从入门到精通](https://mp.weixin.qq.com/s/LwtwaPEkrhFMwazY3PfRew)
+5. [VAE原理及示例代码](https://mp.weixin.qq.com/s/ZjAK_Z7jvrPMGslKiYca_Q)
+6. [机器学习方法—优雅的模型（一）：变分自编码器（VAE）](https://zhuanlan.zhihu.com/p/348498294?utm_psn=1866895402294468608)
+7. [Autoencoders for Image Reconstruction in Python and Keras](https://stackabuse.com/autoencoders-for-image-reconstruction-in-python-and-keras/)
+8. [Diederik P. Kingma and Max Welling (2019), “An Introduction to Variational Autoencoders”, Foundations and Trends in Machine Learning: Vol. xx, No. xx, pp 1–18. DOI: 10.1561/XXXXXXXXX](https://arxiv.org/pdf/1906.02691)

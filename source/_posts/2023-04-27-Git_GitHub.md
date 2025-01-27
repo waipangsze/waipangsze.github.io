@@ -99,6 +99,14 @@ $ git clone <repository> <directory>
 
 git pull - Fetch from and integrate with another repository or a local branch
 
+[聊下git pull --rebase](https://www.cnblogs.com/wangiqngpei557/p/6056624.html)
+
+有一種場景是經常發生的。大家都基於develop拉出分支進行並行開發，這裡的分支可能是多到數十個。然後彼此在進行自己的邏輯編寫，時間可能需要幾天或幾週。在這段期間你可能需要時不時的需要pull下遠端develop分支上的同事的提交。這是個好的習慣，這樣下去就可以避免你在一個無用的程式碼上進行長期的開發，回頭來看這些程式碼不是新的程式碼。甚至是會面臨很多衝突需要解決，而這個時候你可能還需要對衝突的部分程式碼進行測試回歸，這就很麻煩了。
+
+那我們來看看你在pull時候需要習慣性的加上—rebase參數，這樣可以避免很多問題。 --rebase的本意是想讓事情的發展看起來很連續和優美，而不是多出很多無用的merge commit。
+
+因為程式碼都有一個前後依賴，只是這個依賴在開發的時候誰先誰後的問題。
+
 ```sh
 $ git pull --rebase
 You are not currently on a branch.
