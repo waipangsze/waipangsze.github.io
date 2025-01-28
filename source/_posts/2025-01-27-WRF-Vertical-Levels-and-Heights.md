@@ -69,6 +69,9 @@ where PH and PHB are staggered in the vertical direction, meaning that they are 
 
 WRF離地⾼度設定與計算, 簡單分享⼀個使⽤python計算wrfout中的離地⾼度程序，如下：
 
+- `"znu"`  "eta values on half (mass) levels"
+- `"znw"`  "eta values on full (w) levels"  ""
+
 ```python
 from netCDF4 import Dataset
 from wrf import getvar
@@ -77,8 +80,8 @@ np.set_printoptions(suppress=True)
 
 def main(file_nc):
     nc = Dataset(file_nc)
-    hgt = getvar(nc, 'HGT')
-    z = getvar(nc, 'z')
+    hgt = getvar(nc, 'HGT') # "HGT" "Terrain Height"   "m" ij
+    z = getvar(nc, 'z')     # z (geopotential /g)
 
     hei = z - hgt
     eta = getvar(nc, 'ZNU')
@@ -100,27 +103,30 @@ eta=(P-Ptop)/(Pbot-Ptop)
 
 `P` 代表某一層的氣壓，也就是​​你需要研究的那一層， `Ptop` 代表模式頂層氣壓， `Pbot` 代表地面氣壓。 （WRF中好像是10hpa，不太確定）。從表達式可以看出，**地面的eta值就是1，頂層就是0**。這樣一來，無論某個地區的下墊面的海拔高度是多少，它的eta座標值都統一成1。
 
-Outputs,
+Outputs, **e_vert = 54**
 
 ```console
 離地高度(m)為：
-[    4.6424522    30.92521      68.38203      99.607834    141.92523
-   199.51625     257.37473     313.9709      663.8559     1213.3403
-  1480.827      1592.7434     1732.3972     1928.7981     2228.9375
-  2558.0645     2887.5166     3199.1963     3503.0833     3894.8406
-  4270.9155     4674.8535     5122.3745     5496.455      5847.2725
-  6315.642      6890.278      7477.73       7919.236      8284.508
-  9007.295      9896.075     10943.57      12093.356     13241.985
- 14453.84      15761.201     17026.54      17861.408     18336.861    ]
+[   25.79018    84.52496   159.36661   254.26878   373.91403   523.6823
+   709.4084    936.94196  1211.5869   1537.3103   1915.9166   2346.727
+  2826.5383   3351.045    3919.6106   4535.6753   5203.207    5926.446
+  6709.601    7526.155    8336.745    9129.773    9904.727   10662.59
+ 11405.757   12136.74    12855.216   13558.873   14246.067   14916.217
+ 15570.322   16211.534   16845.14    17475.96    18106.285   18739.186
+ 19379.889   20031.79    20695.127   21368.908   22051.965   22742.492
+ 23437.81    24135.63    24835.205   25537.508   26244.611   26958.385
+ 27679.389   28406.797   29139.291   29875.842   30616.08   ]
 
 eta值為：
-[0.9994     0.996      0.99115    0.9871     0.9816     0.9741
- 0.96655    0.95914996 0.91314995 0.84099996 0.806      0.7915
- 0.77349997 0.7485     0.71099997 0.671      0.6325     0.59749997
- 0.565      0.5255     0.48950002 0.454      0.417      0.3885
- 0.3635     0.333      0.2985     0.267      0.24499999 0.2285
- 0.199      0.16600001 0.133      0.1015     0.0755     0.052
- 0.0315     0.015      0.006      0.0015    ]
+[0.9970323  0.9902915  0.98175085 0.9710067  0.9576102  0.9410889
+ 0.92098445 0.8969075  0.8686075  0.83604616 0.79945725 0.759369
+ 0.7165741  0.6719424  0.6260139  0.57906395 0.53141975 0.4834582
+ 0.43560207 0.38982862 0.3482536  0.31100053 0.27762014 0.24770983
+ 0.22090887 0.19689405 0.1753757  0.15609428 0.13881733 0.1233364
+ 0.10946479 0.09703521 0.08589777 0.07591815 0.06697594 0.05896334
+ 0.0517837  0.04535042 0.03958592 0.03442067 0.02979238 0.02564523
+ 0.0219292  0.01859947 0.01561588 0.01294246 0.01054696 0.00840049
+ 0.00647715 0.00475375 0.00320951 0.0018258  0.00058594]
 ```
 
 加密低層層數，總共設定了40層質量格點，對應的 `&domains` 組中的 `eta_levels` 設定如下：
@@ -165,8 +171,11 @@ For cases with dz > dx (as can occur for dx < 1 km at the top), tests have also 
 
 # References
 
-1. [Mapping vertical levels to physical altitude](https://forum.mmm.ucar.edu/threads/mapping-vertical-levels-to-physical-altitude.9906/)
-2. [Vertical Levels Adjustment](https://forum.mmm.ucar.edu/threads/vertical-levels-adjustment.5638/)
+1. [Setting first layer thickness](https://forum.mmm.ucar.edu/threads/setting-first-layer-thickness.11680/)
+2. [height of first layer](https://forum.mmm.ucar.edu/threads/height-of-first-layer.9128/)
+3. [calculate height of first model layer](https://forum.mmm.ucar.edu/threads/calculate-height-of-first-model-layer.9831/)
+4. [Mapping vertical levels to physical altitude](https://forum.mmm.ucar.edu/threads/mapping-vertical-levels-to-physical-altitude.9906/)
+5. [Vertical Levels Adjustment](https://forum.mmm.ucar.edu/threads/vertical-levels-adjustment.5638/)
    1. (1) To increase vertical levels below a specific height, I would suggest you run REAL program first to create eta levels. Then you can manually increase the number of levels based on the automatically generated eta levels by REAL. For example , suppose you run REAL and get the following eta levels:
     ```text
     eta_levels =
@@ -180,7 +189,7 @@ For cases with dz > dx (as can occur for dx < 1 km at the top), tests have also 
     ```
     2. This is just an example to show how to add more levels within certain height
     3. (2) Once wrfinput is produced, you will find `PH` and `PHB` in wrfinput, and **(PH=PHB) is the geopotential height** corresponding to model levels.
- 3. [Stretched vertical levels information?](https://forum.mmm.ucar.edu/threads/stretched-vertical-levels-information.14975/)
- 4. [Does the REAL program generate the Full level height based on the International Standard Atmosphere?](https://forum.mmm.ucar.edu/threads/does-the-real-program-generate-the-full-level-height-based-on-the-international-standard-atmosphere.16833/)
- 5. [Vertical profile of Wind](https://forum.mmm.ucar.edu/threads/vertical-profile-of-wind.16348/)
- 6. [计算wrfout垂直层离地高度](https://mp.weixin.qq.com/s/4txXV2kuYktlvasxkiKdeg)
+ 6. [Stretched vertical levels information?](https://forum.mmm.ucar.edu/threads/stretched-vertical-levels-information.14975/)
+ 7. [Does the REAL program generate the Full level height based on the International Standard Atmosphere?](https://forum.mmm.ucar.edu/threads/does-the-real-program-generate-the-full-level-height-based-on-the-international-standard-atmosphere.16833/)
+ 8. [Vertical profile of Wind](https://forum.mmm.ucar.edu/threads/vertical-profile-of-wind.16348/)
+ 9. [计算wrfout垂直层离地高度](https://mp.weixin.qq.com/s/4txXV2kuYktlvasxkiKdeg)

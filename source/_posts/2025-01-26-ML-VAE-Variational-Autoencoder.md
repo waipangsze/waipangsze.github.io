@@ -169,7 +169,7 @@ $$
 {% endnote %}
 
 {% note primary %}
-**但如果**我們從這個分佈中取樣，那麼這個節點 $z$ 將是一個隨機節點，無法進行反向傳播 (不能微分)，這意味著無法進行優化。(為了在訓練過程中允許反向傳播，同時保持隨機採樣，VAE採用了一種稱為**重參數化技巧**的方法。)
+**但如果**我們從這個分佈中取樣，那麼這個節點 $z$ 將是一個隨機節點，無法進行反向傳播 (不能微分, 採樣本身是不可導的)，這意味著無法進行優化。(為了在訓練過程中允許反向傳播，同時保持隨機採樣，VAE採用了一種稱為**重參數化技巧**的方法。)
 {% endnote %}
 
 # *** 重參數化技巧 (Reparameterization trick)
@@ -385,5 +385,6 @@ This gradient estimator exhibits exhibits very high variance (see.g. [BJP12]) an
 4. [深度理解变分自编码器(VAE) | 从入门到精通](https://mp.weixin.qq.com/s/LwtwaPEkrhFMwazY3PfRew)
 5. [VAE原理及示例代码](https://mp.weixin.qq.com/s/ZjAK_Z7jvrPMGslKiYca_Q)
 6. [机器学习方法—优雅的模型（一）：变分自编码器（VAE）](https://zhuanlan.zhihu.com/p/348498294?utm_psn=1866895402294468608)
-7. [Autoencoders for Image Reconstruction in Python and Keras](https://stackabuse.com/autoencoders-for-image-reconstruction-in-python-and-keras/)
-8. [Diederik P. Kingma and Max Welling (2019), “An Introduction to Variational Autoencoders”, Foundations and Trends in Machine Learning: Vol. xx, No. xx, pp 1–18. DOI: 10.1561/XXXXXXXXX](https://arxiv.org/pdf/1906.02691)
+7. [VAE变分自编码器原理解析看这一篇就够了！另附Python代码实现](https://mp.weixin.qq.com/s/LFmFXA1hFZE8lesSk1XzzQ)
+8. [Autoencoders for Image Reconstruction in Python and Keras](https://stackabuse.com/autoencoders-for-image-reconstruction-in-python-and-keras/)
+9. [Diederik P. Kingma and Max Welling (2019), “An Introduction to Variational Autoencoders”, Foundations and Trends in Machine Learning: Vol. xx, No. xx, pp 1–18. DOI: 10.1561/XXXXXXXXX](https://arxiv.org/pdf/1906.02691)
