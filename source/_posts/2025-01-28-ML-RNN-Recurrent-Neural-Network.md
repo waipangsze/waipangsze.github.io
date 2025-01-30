@@ -73,3 +73,10 @@ RNN在多個領域中有著廣泛的應用：
 
 總結來說，循環神經網路是一種強大的工具，能夠有效處理序列數據並捕捉時間上的依賴關係，其應用範圍涵蓋自然語言處理、時間序列預測、語音識別等多個領域。
 
+# Literature review
+
+1. Rumelhart, David E., Geoffrey E. Hinton, and Ronald J. Williams. ["Learning representations by back-propagating errors."]() nature 323.6088 (1986): 533-536.
+
+# References
+
+1. [超全面讲透一个算法模型，RNN ！！](https://mp.weixin.qq.com/s/KVL2Epn014KRlcL5hmTUCQ)
