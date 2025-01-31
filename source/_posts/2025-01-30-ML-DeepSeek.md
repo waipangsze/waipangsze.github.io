@@ -15,6 +15,29 @@ banner_img: https://i.imgur.com/kZIc53N.png
 
 DeepSeek是一家中國人工智能公司，成立於2023年7月，總部位於浙江省杭州市。該公司專注於開發開源的大型語言模型（LLMs），並由對沖基金High-Flyer全資擁有，該基金由梁文峰共同創辦，梁文峰同時擔任公司的首席執行官。DeepSeek因其在推理任務上的表現與OpenAI的ChatGPT相當，但開發成本和資源消耗卻僅為其一小部分而受到廣泛關注。
 
+# DeepSeek Model
+
+DeepSeek-R1 and DeepSeek-V3 are advanced language models developed by DeepSeek-AI, leveraging a **Mixture of Experts (MoE)** architecture to optimize performance and resource efficiency.
+
+- DeepSeek-V3
+  - [Liu, A., Feng, B., Xue, B., Wang, B., Wu, B., Lu, C., ... & Piao, Y. (2024). Deepseek-v3 technical report. arXiv preprint arXiv:2412.19437.](https://arxiv.org/pdf/2412.19437)
+    - We present DeepSeek-V3, **a strong Mixture-of-Experts (MoE) language model** with 671B total parameters with 37B activated for each token. To achieve efficient inference and cost-effective training, DeepSeek-V3 adopts Multi-head Latent Attention (MLA) and DeepSeekMoE architectures, which were thoroughly validated in DeepSeek-V2.
+  - [【0410 LLM新知】Mixture of Expert，2024年LLM的新標竿](https://axk51013.medium.com/0410-llm%E6%96%B0%E7%9F%A5-mixture-of-expert-2024%E5%B9%B4llm%E7%9A%84%E6%96%B0%E6%A8%99%E7%AB%BF-a51c721fea37)
+- DeepSeek-R1
+  - DeepSeek-R1 requires **at least 800 GB of HBM memory in FP8** format for inference. 
+
+| Model | #Total Params| #Activated Params | Context Length | Download | VRAM FP8 |
+|:----------------:|:--------:|:------------:|:----------:|:-------------:|:-------------:|
+| DeepSeek-R1-Zero | 671B | 37B | 128k | <https://huggingface.co/deepseek-ai/DeepSeek-R1-Zero> | at least 800 GB |
+| DeepSeek-R1 | 671B |  37B | 128k | <https://huggingface.co/deepseek-ai/DeepSeek-R1> | at least 800 GB |
+| DeepSeek-V3 | 671B |      |      | | at least 800 GB | 
+
+DeepSeek-R1-Zero & DeepSeek-R1 are trained based on DeepSeek-V3-Base. For more details regarding the model architecture, please refer to [DeepSeek-V3](https://github.com/deepseek-ai/DeepSeek-V3) repository. (**DeepSeek-V3-671B,	671 billion,	VRAM (FP16) ~1,543 GB, VRAM (4-bit Quantization)	~386 GB**)
+
+- `FP16 Precision`: Higher VRAM GPUs or multiple GPUs are required due to the larger memory footprint.
+- `4-bit Quantization`: Lower VRAM GPUs can handle larger models more efficiently, reducing the need for extensive multi-GPU setups.
+- `Lower Spec GPUs`: Models can still be run on GPUs with lower specifications than the above recommendations, as long as the GPU is equal or more than VRAM requirements. However, the setup would not be optimal and likely requires some tuning, such as adjusting batch sizes and processing settings.
+
 # 本地部署
 
 ## Ollama
@@ -31,6 +54,15 @@ DeepSeek是一家中國人工智能公司，成立於2023年7月，總部位於�
 - macOS: `~/.ollama/models`
 - Linux: `/usr/share/ollama/.ollama/models`
 - Windows: `C:\Users<username>.ollama\models`
+
+```console
+$ ls ~/.ollama
+history        id_ed25519     id_ed25519.pub logs           models
+
+[~/.ollama/models]$ du -sh ./*
+ 39G	./blobs
+ 24K	./manifests
+```
 
 ## Examples
 
@@ -76,17 +108,6 @@ ollama run deepseek-r1:70b
 ![](https://i.imgur.com/knX3TwB.png)
 ![](https://i.imgur.com/SyCFPAZ.png)
 {% endgi %}
-
-## Model Downloads
-
-- DeepSeek-R1
-
-| Model | #Total Params| #Activated Params | Context Length | Download |
-|:----------------:|:--------:|:------------:|:----------:|:-------------:|
-| DeepSeek-R1-Zero | 671B | 37B | 128k | <https://huggingface.co/deepseek-ai/DeepSeek-R1-Zero> |
-| DeepSeek-R1 | 671B |  37B | 128k | <https://huggingface.co/deepseek-ai/DeepSeek-R1> |
-
-DeepSeek-R1-Zero & DeepSeek-R1 are trained based on DeepSeek-V3-Base. For more details regarding the model architecture, please refer to [DeepSeek-V3](https://github.com/deepseek-ai/DeepSeek-V3) repository.
 
 # References
 
