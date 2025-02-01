@@ -2,7 +2,7 @@
 layout: post
 title: ML | CorrDiff (NVIDIA)
 categories: [ML]
-tags: [ML, AI, pytorch, NVIDIA]
+tags: [ML, AI, pytorch, NVIDIA, UNet, Diffusion]
 author: wpsze
 date: 2025-01-02 10:01:00
 math: true
@@ -17,7 +17,7 @@ banner_img:
 # News
 
 - [生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15](https://www.scimonth.com.tw/archives/10997)
-  - 輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（Corrector Diffusion）的生成式人工智慧（generative artificial intelligence, generative AI）技術，並表示它可以應用於區域高解析度天氣預報上。
+  - 輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（ Corrector Diffusion ）的生成式人工智慧（generative artificial intelligence, generative AI）技術，並表示它可以應用於區域高解析度天氣預報上。
   - 對於氣象模擬與預報來說，縮小網格解析度一直是一大挑戰。傳統物理模式受限於運行時所需的龐大運算量，當今執行全球預報的最高解析度模式為ECMWF的九公里解析度全球模式。
   - 氣象署發展的「RWRF」（Radar WRF）高解析度極短期劇烈天氣預報系統（延伸閱讀2），可提升對臺灣區域劇烈天氣的預報能力。此系統奠基於美國國家大氣研究中心（National Center for Atmospheric Research）的「WRF」（Weather Research & Forecasting）數值天氣預報模式與它的資料同化系統（WRFDA），再由氣象署針對臺灣本地需求修改發展，自2016年起開始作業運作。RWRF系統的模式解析度為兩公里，涵蓋範圍如圖一所示。它能運行區域高解析度的**快速更新循環資料同化**，將高解析度的即時觀測資料運用於區域模式中，藉此得到區域範圍內更準確的分析與短期預報資料，比單純的動力降尺度預報更為複雜。**其中，資料同化使臺灣區域的氣象雷達觀測資料每半小時進入此模式中、地面氣象站觀測資料（包含人工和自動氣象站）每一小時進入模式中。RWRF系統以每小時的更新頻率提供13小時長度的預報資料，** 作為署內預報中心與民航局等相關政府單位的參考。
   - 我們可以知道此模型在訓練過程中採用的輸入資料為ERA5全球約25公里解析度再分析資料（僅擷取與RWRF範圍相近的臺灣鄰近範圍）；而採用的輸出資料則為氣象署RWRF系統的兩公里解析度歷史分析資料，包含垂直最大雷達回波（radar reflectivity）、兩公尺高氣溫、十公尺高東西向與南北向風速等四個單層變數。
@@ -68,6 +68,21 @@ Importantly, **兩步驟來先後訓練**
 - **CorrDiff模型採用兩步驟來完成降尺度的計算**：
   - **第一步驟**是先以常應用於影像處理、能有效獲取影像特徵的UNet回歸架構，進行資料樣本平均值的修正；
   - **第二步驟**則利用生成式AI中的擴散（diffusion）演算法，強化資料的高解析度細節與極值。擴散演算法透過將圖像加入雜訊，再去除雜訊的循環過程來執行，過去常應用於圖片的去噪（denoising）、修補或超解析度成像等。
+- CorrDiff consists of two steps: regression and generation. 
+  - The regression step approximates the mean, while 
+  - the generation step further corrects the mean but also generates the distribution, producing fine-scale details stochastically. 
+  - The diffusion component of CorrDiff is found to be **especially important for the task of radar channel synthesis**.
+
+# Basedline Models
+
+- Interpolation of ERA5
+- UNet
+- Random Forest (RF)
+
+# UNet
+
+![](https://i.imgur.com/6CJzWhN.png)
+![](https://i.imgur.com/kWBDUkI.png)
 
 # Getting started
 

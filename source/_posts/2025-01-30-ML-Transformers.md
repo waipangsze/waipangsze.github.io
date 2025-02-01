@@ -1,16 +1,16 @@
 ---
 layout: post
-title: ML | Transformers
+title: ML | Transformer | Attention
 categories: ML
-tags: [NWP, ML, AI, RNN]
+tags: [NWP, ML, AI, RNN, Transformer]
 author: wpsze
 date: 2025-01-30 21:20:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/m673yGz.png
+banner_img: https://i.imgur.com/m673yGz.png
 ---
 
 # "Attention is all you need" (2017)
