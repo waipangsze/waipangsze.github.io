@@ -19,21 +19,26 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="References  CS25: Transformers United V4">
+    <meta name="description" content="&quot;Attention is all you need&quot; (2017)  Vaswani, A. (2017). Attention is all you need. Advances in Neural Information Processing Systems.   Encoder層和Decoder層內部結構如下圖所示。  Encoder具有兩層結構，self-attention和前饋神經網路">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ML | Transformers">
 <meta property="og:url" content="https://waipangsze.github.io/2025/01/30/ML-Transformers/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="References  CS25: Transformers United V4">
+<meta property="og:description" content="&quot;Attention is all you need&quot; (2017)  Vaswani, A. (2017). Attention is all you need. Advances in Neural Information Processing Systems.   Encoder層和Decoder層內部結構如下圖所示。  Encoder具有兩層結構，self-attention和前饋神經網路">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/MUotlGg.png">
+<meta property="og:image" content="https://i.imgur.com/WQyQ5Pe.png">
+<meta property="og:image" content="https://i.imgur.com/m673yGz.png">
+<meta property="og:image" content="https://i.imgur.com/kUDX4jY.png">
 <meta property="article:published_time" content="2025-01-30T13:20:00.000Z">
-<meta property="article:modified_time" content="2025-01-30T13:20:44.302Z">
+<meta property="article:modified_time" content="2025-02-01T10:38:55.970Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
 <meta property="article:tag" content="RNN">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/MUotlGg.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -335,7 +340,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2 words
+          1.3k words
         
       </span>
     
@@ -346,7 +351,7 @@
         
         
         
-          1 mins
+          11 mins
         
       </span>
     
@@ -397,10 +402,221 @@
             
               <div class="markdown-body">
                 
-                <h1 id="references">References</h1>
+                <h1 id="attention-is-all-you-need-2017">"Attention is all you need"
+(2017)</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762">Vaswani, A. (2017).
+<strong>Attention is all you need</strong>. Advances in Neural
+Information Processing Systems.</a></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/MUotlGg.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/swgaC77.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/oqquyUc.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/qA7n7K2.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<p>Encoder層和Decoder層內部結構如下圖所示。</p>
+<ul>
+<li>Encoder具有兩層結構，self-attention和前饋神經網路。
+self-attention計算句子中的每個詞都和其他詞的關聯，從而幫助模型更好地理解上下文語義，引入Muti-Head
+attention後，每個頭關注句子的不同位置，增強了Attention機制關注句子內部單詞之間作用的表達能力。<strong>前饋神經網路為encoder引入非線性變換，增強了模型的擬合能力</strong>。</li>
+<li>The encoder is composed of a stack of <span class="math inline">\(N
+= 6\)</span> identical layers. (<strong>疊6次</strong> !!!)</li>
+<li>Decoder接受output輸入的同時接受encoder的輸入，幫助目前節點取得到需要重點關注的內容</li>
+<li><strong>縮放因子</strong>的作用是歸一化</li>
+<li>FFN的加入引入了非線性(ReLu激活函數)，變換了attention output的空間,
+從而增加了模型的表現能力。把FFN去掉模型也是可以用的，但效果差很多了。</li>
+<li>在每個block中，最後出現的是Layer
+Normalization，其作用是規範最佳化空間，加速收斂。</li>
+<li>當我們使用梯度下降演算法做最佳化時，我們可能會對輸入資料進行歸一化，但是經過網路層作用後，我們的資料已經不是歸一化的了。隨著網路層數的增加，資料分佈不斷變化，偏差越來越大，導致我們不得不使用更小的學習率來穩定梯度。
+Layer Normalization
+的作用是確保資料特徵分佈的穩定性，將資料標準化到ReLU活化函數的作用區域，可以使得激活函數更好的發揮作用。<strong>Normalization有兩種方法，Batch
+Normalization和Layer Normalization</strong>。</li>
+<li><strong>Positional Encoding</strong>
+位置資訊編碼位於encoder和decoder的embedding之後，每個block之前。它非常重要，沒有這部分模型就無法運作。
+Positional
+Encoding是transformer的特有機制，彌補了Attention機制無法捕捉sequence中token位置資訊的缺點。Positional
+Embedding的成分直接疊加於Embedding之上，使得每個token的位置資訊和它的語義資訊(embedding)充分融合，並被傳遞到後續所有經過複雜變換的序列表達中去。</li>
+<li>Cross Attention</li>
+<li>Mask 機制
+<ul>
+<li>mask 表示掩碼，它對某些值進行掩蓋，使其在參數更新時不產生效果。
+Transformer 模型裡面涉及兩種 mask，分別是 padding mask 和 sequence
+mask。其中，padding mask 在所有的 scaled dot-product attention
+裡面都需要用到，而 sequence mask 只有在 decoder 的 self-attention
+裡面用到。</li>
+<li><strong>padding mask</strong>:
+因為每個批次輸入序列長度都是不一樣的也就是說，我們要對輸入序列進行對齊。具體來說，就是給在較短的序列後面填滿
+0。但是如果輸入的序列太長，則是截取左邊的內容，把多餘的直接捨棄。因為這些填滿的位置，其實是沒什麼意義的，所以我們的attention機制不應該把注意力放在這些位置上，所以我們需要進行一些處理。具體的做法是，把這些位置的值加上一個非常大的負數(負無窮)，這樣的話，經過
+softmax，這些位置的機率就會接近0。</li>
+<li><strong>Sequence mask</strong>: sequence mask 是為了讓 decoder
+不能看見未來的資訊。也就是對於一個序列，在 time_step 為 t
+的時刻，我們的解碼輸出應該只能依賴 t 時刻之前的輸出，而不能依賴 t
+之後的輸出。因此我們需要想一個辦法，把 t 之後的訊息給隱藏起來。</li>
+</ul></li>
+<li><strong>Residual Network</strong>
+<ul>
+<li>殘差網路是深度學習中重要概念。在神經網路可以收斂的前提下，隨著網路深度的增加，網路表現先是逐漸增加至飽和，然後迅速下降，這就是我們經常討論的網路退化問題。</li>
+</ul></li>
+<li><strong>Linear &amp; Softmax</strong>
+<ul>
+<li>線性變換層是一個簡單的全連接神經網絡，它可以把解碼組件產生的向量投射到一個比它大得多的、被稱作對數幾率（logits）的向量裡。接下來的Softmax
+層便會把那些分數變成機率（都是正數、上限1.0）。機率最高的單元格被選中，並且它對應的單字被作為這個時間步的輸出。</li>
+</ul></li>
+</ul>
+<iframe width="560" height="560" src="https://www.youtube.com/embed/zxQyTK8quyY" title="Transformer Neural Networks, ChatGPT&#39;s foundation, Clearly Explained!!!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<h1 id="input-as-vectors-for-a-transformer-model">Input as vectors for a
+Transformer model</h1>
+<p>To prepare input as vectors for a Transformer model, the following
+steps are typically followed:</p>
+<h2 id="tokenization">1. <strong>Tokenization</strong></h2>
+<p>The first step involves breaking down the input text into smaller
+units called tokens. This can be done using various tokenization
+strategies, such as word-level, subword-level (like Byte Pair Encoding),
+or character-level tokenization. Each token corresponds to a unique
+identifier in the vocabulary.</p>
+<h2 id="embedding">2. <strong>Embedding</strong></h2>
+<p>Once the text is tokenized, each token is converted into a dense
+vector representation through an embedding layer. This process maps
+tokens to continuous vector spaces, allowing the model to capture
+semantic relationships between words. The embedding can be learned
+during training or pre-trained embeddings (like Word2Vec or GloVe) can
+be used.</p>
+<ul>
+<li><strong>Learned Embeddings</strong>: In the original Transformer
+paper, Vaswani et al. (2017) proposed using learned embeddings, meaning
+that the model learns to represent tokens as vectors during
+training.</li>
+</ul>
+<h2 id="positional-encoding">3. <strong>Positional
+Encoding</strong></h2>
+<p>Since Transformers do not inherently understand the order of tokens
+due to their parallel processing capability, positional encodings are
+added to the embeddings to provide information about the position of
+each token in the sequence. The positional encoding is typically a fixed
+function based on sine and cosine functions of different
+frequencies.</p>
+<ul>
+<li>The positional encoding is added to the input embeddings, resulting
+in a combined representation that retains both the content and
+positional information.</li>
+</ul>
+<h2 id="summary-of-input-preparation-steps">Summary of Input Preparation
+Steps</h2>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://web.stanford.edu/class/cs25/">CS25: Transformers
-United V4</a></li>
+<li><strong>Tokenization</strong>: Split text into tokens.</li>
+<li><strong>Embedding</strong>: Convert tokens into dense vectors.</li>
+<li><strong>Positional Encoding</strong>: Add positional information to
+embeddings.</li>
+<li><strong>Feed into Encoder</strong>: Use combined vectors as input
+for the Transformer encoder.</li>
+</ol>
+<p><img src="https://i.imgur.com/WQyQ5Pe.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h1 id="自注意力機制-self-attention">自注意力機制 (Self-attention)</h1>
+<h2 id="core-components">Core Components</h2>
+<p>In self-attention, we define three matrices:</p>
+<ul>
+<li><strong>Query (Q)</strong>: Represents the elements for which we
+want to compute attention scores.</li>
+<li><strong>Key (K)</strong>: Represents the elements that will be
+compared against the queries.</li>
+<li><strong>Value (V)</strong>: Represents the actual information we
+want to aggregate based on the attention scores.</li>
+</ul>
+<p>To compute these matrices from an input embedding matrix <span
+class="math inline">\(X\)</span> (of shape <span class="math inline">\(L
+\times D\)</span>, where <span class="math inline">\(L\)</span> is the
+number of words and <span class="math inline">\(D\)</span> is the
+embedding dimension), we use learned weight matrices <span
+class="math inline">\(W_Q\)</span>, <span
+class="math inline">\(W_K\)</span>, and <span
+class="math inline">\(W_V\)</span>:</p>
+<p><span class="math display">\[
+Q = X W_Q
+\]</span> <span class="math display">\[
+K = X W_K
+\]</span> <span class="math display">\[
+V = X W_V
+\]</span></p>
+<h2 id="attention-score-calculation">Attention Score Calculation</h2>
+<p>The self-attention mechanism computes attention scores using the
+following steps:</p>
+<ol type="1">
+<li><p><strong>Dot Product</strong>: Calculate the dot product of the
+query and key matrices: <span class="math display">\[
+\text{Attention Scores} = QK^T
+\]</span> This results in a matrix where each entry indicates the
+similarity between queries and keys.</p></li>
+<li><p><strong>Scaling</strong>: To stabilize gradients during training,
+we scale the dot product by the square root of the dimension of the key
+vectors <span class="math inline">\(d_k\)</span>: <span
+class="math display">\[
+S = \frac{QK^T}{\sqrt{d_k}}
+\]</span></p></li>
+<li><p><strong>Softmax</strong>: Apply the softmax function to convert
+these scores into probabilities: <span class="math display">\[
+A = \text{softmax}(S)
+\]</span> This ensures that the attention scores sum to 1 across each
+row, effectively normalizing them.</p></li>
+<li><p><strong>Weighted Sum</strong>: Finally, compute the output by
+taking a weighted sum of the value vectors based on the attention
+scores: <span class="math display">\[
+O = AV
+\]</span> Here, <span class="math inline">\(O\)</span> is the output
+matrix representing aggregated information from <span
+class="math inline">\(V\)</span> based on how much focus each query
+gives to each value.</p></li>
+</ol>
+<h3 id="complete-self-attention-equation">Complete Self-Attention
+Equation</h3>
+<p>Combining these steps, we can express self-attention as: <span
+class="math display">\[
+O = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\]</span></p>
+<h2 id="multi-head-attention">Multi-Head Attention</h2>
+<p>In practice, transformers often use multi-head attention, which
+allows the model to jointly attend to information from different
+representation subspaces. The output for each head is computed
+independently and then concatenated: <span class="math display">\[
+O = W_o [H_1; H_2; ...; H_M]
+\]</span> where each head <span class="math inline">\(H_i\)</span> is
+calculated as: <span class="math display">\[
+H_i =
+\text{softmax}\left(\frac{W_k^{(i)}Q(W_q^{(i)})^T}{\sqrt{d_k}}\right)W_v^{(i)}V
+\]</span></p>
+<p>Here, <span class="math inline">\(W_q^{(i)}, W_k^{(i)},
+W_v^{(i)}\)</span> are learned weight matrices for each head, and <span
+class="math inline">\(W_o\)</span> is a final linear transformation
+applied after concatenating all heads.</p>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/m673yGz.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/1xy5F9F.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/d6LS6YQ.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/L8t2LFA.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/JL92Jfv.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/uNcguro.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/9oxhFT8.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/AzOhXvb.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/36lKeEY.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/RxJGBEk.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/vu4JQUO.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<iframe width="560" height="560" src="https://www.youtube.com/embed/hYdO9CscNes" title="【機器學習2021】自注意力機制 (Self-attention) (上)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<iframe width="560" height="560" src="https://www.youtube.com/embed/gmsMY5kc-zw" title="【機器學習2021】自注意力機制 (Self-attention) (下)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<h1 id="cross-attention">Cross-Attention</h1>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/kUDX4jY.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/LfWgMKb.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"></div><div class="group-image-row"></div><div class="group-image-row"></div></div>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/311156298">Transformer -
+Attention is all you need</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/46990010">论文解读:Attention
+is All you need</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=n9TlOhRjYoc&amp;ab_channel=Hung-yiLee">【機器學習2021】Transformer
+(上)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=N6aRv06iv2g&amp;ab_channel=Hung-yiLee">【機器學習2021】Transformer
+(下)</a></li>
 </ol>
 
                 
@@ -472,7 +688,7 @@ United V4</a></li>
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 30, 2025</div>
+          <div>February 1, 2025</div>
         </div>
       
       
