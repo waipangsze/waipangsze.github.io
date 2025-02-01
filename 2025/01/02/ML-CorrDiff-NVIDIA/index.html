@@ -19,21 +19,24 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（Corrector Diffusion）的生">
+    <meta name="description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（ Corrector Diffusion ）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ML | CorrDiff (NVIDIA)">
 <meta property="og:url" content="https://waipangsze.github.io/2025/01/02/ML-CorrDiff-NVIDIA/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（Corrector Diffusion）的生">
+<meta property="og:description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（ Corrector Diffusion ）">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/LgX4aZr.png">
+<meta property="og:image" content="https://i.imgur.com/6CJzWhN.png">
 <meta property="article:published_time" content="2025-01-02T02:01:00.000Z">
-<meta property="article:modified_time" content="2025-01-24T12:54:11.097Z">
+<meta property="article:modified_time" content="2025-02-01T16:44:22.972Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
 <meta property="article:tag" content="pytorch">
 <meta property="article:tag" content="NVIDIA">
+<meta property="article:tag" content="UNet">
+<meta property="article:tag" content="Diffusion">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/LgX4aZr.png">
   
@@ -348,7 +351,7 @@
         
         
         
-          18 mins
+          19 mins
         
       </span>
     
@@ -407,9 +410,10 @@ CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15</a>
 <ul>
 <li>輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU
 technology
-conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（Corrector
-Diffusion）的生成式人工智慧（generative artificial intelligence,
-generative AI）技術，並表示它可以應用於區域高解析度天氣預報上。</li>
+conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（
+Corrector Diffusion ）的生成式人工智慧（generative artificial
+intelligence, generative
+AI）技術，並表示它可以應用於區域高解析度天氣預報上。</li>
 <li>對於氣象模擬與預報來說，縮小網格解析度一直是一大挑戰。傳統物理模式受限於運行時所需的龐大運算量，當今執行全球預報的最高解析度模式為ECMWF的九公里解析度全球模式。</li>
 <li>氣象署發展的「RWRF」（Radar
 WRF）高解析度極短期劇烈天氣預報系統（延伸閱讀2），可提升對臺灣區域劇烈天氣的預報能力。此系統奠基於美國國家大氣研究中心（National
@@ -516,7 +520,25 @@ isolating generative learning to stochastic scales.</li>
 <li><strong>第一步驟</strong>是先以常應用於影像處理、能有效獲取影像特徵的UNet回歸架構，進行資料樣本平均值的修正；</li>
 <li><strong>第二步驟</strong>則利用生成式AI中的擴散（diffusion）演算法，強化資料的高解析度細節與極值。擴散演算法透過將圖像加入雜訊，再去除雜訊的循環過程來執行，過去常應用於圖片的去噪（denoising）、修補或超解析度成像等。</li>
 </ul></li>
+<li>CorrDiff consists of two steps: regression and generation.
+<ul>
+<li>The regression step approximates the mean, while</li>
+<li>the generation step further corrects the mean but also generates the
+distribution, producing fine-scale details stochastically.</li>
+<li>The diffusion component of CorrDiff is found to be
+<strong>especially important for the task of radar channel
+synthesis</strong>.</li>
+</ul></li>
 </ul>
+<h1 id="basedline-models">Basedline Models</h1>
+<ul>
+<li>Interpolation of ERA5</li>
+<li>UNet</li>
+<li>Random Forest (RF)</li>
+</ul>
+<h1 id="unet">UNet</h1>
+<p><img src="https://i.imgur.com/6CJzWhN.png" srcset="/img/loading.gif" lazyload /> <img
+src="https://i.imgur.com/kWBDUkI.png" srcset="/img/loading.gif" lazyload /></p>
 <h1 id="getting-started">Getting started</h1>
 <p>To build custom CorrDiff versions, you can get started by training
 the <strong>“Mini” version of CorrDiff</strong>, which uses smaller
@@ -633,6 +655,10 @@ class="uri">https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/containers/
       
         <a href="/tags/NVIDIA/" class="print-no-link">#NVIDIA</a>
       
+        <a href="/tags/UNet/" class="print-no-link">#UNet</a>
+      
+        <a href="/tags/Diffusion/" class="print-no-link">#Diffusion</a>
+      
     </div>
   
 </div>
@@ -662,7 +688,7 @@ class="uri">https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/containers/
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 24, 2025</div>
+          <div>February 2, 2025</div>
         </div>
       
       
