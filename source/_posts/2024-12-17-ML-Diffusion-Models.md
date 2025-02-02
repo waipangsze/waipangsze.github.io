@@ -205,6 +205,18 @@ Summary Here are some main takeaways from this article:
 - An example of training a diffusion model for modeling a 2D swiss roll data. (Image source: [Sohl-Dickstein et al., 2015](https://arxiv.org/abs/1503.03585))
   - ![](https://i.imgur.com/oVtF9Tt.png){width=500}
 
+# Questions
+
+- [diffusion预测噪声为什么用UNET模型呢？ - 章彦博的回答 - 知乎](https://www.zhihu.com/question/613852600/answer/3273556154)
+  - 其中的 $\epsilon_\theta$ 就直接是你要訓練的模型了，它是用來預測噪音 $\epsilon$ 的。但我們知道，**噪音都是高頻的**，不存在低維度的特徵，神經網路很難學習。同時， $x_0$ 通常是光滑的，神經網路會比較容易學到。
+  - 不使用UNet的話，這裡就直接用一個兩層全連接網路來預測雜訊。看起來是個很簡單的任務，但效果非常差。跑了100個epoch，想著就算沒有收斂，怎麼樣也能學個大概。結果沒想到，不光沒學個大概，連數值範圍都爆炸了
+  - 然後我把epoch設到了10000，數值範圍終於接近了，但效果還是很差。我猜想這就是噪音惹的禍。神經網路努力地去學習高頻的噪聲，從而忽略了低頻的範圍訊息
+  - $\epsilon = \dfrac{x_t - \sqrt{1-\bar{\alpha}_t} x_{0}}{\sqrt{1-\bar{\alpha}_t}}$
+  - $\text{UNet}(x) = g(x + f(x))$, 它恰好和上式有類似的結構.
+  - 試驗的: $\epsilon_\theta(x_t, t) = x_t + f(x_t, t)$, 改了之後，效果立刻就好起來了。而且就算不收斂，數值範圍也不會爆炸
+  - 如果認為神經網路能擬合一切的話，確實本質上是一樣的。但你加了U-Net / ResNet的結構之後，網路會更容易發現較好的解。而且我的實驗表明，如果沒有這樣的結構，網路在收斂之前的行為非常差。我猜是因為**epsilon是高頻**的，而神經網路很難從這樣的數據中學習。
+  - 至於一開始為什麼會使用UNet，因為 Noise 本身其實是一個很特殊的訊息，並不適用於傳統的神經網路來學習。 UNet因為獨特的 Skip connection 架構可以很好的學到 **Noise裡的高頻訊息**，如果嘗試用FC層的神經網路來預測Noise，效果會非常炸裂
+
 # Diffusion Models vs GANs vs VAEs
 
 擴散模型（Diffusion Models）與傳統的生成對抗網絡（GANs）和變分自編碼器（VAEs）相比，具有多項顯著的優勢和特點。以下是這三種生成模型的比較：
