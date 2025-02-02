@@ -83,6 +83,15 @@ Importantly, **兩步驟來先後訓練**
 ![](https://i.imgur.com/6CJzWhN.png)
 ![](https://i.imgur.com/kWBDUkI.png)
 
+# Stochastic differential equations (SDEs)
+
+- [Selz, T., & Craig, G. C. (2015). **Upscale error growth in a high-resolution simulation of a summertime weather event over Europe**. Monthly Weather Review, 143(3), 813-827.](https://journals.ametsoc.org/view/journals/mwre/143/3/mwr-d-14-00140.1.xml?tab_body=abstract-display)
+- [Song, Y., & Ermon, S. (2019). **Generative modeling by estimating gradients of the data distribution**. Advances in neural information processing systems, 32.](https://proceedings.neurips.cc/paper_files/paper/2019/file/3001ef257407d5a371a96dcd947c7d93-Paper.pdf)
+- [Ho, J., Jain, A., & Abbeel, P. (2020). **Denoising diffusion probabilistic models**. Advances in neural information processing systems, 33, 6840-6851.](https://proceedings.neurips.cc/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf)
+- [Song, Y., Sohl-Dickstein, J., Kingma, D. P., Kumar, A., Ermon, S., & Poole, B. (2020). **Score-based generative modeling through stochastic differential equations**. arXiv preprint arXiv:2011.13456.](https://arxiv.org/pdf/2011.13456)
+- [Batzolis, G., Stanczuk, J., Schönlieb, C. B., & Etmann, C. (2021). **Conditional image generation with score-based diffusion models**. arXiv preprint arXiv:2111.13606.](https://arxiv.org/pdf/2111.13606)
+- [Karras, T., Aittala, M., Aila, T., & Laine, S. (2022). **Elucidating the design space of diffusion-based generative models**. Advances in neural information processing systems, 35, 26565-26577.](https://proceedings.neurips.cc/paper_files/paper/2022/file/a98846e9d9cc01cfb87eb694d946ce6b-Paper-Conference.pdf)
+
 # Getting started
 
 To build custom CorrDiff versions, you can get started by training the **“Mini” version of CorrDiff**, which uses smaller training samples and a smaller network to reduce training costs from thousands of GPU hours to **around 10 hours on A100 GPUs** while still producing reasonable results. It also includes a simple data loader that can be used as a baseline for training CorrDiff on custom datasets.
@@ -188,4 +197,6 @@ org.label-schema.usage.singularity.version: 3.8.6
 ## Running examples
 
 
+# References
 
+1. [Generative Modeling by Estimating Gradients of the Data Distribution](https://yang-song.net/blog/2021/score/)

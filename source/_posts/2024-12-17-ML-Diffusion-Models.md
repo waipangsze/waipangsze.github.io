@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ML | Diffusion Models
+title: ML | Diffusion Models (Denoising diffusion probabilistic models)
 categories: [ML]
 tags: [ML, AI, pytorch, Diffusion, UNet]
 author: wpsze
@@ -20,6 +20,8 @@ Diffusion Models are **generative models**, meaning that they are used to genera
 More specifically, a Diffusion Model is a **latent variable model** which maps to the latent space **using a fixed Markov chain**. This chain gradually adds noise to the data in order to obtain the approximate posterior $q(x_1:T|x_0)$, where $x_1, ..., x_T$ are the latent variables with the same dimensionality as $x_0$. In the figure below, we see such a Markov chain manifested for image data.
 
 Ultimately, the image is asymptotically transformed to pure Gaussian noise. The goal of training a diffusion model is to learn the **reverse process**. By traversing backwards along this chain, we can generate new data.
+
+- [Ho, Jonathan, Ajay Jain, and Pieter Abbeel. "Denoising diffusion probabilistic models." Advances in neural information processing systems 33 (2020): 6840-6851.](https://proceedings.neurips.cc/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf)
 
 ![](https://i.imgur.com/BOHjnCW.png)
 ![](https://i.imgur.com/ArrrokC.png)
@@ -77,7 +79,7 @@ $$
 # Details
 
 {% gi 12 2-2-2-2-2-2 %}
-![](https://i.imgur.com/3fnkgvt.png)
+![](https://i.imgur.com/JMP2TcX.png)
 {% endgi %}
 
 ## 重參數化技巧 (Reparameterization trick)
@@ -156,7 +158,7 @@ $$
 
 ### Simplified Loss (ToDo)
 
-So the final simplified training objective is as follows:
+So the final simplified training objective ([Ho et al. (2020)](https://arxiv.org/abs/2006.11239) empirically found that training the diffusion model works better with a simplified objective that ignores the weighting term)  is as follows:
 
 ![](https://i.imgur.com/sMyAqVN.png){width=400}
 
@@ -184,7 +186,7 @@ The official training algorithm is as above, and the following diagram is an ill
 
 ### generating step
 
-We can generate images from noises using the above algorithm. The following diagram is an illustration of it
+We can generate images from noises using the above algorithm. The following diagram is an illustration of it. Note that in the last step, we simply output the learned mean $\mu_\theta(x_{t=1}, t=1)$ without adding the extra noise to it.
 
 ![](https://i.imgur.com/wQIehey.png){width=600}
 
@@ -197,6 +199,11 @@ Summary Here are some main takeaways from this article:
 - The backward diffusion can be done using a trained neural network.
 - To approximate the desired denoising step q, we just need to approximate the noise $\epsilon_t$ using a neural network $\epsilon_\theta$.
 - Training on the simplified loss function yields better sample quality.
+
+# Literature review
+
+- An example of training a diffusion model for modeling a 2D swiss roll data. (Image source: [Sohl-Dickstein et al., 2015](https://arxiv.org/abs/1503.03585))
+  - ![](https://i.imgur.com/oVtF9Tt.png){width=500}
 
 # Diffusion Models vs GANs vs VAEs
 
@@ -232,8 +239,8 @@ Summary Here are some main takeaways from this article:
 
 # References
 
-1. [由浅入深了解Diffusion Model](https://zhuanlan.zhihu.com/p/525106459?utm_psn=1869188646894170112)
-2. [A Beginner's Guide to Diffusion Models: Understanding the Basics and Beyond | Subhradip Roy's Blog (**Recommend**)](https://roysubhradip.hashnode.dev/a-beginners-guide-to-diffusion-models-understanding-the-basics-and-beyond)
+1. [A Beginner's Guide to Diffusion Models: Understanding the Basics and Beyond | Subhradip Roy's Blog (**Recommend**)](https://roysubhradip.hashnode.dev/a-beginners-guide-to-diffusion-models-understanding-the-basics-and-beyond)
+2. [What are Diffusion Models? (**Recommend**)](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/#forward-diffusion-process)
 3. [【生成式AI】淺談圖像生成模型 Diffusion Model 原理](https://www.youtube.com/playlist?list=PLJV_el3uVTsNi7PgekEUFsyVllAJXRsP-)
 4. [理解 Stable Diffusion UNet 网络](https://blog.cnbang.net/tech/3823/)
 5. [Introduction to Diffusion Models for Machine Learning](https://www.assemblyai.com/blog/diffusion-models-for-machine-learning-introduction/)
