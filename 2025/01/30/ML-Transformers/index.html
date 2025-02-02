@@ -19,22 +19,25 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="&quot;Attention is all you need&quot; (2017)  Vaswani, A. (2017). Attention is all you need. Advances in Neural Information Processing Systems.   Encoder層和Decoder層內部結構如下圖所示。  Encoder具有兩層結構，self-attention和前饋神經網路">
+    <meta name="description" content="&quot;Attention is all you need&quot; (2017)  Vaswani, A. (2017). Attention is all you need. Advances in Neural Information Processing Systems.   Encoder層和Decoder層內部結構如圖所示。  Encoder具有兩層結構，self-attention和前饋神經網路。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ML | Transformer | Attention">
+<meta property="og:title" content="ML | Transformer | Attention, FFN, ResNet">
 <meta property="og:url" content="https://waipangsze.github.io/2025/01/30/ML-Transformers/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="&quot;Attention is all you need&quot; (2017)  Vaswani, A. (2017). Attention is all you need. Advances in Neural Information Processing Systems.   Encoder層和Decoder層內部結構如下圖所示。  Encoder具有兩層結構，self-attention和前饋神經網路">
+<meta property="og:description" content="&quot;Attention is all you need&quot; (2017)  Vaswani, A. (2017). Attention is all you need. Advances in Neural Information Processing Systems.   Encoder層和Decoder層內部結構如圖所示。  Encoder具有兩層結構，self-attention和前饋神經網路。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/m673yGz.png">
 <meta property="article:published_time" content="2025-01-30T13:20:00.000Z">
-<meta property="article:modified_time" content="2025-02-01T15:40:23.066Z">
+<meta property="article:modified_time" content="2025-02-02T05:58:11.262Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
+<meta property="article:tag" content="ResNet">
 <meta property="article:tag" content="RNN">
 <meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="Attention">
+<meta property="article:tag" content="FFN">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/m673yGz.png">
   
@@ -42,7 +45,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>ML | Transformer | Attention - wpsze</title>
+  <title>ML | Transformer | Attention, FFN, ResNet - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -315,7 +318,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="ML | Transformer | Attention"></span>
+            <span id="subtitle" data-typed-text="ML | Transformer | Attention, FFN, ResNet"></span>
           
         </div>
 
@@ -338,7 +341,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k words
+          2.4k words
         
       </span>
     
@@ -349,7 +352,7 @@
         
         
         
-          11 mins
+          21 mins
         
       </span>
     
@@ -395,7 +398,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">ML | Transformer | Attention</h1>
+            <h1 id="seo-header">ML | Transformer | Attention, FFN, ResNet</h1>
             
             
               <div class="markdown-body">
@@ -410,8 +413,10 @@ Information Processing Systems.</a></li>
 <div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/MUotlGg.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
 src="https://i.imgur.com/swgaC77.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
 src="https://i.imgur.com/oqquyUc.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
-src="https://i.imgur.com/qA7n7K2.png" srcset="/img/loading.gif" lazyload /></div></div></div>
-<p>Encoder層和Decoder層內部結構如下圖所示。</p>
+src="https://i.imgur.com/qA7n7K2.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/MiCibQL.jpg" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/Ddp94SL.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"></div><div class="group-image-row"></div><div class="group-image-row"></div></div>
+<p>Encoder層和Decoder層內部結構如圖所示。</p>
 <ul>
 <li>Encoder具有兩層結構，self-attention和前饋神經網路。
 self-attention計算句子中的每個詞都和其他詞的關聯，從而幫助模型更好地理解上下文語義，引入Muti-Head
@@ -428,12 +433,39 @@ Normalization，其作用是規範最佳化空間，加速收斂。</li>
 Layer Normalization
 的作用是確保資料特徵分佈的穩定性，將資料標準化到ReLU活化函數的作用區域，可以使得激活函數更好的發揮作用。<strong>Normalization有兩種方法，Batch
 Normalization和Layer Normalization</strong>。</li>
-<li><strong>Positional Encoding</strong>
+<li><strong>Positional Encoding</strong> :
 位置資訊編碼位於encoder和decoder的embedding之後，每個block之前。它非常重要，沒有這部分模型就無法運作。
 Positional
 Encoding是transformer的特有機制，彌補了Attention機制無法捕捉sequence中token位置資訊的缺點。Positional
-Embedding的成分直接疊加於Embedding之上，使得每個token的位置資訊和它的語義資訊(embedding)充分融合，並被傳遞到後續所有經過複雜變換的序列表達中去。</li>
-<li>Cross Attention</li>
+Embedding的成分直接疊加於Embedding之上，使得每個token的位置資訊和它的語義資訊(embedding)充分融合，並被傳遞到後續所有經過複雜變換的序列表達中去。
+<ul>
+<li><strong>提供位置信息</strong>：位置編碼的主要功能是告訴模型每個輸入向量在序列中的具體位置。這對於理解語言中的語法結構和上下文至關重要，因為語言的意義往往依賴於詞語的順序。</li>
+<li><strong>數學表達</strong> :
+位置編碼通常使用正弦和餘弦函數來生成，這樣可以保證不同位置之間的距離信息。具體公式如下：
+<ul>
+<li>對於位置 <span class="math inline">\(pos\)</span> 和維度 <span
+class="math inline">\(i\)</span>： <span class="math display">\[
+\text{PE}(pos, 2i) = \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)
+\]</span> <span class="math display">\[
+\text{PE}(pos, 2i+1) = \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
+\]</span> 其中，<span class="math inline">\(d_{model}\)</span>
+是模型的維度（例如512），而 <span class="math inline">\(i\)</span>
+是當前維度的索引。<strong>這種設計使得每個位置都有一組唯一的向量表示，並且相鄰位置之間的關係可以通過這些向量的相似性來捕捉</strong>!!!。</li>
+<li><img src="https://i.imgur.com/A3FBmBf.png" srcset="/img/loading.gif" lazyload width="400" /></li>
+<li>句子中的位置獲得相應的位置編碼。例如，在句子
+<code>貓坐在墊子上</code>
+中，<code>貓</code>的位置編碼將與<code>坐</code>的不同，這樣模型就能夠理解它們之間的順序和關係。</li>
+</ul></li>
+</ul></li>
+<li><strong>Cross Attention</strong>
+<ul>
+<li>交叉注意力使得模型能夠在處理一個序列時，參考另一個序列的信息。這種機制特別適用於需要同時考慮多個模態或序列的任務，例如機器翻譯、圖像描述生成等。</li>
+<li><strong>與自注意力的對比</strong>
+<ul>
+<li><p><strong>自注意力（Self-Attention）</strong>：主要關注同一序列內部元素之間的關係，允許每個元素關注到其他所有元素。這有助於捕捉長距離依賴關係。</p></li>
+<li><p><strong>交叉注意力</strong>：則專注於兩個不同序列之間的互動，允許模型在生成過程中參考其他序列的信息。</p></li>
+</ul></li>
+</ul></li>
 <li>Mask 機制
 <ul>
 <li>mask 表示掩碼，它對某些值進行掩蓋，使其在參數更新時不產生效果。
@@ -450,17 +482,98 @@ softmax，這些位置的機率就會接近0。</li>
 的時刻，我們的解碼輸出應該只能依賴 t 時刻之前的輸出，而不能依賴 t
 之後的輸出。因此我們需要想一個辦法，把 t 之後的訊息給隱藏起來。</li>
 </ul></li>
+<li><strong>Decoder Masked Attention</strong>
+<ul>
+<li>遮罩注意力機制的<strong>主要目的是在訓練階段防止解碼器（Decoder）利用未來位置的資訊</strong>，確保模型僅基於當前及之前的輸入生成輸出，模擬實際推理時逐步預測的過程。</li>
+<li>為遮蔽未來位置，在計算 softmax
+前，將注意力分數矩陣的上三角部分（未來位置）設為
+<code>-inf</code>，（Upper Triangular
+Matrix），迫使模型忽略未來資訊</li>
+<li><span class="math display">\[
+\text{MaskedAttention}(Q, K, V) =
+\text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M_{\text{mask}}\right)V
+\]</span></li>
+<li>假設序列長度為 3，遮罩矩陣為： <span class="math display">\[
+M_{\text{mask}} =
+\begin{bmatrix}
+0 &amp; -\infty &amp; -\infty \\
+0 &amp; 0 &amp; -\infty \\
+0 &amp; 0 &amp; 0
+\end{bmatrix}
+\]</span> 此矩陣確保位置 <span class="math inline">\(i\)</span>
+僅能關注位置 <span class="math inline">\(j \leq i\)</span>。</li>
+<li>解碼器的遮罩多頭注意力（Masked Multi-Head Attention）</li>
+<li>以翻譯任務為例，目標序列為 <strong>"貓坐在墊子上"</strong>：
+<ul>
+<li><strong>訓練階段</strong>：<br />
+解碼器輸入為 <code>&lt;BOS&gt; 貓 坐 在 墊子</code>，遮罩確保預測 "坐"
+時僅使用 <code>&lt;BOS&gt; 貓</code> 的資訊。</li>
+<li><strong>推理階段</strong>：<br />
+模型逐步生成輸出（如 <code>貓</code> → <code>坐</code> →
+<code>在</code>），每一步僅依賴已生成的序列。</li>
+</ul></li>
+<li>遮罩注意力機制是Transformer解碼器的核心設計之一，<strong>透過數學上的遮罩操作與架構上的因果性約束</strong>，實現高效且準確的序列生成，在機器翻譯、文本生成等任務中表現卓越。</li>
+</ul></li>
 <li><strong>Residual Network</strong>
 <ul>
-<li>殘差網路是深度學習中重要概念。在神經網路可以收斂的前提下，隨著網路深度的增加，網路表現先是逐漸增加至飽和，然後迅速下降，這就是我們經常討論的網路退化問題。</li>
+<li>殘差網絡是深度學習中重要概念。在神經網絡可以收斂的前提下，隨著網絡深度的增加，網絡表現先是逐漸增加至飽和，然後迅速下降，這就是我們經常討論的網絡退化問題。</li>
 </ul></li>
-<li><strong>Linear &amp; Softmax</strong>
+<li><strong>Output: The Final Linear and Softmax Layer</strong>
 <ul>
 <li>線性變換層是一個簡單的全連接神經網絡，它可以把解碼組件產生的向量投射到一個比它大得多的、被稱作對數幾率（logits）的向量裡。接下來的Softmax
 層便會把那些分數變成機率（都是正數、上限1.0）。機率最高的單元格被選中，並且它對應的單字被作為這個時間步的輸出。</li>
 </ul></li>
 </ul>
-<iframe width="560" height="560" src="https://www.youtube.com/embed/zxQyTK8quyY" title="Transformer Neural Networks, ChatGPT&#39;s foundation, Clearly Explained!!!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+<div class="note note-primary">
+            <ul><li>這裡不得不提一點，雖然論文的名字叫《Attention is All yourNeed》，但是實際上， FFN and ResNet are also your need。</li><li>研究人員發現FFN 和ResNet 的Skip Connection無論去掉哪一個，模型都會變得不可用。</li><li>所以說 Attention, FFN, ResNet 可以認為是 Transformers架構的三駕馬車，缺一不可。</li><li>後續雖然有許多 Transformers架構的魔改，但真正取得不錯的效果且落地的例子就是修改 FFN 的 MoE架構。剩下的兩輛馬車，ResNet 幾乎沒辦法修改了，Attention則在效率和效果之間尋求平衡。</li></ul>
+          </div>
+<div class="note note-primary">
+            <ul><li>MoE : Transformer Feed-forward Layers are Mixtures of Experts這是劉知遠團隊的論文，其實一直以來，神經網路就存在稀疏活化的現象，也就是在推理的時候，其實只有極小一部分參數參與了計算。這篇論文則透過MoE的想法來將FFN層拆分成了多個專家，並且新增了一個路由模組來確定推理的時候來掛哪個專家的門診：）這麼做之後，在提升推理速度的同時，效果仍能維持原來的95%以上。挺有價值的工作，大模型上也可以這麼做一把。</li></ul>
+          </div>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/T5yqKkc.gif" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/cpdMrRR.gif" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/0jAGUu9.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/iAPvqC1.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"></div><div class="group-image-row"></div><div class="group-image-row"></div><div class="group-image-row"></div></div>
+<ul>
+<li>After finishing the encoding phase, we begin the decoding phase.
+Each step in the decoding phase outputs an element from the output
+sequence (the English translation sentence in this case).</li>
+<li>The following steps repeat the process until a special symbol is
+reached indicating the transformer decoder has completed its
+output.</li>
+<li>The output of each step is fed to the bottom decoder in the next
+time step, and the decoders bubble up their decoding results just like
+the encoders did.</li>
+<li>And just like we did with the encoder inputs, we embed and add
+positional encoding to those decoder inputs to indicate the position of
+each word.</li>
+</ul>
+<h2
+id="linear-classifier-and-final-softmax-for-output-probabilitiesr">Linear
+Classifier and Final Softmax for Output Probabilitiesr</h2>
+<ul>
+<li>The decoder stack outputs a vector of floats. How do we turn that
+into a word? That’s the job of the final Linear layer which is followed
+by a Softmax Layer.</li>
+<li>The Linear layer is a simple fully connected neural network that
+projects the vector produced by the stack of decoders, into a much, much
+larger vector called a logits vector.</li>
+<li>Let’s assume that our model knows <strong>10,000 unique English
+words (our model’s “output vocabulary”)</strong> that it’s learned from
+its training dataset. This would make the <strong>logits vector 10,000
+cells wide</strong> – each cell corresponding to the score of a unique
+word. That is how we interpret the output of the model followed by the
+Linear layer.</li>
+<li>The softmax layer then turns those scores into probabilities (all
+positive, all add up to 1.0). The cell with the highest probability is
+chosen, and the word associated with it is produced as the output for
+this time step.</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/c2XOwSF.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/7Q5Offp.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"></div><div class="group-image-row"></div><div class="group-image-row"></div><div class="group-image-row"></div><div class="group-image-row"></div></div>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zxQyTK8quyY" title="Transformer Neural Networks, ChatGPT&#39;s foundation, Clearly Explained!!!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bQ5BoolX9Ag" title="Decoder-Only Transformers, ChatGPTs specific Transformer, Clearly Explained!!!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 </iframe>
 <h1 id="input-as-vectors-for-a-transformer-model">Input as vectors for a
 Transformer model</h1>
@@ -596,19 +709,39 @@ src="https://i.imgur.com/AzOhXvb.png" srcset="/img/loading.gif" lazyload /></div
 src="https://i.imgur.com/36lKeEY.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
 src="https://i.imgur.com/RxJGBEk.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
 src="https://i.imgur.com/vu4JQUO.png" srcset="/img/loading.gif" lazyload /></div></div></div>
-<iframe width="560" height="560" src="https://www.youtube.com/embed/hYdO9CscNes" title="【機器學習2021】自注意力機制 (Self-attention) (上)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hYdO9CscNes" title="【機器學習2021】自注意力機制 (Self-attention) (上)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 </iframe>
-<iframe width="560" height="560" src="https://www.youtube.com/embed/gmsMY5kc-zw" title="【機器學習2021】自注意力機制 (Self-attention) (下)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gmsMY5kc-zw" title="【機器學習2021】自注意力機制 (Self-attention) (下)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 </iframe>
 <h1 id="cross-attention">Cross-Attention</h1>
+<div class="note note-primary">
+            <p>在 cross attention 的基礎上, 提出了 self-attention</p>
+          </div>
 <div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/kUDX4jY.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
 src="https://i.imgur.com/LfWgMKb.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"></div><div class="group-image-row"></div><div class="group-image-row"></div></div>
 <h1 id="references">References</h1>
 <ol type="1">
+<li><a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/596771388/answer/3459193587">为什么我还是无法理解transformer？
+- 看图学的回答 - 知乎 ( <strong>推薦 </strong> )</a></li>
+<li><a target="_blank" rel="noopener" href="https://jalammar.github.io/illustrated-transformer/">The
+Illustrated Transformer ( <strong>推薦 </strong> )</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://goyalpramod.github.io/blogs/Transformers_laid_out/">Transformers
+Laid Out | Pramod's Blog ( <strong>推薦 </strong> )</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/362131975/answer/3360076979">transformer的细节到底是怎么样的？
+- 亚东的回答 - 知乎</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/362131975/answer/3039107481">transformer的细节到底是怎么样的？
+- Hao Bai的回答 - 知乎</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/311156298">Transformer -
 Attention is all you need</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/46990010">论文解读:Attention
 is All you need</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://deepgram.com/learn/visualizing-and-explaining-transformer-models-from-the-ground-up">Visualizing
+and Explaining Transformer Models From the Ground Up</a></li>
 <li><a
 target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=n9TlOhRjYoc&amp;ab_channel=Hung-yiLee">【機器學習2021】Transformer
 (上)</a></li>
@@ -655,9 +788,15 @@ target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=N6aRv06iv2g
       
         <a href="/tags/ML/" class="print-no-link">#ML</a>
       
+        <a href="/tags/ResNet/" class="print-no-link">#ResNet</a>
+      
         <a href="/tags/RNN/" class="print-no-link">#RNN</a>
       
         <a href="/tags/Transformer/" class="print-no-link">#Transformer</a>
+      
+        <a href="/tags/Attention/" class="print-no-link">#Attention</a>
+      
+        <a href="/tags/FFN/" class="print-no-link">#FFN</a>
       
     </div>
   
@@ -669,7 +808,7 @@ target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=N6aRv06iv2g
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>ML | Transformer | Attention</div>
+      <div>ML | Transformer | Attention, FFN, ResNet</div>
       <div>https://waipangsze.github.io/2025/01/30/ML-Transformers/</div>
     </div>
     <div class="license-meta">
@@ -688,7 +827,7 @@ target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=N6aRv06iv2g
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 1, 2025</div>
+          <div>February 2, 2025</div>
         </div>
       
       
