@@ -1,0 +1,1009 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Introduction Keywords:  The Pseudo-Global-Warming (PGW) approach CMIP6 how to convert ERA5 GRIB files to NetCDF format GRIB files are the file format used at ECMWF. GRIB is a WMO standard and consists">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS">
+<meta property="og:url" content="https://waipangsze.github.io/2025/02/03/NWP-PGW-hands-on-ERA5-GFS/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Introduction Keywords:  The Pseudo-Global-Warming (PGW) approach CMIP6 how to convert ERA5 GRIB files to NetCDF format GRIB files are the file format used at ECMWF. GRIB is a WMO standard and consists">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-03T08:47:00.000Z">
+<meta property="article:modified_time" content="2025-02-03T09:56:19.788Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="GRIB">
+<meta property="article:tag" content="NetCDF">
+<meta property="article:tag" content="CMIP6">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-03 16:47" pubdate>
+          February 3, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          393 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="introduction">Introduction</h1>
+<p>Keywords:</p>
+<ul>
+<li>The Pseudo-Global-Warming (PGW) approach</li>
+<li>CMIP6</li>
+<li>how to convert ERA5 GRIB files to NetCDF format</li>
+<li>GRIB files are the file format used at ECMWF. GRIB is a WMO standard and consists of GRIB Edition 1 and Edition 2</li>
+</ul>
+<p>The ERA5 dataset, produced by the European Centre for Medium-Range Weather Forecasts (ECMWF), provides a wealth of climate and weather data. However, the data is often distributed in the GRIB format, which can be less user-friendly than the NetCDF format, commonly used in scientific computing. This blog post will walk you through the process of converting ERA5 GRIB files to NetCDF.</p>
+<h1 id="motivation">Motivation</h1>
+<p>Climate change is one of the most pressing issues of our time, and understanding its impacts requires access to high-quality climate data. The ERA5 dataset provides crucial information on past and present climate conditions, helping researchers analyze trends and signals related to climate change. However, the ERA5 data is often stored in GRIB format, which can be challenging to work with. By converting ERA5 GRIB files to NetCDF format, we can more easily integrate climate change signals into ERA5.</p>
+<p>By applying the Pseudo-Global-Warming (PGW) approach, you can use the CMIP6 climate change signals to generate a difference and then add this to the initial conditions, such as those provided by ERA5.</p>
+<h1 id="converting-era5-grib-to-netcdf-a-step-by-step-guide">Converting ERA5 GRIB to NetCDF: A Step-by-Step Guide</h1>
+<h2 id="what-you-need">What You Need</h2>
+<p>Before we begin, ensure you have the following:</p>
+<ol type="1">
+<li><strong>Python</strong>: A popular programming language for data manipulation.</li>
+<li><p><strong>Libraries</strong>: You will need <code>xarray</code>, <code>cfgrib</code>, and <code>netCDF4</code>. You can install them using pip:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">micromamba install xarray cfgrib netcdf4<br></code></pre></td></tr></table></figure></li>
+<li><strong>ERA5 GRIB File</strong>: Download your desired ERA5 dataset in GRIB format from the ECMWF website.</li>
+<li>New tool: <a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/OIFS/How+to+convert+GRIB+to+netCDF">Convert GRIB file to netCDF</a>
+<ol type="1">
+<li><code>grib_to_netcdf ICMGG_hybrid.grb -o ICMGG_hybrid.nc</code></li>
+<li><code>micromamba install conda-forge::eccodes</code></li>
+</ol></li>
+</ol>
+<h2 id="steps-to-convert-grib-to-netcdf">Steps to Convert GRIB to NetCDF</h2>
+<h3 id="step-1-import-required-libraries">Step 1: Import Required Libraries</h3>
+<p>Start your Python script or Jupyter Notebook by importing the necessary libraries.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br></code></pre></td></tr></table></figure>
+<h3 id="step-2-load-the-grib-file">Step 2: Load the GRIB File</h3>
+<p>Use the <code>xarray</code> library to open the GRIB file. Replace <code>your_file.grib</code> with the path to your GRIB file.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">grib_file = <span class="hljs-string">&#x27;your_file.grib&#x27;</span><br>ds = xr.open_dataset(grib_file, engine=<span class="hljs-string">&#x27;cfgrib&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="step-3-inspect-the-data">Step 3: Inspect the Data</h3>
+<p>It’s good practice to check the structure of your dataset before converting it. Use the following command to view the dataset's dimensions, coordinates, and variables.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">print</span>(ds)<br></code></pre></td></tr></table></figure>
+<h3 id="step-4-save-as-netcdf">Step 4: Save as NetCDF</h3>
+<p>Once you are satisfied with the dataset, you can save it in NetCDF format. Specify the desired output filename:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">output_file = <span class="hljs-string">&#x27;output_file.nc&#x27;</span><br>ds.to_netcdf(output_file)<br></code></pre></td></tr></table></figure>
+<h3 id="step-5-verify-the-conversion">Step 5: Verify the Conversion</h3>
+<p>To ensure that the conversion was successful, you can reopen the NetCDF file and inspect its contents.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">ds_netcdf = xr.open_dataset(output_file)<br><span class="hljs-built_in">print</span>(ds_netcdf)<br></code></pre></td></tr></table></figure>
+<h2 id="conclusion">Conclusion</h2>
+<p>Converting ERA5 GRIB files to NetCDF format is straightforward with the use of Python and the <code>xarray</code> library. This conversion allows for easier manipulation and analysis of climate data. Whether you're conducting research or analyzing weather patterns, using NetCDF can significantly enhance your workflow.</p>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.xarray.dev/en/stable/">xarray Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://cfgrib.readthedocs.io/en/latest/">cfgrib Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5">ERA5 Data Access</a></li>
+</ul>
+<hr />
+<h1 id="converting-netcdf-files-back-to-grib-format-a-step-by-step-guide">Converting NetCDF Files back to GRIB Format: A Step-by-Step Guide</h1>
+<h2 id="introduction-1">Introduction</h2>
+<p>In the realm of climate data analysis, the ability to convert between different file formats is essential. While NetCDF is widely used for storing multidimensional scientific data, GRIB (Generalized Regularly-distributed Information in Binary form) is prevalent in meteorological applications. This blog will guide you through the process of converting NetCDF files back to GRIB format, ensuring you're equipped to handle various data formats in your climate studies.</p>
+<h2 id="motivation-1">Motivation</h2>
+<p>The motivation behind converting NetCDF files to GRIB format can stem from several factors:</p>
+<ul>
+<li><strong>Compatibility</strong>: Many meteorological models and tools predominantly use GRIB format. Converting your NetCDF data ensures compatibility with these systems.</li>
+<li><strong>Efficiency</strong>: GRIB files are often more compact than their NetCDF counterparts, making them easier to store and share, especially when dealing with large datasets.</li>
+<li><strong>Standardization</strong>: For specific applications, adhering to a standard format like GRIB can enhance data interoperability across different platforms and tools.</li>
+</ul>
+<h2 id="required-tools">Required Tools</h2>
+<p>Before you begin, ensure you have the following tools installed:</p>
+<ul>
+<li><strong>Python</strong>: Ensure you have Python installed on your system.</li>
+<li><strong>xarray</strong>: A Python library for handling NetCDF files.</li>
+<li><strong>cfgrib</strong>: A Python library for reading and writing GRIB files.</li>
+<li><strong>ecCodes</strong>: A library provided by ECMWF for encoding and decoding GRIB messages.</li>
+</ul>
+<p>You can install the necessary Python packages using pip:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">micromamba install xarray cfgrib<br></code></pre></td></tr></table></figure>
+<h2 id="conversion-steps">Conversion Steps</h2>
+<h3 id="step-1-load-the-netcdf-file">Step 1: Load the NetCDF File</h3>
+<p>First, you need to load the NetCDF file using <code>xarray</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><br><span class="hljs-comment"># Load the NetCDF file</span><br>netcdf_file = <span class="hljs-string">&#x27;your_file.nc&#x27;</span><br>data = xr.open_dataset(netcdf_file)<br></code></pre></td></tr></table></figure>
+<h3 id="step-2-prepare-the-data">Step 2: Prepare the Data</h3>
+<p>Ensure that the data in the NetCDF file is structured properly for GRIB output. Some adjustments may be necessary to match the GRIB conventions.</p>
+<h3 id="step-3-convert-to-grib-format">Step 3: Convert to GRIB Format</h3>
+<p>Use the <code>cfgrib</code> library to convert the data to GRIB format:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> cfgrib<br><br><span class="hljs-comment"># Save to GRIB format</span><br>grib_file = <span class="hljs-string">&#x27;output_file.grib&#x27;</span><br>data.to_netcdf(grib_file, <span class="hljs-built_in">format</span>=<span class="hljs-string">&#x27;GRIB&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="step-4-verify-the-conversion">Step 4: Verify the Conversion</h3>
+<p>After conversion, it’s crucial to verify that the GRIB file has been created correctly. You can do this by checking the contents:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls output_file.grib<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>conda install conda-forge::eccodes</code></li>
+<li><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/ECC/grib_ls">grib_ls</a>: List content of GRIB files printing values of some keys. It does not fail when a key is not found.</li>
+</ul>
+<h2 id="conclusion-1">Conclusion</h2>
+<p>Converting NetCDF files to GRIB format is a straightforward process that enhances data interoperability and efficiency in meteorological applications. By following the steps outlined in this guide, you can seamlessly transition between these two formats, ensuring your climate data analysis remains robust and versatile.</p>
+<h2 id="further-reading">Further Reading</h2>
+<p>For more in-depth information, consider checking the official documentation for:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.xarray.dev/en/stable/">xarray</a></li>
+<li><a target="_blank" rel="noopener" href="https://cfgrib.readthedocs.io/en/latest/">cfgrib</a></li>
+<li><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/ECC/ecCodes">ecCodes</a></li>
+</ul>
+<hr />
+<h1 id="interpolating-3d-temperature-from-signal-netcdf-to-era5-netcdf">Interpolating 3D Temperature from Signal NetCDF to ERA5 NetCDF</h1>
+<p>Here's a Python script for interpolating a 3D temperature field from a signal NetCDF file to match the grid of an ERA5 NetCDF file.</p>
+<p>In this part, we will demonstrate how to interpolate a 3D temperature field (<code>ta</code>) from a signal NetCDF file to match the grid of an ERA5 NetCDF file containing its own 3D temperature field (<code>TT</code>). This process is essential for applying climate change signals to ERA5 data effectively.</p>
+<h2 id="introduction-2">Introduction</h2>
+<p>In this blog, we'll discuss how to interpolate a 3D temperature field (<code>ta</code>) from a signal NetCDF file to match the grid of an ERA5 NetCDF file, which contains a different temperature variable (<code>TT</code>). This procedure involves two main steps: vertical interpolation to align the vertical levels and horizontal interpolation to match the latitude and longitude coordinates.</p>
+<h2 id="motivation-2">Motivation</h2>
+<p>By applying the Pseudo-Global-Warming (PGW) approach using CMIP6 climate change signals, we can generate a difference that can be added to the initial conditions like ERA5. Accurate interpolation is crucial for effective climate modeling and analysis.</p>
+<h2 id="steps-for-interpolation">Steps for Interpolation</h2>
+<ol type="1">
+<li><strong>Vertical Interpolation</strong>: Adjust the temperature data from the signal file to the vertical levels of the ERA5 file.</li>
+<li><strong>Horizontal Interpolation</strong>: Align the interpolated vertical data to the spatial grid (latitude and longitude) of the ERA5 dataset.</li>
+</ol>
+<h3 id="python-script">Python Script</h3>
+<p>Below is a Python script that performs the required interpolations.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><span class="hljs-keyword">from</span> scipy.interpolate <span class="hljs-keyword">import</span> interp1d<br><br><span class="hljs-comment"># Load the signal and ERA5 NetCDF files</span><br>signal_nc = xr.open_dataset(<span class="hljs-string">&#x27;signal.nc&#x27;</span>)  <span class="hljs-comment"># Replace with actual signal file path</span><br>era5_nc = xr.open_dataset(<span class="hljs-string">&#x27;era5.nc&#x27;</span>)      <span class="hljs-comment"># Replace with actual ERA5 file path</span><br><br><span class="hljs-comment"># Extract variables</span><br>ta_signal = signal_nc[<span class="hljs-string">&#x27;ta&#x27;</span>]  <span class="hljs-comment"># 3D temperature from signal file</span><br>TT_era5 = era5_nc[<span class="hljs-string">&#x27;TT&#x27;</span>]       <span class="hljs-comment"># 3D temperature from ERA5 file</span><br><br><span class="hljs-comment"># Vertical levels</span><br>signal_levels = signal_nc[<span class="hljs-string">&#x27;level&#x27;</span>].values  <span class="hljs-comment"># Vertical levels from signal file</span><br>era5_levels = era5_nc[<span class="hljs-string">&#x27;level&#x27;</span>].values        <span class="hljs-comment"># Vertical levels from ERA5 file</span><br><br><span class="hljs-comment"># Interpolation function for vertical levels</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">vertical_interpolate</span>(<span class="hljs-params">temperature, signal_levels, target_levels</span>):<br>    interpolated_temp = np.empty((temperature.shape[<span class="hljs-number">0</span>], target_levels.size, temperature.shape[<span class="hljs-number">2</span>], temperature.shape[<span class="hljs-number">3</span>]))<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(temperature.shape[<span class="hljs-number">0</span>]):  <span class="hljs-comment"># Iterate over time</span><br>        f = interp1d(signal_levels, temperature[i, :, :, :], axis=<span class="hljs-number">0</span>, kind=<span class="hljs-string">&#x27;linear&#x27;</span>, fill_value=<span class="hljs-string">&#x27;extrapolate&#x27;</span>)<br>        interpolated_temp[i, :, :, :] = f(target_levels)<br>    <span class="hljs-keyword">return</span> interpolated_temp<br><br><span class="hljs-comment"># Perform vertical interpolation</span><br>interpolated_ta = vertical_interpolate(ta_signal.values, signal_levels, era5_levels)<br><br><span class="hljs-comment"># Create a new DataArray for the interpolated temperature</span><br>interpolated_ta_da = xr.DataArray(interpolated_ta, coords=[ta_signal.coords[<span class="hljs-string">&#x27;time&#x27;</span>], era5_levels, TT_era5.coords[<span class="hljs-string">&#x27;latitude&#x27;</span>], TT_era5.coords[<span class="hljs-string">&#x27;longitude&#x27;</span>]], dims=[<span class="hljs-string">&#x27;time&#x27;</span>, <span class="hljs-string">&#x27;level&#x27;</span>, <span class="hljs-string">&#x27;latitude&#x27;</span>, <span class="hljs-string">&#x27;longitude&#x27;</span>])<br><br><span class="hljs-comment"># Horizontal interpolation (using xarray&#x27;s interpolation)</span><br>interpolated_ta_da = interpolated_ta_da.interp(latitude=TT_era5.coords[<span class="hljs-string">&#x27;latitude&#x27;</span>], longitude=TT_era5.coords[<span class="hljs-string">&#x27;longitude&#x27;</span>])<br><br><span class="hljs-comment"># Save the result to a new NetCDF file</span><br>interpolated_ta_da.to_netcdf(<span class="hljs-string">&#x27;interpolated_temperature.nc&#x27;</span>)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Interpolation completed and saved to &#x27;interpolated_temperature.nc&#x27;.&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="explanation-of-the-code">Explanation of the Code</h3>
+<ol type="1">
+<li><strong>Loading Data</strong>: The script uses <code>xarray</code> to load the signal and ERA5 NetCDF files.</li>
+<li><strong>Vertical Interpolation</strong>: A function (<code>vertical_interpolate</code>) is defined to perform linear interpolation on the vertical levels of the temperature data.</li>
+<li><strong>Horizontal Interpolation</strong>: The <code>interp</code> method from <code>xarray</code> is used to interpolate the data to the ERA5 latitude and longitude grid.</li>
+<li><strong>Saving the Result</strong>: The interpolated temperature data is saved to a new NetCDF file.</li>
+</ol>
+<h2 id="conclusion-2">Conclusion</h2>
+<p>This interpolation approach allows for aligning temperature data from different datasets, which is essential for climate modeling. By accurately matching the grids of the signal and ERA5 data, we can effectively analyze and apply climate change signals in our research.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/GRIB/" class="print-no-link">#GRIB</a>
+      
+        <a href="/tags/NetCDF/" class="print-no-link">#NetCDF</a>
+      
+        <a href="/tags/CMIP6/" class="print-no-link">#CMIP6</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS</div>
+      <div>https://waipangsze.github.io/2025/02/03/NWP-PGW-hands-on-ERA5-GFS/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 3, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>February 3, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/01/Maths-Riemann-Hypothesis-Analytic-Continuation-Prime-Number-Counting-Function/" title="Maths | 黎曼猜想/解析延拓/素數計數函數">
+                        <span class="hidden-mobile">Maths | 黎曼猜想/解析延拓/素數計數函數</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

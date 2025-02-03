@@ -1,0 +1,986 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Euler Product Formula The Euler product formula is a significant result in number theory that connects the Riemann zeta function to prime numbers. It states that the Riemann zeta function can be expre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maths | 黎曼猜想&#x2F;解析延拓&#x2F;素數計數函數">
+<meta property="og:url" content="https://waipangsze.github.io/2025/02/01/Maths-Riemann-Hypothesis-Analytic-Continuation-Prime-Number-Counting-Function/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Euler Product Formula The Euler product formula is a significant result in number theory that connects the Riemann zeta function to prime numbers. It states that the Riemann zeta function can be expre">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ueber_die_Anzahl_der_Primzahlen_unter_einer_gegebenen_Gr%C3%B6sse.pdf/page1-718px-Ueber_die_Anzahl_der_Primzahlen_unter_einer_gegebenen_Gr%C3%B6sse.pdf.jpg">
+<meta property="article:published_time" content="2025-02-01T04:38:00.000Z">
+<meta property="article:modified_time" content="2025-02-03T00:32:58.528Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ueber_die_Anzahl_der_Primzahlen_unter_einer_gegebenen_Gr%C3%B6sse.pdf/page1-718px-Ueber_die_Anzahl_der_Primzahlen_unter_einer_gegebenen_Gr%C3%B6sse.pdf.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Maths | 黎曼猜想/解析延拓/素數計數函數 - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ueber_die_Anzahl_der_Primzahlen_unter_einer_gegebenen_Gr%C3%B6sse.pdf/page3-360px-Ueber_die_Anzahl_der_Primzahlen_unter_einer_gegebenen_Gr%C3%B6sse.pdf.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Maths | 黎曼猜想/解析延拓/素數計數函數"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-01 12:38" pubdate>
+          February 1, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          953 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Maths | 黎曼猜想/解析延拓/素數計數函數</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="euler-product-formula">Euler Product Formula</h1>
+<p>The <strong>Euler product formula</strong> is a significant result in number theory that <em>connects the Riemann zeta function to prime numbers</em>. It states that the Riemann zeta function can be expressed both as an infinite series and as an infinite product over all prime numbers:</p>
+<p><span class="math display">\[
+\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s} = \prod_{p \text{ prime}} \frac{1}{1 - p^{-s}}
+\]</span></p>
+<ul>
+<li><p><strong>Left Side</strong>: The left-hand side represents the Riemann zeta function, which is defined for complex numbers <span class="math inline">\(s\)</span> with a real part greater than 1. This series converges for those values of <span class="math inline">\(s\)</span>.</p></li>
+<li><p><strong>Right Side</strong>: The right-hand side is the product over all prime numbers <span class="math inline">\(p\)</span>, where each term <span class="math inline">\(\frac{1}{1 - p^{-s}}\)</span> can be expanded into a geometric series. This formulation highlights the deep connection between prime numbers and the distribution of integers.</p></li>
+</ul>
+<h2 id="historical-context">Historical Context</h2>
+<p><strong>Leonhard Euler first proved this formula in his work Variae observationes circa series infinitas in 1737</strong>, demonstrating how the zeta function encapsulates properties of prime numbers. The proof uses basic algebraic manipulations and the concept of multiplicative functions, showcasing the relationship between the sum of reciprocals of integers raised to a power and the product over primes.</p>
+<h1 id="riemann-hypothesis">Riemann Hypothesis</h1>
+<p>The <strong>Riemann Hypothesis</strong> is one of the most famous unsolved problems in mathematics, originally conjectured by Bernhard Riemann in 1859. It posits that all non-trivial zeros of the Riemann zeta function lie on a specific line in the complex plane known as the <strong>critical line</strong>, defined by:</p>
+<p><span class="math display">\[
+\text{Re}(s) = \frac{1}{2}
+\]</span></p>
+<h2 id="details-of-the-hypothesis">Details of the Hypothesis</h2>
+<ul>
+<li><p><strong>Trivial Zeros</strong>: The zeta function has trivial zeros at negative even integers (e.g., -2, -4, -6,...).</p></li>
+<li><p><strong>Non-Trivial Zeros</strong>: The hypothesis asserts that all non-trivial zeros (those not at negative even integers) are located within a critical strip defined by <span class="math inline">\(0 &lt; \text{Re}(s) &lt; 1\)</span>, specifically on the line where <span class="math inline">\(\text{Re}(s) = \frac{1}{2}\)</span>.</p></li>
+</ul>
+<h1 id="黎曼猜想riemann-hypothesis">黎曼猜想（Riemann Hypothesis）</h1>
+<p>黎曼猜想（Riemann Hypothesis）是數學中最重要和最著名的未解問題之一。黎曼猜想是由德國數學家波恩哈德·黎曼於1859年提出的。它與素數的分佈密切相關，特別是與素數計數函數（π(x)）的性質有關。</p>
+<h2 id="黎曼猜想">1. 黎曼猜想</h2>
+<p>黎曼猜想聲稱，所有非平凡的黎曼ζ函數的零點都位於複數平面上，實部為 1/2 的直線上，即 <span class="math inline">\(\frac{1}{2} + it\)</span> 的形式，其中 <span class="math inline">\(t\)</span> 是實數。</p>
+<h2 id="解析延拓-analytic-continuation">2. 解析延拓 (analytic continuation)</h2>
+<p>黎曼ζ函數最初是對於實部大於 1 的數進行定義的，然後通過解析延拓（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Analytic_continuation">analytic continuation</a>）擴展到其他區域。這種延拓使得ζ函數在整個複數平面上（除了 <span class="math inline">\(s = 1\)</span> 的極點）都具有良好的性質。</p>
+<h2 id="素數質數計數函數">3. 素數(質數)計數函數</h2>
+<p>素數計數函數 <span class="math inline">\(\pi(x)\)</span> 定義為小於或等於 <span class="math inline">\(x\)</span> 的素數的數量。黎曼猜想的正確性與素數的分佈密切相關，特別是它預測了素數的分佈模式。(例如 <span class="math inline">\(\pi(10) = 4\)</span>，因為不超過10 的素數有 2, 3, 5, 7 。)</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/PrimePi.svg/800px-PrimePi.svg.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<p>Of great interest in number theory is the growth rate of the prime-counting function. It was conjectured in the end of the 18th century by <strong>Gauss</strong> and by <strong>Legendre</strong> to be approximately</p>
+<p><span class="math display">\[
+\begin{align}
+\lim_{x\rightarrow\infty} \frac{\pi(x)}{x/\log x}=1 \\
+\lim_{x\rightarrow\infty}\frac{\pi(x)}{\operatorname{li}(x)} = 1
+\end{align}
+\]</span></p>
+<p>This statement is the prime number theorem and its equivalent statement where <span class="math inline">\(li\)</span> is the <strong>logarithmic integral function</strong>. The prime number theorem was first proved in 1896 by Jacques Hadamard and by Charles de la Vallée Poussin independently, using properties of the Riemann zeta function introduced by Riemann in 1859. Proofs of the prime number theorem not using the zeta function or complex analysis were found around 1948 by Atle Selberg and by Paul Erdős (for the most part independently).</p>
+<h3 id="more-precise-estimates">More precise estimates</h3>
+<p>In 1899, de la Vallée Poussin proved that (for some positive constant <span class="math inline">\(a\)</span>) <span class="math display">\[
+\pi(x) = \operatorname{li} (x) + O \left(x e^{-a\sqrt{\log x}}\right) \quad\text{as } x \to \infty 
+\]</span></p>
+<p>In 2002, Kevin Ford proved that, <span class="math display">\[
+\pi(x) = \operatorname{li} (x) + O \left(x \exp \left( -0.2098(\log x)^{3/5} (\log \log x)^{-1/5} \right) \right)
+\]</span></p>
+<p>Mossinghoff and Trudgian proved an explicit upper bound for the difference between <span class="math inline">\(\pi(x)\)</span> and <span class="math inline">\(li(x)\)</span>, <span class="math display">\[
+\bigl| \pi(x) - \operatorname{li}(x) \bigr| \le 0.2593 \frac{x}{(\log x)^{3/4}} \exp \left( -\sqrt{ \frac{\log x}{6.315} } \right) \quad \text{for } x \ge 229
+\]</span></p>
+<p><img src="https://www.changhai.org/articles/science/mathematics/riemann_hypothesis/images/prime_dist.gif" srcset="/img/loading.gif" lazyload width="400" /></p>
+<p>現在有沒有一個公式可以比質數定理更精確地描述質數的分配呢？</p>
+<h3 id="exact-form">Exact form !!!</h3>
+<p>For <span class="math inline">\(x &gt; 1\)</span>, let <span class="math inline">\(\pi_0(x) = \pi(x) - \frac{1}{2}\)</span> when <span class="math inline">\(x\)</span> is a prime number, and <span class="math inline">\(\pi_0(x) = \pi(x)\)</span> otherwise. <strong>Bernhard Riemann, in his work On the Number of Primes Less Than a Given Magnitude</strong>, proved that <span class="math inline">\(\pi_0(x)\)</span> is equal to</p>
+<p><span class="math display">\[
+\pi_0(x)=R(x)-\sum_{\rho} R(x^{\rho}),
+\]</span> where <span class="math inline">\(R(x)=\sum_{n=1}^{\infty} \frac{\mu(n)}{n}\text{ li}\left(x^{1/n}\right)\)</span>,</p>
+<p><span class="math inline">\(\mu(n)\)</span> is the <strong>Möbius function</strong>, <span class="math inline">\(\text{li}(x)\)</span> is the <strong>logarithmic integral function</strong>, <span class="math inline">\(\rho\)</span> indexes <strong>every zero of the Riemann zeta function</strong>, and <span class="math inline">\(\text{li}(x^\rho)\)</span> is not evaluated with a branch cut but instead considered as Ei<span class="math inline">\((\frac{\rho}{n}\log x)\)</span> where Ei<span class="math inline">\((x)\)</span> is the <strong>exponential integral</strong>. If the trivial zeros are collected and the sum is taken only over the non-trivial zeros <span class="math inline">\(\rho\)</span> of the Riemann zeta function, then <span class="math inline">\(\pi_0(x)\)</span> may be approximated.</p>
+<p><span class="math display">\[
+\pi_0(x)\approx R(x)-\sum_{\rho} R(x^{\rho})-\frac{1}{\log x}+\frac{1}{\pi}\arctan\frac{\pi}{\log x}
+\]</span></p>
+<p>The Riemann hypothesis suggests that every such non-trivial zero lies along <span class="math inline">\(Re(s) = \frac{1}{2}\)</span>.</p>
+<p>這樣，我們可以說，如果我們知道了黎曼zeta函數的所有非平凡零點的精確位置，那麼就有了計算素數計數函數的精確公式。</p>
+<figure>
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Riemann_Explicit_Formula.gif" srcset="/img/loading.gif" lazyload alt="Riemann&#39;s explicit formula using the first 200 non-trivial zeros of the zeta function" width="400" /><figcaption>Riemann's explicit formula using the first 200 non-trivial zeros of the zeta function</figcaption>
+</figure>
+<h2 id="對數積分函數">4. 對數積分函數</h2>
+<p>The logarithmic integral has an integral representation defined for all positive real number <span class="math inline">\(x \neq 1\)</span>, <span class="math display">\[
+\operatorname{li}(x) = \int_0^x \frac{dt}{\ln t}
+\]</span></p>
+<p><span class="math display">\[
+\operatorname{li}(x) = \lim_{\varepsilon \to 0+} \left( \int_0^{1-\varepsilon} \frac{dt}{\ln t} + \int_{1+\varepsilon}^x \frac{dt}{\ln t} \right)
+\]</span></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Logarithmic_integral_function.svg/2880px-Logarithmic_integral_function.svg.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<p>對數積分函數 (The offset logarithmic integral or Eulerian logarithmic integral)定義為： <span class="math display">\[
+\text{Li}(x) = \int_2^x \frac{dt}{\ln t} = \operatorname{li}(x) - \operatorname{li}(2)
+\]</span> 這個積分從 2 開始，因為我們在考慮素數的時候，1 不是素數，而 <span class="math inline">\(\log t\)</span> 是自然對數。</p>
+<ul>
+<li><span class="math inline">\(\text{Li}(x)\)</span> 是一個單調遞增的函數，隨著 <span class="math inline">\(x\)</span> 的增大，<span class="math inline">\(\text{Li}(x)\)</span> 會增大。</li>
+<li>根據素數定理，對於大 <span class="math inline">\(x\)</span>，素數計數函數 <span class="math inline">\(\pi(x)\)</span> 和對數積分函數之間的關係可以用漸近公式來表示： <span class="math display">\[
+\pi(x) \sim \text{Li}(x) \text{（對於大 } x\text{）}
+\]</span> 這意味著當 <span class="math inline">\(x\)</span> 趨近於無限大時，<span class="math inline">\(\pi(x)\)</span> 和 <span class="math inline">\(\text{Li}(x)\)</span> 之間的比值趨近於 1。</li>
+</ul>
+<p><span class="math display">\[
+\Pi_0(x) = \operatorname{li}(x) - \sum_\rho \operatorname{li}(x^\rho) -\log 2 + \int_x^\infty\frac{dt}{t(t^2-1) \log t}
+\]</span></p>
+<h1 id="videos">Videos</h1>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/T93SayXhw2w" title="1+2+3+4+...=-1/12 ？李永樂老師講黎曼猜想（1）" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4vbcC4TcMGc" title="質數有多重要？數學家歐拉和高斯是如何研究質數的 ？李永樂老師講黎曼猜想（2）" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NeoDdnSlRjk" title="懸賞100萬美元的“黎曼猜想”有多難？李永樂老師講什麽是黎曼猜想（3）" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Y86kfiVEXd4" title="朗道-西格爾零點是什麼？張益唐證明了黎曼猜想嗎？" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sD0NjbwqlYw" title="But what is the Riemann zeta function? Visualizing analytic continuation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/On_the_Number_of_Primes_Less_Than_a_Given_Magnitude">On the Number of Primes Less Than a Given Magnitude</a>
+<ol type="1">
+<li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ueber_die_Anzahl_der_Primzahlen_unter_einer_gegebenen_Gr%C3%B6sse.pdf/page1-718px-Ueber_die_Anzahl_der_Primzahlen_unter_einer_gegebenen_Gr%C3%B6sse.pdf.jpg" srcset="/img/loading.gif" lazyload alt="Bernhard Riemann&#39;s article concerning the number of primes that are less than a given magnitude." width="200" /></li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://charlesliuyx.github.io/2018/09/20/%E3%80%90%E7%9B%B4%E8%A7%82%E8%AF%A6%E8%A7%A3%E3%80%91%E9%80%9A%E4%BF%97%E6%98%93%E6%87%82%E4%BA%86%E8%A7%A3%E4%BB%80%E4%B9%88%E6%98%AF%E9%BB%8E%E6%9B%BC%E7%8C%9C%E6%83%B3/">【直观详解】通俗易懂了解什么是黎曼猜 | 2018</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.changhai.org/articles/science/mathematics/riemann_hypothesis/">Riemann 猜想漫谈 | 卢昌海 (<strong>推薦</strong>)</a></li>
+<li><a target="_blank" rel="noopener" href="https://pansci.asia/archives/147956">數學界的聖杯「黎曼猜想證明」，是否已被人類得手？|2018</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Maths/" class="category-chain-item">Maths</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Maths | 黎曼猜想/解析延拓/素數計數函數</div>
+      <div>https://waipangsze.github.io/2025/02/01/Maths-Riemann-Hypothesis-Analytic-Continuation-Prime-Number-Counting-Function/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 1, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>February 3, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/03/NWP-PGW-hands-on-ERA5-GFS/" title="NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/30/ML-Ollama/" title="ML | Ollama">
+                        <span class="hidden-mobile">ML | Ollama</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

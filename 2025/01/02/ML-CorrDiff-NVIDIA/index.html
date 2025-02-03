@@ -19,21 +19,22 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（Corrector Diffusion）的生">
+    <meta name="description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（ Corrector Diffusion ）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ML | CorrDiff (NVIDIA)">
 <meta property="og:url" content="https://waipangsze.github.io/2025/01/02/ML-CorrDiff-NVIDIA/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（Corrector Diffusion）的生">
+<meta property="og:description" content="News  生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15  輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（ Corrector Diffusion ）">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/LgX4aZr.png">
-<meta property="og:image" content="https://i.imgur.com/e9PX9n8.png">
 <meta property="article:published_time" content="2025-01-02T02:01:00.000Z">
-<meta property="article:modified_time" content="2025-01-23T09:22:03.493Z">
+<meta property="article:modified_time" content="2025-02-03T00:32:58.528Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
 <meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="Diffusion">
+<meta property="article:tag" content="UNet">
 <meta property="article:tag" content="NVIDIA">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/LgX4aZr.png">
@@ -309,7 +310,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/LgX4aZr.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -338,7 +339,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k words
+          2.3k words
         
       </span>
     
@@ -349,7 +350,7 @@
         
         
         
-          18 mins
+          19 mins
         
       </span>
     
@@ -404,7 +405,7 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.scimonth.com.tw/archives/10997">生成式AI與傳統數值天氣預報的結合NVIDIA CorrDiff天氣降尺度模型 | 科學月刊 | 2024-07-15</a>
 <ul>
-<li>輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（Corrector Diffusion）的生成式人工智慧（generative artificial intelligence, generative AI）技術，並表示它可以應用於區域高解析度天氣預報上。</li>
+<li>輝達（NVIDIA）執行長黃仁勳今（2024）年3月在美國舉辦的GTC（GPU technology conference）大會及6月在臺灣舉辦的臺北國際電腦展（COMPUTEX）上，皆展示了一項稱為「CorrDiff」（ Corrector Diffusion ）的生成式人工智慧（generative artificial intelligence, generative AI）技術，並表示它可以應用於區域高解析度天氣預報上。</li>
 <li>對於氣象模擬與預報來說，縮小網格解析度一直是一大挑戰。傳統物理模式受限於運行時所需的龐大運算量，當今執行全球預報的最高解析度模式為ECMWF的九公里解析度全球模式。</li>
 <li>氣象署發展的「RWRF」（Radar WRF）高解析度極短期劇烈天氣預報系統（延伸閱讀2），可提升對臺灣區域劇烈天氣的預報能力。此系統奠基於美國國家大氣研究中心（National Center for Atmospheric Research）的「WRF」（Weather Research &amp; Forecasting）數值天氣預報模式與它的資料同化系統（WRFDA），再由氣象署針對臺灣本地需求修改發展，自2016年起開始作業運作。RWRF系統的模式解析度為兩公里，涵蓋範圍如圖一所示。它能運行區域高解析度的<strong>快速更新循環資料同化</strong>，將高解析度的即時觀測資料運用於區域模式中，藉此得到區域範圍內更準確的分析與短期預報資料，比單純的動力降尺度預報更為複雜。<strong>其中，資料同化使臺灣區域的氣象雷達觀測資料每半小時進入此模式中、地面氣象站觀測資料（包含人工和自動氣象站）每一小時進入模式中。RWRF系統以每小時的更新頻率提供13小時長度的預報資料，</strong> 作為署內預報中心與民航局等相關政府單位的參考。</li>
 <li>我們可以知道此模型在訓練過程中採用的輸入資料為ERA5全球約25公里解析度再分析資料（僅擷取與RWRF範圍相近的臺灣鄰近範圍）；而採用的輸出資料則為氣象署RWRF系統的兩公里解析度歷史分析資料，包含垂直最大雷達回波（radar reflectivity）、兩公尺高氣溫、十公尺高東西向與南北向風速等四個單層變數。</li>
@@ -461,6 +462,29 @@ p&gt;m , q&gt;n
 <li><strong>第一步驟</strong>是先以常應用於影像處理、能有效獲取影像特徵的UNet回歸架構，進行資料樣本平均值的修正；</li>
 <li><strong>第二步驟</strong>則利用生成式AI中的擴散（diffusion）演算法，強化資料的高解析度細節與極值。擴散演算法透過將圖像加入雜訊，再去除雜訊的循環過程來執行，過去常應用於圖片的去噪（denoising）、修補或超解析度成像等。</li>
 </ul></li>
+<li>CorrDiff consists of two steps: regression and generation.
+<ul>
+<li>The regression step approximates the mean, while</li>
+<li>the generation step further corrects the mean but also generates the distribution, producing fine-scale details stochastically.</li>
+<li>The diffusion component of CorrDiff is found to be <strong>especially important for the task of radar channel synthesis</strong>.</li>
+</ul></li>
+</ul>
+<h1 id="basedline-models">Basedline Models</h1>
+<ul>
+<li>Interpolation of ERA5</li>
+<li>UNet</li>
+<li>Random Forest (RF)</li>
+</ul>
+<h1 id="unet">UNet</h1>
+<p><img src="https://i.imgur.com/6CJzWhN.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/kWBDUkI.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="stochastic-differential-equations-sdes">Stochastic differential equations (SDEs)</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/mwre/143/3/mwr-d-14-00140.1.xml?tab_body=abstract-display">Selz, T., &amp; Craig, G. C. (2015). <strong>Upscale error growth in a high-resolution simulation of a summertime weather event over Europe</strong>. Monthly Weather Review, 143(3), 813-827.</a></li>
+<li><a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2019/file/3001ef257407d5a371a96dcd947c7d93-Paper.pdf">Song, Y., &amp; Ermon, S. (2019). <strong>Generative modeling by estimating gradients of the data distribution</strong>. Advances in neural information processing systems, 32.</a></li>
+<li><a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf">Ho, J., Jain, A., &amp; Abbeel, P. (2020). <strong>Denoising diffusion probabilistic models</strong>. Advances in neural information processing systems, 33, 6840-6851.</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2011.13456">Song, Y., Sohl-Dickstein, J., Kingma, D. P., Kumar, A., Ermon, S., &amp; Poole, B. (2020). <strong>Score-based generative modeling through stochastic differential equations</strong>. arXiv preprint arXiv:2011.13456.</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2111.13606">Batzolis, G., Stanczuk, J., Schönlieb, C. B., &amp; Etmann, C. (2021). <strong>Conditional image generation with score-based diffusion models</strong>. arXiv preprint arXiv:2111.13606.</a></li>
+<li><a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2022/file/a98846e9d9cc01cfb87eb694d946ce6b-Paper-Conference.pdf">Karras, T., Aittala, M., Aila, T., &amp; Laine, S. (2022). <strong>Elucidating the design space of diffusion-based generative models</strong>. Advances in neural information processing systems, 35, 26565-26577.</a></li>
 </ul>
 <h1 id="getting-started">Getting started</h1>
 <p>To build custom CorrDiff versions, you can get started by training the <strong>“Mini” version of CorrDiff</strong>, which uses smaller training samples and a smaller network to reduce training costs from thousands of GPU hours to <strong>around 10 hours on A100 GPUs</strong> while still producing reasonable results. It also includes a simple data loader that can be used as a baseline for training CorrDiff on custom datasets.</p>
@@ -498,6 +522,10 @@ p&gt;m , q&gt;n
 <p>and,</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">singularity inspect Modulus.sif</span> <br>org.label-schema.build-arch: amd64<br>org.label-schema.build-date: Thursday_23_January_2025_15:46:48_HKT<br>org.label-schema.schema-version: 1.0<br>org.label-schema.usage.singularity.deffile.bootstrap: docker<br>org.label-schema.usage.singularity.deffile.from: nvcr.io/nvidia/modulus/modulus:24.12<br>org.label-schema.usage.singularity.version: 3.8.6<br></code></pre></td></tr></table></figure>
 <h2 id="running-examples">Running examples</h2>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://yang-song.net/blog/2021/score/">Generative Modeling by Estimating Gradients of the Data Distribution</a></li>
+</ol>
 
                 
               </div>
@@ -537,6 +565,10 @@ p&gt;m , q&gt;n
       
         <a href="/tags/pytorch/" class="print-no-link">#pytorch</a>
       
+        <a href="/tags/Diffusion/" class="print-no-link">#Diffusion</a>
+      
+        <a href="/tags/UNet/" class="print-no-link">#UNet</a>
+      
         <a href="/tags/NVIDIA/" class="print-no-link">#NVIDIA</a>
       
     </div>
@@ -568,7 +600,7 @@ p&gt;m , q&gt;n
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 23, 2025</div>
+          <div>February 3, 2025</div>
         </div>
       
       

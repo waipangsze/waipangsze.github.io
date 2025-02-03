@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.researchgate.net/profile/Zhen-Li-105/publication/335990167/figure/fig1/AS:806502679982080@1569296631121/Schematic-of-a-physics-informed-neural-network-PINN-where-the-loss-function-of-PINN_W640.jpg">
 <meta property="article:published_time" content="2024-06-26T06:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-22T05:56:42.005Z">
+<meta property="article:modified_time" content="2025-02-03T00:32:58.512Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="PINN">
 <meta property="article:tag" content="AI">
@@ -337,7 +337,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.4k words
+          3.9k words
         
       </span>
     
@@ -348,7 +348,7 @@
         
         
         
-          29 mins
+          33 mins
         
       </span>
     
@@ -586,6 +586,15 @@
 <li>神经网络确实能处理许多高维问题，但很难说神经网络方法在一些benchmark问题上已经完全超越了传统问题，还需要进一步讨论。</li>
 </ul></li>
 </ul></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/YGd_PSWfqoZhsrYOUcTbJw">一GAN崩了不听话的PINN | 2025年01月27日 西南望长安</a>
+<ul>
+<li>这篇论文是关于如何使用GAN来自适应调整PINN的损失函数，从而让PINN 收敛到更好的性能。论文题目是“DEQGAN: Learning the Loss Function for PINNs with Generative Adversarial Networks”</li>
+<li>当我们把PINN用在实际工作中，你会发现有时候很难搞到收敛的结果，把PINN 当作一个所谓的physics solver似乎只是一个镜花水月的梦想。why？ 首先，神经网络的自由度远远超出了pde方程的复杂度，这就像是高维生物在看低微生物，亦或者人类在看小蚂蚁，有无数种方法可以玩弄小蚂蚁，所以虽然pde只有一个解，但是神经网络有一万条路去拟合，其中大部分都跑到了局部最优</li>
+<li>典型做法是这样的，大家不停试错，为这些损失函数配置权重，最终找到一组可以让模型收敛，论文里“trail and error”三个词可能代表了科研民工们三个月的工作量。但是这样的人肉优化是不是最好的，我不置可否，虽然它很artificial，但好像不咋intelligence。</li>
+<li>更有甚者，就是直接拿一堆样本把模型都监督学习跑了几万个epoch训好了，然后拿pde loss“辛辛苦苦的”跑了三个epoch；亦或者给监督损失一个极大的权重，pde一个忽略不计的权重。这仿佛去吃牛肉面，只看到了牛肉沫，剩下的全是科技狠活出来的牛肉味儿。</li>
+<li>说起来简单，其实GAN 也不是什么灵丹妙药，毕竟GAN自身就是天下一等一的不稳定，难训练。</li>
+<li>如果大家去看论文里下表的参差不齐的学习率设计，你就知道作者为了把它调收敛也是花了不少心思，但是好在GAN的理论研究比较多，怎么把GAN 搞收敛已经有比较多的手段了。</li>
+</ul></li>
 </ul>
 <h1 id="governing-equations-from-scarce-data">governing equations from scarce data</h1>
 <ul>
@@ -682,7 +691,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 22, 2024</div>
+          <div>February 3, 2025</div>
         </div>
       
       

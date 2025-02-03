@@ -19,21 +19,23 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="CNN中標準的block組合無非是一個Conv+BN+ReLU，這是一個標準的非線性變換模組。網路越深，代表非線性映射的能力越powerful，意味著網路可以學習到更複雜的變化，從而可以更好的擬合輸入的特徵；但是，網路加深到一定程度則會帶來梯度不穩定，造成網路退化的現象，從而導致效能下降。於是，ResNet便出現了，引入殘差映射，可以使梯度更好地回傳，從而使訓練深層網路變得可能。">
+    <meta name="description" content="殘差網路概述 殘差神經網路（Residual Neural Network，簡稱 ResNet ） 是一種深度學習模型，旨在解決傳統深度神經網路中常見的梯度消失和梯度爆炸問題。這種網路的核心理念是讓每一層學習與輸入之間的殘差，而非直接學習預期的輸出。這樣的設計使得訓練更深層的模型變得更為有效，並且在增加層數時能保持甚至提高準確率。 ResNet 透過 殘差學習解決了深度網路的退化問題，讓我們可以訓">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ML | ResNet">
 <meta property="og:url" content="https://waipangsze.github.io/2025/01/26/ML-ResNet/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="CNN中標準的block組合無非是一個Conv+BN+ReLU，這是一個標準的非線性變換模組。網路越深，代表非線性映射的能力越powerful，意味著網路可以學習到更複雜的變化，從而可以更好的擬合輸入的特徵；但是，網路加深到一定程度則會帶來梯度不穩定，造成網路退化的現象，從而導致效能下降。於是，ResNet便出現了，引入殘差映射，可以使梯度更好地回傳，從而使訓練深層網路變得可能。">
+<meta property="og:description" content="殘差網路概述 殘差神經網路（Residual Neural Network，簡稱 ResNet ） 是一種深度學習模型，旨在解決傳統深度神經網路中常見的梯度消失和梯度爆炸問題。這種網路的核心理念是讓每一層學習與輸入之間的殘差，而非直接學習預期的輸出。這樣的設計使得訓練更深層的模型變得更為有效，並且在增加層數時能保持甚至提高準確率。 ResNet 透過 殘差學習解決了深度網路的退化問題，讓我們可以訓">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/UtmMY3o.png">
 <meta property="article:published_time" content="2025-01-26T04:38:00.000Z">
-<meta property="article:modified_time" content="2025-01-27T00:36:24.306Z">
+<meta property="article:modified_time" content="2025-02-03T00:32:58.528Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
 <meta property="article:tag" content="ResNet">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/UtmMY3o.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -306,7 +308,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/UtmMY3o.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -335,7 +337,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          147 words
+          3.3k words
         
       </span>
     
@@ -346,7 +348,7 @@
         
         
         
-          2 mins
+          28 mins
         
       </span>
     
@@ -397,7 +399,128 @@
             
               <div class="markdown-body">
                 
-                <p>CNN中標準的block組合無非是一個Conv+BN+ReLU，這是一個標準的非線性變換模組。網路越深，代表非線性映射的能力越powerful，意味著網路可以學習到更複雜的變化，從而可以更好的擬合輸入的特徵；但是，網路加深到一定程度則會帶來梯度不穩定，造成網路退化的現象，從而導致效能下降。於是，ResNet便出現了，引入殘差映射，可以使梯度更好地回傳，從而使訓練深層網路變得可能。</p>
+                <h1 id="殘差網路概述">殘差網路概述</h1>
+<p><strong>殘差神經網路</strong>（Residual Neural Network，簡稱 <strong>ResNet</strong> ） 是一種深度學習模型，<strong>旨在解決傳統深度神經網路中常見的梯度消失和梯度爆炸問題</strong>。這種網路的核心理念是讓每一層學習與輸入之間的殘差，而非直接學習預期的輸出。這樣的設計使得訓練更深層的模型變得更為有效，並且在增加層數時能保持甚至提高準確率。</p>
+<p><strong>ResNet 透過 殘差學習解決了深度網路的退化問題，讓我們可以訓練出更深的網絡</strong>，這稱得上是深度網絡的一個歷史大突破吧。</p>
+<h2 id="殘差塊-residual-block">殘差塊 (Residual Block)</h2>
+<p>ResNet的基本單位是殘差塊（<strong>Residual Block</strong>），每個殘差塊都包含一個短路連接（<strong>shortcut connection</strong>），這是一條將輸入直接連接到輸出的路徑。這樣，即使在反向傳播過程中出現梯度消失或爆炸，捷徑連接也能確保梯度順利流動，從而促進學習。</p>
+<p>ResNet 的核心在於其殘差塊。每個殘差塊包含一個捷徑連接，<strong>這條連接將輸入直接加到輸出上</strong>。這樣做的目的是讓網路能夠學習到恒等映射，即使在其他層出現梯度消失時，捷徑連接仍能確保梯度能夠有效反向傳播。</p>
+<p>具體而言，假設 <span class="math inline">\(x\)</span> 是輸入，<span class="math inline">\(F(x)\)</span> 是通過卷積和激活函數計算出的映射，那麼殘差塊的輸出可以表示為：</p>
+<p><span class="math display">\[
+H(x) = F(x) + x
+\]</span></p>
+<p>當網絡學會了恒等映射時，即 <span class="math inline">\(F(x) = 0\)</span>，則輸出 <span class="math inline">\(H(x)\)</span> 就等於輸入 <span class="math inline">\(x\)</span>。這樣，即使 <span class="math inline">\(F(x)\)</span> 的梯度為0，捷徑連接仍然能夠保證前面層的梯度不會消失</p>
+<p>ResNet的作者何愷明也因此摘得CVPR2016最佳論文獎，當然何博士的成就遠不止於此，感興趣的可以去搜一下他後來的輝煌戰績。是解決了深度CNN模型難見訓練的問題，從圖2中可以<strong>14年的VGG才19層</strong>，而<strong>15年的ResNet多達152層</strong>，這在網絡深度如果完全不是一個量級上，所以是第一眼看這張圖的話，一定會覺得ResNet是靠深度取勝。</p>
+<h2 id="梯度消失的本質">梯度消失的本質</h2>
+<p>在傳統的深度神經網路中，隨著層數的增加，梯度在反向傳播過程中會逐漸變小，最終導致更新無法進行。這是因為每一層的輸出依賴於前面各層的輸出，當激活函數的導數小於1時，梯度會隨著層數增加而減少，形成梯度消失現象。</p>
+<h3 id="退化問題degradation-problem">退化問題（Degradation problem）</h3>
+<p>實驗發現深度網路出現了<strong>退化問題（Degradation problem）</strong>：網路深度增加時，網路準確度出現飽和，甚至出現下降。這個現象可以在直觀看出來：56層的網路 比 20層網路效果還要差。這不會是過度擬合問題，因為56層網路的訓練誤差同樣高。<strong>我們知道深層網路存在著梯度消失或爆炸的問題</strong>，這使得深度學習模型很難訓練。但是現在已經存在一些技術手段如 BatchNorm 來緩解這個問題。深度網路的退化問題至少說明深度網路不容易訓練。但我們考慮這樣一個事實：現在你有一個淺層網絡，你想透過向上堆積新層來建立深層網絡，一個極端情況是這些增加的層什麼也不學習，僅僅複製淺層網絡的特徵，即這樣新層是恆等映射（Identity mapping）。在這種情況下，深層網路應該至少和淺層網路效能一樣，也不應該出現退化現象。好吧，你不得不承認肯定是目前的訓練方法有問題，才使得深層網路很難去找到一個好的參數。</p>
+<h2 id="工作原理">工作原理</h2>
+<h3 id="批歸一化batch-normalization">批歸一化（Batch Normalization）</h3>
+<p><strong>批歸一化</strong>是一種正則化技術，用於減少內部協變偏移（Internal Covariate Shift），這是指在訓練過程中，隨著參數更新，層的輸入分佈會發生變化。這會導致訓練速度變慢，並使得模型難以收斂。</p>
+<h4 id="工作原理-1">工作原理</h4>
+<ol type="1">
+<li><strong>標準化</strong>：對每一批次的輸入進行標準化，使其均值為0，方差為1。這樣可以使得每層的輸入保持在相似的範圍內。</li>
+</ol>
+<p><span class="math display">\[
+\hat{x} = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}}
+\]</span></p>
+<p>其中，<span class="math inline">\(\mu\)</span> 是批次均值，<span class="math inline">\(\sigma^2\)</span> 是批次方差，<span class="math inline">\(\epsilon\)</span> 是一個小常數，用於防止除以零。</p>
+<ol start="2" type="1">
+<li><strong>縮放和平移</strong>：標準化後，通過學習到的參數 <span class="math inline">\(\gamma\)</span> 和 <span class="math inline">\(\beta\)</span> 對輸出進行縮放和平移，以保持模型的表達能力。</li>
+</ol>
+<p><span class="math display">\[
+y = \gamma \hat{x} + \beta
+\]</span></p>
+<p>這樣做不僅提高了訓練的穩定性，還加速了收斂速度，使得更深層的網絡能夠有效訓練。</p>
+<h3 id="預激活技術pre-activation">預激活技術（Pre-activation）</h3>
+<p><strong>預激活技術</strong>是對傳統殘差塊結構的一種改進，它將激活函數放置在卷積層之前。這種方法有助於改善梯度流動並提高模型性能。</p>
+<p>在傳統的殘差塊中，結構如下：</p>
+<p><span class="math display">\[
+H(x) = F(x) + x
+\]</span></p>
+<p>而在預激活結構中，則改為：</p>
+<ol type="1">
+<li><strong>先進行批歸一化和激活</strong>：首先對輸入 <span class="math inline">\(x\)</span> 進行 卷積、批歸一化 (Batch Normalization）。</li>
+</ol>
+<p><span class="math display">\[
+y = F(x)
+\]</span></p>
+<ol start="2" type="1">
+<li><strong>再進行捷徑連接</strong>：然後將捷徑連接添加到經過處理的輸出上。激活。</li>
+</ol>
+<p><span class="math display">\[
+H(x) = y + x
+\]</span></p>
+<p>這樣做的好處是，在每個殘差塊中都能夠更好地保留信息流動，<strong>使得梯度能夠更有效地反向傳播</strong>。</p>
+<h1 id="deep-residual-learning-for-image-recognition.">"Deep residual learning for image recognition."</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf">He, Kaiming, et al. "Deep residual learning for image recognition." Proceedings of the IEEE conference on computer vision and pattern recognition. 2016.</a>
+<ul>
+<li>這是何凱明論文的原圖，可以看到，<strong>56層的網路無論是在訓練集或測試集上</strong>，誤差率都比20層的要高。<strong>出現這種現象的原因並非是由於層數加深引發的梯度消失/梯度爆炸</strong>，<em>因為已經通過歸一化的方法解決了這個問題</em>，對於出現這種現象的原因將在下面討論，我們將這種反常的現象稱之為「退化現象」。</li>
+<li>作者比較18-layer和34-layer的網路效果，可以看到普通的網路出現退化現象，但ResNet很好的解決了<strong>退化問題</strong>。</li>
+<li>殘差單元可以以跳層連接的形式實現，即將單元的輸入直接與單元輸出加在一起，然後再啟動。因此殘差網路可以輕鬆地用主流的自動微分深度學習框架實現，直接使用BP演算法更新參數損失對某低層輸出的梯度，被分解為了兩項。</li>
+</ul></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/IRN73Xt.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/LT2gCRW.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/YGVdUTF.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/UtmMY3o.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/HX57hvz.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h1 id="殘差學習為何有效-沒有明確的定論">殘差學習為何有效? 沒有明確的定論</h1>
+<h2 id="梯度保持">梯度保持</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://deeplearning.ouxinyu.cn/References/%5BarXiv1603.05027%5D%20Identity%20Mappings%20in%20Deep%20Residual%20Networks.pdf">He, Kaiming, et al. "<strong>Identity mappings in deep residual networks</strong>." Computer Vision–ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11–14, 2016, Proceedings, Part IV 14. Springer International Publishing, 2016.</a></li>
+<li>在殘差網路中，遠跳連接使用恆等映射
+<ul>
+<li>問題一: 如果遠跳連線不是恆等映射會怎樣？</li>
+<li>問題二：如果最後的激活函數取消會怎樣？</li>
+</ul></li>
+</ul>
+<h2 id="loss-surfaces">Loss surfaces</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2018/file/a41b3bb3e6b050b6c9067c67f663b915-Paper.pdf">Li, H., Xu, Z., Taylor, G., Studer, C., &amp; Goldstein, T. (2018). Visualizing the <strong>loss landscape of neural nets</strong>. Advances in neural information processing systems, 31.</a></li>
+</ul>
+<p>"Visualizing the Loss Landscape of Neural Nets" 是一篇探討神經網絡損失函數結構的研究論文。該研究旨在理解神經網絡在訓練過程中如何最小化高維非凸損失函數，並探討損失景觀（loss landscape）對模型泛化能力的影響。</p>
+<h3 id="研究背景">研究背景</h3>
+<p>在訓練神經網絡時，最小化損失函數是一個關鍵步驟。這一過程通常涉及從一個複雜的高維空間中找到全局最小值。儘管這在理論上是困難的，但實務中卻有時能夠輕易達成。這種現象的原因與多種因素有關，包括網絡架構設計、優化器選擇以及變量初始化等。</p>
+<h3 id="損失景觀的可視化">損失景觀的可視化</h3>
+<p>研究者們提出了一種基於“過濾器正規化”（Filter Normalization）的可視化方法，這一方法能夠清晰地展示損失函數的結構。通過對損失景觀進行可視化，可以直觀地理解不同神經網絡架構如何影響損失函數的分佈，以及這些變化如何影響模型的泛化能力。</p>
+<h4 id="損失景觀的特徵">損失景觀的特徵</h4>
+<ol type="1">
+<li><strong>平坦區域</strong>：在損失景觀中，平坦區域意味著小幅度的參數變化會導致損失值的微小變化，這通常與較好的泛化能力相關。</li>
+<li><strong>陡峭區域</strong>：相反，陡峭區域則表示參數的小變動可能會引起損失值的大幅變化，這可能導致模型在未見數據上的表現不穩定。</li>
+</ol>
+<p>圖中展示了對於ResNet-56, 有skip connection和沒有skip connection之間，其loss surface的區別。<strong>可以看出來，增加了 skip connection之後，loss surface明顯平滑很多，自然有利於網路優化了。</strong></p>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/dreneeh.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/N8Fj8fS.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h2 id="常微分方程-動力學系統">常微分方程 動力學系統</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2018/file/69386f6bb1dfed68692a24c8686939b9-Paper.pdf">Chen, R. T., Rubanova, Y., Bettencourt, J., &amp; Duvenaud, D. K. (2018). Neural ordinary differential equations. Advances in neural information processing systems, 31.</a>
+<ul>
+<li>神經常微分方程（Neural Ordinary Differential Equations，簡稱Neural ODE）是一種新型的深度學習模型，將神經網絡的結構與常微分方程（ODE）相結合，提供了一種連續的方式來描述數據的變化。這一概念於2018年在NeurIPS會議上獲得最佳論文獎，並迅速成為機器學習領域中的熱門話題。</li>
+<li>神經常微分方程的基本思想是將傳統神經網絡中的離散層結構轉變為連續層。這意味著，神經網絡的每一層不再是獨立的，而是可以看作是一個連續的動態系統。</li>
+<li>我們利用了微分方程的方法來進行連續時間的推斷。</li>
+</ul></li>
+</ul>
+<p>殘差的數學表示為</p>
+<p><span class="math display">\[
+h_{t+1} = h_t + f(h_t, \theta_t)
+\]</span></p>
+<p>， 如果從常微分方程 動力學系統 的角度出發：</p>
+<p><span class="math display">\[
+\dfrac{d h(t)}{dt} = f(h(t), t, \theta)
+\]</span></p>
+<p>如果把神經元看成一個動力學系統，那麼殘差連接其實是這個動力學系統的離散形式。</p>
+<ul>
+<li>我們把整個映射看成100%，則前面四層網絡實現了98%的映射關係，而殘餘的映射由紫色層完成，Residual 另一個翻譯就是 殘餘，殘留 的意思，也就是讓每一個殘差塊，只關注殘餘映射的一小部分</li>
+<li>resnet 是微分方程的離散化。分析起來得結合manifold微分幾何。這才是根子。而不是什麼泰勒展開。</li>
+<li>真要分析它的性能，要將resnet空間看作參數化的函數流形，分析流形上的曲率分佈，將其與普通CNN相比較，你會看到它與量子計算系統的流形結構高度相似，而且比CNN平滑，這才搗到根上。</li>
+<li>其實這種網絡結構不應該被稱為殘差網絡，而應該稱為跳連結網絡。真正的恆等映射並非博主所說的粉紅色部分，而是跳轉直連這部分。由於跳連結這條線沒有加入其他層，是直連的，所以才是恆等映射。如果將“殘差”字樣全部替換為“跳鏈接”，估計很多人就不會有疑問了。因為在沒有跳連結之前，神經網路會有以下問題：從前向傳播的方向來看：資料每經過一層就會造成資訊損失，層數越多，後面可以學習的特徵就越少。而加入跳連結後，高層可以學習前一層的輸出，同時也能學習前一層或幾層的輸入。這就像教學一樣，大學生教高中生，高中生教國中生，國中生教小學生。由於每個人的能力有限，知識傳遞時會有損失。假如每個人都損失一點，到最後的人可能就沒什麼好學的了。而跳連結的想法就好比小學生，他不僅可以接觸到國中生給自己的知識，還可以直接接觸到高中的知識，這樣小學生就能更好地學習了。從反向傳播的方向來說：由於誤差是從高層逐步向底層傳播的，所以沒有跳連結之前，高層的誤差向底層傳播時會越來越少。假如最高層的誤差是100，等傳到底層時就可能變成0.1了。而有了跳連結後，我們可以直接將誤差100直接傳給底層，而不僅僅是簡單的一層一層地傳遞。理解了跳連結就可以很簡單的理解他的變種了，原理都是一樣的；不要被殘差這個詞誤導了</li>
+<li>跟數值計算解線性方程組裡的鬆弛差不多，就是讓參數變化不要太大，不要一下子就越過了鞍點</li>
+<li>學過自動化控制的人應該知道 這個想法在自動化控制裡面是常識 無所不在 前饋控制 其實殘差應該改名為前饋</li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://zh.d2l.ai/chapter_convolutional-modern/resnet.html">7.6. 残差网络（ResNet）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/306135761/answer/2491142607?utm_psn=1867892895526309888">为什么残差连接的网络结构更容易学习？</a></li>
+<li><a target="_blank" rel="noopener" href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Xie_Aggregated_Residual_Transformations_CVPR_2017_paper.pdf">Xie, S., Girshick, R., Dollár, P., Tu, Z., &amp; He, K. (2017). Aggregated residual transformations for deep neural networks. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 1492-1500).</a></li>
+</ol>
 
                 
               </div>
@@ -468,7 +591,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 27, 2025</div>
+          <div>February 3, 2025</div>
         </div>
       
       

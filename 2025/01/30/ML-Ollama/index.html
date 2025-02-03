@@ -1,0 +1,1055 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Ollama Ollama是一個開源工具，旨在直接在本地機器上運行大型語言模型（LLMs），增強用戶的隱私和性能。它使開發者、研究人員和企業能夠利用強大的人工智能模型，而無需依賴基於雲的解決方案，從而保持對數據的完全控制並降低與外部伺服器相關的潛在安全風險。 Ollama的主要特點  本地執行：Ollama使得在本地執行LLMs成為可能，這減輕了隱私問題並增強了數據安全性。這意味著用戶不需要將敏感">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML | Ollama">
+<meta property="og:url" content="https://waipangsze.github.io/2025/01/30/ML-Ollama/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Ollama Ollama是一個開源工具，旨在直接在本地機器上運行大型語言模型（LLMs），增強用戶的隱私和性能。它使開發者、研究人員和企業能夠利用強大的人工智能模型，而無需依賴基於雲的解決方案，從而保持對數據的完全控制並降低與外部伺服器相關的潛在安全風險。 Ollama的主要特點  本地執行：Ollama使得在本地執行LLMs成為可能，這減輕了隱私問題並增強了數據安全性。這意味著用戶不需要將敏感">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/qLGkr7T.png">
+<meta property="article:published_time" content="2025-01-30T14:08:00.000Z">
+<meta property="article:modified_time" content="2025-02-03T00:32:58.528Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="ML">
+<meta property="article:tag" content="Ollama">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/qLGkr7T.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ML | Ollama - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/qLGkr7T.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ML | Ollama"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-30 22:08" pubdate>
+          January 30, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ML | Ollama</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ollama">Ollama</h1>
+<p>Ollama是一個開源工具，旨在直接在<strong>本地機器上運行大型語言模型（LLMs）</strong>，增強用戶的隱私和性能。它使開發者、研究人員和企業能夠利用強大的人工智能模型，<strong>而無需依賴基於雲的解決方案</strong>，從而保持對數據的完全控制並降低與外部伺服器相關的潛在安全風險。</p>
+<h2 id="ollama的主要特點">Ollama的主要特點</h2>
+<ul>
+<li><p><strong>本地執行</strong>：Ollama使得在本地執行LLMs成為可能，這減輕了隱私問題並增強了數據安全性。這意味著用戶不需要將敏感信息上傳到雲端，確保所有處理都在其設備上進行。</p></li>
+<li><p><strong>廣泛的模型庫</strong>：該平台支持多種預訓練模型，包括流行的LLaMA 2和Code Llama。用戶可以輕鬆選擇適合特定任務的模型，確保人工智能應用的多樣性。</p></li>
+<li><p><strong>自定義和微調</strong>：Ollama允許用戶根據需求自定義和微調語言模型，包括提示工程和少量學習，使輸出更符合用戶目標。</p></li>
+<li><p><strong>無縫集成</strong>：該工具與各種編程語言和框架良好集成，使開發者能夠輕鬆將LLMs納入其項目中。</p></li>
+<li><p><strong>無使用限制</strong>：與許多在線人工智能服務施加使用上限不同，Ollama不限制生成文本的量，為用戶提供了更大的靈活性。</p></li>
+</ul>
+<h2 id="ollama的應用">Ollama的應用</h2>
+<p>Ollama可以在多個領域中使用，包括：</p>
+<ul>
+<li><strong>聊天機器人和虛擬助手</strong>：通過智能自動回應增強客戶服務體驗。</li>
+<li><strong>代碼生成和輔助</strong>：通過生成代碼片段或提供調試幫助來簡化開發工作流程。</li>
+<li><strong>自然語言處理</strong>：促進翻譯、摘要和內容生成等任務。</li>
+<li><strong>研究和知識發現</strong>：分析大型數據集以提取見解或生成假設。</li>
+</ul>
+<p>總之，Ollama是一個強大的本地運行LLMs的工具，在隱私、性能和自定義方面提供顯著優勢。它能夠在不依賴雲基礎設施的情況下運作，使其對於關心數據安全的人士在使用先進人工智能技術時特別具吸引力。</p>
+<h1 id="本地部署">本地部署</h1>
+<h2 id="ollama-1">Ollama</h2>
+<p>我們可以透過Ollama來進行安裝</p>
+<ul>
+<li>Ollama 官方版：<a target="_blank" rel="noopener" href="https://ollama.com/" class="uri">https://ollama.com/</a>
+<ul>
+<li>Mac
+<ul>
+<li><strong>Apple Silicon 可用</strong></li>
+<li>如果是 Mac, 下載後解開執行，簡單照著指示放到應用程式即可。<strong>雖然是應用程式，不過實際要跑模型的時候是用命令列</strong></li>
+</ul></li>
+<li>Linux
+<ul>
+<li><code>curl -fsSL https://ollama.com/install.sh | sh</code></li>
+</ul></li>
+<li>Ollama 是一個開源軟體，讓使用者可以在自己的硬體上運行、創建和分享大型語言模型服務。這個平台適合希望在本地端運行模型的使用者，因為它不僅可以保護隱私，還允許用戶透過命令行介面輕鬆地設置和互動。Ollama 支援包括 Llama 2 和 Mistral 等多種模型，並提供彈性的客製化選項，例如從其他格式導入模型並設置運行參數。</li>
+</ul></li>
+<li>Web UI 控制端: <a target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/page-assist-%E6%9C%AC%E5%9C%B0-ai-%E6%A8%A1%E5%9E%8B%E7%9A%84-web/jfgfiigpkhlkbnfnbobbkinehhfdhndo">Page Assist - A Web UI for Local AI Models | Chrome Extension</a></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/yycohCi.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/qLGkr7T.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/EhgPLta.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/9Px50B2.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/3ki4mkk.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/W9MzN7v.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h2 id="ollama-where-is-model-stored">ollama where is model stored</h2>
+<ul>
+<li>macOS: <code>~/.ollama/models</code></li>
+<li>Linux: <code>/usr/share/ollama/.ollama/models</code></li>
+<li>Windows: <code>C:\Users&lt;username&gt;.ollama\models</code></li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> ~/.ollama</span><br>history        id_ed25519     id_ed25519.pub logs           models<br><br>[~/.ollama/models]$ du -sh ./*<br> 39G	./blobs<br> 24K	./manifests<br></code></pre></td></tr></table></figure>
+<h2 id="webui">WebUI</h2>
+<ol type="1">
+<li>Web UI 控制端: <a target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/page-assist-%E6%9C%AC%E5%9C%B0-ai-%E6%A8%A1%E5%9E%8B%E7%9A%84-web/jfgfiigpkhlkbnfnbobbkinehhfdhndo">Page Assist - A Web UI for Local AI Models | Chrome Extension</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/open-webui/open-webui">Open WebUI</a>
+<ol type="1">
+<li><code>pip install open-webui</code></li>
+<li><code>open-webui serve</code> # you can access at <a target="_blank" rel="noopener" href="http://localhost:8080" class="uri">http://localhost:8080</a></li>
+</ol></li>
+</ol>
+<h3 id="installation-with-default-configuration">Installation with Default Configuration</h3>
+<ul>
+<li><p><strong>If Ollama is on your computer</strong>, use this command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main<br></code></pre></td></tr></table></figure></li>
+<li><p><strong>If Ollama is on a Different Server</strong>, use this command:</p>
+<p>To connect to Ollama on another server, change the <code>OLLAMA_BASE_URL</code> to the server's URL:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=https://example.com -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main<br></code></pre></td></tr></table></figure></li>
+<li><p><strong>To run Open WebUI with Nvidia GPU support</strong>, use this command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="installation-for-openai-api-usage-only">Installation for OpenAI API Usage Only</h3>
+<ul>
+<li><p><strong>If you're only using OpenAI API</strong>, use this command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d -p 3000:8080 -e OPENAI_API_KEY=your_secret_key -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="installing-open-webui-with-bundled-ollama-support">Installing Open WebUI with Bundled Ollama Support</h3>
+<p>This installation method uses a single container image that bundles Open WebUI with Ollama, allowing for a streamlined setup via a single command. Choose the appropriate command based on your hardware setup:</p>
+<ul>
+<li><p><strong>With GPU Support</strong>: Utilize GPU resources by running the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama<br></code></pre></td></tr></table></figure></li>
+<li><p><strong>For CPU Only</strong>: If you're not using a GPU, use this command instead:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d -p 3000:8080 -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>Both commands facilitate a built-in, hassle-free installation of both Open WebUI and Ollama, ensuring that you can get everything up and running swiftly.</p>
+<p>After installation, you can access Open WebUI at <a target="_blank" rel="noopener" href="http://localhost:3000">http://localhost:3000</a>.</p>
+<h2 id="run">Run</h2>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">ollama run phi3</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>ollama pull &lt;名字&gt;</code> 只下載模型不跑</li>
+<li><code>ollama list</code> 可顯示本機下載了哪些模型</li>
+<li><code>ollama rm &lt;名字&gt;</code> 可刪除下載的模型</li>
+</ul>
+<p><strong>模型儲存</strong> 在 <code>~/.ollama/models/</code>; <strong>log</strong> 也在 <code>~/.ollama/logs/server.log</code></p>
+<h2 id="stop-ollama">Stop Ollama</h2>
+<p>「這什麼蠢問題？不是 ctrl-c 或是 ctrl-d 就好了嗎？」</p>
+<ul>
+<li>其實 ollama run 「結束」以後，服務還在 port 照 bind，可以 ps 看到。雖然一段時間沒跑模型以後，模型就會從記憶體裡卸載，但如果有潔癖的話，可以在 Mac menu bar 右上角看到 Ollama 的圖示，點下去 Quit 就行</li>
+</ul>
+<p><img src="https://i.imgur.com/f44agCl.png" srcset="/img/loading.gif" lazyload width="300" /></p>
+<ul>
+<li>Linux 我沒試過??</li>
+</ul>
+<h2 id="ollama-library">Ollama-library</h2>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://ollama.com/library" class="uri">https://ollama.com/library</a></p></li>
+<li><p>The Llama 3.2 1B and 3B models support context length of 128K tokens and are state-of-the-art in their class for on-device use cases like summarization, instruction following, and rewriting tasks running locally at the edge. These models are enabled on day one for Qualcomm and MediaTek hardware and optimized for Arm processors.</p></li>
+</ul>
+<p><img src="https://i.imgur.com/g944O2M.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h2 id="model-examples">Model examples</h2>
+<h3 id="llama-large-language-model-meta-ai">LLaMA (Large Language Model Meta AI)</h3>
+<p>LLaMA (Large Language Model Meta AI) is a family of large language models developed by Meta AI, with its initial release in February 2023. The latest version, LLaMA 3.3, was launched in December 2024. (<strong>The largest model, LLaMA 3.1 with 405 billion parameters, requires approximately 854 GB of memory without quantization.</strong> With techniques like 8-bit quantization, this can be reduced to around 427 GB, though it still demands substantial computational resources.)</p>
+<p>Llama 3.2 1B and 3B models:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Total Parameters</th>
+<th>Context Length</th>
+<th>Memory Requirements (GB)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Llama 3.2 1B</strong></td>
+<td>1 billion</td>
+<td>128,000 tokens</td>
+<td>BF16/FP16: ~2.5 GB</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td>FP8: ~1.25 GB</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td>INT4: ~0.75 GB</td>
+</tr>
+<tr class="even">
+<td><strong>Llama 3.2 3B</strong></td>
+<td>3 billion</td>
+<td>128,000 tokens</td>
+<td>BF16/FP16: ~6.5 GB</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td>FP8: ~3.2 GB</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td>INT4: ~1.75 GB</td>
+</tr>
+</tbody>
+</table>
+<p>Key Features:</p>
+<ul>
+<li><strong>Multilingual Support</strong>: Trained on up to 9 trillion tokens, supporting languages like English, German, French, Italian, Portuguese, Hindi, Spanish, and Thai.</li>
+<li><strong>Optimized for Efficiency</strong>: Designed for on-device applications such as prompt rewriting and knowledge retrieval.</li>
+<li><strong>High Performance</strong>: Outperforms many existing open-access models of similar sizes and is competitive with larger models.</li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://github.com/ollama/">github | ollama</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.freedidi.com/18341.html">本地部署 DeepSeek-R1 大模型！免费开源，媲美OpenAI-o1能力</a></li>
+<li><a target="_blank" rel="noopener" href="https://ollama.com/library/deepseek-r1:1.5b">ollama | deepseek-r1</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B">huggingface | DeepSeek-R1-Distill-Qwen-1.5B</a></li>
+<li><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/articles/10343826">Day 03】Ollama UI 本機建置</a></li>
+<li><a target="_blank" rel="noopener" href="https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices/">Llama 3.2: Revolutionizing edge AI and vision with open, customizable models</a></li>
+<li><a target="_blank" rel="noopener" href="https://ollama.com/library/llama3.2">ollama | llama3.2</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ML/" class="category-chain-item">ML</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+        <a href="/tags/Ollama/" class="print-no-link">#Ollama</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ML | Ollama</div>
+      <div>https://waipangsze.github.io/2025/01/30/ML-Ollama/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 30, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>February 3, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/01/Maths-Riemann-Hypothesis-Analytic-Continuation-Prime-Number-Counting-Function/" title="Maths | 黎曼猜想/解析延拓/素數計數函數">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Maths | 黎曼猜想/解析延拓/素數計數函數</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/01/30/ML-DeepSeek/" title="ML | DeepSeek">
+                        <span class="hidden-mobile">ML | DeepSeek</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
