@@ -973,16 +973,21 @@ From these papers,
 
 
 # References
-1. 香港天文台
+1. **香港天文台**
    1. [什麼是雷暴？](https://www.hko.gov.hk/tc/education/weather/thunderstorm-and-lightning/00031-what-are-thunderstorms.html)
-   2. [2006-Reprint 622-探討閃電位置數據應用在臨近預報的前景](https://www.hko.gov.hk/tc/publica/reprint/files/r622.pdf)
-   3. [2009-Reprint 817-香港一次夏季雹暴的天氣過程分析及臨近預報系統的應用](https://www.weather.gov.hk/tc/publica/reprint/files/r817a.pdf)
-   4. [2012-Reprint 1035-利用閃電數據監測暴雨發展的個案分析](https://www.weather.gov.hk/en/publica/reprint/files/r1035.pdf)
-   5. [2017 天文台加強閃電定位資訊系統投入業務運作](https://www.hko.gov.hk/tc/whatsnew/r1_wn20170531.htm)
-   6. [2018-Reprint 1337-粵港澳閃電定位網絡的最新發展及與超強颱風天鴿相關之數據分析](https://www.hko.gov.hk/en/publica/reprint/files/r1337.pdf)
-   7. [2018-Reprint 1341-公眾定點閃電臨近預報服務](https://www.hko.gov.hk/tc/publica/reprint/files/r1341.pdf)
-   8. [2019-Reprint 1358-區域與全球閃電定位資料於珠三角地區的精細化比對](https://www.hko.gov.hk/en/publica/reprint/files/r1358.pdf)
-   9. [2020-在珠三角一帶與大雨相關的閃電特徵分析](https://www.hko.gov.hk/tc/publica/ghm_21/files/HPaper_WongCP.pdf)
+   2. [雷暴警告](https://www.hko.gov.hk/tc/wservice/warning/thunder.htm)
+   3. [為什麼總是先閃電後打雷？](https://www.hko.gov.hk/tc/education/weather/thunderstorm-and-lightning/00021-why-does-lightning-always-come-before-thunder.html)
+   4. [甚麼是雲間閃電？](https://www.hko.gov.hk/tc/education/weather/thunderstorm-and-lightning/00018-what-is-cloudtocloud-lightning.html)
+   5. [香港天文台閃電位置資訊系統](https://www.hko.gov.hk/tc/wxinfo/llis/stat.htm)
+   6. [2006-Reprint 622-探討閃電位置數據應用在臨近預報的前景](https://www.hko.gov.hk/tc/publica/reprint/files/r622.pdf)
+   7. [2009-Reprint 817-香港一次夏季雹暴的天氣過程分析及臨近預報系統的應用](https://www.weather.gov.hk/tc/publica/reprint/files/r817a.pdf)
+   8. [2012-Reprint 1035-利用閃電數據監測暴雨發展的個案分析](https://www.weather.gov.hk/en/publica/reprint/files/r1035.pdf)
+   9. [2017 天文台加強閃電定位資訊系統投入業務運作](https://www.hko.gov.hk/tc/whatsnew/r1_wn20170531.htm)
+   10. [2018-Reprint 1337-粵港澳閃電定位網絡的最新發展及與超強颱風天鴿相關之數據分析](https://www.hko.gov.hk/en/publica/reprint/files/r1337.pdf)
+   11. [2018-Reprint 1341-公眾定點閃電臨近預報服務](https://www.hko.gov.hk/tc/publica/reprint/files/r1341.pdf)
+   12. [2019-Reprint 1358-區域與全球閃電定位資料於珠三角地區的精細化比對](https://www.hko.gov.hk/en/publica/reprint/files/r1358.pdf)
+   13. [2020-在珠三角一帶與大雨相關的閃電特徵分析](https://www.hko.gov.hk/tc/publica/ghm_21/files/HPaper_WongCP.pdf)
+   14. [3025-空中對決：飛機與雷神的交鋒](https://www.hko.gov.hk/tc/education/weather/thunderstorm-and-lightning/00732-The-Aerial-Battle-Aircraft-vs-Thunder-God.html)
 
 2. [世界气候“雷极”：印度尼西亚爪哇岛，平均年雷雨日数超过220天](https://mp.weixin.qq.com/s/yuzCZB2Nb5CydG3WCysK_w)
 3. 徐良韬, 张义军, 王飞, 郑栋. 2012: 雷暴起电和放电物理过程在WRF模式中的耦合及初步检验. 大气科学, 36(5): 1041-1052. DOI: 10.3878/j.issn.1006-9895.2012.11235

@@ -176,6 +176,18 @@ with open('saved_dictionary.pkl', 'rb') as f:
     loaded_dict = pickle.load(f)
 ```
 
+# Discover Anemoi: Webinar Series
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AiO-GCIPcM4" title="Discover Anemoi: Introduction to Anemoi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/S91TGYrKg00" title="Discover Anemoi: Anemoi Datasets" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tIuyeQgGEG4" title="Discover Anemoi: Anemoi Graphs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hbzgAsxDMX4" title="Discover Anemoi: Anemoi Training" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CEXqlpSuNPo" title="Discover Anemoi: Inference" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 # References
 
 1. [AIFS: a new ECMWF forecasting system | ECMWF | January 2024](https://www.ecmwf.int/en/newsletter/178/news/aifs-new-ecmwf-forecasting-system)

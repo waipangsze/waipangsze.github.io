@@ -13,7 +13,7 @@ index_img: https://i.imgur.com/kZIc53N.png
 banner_img: https://i.imgur.com/kZIc53N.png
 ---
 
-DeepSeek是一家中國人工智能公司，成立於2023年7月，總部位於浙江省杭州市。該公司專注於開發開源的大型語言模型（LLMs），並由對沖基金High-Flyer全資擁有，該基金由梁文峰共同創辦，梁文峰同時擔任公司的首席執行官。DeepSeek因其在推理任務上的表現與OpenAI的ChatGPT相當，但開發成本和資源消耗卻僅為其一小部分而受到廣泛關注。
+DeepSeek (深度求索)，全稱杭州深度求索人工智能基礎技術研究有限公司，是中國的一家人工智能與大型語言模型公司。該公司的總部位於中國大陸浙江省杭州市，由中資對沖基金幻方量化創立，創始人和行政總裁為梁文鋒。DeepSeek因其在推理任務上的表現與OpenAI的ChatGPT相當，但開發成本和資源消耗卻僅為其一小部分而受到廣泛關注。
 
 # DeepSeek Model
 
