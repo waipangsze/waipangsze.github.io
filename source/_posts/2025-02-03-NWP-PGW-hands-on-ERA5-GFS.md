@@ -40,13 +40,17 @@ Before we begin, ensure you have the following:
 2. **Libraries**: You will need `xarray`, `cfgrib`, and `netCDF4`. You can install them using pip:
 
    ```bash
-   micromamba install xarray cfgrib netcdf4
+   micromamba env create -n PGW
+   micromamba activate PGW
+   micromamba install python=3.11 -y
+   pip install xarray cfgrib netCDF4
+   micromamba install scipy -y
    ```
 
 3. **ERA5 GRIB File**: Download your desired ERA5 dataset in GRIB format from the ECMWF website.
-4. New tool: [Convert GRIB file to netCDF](https://confluence.ecmwf.int/display/OIFS/How+to+convert+GRIB+to+netCDF) 
+4. New tool (not use): [Convert GRIB file to netCDF](https://confluence.ecmwf.int/display/OIFS/How+to+convert+GRIB+to+netCDF) 
    1. `grib_to_netcdf ICMGG_hybrid.grb -o ICMGG_hybrid.nc`
-   2. `micromamba install conda-forge::eccodes`
+   2. `micromamba install conda-forge::eccodes -y`
 
 ## Steps to Convert GRIB to NetCDF
 
