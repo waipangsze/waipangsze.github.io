@@ -1,0 +1,61 @@
+---
+layout: post
+title: ML | AnythingLLM + Ollama
+categories: ML
+tags: [ML, AI, Ollama, AnythingLLM]
+author: wpsze
+date: 2025-02-04 23:30:00
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: 
+banner_img: 
+---
+
+# What is AnythingLLM?
+
+- <https://docs.useanything.com/introduction>
+
+**AnythingLLM** is the easiest to use, all-in-one AI application that can do RAG, AI Agents, and much more with no code or infrastructure headaches.
+
+AnythingLLM is built by *Mintplex Labs*, Inc - founded by Timothy Carambat and went through *YCombinator* Summer 2022.
+
+{% note primary %}
+- You want a **zero-setup, private, and all-in-one AI application for local LLMs, RAG, and AI Agents all in one place without painful developer-required set up**.
+- 用Ollama & AnythingLLM建構AI知識庫
+{% endnote %}
+
+- 多用戶支持：無論是團隊合作還是個人使用，AnythingLLM 都能夠輕鬆管理多用戶的權限和操作。
+- 靈活的 LLM 和向量資料庫選擇：用戶可以根據需求選擇合適的 LLM 和向量資料庫，滿足不同的應用場景。
+- 高效的文件管理：支持多種文件類型，如 PDF、TXT、DOCX 等，並通過簡單的 UI 進行管理。（目前不支援DOC格式）
+- 自定義聊天小工具：可將聊天功能嵌入網站，提升互動體驗。
+- 兩種聊天模式：在保留上下文的會話模式(平常使用，沒資料就直接根據LLM的知識回應)和問答的查詢模式(較嚴格，查詢到資料才回答，更減低幻覺發生)之間靈活切換。
+
+{% gi 6 1-3-2 %}
+![](https://i.imgur.com/mhEGKtT.png)
+![](https://i.imgur.com/YIN7Uls.png)
+![](https://i.imgur.com/CdkwoT9.png)
+![](https://i.imgur.com/W0WcgyK.png)
+{% endgi %}
+
+## RAG
+
+RAG (Retrieval-Augmented Generation) 可以想像成是一個小抄或字典，透過向量資料庫檢索出來的資料跟使用者的問題一併告訴語言模型，讓語言模型能夠減低幻覺，根據資料回答問題。
+
+## Ollama
+
+- 7B模型至少要8G內存，13B的要16G，想玩70B的大傢伙，那得有64G
+
+# Installation
+
+## MacOS
+
+```sh
+brew install --cask anythingllm
+```
+
+# References
+
+1. [AnythingLLM + Ollama輕鬆架設多人用的客製化 RAG](https://medium.com/@pang2258/anythingllm-ollama%E8%BC%95%E9%AC%86%E6%9E%B6%E8%A8%AD%E5%A4%9A%E4%BA%BA%E7%94%A8%E7%9A%84%E5%AE%A2%E8%A3%BD%E5%8C%96-rag-2d05954bf771)
+2. [使用ollama + AnythingLLM快速且简单的在本地部署llama3](https://www.cnblogs.com/jokingremarks/p/18151827)
