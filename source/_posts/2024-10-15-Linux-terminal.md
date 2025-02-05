@@ -33,6 +33,7 @@ sh run.sh >/dev/null 2>&1 &
 # -C : Print Around Lines
 grep -irn -C 3 "xxx" file
 grep -irn -C 3 "xxx" ./*
+grep -irn 'pattern1\|pattern2' fileName_or_filePath
 
 find ./ -name "xxx"
 find ./ -type f | wc -l # count how many files
