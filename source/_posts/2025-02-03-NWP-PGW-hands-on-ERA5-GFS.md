@@ -308,32 +308,15 @@ The motivation behind converting NetCDF files to GRIB format can stem from sever
 - **Efficiency**: GRIB files are often more compact than their NetCDF counterparts, making them easier to store and share, especially when dealing with large datasets.
 - **Standardization**: For specific applications, adhering to a standard format like GRIB can enhance data interoperability across different platforms and tools.
 
-## Required Tools
+## 麻煩了
 
-Before you begin, ensure you have the following tools installed:
+{% note primary %}
+**這一步真是麻煩太多了**
+{% endnote %}
 
-- **Python**: Ensure you have Python installed on your system.
-- **xarray**: A Python library for handling NetCDF files.
-- **cfgrib**: A Python library for reading and writing GRIB files.
-- **cdo**: CLI tools to manipulate and analyse Climate and NWP model Data
-
-```console
-micromamba install conda-forge::cdo
-```
-
-and,
-```
- $ cdo -v -f grb -copy new_ERA5_SL.nc new_ERA5_SL.grib
- OpenMP:  num_procs=24  max_threads=1
-cdo    copy: Process file: new_ERA5_SL.nc
-Warning (cdfInqContents): Coordinates variable number can't be assigned!
-Warning (cdfInqContents): Coordinates variable time can't be assigned!
-Warning (cdfInqContents): Coordinates variable step can't be assigned!
-Warning (cdfInqContents): Coordinates variable surface can't be assigned!
-encodeBMS_float   : Missing value = NaN is unsupported!
-encodeBMS_double  : Missing value = NaN is unsupported!
-cdo    copy: Processed 15573600 values from 15 variables over 1 timestep [1.40s 45MB].
-```
+{% note primary %}
+Move to [**NWP | PGW | To prepare the ERA5 GRIB file**](https://waipangsze.github.io/2025/02/05/NWP-PGW-To-prepare-the-ERA5-GRIB-file/)
+{% endnote %}
 
 ## Verify the Conversion
 
@@ -342,14 +325,6 @@ After conversion, it’s crucial to verify that the GRIB file has been created c
 ```bash
 grib_ls output_file.grib
 ```
-
-## Further Reading
-
-For more in-depth information, consider checking the official documentation for:
-
-- [xarray](https://docs.xarray.dev/en/stable/)
-- [cfgrib](https://cfgrib.readthedocs.io/en/latest/)
-- [ecCodes](https://confluence.ecmwf.int/display/ECC/ecCodes)
 
 ---
 

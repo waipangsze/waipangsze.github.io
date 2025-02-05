@@ -39,6 +39,7 @@ ECMWF provides and supports [ecCodes](https://confluence.ecmwf.int/display/ECC/e
   - Supports GRIB to JSON (`grib_dump -j <gribfile>`)
   - `grib_ls`: List content of GRIB files printing values of some keys. It does not fail when a key is not found.
   - `grib_dump`: Dump the content of a GRIB file in different formats.
+  - [**Using the ecCodes GRIB Tools**](https://www.google.com/search?q=eccodes-grib-tools2-2016.pdf&oq=eccodes-grib-tools2-2016.pdf&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg80gEHMzUxajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#:~:text=Using%20the%20ecCodes%20GRIB%20Tools)
 
 > Please be aware that when reading GRIB files where the range of valid data values includes '9999' that some software may incorrectly indicate that these data points are missing. This is because 9999 is the default missing value indicator. 
 
