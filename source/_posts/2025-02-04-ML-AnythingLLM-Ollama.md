@@ -55,7 +55,32 @@ RAG (Retrieval-Augmented Generation) 可以想像成是一個小抄或字典，�
 brew install --cask anythingllm
 ```
 
+Once installed, you will find AnythingLLM in your Applications folder as well as you can use `cmd + spacebar` and type in `AnythingLLM` to run.
+
+### ollama setup
+
+- URL: http://127.0.0.1:11434 
+  - No slash / at the end of URL
+- updated workspace
+
+{% gi 6 3-3 %}
+![](https://i.imgur.com/06uxnHS.png)
+![](https://i.imgur.com/6F8l0Ml.png)
+![](https://i.imgur.com/ScdOVxc.png)
+{% endgi %}
+
+### upload PDF
+
+{% gi 6 3-3 %}
+![](https://i.imgur.com/Bdx3d7w.png)
+![](https://i.imgur.com/RWEbIjz.png)
+![](https://i.imgur.com/6VWZ55T.png)
+![](https://i.imgur.com/6lib4wr.png)
+![](https://i.imgur.com/PuYMkhw.png)
+![](https://i.imgur.com/QgsPU6h.png)
+{% endgi %}
 # References
 
-1. [AnythingLLM + Ollama輕鬆架設多人用的客製化 RAG](https://medium.com/@pang2258/anythingllm-ollama%E8%BC%95%E9%AC%86%E6%9E%B6%E8%A8%AD%E5%A4%9A%E4%BA%BA%E7%94%A8%E7%9A%84%E5%AE%A2%E8%A3%BD%E5%8C%96-rag-2d05954bf771)
-2. [使用ollama + AnythingLLM快速且简单的在本地部署llama3](https://www.cnblogs.com/jokingremarks/p/18151827)
+1. [AnythingLLM](https://anythingllm.com/)
+2. [AnythingLLM + Ollama輕鬆架設多人用的客製化 RAG](https://medium.com/@pang2258/anythingllm-ollama%E8%BC%95%E9%AC%86%E6%9E%B6%E8%A8%AD%E5%A4%9A%E4%BA%BA%E7%94%A8%E7%9A%84%E5%AE%A2%E8%A3%BD%E5%8C%96-rag-2d05954bf771)
+3. [使用ollama + AnythingLLM快速且简单的在本地部署llama3](https://www.cnblogs.com/jokingremarks/p/18151827)
