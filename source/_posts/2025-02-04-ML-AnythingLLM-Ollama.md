@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/mhEGKtT.png
+banner_img: https://i.imgur.com/mhEGKtT.png
 ---
 
 # What is AnythingLLM?
@@ -79,6 +79,21 @@ Once installed, you will find AnythingLLM in your Applications folder as well as
 ![](https://i.imgur.com/PuYMkhw.png)
 ![](https://i.imgur.com/QgsPU6h.png)
 {% endgi %}
+
+# Comments
+
+- [Seven Failure Points When Engineering a Retrieval Augmented Generation System](https://arxiv.org/html/2401.05856v1)
+- [LLM RAG值得做吗？ - 小五哥的回答 - 知乎](https://www.zhihu.com/question/2818756749/answer/20825040322)
+  - 1、不值得。RAG是增强检索，本质上是语义近似检索，LLM只是对检索条目的总结，重点是在检索，而不是在大模型。
+  - 2、RAG对计算资源需求不高，向量库和向量模型对GPU的需求很低，甚至CPU也能跑，大模型用Ollama装量化模型，也不需要GPU，当然用CPU性能差些。
+  - 3、我个人认为，RAG中是个算力不足、无法实践微调的临时过渡方案，没有前景。
+  - 4、RAG的核心是文本分段策略，是数据层面的，非技术层面的。论文方面，两段检索、二次排名这些能出点成果。
+- [LLM RAG值得做吗？ - 程序锅的回答 - 知乎](https://www.zhihu.com/question/2818756749/answer/52312494601)
+  - 如果大模型你不会做RAG，那你还能做什么？大模型训练门槛极高、大模型微调效果不佳，老板让你做一个LLM应用，输出结果全靠提示工程？
+  - 我的观点是大模型最近几年真正落地，都需要RAG来缓解幻觉问题。所以用好RAG以及掌握它的原理是很重要的
+- [AnythingLLM 个人知识库局限性 - TroyLiu的文章 - 知乎](https://zhuanlan.zhihu.com/p/939571291)
+
+
 # References
 
 1. [AnythingLLM](https://anythingllm.com/)
