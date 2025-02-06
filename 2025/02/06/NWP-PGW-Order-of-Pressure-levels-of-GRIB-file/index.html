@@ -19,15 +19,15 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS                         NWP | ERA5 | GRIB1 and GRIB2            To prepare the ERA5 GRIB file from the modified era5_with_signal.nc">
+    <meta name="description" content="NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS                         NWP | ERA5 | GRIB1 and GRIB2            In GRIB files, the order of pressure levels is important because ma">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NWP | PGW | To prepare the ERA5 GRIB file">
-<meta property="og:url" content="https://waipangsze.github.io/2025/02/05/NWP-PGW-To-prepare-the-ERA5-GRIB-file/index.html">
+<meta property="og:title" content="NWP | PGW | Order of Pressure levels of GRIB file">
+<meta property="og:url" content="https://waipangsze.github.io/2025/02/06/NWP-PGW-Order-of-Pressure-levels-of-GRIB-file/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS                         NWP | ERA5 | GRIB1 and GRIB2            To prepare the ERA5 GRIB file from the modified era5_with_signal.nc">
+<meta property="og:description" content="NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS                         NWP | ERA5 | GRIB1 and GRIB2            In GRIB files, the order of pressure levels is important because ma">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-02-05T07:33:00.000Z">
-<meta property="article:modified_time" content="2025-02-06T04:03:38.444Z">
+<meta property="article:published_time" content="2025-02-06T07:04:00.000Z">
+<meta property="article:modified_time" content="2025-02-06T07:05:37.456Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -44,7 +44,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>NWP | PGW | To prepare the ERA5 GRIB file - wpsze</title>
+  <title>NWP | PGW | Order of Pressure levels of GRIB file - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -317,7 +317,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="NWP | PGW | To prepare the ERA5 GRIB file"></span>
+            <span id="subtitle" data-typed-text="NWP | PGW | Order of Pressure levels of GRIB file"></span>
           
         </div>
 
@@ -328,8 +328,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-02-05 15:33" pubdate>
-          February 5, 2025 pm
+        <time datetime="2025-02-06 15:04" pubdate>
+          February 6, 2025 pm
         </time>
       </span>
     
@@ -340,7 +340,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          516 words
+          126 words
         
       </span>
     
@@ -351,7 +351,7 @@
         
         
         
-          5 mins
+          2 mins
         
       </span>
     
@@ -397,7 +397,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">NWP | PGW | To prepare the ERA5 GRIB file</h1>
+            <h1 id="seo-header">NWP | PGW | Order of Pressure levels of GRIB file</h1>
             
             
               <div class="markdown-body">
@@ -408,107 +408,60 @@
 <div class="note note-primary">
             <p><a href="https://waipangsze.github.io/2025/02/05/NWP-ERA5-GRIB1-GRIB2/"><strong>NWP | ERA5 | GRIB1 and GRIB2</strong></a></p>
           </div>
-<p>To prepare the <code>ERA5</code> GRIB file from the modified <code>era5_with_signal.nc</code>, you need to specify GRIB metadata such as <code>dataDate</code>, <code>shortName</code>, <code>level</code>, <code>dataType</code>, and <code>typeOfLevel</code> when converting <code>era5_with_signal.nc</code> back to GRIB format. The process involves using <strong><code>cdo</code></strong> and <strong><code>grib_set</code></strong> from ecCodes to properly define these GRIB headers.</p>
-<p>Below is the detailed step-by-step guide:</p>
+<p>In GRIB files, the order of pressure levels is important because many tools expect them to be sorted either in ascending (from surface to top of the atmosphere) or descending (from top of the atmosphere to surface) order. Here's how you can <strong>ensure the order of pressure levels</strong> and <strong>reverse them</strong> using tools like <code>cdo</code> or <code>grib_set</code>.</p>
 <hr />
-<h3 id="step-1-check-metadata-of-the-original-grib-file"><strong>Step 1: Check Metadata of the Original GRIB File</strong></h3>
-<p>Inspect the original <code>ERA5</code> GRIB file (<code>era5.grib</code>) to understand the required metadata.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls era5.grib<br></code></pre></td></tr></table></figure>
-<p>This will give you information about: - <code>dataDate</code>: The date of the data (e.g., 20250101 for January 1, 2025). - <code>shortName</code>: The short name of the variable (e.g., <code>t2m</code> for 2-meter temperature). - <code>level</code>: The model level, pressure level, or surface (e.g., <code>2</code> for surface data). - <code>dataType</code>: The type of data, such as <code>an</code> (analysis) or <code>fc</code> (forecast). - <code>typeOfLevel</code>: Specifies the level type (e.g., <code>surface</code>, <code>isobaricInhPa</code>, etc.).</p>
-<p>Ensure you note these details.</p>
-<hr />
-<h3 id="step-2-convert-era5_with_signal.nc-to-grib-format"><strong>Step 2: Convert <code>era5_with_signal.nc</code> to GRIB Format</strong></h3>
-<p>Use <strong><code>cdo</code></strong> to convert the modified NetCDF file to GRIB format. You can specify metadata such as short names, levels, and GRIB options directly.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo -f grb copy era5_with_signal.nc era5_with_signal.grib<br></code></pre></td></tr></table></figure>
-<p>This creates a basic GRIB file, but it may not yet have all the required metadata (e.g., <code>dataDate</code>, <code>shortName</code>, <code>typeOfLevel</code>). You can fix those in the next steps.</p>
-<hr />
-<h3 id="step-3-assign-grib-metadata"><strong>Step 3: Assign GRIB Metadata</strong></h3>
-<p>Use <strong><code>grib_set</code></strong> to modify GRIB metadata. First, inspect the GRIB file to see the current metadata:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls era5_with_signal.grib<br></code></pre></td></tr></table></figure>
-<p>If metadata like <code>dataDate</code>, <code>shortName</code>, or <code>typeOfLevel</code> is incorrect or missing, update them as follows:</p>
-<h4 id="example-1-set-datadate-and-shortname">Example 1: Set <code>dataDate</code> and <code>shortName</code></h4>
-<p>Set the date and variable short name (e.g., for <code>2-meter temperature</code>):</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_set -s dataDate=20250101,shortName=t2m era5_with_signal.grib era5_with_signal_updated.grib<br></code></pre></td></tr></table></figure>
-<h4 id="example-2-set-typeoflevel-and-level">Example 2: Set <code>typeOfLevel</code> and <code>level</code></h4>
-<p>If the <code>typeOfLevel</code> (e.g., <code>surface</code>) or <code>level</code> (e.g., <code>2</code>) is missing or incorrect, set them:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_set -s typeOfLevel=surface,level=2 era5_with_signal_updated.grib era5_with_signal_final.grib<br></code></pre></td></tr></table></figure>
-<hr />
-<h3 id="step-4-verify-the-final-grib-file"><strong>Step 4: Verify the Final GRIB File</strong></h3>
-<p>After updating the metadata, verify the contents of the resulting GRIB file:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls era5_with_signal_final.grib<br></code></pre></td></tr></table></figure>
-<p>Check that all metadata (e.g., <code>dataDate</code>, <code>shortName</code>, <code>level</code>, etc.) matches the desired values.</p>
-<hr />
-<h3 id="step-5-automate-metadata-assignment-optional"><strong>Step 5: Automate Metadata Assignment (Optional)</strong></h3>
-<p>If you need to assign multiple metadata fields at once, you can use a configuration file with <code>grib_set</code> or write a script to automate the process.</p>
-<h4 id="example-bulk-metadata-update-script">Example: Bulk Metadata Update Script</h4>
-<p>Create a script to set multiple fields:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><br>INPUT_GRIB=<span class="hljs-string">&quot;era5_with_signal.grib&quot;</span><br>OUTPUT_GRIB=<span class="hljs-string">&quot;era5_with_signal_final.grib&quot;</span><br><br><span class="hljs-comment"># Update metadata</span><br>grib_set -s dataDate=20250101,shortName=t2m,typeOfLevel=surface,level=2 <span class="hljs-variable">$INPUT_GRIB</span> <span class="hljs-variable">$OUTPUT_GRIB</span><br><br><span class="hljs-comment"># Verify metadata</span><br>grib_ls <span class="hljs-variable">$OUTPUT_GRIB</span><br></code></pre></td></tr></table></figure>
-<p>Save this as <code>update_grib_metadata.sh</code>, make it executable, and run it:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">chmod</span> +x update_grib_metadata.sh<br>./update_grib_metadata.sh<br></code></pre></td></tr></table></figure>
-<hr />
-<h3 id="step-6-handling-multiple-variables"><strong>Step 6: Handling Multiple Variables</strong></h3>
-<p>If your <code>era5_with_signal.nc</code> contains multiple variables (e.g., temperature <code>t2m</code>, wind speed <code>u10</code>, etc.), you need to split the file by variable, assign correct metadata, and merge them back into one GRIB file.</p>
-<h4 id="split-by-variable">Split by Variable:</h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo selname,t2m era5_with_signal.nc t2m.nc<br>cdo selname,u10 era5_with_signal.nc u10.nc<br></code></pre></td></tr></table></figure>
-<h4 id="convert-each-variable-to-grib">Convert Each Variable to GRIB:</h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo -f grb copy t2m.nc t2m.grib<br>cdo -f grb copy u10.nc u10.grib<br></code></pre></td></tr></table></figure>
-<h4 id="set-metadata-for-each-grib-file">Set Metadata for Each GRIB File:</h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_set -s dataDate=20250101,shortName=t2m,typeOfLevel=surface,level=2 t2m.grib t2m_final.grib<br>grib_set -s dataDate=20250101,shortName=u10,typeOfLevel=surface,level=10 u10.grib u10_final.grib<br></code></pre></td></tr></table></figure>
-<h4 id="merge-the-grib-files">Merge the GRIB Files:</h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo merge t2m_final.grib u10_final.grib era5_with_signal_final.grib<br></code></pre></td></tr></table></figure>
-<hr />
-<h3 id="summary-of-commands"><strong>Summary of Commands</strong></h3>
+<h3 id="step-1-check-the-current-order-of-pressure-levels"><strong>Step 1: Check the Current Order of Pressure Levels</strong></h3>
+<p>To inspect the order of pressure levels in the GRIB file, use the following commands:</p>
 <ol type="1">
-<li><p>Convert NetCDF to GRIB: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo -f grb copy era5_with_signal.nc era5_with_signal.grib<br></code></pre></td></tr></table></figure></p></li>
-<li><p>Assign GRIB metadata: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_set -s dataDate=YYYYMMDD,shortName=VAR,typeOfLevel=LEVEL_TYPE,level=LEVEL era5_with_signal.grib era5_with_signal_final.grib<br></code></pre></td></tr></table></figure></p></li>
-<li><p>Verify the final GRIB file: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls era5_with_signal_final.grib<br></code></pre></td></tr></table></figure></p></li>
+<li><p><strong>Using <code>grib_ls</code></strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls -p level era5_with_signal.grib<br></code></pre></td></tr></table></figure> This lists the levels (<code>level</code>) in the GRIB file. Check if they are in ascending or descending order.</p></li>
+<li><p><strong>Using <code>cdo</code></strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo showlevel era5_with_signal.grib<br></code></pre></td></tr></table></figure> This outputs the pressure levels in the order they appear in the file.</p></li>
 </ol>
-<p>This process ensures that your modified ERA5 file is correctly formatted with all necessary GRIB metadata. Let me know if you encounter any issues!</p>
-<h1 id="hands-on-wpsze">** Hands-on: wpsze</h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs ssh">#!/bin/bash<br><br>#------------------------------------------------#<br>#Author:         wpsze<br>#Email：         wpsze<br>#date:           2025-02-06 08:41:43<br>#Version:        0.0 <br>#Description:    The purpose of the script<br>#Copyright (C)： 2025 All rights reserved<br>#------------------------------------------------#<br><br>cdo selname,sst new_ERA5_SL.nc sst_nan.nc<br>cdo selname,skt new_ERA5_SL.nc skt_nan.nc<br><br>cdo setmissval,-inf sst_nan.nc sst.nc<br>cdo setmissval,-inf skt_nan.nc skt.nc<br><br>cdo -f grb copy sst.nc sst.grib<br>cdo -f grb copy skt.nc skt.grib<br><br>cdo showname sst.grib<br>cdo showname skt.grib<br><br>grib_set -s dataDate=20240714,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib<br>grib_set -s dataDate=20240714,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib<br><br>cdo showname sst_final.grib<br>cdo showname skt_final.grib<br><br>cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib<br><br>cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib era5_with_signal_final.grib<br></code></pre></td></tr></table></figure>
-<h2 id="debug">Debug</h2>
-<h3 id="encodebms_double-missing-value-nan-is-unsupported">encodeBMS_double : Missing value = NaN is unsupported!</h3>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://code.mpimet.mpg.de/boards/1/topics/1628">CDO NetCDF to Grib files | 2013</a></li>
-</ul>
-<p><strong>NaN is not allowed in the grib standard,</strong> but you can change it with cdo:</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console">[ram@thingol:~/tar/downloads]cdo setmissval,-9.e38 oscar_vel7403.nc t.nc<br>cdo setmissval: Processed 2310724 values from 4 variables over 1 timestep ( 0.12s )<br></code></pre></td></tr></table></figure>
-<p>and then convert it to grib,</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console">[ram@thingol:~/tar/downloads]cdo -f grb copy t.nc oscar_vel7403.grb            <br>cgribexDefLevel    : Changed zaxis type from generic to pressure<br>cdo copy: Processed 2310724 values from 4 variables over 1 timestep ( 0.09s )<br></code></pre></td></tr></table></figure>
-<p>Some lines on grib and netcdf:</p>
-<p>GRIB1/GRIB2 are international standards for climate data sets defined by the WMO. Every data set has to have some identifiers (mostly integers), which describe what the data is (physical variable,unit,...). See here for a docu on the definitions. For example, NaN is not allowed for a missing value in the GRIB1 standard. In contrast to this Netcdf is self-explanatory: The user can defined, which name, unit or other (freely definable) attributes a certain variable should have. That's why it's not always possible to convert netcdf to grib.</p>
-<h3 id="netcdf-numeric-conversion-not-representable">NetCDF: Numeric conversion not representable</h3>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncview sst.nc</span><br>Ncview 2.1.7 David W. Pierce  29 March 2016<br>http://meteora.ucsd.edu:80/~pierce/ncview_home_page.html<br>Copyright (C) 1993 through 2015, David W. Pierce<br>Ncview comes with ABSOLUTELY NO WARRANTY; for details type `ncview -w&#x27;.<br>This is free software licensed under the Gnu General Public License version 3; type `ncview -c&#x27; for redistribution details.<br><br>Note: no Ncview app-defaults file found, using internal defaults<br>netcdf_fi_get_data: error on nc_get_vara_float call<br>cdfid=65536   variable=sst<br>start, count:<br>[0]: 0  721<br>[1]: 0  1440<br>NetCDF: Numeric conversion not representable<br></code></pre></td></tr></table></figure>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://code.mpimet.mpg.de/boards/1/topics/165">NetCDF: Numeric conversion not representable</a></li>
-<li><a target="_blank" rel="noopener" href="https://code.mpimet.mpg.de/projects/cdo/wiki#netCDF-with-packed-data">netCDF with packed data</a>
-<ul>
-<li>Packing reduces the data volume by reducing the precision of the stored numbers. In NetCDF it is implemented using the attributes add_offset and scale_factor. CDO supports NetCDF files with packed data but can not automatically repack the data. That means the attributes add_offset and scale_factor are never changed. If you are using a CDO operator which change the range of the data you also have to take care that the modified data can be packed with the same add_offset and scale_factor. Otherwise the result could be wrong. You will get the following error message if some data values are out of the range of the packed datatype:</li>
-<li><code>Error (cdf_put_vara_double) : NetCDF: Numeric conversion not representable</code></li>
-<li>In this case you have to change the data type to <strong>single or double precision floating-point.</strong> This can be done with the CDO option <code>-b F32</code> or <code>-b F64</code>.</li>
-<li>As of CDO release 2.3.0, NetCDF data is always written out unpacked if the operator changes the range of the data. Use the new operator pack to repack the data if required:</li>
-<li><code>cdo pack -&lt;operator&gt;  infile outfile</code></li>
-</ul></li>
-</ul>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">cdo pack sst.nc sst_test.nc</span><br>cdo    pack: Processed 1038240 values from 1 variable over 1 timestep [0.29s 54MB].<br><br>-rw-rw-r-- 1 wpsze wpsze 8.0M Feb  6 11:16 sst.nc<br>-rw-rw-r-- 1 wpsze wpsze 2.1M Feb  6 11:51 sst_test.nc<br></code></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>Packing reduces the data volume by reducing the precision of the stored numbers</li>
-<li>It reduces the precision, so not apply <code>cdo pack</code></li>
-</ul>
-</blockquote>
-
-    <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-0994800d" role="button" aria-expanded="false" aria-controls="collapse-0994800d">
-        <div class="fold-arrow">▶</div>ncdump -h sst*.nc
-      </div>
-      <div class="fold-collapse collapse" id="collapse-0994800d">
-        <div class="fold-content">
-          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncdump -h sst.nc</span><br>netcdf sst &#123;<br>dimensions:<br>	longitude = 1440 ;<br>	latitude = 721 ;<br>variables:<br>	double sst(latitude, longitude) ;<br>		sst:coordinates = &quot;depthBelowLandLayer&quot; ;<br>		sst:_FillValue = -Infinity ;<br>		sst:missing_value = -Infinity ;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncdump -h sst_test.nc</span> <br>netcdf sst_test &#123;<br>dimensions:<br>	longitude = 1440 ;<br>	latitude = 721 ;<br>variables:<br>	short sst(latitude, longitude) ;<br>		sst:coordinates = &quot;depthBelowLandLayer&quot; ;<br>		sst:add_offset = 294.354168667848 ;<br>		sst:scale_factor = 0.000648260007869365 ;<br>		sst:_FillValue = -32767s ;<br>		sst:missing_value = -32767s ;<br></code></pre></td></tr></table></figure>
-        </div>
-      </div>
-    </div>
-<p>then, <code>ncview sst_test.nc</code> is successful.</p>
+<hr />
+<h3 id="step-2-ensure-ascending-or-descending-order"><strong>Step 2: Ensure Ascending or Descending Order</strong></h3>
+<p>If the pressure levels are not in the desired order, you can reorder them using <code>cdo</code>.</p>
+<h4 id="ensure-ascending-order-surface-to-top-of-atmosphere"><strong>Ensure Ascending Order (Surface to Top of Atmosphere)</strong></h4>
+<p>To reorder pressure levels in ascending order (e.g., 1000 hPa → 850 hPa → ... → 10 hPa):</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo vertsort era5_with_signal.grib era5_sorted_ascending.grib<br></code></pre></td></tr></table></figure>
+<p>The <code>vertsort</code> operation ensures that the levels are sorted in ascending order.</p>
+<hr />
+<h4 id="ensure-descending-order-top-of-atmosphere-to-surface"><strong>Ensure Descending Order (Top of Atmosphere to Surface)</strong></h4>
+<p>To reorder pressure levels in descending order (e.g., 10 hPa → 100 hPa → ... → 1000 hPa), use the <code>vertsort</code> operation and then reverse the order:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo invertlev era5_with_signal.grib era5_sorted_descending.grib<br></code></pre></td></tr></table></figure>
+<p>The <code>invertlev</code> operation reverses the order of the vertical levels.</p>
+<hr />
+<h3 id="step-3-verify-the-new-order"><strong>Step 3: Verify the New Order</strong></h3>
+<p>After reordering the levels, verify the result:</p>
+<ol type="1">
+<li><p><strong>Using <code>grib_ls</code></strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls -p level era5_sorted_ascending.grib<br>grib_ls -p level era5_sorted_descending.grib<br></code></pre></td></tr></table></figure></p></li>
+<li><p><strong>Using <code>cdo</code></strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo showlevel era5_sorted_ascending.grib<br>cdo showlevel era5_sorted_descending.grib<br></code></pre></td></tr></table></figure></p></li>
+</ol>
+<p>Ensure that the levels are in the desired order.</p>
+<hr />
+<h3 id="step-4-for-netcdf-files"><strong>Step 4: For NetCDF Files</strong></h3>
+<p>If you are working with a NetCDF file (<code>era5_with_signal.nc</code>) and need to reorder the pressure levels:</p>
+<h4 id="ascending-order"><strong>Ascending Order</strong></h4>
+<p>Use <code>cdo vertsort</code> for NetCDF files as well:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo vertsort era5_with_signal.nc era5_sorted_ascending.nc<br></code></pre></td></tr></table></figure>
+<h4 id="descending-order"><strong>Descending Order</strong></h4>
+<p>Use <code>cdo invertlev</code> to reverse the order:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo invertlev era5_with_signal.nc era5_sorted_descending.nc<br></code></pre></td></tr></table></figure>
+<hr />
+<h3 id="additional-tips">Additional Tips:</h3>
+<ol type="1">
+<li><p><strong>Regrid if Necessary</strong>: If the pressure levels are missing or inconsistent, you can interpolate them to a standard set using <code>cdo intlevel</code>. For example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo intlevel,1000,850,500,250 era5_with_signal.nc era5_regridded_levels.nc<br></code></pre></td></tr></table></figure></li>
+<li><p><strong>Metadata Consistency</strong>: Ensure that the <code>typeOfLevel</code> (e.g., <code>isobaricInhPa</code>) is correctly set, especially after reordering or interpolating levels. Use <code>grib_set</code> if needed:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_set -s typeOfLevel=isobaricInhPa era5_sorted_ascending.grib era5_final.grib<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr />
+<h3 id="summary-of-commands">Summary of Commands:</h3>
+<ol type="1">
+<li><p><strong>Check the current order of levels</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls -p level era5_with_signal.grib<br>cdo showlevel era5_with_signal.grib<br></code></pre></td></tr></table></figure></p></li>
+<li><p><strong>Ensure ascending order (surface to top)</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo vertsort era5_with_signal.grib era5_sorted_ascending.grib<br></code></pre></td></tr></table></figure></p></li>
+<li><p><strong>Ensure descending order (top to surface)</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo invertlev era5_with_signal.grib era5_sorted_descending.grib<br></code></pre></td></tr></table></figure></p></li>
+<li><p><strong>Verify the new order</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls -p level era5_sorted_ascending.grib<br>cdo showlevel era5_sorted_ascending.grib<br></code></pre></td></tr></table></figure></p></li>
+<li><p><strong>For NetCDF files</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo vertsort era5_with_signal.nc era5_sorted_ascending.nc<br>cdo invertlev era5_with_signal.nc era5_sorted_descending.nc<br></code></pre></td></tr></table></figure></p></li>
+</ol>
 
                 
               </div>
@@ -570,8 +523,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>NWP | PGW | To prepare the ERA5 GRIB file</div>
-      <div>https://waipangsze.github.io/2025/02/05/NWP-PGW-To-prepare-the-ERA5-GRIB-file/</div>
+      <div>NWP | PGW | Order of Pressure levels of GRIB file</div>
+      <div>https://waipangsze.github.io/2025/02/06/NWP-PGW-Order-of-Pressure-levels-of-GRIB-file/</div>
     </div>
     <div class="license-meta">
       
@@ -583,7 +536,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>February 5, 2025</div>
+          <div>February 6, 2025</div>
         </div>
       
       
@@ -620,18 +573,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/02/05/NWP-ERA5-GRIB1-GRIB2/" title="NWP | ERA5 | GRIB1 and GRIB2">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">NWP | ERA5 | GRIB1 and GRIB2</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/02/04/ML-AnythingLLM-Ollama/" title="ML | AnythingLLM + Ollama">
-                        <span class="hidden-mobile">ML | AnythingLLM + Ollama</span>
+                      <a href="/2025/02/05/NWP-ERA5-GRIB1-GRIB2/" title="NWP | ERA5 | GRIB1 and GRIB2">
+                        <span class="hidden-mobile">NWP | ERA5 | GRIB1 and GRIB2</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
