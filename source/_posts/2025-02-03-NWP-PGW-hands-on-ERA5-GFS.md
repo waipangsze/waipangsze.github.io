@@ -45,6 +45,10 @@ Before we begin, ensure you have the following:
    micromamba install python=3.11 -y
    pip install xarray cfgrib netCDF4
    micromamba install scipy -y
+   micromamba install conda-forge::cdo -y
+   micromamba install conda-forge::wgrib -y
+   micromamba install matplotlib -y
+   micromamba install conda-forge::ncview -y
    ```
 
 3. **ERA5 GRIB File**: Download your desired ERA5 dataset in GRIB format from the ECMWF website.

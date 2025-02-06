@@ -13,6 +13,14 @@ index_img:
 banner_img: 
 ---
 
+{% note primary %}
+[**NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS**](https://waipangsze.github.io/2025/02/03/NWP-PGW-hands-on-ERA5-GFS/)
+{% endnote %}
+
+{% note primary %}
+[**NWP | ERA5 | GRIB1 and GRIB2**](https://waipangsze.github.io/2025/02/05/NWP-ERA5-GRIB1-GRIB2/)
+{% endnote %}
+
 To prepare the `ERA5` GRIB file from the modified `era5_with_signal.nc`, you need to specify GRIB metadata such as `dataDate`, `shortName`, `level`, `dataType`, and `typeOfLevel` when converting `era5_with_signal.nc` back to GRIB format. The process involves using **`cdo`** and **`grib_set`** from ecCodes to properly define these GRIB headers.
 
 Below is the detailed step-by-step guide:
@@ -159,32 +167,133 @@ cdo merge t2m_final.grib u10_final.grib era5_with_signal_final.grib
 This process ensures that your modified ERA5 file is correctly formatted with all necessary GRIB metadata. Let me know if you encounter any issues!
 
 
-# wpsze (todo)
+# ** Hands-on: wpsze
 
-```console
-cdo showname sst.grib
-cdo showname sst_final.grib
+```ssh
+#!/bin/bash
 
-cdo selname,sst era5_with_signal.nc sst.nc
-cdo selname,skt era5_with_signal.nc skt.nc
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         wpsze
+#date:           2025-02-06 08:41:43
+#Version:        0.0 
+#Description:    The purpose of the script
+#Copyright (C)： 2025 All rights reserved
+#------------------------------------------------#
+
+cdo selname,sst new_ERA5_SL.nc sst_nan.nc
+cdo selname,skt new_ERA5_SL.nc skt_nan.nc
+
+cdo setmissval,-inf sst_nan.nc sst.nc
+cdo setmissval,-inf skt_nan.nc skt.nc
 
 cdo -f grb copy sst.nc sst.grib
 cdo -f grb copy skt.nc skt.grib
 
-grib_set -s dataDate=20240714,shortName=sst sst.grib sst_x.grib
+cdo showname sst.grib
+cdo showname skt.grib
 
 grib_set -s dataDate=20240714,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib
 grib_set -s dataDate=20240714,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib
 
-grib_set -s dataDate=20240714,shortName=sst,typeOfLevel=surface,level=0,TR=0 sst.grib sst_final.grib
+cdo showname sst_final.grib
+cdo showname skt_final.grib
 
-sst_final.grib
-edition      centre       typeOfLevel  level        dataDate     stepRange    shortName    packingType  gridType     
-1            ecmf         surface      0            20240714     0            sst          grid_simple  regular_ll  
-1 of 1 messages in sst_final.grib
+cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib
 
-cdo delname,var34 original-SL.grib original-SL_without_vars.grib
-
-cdo merge sst_final.grib original-SL_without_vars.grib era5_with_signal_final.grib
 cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib era5_with_signal_final.grib
 ```
+
+## Debug
+
+### encodeBMS_double : Missing value = NaN is unsupported!
+
+- [CDO NetCDF to Grib files | 2013](https://code.mpimet.mpg.de/boards/1/topics/1628)
+
+**NaN is not allowed in the grib standard,** but you can change it with cdo:
+
+```console
+[ram@thingol:~/tar/downloads]cdo setmissval,-9.e38 oscar_vel7403.nc t.nc
+cdo setmissval: Processed 2310724 values from 4 variables over 1 timestep ( 0.12s )
+```
+
+and then convert it to grib,
+
+```console
+[ram@thingol:~/tar/downloads]cdo -f grb copy t.nc oscar_vel7403.grb            
+cgribexDefLevel    : Changed zaxis type from generic to pressure
+cdo copy: Processed 2310724 values from 4 variables over 1 timestep ( 0.09s )
+```
+
+Some lines on grib and netcdf:
+
+GRIB1/GRIB2 are international standards for climate data sets defined by the WMO. Every data set has to have some identifiers (mostly integers), which describe what the data is (physical variable,unit,...). See here for a docu on the definitions. For example, NaN is not allowed for a missing value in the GRIB1 standard. In contrast to this Netcdf is self-explanatory: The user can defined, which name, unit or other (freely definable) attributes a certain variable should have. That's why it's not always possible to convert netcdf to grib.
+
+### NetCDF: Numeric conversion not representable
+
+```console
+ $ ncview sst.nc
+Ncview 2.1.7 David W. Pierce  29 March 2016
+http://meteora.ucsd.edu:80/~pierce/ncview_home_page.html
+Copyright (C) 1993 through 2015, David W. Pierce
+Ncview comes with ABSOLUTELY NO WARRANTY; for details type `ncview -w'.
+This is free software licensed under the Gnu General Public License version 3; type `ncview -c' for redistribution details.
+
+Note: no Ncview app-defaults file found, using internal defaults
+netcdf_fi_get_data: error on nc_get_vara_float call
+cdfid=65536   variable=sst
+start, count:
+[0]: 0  721
+[1]: 0  1440
+NetCDF: Numeric conversion not representable
+```
+
+- [NetCDF: Numeric conversion not representable](https://code.mpimet.mpg.de/boards/1/topics/165)
+- [netCDF with packed data](https://code.mpimet.mpg.de/projects/cdo/wiki#netCDF-with-packed-data)
+  - Packing reduces the data volume by reducing the precision of the stored numbers. In NetCDF it is implemented using the attributes add_offset and scale_factor. CDO supports NetCDF files with packed data but can not automatically repack the data. That means the attributes add_offset and scale_factor are never changed. If you are using a CDO operator which change the range of the data you also have to take care that the modified data can be packed with the same add_offset and scale_factor. Otherwise the result could be wrong. You will get the following error message if some data values are out of the range of the packed datatype:
+  - `Error (cdf_put_vara_double) : NetCDF: Numeric conversion not representable`
+  - In this case you have to change the data type to **single or double precision floating-point.** This can be done with the CDO option `-b F32` or `-b F64`.
+  - As of CDO release 2.3.0, NetCDF data is always written out unpacked if the operator changes the range of the data. Use the new operator pack to repack the data if required:
+  - `cdo pack -<operator>  infile outfile`
+
+```console
+ $ cdo pack sst.nc sst_test.nc
+cdo    pack: Processed 1038240 values from 1 variable over 1 timestep [0.29s 54MB].
+
+-rw-rw-r-- 1 wpsze wpsze 8.0M Feb  6 11:16 sst.nc
+-rw-rw-r-- 1 wpsze wpsze 2.1M Feb  6 11:51 sst_test.nc
+```
+
+> - Packing reduces the data volume by reducing the precision of the stored numbers
+> - It reduces the precision, so not apply `cdo pack`
+
+{% fold info @ncdump -h sst*.nc %}
+```console
+ $ ncdump -h sst.nc
+netcdf sst {
+dimensions:
+	longitude = 1440 ;
+	latitude = 721 ;
+variables:
+	double sst(latitude, longitude) ;
+		sst:coordinates = "depthBelowLandLayer" ;
+		sst:_FillValue = -Infinity ;
+		sst:missing_value = -Infinity ;
+
+
+ $ ncdump -h sst_test.nc 
+netcdf sst_test {
+dimensions:
+	longitude = 1440 ;
+	latitude = 721 ;
+variables:
+	short sst(latitude, longitude) ;
+		sst:coordinates = "depthBelowLandLayer" ;
+		sst:add_offset = 294.354168667848 ;
+		sst:scale_factor = 0.000648260007869365 ;
+		sst:_FillValue = -32767s ;
+		sst:missing_value = -32767s ;
+```
+{% endfold %}
+
+then, `ncview sst_test.nc` is successful. 
