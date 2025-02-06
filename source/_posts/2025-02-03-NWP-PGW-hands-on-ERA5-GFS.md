@@ -17,10 +17,10 @@ banner_img:
 
 Keywords:
 
-- The Pseudo-Global-Warming (PGW) approach
-- CMIP6
-- how to convert ERA5 GRIB files to NetCDF format
-- GRIB files are the file format used at ECMWF.  GRIB is a WMO standard and consists of GRIB Edition 1 and Edition 2
+- The Pseudo-Global-Warming (**PGW**) approach
+- **CMIP6**
+- how to convert **ERA5** **GRIB** files to NetCDF format
+- GRIB files are the file format used at **ECMWF**.  GRIB is a WMO standard and consists of GRIB Edition 1 and Edition 2
 
 The ERA5 dataset, produced by the European Centre for Medium-Range Weather Forecasts (ECMWF), provides a wealth of climate and weather data. However, the data is often distributed in the GRIB format, which can be less user-friendly than the NetCDF format, commonly used in scientific computing. This blog post will walk you through the process of converting ERA5 GRIB files to NetCDF.
 
@@ -48,11 +48,10 @@ Before we begin, ensure you have the following:
    micromamba install conda-forge::cdo -y
    micromamba install conda-forge::wgrib -y
    micromamba install matplotlib -y
-   micromamba install conda-forge::ncview -y
    ```
 
 3. **ERA5 GRIB File**: Download your desired ERA5 dataset in GRIB format from the ECMWF website.
-4. New tool (not use): [Convert GRIB file to netCDF](https://confluence.ecmwf.int/display/OIFS/How+to+convert+GRIB+to+netCDF) 
+4. New tool (for checking): [Convert GRIB file to netCDF](https://confluence.ecmwf.int/display/OIFS/How+to+convert+GRIB+to+netCDF) 
    1. `grib_to_netcdf ICMGG_hybrid.grb -o ICMGG_hybrid.nc`
    2. `micromamba install conda-forge::eccodes -y`
 
@@ -295,40 +294,6 @@ variables:
 - [xarray Documentation](https://docs.xarray.dev/en/stable/)
 - [cfgrib Documentation](https://cfgrib.readthedocs.io/en/latest/)
 - [ERA5 Data Access](https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5)
-
----
-
-# Converting NetCDF Files back to GRIB Format: A Step-by-Step Guide
-
-## Introduction
-
-In the realm of climate data analysis, the ability to convert between different file formats is essential. While NetCDF is widely used for storing multidimensional scientific data, GRIB (Generalized Regularly-distributed Information in Binary form) is prevalent in meteorological applications. This blog will guide you through the process of converting NetCDF files back to GRIB format, ensuring you're equipped to handle various data formats in your climate studies.
-
-## Motivation
-
-The motivation behind converting NetCDF files to GRIB format can stem from several factors:
-
-- **Compatibility**: Many meteorological models and tools predominantly use GRIB format. Converting your NetCDF data ensures compatibility with these systems.
-- **Efficiency**: GRIB files are often more compact than their NetCDF counterparts, making them easier to store and share, especially when dealing with large datasets.
-- **Standardization**: For specific applications, adhering to a standard format like GRIB can enhance data interoperability across different platforms and tools.
-
-## 麻煩了
-
-{% note primary %}
-**這一步真是麻煩太多了**
-{% endnote %}
-
-{% note primary %}
-Move to [**NWP | PGW | To prepare the ERA5 GRIB file**](https://waipangsze.github.io/2025/02/05/NWP-PGW-To-prepare-the-ERA5-GRIB-file/)
-{% endnote %}
-
-## Verify the Conversion
-
-After conversion, it’s crucial to verify that the GRIB file has been created correctly. You can do this by checking the contents:
-
-```bash
-grib_ls output_file.grib
-```
 
 ---
 
@@ -594,6 +559,40 @@ print("Interpolation completed and saved to 'interpolated_PL.nc'.")
 
 ## Conclusion
 This interpolation approach allows for aligning temperature data from different datasets, which is essential for climate modeling. By accurately matching the grids of the signal and ERA5 data, we can effectively analyze and apply climate change signals in our research.
+
+---
+
+# Converting NetCDF Files back to GRIB Format: A Step-by-Step Guide
+
+## Introduction
+
+In the realm of climate data analysis, the ability to convert between different file formats is essential. While NetCDF is widely used for storing multidimensional scientific data, GRIB (Generalized Regularly-distributed Information in Binary form) is prevalent in meteorological applications. This blog will guide you through the process of converting NetCDF files back to GRIB format, ensuring you're equipped to handle various data formats in your climate studies.
+
+## Motivation
+
+The motivation behind converting NetCDF files to GRIB format can stem from several factors:
+
+- **Compatibility**: Many meteorological models and tools predominantly use GRIB format. Converting your NetCDF data ensures compatibility with these systems.
+- **Efficiency**: GRIB files are often more compact than their NetCDF counterparts, making them easier to store and share, especially when dealing with large datasets.
+- **Standardization**: For specific applications, adhering to a standard format like GRIB can enhance data interoperability across different platforms and tools.
+
+## 麻煩了
+
+**這一步真是麻煩太多了**
+
+{% note primary %}
+Move to [**NWP | PGW | To prepare the ERA5 GRIB file**](https://waipangsze.github.io/2025/02/05/NWP-PGW-To-prepare-the-ERA5-GRIB-file/)
+{% endnote %}
+
+## Verify the Conversion
+
+After conversion, it’s crucial to verify that the GRIB file has been created correctly. You can do this by checking the contents:
+
+```bash
+grib_ls output_file.grib
+```
+
+---
 
 # References
 
