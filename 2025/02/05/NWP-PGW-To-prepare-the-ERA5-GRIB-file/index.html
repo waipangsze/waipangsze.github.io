@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/kcuHfQW.png">
 <meta property="article:published_time" content="2025-02-05T07:33:00.000Z">
-<meta property="article:modified_time" content="2025-02-06T11:13:09.339Z">
+<meta property="article:modified_time" content="2025-02-07T16:35:48.725Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -342,7 +342,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          516 words
+          520 words
         
       </span>
     
@@ -515,7 +515,7 @@ File:</h4>
 formatted with all necessary GRIB metadata. Let me know if you encounter
 any issues!</p>
 <h1 id="hands-on-wpsze">** Hands-on: wpsze</h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs ssh">#!/bin/bash<br><br>#------------------------------------------------#<br>#Author:         wpsze<br>#Email：         wpsze<br>#date:           2025-02-06 08:41:43<br>#Version:        0.0 <br>#Description:    The purpose of the script<br>#Copyright (C)： 2025 All rights reserved<br>#------------------------------------------------#<br><br>cdo selname,sst new_ERA5_SL.nc sst_nan.nc<br>cdo selname,skt new_ERA5_SL.nc skt_nan.nc<br><br>cdo setmissval,-inf sst_nan.nc sst.nc<br>cdo setmissval,-inf skt_nan.nc skt.nc<br><br>cdo -f grb copy sst.nc sst.grib<br>cdo -f grb copy skt.nc skt.grib<br><br>cdo showname sst.grib<br>cdo showname skt.grib<br><br>grib_set -s dataDate=20240714,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib<br>grib_set -s dataDate=20240714,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib<br><br>cdo showname sst_final.grib<br>cdo showname skt_final.grib<br><br>cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib<br><br>cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib era5_with_signal_final.grib<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs ssh">#!/bin/bash<br><br>#------------------------------------------------#<br>#Author:         wpsze<br>#Email：         wpsze<br>#date:           2025-02-06 08:41:43<br>#Version:        0.0 <br>#Description:    The purpose of the script<br>#Copyright (C)： 2025 All rights reserved<br>#------------------------------------------------#<br><br>cdo selname,sst new_ERA5_SL.nc sst_nan.nc<br>cdo selname,skt new_ERA5_SL.nc skt_nan.nc<br><br>cdo setmissval,-inf sst_nan.nc sst.nc # or -999<br>cdo setmissval,-inf skt_nan.nc skt.nc # or -999<br><br>cdo -f grb copy sst.nc sst.grib<br>cdo -f grb copy skt.nc skt.grib<br><br>cdo showname sst.grib<br>cdo showname skt.grib<br><br>grib_set -s dataDate=20240714,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib<br>grib_set -s dataDate=20240714,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib<br><br>cdo showname sst_final.grib<br>cdo showname skt_final.grib<br><br>cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib<br><br>cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib era5_with_signal_final.grib<br></code></pre></td></tr></table></figure>
 <h2 id="debug">Debug</h2>
 <h3
 id="encodebms_double-missing-value-nan-is-unsupported">encodeBMS_double
@@ -668,7 +668,7 @@ stored numbers</li>
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 6, 2025</div>
+          <div>February 8, 2025</div>
         </div>
       
       

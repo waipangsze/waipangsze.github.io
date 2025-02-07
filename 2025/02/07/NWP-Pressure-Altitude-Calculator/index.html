@@ -19,16 +19,15 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="NWP| Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS                         NWP| ERA5 | GRIB1 and GRIB2            In GRIB files, the order of pressure levels is important because many">
+    <meta name="description" content="Pressure Altitude Calculator Pressure Altitude  Pressure Altitude Calculator | NOAA What is the formula for the pressure altitude script?  From the user, a station pressure (\(P_{sta}\)) is given. To">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NWP | PGW | Order of Pressure levels of GRIB file">
-<meta property="og:url" content="https://waipangsze.github.io/2025/02/06/NWP-PGW-Order-of-Pressure-levels-of-GRIB-file/index.html">
+<meta property="og:title" content="NWP | Pressure Altitude Calculator">
+<meta property="og:url" content="https://waipangsze.github.io/2025/02/07/NWP-Pressure-Altitude-Calculator/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="NWP| Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS                         NWP| ERA5 | GRIB1 and GRIB2            In GRIB files, the order of pressure levels is important because many">
+<meta property="og:description" content="Pressure Altitude Calculator Pressure Altitude  Pressure Altitude Calculator | NOAA What is the formula for the pressure altitude script?  From the user, a station pressure (\(P_{sta}\)) is given. To">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/yzuPf2q.png">
-<meta property="article:published_time" content="2025-02-06T07:04:00.000Z">
-<meta property="article:modified_time" content="2025-02-06T11:10:12.766Z">
+<meta property="article:published_time" content="2025-02-07T02:52:00.000Z">
+<meta property="article:modified_time" content="2025-02-07T13:32:38.340Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -37,16 +36,13 @@
 <meta property="article:tag" content="PGW">
 <meta property="article:tag" content="GFS">
 <meta property="article:tag" content="GRIB">
-<meta property="article:tag" content="NetCDF">
-<meta property="article:tag" content="CMIP6">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i.imgur.com/yzuPf2q.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>NWP | PGW | Order of Pressure levels of GRIB file - wpsze</title>
+  <title>NWP | Pressure Altitude Calculator - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -313,13 +309,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://i.imgur.com/yzuPf2q.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="NWP | PGW | Order of Pressure levels of GRIB file"></span>
+            <span id="subtitle" data-typed-text="NWP | Pressure Altitude Calculator"></span>
           
         </div>
 
@@ -330,8 +326,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-02-06 15:04" pubdate>
-          February 6, 2025 pm
+        <time datetime="2025-02-07 10:52" pubdate>
+          February 7, 2025 am
         </time>
       </span>
     
@@ -342,7 +338,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          126 words
+          40 words
         
       </span>
     
@@ -353,7 +349,7 @@
         
         
         
-          2 mins
+          1 mins
         
       </span>
     
@@ -399,106 +395,36 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">NWP | PGW | Order of Pressure levels of GRIB file</h1>
+            <h1 id="seo-header">NWP | Pressure Altitude Calculator</h1>
             
             
               <div class="markdown-body">
                 
-                <div class="note note-primary">
-            <p><ahref="https://waipangsze.github.io/2025/02/03/NWP-PGW-hands-on-ERA5-GFS/"><strong>NWP| Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS</strong></a></p>
-          </div>
-<div class="note note-primary">
-            <p><ahref="https://waipangsze.github.io/2025/02/05/NWP-ERA5-GRIB1-GRIB2/"><strong>NWP| ERA5 | GRIB1 and GRIB2</strong></a></p>
-          </div>
-<p>In GRIB files, the order of pressure levels is important because many
-tools expect them to be sorted either in ascending (from surface to top
-of the atmosphere) or descending (from top of the atmosphere to surface)
-order. Here's how you can <strong>ensure the order of pressure
-levels</strong> and <strong>reverse them</strong> using tools like
-<code>cdo</code> or <code>grib_set</code>.</p>
-<hr />
-<h3 id="step-1-check-the-current-order-of-pressure-levels"><strong>Step
-1: Check the Current Order of Pressure Levels</strong></h3>
-<p>To inspect the order of pressure levels in the GRIB file, use the
-following commands:</p>
-<ol type="1">
-<li><p><strong>Using <code>grib_ls</code></strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls -p level era5_with_signal.grib<br></code></pre></td></tr></table></figure> This
-lists the levels (<code>level</code>) in the GRIB file. Check if they
-are in ascending or descending order.</p></li>
-<li><p><strong>Using <code>cdo</code></strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo showlevel era5_with_signal.grib<br></code></pre></td></tr></table></figure> This
-outputs the pressure levels in the order they appear in the
-file.</p></li>
-</ol>
-<hr />
-<h3 id="step-2-ensure-ascending-or-descending-order"><strong>Step 2:
-Ensure Ascending or Descending Order</strong></h3>
-<p>If the pressure levels are not in the desired order, you can reorder
-them using <code>cdo</code>.</p>
-<h4
-id="ensure-ascending-order-surface-to-top-of-atmosphere"><strong>Ensure
-Ascending Order (Surface to Top of Atmosphere)</strong></h4>
-<p>To reorder pressure levels in ascending order (e.g., 1000 hPa → 850
-hPa → ... → 10 hPa):</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo vertsort era5_with_signal.grib era5_sorted_ascending.grib<br></code></pre></td></tr></table></figure>
-<p>The <code>vertsort</code> operation ensures that the levels are
-sorted in ascending order.</p>
-<hr />
-<h4
-id="ensure-descending-order-top-of-atmosphere-to-surface"><strong>Ensure
-Descending Order (Top of Atmosphere to Surface)</strong></h4>
-<p>To reorder pressure levels in descending order (e.g., 10 hPa → 100
-hPa → ... → 1000 hPa), use the <code>vertsort</code> operation and then
-reverse the order:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo invertlev era5_with_signal.grib era5_sorted_descending.grib<br></code></pre></td></tr></table></figure>
-<p>The <code>invertlev</code> operation reverses the order of the
-vertical levels.</p>
-<hr />
-<h3 id="step-3-verify-the-new-order"><strong>Step 3: Verify the New
-Order</strong></h3>
-<p>After reordering the levels, verify the result:</p>
-<ol type="1">
-<li><p><strong>Using <code>grib_ls</code></strong>:
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls -p level era5_sorted_ascending.grib<br>grib_ls -p level era5_sorted_descending.grib<br></code></pre></td></tr></table></figure></p></li>
-<li><p><strong>Using <code>cdo</code></strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo showlevel era5_sorted_ascending.grib<br>cdo showlevel era5_sorted_descending.grib<br></code></pre></td></tr></table></figure></p></li>
-</ol>
-<p>Ensure that the levels are in the desired order.</p>
-<hr />
-<h3 id="step-4-for-netcdf-files"><strong>Step 4: For NetCDF
-Files</strong></h3>
-<p>If you are working with a NetCDF file
-(<code>era5_with_signal.nc</code>) and need to reorder the pressure
-levels:</p>
-<h4 id="ascending-order"><strong>Ascending Order</strong></h4>
-<p>Use <code>cdo vertsort</code> for NetCDF files as well:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo vertsort era5_with_signal.nc era5_sorted_ascending.nc<br></code></pre></td></tr></table></figure>
-<h4 id="descending-order"><strong>Descending Order</strong></h4>
-<p>Use <code>cdo invertlev</code> to reverse the order:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo invertlev era5_with_signal.nc era5_sorted_descending.nc<br></code></pre></td></tr></table></figure>
-<hr />
-<h3 id="additional-tips">Additional Tips:</h3>
-<ol type="1">
-<li><p><strong>Regrid if Necessary</strong>: If the pressure levels are
-missing or inconsistent, you can interpolate them to a standard set
-using <code>cdo intlevel</code>. For example:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo intlevel,1000,850,500,250 era5_with_signal.nc era5_regridded_levels.nc<br></code></pre></td></tr></table></figure></li>
-<li><p><strong>Metadata Consistency</strong>: Ensure that the
-<code>typeOfLevel</code> (e.g., <code>isobaricInhPa</code>) is correctly
-set, especially after reordering or interpolating levels. Use
-<code>grib_set</code> if needed:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_set -s typeOfLevel=isobaricInhPa era5_sorted_ascending.grib era5_final.grib<br></code></pre></td></tr></table></figure></li>
-</ol>
-<hr />
-<h3 id="summary-of-commands">Summary of Commands:</h3>
-<ol type="1">
-<li><p><strong>Check the current order of levels</strong>:
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls -p level era5_with_signal.grib<br>cdo showlevel era5_with_signal.grib<br></code></pre></td></tr></table></figure></p></li>
-<li><p><strong>Ensure ascending order (surface to top)</strong>:
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo vertsort era5_with_signal.grib era5_sorted_ascending.grib<br></code></pre></td></tr></table></figure></p></li>
-<li><p><strong>Ensure descending order (top to surface)</strong>:
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo invertlev era5_with_signal.grib era5_sorted_descending.grib<br></code></pre></td></tr></table></figure></p></li>
-<li><p><strong>Verify the new order</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">grib_ls -p level era5_sorted_ascending.grib<br>cdo showlevel era5_sorted_ascending.grib<br></code></pre></td></tr></table></figure></p></li>
-<li><p><strong>For NetCDF files</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo vertsort era5_with_signal.nc era5_sorted_ascending.nc<br>cdo invertlev era5_with_signal.nc era5_sorted_descending.nc<br></code></pre></td></tr></table></figure></p></li>
-</ol>
+                <h1 id="pressure-altitude-calculator">Pressure Altitude Calculator</h1>
+<p>Pressure Altitude</p>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://www.weather.gov/epz/wxcalc_pressurealtitude">Pressure
+Altitude Calculator | NOAA</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.weather.gov/epz/wxcalc_pressurealtitude">What
+is the formula for the pressure altitude script?</a></li>
+</ul>
+<p>From the user, a station pressure (<span
+class="math inline">\(P_{sta}\)</span>) is given. To calculate the
+pressure altitude, the station pressure must be in units of millibars
+(mb). To see how to convert station pressure to millibars see the link
+below: Pressure Conversion Then, the pressure altitude (<span
+class="math inline">\(h_{alt}\)</span>) can be calculated using the
+equation below:</p>
+<p><span class="math display">\[
+h_{alt} = \left(1 -
+\left(\frac{P_{sta}}{1013.25}\right)^{0.190284}\right) × 145366.45
+\]</span></p>
+<p>The answer will be in units of feet. To convert the answer to units
+of meters, see the equation below:</p>
+<p><span class="math display">\[
+hm = 0.3048 × h_{alt}
+\]</span></p>
 
                 
               </div>
@@ -546,10 +472,6 @@ set, especially after reordering or interpolating levels. Use
       
         <a href="/tags/GRIB/" class="print-no-link">#GRIB</a>
       
-        <a href="/tags/NetCDF/" class="print-no-link">#NetCDF</a>
-      
-        <a href="/tags/CMIP6/" class="print-no-link">#CMIP6</a>
-      
     </div>
   
 </div>
@@ -560,8 +482,8 @@ set, especially after reordering or interpolating levels. Use
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>NWP | PGW | Order of Pressure levels of GRIB file</div>
-      <div>https://waipangsze.github.io/2025/02/06/NWP-PGW-Order-of-Pressure-levels-of-GRIB-file/</div>
+      <div>NWP | Pressure Altitude Calculator</div>
+      <div>https://waipangsze.github.io/2025/02/07/NWP-Pressure-Altitude-Calculator/</div>
     </div>
     <div class="license-meta">
       
@@ -573,13 +495,13 @@ set, especially after reordering or interpolating levels. Use
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>February 6, 2025</div>
+          <div>February 7, 2025</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 6, 2025</div>
+          <div>February 7, 2025</div>
         </div>
       
       
@@ -610,18 +532,12 @@ set, especially after reordering or interpolating levels. Use
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/02/07/NWP-Pressure-Altitude-Calculator/" title="NWP | Pressure Altitude Calculator">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">NWP | Pressure Altitude Calculator</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/02/05/NWP-ERA5-GRIB1-GRIB2/" title="NWP | ERA5 | GRIB1 and GRIB2">
-                        <span class="hidden-mobile">NWP | ERA5 | GRIB1 and GRIB2</span>
+                      <a href="/2025/02/06/NWP-PGW-Order-of-Pressure-levels-of-GRIB-file/" title="NWP | PGW | Order of Pressure levels of GRIB file">
+                        <span class="hidden-mobile">NWP | PGW | Order of Pressure levels of GRIB file</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
