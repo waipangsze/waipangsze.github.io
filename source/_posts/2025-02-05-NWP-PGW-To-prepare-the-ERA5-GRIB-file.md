@@ -184,8 +184,8 @@ This process ensures that your modified ERA5 file is correctly formatted with al
 cdo selname,sst new_ERA5_SL.nc sst_nan.nc
 cdo selname,skt new_ERA5_SL.nc skt_nan.nc
 
-cdo setmissval,-inf sst_nan.nc sst.nc
-cdo setmissval,-inf skt_nan.nc skt.nc
+cdo setmissval,-inf sst_nan.nc sst.nc # or -999
+cdo setmissval,-inf skt_nan.nc skt.nc # or -999
 
 cdo -f grb copy sst.nc sst.grib
 cdo -f grb copy skt.nc skt.grib

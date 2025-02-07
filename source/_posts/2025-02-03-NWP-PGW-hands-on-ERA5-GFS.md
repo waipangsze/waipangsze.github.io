@@ -51,7 +51,7 @@ Before we begin, ensure you have the following:
    ```
 
 3. **ERA5 GRIB File**: Download your desired ERA5 dataset in GRIB format from the ECMWF website.
-4. New tool (for checking): [Convert GRIB file to netCDF](https://confluence.ecmwf.int/display/OIFS/How+to+convert+GRIB+to+netCDF) 
+4. New tool (seems fine or for checking): [Convert GRIB file to netCDF](https://confluence.ecmwf.int/display/OIFS/How+to+convert+GRIB+to+netCDF) 
    1. `grib_to_netcdf ICMGG_hybrid.grb -o ICMGG_hybrid.nc`
    2. `micromamba install conda-forge::eccodes -y`
 
@@ -301,38 +301,159 @@ variables:
 
 Here’s a Python script for interpolating Sea Surface Temperature (SST) and Surface Skin Temperature (SKT) from a signal NetCDF file to match the ERA5 grid. This process involves horizontal interpolation to ensure that the temperatures align accurately with the finer resolution of the ERA5 dataset. Accurate temperature data is crucial for climate modeling and analysis. By interpolating these temperatures, we can effectively integrate them into broader climate studies.
 
-## ESMPy
+## Manipulate signal.nc
 
-- [Conda install xesmf](https://forum.access-hive.org.au/t/conda-install-xesmf/1665)
+{% note primary %}
+Modify `signal.nc` because the original signal.nc is not properly defined in a format recognized by CDO, making it impossible to apply CDO command tools.
+{% endnote %}
 
+{% fold info @signal.nc %}
+```console
+netcdf signal {
+dimensions:
+	ncl0 = 14 ;
+	ncl1 = 145 ;
+	ncl2 = 288 ;
+	ncl3 = 145 ;
+	ncl4 = 288 ;
+	ncl5 = 14 ;
+	ncl6 = 145 ;
+	ncl7 = 288 ;
+	ncl8 = 14 ;
+	ncl9 = 145 ;
+	ncl10 = 288 ;
+	ncl11 = 14 ;
+	ncl12 = 145 ;
+	ncl13 = 288 ;
+	ncl14 = 14 ;
+	ncl15 = 145 ;
+	ncl16 = 288 ;
+variables:
+	float diff_ta(ncl0, ncl1, ncl2) ;
+	float diff_ts(ncl3, ncl4) ;
+	float diff_rh(ncl5, ncl6, ncl7) ;
+	float diff_ua(ncl8, ncl9, ncl10) ;
+	float diff_va(ncl11, ncl12, ncl13) ;
+	double lev(ncl14) ;
+	double lat(ncl15) ;
+	double lon(ncl16) ;
+}
 ```
-micromamba env create -n PGW_xesmf
-micromamba activate PGW_xesmf 
-micromamba install conda-forge::xesmf=0.8.2 -y
-micromamba install conda-forge::netcdf4 -y
-``
-
-To use ESMPy in an external program, import it with:
-
-```python
-import esmpy
-```
-
-The environment variable `ESMFMKFILE` should be set when using `ESMPy`. If it is not found, the package will try to guess a few very common locations, but we recommend correctly setting the variable nonetheless.
-
-Note The Python module name for `ESMPy` was changed in v8.4.0 from `“ESMF”` to `“esmpy”`. **If you are using a version older than v8.4.0, the import command is import ESMF**. See the ESMF Release Notes for more details and links to previous versions of the ESMPy documentation.
+{% endfold %}
 
 ## cdo
 
-- the signal.nc is not well-defined file...
-- have to rename all corrodinates...
+Error: `cdo    remapbil (Abort): Unsupported generic coordinates (Variable: diff_ta)!`
+
+It is because **lat/lon/lev are not well-defined**.
+
+- The original signal.nc is not well-defined file...
+- have to assign attrs of dimension,
   - isobaricInhPa = 37 ;
   - latitude = 721 ;
   - longitude = 1440 ;
 - Probably you need to fix the missing values, too.
 
+{% fold info @assign attrs of dimension %}
+```python
+#!/bin/python
+
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         wpsze
+#date:           2025-02-07 17:37:01
+#Version:        0.0 
+#Description:    The purpose of the script
+#Copyright (C)： 2025 All rights reserved
+#------------------------------------------------#
+
+import numpy as np
+import xarray as xr
+
+# Load the signal and ERA5 NetCDF files
+signal_nc = xr.open_dataset('signal.nc')      # Replace with actual signal file path
+
+signal_nc = signal_nc.rename({'ncl0': 'level', 'ncl1': 'latitude', 'ncl2': 'longitude',
+                              'ncl3': 'latitude', 'ncl4': 'longitude',
+                              'ncl5': 'level', 'ncl6': 'latitude', 'ncl7': 'longitude',
+                              'ncl8': 'level', 'ncl9': 'latitude', 'ncl10': 'longitude',
+                              'ncl11': 'level', 'ncl12': 'latitude', 'ncl13': 'longitude',
+                              'ncl14': 'level', 'ncl15': 'latitude', 'ncl16': 'longitude',})
+
+# Define dimensions
+lev = signal_nc['lev'].values  # Level dimension
+lat = signal_nc['lat'].values  # Latitude dimension
+lon = signal_nc['lon'].values  # Longitude dimension
+
+# Create DataArrays
+diff_ta = xr.DataArray(
+    signal_nc['diff_ta'],
+    dims=["level", "latitude", "longitude"],
+    coords={"level": lev, "latitude": lat, "longitude": lon}
+)
+
+diff_rh = xr.DataArray(
+    signal_nc['diff_rh'],
+    dims=["level", "latitude", "longitude"],
+    coords={"level": lev, "latitude": lat, "longitude": lon}
+)
+
+diff_ua = xr.DataArray(
+    signal_nc['diff_ua'],
+    dims=["level", "latitude", "longitude"],
+    coords={"level": lev, "latitude": lat, "longitude": lon}
+)
+
+diff_va = xr.DataArray(
+    signal_nc['diff_va'],
+    dims=["level", "latitude", "longitude"],
+    coords={"level": lev, "latitude": lat, "longitude": lon}
+)
+
+diff_ts = xr.DataArray(
+    signal_nc['diff_ts'],
+    dims=["latitude", "longitude"],
+    coords={"latitude": lat, "longitude": lon}
+)
+
+# Combine into a Dataset
+test = xr.Dataset({
+    "diff_ta": diff_ta,
+    "diff_rh": diff_rh,
+    "diff_ua": diff_ua,
+    "diff_va": diff_va,
+    "diff_ts": diff_ts
+})
+
+test['latitude'] = test['latitude'].assign_attrs(		
+                standard_name = "latitude",
+		long_name = "latitude",
+		units = "degrees_north",
+		axis = "Y" )
+test['longitude'] = test['longitude'].assign_attrs(
+                standard_name = "longitude",
+		long_name = "longitude",
+		units = "degrees_east",
+		axis = "X")
+
+test['level'] = test['level'].assign_attrs(
+                standard_name = "air_pressure",
+		long_name = "pressure",
+		units = "hPa",
+		positive = "down",
+		axis = "Z",
+		stored_direction = "decreasing")
+   
+#================== Save =================================================
+# Save the result to a new NetCDF file
+test.to_netcdf('new-signal.nc', format='NETCDF4')
 ```
-cdo remapbil,ERA5-SL.nc signal.nc signal_0p25.nc
+{% endfold %}
+
+and, regrid `singal.nc` to **0.25deg**,
+
+```
+cdo remapbil,r1440x721 signal.nc signal_0p25.nc
 ```
 
 ## Python script
@@ -352,11 +473,10 @@ cdo remapbil,ERA5-SL.nc signal.nc signal_0p25.nc
 
 import numpy as np
 import xarray as xr
-from scipy.interpolate import interp1d
-
+# from scipy.interpolate import interp1d
 
 # Load the signal and ERA5 NetCDF files
-signal_nc = xr.open_dataset('signal.nc')      # Replace with actual signal file path
+signal_nc = xr.open_dataset('signal_0p25.nc')      # Replace with actual signal file path
 era5_nc = xr.open_dataset('ERA5-SL.nc')          # Replace with actual ERA5 file path
 
 # Extract 2D SST variables
@@ -371,50 +491,57 @@ skt_era5 = era5_nc['skt']       # Skin temperature from ERA5 file (2D array)
 #================== SST ==================================================
 print("=== processing: SST ")
 # Update dimensions for signal_sst.nc
-sst_signal = sst_signal.rename({'ncl3': 'latitude', 'ncl4': 'longitude'})
+#sst_signal = sst_signal.rename({'ncl3': 'latitude', 'ncl4': 'longitude'})
 
-# Reverse the SST data along the latitude dimension
-reversed_sst_signal = sst_signal[::-1, :]  # Assuming latitude is the first dimension
+# # Reverse the SST data along the latitude dimension
+#reversed_sst_signal = sst_signal[::-1, :]  # Assuming latitude is the first dimension
 
-# Update the coordinates to reflect the new latitude order
-reversed_latitude = lat_signal[::-1]  # Reverse latitude coordinates, from [-90,90] to [90,-90]
+# # Update the coordinates to reflect the new latitude order
+#reversed_latitude = lat_signal[::-1]  # Reverse latitude coordinates, from [-90,90] to [90,-90]
 
-# Update the SST variable to use the reversed latitude
-reversed_sst_signal = reversed_sst_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
+# # Update the SST variable to use the reversed latitude
+#reversed_sst_signal = reversed_sst_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
 
 # Define new latitude and longitude arrays for 0.25-degree grid
 # Perform horizontal interpolation to 0.25-degree grid
-reversed_sst_signal = reversed_sst_signal.interp(latitude=sst_era5.coords['latitude'].values, longitude=sst_era5.coords['longitude'].values)
+# method ({"linear", "nearest", "zero", "slinear", "quadratic", 
+# "cubic", "quintic", "polynomial", "pchip", "barycentric", "krogh",
+# "akima", "makima"}) – Interpolation method to use (see descriptions above). fill_value='extrapolate'
+# reversed_sst_signal = reversed_sst_signal.interp(latitude=sst_era5.coords['latitude'].values, 
+#                                                  longitude=sst_era5.coords['longitude'].values)
 
 # Add signal to ERA5
-era5_nc['sst'] = sst_era5 + reversed_sst_signal
+era5_nc['sst'] = sst_era5 + sst_signal.values[::-1,:]
 
-#================== skt ==================================================
+# #================== skt ==================================================
 print("=== processing: Skin temperature ")
-# Update dimensions for signal_sst.nc
-skt_signal = skt_signal.rename({'ncl3': 'latitude', 'ncl4': 'longitude'})
+# # Update dimensions for signal_sst.nc
+# skt_signal = skt_signal.rename({'ncl3': 'latitude', 'ncl4': 'longitude'})
 
-# Reverse the SST data along the latitude dimension
-reversed_skt_signal = skt_signal[::-1, :]  # Assuming latitude is the first dimension
+# # Reverse the SST data along the latitude dimension
+#reversed_skt_signal = skt_signal[::-1, :]  # Assuming latitude is the first dimension
 
-# Update the coordinates to reflect the new latitude order
-# reversed_latitude = lat_signal[::-1]  # Reverse latitude coordinates (Done before!!)
+# # Update the coordinates to reflect the new latitude order
+# # reversed_latitude = lat_signal[::-1]  # Reverse latitude coordinates (Done before!!)
 
-# Update the SST variable to use the reversed latitude
-reversed_skt_signal = reversed_skt_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
+# # Update the SST variable to use the reversed latitude
+#reversed_skt_signal = reversed_skt_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
 
-# Define new latitude and longitude arrays for 0.25-degree grid
-# Perform horizontal interpolation to 0.25-degree grid
-reversed_skt_signal = reversed_skt_signal.interp(latitude=sst_era5.coords['latitude'].values, longitude=sst_era5.coords['longitude'].values)
+# # Define new latitude and longitude arrays for 0.25-degree grid
+# # Perform horizontal interpolation to 0.25-degree grid
+# reversed_skt_signal = reversed_skt_signal.interp(latitude=sst_era5.coords['latitude'].values, 
+#                                                  longitude=sst_era5.coords['longitude'].values)
 
-# Add signal to ERA5
-era5_nc['skt'] = skt_era5 + reversed_skt_signal
+# # Add signal to ERA5
+era5_nc['skt'] = skt_era5 + skt_signal.values[::-1,:]
 
 #================== Save =================================================
 # Save the result to a new NetCDF file
 era5_nc.to_netcdf('new_ERA5_SL.nc')
 
-print("Horizontal interpolation completed and saved to 'interpolated_SL.nc'.")
+##to_grib(era5_nc, 'new_ERA5_SL.grib') #, grib_keys={'centre': 'ecmf'})
+
+print("Horizontal interpolation completed and saved to 'interpolated_new_ERA5_SL.nc'.")
 ```
 {% endfold %}
 
@@ -433,7 +560,6 @@ By applying the Pseudo-Global-Warming (PGW) approach using CMIP6 climate change 
 ## Steps for Interpolation
 
 1. **Vertical Interpolation**: Adjust the temperature data from the signal file to the vertical levels of the ERA5 file.
-2. **Horizontal Interpolation**: Align the interpolated vertical data to the spatial grid (latitude and longitude) of the ERA5 dataset.
 
 ### Python Script
 
@@ -491,7 +617,7 @@ dimensions:
 
 Below is a Python script that performs the required interpolations.
 
-{% fold info @3d_interp.nc (Pressure level) %}
+{% fold info @3d_interp.py (Pressure level) %}
 ```console
 #!/bin/python
 
@@ -509,19 +635,19 @@ import xarray as xr
 from scipy.interpolate import interp1d
 
 # Load the signal and ERA5 NetCDF files
-signal_nc = xr.open_dataset('signal.nc')  # Replace with actual signal file path
+signal_nc = xr.open_dataset('signal_0p25.nc')  # Replace with actual signal file path
 era5_nc = xr.open_dataset('ERA5-PL.nc')   # Replace with actual ERA5 file path
 
 #================ Vertical levels =======================================
 # Vertical levels
-signal_levels = signal_nc['lev'].values/100            # Vertical levels from signal file,  lev(ncl14), convert to hPa unit
+signal_levels = signal_nc['level'].values/100            # Vertical levels from signal file,  lev(ncl14), convert to hPa unit
 lat_signal = signal_nc['lat']
 lon_signal = signal_nc['lon']
 
 # Update the coordinates to reflect the new latitude order
 reversed_latitude = lat_signal[::-1]  # Reverse latitude coordinates, from [-90,90] to [90,-90]
 
-era5_levels = era5_nc['isobaricInhPa']          # Vertical levels from ERA5 file
+era5_levels = era5_nc['isobaricInhPa']          # Vertical levels from ERA5 file, 'level' if grib_to_netcdf, 'isobaricInhPa' if xarray/cfgrib
 
 # signal:
 #[1000.  925.  850.  700.  600.  500.  400.  300.  250.  200.  150.  100.
@@ -535,8 +661,8 @@ era5_levels = era5_nc['isobaricInhPa']          # Vertical levels from ERA5 file
 # [975. 950. 925. 900. 875. 850. 825. 800. 775. 750. 700. 650. 600. 550.
 # 500. 450. 400. 350. 300. 250. 225. 200. 175. 150. 125. 100.  70.  50.]
 
-print(signal_levels)
-print(era5_levels[1:29].values)
+print(f"CMIP6 singal levels = {signal_levels}")
+print(f"era5_levels[1:29] = {era5_levels[1:29].values}")
 
 #================ Interpolation function ================================
 # Interpolation function for vertical levels
@@ -559,7 +685,7 @@ ta_signal = signal_nc['diff_ta']    # 3D temperature from signal file, diff_ta(n
 TT_era5 = era5_nc['t']              # 3D temperature from ERA5 file, t(isobaricInhPa, latitude, longitude)
 
 # Update dimensions
-ta_signal = ta_signal.rename({'ncl0': 'isobaricInhPa', 'ncl1': 'latitude', 'ncl2': 'longitude'})
+ta_signal = ta_signal.rename({'level': 'isobaricInhPa', 'lat': 'latitude', 'lon': 'longitude'})
 
 # Reverse the TT data along the latitude dimension
 reversed_ta_signal = ta_signal[:, ::-1, :]  # latitude is the second dimension
@@ -572,17 +698,43 @@ interpolated_ta = vertical_interpolate(reversed_ta_signal, signal_levels, era5_l
 
 # Define new latitude and longitude arrays for 0.25-degree grid
 # Perform horizontal interpolation to 0.25-degree grid
-interpolated_ta = interpolated_ta.interp(latitude=TT_era5.coords['latitude'].values, longitude=TT_era5.coords['longitude'].values)
+## interpolated_ta = interpolated_ta.interp(latitude=TT_era5.coords['latitude'].values, longitude=TT_era5.coords['longitude'].values)
 
 # Add signal to ERA5
 era5_nc['t'][1:29,:,:] = TT_era5[1:29,:,:] + interpolated_ta[1:29,:,:]
 
-#================  ================================
+#================ Relative Humidity (RH) in % ================================
+print("=== processing: Relative Humidity (RH) in % ")
+
+# Extract variables
+rh_signal = signal_nc['diff_rh']    # 3D RH from signal file, diff_ta(ncl5, ncl6, ncl7)
+RH_era5 = era5_nc['r']              # 3D RH from ERA5 file, t(isobaricInhPa, latitude, longitude)
+
+# Update dimensions
+rh_signal = rh_signal.rename({'level': 'isobaricInhPa', 'lat': 'latitude', 'lon': 'longitude'})
+
+# Reverse the RH data along the latitude dimension
+reversed_rh_signal = rh_signal[:, ::-1, :]  # latitude is the second dimension
+
+# Update the RH variable to use the reversed latitude
+reversed_rh_signal = reversed_rh_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
+
+# Perform vertical interpolation
+interpolated_rh = vertical_interpolate(reversed_rh_signal, signal_levels, era5_levels)
+
+# Define new latitude and longitude arrays for 0.25-degree grid
+# Perform horizontal interpolation to 0.25-degree grid
+##interpolated_rh = interpolated_rh.interp(latitude=RH_era5.coords['latitude'].values, longitude=RH_era5.coords['longitude'].values)
+
+# Add signal to ERA5
+era5_nc['r'][1:29,:,:] = RH_era5[1:29,:,:] + interpolated_rh[1:29,:,:]
+
+#=============================================================================
 
 # Save the result to a new NetCDF file
 era5_nc.to_netcdf('new_ERA5_PL.nc')
 
-print("Interpolation completed and saved to 'interpolated_PL.nc'.")
+print("Interpolation completed and saved to 'interpolated_new_ERA5_PL.nc'.")
 ```
 {% endfold %}
 
@@ -590,8 +742,7 @@ print("Interpolation completed and saved to 'interpolated_PL.nc'.")
 
 1. **Loading Data**: The script uses `xarray` to load the signal and ERA5 NetCDF files.
 2. **Vertical Interpolation**: A function (`vertical_interpolate`) is defined to perform linear interpolation on the vertical levels of the temperature data.
-3. **Horizontal Interpolation**: The `interp` method from `xarray` is used to interpolate the data to the ERA5 latitude and longitude grid.
-4. **Saving the Result**: The interpolated temperature data is saved to a new NetCDF file.
+3. **Saving the Result**: The interpolated temperature data is saved to a new NetCDF file.
 
 ## Conclusion
 This interpolation approach allows for aligning temperature data from different datasets, which is essential for climate modeling. By accurately matching the grids of the signal and ERA5 data, we can effectively analyze and apply climate change signals in our research.
