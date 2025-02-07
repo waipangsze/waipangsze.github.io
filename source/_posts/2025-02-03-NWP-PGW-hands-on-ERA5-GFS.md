@@ -301,6 +301,42 @@ variables:
 
 Here’s a Python script for interpolating Sea Surface Temperature (SST) and Surface Skin Temperature (SKT) from a signal NetCDF file to match the ERA5 grid. This process involves horizontal interpolation to ensure that the temperatures align accurately with the finer resolution of the ERA5 dataset. Accurate temperature data is crucial for climate modeling and analysis. By interpolating these temperatures, we can effectively integrate them into broader climate studies.
 
+## ESMPy
+
+- [Conda install xesmf](https://forum.access-hive.org.au/t/conda-install-xesmf/1665)
+
+```
+micromamba env create -n PGW_xesmf
+micromamba activate PGW_xesmf 
+micromamba install conda-forge::xesmf=0.8.2 -y
+micromamba install conda-forge::netcdf4 -y
+``
+
+To use ESMPy in an external program, import it with:
+
+```python
+import esmpy
+```
+
+The environment variable `ESMFMKFILE` should be set when using `ESMPy`. If it is not found, the package will try to guess a few very common locations, but we recommend correctly setting the variable nonetheless.
+
+Note The Python module name for `ESMPy` was changed in v8.4.0 from `“ESMF”` to `“esmpy”`. **If you are using a version older than v8.4.0, the import command is import ESMF**. See the ESMF Release Notes for more details and links to previous versions of the ESMPy documentation.
+
+## cdo
+
+- the signal.nc is not well-defined file...
+- have to rename all corrodinates...
+  - isobaricInhPa = 37 ;
+  - latitude = 721 ;
+  - longitude = 1440 ;
+- Probably you need to fix the missing values, too.
+
+```
+cdo remapbil,ERA5-SL.nc signal.nc signal_0p25.nc
+```
+
+## Python script
+
 {% fold info @2d_interp.py %}
 ```python
 #!/bin/python
