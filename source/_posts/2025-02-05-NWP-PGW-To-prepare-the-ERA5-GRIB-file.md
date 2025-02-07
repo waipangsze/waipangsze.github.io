@@ -181,11 +181,15 @@ This process ensures that your modified ERA5 file is correctly formatted with al
 #Copyright (C)： 2025 All rights reserved
 #------------------------------------------------#
 
+#================= SL ====================================
 cdo selname,sst new_ERA5_SL.nc sst_nan.nc
 cdo selname,skt new_ERA5_SL.nc skt_nan.nc
 
-cdo setmissval,-inf sst_nan.nc sst.nc # or -999
-cdo setmissval,-inf skt_nan.nc skt.nc # or -999
+cdo setmissval,-999 sst_nan.nc sst.nc
+cdo setmissval,-999 skt_nan.nc skt.nc
+
+# cdo pack sst.nc sst_test.nc
+# cdo pack skt.nc skt_test.nc
 
 cdo -f grb copy sst.nc sst.grib
 cdo -f grb copy skt.nc skt.grib
@@ -201,7 +205,58 @@ cdo showname skt_final.grib
 
 cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib
 
-cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib era5_with_signal_final.grib
+rm era5_with_signal_final_SL.grib
+cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib era5_with_signal_final_SL.grib
+
+cdo showname era5_with_signal_final_SL.grib
+
+#================= PL: t ====================================
+cdo selname,t new_ERA5_PL.nc t_nan.nc
+
+cdo setmissval,-999 t_nan.nc t.nc
+
+# cdo pack t.nc t_test.nc
+
+# How to ensure the order of levels
+# encodeBMS_float   : Missing value = NaN is unsupported!
+cdo -f grb copy t.nc t_lev.grib
+cdo invertlev t_lev.grib t.grib
+
+cdo showname t.grib
+
+grib_set -s dataDate=20240714,shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib
+
+cdo showname t_final.grib
+
+##cdo delname,var130,var157 original-PL.grib original-PL_without_vars.grib
+##cdo merge t_final.grib original-PL_without_vars.grib era5_with_signal_final_PL.grib
+##cdo showname era5_with_signal_final_PL.grib
+
+#================= PL: r ====================================
+cdo selname,r new_ERA5_PL.nc r_nan.nc
+
+cdo setmissval,-999 r_nan.nc r.nc
+
+# cdo pack r.nc r_test.nc
+
+# How to ensure the order of levels
+# encodeBMS_float   : Missing value = NaN is unsupported!
+cdo -f grb copy r.nc r_lev.grib
+cdo invertlev r_lev.grib r.grib
+
+cdo showname r.grib
+
+grib_set -s dataDate=20240714,shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib
+
+cdo showname r_final.grib
+
+#================= PL: combine t, r ====================================
+cdo delname,var130,var157 original-PL.grib original-PL_without_vars.grib
+
+rm era5_with_signal_final_PL.grib
+cdo merge t_final.grib r_final.grib original-PL_without_vars.grib era5_with_signal_final_PL.grib
+
+cdo showname era5_with_signal_final_PL.grib
 ```
 
 ## Debug

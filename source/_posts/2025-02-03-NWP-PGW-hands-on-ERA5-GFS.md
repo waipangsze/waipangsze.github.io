@@ -767,9 +767,8 @@ The motivation behind converting NetCDF files to GRIB format can stem from sever
 
 **這一步真是麻煩太多了**
 
-{% note primary %}
 Move to [**NWP | PGW | To prepare the ERA5 GRIB file**](https://waipangsze.github.io/2025/02/05/NWP-PGW-To-prepare-the-ERA5-GRIB-file/)
-{% endnote %}
+
 
 ## Verify the Conversion
 
