@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/kcuHfQW.png">
 <meta property="article:published_time" content="2025-02-05T07:33:00.000Z">
-<meta property="article:modified_time" content="2025-02-07T00:24:01.235Z">
+<meta property="article:modified_time" content="2025-02-10T05:32:50.049Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -342,7 +342,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          516 words
+          676 words
         
       </span>
     
@@ -353,7 +353,7 @@
         
         
         
-          5 mins
+          6 mins
         
       </span>
     
@@ -467,7 +467,17 @@
 </ol>
 <p>This process ensures that your modified ERA5 file is correctly formatted with all necessary GRIB metadata. Let me know if you encounter any issues!</p>
 <h1 id="hands-on-wpsze">** Hands-on: wpsze</h1>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs ssh">#!/bin/bash<br><br>#------------------------------------------------#<br>#Author:         wpsze<br>#Email：         wpsze<br>#date:           2025-02-06 08:41:43<br>#Version:        0.0 <br>#Description:    The purpose of the script<br>#Copyright (C)： 2025 All rights reserved<br>#------------------------------------------------#<br><br>cdo selname,sst new_ERA5_SL.nc sst_nan.nc<br>cdo selname,skt new_ERA5_SL.nc skt_nan.nc<br><br>cdo setmissval,-inf sst_nan.nc sst.nc<br>cdo setmissval,-inf skt_nan.nc skt.nc<br><br>cdo -f grb copy sst.nc sst.grib<br>cdo -f grb copy skt.nc skt.grib<br><br>cdo showname sst.grib<br>cdo showname skt.grib<br><br>grib_set -s dataDate=20240714,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib<br>grib_set -s dataDate=20240714,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib<br><br>cdo showname sst_final.grib<br>cdo showname skt_final.grib<br><br>cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib<br><br>cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib era5_with_signal_final.grib<br></code></pre></td></tr></table></figure>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-1607c597" role="button" aria-expanded="false" aria-controls="collapse-1607c597">
+        <div class="fold-arrow">▶</div>netcdf2grid.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-1607c597">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><code class="hljs ssh">#!/bin/bash<br><br>#------------------------------------------------#<br>#Author:         wpsze<br>#Email：         wpsze<br>#date:           2025-02-06 08:41:43<br>#Version:        0.0 <br>#Description:    The purpose of the script<br>#Copyright (C)： 2025 All rights reserved<br>#------------------------------------------------#<br><br>#================= SL ====================================<br>cdo selname,sst new_ERA5-0p25-SL-$&#123;yyyymmddhh&#125;.nc sst_nan.nc<br>cdo selname,skt new_ERA5-0p25-SL-$&#123;yyyymmddhh&#125;.nc skt_nan.nc<br><br>cdo setmissval,-999 sst_nan.nc sst.nc<br>cdo setmissval,-999 skt_nan.nc skt.nc<br><br># cdo pack sst.nc sst_test.nc<br># cdo pack skt.nc skt_test.nc<br><br>cdo -f grb copy sst.nc sst.grib<br>cdo -f grb copy skt.nc skt.grib<br><br>cdo showname sst.grib<br>cdo showname skt.grib<br><br>grib_set -s dataDate=20240714,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib<br>grib_set -s dataDate=20240714,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib<br><br>cdo showname sst_final.grib<br>cdo showname skt_final.grib<br><br>cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib<br><br>rm new_ERA5-0p25-SL-$&#123;yyyymmddhh&#125;.grib<br>cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib new_ERA5-0p25-SL-$&#123;yyyymmddhh&#125;.grib<br><br>cdo showname new_ERA5-0p25-SL-$&#123;yyyymmddhh&#125;.grib<br><br>#================= PL: t ====================================<br>cdo selname,t new_ERA5-0p25-PL-$&#123;yyyymmddhh&#125;.nc t_nan.nc<br><br>cdo setmissval,-999 t_nan.nc t.nc<br><br># cdo pack t.nc t_test.nc<br><br># How to ensure the order of levels<br># encodeBMS_float   : Missing value = NaN is unsupported!<br>cdo -f grb copy t.nc t_lev.grib<br>cdo invertlev t_lev.grib t.grib<br><br>cdo showname t.grib<br><br>grib_set -s dataDate=20240714,shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib<br><br>cdo showname t_final.grib<br><br>##cdo delname,var130,var157 original-PL.grib original-PL_without_vars.grib<br>##cdo merge t_final.grib original-PL_without_vars.grib era5_with_signal_final_PL.grib<br>##cdo showname era5_with_signal_final_PL.grib<br><br>#================= PL: r ====================================<br>cdo selname,r new_ERA5-0p25-PL-$&#123;yyyymmddhh&#125;.nc r_nan.nc<br><br>cdo setmissval,-999 r_nan.nc r.nc<br><br># cdo pack r.nc r_test.nc<br><br># How to ensure the order of levels<br># encodeBMS_float   : Missing value = NaN is unsupported!<br>cdo -f grb copy r.nc r_lev.grib<br>cdo invertlev r_lev.grib r.grib<br><br>cdo showname r.grib<br><br>grib_set -s dataDate=20240714,shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib<br><br>cdo showname r_final.grib<br><br>#================= PL: combine t, r ====================================<br>cdo delname,var130,var157 original-PL.grib original-PL_without_vars.grib<br><br>rm new_ERA5-0p25-PL-$&#123;yyyymmddhh&#125;.grib<br>cdo merge t_final.grib r_final.grib original-PL_without_vars.grib new_ERA5-0p25-PL-$&#123;yyyymmddhh&#125;.grib<br><br>cdo showname new_ERA5-0p25-PL-$&#123;yyyymmddhh&#125;.grib<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
 <h2 id="debug">Debug</h2>
 <h3 id="encodebms_double-missing-value-nan-is-unsupported">encodeBMS_double : Missing value = NaN is unsupported!</h3>
 <ul>
@@ -511,6 +521,10 @@
       </div>
     </div>
 <p>then, <code>ncview sst_test.nc</code> is successful.</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://code.mpimet.mpg.de/projects/cdo/wiki/tutorial#Basic-Usage">Climate Data Operators (CDO) Tutorial (<strong>recommend</strong>)</a></li>
+</ol>
 
                 
               </div>
@@ -591,7 +605,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 7, 2025</div>
+          <div>February 10, 2025</div>
         </div>
       
       
