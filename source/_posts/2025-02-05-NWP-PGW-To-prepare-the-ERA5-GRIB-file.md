@@ -169,6 +169,7 @@ This process ensures that your modified ERA5 file is correctly formatted with al
 
 # ** Hands-on: wpsze
 
+{% fold info @netcdf2grid.sh %}
 ```ssh
 #!/bin/bash
 
@@ -182,8 +183,8 @@ This process ensures that your modified ERA5 file is correctly formatted with al
 #------------------------------------------------#
 
 #================= SL ====================================
-cdo selname,sst new_ERA5_SL.nc sst_nan.nc
-cdo selname,skt new_ERA5_SL.nc skt_nan.nc
+cdo selname,sst new_ERA5-0p25-SL-${yyyymmddhh}.nc sst_nan.nc
+cdo selname,skt new_ERA5-0p25-SL-${yyyymmddhh}.nc skt_nan.nc
 
 cdo setmissval,-999 sst_nan.nc sst.nc
 cdo setmissval,-999 skt_nan.nc skt.nc
@@ -205,13 +206,13 @@ cdo showname skt_final.grib
 
 cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib
 
-rm era5_with_signal_final_SL.grib
-cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib era5_with_signal_final_SL.grib
+rm new_ERA5-0p25-SL-${yyyymmddhh}.grib
+cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib new_ERA5-0p25-SL-${yyyymmddhh}.grib
 
-cdo showname era5_with_signal_final_SL.grib
+cdo showname new_ERA5-0p25-SL-${yyyymmddhh}.grib
 
 #================= PL: t ====================================
-cdo selname,t new_ERA5_PL.nc t_nan.nc
+cdo selname,t new_ERA5-0p25-PL-${yyyymmddhh}.nc t_nan.nc
 
 cdo setmissval,-999 t_nan.nc t.nc
 
@@ -233,7 +234,7 @@ cdo showname t_final.grib
 ##cdo showname era5_with_signal_final_PL.grib
 
 #================= PL: r ====================================
-cdo selname,r new_ERA5_PL.nc r_nan.nc
+cdo selname,r new_ERA5-0p25-PL-${yyyymmddhh}.nc r_nan.nc
 
 cdo setmissval,-999 r_nan.nc r.nc
 
@@ -253,11 +254,12 @@ cdo showname r_final.grib
 #================= PL: combine t, r ====================================
 cdo delname,var130,var157 original-PL.grib original-PL_without_vars.grib
 
-rm era5_with_signal_final_PL.grib
-cdo merge t_final.grib r_final.grib original-PL_without_vars.grib era5_with_signal_final_PL.grib
+rm new_ERA5-0p25-PL-${yyyymmddhh}.grib
+cdo merge t_final.grib r_final.grib original-PL_without_vars.grib new_ERA5-0p25-PL-${yyyymmddhh}.grib
 
-cdo showname era5_with_signal_final_PL.grib
+cdo showname new_ERA5-0p25-PL-${yyyymmddhh}.grib
 ```
+{% endfold %}
 
 ## Debug
 
@@ -352,3 +354,7 @@ variables:
 {% endfold %}
 
 then, `ncview sst_test.nc` is successful. 
+
+# References
+
+1. [Climate Data Operators (CDO) Tutorial (**recommend**)](https://code.mpimet.mpg.de/projects/cdo/wiki/tutorial#Basic-Usage)

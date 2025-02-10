@@ -647,10 +647,11 @@ Param| Type |Level1|Level2| Name     | Units    | Description                   
 
 # References
 
-1. [Reading GRIB Files | NCEP](https://www.cpc.ncep.noaa.gov/products/wesley/reading_grib.html)
-2. [wgrib2: wgrib for GRIB-2 files](https://www.cpc.ncep.noaa.gov/products/wesley/wgrib2)
-3. [What are GRIB files and how can I read them](https://confluence.ecmwf.int/display/CKB/What+are+GRIB+files+and+how+can+I+read+them)
-4. [Please see the WMO "Introduction to GRIB Edition 1 and GRIB Edition 2" documentation for further details.](https://old.wmo.int/extranet/pages/prog/www/WMOCodes/Guides/GRIB/Introduction_GRIB1-GRIB2.pdf)
-5. [GRIB格式介绍 (**推薦**)](https://perillaroc.github.io/eccodes-tutorial-cn/01-introduction/)
+1. [Climate Data Operators (CDO) Tutorial (**recommend**)](https://code.mpimet.mpg.de/projects/cdo/wiki/tutorial#Basic-Usage)
+2. [Reading GRIB Files | NCEP](https://www.cpc.ncep.noaa.gov/products/wesley/reading_grib.html)
+3. [wgrib2: wgrib for GRIB-2 files](https://www.cpc.ncep.noaa.gov/products/wesley/wgrib2)
+4. [What are GRIB files and how can I read them](https://confluence.ecmwf.int/display/CKB/What+are+GRIB+files+and+how+can+I+read+them)
+5. [Please see the WMO "Introduction to GRIB Edition 1 and GRIB Edition 2" documentation for further details.](https://old.wmo.int/extranet/pages/prog/www/WMOCodes/Guides/GRIB/Introduction_GRIB1-GRIB2.pdf)
+6. [GRIB格式介绍 (**推薦**)](https://perillaroc.github.io/eccodes-tutorial-cn/01-introduction/)
    1. GRIB 格式是面向二进制的数据交换格式，无法直接阅读，需要使用软件进行解码和编码。
    2. 使用16进制编辑器打开 GRIB 文件的示例，除了最开始4个字节外，其余部分都无法解析成文本。 后面将会看到前4个字节对应的 ASCII 编码内容 GRIB 正是 GRIB 文件的标志。

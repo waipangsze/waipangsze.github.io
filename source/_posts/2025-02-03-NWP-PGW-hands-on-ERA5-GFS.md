@@ -24,11 +24,103 @@ Keywords:
 
 The ERA5 dataset, produced by the European Centre for Medium-Range Weather Forecasts (ECMWF), provides a wealth of climate and weather data. However, the data is often distributed in the GRIB format, which can be less user-friendly than the NetCDF format, commonly used in scientific computing. This blog post will walk you through the process of converting ERA5 GRIB files to NetCDF.
 
+{% note primary %}
+Read [**Pseudo-Global Warming (PGW) - Future Projection**](https://waipangsze.github.io/2024/09/30/PGW/)
+{% endnote %}
+
 # Motivation
 
 Climate change is one of the most pressing issues of our time, and understanding its impacts requires access to high-quality climate data. The ERA5 dataset provides crucial information on past and present climate conditions, helping researchers analyze trends and signals related to climate change. However, the ERA5 data is often stored in GRIB format, which can be challenging to work with. By converting ERA5 GRIB files to NetCDF format, we can more easily integrate climate change signals into ERA5.
 
 By applying the Pseudo-Global-Warming (PGW) approach, you can use the CMIP6 climate change signals to generate a difference and then add this to the initial conditions, such as those provided by ERA5. 
+
+# Main Script
+
+{% fold info @PGW_main.sh %}
+```console
+#!/bin/bash
+
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         wpsze
+#date:           2025-02-10 09:45:06
+#Version:        0.0 
+#Description:    The purpose of the script
+#Copyright (C)： 2025 All rights reserved
+#------------------------------------------------#
+
+export ERA5_datetime=${ERA5_datetime:-"2022063000"}
+export ERA5_path=${ERA5_path:-"/home/wpsze/ERA5/"}
+export PGW_ERA5_path=${PGW_ERA5_path:-"/home/wpsze/PGW/ERA5/"}              # save future projection of ERA5 IC
+export PGW_script_path=${PGW_script_path:-"/home/wpsze/PGW/"}
+
+export cmip6_signal_file=${cmip6_signal_file:-"/home/wpsze/CMIP6_gw_signal_difference_data/diff_ssp585far-hist_07.nc"}
+
+export yyyymmddhh="${ERA5_datetime}"
+export yyyymm="${ERA5_datetime:0:6}"
+export yyyymmdd="${ERA5_datetime:0:8}"
+export hh="${ERA5_datetime:8:2}"
+
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate PGW
+
+mkdir -p tmp
+cd tmp
+
+rm *idx
+ln -sf ${ERA5_path}/${yyyymm}/${yyyymmdd}/ERA5-0p25-PL-${yyyymmddhh}.grib
+ln -sf ${ERA5_path}/${yyyymm}/${yyyymmdd}/ERA5-0p25-SL-${yyyymmddhh}.grib
+
+# Convert ERA5.grib to .nc
+if [[ ! -f "ERA5-0p25-SL-${yyyymmddhh}.nc" ]]; then
+    echo "ERA5-0p25-SL/PL-${yyyymmddhh}.nc doesn't exist, generating them ... "
+    time python3 ${PGW_script_path}/grib2netcdf.py
+else
+    echo "ERA5-0p25-SL/PL-${yyyymmddhh}.nc exist."
+fi
+
+# rename/rebuild singal.nc
+if [[ ! -f "signal.nc" ]]; then
+    echo "singal.nc doesn't exits, soft-link and rebuild ..."
+    ln -sf ${cmip6_signal_file} original-signal.nc
+    time python3 ${PGW_script_path}/rename_signal.py
+else 
+    echo "signal.nc exists."
+fi
+
+# regrid signal.nc (1.25deg) to 0.25deg 
+if [[ ! -f "signal_0p25.nc" ]]; then
+    cdo remapbil,r1440x721 signal.nc signal_0p25.nc
+else
+    echo "signal_0p25.nc exists."
+fi
+
+# Add singal.nc into ERA5.nc
+time python3 ${PGW_script_path}/2d_interp.py
+time python3 ${PGW_script_path}/3d_interp.py
+
+# Convert nc file to grib file
+cp ERA5-0p25-SL-${yyyymmddhh}.grib original-SL.grib
+cp ERA5-0p25-PL-${yyyymmddhh}.grib original-PL.grib
+time sh ${PGW_script_path}/netcdf2grib.sh
+
+# cleanup
+rm original-SL.grib original-PL.grib
+rm original-SL_without_vars.grib original-PL_without_vars.grib
+rm skt_final.grib skt.grib skt_nan.nc skt.nc 
+rm sst_final.grib sst.grib sst_nan.nc sst.nc
+rm t_final.grib t.grib t_lev.grib t_nan.nc t.nc
+rm r_final.grib r.grib r_lev.grib r_nan.nc r.nc
+rm *idx
+
+# soft-link (Finally, have to move all girb to there!)
+mkdir -p ${PGW_ERA5_path}/${yyyymm}/${yyyymmdd}/
+current_dir=$(pwd)
+ln -sf ${current_dir}/new_ERA5-0p25-SL-${yyyymmddhh}.grib ${PGW_ERA5_path}/${yyyymm}/${yyyymmdd}/ERA5-0p25-SL-${yyyymmddhh}.grib
+ln -sf ${current_dir}/new_ERA5-0p25-PL-${yyyymmddhh}.grib ${PGW_ERA5_path}/${yyyymm}/${yyyymmdd}/ERA5-0p25-PL-${yyyymmddhh}.grib
+```
+{% endfold %}
+
 
 # Converting ERA5 GRIB to NetCDF: A Step-by-Step Guide
 
@@ -57,6 +149,7 @@ Before we begin, ensure you have the following:
 
 ## Steps to Convert GRIB to NetCDF
 
+{% fold info @grib2netcdf.py %}
 ```python
 #!/bin/python
 
@@ -68,27 +161,31 @@ Before we begin, ensure you have the following:
 #Description:    The purpose of the script
 #Copyright (C)： 2025 All rights reserved
 #------------------------------------------------#
-
+import os
 import xarray as xr
 
+# environment variable 
+yyyymmddhh = os.environ['yyyymmddhh'] 
+
 #============== SL =============================
-grib_file = 'ERA5-SL-0p25-2024071400.grib'
+grib_file = f'ERA5-0p25-SL-{yyyymmddhh}.grib'
 ds = xr.open_dataset(grib_file, engine='cfgrib')
 
 print(ds)
 
-output_file = 'ERA5-SL.nc'
+output_file = f'ERA5-0p25-SL-{yyyymmddhh}.nc'
 ds.to_netcdf(output_file)
 
 #============== PL =============================
-grib_file = 'ERA5-PL-0p25-2024071400.grib'
+grib_file = f'ERA5-0p25-PL-{yyyymmddhh}.grib'
 ds = xr.open_dataset(grib_file, engine='cfgrib')
 
 print(ds)
 
-output_file = 'ERA5-PL.nc'
+output_file = f'ERA5-0p25-PL-{yyyymmddhh}.nc'
 ds.to_netcdf(output_file)
 ```
+{% endfold %}
 
 ## Verify the Conversion
 
@@ -354,7 +451,7 @@ It is because **lat/lon/lev are not well-defined**.
   - longitude = 1440 ;
 - Probably you need to fix the missing values, too.
 
-{% fold info @assign attrs of dimension %}
+{% fold info @rename_signal.py %}
 ```python
 #!/bin/python
 
@@ -439,14 +536,14 @@ test['longitude'] = test['longitude'].assign_attrs(
 test['level'] = test['level'].assign_attrs(
                 standard_name = "air_pressure",
 		long_name = "pressure",
-		units = "hPa",
+		units = "Pa",
 		positive = "down",
 		axis = "Z",
 		stored_direction = "decreasing")
    
 #================== Save =================================================
 # Save the result to a new NetCDF file
-test.to_netcdf('new-signal.nc', format='NETCDF4')
+test.to_netcdf('signal.nc', format='NETCDF4')
 ```
 {% endfold %}
 
@@ -470,10 +567,13 @@ cdo remapbil,r1440x721 signal.nc signal_0p25.nc
 #Description:    The purpose of the script
 #Copyright (C)： 2025 All rights reserved
 #------------------------------------------------#
-
+import os
 import numpy as np
 import xarray as xr
 # from scipy.interpolate import interp1d
+
+# environment variable 
+yyyymmddhh = os.environ['yyyymmddhh'] 
 
 # Load the signal and ERA5 NetCDF files
 signal_nc = xr.open_dataset('signal_0p25.nc')      # Replace with actual signal file path
@@ -511,7 +611,7 @@ print("=== processing: SST ")
 #                                                  longitude=sst_era5.coords['longitude'].values)
 
 # Add signal to ERA5
-era5_nc['sst'] = sst_era5 + sst_signal.values[::-1,:]
+era5_nc['sst'] = sst_era5 + sst_signal.values[::-1,:] # Reverse latitude coordinates, from [-90,90] to [90,-90]
 
 # #================== skt ==================================================
 print("=== processing: Skin temperature ")
@@ -533,15 +633,15 @@ print("=== processing: Skin temperature ")
 #                                                  longitude=sst_era5.coords['longitude'].values)
 
 # # Add signal to ERA5
-era5_nc['skt'] = skt_era5 + skt_signal.values[::-1,:]
+era5_nc['skt'] = skt_era5 + skt_signal.values[::-1,:] # Reverse latitude coordinates, from [-90,90] to [90,-90]
 
 #================== Save =================================================
 # Save the result to a new NetCDF file
-era5_nc.to_netcdf('new_ERA5_SL.nc')
+era5_nc.to_netcdf(f'new_ERA5-0p25-SL-{yyyymmddhh}.nc')
 
 ##to_grib(era5_nc, 'new_ERA5_SL.grib') #, grib_keys={'centre': 'ecmf'})
 
-print("Horizontal interpolation completed and saved to 'interpolated_new_ERA5_SL.nc'.")
+print(f"Horizontal interpolation completed and save
 ```
 {% endfold %}
 
@@ -618,7 +718,7 @@ dimensions:
 Below is a Python script that performs the required interpolations.
 
 {% fold info @3d_interp.py (Pressure level) %}
-```console
+```python
 #!/bin/python
 
 #------------------------------------------------#
@@ -629,10 +729,13 @@ Below is a Python script that performs the required interpolations.
 #Description:    The purpose of the script
 #Copyright (C)： 2025 All rights reserved
 #------------------------------------------------#
-
+import os
 import numpy as np
 import xarray as xr
 from scipy.interpolate import interp1d
+
+# environment variable 
+yyyymmddhh = os.environ['yyyymmddhh'] 
 
 # Load the signal and ERA5 NetCDF files
 signal_nc = xr.open_dataset('signal_0p25.nc')  # Replace with actual signal file path
@@ -732,9 +835,9 @@ era5_nc['r'][1:29,:,:] = RH_era5[1:29,:,:] + interpolated_rh[1:29,:,:]
 #=============================================================================
 
 # Save the result to a new NetCDF file
-era5_nc.to_netcdf('new_ERA5_PL.nc')
+era5_nc.to_netcdf(f'new_ERA5-0p25-PL-{yyyymmddhh}.nc')
 
-print("Interpolation completed and saved to 'interpolated_new_ERA5_PL.nc'.")
+print(f"Interpolation completed and saved to 'interpolated_ERA5-0p25-PL-{yyyymmddhh}.nc.")
 ```
 {% endfold %}
 
@@ -778,17 +881,178 @@ After conversion, it’s crucial to verify that the GRIB file has been created c
 grib_ls output_file.grib
 ```
 
+## Verify the initial condition
+
+To plot the vertical profiles of the given data, we can use Python with the matplotlib library. Here's how visualize the profiles of signal_1p25, signal_0p25, diff_era5 and diff-MPAS-init.nc against the specified levels.
+
+{% fold info @check_plot.py %}
+```python
+#!/bin/python
+
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         wpsze
+#date:           2025-02-06 08:54:13
+#Version:        0.0 
+#Description:    The purpose of the script
+#Copyright (C)： 2025 All rights reserved
+#------------------------------------------------#
+
+import xarray as xr
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+SMALL_SIZE = 8
+MEDIUM_SIZE = 10
+BIGGER_SIZE = 24
+
+plt.rcParams["figure.figsize"] = (10,8)
+plt.rc('font', size=BIGGER_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGER_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=BIGGER_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=BIGGER_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=BIGGER_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
+#=================================================================
+yyyymmddhh = "2022063000"
+
+#============== signal 1.25 deg =============================
+dsignal = xr.open_dataset("signal.nc")
+
+#============== signal 0.25 deg =============================
+dsignal_0p25 = xr.open_dataset("signal_0p25.nc")
+
+#============== SL/PL =============================
+original_SL_file = xr.open_dataset(f"ERA5-0p25-SL-{yyyymmddhh}.nc")
+new_SL_file = xr.open_dataset(f"new_ERA5-0p25-SL-{yyyymmddhh}.nc")
+# original_PL_file = xr.open_dataset(f"ERA5-0p25-SL-{yyyymmddhh}.nc")
+# new_PL_file = xr.open_dataset(f"new_ERA5-0p25-SL-{yyyymmddhh}.nc")
+diff_PL = xr.open_dataset("diff_pl.nc") # ncdiff new_PL.nc PL.nc
+
+#============== MPAS init.nc diff =============================
+diff_init = xr.open_dataset("diff_init.nc") # ncdiff xx.nc xx.nc
+
+# diff_init["skintemp"].shape
+# (1, 40962)
+# diff_init["theta"].shape
+# (1, 40962, 55)
+#============== SST & SKT =============================
+tmp = np.nanmean(dsignal["diff_ts"].values)
+print(f"signal diff_ts 1.25deg nanmean = {tmp}")
+
+tmp = np.nanmean(dsignal_0p25["diff_ts"].values)
+print(f"signal diff_ts 0.25deg nanmean = {tmp}")
+
+tmp = new_SL_file["sst"].values - original_SL_file["sst"].values
+print(f"diff EAR5 (future-past) SST = {np.nanmean(tmp)}")
+
+tmp = new_SL_file["skt"].values - original_SL_file["skt"].values
+print(f"diff EAR5 (future-past) SKT = {np.nanmean(tmp)}")
+
+tmp = diff_init["skintemp"]
+print(f"diff init (future-past) skintemp = {np.nanmean(tmp)}")
+#============== vertial =============================
+# Extract the variable 'ta' (ensure to adjust the variable name if it's different)
+ta_signal = dsignal['diff_ta']
+ta_signal_0p25 = dsignal_0p25['diff_ta']
+ta_era5 = diff_PL['t']
+
+# Assuming the vertical dimension is named 'level' or 'plev'; adjust as necessary
+levels = ta_signal['level'].values  # Adjust depending on your dimensions
+levels_era5 = diff_PL['isobaricInhPa'].values  # Adjust depending on your dimensions
+
+# Plotting
+plt.figure(figsize=(10, 6))
+
+# Plot each profile
+plt.plot(ta_era5.sel(isobaricInhPa=levels_era5).mean(dim='latitude').mean(dim='longitude'), levels_era5, label='ERA5', color='green', marker = 'o')
+plt.plot(ta_signal.sel(level=levels).mean(dim='latitude').mean(dim='longitude'), levels/100, label='Signal', color='blue', marker = 'o')
+plt.plot(ta_signal_0p25.sel(level=levels).mean(dim='lat').mean(dim='lon'), levels/100, label='Signal 0.25°', color='orange', marker = 'o')
+
+# Add labels and title
+plt.xlabel('diff Temperature (K)')  # Adjust based on your variable unit
+plt.ylabel('Pressure Level (hPa)')  # Adjust based on your vertical coordinate
+plt.title('Vertical Profiles of diff Temperature (ta)')
+plt.legend()
+plt.grid()
+plt.gca().invert_yaxis()  # Invert y-axis for pressure levels
+plt.tight_layout()
+
+# Show the plot
+# plt.show()
+plt.savefig("diff_ta.png", dpi=300)
+
+#============== vertial =============================
+# Extract the variable 'ta' (ensure to adjust the variable name if it's different)
+ta_signal = dsignal['diff_rh']
+ta_signal_0p25 = dsignal_0p25['diff_rh']
+ta_era5 = diff_PL['r']
+
+# Assuming the vertical dimension is named 'level' or 'plev'; adjust as necessary
+levels = ta_signal['level'].values  # Adjust depending on your dimensions
+levels_era5 = diff_PL['isobaricInhPa'].values  # Adjust depending on your dimensions
+
+# Plotting
+plt.figure(figsize=(10, 6))
+
+# Plot each profile
+plt.plot(ta_era5.sel(isobaricInhPa=levels_era5).mean(dim='latitude').mean(dim='longitude'), levels_era5, label='ERA5', color='green', marker = 'o')
+plt.plot(ta_signal.sel(level=levels).mean(dim='latitude').mean(dim='longitude'), levels/100, label='Signal', color='blue', marker = 'o')
+plt.plot(ta_signal_0p25.sel(level=levels).mean(dim='lat').mean(dim='lon'), levels/100, label='Signal 0.25°', color='orange', marker = 'o')
+
+# Add labels and title
+plt.xlabel('diff RH (%)')  # Adjust based on your variable unit
+plt.ylabel('Pressure Level (hPa)')  # Adjust based on your vertical coordinate
+plt.title('Vertical Profiles of diff RH (%)')
+plt.legend()
+plt.grid()
+plt.gca().invert_yaxis()  # Invert y-axis for pressure levels
+plt.tight_layout()
+
+# Show the plot
+# plt.show()
+plt.savefig("diff_rh.png", dpi=300)
+
+#========================================================
+# Plotting
+plt.figure(figsize=(10, 6))
+
+# Plot each profile
+plt.plot(np.mean(diff_init["relhum"][0,:,:], axis=0), np.linspace(0,54,54+1), label='MPAS-120km', color='black', marker = 'o')
+
+# Add labels and title
+plt.xlabel('diff RH (%)')  # Adjust based on your variable unit
+plt.ylabel('level')  # Adjust based on your vertical coordinate
+plt.title('Vertical Profiles of diff RH (%)')
+plt.legend()
+plt.grid()
+plt.tight_layout()
+
+# Show the plot
+# plt.show()
+plt.savefig("diff_init_rh.png", dpi=300)
+```
+{% endfold %}
+
+# NCL references
+
+
+
 ---
 
 # References
 
-1. [failed to set key 'endStep' in to_grib](https://github.com/ecmwf/cfgrib/issues/289)
-2. [Add support to write a xarray.Dataset to a GRIB file.](https://github.com/ecmwf/cfgrib/issues/18)
+1. [Climate Data Operators (CDO) Tutorial (**recommend**)](https://code.mpimet.mpg.de/projects/cdo/wiki/tutorial#Basic-Usage)
+2. [failed to set key 'endStep' in to_grib](https://github.com/ecmwf/cfgrib/issues/289)
+3. [Add support to write a xarray.Dataset to a GRIB file.](https://github.com/ecmwf/cfgrib/issues/18)
    1. cfgrib.to_grib(ds, 'User_Guide_Example_Data_from_cfgrib.grib')#, grib_keys={'centre': 'ecmf'})
    2. `cfgrib/xarray_to_grib.py:252: FutureWarning: GRIB write support is experimental, DO NOT RELY ON IT!`
-3. [Converting NetCDF to GRIB | 2014](https://code.mpimet.mpg.de/boards/1/topics/2907)
+4. [Converting NetCDF to GRIB | 2014](https://code.mpimet.mpg.de/boards/1/topics/2907)
    1. `cdo -v -f grb -copy sstatlantic_addhifreq.nc ofile.grb`
    2. The large GRIB file has data with 2602x1402=3648004 grid points. CDO stores netCDF double precision floats to 24bit packed GRIB per default. The result is a GRIB record with 10944120 bytes. The max. record length in the GRIB1 standard is 8388607 bytes. **CDO uses the ECMWF extension of the GRIB1 standard for larger GRIB records**. These large GRIB records can only be read by CDO or tools from the ECMWF.
    3. You can create a 16bit GRIB record to reduce the record size:
       1. `cdo -b 16 -f grb copy file.nc file.grb`
-4. Due to the fact that the NetCDF data model is much more free and extensible than the GRIB one, it is not possible to write a generic xarray.Dataset to a GRIB file. The aim for cfgrib is to implement write support for a subset of carefully crafted datasets that fit the GRIB data model. In particular the only coordinates that we target at the moment are the one returned by opening a GRIB with the cfgrib flavour of cfgrib.open_dataset, namely:number, time, step, a vertical coordinate (isobaricInhPa, heightAboveGround, surface, etc), and the horizontal coordinates (for example latitude and longitude for a regular_ll grid type).
+5. Due to the fact that the NetCDF data model is much more free and extensible than the GRIB one, it is not possible to write a generic xarray.Dataset to a GRIB file. The aim for cfgrib is to implement write support for a subset of carefully crafted datasets that fit the GRIB data model. In particular the only coordinates that we target at the moment are the one returned by opening a GRIB with the cfgrib flavour of cfgrib.open_dataset, namely:number, time, step, a vertical coordinate (isobaricInhPa, heightAboveGround, surface, etc), and the horizontal coordinates (for example latitude and longitude for a regular_ll grid type).

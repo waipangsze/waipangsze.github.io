@@ -156,3 +156,7 @@ cdo invertlev era5_with_signal.nc era5_sorted_descending.nc
    cdo vertsort era5_with_signal.nc era5_sorted_ascending.nc
    cdo invertlev era5_with_signal.nc era5_sorted_descending.nc
    ```
+
+# References
+
+1. [Climate Data Operators (CDO) Tutorial (**recommend**)](https://code.mpimet.mpg.de/projects/cdo/wiki/tutorial#Basic-Usage)
