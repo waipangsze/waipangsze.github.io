@@ -8,9 +8,9 @@ index_img:
 banner_img: 
 ---
 
-rsync是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。
+rsync (remote sync) 是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。
 
-在常駐模式（daemon mode）下，rsync預設監聽TCP埠873，以原生rsync傳輸協定或者透過遠端shell如RSH或者SSH提供檔案。SSH模式下，rsync用戶端執行程式必須同時在本機和遠端機器上安裝。
+在常駐模式（daemon mode）下，rsync預設監聽 `TCP埠 873`，以原生rsync傳輸協定或者透過遠端shell如RSH或者SSH提供檔案。SSH模式下，rsync用戶端執行程式必須同時在本機和遠端機器上安裝。
 
 ```sh
 rsync 的基本語法結構如下：
@@ -25,8 +25,8 @@ rsync 參數 來源檔案 目的檔案
 -h：將數字以比較容易閱讀的格式輸出。
 ```
 
-1. 如果要讓 rsync 在傳輸檔案時可以即時顯示進度，可以加上 --progress 參數
-2. -P参数是--progress和--partial这两个参数的结合
+1. 如果要讓 rsync 在傳輸檔案時可以即時顯示進度，可以加上 --progress 參數。
+2. -P參數是--progress和--partial這兩個參數的結合，使用此選項時，rsync 在傳輸過程中**顯示進度條**並**保留部分傳輸的檔案**。透過緩慢或不穩定的網路連線傳輸大檔案時非常有用。
 
 ```console
 rsync -aP folder username@target-ip:/home/user/xxx/
