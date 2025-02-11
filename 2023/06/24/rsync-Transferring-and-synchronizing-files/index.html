@@ -19,15 +19,15 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="rsync是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。 在常駐模式（daemon mode）下，rsync預設監聽TCP埠873，以原生rsync傳輸協定或者透過遠端shell如RSH或者SSH提供檔案">
+    <meta name="description" content="rsync (remote sync) 是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。 在常駐模式（daemon mode）下，rsync預設監聽 TCP埠 873，以原生rsync傳輸協定或者透過遠端s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rsync - Transferring and synchronizing files">
 <meta property="og:url" content="https://waipangsze.github.io/2023/06/24/rsync-Transferring-and-synchronizing-files/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="rsync是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。 在常駐模式（daemon mode）下，rsync預設監聽TCP埠873，以原生rsync傳輸協定或者透過遠端shell如RSH或者SSH提供檔案">
+<meta property="og:description" content="rsync (remote sync) 是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。 在常駐模式（daemon mode）下，rsync預設監聽 TCP埠 873，以原生rsync傳輸協定或者透過遠端s">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-06-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-02-04T08:06:02.866Z">
+<meta property="article:modified_time" content="2025-02-11T02:05:29.378Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="download">
 <meta name="twitter:card" content="summary_large_image">
@@ -332,7 +332,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          531 words
+          585 words
         
       </span>
     
@@ -394,12 +394,12 @@
             
               <div class="markdown-body">
                 
-                <p>rsync是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。</p>
-<p>在常駐模式（daemon mode）下，rsync預設監聽TCP埠873，以原生rsync傳輸協定或者透過遠端shell如RSH或者SSH提供檔案。SSH模式下，rsync用戶端執行程式必須同時在本機和遠端機器上安裝。</p>
+                <p>rsync (remote sync) 是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。</p>
+<p>在常駐模式（daemon mode）下，rsync預設監聽 <code>TCP埠 873</code>，以原生rsync傳輸協定或者透過遠端shell如RSH或者SSH提供檔案。SSH模式下，rsync用戶端執行程式必須同時在本機和遠端機器上安裝。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">rsync 的基本語法結構如下：<br><br>rsync 參數 來源檔案 目的檔案<br>以下是最常見的幾個參數：<br><br>-v：verbose 模式，輸出比較詳細的訊息。<br>-r：遞迴（recursive）備份所有子目錄下的目錄與檔案。<br>-a：封裝備份模式，相當於 -rlptgoD，遞迴備份所有子目錄下的目錄與檔案，保留連結檔、檔案的擁有者、群組、權限以及時間戳記。<br>-z：啟用壓縮。<br>-h：將數字以比較容易閱讀的格式輸出。<br></code></pre></td></tr></table></figure>
 <ol type="1">
-<li>如果要讓 rsync 在傳輸檔案時可以即時顯示進度，可以加上 --progress 參數</li>
-<li>-P参数是--progress和--partial这两个参数的结合</li>
+<li>如果要讓 rsync 在傳輸檔案時可以即時顯示進度，可以加上 --progress 參數。</li>
+<li>-P參數是--progress和--partial這兩個參數的結合，使用此選項時，rsync 在傳輸過程中<strong>顯示進度條</strong>並<strong>保留部分傳輸的檔案</strong>。透過緩慢或不穩定的網路連線傳輸大檔案時非常有用。</li>
 </ol>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs console">rsync -aP folder username@target-ip:/home/user/xxx/<br><br>rsync -aP --exclude=&#x27;*.txt&#x27; --exclude &#x27;dir1/*&#x27; source/ destination<br>rsync -aP --exclude=&#123;&#x27;*.txt&#x27;, &#x27;file1.txt&#x27;,&#x27;dir1/*&#x27;&#125; source/ destination<br>rsync -aP --exclude-from=&#x27;exclude-file.txt&#x27; source/ destination/<br>rsync -av --include=&quot;*.txt&quot; --exclude=&#x27;*&#x27; source/ destination<br></code></pre></td></tr></table></figure>
 <p>and,</p>
@@ -469,7 +469,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 4, 2025</div>
+          <div>February 11, 2025</div>
         </div>
       
       
