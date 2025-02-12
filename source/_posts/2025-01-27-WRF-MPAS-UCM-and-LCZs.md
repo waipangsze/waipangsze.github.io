@@ -314,7 +314,7 @@ Generally 10m wind is computed based on the `Monin-Obukhov similarity theory`; h
 - [Wang, Yi, et al. "Impact of **land surface heterogeneity on urban heat island** circulation and sea‐land breeze circulation in **Hong Kong**." Journal of Geophysical Research: Atmospheres 122.8 (2017): 4332-4352.](https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1002/2017JD026702)
 - [Kim, G., Cha, D. H., Song, C. K., & Kim, H. (2021). **Impacts of anthropogenic heat and building height** on urban precipitation over the Seoul metropolitan area in regional climate modeling. Journal of Geophysical Research: Atmospheres, 126(23), e2021JD035348.](https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2021JD035348)
 
-## HKCU
+## CUHK
 
 - [Hu, C., C.-Y. Tam, Z. Li, J. Chen, Y. Li, K.K.W. Cheung, Z.-L. Yang, J.-E. Chu and T. N. Chow, 2024: **Impacts of Urban Heat and Surface Roughness** on Landfalling Tropical Cyclone Intensity: A Case Study based on TC Victor (1997) in Coastal South China, J. Geophys. Res., 129, e2024JD040915.](https://doi.org/10.1029/2024JD040915)
   - urban surface roughness contributes to a decrease in postlandfall storm intensity through frictional energy dissipation

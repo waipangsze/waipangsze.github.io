@@ -9,12 +9,18 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/ABJTiRl.png
+banner_img: https://i.imgur.com/ABJTiRl.png
 ---
 
 # Physics and Physics Configurations
 
+{% gi 6 3-3 %}
+![](https://i.imgur.com/siMEUS9.png)
+![](https://i.imgur.com/BO0rB71.png)
+![](https://i.imgur.com/rc5XBgi.png)
+![](https://i.imgur.com/ABJTiRl.png)
+{% endgi %}
 
 # Profiling computing time of MPAS
 
@@ -25,6 +31,11 @@ The total runtime for a simulation includes time not spent in initialization or 
 The "parallel efficiency" is defined as the average time for a region across all MPI tasks divided by the maximum time for that region across all tasks.
 
 Hopefully this helps, and if you have any additional questions about timers, please feel free to follow up in this thread.
+
+{% gi 6 3-3 %}
+![](https://i.imgur.com/TJAfYme.png)
+![](https://i.imgur.com/wtb6Ilv.png)
+{% endgi %}
 
 ```console
   Timer information:
