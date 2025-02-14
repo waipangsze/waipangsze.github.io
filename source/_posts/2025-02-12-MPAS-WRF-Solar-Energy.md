@@ -1,7 +1,7 @@
 ---
 layout: post
 title: MPAS | WRF | Solar Energy
-categories: [NWP]
+categories: [MPAS]
 tags: [MPAS, NWP, WRF, ERA5, GFS]
 author: wpsze
 date: 2025-02-12 18:02:00

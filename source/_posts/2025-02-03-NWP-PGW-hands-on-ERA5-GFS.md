@@ -98,11 +98,13 @@ fi
 # Add singal.nc into ERA5.nc
 time python3 ${PGW_script_path}/2d_interp.py
 time python3 ${PGW_script_path}/3d_interp.py
+# time python3 ${PGW_script_path}/3d_interp_with_uv.py
 
 # Convert nc file to grib file
 cp ERA5-0p25-SL-${yyyymmddhh}.grib original-SL.grib
 cp ERA5-0p25-PL-${yyyymmddhh}.grib original-PL.grib
 time sh ${PGW_script_path}/netcdf2grib.sh
+# time sh ${PGW_script_path}/netcdf2grib_with_uv.sh
 
 # cleanup
 rm original-SL.grib original-PL.grib
@@ -841,6 +843,182 @@ print(f"Interpolation completed and saved to 'interpolated_ERA5-0p25-PL-{yyyymmd
 ```
 {% endfold %}
 
+{% fold info @3d_interp_with_uv.py %}
+```python
+#!/bin/python
+
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         wpsze
+#date:           2025-02-04 16:31:50
+#Version:        0.0 
+#Description:    The purpose of the script
+#Copyright (C)： 2025 All rights reserved
+#------------------------------------------------#
+import os
+import numpy as np
+import xarray as xr
+from scipy.interpolate import interp1d
+
+# environment variable 
+yyyymmddhh = os.environ['yyyymmddhh'] 
+
+# Load the signal and ERA5 NetCDF files
+signal_nc = xr.open_dataset('signal_0p25.nc')  # Replace with actual signal file path
+era5_nc = xr.open_dataset(f'ERA5-0p25-PL-{yyyymmddhh}.nc')   # Replace with actual ERA5 file path
+
+#================ Vertical levels =======================================
+# Vertical levels
+signal_levels = signal_nc['level'].values/100            # Vertical levels from signal file,  lev(ncl14), convert to hPa unit
+lat_signal = signal_nc['lat']
+lon_signal = signal_nc['lon']
+
+# Update the coordinates to reflect the new latitude order
+reversed_latitude = lat_signal[::-1]  # Reverse latitude coordinates, from [-90,90] to [90,-90]
+
+era5_levels = era5_nc['isobaricInhPa']          # Vertical levels from ERA5 file, 'level' if grib_to_netcdf, 'isobaricInhPa' if xarray/cfgrib
+
+# signal:
+#[1000.  925.  850.  700.  600.  500.  400.  300.  250.  200.  150.  100.
+#   70.   50.]
+# ERA5:
+#[1000.  975.  950.  925.  900.  875.  850.  825.  800.  775.  750.  700.
+#  650.  600.  550.  500.  450.  400.  350.  300.  250.  225.  200.  175.
+#  150.  125.  100.   70.   50.   30.   20.   10.    7.    5.    3.    2.
+#    1.]
+# Only add singals to specific levels and Convert to by era5_levels[1:29]
+# [975. 950. 925. 900. 875. 850. 825. 800. 775. 750. 700. 650. 600. 550.
+# 500. 450. 400. 350. 300. 250. 225. 200. 175. 150. 125. 100.  70.  50.]
+
+print(f"CMIP6 singal levels = {signal_levels}")
+print(f"era5_levels[1:29] = {era5_levels[1:29].values}")
+
+#================ Interpolation function ================================
+# Interpolation function for vertical levels
+def vertical_interpolate(var_3d, signal_levels, target_levels):
+    interpolated_temp = xr.DataArray(
+        np.empty((target_levels.size, var_3d.shape[1], var_3d.shape[2])), 
+        dims=("isobaricInhPa", "latitude", "longitude"))
+    interpolated_temp = interpolated_temp.assign_coords(isobaricInhPa=era5_levels.values, 
+                                                        latitude=reversed_latitude.values,
+                                                        longitude=lon_signal.values)
+    f = interp1d(signal_levels, var_3d[:, :, :], axis=0, kind='linear', fill_value='extrapolate')
+    interpolated_temp[:, :, :] = f(target_levels)
+    return interpolated_temp
+
+#================ T air_temperature in K ================================
+print("=== processing: T air_temperature in K ")
+
+# Extract variables
+ta_signal = signal_nc['diff_ta']    # 3D temperature from signal file, diff_ta(ncl0, ncl1, ncl2)
+TT_era5 = era5_nc['t']              # 3D temperature from ERA5 file, t(isobaricInhPa, latitude, longitude)
+
+# Update dimensions
+ta_signal = ta_signal.rename({'level': 'isobaricInhPa', 'lat': 'latitude', 'lon': 'longitude'})
+
+# Reverse the TT data along the latitude dimension
+reversed_ta_signal = ta_signal[:, ::-1, :]  # latitude is the second dimension, # Reverse latitude coordinates, from [-90,90] to [90,-90]
+
+# Update the TT variable to use the reversed latitude
+reversed_ta_signal = reversed_ta_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
+
+# Perform vertical interpolation
+interpolated_ta = vertical_interpolate(reversed_ta_signal, signal_levels, era5_levels)
+
+# Define new latitude and longitude arrays for 0.25-degree grid
+# Perform horizontal interpolation to 0.25-degree grid
+## interpolated_ta = interpolated_ta.interp(latitude=TT_era5.coords['latitude'].values, longitude=TT_era5.coords['longitude'].values)
+
+# Add signal to ERA5
+era5_nc['t'][1:29,:,:] = TT_era5[1:29,:,:] + interpolated_ta[1:29,:,:]
+
+#================ Relative Humidity (RH) in % ================================
+print("=== processing: Relative Humidity (RH) in % ")
+
+# Extract variables
+rh_signal = signal_nc['diff_rh']    # 3D RH from signal file, diff_ta(ncl5, ncl6, ncl7)
+RH_era5 = era5_nc['r']              # 3D RH from ERA5 file, t(isobaricInhPa, latitude, longitude)
+
+# Update dimensions
+rh_signal = rh_signal.rename({'level': 'isobaricInhPa', 'lat': 'latitude', 'lon': 'longitude'})
+
+# Reverse the RH data along the latitude dimension
+reversed_rh_signal = rh_signal[:, ::-1, :]  # latitude is the second dimension, # Reverse latitude coordinates, from [-90,90] to [90,-90]
+
+# Update the RH variable to use the reversed latitude
+reversed_rh_signal = reversed_rh_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
+
+# Perform vertical interpolation
+interpolated_rh = vertical_interpolate(reversed_rh_signal, signal_levels, era5_levels)
+
+# Define new latitude and longitude arrays for 0.25-degree grid
+# Perform horizontal interpolation to 0.25-degree grid
+##interpolated_rh = interpolated_rh.interp(latitude=RH_era5.coords['latitude'].values, longitude=RH_era5.coords['longitude'].values)
+
+# Add signal to ERA5
+era5_nc['r'][1:29,:,:] = RH_era5[1:29,:,:] + interpolated_rh[1:29,:,:]
+
+#================ u eastward_wind ================================
+print("=== processing: u eastward_wind (m s**-1) ")
+
+# Extract variables
+ua_signal = signal_nc['diff_ua']    # 3D diff_ua from signal file, diff_ua(level, latitude, longitude)
+u_era5 = era5_nc['u']              # 3D u from ERA5 file, u(isobaricInhPa, latitude, longitude)
+
+# Update dimensions
+ua_signal = ua_signal.rename({'level': 'isobaricInhPa', 'lat': 'latitude', 'lon': 'longitude'})
+
+# Reverse the RH data along the latitude dimension
+reversed_ua_signal = ua_signal[:, ::-1, :]  # latitude is the second dimension, # Reverse latitude coordinates, from [-90,90] to [90,-90]
+
+# Update the RH variable to use the reversed latitude
+reversed_ua_signal = reversed_ua_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
+
+# Perform vertical interpolation
+interpolated_ua = vertical_interpolate(reversed_ua_signal, signal_levels, era5_levels)
+
+# Define new latitude and longitude arrays for 0.25-degree grid
+# Perform horizontal interpolation to 0.25-degree grid
+##interpolated_rh = interpolated_rh.interp(latitude=RH_era5.coords['latitude'].values, longitude=RH_era5.coords['longitude'].values)
+
+# Add signal to ERA5
+era5_nc['u'][1:29,:,:] = u_era5[1:29,:,:] + interpolated_ua[1:29,:,:]
+
+#================ v northward_wind ================================
+print("=== processing: v northward_wind (m s**-1) ")
+
+# Extract variables
+va_signal = signal_nc['diff_va']    # 3D diff_va from signal file, diff_va(level, latitude, longitude)
+v_era5 = era5_nc['v']              # 3D v from ERA5 file, u(isobaricInhPa, latitude, longitude)
+
+# Update dimensions
+va_signal = va_signal.rename({'level': 'isobaricInhPa', 'lat': 'latitude', 'lon': 'longitude'})
+
+# Reverse the RH data along the latitude dimension
+reversed_va_signal = va_signal[:, ::-1, :]  # latitude is the second dimension, # Reverse latitude coordinates, from [-90,90] to [90,-90]
+
+# Update the RH variable to use the reversed latitude
+reversed_va_signal = reversed_va_signal.assign_coords(latitude=reversed_latitude.values, longitude=lon_signal.values)
+
+# Perform vertical interpolation
+interpolated_va = vertical_interpolate(reversed_va_signal, signal_levels, era5_levels)
+
+# Define new latitude and longitude arrays for 0.25-degree grid
+# Perform horizontal interpolation to 0.25-degree grid
+##interpolated_rh = interpolated_rh.interp(latitude=RH_era5.coords['latitude'].values, longitude=RH_era5.coords['longitude'].values)
+
+# Add signal to ERA5
+era5_nc['v'][1:29,:,:] = v_era5[1:29,:,:] + interpolated_va[1:29,:,:]
+
+#=============================================================================
+
+# Save the result to a new NetCDF file
+era5_nc.to_netcdf(f'new_ERA5-0p25-PL-{yyyymmddhh}.nc')
+
+print(f"Interpolation completed and saved to 'interpolated_ERA5-0p25-PL-{yyyymmddhh}.nc.")
+```
+{% endfold %}
+
 ### Explanation of the Code
 
 1. **Loading Data**: The script uses `xarray` to load the signal and ERA5 NetCDF files.
@@ -1040,6 +1218,49 @@ plt.savefig("diff_init_rh.png", dpi=300)
 # NCL references
 
 
+# Discussion Summary
+
+1. **Which Variables Can Be Used?**
+   - The selection of variables is highly dependent on the specific goals and context of the case study. Commonly utilized variables include:
+     - **Temperature (T)**: Essential for understanding thermal dynamics.
+     - **Relative Humidity (RH)**: Important for moisture content and cloud formation.
+     - Additional variables may include geopotential and wind components, depending on the focus of the study.
+
+2. **Importing Wind Components (u, v):**
+   - The decision to import wind components (u and v) should be guided by their relevance to the study. Wind data is crucial for:
+     - Enhancing model accuracy, especially in studies involving atmospheric dynamics.
+     - Providing insights into transport processes and weather patterns.
+
+3. **Interpolation Methods:**
+   - **Horizontal Interpolation**: Bilinear interpolation is commonly used for its simplicity and effectiveness in providing smooth transitions between grid points.
+   - **Vertical Interpolation**: The choice between linear and logarithmic interpolation should be based on the nature of the variable being interpolated:
+     - **Linear Interpolation** is suitable for most variables.
+     - **Logarithmic Interpolation** may be more appropriate for variables with a wide range of values, such as pressure or density.
+
+4. **Consideration of Vertical Levels:**
+   - When performing vertical interpolation, it is important to consider whether to include levels such as 100 hPa. Generally:
+     - If the climate signal data does not extend above certain levels (e.g., 50 hPa), it is prudent to exclude those levels to avoid introducing inconsistencies into the model.
+
+5. **Data Integration Formats:**
+   - The climate signal can be integrated into different formats based on the model being used:
+     - For **ERA5**, climate signals can be added to the ICBC (Initial Condition Boundary Condition) files in GRIB format.
+     - In **WRF**, data may be added directly to `met_em` files, which are used for meteorological input.
+       - ungrib 
+         - Extract meteorological fields from GRIB files
+       - metgrid 
+         - Horizontally interpolate meteorological fields (from ungrib) to simulation grids (defined by geogrid)
+       - real.exe
+         - Initialization will calculate reference state, vertical coordinate interpolation, disturbance field calculation, output boundary conditions, surface data mask, etc.
+         - [初始化會計算 reference state ，垂直座標內插，擾動場計算，產出邊界條件，地表資料遮罩等等](https://sites.google.com/g.ntu.edu.tw/wrf-tutorial-modules/%E6%A8%A1%E5%BC%8F%E8%A8%AD%E8%A8%88/wrf-initialization)
+         - <https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.2/users_guide_chap4.html>
+         - **So, it is fine for adding signal into met_em because met_em only does horizontal interpolation.**
+       - wrf.exe
+     - For **MPAS**, it is no met_em step and only from `static.nc` to `init.nc`. Therefore, the only way is to add signal into ICBC=ERA5.
+
+6. **Long-term Simulations:**
+   - For extended runs in both MPAS and WRF, it is essential to **regularly update SST data**. This practice helps maintain the relevance of the model outputs to current climate conditions, ensuring that the simulations reflect the most recent data and improving the accuracy of long-term forecasts.
+
+Integrating and interpolating climate variables in models like WRF and MPAS involves careful consideration of the variables used, the methods of interpolation, and the formats for data integration. By addressing these factors, researchers can enhance the accuracy and reliability of climate and weather predictions. Proper handling of SST and other variables in both short-term and long-term simulations is crucial for effective climate modeling and analysis.
 
 ---
 

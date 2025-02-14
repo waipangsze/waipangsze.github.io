@@ -172,6 +172,97 @@ This process ensures that your modified ERA5 file is correctly formatted with al
 {% fold info @netcdf2grid.sh %}
 ```ssh
 #!/bin/bash
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         wpsze
+#date:           2025-02-06 08:41:43
+#Version:        0.0 
+#Description:    The purpose of the script
+#Copyright (C)： 2025 All rights reserved
+#------------------------------------------------#
+
+#================= SL ====================================
+cdo selname,sst new_ERA5-0p25-SL-${yyyymmddhh}.nc sst_nan.nc
+cdo selname,skt new_ERA5-0p25-SL-${yyyymmddhh}.nc skt_nan.nc
+
+cdo setmissval,-999 sst_nan.nc sst.nc
+cdo setmissval,-999 skt_nan.nc skt.nc
+
+# cdo pack sst.nc sst_test.nc
+# cdo pack skt.nc skt_test.nc
+
+cdo -f grb copy sst.nc sst.grib
+cdo -f grb copy skt.nc skt.grib
+
+cdo showname sst.grib
+cdo showname skt.grib
+
+grib_set -s dataDate=${yyyymmdd},shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib
+grib_set -s dataDate=${yyyymmdd},shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib
+
+cdo showname sst_final.grib
+cdo showname skt_final.grib
+
+cdo delname,var34,var235 original-SL.grib original-SL_without_vars.grib
+
+rm new_ERA5-0p25-SL-${yyyymmddhh}.grib
+cdo merge sst_final.grib skt_final.grib original-SL_without_vars.grib new_ERA5-0p25-SL-${yyyymmddhh}.grib
+
+cdo showname new_ERA5-0p25-SL-${yyyymmddhh}.grib
+
+#================= PL: t ====================================
+cdo selname,t new_ERA5-0p25-PL-${yyyymmddhh}.nc t_nan.nc
+
+cdo setmissval,-999 t_nan.nc t.nc
+
+# cdo pack t.nc t_test.nc
+
+# How to ensure the order of levels
+# encodeBMS_float   : Missing value = NaN is unsupported!
+cdo -f grb copy t.nc t_lev.grib
+cdo invertlev t_lev.grib t.grib
+
+cdo showname t.grib
+
+grib_set -s dataDate=${yyyymmdd},shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib
+
+cdo showname t_final.grib
+
+##cdo delname,var130,var157 original-PL.grib original-PL_without_vars.grib
+##cdo merge t_final.grib original-PL_without_vars.grib era5_with_signal_final_PL.grib
+##cdo showname era5_with_signal_final_PL.grib
+
+#================= PL: r ====================================
+cdo selname,r new_ERA5-0p25-PL-${yyyymmddhh}.nc r_nan.nc
+
+cdo setmissval,-999 r_nan.nc r.nc
+
+# cdo pack r.nc r_test.nc
+
+# How to ensure the order of levels
+# encodeBMS_float   : Missing value = NaN is unsupported!
+cdo -f grb copy r.nc r_lev.grib
+cdo invertlev r_lev.grib r.grib
+
+cdo showname r.grib
+
+grib_set -s dataDate=${yyyymmdd},shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib
+
+cdo showname r_final.grib
+
+#================= PL: combine t, r ====================================
+cdo delname,var130,var157 original-PL.grib original-PL_without_vars.grib
+
+rm new_ERA5-0p25-PL-${yyyymmddhh}.grib
+cdo merge t_final.grib r_final.grib original-PL_without_vars.grib new_ERA5-0p25-PL-${yyyymmddhh}.grib
+
+cdo showname new_ERA5-0p25-PL-${yyyymmddhh}.grib
+```
+{% endfold %}
+
+{% fold info @netcdf2grib_with_uv.sh %}
+```console
+#!/bin/bash
 
 #------------------------------------------------#
 #Author:         wpsze
@@ -198,8 +289,8 @@ cdo -f grb copy skt.nc skt.grib
 cdo showname sst.grib
 cdo showname skt.grib
 
-grib_set -s dataDate=20240714,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib
-grib_set -s dataDate=20240714,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib
+grib_set -s dataDate=${yyyymmdd},shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib
+grib_set -s dataDate=${yyyymmdd},shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib
 
 cdo showname sst_final.grib
 cdo showname skt_final.grib
@@ -225,7 +316,7 @@ cdo invertlev t_lev.grib t.grib
 
 cdo showname t.grib
 
-grib_set -s dataDate=20240714,shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib
+grib_set -s dataDate=${yyyymmdd},shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib
 
 cdo showname t_final.grib
 
@@ -247,15 +338,51 @@ cdo invertlev r_lev.grib r.grib
 
 cdo showname r.grib
 
-grib_set -s dataDate=20240714,shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib
+grib_set -s dataDate=${yyyymmdd},shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib
 
 cdo showname r_final.grib
 
-#================= PL: combine t, r ====================================
-cdo delname,var130,var157 original-PL.grib original-PL_without_vars.grib
+#================= PL: u ====================================
+cdo selname,u new_ERA5-0p25-PL-${yyyymmddhh}.nc u_nan.nc
+
+cdo setmissval,-999 u_nan.nc u.nc
+
+# cdo pack u.nc u_test.nc
+
+# How to ensure the order of levels
+# encodeBMS_float   : Missing value = NaN is unsupported!
+cdo -f grb copy u.nc u_lev.grib
+cdo invertlev u_lev.grib u.grib
+
+cdo showname u.grib
+
+grib_set -s dataDate=${yyyymmdd},shortName=u,typeOfLevel=isobaricInhPa u.grib u_final.grib
+
+cdo showname u_final.grib
+
+#================= PL: v ====================================
+cdo selname,v new_ERA5-0p25-PL-${yyyymmddhh}.nc v_nan.nc
+
+cdo setmissval,-999 v_nan.nc v.nc
+
+# cdo pack v.nc v_test.nc
+
+# How to ensure the order of levels
+# encodeBMS_float   : Missing value = NaN is unsupported!
+cdo -f grb copy v.nc v_lev.grib
+cdo invertlev v_lev.grib v.grib
+
+cdo showname v.grib
+
+grib_set -s dataDate=${yyyymmdd},shortName=v,typeOfLevel=isobaricInhPa v.grib v_final.grib
+
+cdo showname v_final.grib
+
+#================= PL: combine t, r, u, v ====================================
+cdo delname,var130,var157,var131,var132 original-PL.grib original-PL_without_vars.grib
 
 rm new_ERA5-0p25-PL-${yyyymmddhh}.grib
-cdo merge t_final.grib r_final.grib original-PL_without_vars.grib new_ERA5-0p25-PL-${yyyymmddhh}.grib
+cdo merge t_final.grib r_final.grib u_final.grib v_final.grib original-PL_without_vars.grib new_ERA5-0p25-PL-${yyyymmddhh}.grib
 
 cdo showname new_ERA5-0p25-PL-${yyyymmddhh}.grib
 ```

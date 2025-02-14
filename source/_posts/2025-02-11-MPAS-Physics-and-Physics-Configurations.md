@@ -1,7 +1,7 @@
 ---
 layout: post
 title: MPAS | Physics and Physics Configurations, Profiling computing time
-categories: [NWP]
+categories: [MPAS]
 tags: [MPAS, NWP, WRF, ERA5, GFS]
 author: wpsze
 date: 2025-02-11 11:07:00
