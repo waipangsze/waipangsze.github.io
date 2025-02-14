@@ -1,0 +1,980 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Generating SST and sea-ice update files  https:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;projects&#x2F;mpas&#x2F;tutorial&#x2F;Howard2024&#x2F;index.html MPAS-Tutorial-NCAR-2023&#x2F;mpas_tutorial | ftp  Because MPAS-Atmosphere — at least, when ru">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS | ERA5| Update SST and sea-ice fraction">
+<meta property="og:url" content="https://waipangsze.github.io/2025/02/14/MPAS-ERA5-Update-SST-and-sea-ice-fraction/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Generating SST and sea-ice update files  https:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;projects&#x2F;mpas&#x2F;tutorial&#x2F;Howard2024&#x2F;index.html MPAS-Tutorial-NCAR-2023&#x2F;mpas_tutorial | ftp  Because MPAS-Atmosphere — at least, when ru">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-14T03:49:00.000Z">
+<meta property="article:modified_time" content="2025-02-14T09:09:56.449Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="PGW">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="GRIB">
+<meta property="article:tag" content="NetCDF">
+<meta property="article:tag" content="CMIP6">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS | ERA5| Update SST and sea-ice fraction - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS | ERA5| Update SST and sea-ice fraction"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-14 11:49" pubdate>
+          February 14, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          694 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS | ERA5| Update SST and sea-ice fraction</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="generating-sst-and-sea-ice-update-files">Generating SST and sea-ice update files</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html" class="uri">https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/">MPAS-Tutorial-NCAR-2023/mpas_tutorial | ftp</a></li>
+</ul>
+<p>Because MPAS-Atmosphere — at least, when run as a stand-alone model — does not contain prognostic equations for the SST and sea-ice fraction, these fields would remain constant if not updated from an external source; this is, of course, not realistic, and it will generally impact the quality of longer model simulations. Consequently, for MPAS-Atmosphere simulations longer than roughly a week, it is typically necessary to periodically update the sea-surface temperature (SST) field in the model. For real-time simulations, this is generally not an option, but it is feasible for retrospective simulations, where we have observed SST analyses available to us.</p>
+<div class="note note-primary">
+            <p>Prepare <strong>intermediate files containing SST and sea-ice analyses</strong></p>
+          </div>
+<h1 id="for-era5">For ERA5</h1>
+<h2 id="intermediate-files">Intermediate files</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_data_util_pp.pdf">Fortran script to convert netCDF to Intermediate format</a>
+<ul>
+<li>Convert netCDF to Intermediate: <a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/src/netcdf-to-intermediate.f">netcdf-to-intermediate.f</a></li>
+</ul></li>
+</ul>
+<h3 id="reading-intermediate-files">Reading intermediate files</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/hanschen/WPS/blob/master/util/src/rd_intermediate.F">WPS/util/src/rd_intermediate.F</a></li>
+<li><code>WPS/util/rd_intermediate.exe</code></li>
+<li>USAGE: <code>rd_intermediate.exe &lt;filename&gt;</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> /home/wpsze/WRF/WRFv440/wrf_env.sh<br><span class="hljs-built_in">ln</span> -sf /home/wpsze/WRF/WRFv440/wrf_install/WPS-4.4/bin/rd_intermediate.exe<br><span class="hljs-built_in">ln</span> -sf /home/wpsze/WRF/WRFv440/wrf_install/WPS-4.4/util/plotfmt.ncl<br>./rd_intermediate.exe <span class="hljs-variable">$1</span><br>ncl plotfmt.ncl <span class="hljs-variable">$1</span><br></code></pre></td></tr></table></figure>
+<p>and, on termianl,</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">./read_int.sh ERA5:2022-06-30_00</span><br>......<br>================================================<br>FIELD = SEAICE<br>UNITS = fraction DESCRIPTION = Sea-Ice Fraction<br>DATE = 2022-06-30_00:00:00 FCST = 0.000000<br>SOURCE = ECMWF<br>LEVEL = 200100.000000<br>I,J DIMS = 1440, 721<br>IPROJ = 0  PROJECTION = LAT LON<br>  REF_X, REF_Y = 1.000000, 1.000000<br>  REF_LAT, REF_LON = 90.000008, 0.000000<br>  DLAT, DLON = -0.250000, 0.250000<br>  EARTH_RADIUS = 6367.470215<br>DATA(1,1)=0.927246<br><br>================================================<br>FIELD = SST<br>UNITS = K DESCRIPTION = Sea-Surface Temperature<br>DATE = 2022-06-30_00:00:00 FCST = 0.000000<br>SOURCE = ECMWF<br>LEVEL = 200100.000000<br>I,J DIMS = 1440, 721<br>IPROJ = 0  PROJECTION = LAT LON<br>  REF_X, REF_Y = 1.000000, 1.000000<br>  REF_LAT, REF_LON = 90.000008, 0.000000<br>  DLAT, DLON = -0.250000, 0.250000<br>  EARTH_RADIUS = 6367.470215<br>DATA(1,1)=271.459961<br>================================================<br>......<br></code></pre></td></tr></table></figure>
+<h3 id="plotting-intermediate-files-plotfmt.ncl">Plotting Intermediate Files: plotfmt.ncl</h3>
+<p>Plots the fields in the ungribbed intermediate files</p>
+<blockquote>
+<p>$ ncl plotfmt.ncl 'filename="FNL:2007-09-15_00"'</p>
+</blockquote>
+<p>See above shell script.</p>
+<h2 id="results">Results</h2>
+<div class="note note-primary">
+            <p>The ERA5.grib can be <strong>IC, LBC, FDDA</strong> and <strong>SST/Sea-Ice updated</strong> as well.</p><p>And, <strong>ERA5 corresponding interemediate file</strong> can be used.</p>
+          </div>
+<h1 id="for-mpas">For MPAS</h1>
+<h2 id="namelist.init_atmosphere">namelist.init_atmosphere</h2>
+<p>The key namelist options that must be set are shown below; other options can be ignored.</p>
+<p>Note in particular that we have set the <code>config_init_case</code> <strong>variable to 8!</strong> This is the initialization case used to create surface update files, instead of real-data initial conditions files.</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">
+        <div class="fold-arrow">▶</div>namelist.init_atmosphere
+      </div>
+      <div class="fold-collapse collapse" id="collapse-6ae3e036">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs namelist.init_atmosphere">&amp;nhyd_model<br>    config_init_case = 8<br>    config_start_time = &#x27;2014-09-10_00:00:00&#x27;<br>    config_stop_time = &#x27;2014-09-20_00:00:00&#x27;<br>/<br><br>&amp;data_sources<br>    config_sfc_prefix = &#x27;SST&#x27;<br>    config_fg_interval = 86400<br>/<br><br>&amp;preproc_stages<br>    config_static_interp = false<br>    config_native_gwd_static = false<br>    config_vertical_grid = false<br>    config_met_interp = false<br>    config_input_sst = true<br>    config_frac_seaice = true<br>/<br>&amp;decomposition<br>    config_block_decomp_file_prefix = &#x27;x1.10242.graph.info.part.&#x27;<br>/<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="streams.init_atmosphere">streams.init_atmosphere</h2>
+<p>We have set both the <code>filename_template</code> and output_interval attributes of the "<code>surface</code>" stream. The <code>output_interval</code> should match the interval specified in the namelist for the <code>config_fg_interval</code> variable. The other streams ("<code>input</code>", "<code>output</code>", and "<code>lbc</code>") can remain unchanged — the input file should still be set to the name of the static file.</p>
+<ul>
+<li>Noted: can set <code>filename_template="sst.$Y-$M-$D_$h.$m.$s.nc"</code></li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">
+        <div class="fold-arrow">▶</div>streams.init_atmosphere
+      </div>
+      <div class="fold-collapse collapse" id="collapse-9c51fa20">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs streams.init_atmosphere">&lt;immutable_stream name=&quot;surface&quot;<br>                  type=&quot;output&quot;<br>                  filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>                  filename_interval=&quot;none&quot;<br>                  packages=&quot;sfc_update&quot;<br>                  output_interval=&quot;86400&quot;/&gt;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h3 id="plot">Plot</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/240km_uniform/plot_delta_sst.py" class="uri">https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/240km_uniform/plot_delta_sst.py</a></li>
+<li><code>./plot_delta_sst.py x1.10242.static.nc x1.10242.sfc_update.nc</code></li>
+<li>In this plot, we have masked out the SST differences over land, since the values of the field over land are not representative of actual SST differences, but may represent differences in, e.g., skin temperature or 2-m air temperature, depending on the source of the SST analyses.</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+        <div class="fold-arrow">▶</div>plot_delta_sst.py
+      </div>
+      <div class="fold-collapse collapse" id="collapse-05eef982">
+        <div class="fold-content">
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><br><span class="hljs-keyword">import</span> Ngl<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">from</span> netCDF4 <span class="hljs-keyword">import</span> Dataset<br><span class="hljs-keyword">import</span> math<br><span class="hljs-keyword">import</span> sys<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Get the name of the file containing the static information</span><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Usage: &#x27;</span>+sys.argv[<span class="hljs-number">0</span>]+<span class="hljs-string">&#x27; [mesh filename] &lt;field filename&gt;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        exit(<span class="hljs-number">0</span>)<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># The (lat,lon) the plot is to be centered over</span><br>    <span class="hljs-comment">#</span><br>    cenLat   = <span class="hljs-number">0.0</span><br>    cenLon   = <span class="hljs-number">0.0</span><br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Projection to use for plot</span><br>    <span class="hljs-comment">#</span><br>    projection = <span class="hljs-string">&#x27;CylindricalEquidistant&#x27;</span><br><br><br>    r2d = <span class="hljs-number">180.0</span> / math.pi             <span class="hljs-comment"># radians to degrees</span><br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">2</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">1</span>])<br>        g = f<br>    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">3</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">2</span>])<br>        g = Dataset(sys.argv[<span class="hljs-number">1</span>])<br><br>    rlist = Ngl.Resources()<br><span class="hljs-comment">#    rlist.wkWidth = 1200</span><br><span class="hljs-comment">#    rlist.wkHeight = 1200</span><br><br>    rlist.wkColorMap = <span class="hljs-string">&#x27;gui_default&#x27;</span><br><br>    wks_type = <span class="hljs-string">&#x27;png&#x27;</span><br>    wks = Ngl.open_wks(wks_type, <span class="hljs-string">&#x27;delta_sst&#x27;</span>, rlist)<br><br>    lonCell = g.variables[<span class="hljs-string">&#x27;lonCell&#x27;</span>][:] * r2d<br>    latCell = g.variables[<span class="hljs-string">&#x27;latCell&#x27;</span>][:] * r2d<br><br>    res = Ngl.Resources()<br><br>    res.sfXArray             = lonCell<br>    res.sfYArray             = latCell<br><br>    res.cnFillMode           = <span class="hljs-string">&#x27;AreaFill&#x27;</span><br><br>    res.cnFillOn             = <span class="hljs-literal">True</span><br>    res.cnLinesOn            = <span class="hljs-literal">False</span><br>    res.cnLineLabelsOn       = <span class="hljs-literal">False</span><br><br>    res.cnInfoLabelOn        = <span class="hljs-literal">True</span><br><br>    res.lbLabelAutoStride    = <span class="hljs-literal">True</span><br>    res.lbBoxLinesOn         = <span class="hljs-literal">False</span><br><br>    res.mpProjection      = projection<br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;MediumRes&#x27;</span><br>    res.mpCenterLatF      = cenLat<br>    res.mpCenterLonF      = cenLon<br>    res.mpGridAndLimbOn   = <span class="hljs-literal">True</span><br>    res.mpGridAndLimbDrawOrder = <span class="hljs-string">&#x27;PreDraw&#x27;</span><br>    res.mpGridLineColor   = <span class="hljs-string">&#x27;Background&#x27;</span><br>    res.mpOutlineOn       = <span class="hljs-literal">True</span><br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;Ncarg4_1&#x27;</span><br>    res.mpDataSetName     = <span class="hljs-string">&#x27;Earth..3&#x27;</span><br>    res.mpOutlineBoundarySets = <span class="hljs-string">&#x27;Geophysical&#x27;</span><br>    res.mpPerimOn         = <span class="hljs-literal">True</span><br>    res.mpLimitMode = <span class="hljs-string">&#x27;LatLon&#x27;</span><br>    res.mpMinLonF = -<span class="hljs-number">180.0</span><br>    res.mpMaxLonF = <span class="hljs-number">180.0</span><br>    res.mpMinLatF = -<span class="hljs-number">90.0</span><br>    res.mpMaxLatF = <span class="hljs-number">90.0</span><br><br>    res.cnLevelSelectionMode = <span class="hljs-string">&#x27;ManualLevels&#x27;</span><br>    res.cnMinLevelValF = -<span class="hljs-number">2.0</span><br>    res.cnMaxLevelValF = <span class="hljs-number">2.0</span><br>    res.cnLevelSpacingF = <span class="hljs-number">0.10</span><br>    res.lbAutoManage = <span class="hljs-literal">False</span><br>    res.lbOrientation = <span class="hljs-string">&#x27;Horizontal&#x27;</span><br>    res.lbBoxEndCapStyle = <span class="hljs-string">&#x27;TriangleBothEnds&#x27;</span><br>    res.lbLabelAngleF = <span class="hljs-number">90.0</span><br>    res.lbLabelFontHeightF = <span class="hljs-number">0.01</span><br><br>    res.mpFillOn              = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Turn on map fill.</span><br>    res.mpFillAreaSpecifiers  = [<span class="hljs-string">&#x27;Land&#x27;</span>]<br>    res.mpSpecifiedFillColors = [<span class="hljs-number">0</span>]<br>    res.mpAreaMaskingOn       = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Indicate we want to </span><br>    res.mpMaskAreaSpecifiers  = [<span class="hljs-string">&#x27;Water&#x27;</span>]<br>    res.cnFillDrawOrder       = <span class="hljs-string">&#x27;Predraw&#x27;</span>       <span class="hljs-comment"># Draw contours first.</span><br><br>    fld = f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">10</span>,:] - f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">0</span>,:]<br>    <span class="hljs-built_in">map</span> = Ngl.contour_map(wks, fld, res)<br><br>    Ngl.end()<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="registry.xml">Registry.xml</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347">MPAS-Model/src/core_init_atmosphere/Registry.xml</a></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sfc_update&quot;</span> <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Used by test cases that produce surface updates.&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sst&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;K&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;sea-surface temperature&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;xice&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;unitless&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;fractional area coverage of sea-ice&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/PGW/" class="print-no-link">#PGW</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/GRIB/" class="print-no-link">#GRIB</a>
+      
+        <a href="/tags/NetCDF/" class="print-no-link">#NetCDF</a>
+      
+        <a href="/tags/CMIP6/" class="print-no-link">#CMIP6</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS | ERA5| Update SST and sea-ice fraction</div>
+      <div>https://waipangsze.github.io/2025/02/14/MPAS-ERA5-Update-SST-and-sea-ice-fraction/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 14, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>February 14, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/12/MPAS-WRF-Solar-Energy/" title="MPAS | WRF | Solar Energy">
+                        <span class="hidden-mobile">MPAS | WRF | Solar Energy</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
