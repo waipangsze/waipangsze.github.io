@@ -36,8 +36,24 @@ By applying the Pseudo-Global-Warming (PGW) approach, you can use the CMIP6 clim
 
 # Main Script
 
+{% fold info @loop.sh %}
+```sh
+#!/bin/bash
+
+ym="20220630"
+
+for iday in {0..360..3}; do
+    # Next_day=$(date +%Y-%m-%d_%H:%M:%S -d "$YYYYMMDD + 1 hour")
+    export ERA5_datetime=$(date +%Y%m%d%H -d "$ym + $iday hour")
+    echo ${ERA5_datetime}
+
+    ./PGW_main.sh
+done
+```
+{% endfold %}
+
 {% fold info @PGW_main.sh %}
-```console
+```sh
 #!/bin/bash
 
 #------------------------------------------------#

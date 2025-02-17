@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/Gs7ezqA.png
+banner_img: https://i.imgur.com/Gs7ezqA.png
 ---
 
 # Generating SST and sea-ice update files
@@ -90,7 +90,16 @@ Plots the fields in the ungribbed intermediate files
 
 See above shell script.
 
-## Results
+{% gi 6 3-3 %}
+![](https://i.imgur.com/Z3OysPt.png)
+![](https://i.imgur.com/IuCdgnU.png)
+![](https://i.imgur.com/698XQfv.png)
+![](https://i.imgur.com/oZwecqP.png)
+![](https://i.imgur.com/vSVNCUn.png)
+![](https://i.imgur.com/EPqOweu.png)
+{% endgi %}
+
+## Summary
 
 {% note primary %}
 The ERA5.grib can be **IC, LBC, FDDA** and **SST/Sea-Ice updated** as well.
@@ -115,7 +124,7 @@ Note in particular that we have set the `config_init_case` **variable to 8!** Th
 /
 
 &data_sources
-    config_sfc_prefix = 'SST'
+    config_sfc_prefix = 'SST' # SST or ERA5: the prefix of the intermediate data files containing SST and sea-ice
     config_fg_interval = 86400
 /
 
@@ -147,6 +156,29 @@ We have set both the `filename_template` and output_interval attributes of the "
                   filename_interval="none"
                   packages="sfc_update"
                   output_interval="86400"/>
+```
+{% endfold %}
+
+## results
+
+{% fold info @ncdump -h sst.2022-06-30_00.00.00.nc %}
+```console
+ $ ncdump -h sst.2022-06-30_00.00.00.nc
+netcdf sst.2022-06-30_00.00.00 {
+dimensions:
+	StrLen = 64 ;
+	Time = UNLIMITED ; // (1 currently)
+	nCells = 40962 ;
+variables:
+	char xtime(Time, StrLen) ;
+		xtime:units = "YYYY-MM-DD_hh:mm:ss" ;
+		xtime:long_name = "Model valid time" ;
+	float sst(Time, nCells) ;
+		sst:units = "K" ;
+		sst:long_name = "sea-surface temperature" ;
+	float xice(Time, nCells) ;
+		xice:units = "unitless" ;
+		xice:long_name = "fractional area coverage of sea-ice" ;
 ```
 {% endfold %}
 
@@ -269,6 +301,10 @@ if __name__ == "__main__":
 ```
 {% endfold %}
 
+![](https://i.imgur.com/Gs7ezqA.png){width=400}
+
+- or `$ ncdiff sst.nc init.nc diff-sst.nc`
+
 ## Registry.xml
 
 - [MPAS-Model/src/core_init_atmosphere/Registry.xml](https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347)
@@ -284,5 +320,29 @@ if __name__ == "__main__":
         packages="met_stage_out;sfc_update"/>
 ```
 
+## streams.atmosphere
 
+- stream_list.atmosphere.surface
 
+{% fold info @streams.atmosphere %}
+```streams.atmosphere
+<stream name="surface"
+        type="input"
+        filename_template="x1.10242.sfc_update.nc"
+        filename_interval="none"
+        input_interval="86400">
+
+    <file name="stream_list.atmosphere.surface"/>
+
+</stream>
+```
+{% endfold %}
+
+## namelist.atmosphere
+
+{% fold info @namelist.atmosphere %}
+```namelist.atmosphere
+&physics
+    config_sst_update = true
+```
+{% endfold %}
