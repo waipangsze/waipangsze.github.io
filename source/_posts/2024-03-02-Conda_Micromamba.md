@@ -100,6 +100,9 @@ micromamba env create --name newenv --file oldenv.yaml
 ```sh
 $ source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
 $ micromamba activate venv
+
+## For everyone to activate my env
+$ micromamba activate /home/wpsze/micromamba/envs/mpich
 ```
 
 ### activate or execute

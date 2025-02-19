@@ -346,3 +346,15 @@ if __name__ == "__main__":
     config_sst_update = true
 ```
 {% endfold %}
+
+# WRF&MPAS-A Support Forum
+
+- [MPAS tutorial questions about ungrid and SST data | Jun 2023](https://forum.mmm.ucar.edu/threads/mpas-tutorial-questions-about-ungrid-and-sst-data.13510/)
+  - (1) Starting from WPSV4.3, a configure option, --nowrf, has been added to allow for configuration of the WPS without reference to a compiled WRF model. if you only need the ungrib component of the WPS, you can compile WPS with this option.
+  - (2) Most of the reanalysis products like GFS, ERA5 etc include SST. When you run ungrib to extract variables from the reanalysis data, SST will be included in the intermediate file.
+- [SST update on the lakes | Jul 2023](https://forum.mmm.ucar.edu/threads/sst-update-on-the-lakes.13717/)
+  - SST_UPDATE only works over water points, i.e., those grid points where landmask =0. Those points with lakemask =1 should correspond to points with landmask=0, and thus sst_update should apply to such points.
+- [MPAS SST update file | Feb 2020](https://forum.mmm.ucar.edu/threads/mpas-sst-update-file.8874/)
+- [Updating SST not working | Sep 2018](https://forum.mmm.ucar.edu/threads/updating-sst-not-working.200/)
+  - forrtl: severe (64): input conversion error, unit -5, file Internal List-Directed Read
+  - The issue seems to be that parts of the timestamp string ('xtime') that are read from input files contain garbage, which confuses the parsing code in the timekeeping module.

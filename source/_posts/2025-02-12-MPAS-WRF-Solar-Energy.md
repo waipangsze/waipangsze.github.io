@@ -90,6 +90,20 @@ state real swddif2 ij misc 1 - rhd "SWDDIF2" "Shortwave surface downward diffuse
         description="shortwave surface downward diffuse irradiance"/>
 ```
 
+# GFS: DSWRF
+
+The Global Forecast System (GFS) model is used to predict solar power generation by forecasting various weather parameters, including downward short-wave radiation flux (DSWRF). The GFS model is run daily at 00, 06, 12, and 18 UTC, providing hourly forecasts for up to 120 hours.
+
+Here's how the GFS model and DSWRF are used in solar energy predictions:
+
+*   **DSWRF Parameter:** GFS uses the DSWRF parameter, labeled as a "0-3 hour ave".
+*   **NWP Variables:** The GFS model uses nine Numerical Weather Prediction (NWP) variables to predict solar generation at a site. These include shortwave radiation, cloud cover, air temperature, wind speed, and precipitation.
+*   **Inputs for Models:** The parameters derived from GFS are used as inputs for solar irradiance models.
+*   **Calibration:** GFS solar irradiation forecasts can be calibrated to improve accuracy.
+*   **Bias Correction:** Correcting cloud cover bias in GFS-derived cloud forecasts can improve energy forecasts.
+
+---
+
 # References
 
 1. [太陽輻射量的二十四小時時間序列 | HKO ](https://www.hko.gov.hk/tc/wxinfo/ts/display_element_solar.htm)

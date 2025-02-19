@@ -40,6 +40,7 @@ date: 2024-09-30 21:26:27
 
 - [3‧3 氣團和鋒面](https://www.openclass.chc.edu.tw/storage/53/112/%E8%AA%B2%E7%A8%8B%E8%B3%87%E6%96%99.pdf/4C3VihbySO8GtN9cW21cTbki5D2cQnaVqPRQgaM6.pdf#page=0.00)
 - [香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)
+- [时间、历法与 NetCDF 中的时间坐标](https://mp.weixin.qq.com/s/E9s2zHbyX2LmJVcR9rEFxw)
 
 ## 空氣污染
 
