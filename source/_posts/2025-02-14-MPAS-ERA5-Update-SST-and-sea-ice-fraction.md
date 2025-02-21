@@ -347,6 +347,10 @@ if __name__ == "__main__":
 ```
 {% endfold %}
 
+## Plot diff
+
+![](https://i.imgur.com/7shbwIg.png){width=400}
+
 # WRF&MPAS-A Support Forum
 
 - [MPAS tutorial questions about ungrid and SST data | Jun 2023](https://forum.mmm.ucar.edu/threads/mpas-tutorial-questions-about-ungrid-and-sst-data.13510/)

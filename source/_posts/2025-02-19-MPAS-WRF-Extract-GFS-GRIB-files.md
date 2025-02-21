@@ -4,13 +4,13 @@ title: MPAS | WRF | Extract subset of GFS GRIB files
 categories: [MPAS]
 tags: [MPAS, NWP, WRF, ERA5, GFS]
 author: wpsze
-date: 2025-02-12 18:02:00
+date: 2025-02-19 18:02:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/GO7mmRR.png
+banner_img: https://i.imgur.com/GO7mmRR.png
 ---
 
 # GFS subset download
@@ -18,6 +18,100 @@ banner_img:
 - <https://rda.ucar.edu/datasets/d084001/dataaccess/#>
   - Sign up with orcid
   - Customizable Data Requests > Subsetting 
+  - Waiting for completion
+  - csh/python scripts are provided
+
+{% gi 4 1-3 %}
+![](https://i.imgur.com/GO7mmRR.png)
+![](https://i.imgur.com/gyRwXFJ.png)
+![](https://i.imgur.com/HDtKiPl.png)
+{% endgi %}
+
+{% fold info @rda-download.csh %}
+```sh
+#!/usr/bin/env csh
+#
+# c-shell script to download selected files from rda.ucar.edu using Wget
+# NOTE: if you want to run under a different shell, make sure you change
+#       the 'set' commands according to your shell's syntax
+# after you save the file, don't forget to make it executable
+#   i.e. - "chmod 755 <name_of_script>"
+#
+# Experienced Wget Users: add additional command-line flags to 'opts' here
+#   Use the -r (--recursive) option with care
+#   Do NOT use the -b (--background) option - simultaneous file downloads
+#       can cause your data access to be blocked
+set opts = "-N"
+#
+# Check wget version.  Set the --no-check-certificate option 
+# if wget version is 1.10 or higher
+set v = `wget -V |grep 'GNU Wget ' | cut -d ' ' -f 3`
+set a = `echo $v | cut -d '.' -f 1`
+set b = `echo $v | cut -d '.' -f 2`
+if(100 * $a + $b > 109) then
+  set cert_opt = "--no-check-certificate"
+else
+  set cert_opt = ""
+endif
+
+set filelist= ( \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2024123000.f384-25.2025011200.f195.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025011200.f198-25.2025011618.f135.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025011618.f138-25.2025012100.f360.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025012100.f366-25.2025012512.f129.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025012512.f132-25.2025012918.f330.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025012918.f336-25.2025020306.f105.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025020306.f108-25.2025020712.f228.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025020712.f231-25.2025021200.f003.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025021200.f006-25.2025021606.f084.grib2.tar \
+  https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025021606.f087-25.2025021712.f384.grib2.tar \
+)
+while($#filelist > 0)
+  set syscmd = "wget $cert_opt $opts $filelist[1]"
+  echo "$syscmd ..."
+  $syscmd
+  shift filelist
+end
+```
+{% endfold %}
+
+{% fold info @rda-download.py %}
+```python
+#!/usr/bin/env python
+""" 
+Python script to download selected files from rda.ucar.edu.
+After you save the file, don't forget to make it executable
+i.e. - "chmod 755 <name_of_script>"
+"""
+import sys, os
+from urllib.request import build_opener
+
+opener = build_opener()
+
+filelist = [
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2024123000.f384-25.2025011200.f195.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025011200.f198-25.2025011618.f135.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025011618.f138-25.2025012100.f360.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025012100.f366-25.2025012512.f129.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025012512.f132-25.2025012918.f330.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025012918.f336-25.2025020306.f105.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025020306.f108-25.2025020712.f228.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025020712.f231-25.2025021200.f003.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025021200.f006-25.2025021606.f084.grib2.tar',
+  'https://request.rda.ucar.edu/dsrqst/SZE782753/TarFiles/gfs.0p25.2025021606.f087-25.2025021712.f384.grib2.tar'
+]
+
+for file in filelist:
+    ofile = os.path.basename(file)
+    sys.stdout.write("downloading " + ofile + " ... ")
+    sys.stdout.flush()
+    infile = opener.open(file)
+    outfile = open(ofile, "wb")
+    outfile.write(infile.read())
+    outfile.close()
+    sys.stdout.write("done\n")
+```
+{% endfold %}
 
 # Read GFS grib2 files
 

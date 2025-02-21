@@ -42,6 +42,82 @@ banner_img: https://i.imgur.com/gXPusJ6.png
 
 ![](https://i.imgur.com/GlRJZm8.png)
 
+## Τhe absorption bands of Earth's atmosphere
+
+Τhe absorption bands of Earth's atmosphere (grey colour) delimit its atmospheric windows (middle panel) and the effect they have on both downgoing solar radiation and upgoing thermal radiation emitted near the surface is shown in the top panel. The individual absorption spectra of major greenhouse gases plus Rayleigh scattering are shown in the lower panel.
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Atmospheric_Transmission.svg/614px-Atmospheric_Transmission.svg.png)
+
+# ECMWF | IFS | ERA5 : SSRD
+
+- [What are the definitions of the radiation fields?](https://confluence.ecmwf.int/pages/viewpage.action?pageId=111155332)
+  - `"Surface solar radiation downwards" (SSRD)` is the incident solar (shortwave) radiation and `"surface solar radiation" (SSR)` is the net solar radiation (the fraction of solar radiation not reflected by the surface). `"Surface net solar radiation, clear sky" (SSRC)` is a hypothetical field of net solar radiation assuming no clouds.
+  - `"Surface thermal radiation downwards" (STRD)` is the incident thermal (longwave) radiation and `"surface thermal radiation" (STR)` is the net thermal radiation. `"Surface net thermal radiation, clear sky" (STRC)` is a hypothetical field of net thermal radiation assuming no clouds.
+  - "Top solar radiation" is the net solar (shortwave) radiation at the top of the atmosphere (TOA). "Top net solar radiation, clear sky" is a hypothetical field assuming no clouds.
+  - "Top thermal radiation" is the net thermal (longwave) radiation at the top of the atmosphere. "Top net thermal radiation, clear sky" is a hypothetical field assuming no clouds.
+
+**Additional details on radiation parameters can be found here**: [Radiation-quantities-ecmwf-model-and-mars.pdf (document correct as of Cycle 41R1)](https://www.ecmwf.int/sites/default/files/elibrary/2015/18490-radiation-quantities-ecmwf-model-and-mars.pdf)
+
+## Details of the Variable:
+
+- **Name**: Surface Solar Radiation Downwards (SSRD)
+- **GRIB Parameter ID**: 169 (in GRIB format, as used by ECMWF)
+- **Units**: J/m² (accumulated over a time step, typically hourly or 3-hourly depending on the dataset)
+- **Description**: This is the amount of solar radiation (shortwave) reaching the surface of the Earth, integrated over a specified time period. To convert it to an average irradiance in W/m², you divide the accumulated value (J/m²) by the time step in seconds (e.g., 3600 seconds for hourly data).
+
+### Notes:
+1. **Availability**: SSRD is available in many ECMWF IFS outputs, including the high-resolution deterministic forecast (HRES), ensemble forecasts (ENS), and reanalysis products like ERA5.
+2. **Direct vs. Diffuse**: SSRD includes both direct and diffuse radiation. If you specifically need **Direct Normal Irradiance (DNI)** or diffuse components, these are not directly provided as separate variables in standard IFS outputs. However, they can sometimes be derived using additional post-processing or from specialized datasets (e.g., CAMS radiation services, which use IFS data).
+
+### Practical Example:
+If you retrieve SSRD from an hourly ERA5 dataset and the value is 720,000 J/m² over a 1-hour period, the average irradiance is:
+
+$$
+720,000 \text{J/m² ÷} 3600 \text{s} = 200 \text{W/m²}
+$$
+
+## ** Radiation Quantities
+
+### Conventions
+
+The following conventions are employed in the storage of fluxes by the ECMWF model:
+
+1. Archived fluxes are either **downward** or **net**. Energy entering the Earth's atmosphere-surface system is taken as a positive quantity, and therefore downward fluxes are positive and net flux refers to the downward flux minus the upward flux. To obtain the upward flux ($F^{up}$) from the downward flux ($F^{dn}$) and net flux ($F^{net}$), use $F^{up} = F^{dn} - F^{net}$.
+2. Physical fluxes archived by the ECMWF model are **accumulated** since the start of the relevant forecast, and therefore in **units of J m⁻² (or W m⁻² s)**. Thus, a daily mean (in W m⁻²) is obtained by retrieving the accumulated fluxes at $t_1 = t$ and $t_2 = t + 24$ hours (where $t$ is the time of the start of the average), taking the difference and dividing by $86400$, the number of seconds in a day.
+3. **Clear-sky** quantities are computed for exactly the same atmospheric conditions of temperature, humidity, ozone, trace gases and aerosol, but assuming that *the clouds are not there*.
+   1. **Clear-sky irradiance** represents the solar energy reaching the Earth's surface at a specific location and time, assuming there are no clouds present. It's the *theoretical maximum irradiance*, which is reduced by cloud cover in real-world conditions. Clear-sky irradiance is influenced by factors such as the Earth-Sun distance and their relative positions.
+   2. **All-sky irradiance** considers all scattering and absorption by gases, aerosols, and clouds. It is another name for **"global horizontal irradiance" (GHI)**, which is the total solar irradiance (direct plus diffuse) incident on a horizontal surface. Semi-empirical models produce all-sky irradiance as a final output, accounting for all atmospheric factors, including cloud cover.
+4. **Solar** or **short-wave** refers to radiation emitted by the Sun, then scattered, absorbed or transmitted by the atmosphere and reflected or absorbed by the surface. It corresponds roughly to the $0.2-4 \mu m$  or $50,000–2600 cm^{-1}$ part of the spectrum. Thermal, **terrestrial** or **long-wave** refers to radiation emitted and absorbed by the surface or by gases, clouds and particles within the atmosphere. It corresponds roughly to the $4–100 \mu m$ or $2600–10 cm^{-1}$ part of the spectrum. Note that there is some spectral overlap between the two, which is fully represented in the model, so the division between solar and thermal radiation should not be thought of as simply radiation with a wavelength shorter or longer than $4 \mu m$, but rather as radiation originating from the sun versus originating from emission by the Earth or its atmosphere.
+
+{% gi 6 2-2-2 %}
+![](https://i.imgur.com/pjyvEAB.png)
+![](https://i.imgur.com/cHjHFhO.png)
+![](https://i.imgur.com/e49unoQ.png)
+![](https://i.imgur.com/5NVZC7h.png)
+{% endgi %}
+
+### Earth's Energy Budget Diagram
+
+In its orbit around the Sun, the part of Earth that faces the Sun receives approximately $1,371 W/m2$ of energy. Averaged over the area of Earth's full sphere, the energy from sunlight coming to the top of the atmosphere is approximately $340 W/m2$.
+
+![Scientists have been able to document global incoming and outgoing radiation averages, which provide an understanding of how energy is absorbed, reflected, and released by Earth's atmosphere, clouds, and surface. The numbers in parentheses represent the uncertainty range, or variability, associated with these averages. IPCC, WG1, 2021](https://i.imgur.com/QhR1rAk.png){width=500}
+
+---
+
+# GFS: DSWRF
+
+The Global Forecast System (GFS) model is used to predict solar power generation by forecasting various weather parameters, including downward short-wave radiation flux (DSWRF). The GFS model is run daily at 00, 06, 12, and 18 UTC, providing hourly forecasts for up to 120 hours.
+
+Here's how the GFS model and DSWRF are used in solar energy predictions:
+
+*   **DSWRF Parameter:** GFS uses the DSWRF parameter, labeled as a "0-3 hour ave".
+*   **NWP Variables:** The GFS model uses nine Numerical Weather Prediction (NWP) variables to predict solar generation at a site. These include shortwave radiation, cloud cover, air temperature, wind speed, and precipitation.
+*   **Inputs for Models:** The parameters derived from GFS are used as inputs for solar irradiance models.
+*   **Calibration:** GFS solar irradiation forecasts can be calibrated to improve accuracy.
+*   **Bias Correction:** Correcting cloud cover bias in GFS-derived cloud forecasts can improve energy forecasts.
+
+---
+
 # WRF
 
 WRF can output the following variables that meet your need:
@@ -50,7 +126,7 @@ WRF can output the following variables that meet your need:
   - The direct normal irradiance (`DNI`) and the diffuse irradiance are exposed via the Registry. You need to edit the file `Registry.EM_COMMON` and add the variables `SWDDNI` and `SWDDIF` to the WRF output by adding a `h` in the IO part of the table for these variables.
   - Please **recompile WRF** after you change Registry. Remember to type `./clean -a` before recompile the codes.
 - `SWDDIR` "Shortwave surface downward direct irradiance" "W m-2" ""
-- `SWDDIF` "Shortwave surface downward d iffuse irradiance" "W m-2" ""
+- `SWDDIF` "Shortwave surface downward diffuse irradiance" "W m-2" ""
 
 # WRF-Solar
 
@@ -90,20 +166,6 @@ state real swddif2 ij misc 1 - rhd "SWDDIF2" "Shortwave surface downward diffuse
         description="shortwave surface downward diffuse irradiance"/>
 ```
 
-# GFS: DSWRF
-
-The Global Forecast System (GFS) model is used to predict solar power generation by forecasting various weather parameters, including downward short-wave radiation flux (DSWRF). The GFS model is run daily at 00, 06, 12, and 18 UTC, providing hourly forecasts for up to 120 hours.
-
-Here's how the GFS model and DSWRF are used in solar energy predictions:
-
-*   **DSWRF Parameter:** GFS uses the DSWRF parameter, labeled as a "0-3 hour ave".
-*   **NWP Variables:** The GFS model uses nine Numerical Weather Prediction (NWP) variables to predict solar generation at a site. These include shortwave radiation, cloud cover, air temperature, wind speed, and precipitation.
-*   **Inputs for Models:** The parameters derived from GFS are used as inputs for solar irradiance models.
-*   **Calibration:** GFS solar irradiation forecasts can be calibrated to improve accuracy.
-*   **Bias Correction:** Correcting cloud cover bias in GFS-derived cloud forecasts can improve energy forecasts.
-
----
-
 # References
 
 1. [太陽輻射量的二十四小時時間序列 | HKO ](https://www.hko.gov.hk/tc/wxinfo/ts/display_element_solar.htm)
@@ -113,3 +175,4 @@ Here's how the GFS model and DSWRF are used in solar energy predictions:
 5. [行政院原子能委員會委託研究計畫研究報告 | 2016](https://www.nusc.gov.tw/share/file/information/fl-Tg5gcH6VoFxiLPkPRGA__.pdf)
 6. [太阳辐射预报方法分类与评述 | 2023](https://epjournal.csee.org.cn/tyn/cn/article/pdf/preview/10.19911/j.1003-0417.tyn20220121.02.pdf)
 7. [光伏发电预测——WRF-Solar](https://zhuanlan.zhihu.com/p/557953099)
+8. [What is the clear sky irradiance?](https://solar-energy-connection.com/what-is-the-clear-sky-irradiance/)

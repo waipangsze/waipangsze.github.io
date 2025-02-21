@@ -2,7 +2,7 @@
 layout: post
 title: "Bash & Oh-My-Bash"
 categories: [Linux]
-tags: [shell script, HPC]
+tags: [shell script, HPC, bashrc]
 author: wpsze
 index_img: https://i.imgur.com/WZjshPy.png
 banner_img: https://i.imgur.com/WZjshPy.png

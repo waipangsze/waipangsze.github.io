@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Linux | Terminal Command
-categories: [Terminal]
-tags: [HPC]
+categories: [Linux]
+tags: [Linux, HPC, Terminal, shell script, bashrc]
 author: wpsze
 date: 2024-10-15 16:00:00
 math: true
@@ -10,7 +10,7 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 index_img: https://i.imgur.com/WZjshPy.png
-banner_img: 
+banner_img: https://i.imgur.com/WZjshPy.png
 ---
 
 Linux
