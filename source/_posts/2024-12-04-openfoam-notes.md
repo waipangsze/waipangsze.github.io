@@ -22,3 +22,4 @@ banner_img: https://i.imgur.com/GkV6pMK.png
       1. Real-Time Wind Data: `OpenWeatherMap` wind conditions.
       2. 3D Building Models: `OpenStreetMap (OSM)` data using Overpass API.
    2. `NVIDIA Modulus` and `PyTorch` are employed
+3. [Wall functions for the kappa-epsilon turbulence model in generalized nonorthogonal curvilinear coordinates | NASA 1992](https://ntrs.nasa.gov/citations/19920016719)

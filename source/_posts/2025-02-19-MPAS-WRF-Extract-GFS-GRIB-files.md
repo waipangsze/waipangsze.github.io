@@ -113,6 +113,23 @@ for file in filelist:
 ```
 {% endfold %}
 
+# Micromamba env setup
+
+```yml
+ $ cat list.yml 
+name: PGW
+channels:
+- anaconda
+- conda-forge
+dependencies:
+- conda-forge::cdo
+- conda-forge::dask
+- matplotlib
+- python=3.11
+- scipy
+- conda-forge::wgrib
+```
+
 # Read GFS grib2 files
 
 To process a CSV file containing station information (latitude and longitude) and extract weather data from GFS GRIB files, you can follow the steps below. This example assumes you have a CSV file named `stations.csv` with columns for station names, latitude, and longitude.
