@@ -28,12 +28,12 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/gXPusJ6.png">
 <meta property="article:published_time" content="2025-02-12T10:02:00.000Z">
-<meta property="article:modified_time" content="2025-02-14T02:46:27.309Z">
+<meta property="article:modified_time" content="2025-02-20T06:05:25.277Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="ERA5">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="GFS">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/gXPusJ6.png">
@@ -338,7 +338,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          994 words
+          1.3k words
         
       </span>
     
@@ -349,7 +349,7 @@
         
         
         
-          9 mins
+          11 mins
         
       </span>
     
@@ -427,6 +427,68 @@
 </ul>
 <div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/gXPusJ6.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/fAEkJgV.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"></div></div>
 <p><img src="https://i.imgur.com/GlRJZm8.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="τhe-absorption-bands-of-earths-atmosphere">Τhe absorption bands of Earth's atmosphere</h2>
+<p>Τhe absorption bands of Earth's atmosphere (grey colour) delimit its atmospheric windows (middle panel) and the effect they have on both downgoing solar radiation and upgoing thermal radiation emitted near the surface is shown in the top panel. The individual absorption spectra of major greenhouse gases plus Rayleigh scattering are shown in the lower panel.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Atmospheric_Transmission.svg/614px-Atmospheric_Transmission.svg.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="ecmwf-ifs-era5-ssrd">ECMWF | IFS | ERA5 : SSRD</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/pages/viewpage.action?pageId=111155332">What are the definitions of the radiation fields?</a>
+<ul>
+<li><code>"Surface solar radiation downwards" (SSRD)</code> is the incident solar (shortwave) radiation and <code>"surface solar radiation" (SSR)</code> is the net solar radiation (the fraction of solar radiation not reflected by the surface). <code>"Surface net solar radiation, clear sky" (SSRC)</code> is a hypothetical field of net solar radiation assuming no clouds.</li>
+<li><code>"Surface thermal radiation downwards" (STRD)</code> is the incident thermal (longwave) radiation and <code>"surface thermal radiation" (STR)</code> is the net thermal radiation. <code>"Surface net thermal radiation, clear sky" (STRC)</code> is a hypothetical field of net thermal radiation assuming no clouds.</li>
+<li>"Top solar radiation" is the net solar (shortwave) radiation at the top of the atmosphere (TOA). "Top net solar radiation, clear sky" is a hypothetical field assuming no clouds.</li>
+<li>"Top thermal radiation" is the net thermal (longwave) radiation at the top of the atmosphere. "Top net thermal radiation, clear sky" is a hypothetical field assuming no clouds.</li>
+</ul></li>
+</ul>
+<p><strong>Additional details on radiation parameters can be found here</strong>: <a target="_blank" rel="noopener" href="https://www.ecmwf.int/sites/default/files/elibrary/2015/18490-radiation-quantities-ecmwf-model-and-mars.pdf">Radiation-quantities-ecmwf-model-and-mars.pdf (document correct as of Cycle 41R1)</a></p>
+<h2 id="details-of-the-variable">Details of the Variable:</h2>
+<ul>
+<li><strong>Name</strong>: Surface Solar Radiation Downwards (SSRD)</li>
+<li><strong>GRIB Parameter ID</strong>: 169 (in GRIB format, as used by ECMWF)</li>
+<li><strong>Units</strong>: J/m² (accumulated over a time step, typically hourly or 3-hourly depending on the dataset)</li>
+<li><strong>Description</strong>: This is the amount of solar radiation (shortwave) reaching the surface of the Earth, integrated over a specified time period. To convert it to an average irradiance in W/m², you divide the accumulated value (J/m²) by the time step in seconds (e.g., 3600 seconds for hourly data).</li>
+</ul>
+<h3 id="notes">Notes:</h3>
+<ol type="1">
+<li><strong>Availability</strong>: SSRD is available in many ECMWF IFS outputs, including the high-resolution deterministic forecast (HRES), ensemble forecasts (ENS), and reanalysis products like ERA5.</li>
+<li><strong>Direct vs. Diffuse</strong>: SSRD includes both direct and diffuse radiation. If you specifically need <strong>Direct Normal Irradiance (DNI)</strong> or diffuse components, these are not directly provided as separate variables in standard IFS outputs. However, they can sometimes be derived using additional post-processing or from specialized datasets (e.g., CAMS radiation services, which use IFS data).</li>
+</ol>
+<h3 id="practical-example">Practical Example:</h3>
+<p>If you retrieve SSRD from an hourly ERA5 dataset and the value is 720,000 J/m² over a 1-hour period, the average irradiance is:</p>
+<p><span class="math display">\[
+720,000 \text{J/m² ÷} 3600 \text{s} = 200 \text{W/m²}
+\]</span></p>
+<h2 id="radiation-quantities">** Radiation Quantities</h2>
+<h3 id="conventions">Conventions</h3>
+<p>The following conventions are employed in the storage of fluxes by the ECMWF model:</p>
+<ol type="1">
+<li>Archived fluxes are either <strong>downward</strong> or <strong>net</strong>. Energy entering the Earth's atmosphere-surface system is taken as a positive quantity, and therefore downward fluxes are positive and net flux refers to the downward flux minus the upward flux. To obtain the upward flux (<span class="math inline">\(F^{up}\)</span>) from the downward flux (<span class="math inline">\(F^{dn}\)</span>) and net flux (<span class="math inline">\(F^{net}\)</span>), use <span class="math inline">\(F^{up} = F^{dn} - F^{net}\)</span>.</li>
+<li>Physical fluxes archived by the ECMWF model are <strong>accumulated</strong> since the start of the relevant forecast, and therefore in <strong>units of J m⁻² (or W m⁻² s)</strong>. Thus, a daily mean (in W m⁻²) is obtained by retrieving the accumulated fluxes at <span class="math inline">\(t_1 = t\)</span> and <span class="math inline">\(t_2 = t + 24\)</span> hours (where <span class="math inline">\(t\)</span> is the time of the start of the average), taking the difference and dividing by <span class="math inline">\(86400\)</span>, the number of seconds in a day.</li>
+<li><strong>Clear-sky</strong> quantities are computed for exactly the same atmospheric conditions of temperature, humidity, ozone, trace gases and aerosol, but assuming that <em>the clouds are not there</em>.
+<ol type="1">
+<li><strong>Clear-sky irradiance</strong> represents the solar energy reaching the Earth's surface at a specific location and time, assuming there are no clouds present. It's the <em>theoretical maximum irradiance</em>, which is reduced by cloud cover in real-world conditions. Clear-sky irradiance is influenced by factors such as the Earth-Sun distance and their relative positions.</li>
+<li><strong>All-sky irradiance</strong> considers all scattering and absorption by gases, aerosols, and clouds. It is another name for <strong>"global horizontal irradiance" (GHI)</strong>, which is the total solar irradiance (direct plus diffuse) incident on a horizontal surface. Semi-empirical models produce all-sky irradiance as a final output, accounting for all atmospheric factors, including cloud cover.</li>
+</ol></li>
+<li><strong>Solar</strong> or <strong>short-wave</strong> refers to radiation emitted by the Sun, then scattered, absorbed or transmitted by the atmosphere and reflected or absorbed by the surface. It corresponds roughly to the <span class="math inline">\(0.2-4 \mu m\)</span> or <span class="math inline">\(50,000–2600 cm^{-1}\)</span> part of the spectrum. Thermal, <strong>terrestrial</strong> or <strong>long-wave</strong> refers to radiation emitted and absorbed by the surface or by gases, clouds and particles within the atmosphere. It corresponds roughly to the <span class="math inline">\(4–100 \mu m\)</span> or <span class="math inline">\(2600–10 cm^{-1}\)</span> part of the spectrum. Note that there is some spectral overlap between the two, which is fully represented in the model, so the division between solar and thermal radiation should not be thought of as simply radiation with a wavelength shorter or longer than <span class="math inline">\(4 \mu m\)</span>, but rather as radiation originating from the sun versus originating from emission by the Earth or its atmosphere.</li>
+</ol>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/pjyvEAB.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/cHjHFhO.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/e49unoQ.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/5NVZC7h.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"></div></div>
+<h3 id="earths-energy-budget-diagram">Earth's Energy Budget Diagram</h3>
+<p>In its orbit around the Sun, the part of Earth that faces the Sun receives approximately <span class="math inline">\(1,371 W/m2\)</span> of energy. Averaged over the area of Earth's full sphere, the energy from sunlight coming to the top of the atmosphere is approximately <span class="math inline">\(340 W/m2\)</span>.</p>
+<figure>
+<img src="https://i.imgur.com/QhR1rAk.png" srcset="/img/loading.gif" lazyload alt="Scientists have been able to document global incoming and outgoing radiation averages, which provide an understanding of how energy is absorbed, reflected, and released by Earth&#39;s atmosphere, clouds, and surface. The numbers in parentheses represent the uncertainty range, or variability, associated with these averages. IPCC, WG1, 2021" width="500" /><figcaption>Scientists have been able to document global incoming and outgoing radiation averages, which provide an understanding of how energy is absorbed, reflected, and released by Earth's atmosphere, clouds, and surface. The numbers in parentheses represent the uncertainty range, or variability, associated with these averages. IPCC, WG1, 2021</figcaption>
+</figure>
+<hr />
+<h1 id="gfs-dswrf">GFS: DSWRF</h1>
+<p>The Global Forecast System (GFS) model is used to predict solar power generation by forecasting various weather parameters, including downward short-wave radiation flux (DSWRF). The GFS model is run daily at 00, 06, 12, and 18 UTC, providing hourly forecasts for up to 120 hours.</p>
+<p>Here's how the GFS model and DSWRF are used in solar energy predictions:</p>
+<ul>
+<li><strong>DSWRF Parameter:</strong> GFS uses the DSWRF parameter, labeled as a "0-3 hour ave".</li>
+<li><strong>NWP Variables:</strong> The GFS model uses nine Numerical Weather Prediction (NWP) variables to predict solar generation at a site. These include shortwave radiation, cloud cover, air temperature, wind speed, and precipitation.</li>
+<li><strong>Inputs for Models:</strong> The parameters derived from GFS are used as inputs for solar irradiance models.</li>
+<li><strong>Calibration:</strong> GFS solar irradiation forecasts can be calibrated to improve accuracy.</li>
+<li><strong>Bias Correction:</strong> Correcting cloud cover bias in GFS-derived cloud forecasts can improve energy forecasts.</li>
+</ul>
+<hr />
 <h1 id="wrf">WRF</h1>
 <p>WRF can output the following variables that meet your need:</p>
 <ul>
@@ -436,7 +498,7 @@
 <li>Please <strong>recompile WRF</strong> after you change Registry. Remember to type <code>./clean -a</code> before recompile the codes.</li>
 </ul></li>
 <li><code>SWDDIR</code> "Shortwave surface downward direct irradiance" "W m-2" ""</li>
-<li><code>SWDDIF</code> "Shortwave surface downward d iffuse irradiance" "W m-2" ""</li>
+<li><code>SWDDIF</code> "Shortwave surface downward diffuse irradiance" "W m-2" ""</li>
 </ul>
 <h1 id="wrf-solar">WRF-Solar</h1>
 <ul>
@@ -465,6 +527,7 @@
 <li><a target="_blank" rel="noopener" href="https://www.nusc.gov.tw/share/file/information/fl-Tg5gcH6VoFxiLPkPRGA__.pdf">行政院原子能委員會委託研究計畫研究報告 | 2016</a></li>
 <li><a target="_blank" rel="noopener" href="https://epjournal.csee.org.cn/tyn/cn/article/pdf/preview/10.19911/j.1003-0417.tyn20220121.02.pdf">太阳辐射预报方法分类与评述 | 2023</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/557953099">光伏发电预测——WRF-Solar</a></li>
+<li><a target="_blank" rel="noopener" href="https://solar-energy-connection.com/what-is-the-clear-sky-irradiance/">What is the clear sky irradiance?</a></li>
 </ol>
 
                 
@@ -499,13 +562,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
-      
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/GFS/" class="print-no-link">#GFS</a>
       
@@ -538,7 +601,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 14, 2025</div>
+          <div>February 20, 2025</div>
         </div>
       
       
