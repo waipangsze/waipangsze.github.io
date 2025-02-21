@@ -47,14 +47,33 @@ But,
 
 ```
  $ singularity run --writable --nv Modulus.sif
-WARNING: Could not find any Nvidia libraries on this host!
-/usr/bin/which: no nvidia-smi in (/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin)
-WARNING: Could not find the Nvidia SMI binary to bind into container
-ERROR  : Unable to open squashfs image in read-write mode: Read-only file system
-ABORT  : Retval = 255
+INFO:    Could not find any nv files on this host!
+WARNING: Could not find any nv libraries on this host!
+WARNING: You may need to manually edit /home/wpsze/micromamba/envs/singularity/etc/singularity/nvliblist.conf
+INFO:    Converting SIF file to temporary sandbox...
+WARNING: Skipping mount /etc/localtime [binds]: /etc/localtime doesn't exist in container
+WARNING: By using --writable, Singularity can't create /HOME destination automatically without overlay or underlay
+INFO:    Cleaning up image...
+FATAL:   container creation failed: mount /home/wpsze/micromamba/envs/singularity/var/singularity/mnt/session/HOME->/HOME error: while mounting /home/wpsze/micromamba/envs/singularity/var/singularity/mnt/session/HOME: destination /HOME doesn't exist in container
 ```
 
-- <https://github.com/sylabs/singularity/issues/776>
+- [Running a Singularity Container Image on Pleiades | NASA](https://www.nas.nasa.gov/hecc/support/kb/running-a-singularity-container-image-on-pleiades_638.html)
+  - `WARNING: By using --writable, Singularity can't create /homeX destination ......`
+  - **Note**: If you encounter the following warning message, `cd` to `your_image_sandbox` and use the `mkdir` command to create `homeX` before you retry the commands above. (The X in `homeX` represents the actual value (X=1-7) of your $HOME directory on Pleiades.)
+
+## Can Modulus run on CPU? 
+
+- Modulus is built on top of PyTorch, which supports both CPU and GPU execution. By default, Modulus will attempt to use a GPU if available, but it can fall back to CPU execution if no GPU is detected or if explicitly configured.
+- Running on a CPU is feasible for smaller models or prototyping, but large-scale training or complex simulations may be impractical due to performance constraints.
+
+By default, the Modulus container is optimized for GPU use and assumes CUDA availability. To run it on CPU:
+
+- Avoid passing GPU resources to Singularity (e.g., no `--nv` flag).
+- Launch the container interactively or with a script.
+
+```
+$ singularity run Modulus.sif
+```
 
 ## Running Examples
 
@@ -105,3 +124,4 @@ If you see the `outputs/` directory created after the execution of the command (
 # References
 
 1. [NVIDIA Modulus Getting Started](https://docs.nvidia.com/deeplearning/modulus/getting-started/index.html)
+2. [AI FOR SCIENCE FRAMEWORK: MODULUS](https://indico.ihep.ac.cn/event/17357/sessions/3811/attachments/62339/72133/AI%20For%20Science%20Framework%20modulus.pdf)
