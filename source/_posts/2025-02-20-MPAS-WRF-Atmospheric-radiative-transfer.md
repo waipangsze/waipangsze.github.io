@@ -152,7 +152,7 @@ $$
 
 This is the total power received by Earth’s illuminated hemisphere, ignoring atmospheric effects. However, note that the actual power received at the surface is less due to atmospheric absorption and scattering.
 
-#
+# More
 
 ## Solutions to the equation of radiative transfer
 
@@ -169,9 +169,35 @@ $$
 \tau_\nu(s_1,s_2) \ \stackrel{\mathrm{def}}{=}\ \int_{s_1}^{s_2} \alpha_\nu(s)\,ds
 $$
 
+## radiance 發射率
+
+光源的 `輻射率` 或 `輻亮度` **(radiance)**，是描述非點光源時光源單位面積強度的物理量，定義為在指定方向上的單位**立體角**和垂直此方向的單位**面積**上的**輻射通量**，記為**L**。
+
+In radiometry, radiance is the radiant flux emitted, reflected, transmitted or received **by a given surface**, per unit solid angle per unit projected area. Radiance is used to characterize diffuse emission and reflection of electromagnetic radiation, and to quantify emission of neutrinos and other particles. The SI unit of radiance is the watt per steradian per square metre $(W sr^{−1} m^{−2})$. It is a directional quantity: the radiance of a surface depends on the direction from which it is being observed.
+
+The related quantity spectral radiance is the radiance of a surface per unit frequency or wavelength, depending on whether the spectrum is taken as a function of frequency or of wavelength.
+
+Historically, radiance was called "**intensity**" and spectral radiance was called "**specific intensity**". Many fields still use this nomenclature. It is especially dominant in heat transfer, astrophysics and astronomy. "Intensity" has many other meanings in physics, with the most common being power per unit area (**so the radiance is the intensity per solid angle in this case**).
+
+$$
+L=\frac{\partial^2 \Phi}{\cos \theta \partial A \partial \Omega}
+$$
+
+其中：**$\Phi$** 是**輻射通量**，單位**瓦特**（W）；**$\Omega$**是**立體角**，單位**球面度** **(sr)**。
+
 # References
 
 1. [Atmospheric radiative transfer codes](https://en.wikipedia.org/wiki/Atmospheric_radiative_transfer_codes)
 2. [lecture.2.global.pdf](https://www.ess.uci.edu/~yu/class/ess200a/lecture.2.global.pdf)
 3. [Radiation Fundamentals](https://www.cv.nrao.edu/~sransom/web/Ch2.html)
-4. [Chapman, I. M., Naylor, D. A., Gom, B., Querel, R. R., & Davis-Imhof, P. (2010). Btram: An interactive atmospheric radiative transfer model. In 30th Canadian Symposium.](https://www.ulethbridge.ca/phy/naylor/documents/pdf/btram.pdf)
+4. [Properties of Radiation](https://pages.mtu.edu/~scarn/teaching/GE4250/radiation_lecture_slides.pdf)
+5. [Radiometry and Photometry (**Recommend**)](https://labs.phys.utk.edu/mbreinig/phys421/modules/m5/Radiometry.html)
+   1. To specify the amount of energy emitted by a source, we use the quantities.  
+      1. Energy
+      2. Power
+      3. Power per unit area
+      4. Power per unit solid angle
+      5. Power per unit solid angle per unit projected area
+   2. To specify the amount of energy received by a detector, we use one quantity.
+      1. Power per unit area
+6. [Chapman, I. M., Naylor, D. A., Gom, B., Querel, R. R., & Davis-Imhof, P. (2010). Btram: An interactive atmospheric radiative transfer model. In 30th Canadian Symposium.](https://www.ulethbridge.ca/phy/naylor/documents/pdf/btram.pdf)
