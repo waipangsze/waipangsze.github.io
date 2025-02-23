@@ -75,9 +75,9 @@ By default, the Modulus container is optimized for GPU use and assumes CUDA avai
 $ singularity run Modulus.sif
 ```
 
-and, **Importantly**, add on `conf/config.ymal
+and, **Importantly**, add on `conf/config.yaml`
 
-```yml
+```yaml
 device: cpu
 cuda_graphs: False
 ```
@@ -86,7 +86,7 @@ like, on `three_fin_2d/heat_sink` case,
 
 -  $ cat /home/wpsze/ML/NVIDIA-Modulus/modulus-sym/examples/three_fin_2d/conf/config.yaml
   
-```yml 
+```yaml 
 # SPDX-FileCopyrightText: Copyright (c) 2023 - 2024 NVIDIA CORPORATION & AFFILIATES.
 # SPDX-FileCopyrightText: All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
