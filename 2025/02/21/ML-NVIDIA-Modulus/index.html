@@ -27,15 +27,15 @@
 <meta property="og:description" content="NVIDIA Modulus Modulus is an open source deep-learning framework for building, training, and fine-tuning deep learning models using state-of-the-art Physics-ML methods. Whether you are exploring the u">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-02-21T09:57:00.000Z">
-<meta property="article:modified_time" content="2025-02-21T09:57:58.396Z">
+<meta property="article:modified_time" content="2025-02-24T08:30:06.711Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
-<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="PINN">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="DeepONet">
 <meta property="article:tag" content="ML">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="MPAS">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -338,7 +338,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          169 words
+          366 words
         
       </span>
     
@@ -349,7 +349,7 @@
         
         
         
-          2 mins
+          4 mins
         
       </span>
     
@@ -426,9 +426,59 @@
 </ul></li>
 </ul>
 <p>But,</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ruby"> <span class="hljs-variable">$ </span>singularity run --writable --nv <span class="hljs-title class_">Modulus</span>.sif<br><span class="hljs-variable constant_">WARNING</span>: <span class="hljs-title class_">Could</span> <span class="hljs-keyword">not</span> find any <span class="hljs-title class_">Nvidia</span> libraries on this host!<br><span class="hljs-regexp">/usr/bin</span><span class="hljs-regexp">/which: no nvidia-smi in (/bin</span><span class="hljs-symbol">:/usr/bin</span><span class="hljs-symbol">:/usr/local/bin</span><span class="hljs-symbol">:/sbin</span><span class="hljs-symbol">:/usr/sbin</span><span class="hljs-symbol">:/usr/local/sbin</span>)<br><span class="hljs-variable constant_">WARNING</span>: <span class="hljs-title class_">Could</span> <span class="hljs-keyword">not</span> find the <span class="hljs-title class_">Nvidia</span> <span class="hljs-variable constant_">SMI</span> binary to bind into container<br><span class="hljs-variable constant_">ERROR</span>  : <span class="hljs-title class_">Unable</span> to open squashfs image <span class="hljs-keyword">in</span> read-write <span class="hljs-symbol">mode:</span> <span class="hljs-title class_">Read</span>-only file system<br><span class="hljs-variable constant_">ABORT</span>  : <span class="hljs-title class_">Retval</span> = <span class="hljs-number">255</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-code"> $ singularity run --writable --nv Modulus.sif</span><br>INFO:    Could not find any nv files on this host!<br><span class="hljs-symbol">WARNING: </span>Could not find any nv libraries on this host!<br><span class="hljs-symbol">WARNING: </span>You may need to manually edit /home/wpsze/micromamba/envs/singularity/etc/singularity/nvliblist.conf<br>INFO:    Converting SIF file to temporary sandbox...<br><span class="hljs-symbol">WARNING: </span>Skipping mount /etc/localtime [binds]: /etc/localtime doesn&#x27;t exist in container<br><span class="hljs-symbol">WARNING: </span>By using --writable, Singularity can&#x27;t create /HOME destination automatically without overlay or underlay<br>INFO:    Cleaning up image...<br>FATAL:   container creation failed: mount /home/wpsze/micromamba/envs/singularity/var/singularity/mnt/session/HOME-&gt;/HOME error: while mounting /home/wpsze/micromamba/envs/singularity/var/singularity/mnt/session/HOME: destination /HOME doesn&#x27;t exist in container<br></code></pre></td></tr></table></figure>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/sylabs/singularity/issues/776" class="uri">https://github.com/sylabs/singularity/issues/776</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.nas.nasa.gov/hecc/support/kb/running-a-singularity-container-image-on-pleiades_638.html">Running a Singularity Container Image on Pleiades | NASA</a>
+<ul>
+<li><code>WARNING: By using --writable, Singularity can't create /homeX destination ......</code></li>
+<li><strong>Note</strong>: If you encounter the following warning message, <code>cd</code> to <code>your_image_sandbox</code> and use the <code>mkdir</code> command to create <code>homeX</code> before you retry the commands above. (The X in <code>homeX</code> represents the actual value (X=1-7) of your $HOME directory on Pleiades.)</li>
+</ul></li>
+</ul>
+<h2 id="can-modulus-run-on-cpu">Can Modulus run on CPU?</h2>
+<ul>
+<li>Modulus is built on top of PyTorch, which supports both CPU and GPU execution. By default, Modulus will attempt to use a GPU if available, but it can fall back to CPU execution if no GPU is detected or if explicitly configured.</li>
+<li>Running on a CPU is feasible for smaller models or prototyping, but large-scale training or complex simulations may be impractical due to performance constraints.</li>
+</ul>
+<p>By default, the Modulus container is optimized for GPU use and assumes CUDA availability. To run it on CPU:</p>
+<ul>
+<li>Avoid passing GPU resources to Singularity (e.g., no <code>--nv</code> flag).</li>
+<li>Launch the container interactively or with a script.</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">$ singularity <span class="hljs-built_in">run</span> Modulus.sif<br></code></pre></td></tr></table></figure>
+<p>and, <strong>Importantly</strong>, add on <code>conf/config.yaml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">device:</span> <span class="hljs-string">cpu</span><br><span class="hljs-attr">cuda_graphs:</span> <span class="hljs-literal">False</span><br></code></pre></td></tr></table></figure>
+<p>like, on <code>three_fin_2d/heat_sink</code> case,</p>
+<ul>
+<li>$ cat /home/wpsze/ML/NVIDIA-Modulus/modulus-sym/examples/three_fin_2d/conf/config.yaml</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+        <div class="fold-arrow">▶</div>config.yaml
+      </div>
+      <div class="fold-collapse collapse" id="collapse-05eef982">
+        <div class="fold-content">
+          <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># SPDX-FileCopyrightText: Copyright (c) 2023 - 2024 NVIDIA CORPORATION &amp; AFFILIATES.</span><br><span class="hljs-comment"># SPDX-FileCopyrightText: All rights reserved.</span><br><span class="hljs-comment"># SPDX-License-Identifier: Apache-2.0</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="hljs-comment"># you may not use this file except in compliance with the License.</span><br><span class="hljs-comment"># You may obtain a copy of the License at</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment">#     http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Unless required by applicable law or agreed to in writing, software</span><br><span class="hljs-comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="hljs-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="hljs-comment"># See the License for the specific language governing permissions and</span><br><span class="hljs-comment"># limitations under the License.</span><br><br><span class="hljs-attr">defaults :</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">modulus_default</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">arch:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">fully_connected</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">optimizer :</span> <span class="hljs-string">adam</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">scheduler :</span> <span class="hljs-string">tf_exponential_lr</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">loss :</span> <span class="hljs-string">sum</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">_self_</span><br><br><span class="hljs-attr">jit:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-attr">device:</span> <span class="hljs-string">cpu</span><br><span class="hljs-attr">cuda_graphs:</span> <span class="hljs-literal">False</span><br><br><span class="hljs-attr">scheduler:</span><br>  <span class="hljs-attr">decay_rate:</span> <span class="hljs-number">0.95</span><br>  <span class="hljs-attr">decay_steps:</span> <span class="hljs-number">5000</span><br><br><span class="hljs-attr">training:</span> <br>  <span class="hljs-attr">rec_validation_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_inference_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_monitor_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_constraint_freq:</span> <span class="hljs-number">2000</span><br>  <span class="hljs-attr">max_steps:</span> <span class="hljs-number">500000</span><br><br><span class="hljs-attr">batch_size:</span><br>  <span class="hljs-attr">inlet:</span> <span class="hljs-number">64</span><br>  <span class="hljs-attr">outlet:</span> <span class="hljs-number">64</span><br>  <span class="hljs-attr">hs_wall:</span> <span class="hljs-number">500</span><br>  <span class="hljs-attr">channel_wall:</span> <span class="hljs-number">2500</span><br>  <span class="hljs-attr">interior_flow:</span> <span class="hljs-number">4800</span><br>  <span class="hljs-attr">interior_heat:</span> <span class="hljs-number">4800</span><br>  <span class="hljs-attr">integral_continuity:</span> <span class="hljs-number">128</span><br>  <span class="hljs-attr">num_integral_continuity:</span> <span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="bug">Bug</h2>
+<h3 id="root-filesystem-extraction-failed-failed-to-copy-content-in-staging-file-write-tmprootfs">root filesystem extraction failed: failed to copy content in staging file: write /tmp/rootfs</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/apptainer/singularity/issues/5711">root filesystem extraction failed: command error: while getting library dependencies: exit status 127</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.sylabs.io/guides/3.7/user-guide/build_env.html#temporary-folders">Temporary Folders</a>
+<ul>
+<li>The location for temporary directories defaults to <code>/tmp</code>. Singularity will also respect the environment variable <code>TMPDIR</code>, and both of these locations can be overridden by setting the environment variable <code>SINGULARITY_TMPDIR</code>.</li>
+<li>The temporary directory used during a build must be on a filesystem that has <strong>enough space to hold the entire container image</strong>, uncompressed, including any temporary files that are created and later removed during the build.</li>
+<li>You may need to set <code>SINGULARITY_TMPDIR</code> when building a large container on a system which has a small <code>/tmp</code> filesystem.</li>
+<li><code>$ ls -a /tmp</code></li>
+<li>cleanup: <code>rm -r rootfs*</code></li>
+</ul></li>
+<li>try to add
+<ul>
+<li><code>export SINGULARITY_TMPDIR="/home/wpsze/ML/NVIDIA-Modulus/singularity_tmp"</code></li>
+<li><code>-B $SINGULARITY_TMPDIR:/tmp</code></li>
+</ul></li>
 </ul>
 <h2 id="running-examples">Running Examples</h2>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console">223M	./modulus<br>9.5G	./Modulus.sif<br>926M	./modulus-sym<br></code></pre></td></tr></table></figure>
@@ -450,6 +500,7 @@
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/modulus/getting-started/index.html">NVIDIA Modulus Getting Started</a></li>
+<li><a target="_blank" rel="noopener" href="https://indico.ihep.ac.cn/event/17357/sessions/3811/attachments/62339/72133/AI%20For%20Science%20Framework%20modulus.pdf">AI FOR SCIENCE FRAMEWORK: MODULUS</a></li>
 </ol>
 
                 
@@ -484,11 +535,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
-      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
-      
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/PINN/" class="print-no-link">#PINN</a>
       
@@ -497,6 +544,10 @@
         <a href="/tags/DeepONet/" class="print-no-link">#DeepONet</a>
       
         <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
     </div>
   
@@ -527,7 +578,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 21, 2025</div>
+          <div>February 24, 2025</div>
         </div>
       
       
