@@ -157,7 +157,7 @@ dependencies:
     - orthopy==0.9.12
     - quadpy==0.17.21
 
-prefix: "/data/home/cpasss/micromamba/envs/CorrDiff"
+prefix: "/home/wpsze/micromamba/envs/CorrDiff"
 ```
 
 conda install nvidia/label/cuda-12.4.0::cuda-toolkit ??

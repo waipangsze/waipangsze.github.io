@@ -85,7 +85,8 @@ cuda_graphs: False
 like, on `three_fin_2d/heat_sink` case,
 
 -  $ cat /home/wpsze/ML/NVIDIA-Modulus/modulus-sym/examples/three_fin_2d/conf/config.yaml
-  
+
+{% fold info @config.yaml %}
 ```yaml 
 # SPDX-FileCopyrightText: Copyright (c) 2023 - 2024 NVIDIA CORPORATION & AFFILIATES.
 # SPDX-FileCopyrightText: All rights reserved.
@@ -138,6 +139,22 @@ batch_size:
   integral_continuity: 128
   num_integral_continuity: 4
 ```
+{% endfold %}
+
+## Bug
+
+### root filesystem extraction failed: failed to copy content in staging file: write /tmp/rootfs
+
+- [root filesystem extraction failed: command error: while getting library dependencies: exit status 127](https://github.com/apptainer/singularity/issues/5711)
+- [Temporary Folders](https://docs.sylabs.io/guides/3.7/user-guide/build_env.html#temporary-folders)
+  - The location for temporary directories defaults to `/tmp`. Singularity will also respect the environment variable `TMPDIR`, and both of these locations can be overridden by setting the environment variable `SINGULARITY_TMPDIR`.
+  - The temporary directory used during a build must be on a filesystem that has **enough space to hold the entire container image**, uncompressed, including any temporary files that are created and later removed during the build. 
+  - You may need to set `SINGULARITY_TMPDIR` when building a large container on a system which has a small `/tmp` filesystem.
+  - `$ ls -a /tmp`
+  - cleanup: `rm -r rootfs*`
+- try to add
+  - `export SINGULARITY_TMPDIR="/home/wpsze/ML/NVIDIA-Modulus/singularity_tmp"`
+  - `-B $SINGULARITY_TMPDIR:/tmp`
 
 ## Running Examples
 

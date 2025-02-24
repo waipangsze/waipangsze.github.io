@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Singularity Container
+title: Singularity (Apptainer) Container
 categories: [Linux]
 tags: [HPC, NWP]
 author: wpsze
@@ -9,6 +9,7 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 index_img: https://docs.sylabs.io/guides/3.8/user-guide/_static/logo.png
+banner_img: https://docs.sylabs.io/guides/3.8/user-guide/_static/logo.png
 ---
 
 # What is Singularity
@@ -61,6 +62,15 @@ From [北京大學高效能運算平台](https://hpc.pku.edu.cn/_book/guide/soft
 - 使用難度高，相較於裸機上安裝和使用軟體，容器概念的理解、接受還有使用還是需要一定門檻的
 - **跨節點應用由於要呼叫宿主機的 mpi ，相容性有一定的要求，可移植性需要驗證。** 當然，平台也在致力於跨節點應用容器化的測試與打包
 - **最佳化問題，例如為了讓軟體運行更快，Intel 編譯軟體過程中可能會使用-Host 參數，讓編譯器根據主機CPU 型號進行指令優化，或者編譯過程中加入AVX512 的支持，這時候如果將鏡像移植到舊款架構的CPU 主機上，可能會導致鏡像無法正常運作軟體環境**
+
+## Singularity -> Apptainer
+
+**Apptainer (formerly Singularity)** simplifies the creation and execution of containers, ensuring software components are encapsulated for portability and reproducibility.
+
+- Original Singularity project (i.e. the one before Sylabs fork) is officially moving into the Linux Foundation, becoming Apptainer
+- Sylabs’s SingularityCE and Linux Foundation’s Singularity (i.e. Apptainer) will co-exist
+- SingularityCE = Apptainer (for now)
+- For us: `SingularityCE = Apptainer = Singularity`
 
 # SIF（Singularity Image File）& Sandbox
 
@@ -691,6 +701,21 @@ Singularity> exit
 exit
 ```
 
+# Bug
+
+## root filesystem extraction failed: failed to copy content in staging file: write /tmp/rootfs
+
+- [root filesystem extraction failed: command error: while getting library dependencies: exit status 127](https://github.com/apptainer/singularity/issues/5711)
+- [Temporary Folders](https://docs.sylabs.io/guides/3.7/user-guide/build_env.html#temporary-folders)
+  - The location for temporary directories defaults to `/tmp`. Singularity will also respect the environment variable `TMPDIR`, and both of these locations can be overridden by setting the environment variable `SINGULARITY_TMPDIR`.
+  - The temporary directory used during a build must be on a filesystem that has **enough space to hold the entire container image**, uncompressed, including any temporary files that are created and later removed during the build. 
+  - You may need to set `SINGULARITY_TMPDIR` when building a large container on a system which has a small `/tmp` filesystem.
+  - `$ ls -a /tmp`
+  - cleanup: `rm -r rootfs*`
+- try to add
+  - `export SINGULARITY_TMPDIR="/home/wpsze/ML/NVIDIA-Modulus/singularity_tmp"`
+  - `-B $SINGULARITY_TMPDIR:/tmp`
+
 # Specifying bind paths
 
 開發容器的目的之一主要是為了解決依賴函式庫的安裝、軟體環境的隔離、以及軟體環境的移植問題。因此，**容器的核心特性之一就是它們的檔案系統與宿主機相隔離。** 如果我們查看一個 singularity 容器的根目錄，也會看到與 Linux 主機根目錄相似的結構。這意味著容器內的應用程式只能看到（並與之互動）這個封閉環境中的檔案和目錄。與 Linux 下掛載（mount）外接硬碟設備類似，容器同樣需要透過掛載 (bind) 的操作與我們宿主機上的檔案系統互動。[link](https://juejin.cn/post/7345293582365868041)
@@ -728,13 +753,18 @@ $ singularity shell my_container.sif
 # References
 
 1. [Singularity and Docker](https://docs.sylabs.io/guides/2.6/user-guide/singularity_and_docker.html)
-2. [HKU Singularity Container](https://hpc.hku.hk/hpc/software/singularity-container/)
-3. [Sylabs Cloud](https://cloud.sylabs.io/library)
+2. [Apptainer (the Linux Foundation variant of Singularity)](https://hpc.nih.gov/apps/apptainer.html)
+3. [HKU Singularity Container](https://hpc.hku.hk/hpc/software/singularity-container/)
+4. [HKUST SuperPOD - Apptainer (Singularity)](https://itso.hkust.edu.hk/services/academic-teaching-support/high-performance-computing/superpod/singularity-apptainer)
+5. [Sylabs Cloud](https://cloud.sylabs.io/library)
    1. singularity pull ubuntu.sif library://library/default/ubuntu:21.04
-4. [NVIDIA NGC](https://ngc.nvidia.com/)
+6. [NVIDIA NGC](https://ngc.nvidia.com/)
    1. NVIDIA官方自己构建的pytorch和TensorFlow的容器镜像，每个里面包含了cuda、显卡驱动以及cudnn，据说比自己装的速度要快，使用时singularity需要 --nv 选项。
-5. [Docker Hub](https://hub.docker.com/)
+7. [Docker Hub](https://hub.docker.com/)
    1. singularity pull ubuntu.sif docker://ubuntu:latest
-6. [Singularity Hub Archive](https://singularityhub.github.io/singularityhub-archive/)
-7. [从零开始制作PyTorch的Singularity容器镜像](https://www.cnblogs.com/dechinphy/p/pytorch.html)
-8. [建立台灣杉二號的容器](https://man.twcc.ai/@twccdocs/howto-twnia2-create-sglrt-container-zh)
+8. [Singularity Hub Archive](https://singularityhub.github.io/singularityhub-archive/)
+9. [从零开始制作PyTorch的Singularity容器镜像](https://www.cnblogs.com/dechinphy/p/pytorch.html)
+10. [建立台灣杉二號的容器](https://man.twcc.ai/@twccdocs/howto-twnia2-create-sglrt-container-zh)
+11. [Singularity | Giacomo Baruzzo, PhD](https://sysbiobig.dei.unipd.it/wp-content/uploads/2023/03/2-Singularity.pdf)
+12. [基于singularity构建可移植的生信工作站](https://zhuanlan.zhihu.com/p/671679662)
+13. [Singularity to deploy HPC applications: a study case with WRF | 2025](https://link.springer.com/article/10.1007/s11227-024-06893-1)

@@ -279,7 +279,7 @@ def predit_img2img(prompt, negative_prompt,init_image, model_selected,n_steps, h
 def interrogate_deepbooru(pil_image, threshold):
     threshold =0.5
     model = deep_danbooru_model.DeepDanbooruModel()
-    model.load_state_dict(torch.load('/home/wpsze/cpas/huggingface_hub/stable-diffusion-xl-base-1.0/TorchDeepDanbooru/model-resnet_custom_v3.pt'))
+    model.load_state_dict(torch.load('/home/wpsze/ML/huggingface_hub/stable-diffusion-xl-base-1.0/TorchDeepDanbooru/model-resnet_custom_v3.pt'))
     model.eval().half().cuda()
 
     pic = pil_image.convert("RGB").resize((512, 512))
