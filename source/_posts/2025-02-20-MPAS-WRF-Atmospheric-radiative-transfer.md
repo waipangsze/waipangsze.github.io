@@ -13,6 +13,8 @@ index_img:
 banner_img: 
 ---
 
+- Read [**MPAS |WRF | Solar Energy**](https://waipangsze.github.io/2025/02/12/MPAS-WRF-Solar-Energy/)
+
 # Radiative transfer
 
 **Radiative transfer** (also called **radiation transport**) is the physical phenomenon of energy transfer in the form of electromagnetic radiation. The propagation of radiation through a medium is affected by *absorption, emission, and scattering processes*. The equation of radiative transfer describes these interactions mathematically.
@@ -184,6 +186,13 @@ L=\frac{\partial^2 \Phi}{\cos \theta \partial A \partial \Omega}
 $$
 
 其中：**$\Phi$** 是**輻射通量**，單位**瓦特**（W）；**$\Omega$**是**立體角**，單位**球面度** **(sr)**。
+
+{% gi 6 3-3 %}
+![](https://i.imgur.com/GzqyGa8.png)
+![](https://i.imgur.com/6KeXzXp.png)
+![](https://i.imgur.com/PdvPtL0.png)
+![](https://i.imgur.com/R2hipMd.png)
+{% endgi %}
 
 # References
 
