@@ -201,6 +201,27 @@ python helmholtz.py
 
 If you see the `outputs/` directory created after the execution of the command (~5 min), the installation is successful.
 
+#### Examples
+
+1. [Scalar Transport: 2D Advection Diffusion](https://docs.nvidia.com/deeplearning/modulus/modulus-sym-v120/user_guide/foundational/scalar_transport.html)
+   1. `examples/three_fin_2d/heat_sink.py`
+2. [Heat Transfer with High Thermal Conductivity | 2d_heat_transfer](https://docs.nvidia.com/deeplearning/modulus/modulus-sym/user_guide/advanced/2d_heat_transfer.html)
+   1. `examples/limerock/limerock_hFTB`
+3. [Parameterized 3D Heat Sink](https://docs.nvidia.com/deeplearning/modulus/modulus-sym/user_guide/advanced/parametrized_simulations.html)
+
+## Post Processing in Modulus
+
+1. [Post Processing in Modulus](https://docs.nvidia.com/deeplearning/modulus/modulus-v2209/user_guide/features/post_processing.html)
+   1. var_to_polyvtk(save_var, "./test_file")
+   2. grid_to_vtk(save_var, "./test_file", batch_index=1)
+2. [Simple Training and Inference recipe](https://docs.nvidia.com/deeplearning/modulus/modulus-core/tutorials/simple_training_example.html)
+
+## Load model
+
+```sh
+export SINGULARITY_BIND="/home/wpsze/ML/NVIDIA-Modulus"
+singularity shell Modulus.sif
+```
 
 # References
 

@@ -99,6 +99,44 @@ See above shell script.
 ![](https://i.imgur.com/EPqOweu.png)
 {% endgi %}
 
+## skintemp (skt) vs sst
+
+Consider `skt - sst` form ERA5 grib file, they are different but why?
+
+- ERA5-0p25-SL-2022063000.grib
+- ERA5 grib: skt - sst 
+
+![ERA5 grib | skt - sst |](https://i.imgur.com/WoSHTOP.png){width=500}
+
+### Solutions
+
+- [SST input resolution and LANDMASK | Feb 2024](https://forum.mmm.ucar.edu/threads/sst-input-resolution-and-landmask.15850/)
+  - **SST in ERA5 only has valid values over the ocean**. When metgrid conducts horizontal interpolation, it may result in some discontinuity.
+  - **TSK is skin temperature predicted by land model (over the ocean without sst update, it remains as skintemp at the initial time. if sst_update =1, tsk is updated by SST.**)
+  - I am suspicious that SST is somehow not continuous over the coast, which affects tsk later.
+  - To overcome this problem, **please use skintemp as SST**. You cam simply delete the line for SST in Vtable.ECMWF , then rerun ungrib and metgrid.
+  - I would like to confirm that in ERA5, SKINTEMP and SST over the ocean are same. This will justify that we can use SKINTEMP to replace SST.
+- [Metgrid SST interpolation artifacts | Nov 2023](https://forum.mmm.ucar.edu/threads/metgrid-sst-interpolation-artifacts.14755/)
+  - One quick fix of the unrealistic SST along coastal areas is to **replace SST by SKINTEMP**. **Please delete the line below from Vtable.ECMWF**, then rerun ungrib.exe.
+  - `34 | 1 | 0 | | SST | K | Sea-Surface Temperature |`
+  - In this case SST will not be extracted from ERA5 and SKINTEMP will be used as SST. **We believe this is reasonable because SST and SKINTEMP is almost the same over ocean**.
+  - In the case you attempt to use external SST instead of ERA5 SST, you need to provide landmask specifically for the external SST data, then modify METGRID.TBL so that metgrid.exe will know what landmask is used for horizontal interpolation.
+    - A detailed explanation can be found at <https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/201907/duda_wps_advanced.pdf>, and the slides 47-58 give an example how to process external soil data. The same approach is also applied to external SST.
+    - the default fill-values overland is 0K (as in -273.15ºC). If you're running in high res, the interpolation of SST leads to some wonky numbers around the landmask. Probably you can set fill_missing = 285. or some other value to remedy the problem.
+  - [does WRF needs TSK from global data | Nov 2020](https://forum.mmm.ucar.edu/threads/does-wrf-needs-tsk-from-global-data.9751/)
+  - [Strong non-smooth temperature pattern over snow/ice/water land categories | Sep 2021](https://forum.mmm.ucar.edu/threads/strong-non-smooth-temperature-pattern-over-snow-ice-water-land-categories.10793/)
+    -  I see you're using sst_update. Are you using a separate SST input data than the ERA5 data? If so, is it possible that the landsea mask for the two data types is inconsistent? Otherwise, there is a particular process necessary for processing landsea for ERA5 data. 
+    -  **One suggestion is to use SKINTEMP only (instead of SST)**
+ -  [Issue with ERA5 SST fields | Feb 2023](https://forum.mmm.ucar.edu/threads/issue-with-era5-sst-fields.12525/)
+    -  This is an old issue. If you **replace the SST by the skin temperature** you will have unrealistic warm waters near the coast in summer.
+ -  [WRF regional climate simulation | Sep 2021](https://forum.mmm.ucar.edu/threads/wrf-regional-climate-simulation.10726/)
+    -  This will potentially lead to problem in WRF simulation, especially for long term climate simulation with sst_update.
+    -  To solve this issue, **please use skintemp to replace SST** following the steps below:
+       -  (1) in Vtable.ERA-I, **delete** the line below:
+          -  `34 | 1 | 0 | | SST | K | Sea-Surface Temperature |`
+       -  (2) rerun ungrib.exe and metgrid.exe
+       -  (3) run real.exe and wrf.exe
+
 ## Summary
 
 {% note primary %}
@@ -108,6 +146,37 @@ And, **ERA5 corresponding interemediate file** can be used.
 {% endnote %}
 
 # For MPAS
+
+## code
+
+### MPAS init.nc SST issue
+
+- `sst = skintemp` that sst values is from skintemp.
+- `src/core_init_atmosphere/mpas_init_atm_cases.F`
+
+```
+if (config_met_interp) then
+
+!ldf (2011-11-19): added initialization of the sea-surface temperature, seaice fraction, and
+!seaice flag:
+  sst = 0.0
+  xice = 0.0
+  seaice = 0.0
+!ldf end.
+
+! Set SST based on SKINTEMP field if it wasn't found in input data
+if (minval(sst) == 0.0 .and. maxval(sst) == 0.0) then
+    call mpas_log_write('Setting SST from SKINTEMP')
+    !where (landmask == 0) sst = skintemp
+    sst = skintemp
+end if
+```
+
+But, ERA5's skintemp and sst are different as above.
+
+![Left) init.nc, Right) sst.nc](https://i.imgur.com/EIkck30.png)
+![init.nc - sst.nc, and same as above figure of ERA5 grib file](https://i.imgur.com/YHSha1w.png){width=500}
+![It is init.nc: skintemp - sst that has shown sst is same as skintemp in init_atmosphere step in MPAS.](https://i.imgur.com/Fwn5ZjU.png){width=500}
 
 ## namelist.init_atmosphere
 
@@ -312,6 +381,11 @@ if __name__ == "__main__":
 ```xml
 <package name="sfc_update" description="Used by test cases that produce surface updates."/>
 
+<nml_option name="config_input_sst"             type="logical"       default_value="false"
+      units="-"
+      description="Whether to re-compute SST and sea-ice fields from surface input data set; should be set to .true. when running case 8"
+      possible_values="true or false"/>
+
 <var name="sst" type="real" dimensions="nCells Time" units="K"
         description="sea-surface temperature"
         packages="met_stage_out;sfc_update"/>
@@ -350,6 +424,52 @@ if __name__ == "__main__":
 ## Plot diff
 
 ![](https://i.imgur.com/7shbwIg.png){width=400}
+
+# For WRF
+
+- [Input SST Data into the Model | SST Example from our WRF Online Tutorial](http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/index.php)
+
+The WRF model physics **do not predict** sea-surface temperature, vegetation fraction, albedo or sea ice. For long simulations, the model provides an alternative to read-in the time-varying data and update these fields (the sst_update option). In order to use this option, one must have access to time-varying SST and sea ice fields. Twelve monthly values of vegetation fraction and albedo are available from the geogrid program. Once these fields are processed via WPS, one may activate the sst_update option within the namelist.input file.
+
+You will need to input your SST data during the WPS process. Take a look at the [SST Example from our WRF Online Tutorial](http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/index.php) for information on how to do this. Because your SST data are in **netcdf format**, however, you will need to write them to intermediate format in order for metgrid to incorporate the data. To do so, you can follow the instructions in [Chapter 3 of the WRF Users' Guide](http://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.1/users_guide_chap3.html#_Writing_Meteorological_Data). You can also find an example [script for writing a netcdf file to intermediate format here](http://www2.mmm.ucar.edu/wrf/users/special_code.html). Just note that this script was provided to us from a user who wrote it specifically for their application, so you will need to make modifications for your own use.
+
+- SST's are typically added to the model:
+  - a. Use the SST at the initial time as a constant field for all time periods (this is good for short runs, like real-time runs, where SST is not updated during the WRF model run)
+  - b. As an extra input **at each model input time** (this is good for long-months-model runs)
+  - c. **SST:* intermediate files** generated from the SST input data (if you do not have these files, first run ungrib.exe)
+    - `ln -sf ungrib/Variable_Tables/Vtable.SST Vtable`
+
+### Interpolate the input data onto our model domain (metgrid.exe)
+
+```namelist
+start_date = '2016-10-06_00:00:00',
+end_date = '2016-10-08_00:00:00',
+interval_seconds = 21600,
+fg_name = 'FILE', 'SST',
+```
+
+- `./metgrid.exe`
+- generate `met_em.d01.xxx.nc`
+
+### Run model
+
+- Run `real.exe`
+
+```namelist
+&time_control
+auxinput4_inname = "wrflowinp_d<domain>",
+auxinput4_interval = 360,
+io_form_auxinput4 = 2
+ 
+&physics
+sst_update = 1,
+```
+
+**Note**: Do not change the syntax "wrflowinp_d\<domain\>", to "wrflowinp_d01". The syntax should be left exactly as above. Input interval is in minutes.
+
+- generate one more file as `wrflowinp_d01` that contains `SST`, `VEGFRA`, `ALBBCK` and `SEAICE` (if available) for each input time.
+- Run `wrf.exe`
+- To check if `SST` is updated in the model, look at field `TSK` over water.
 
 # WRF&MPAS-A Support Forum
 
