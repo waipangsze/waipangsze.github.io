@@ -8,7 +8,7 @@
     <link href="/2025/02/21/ML-NVIDIA-Modulus/"/>
     <url>/2025/02/21/ML-NVIDIA-Modulus/</url>
     
-    <content type="html"><![CDATA[<h1 id="nvidia-modulus">NVIDIA Modulus</h1><p>Modulus is an open source deep-learning framework for building, training, and fine-tuning deep learning models using state-of-the-art <strong>Physics-ML methods</strong>.</p><p>Whether you are exploring the use of Neural operators like <strong>Fourier Neural Operators</strong> or interested in <strong>Physics informed Neural Networks</strong> or a hybrid approach in between, Modulus provides you with the optimized stack that will enable you to train your models at real world scale.</p><p>Modulus code is open source and packaged in a modular fashion into two repos - <strong>Modulus Core</strong> and <strong>Modulus Sym</strong>.</p><ul><li><strong>Modulus Core</strong> provides a pytorch like experience for those proficient with python for AI. It includes all the core algorithms, network architectures and utilities to cover the broad spectrum of physics-constrained and data-driven workflows to suit the diversity of use cases in the science and engineering disciplines.</li><li><strong>Modulus Symbolic (Modulus Sym)</strong> provides pythonic APIs, algorithms and utilities to be used with Modulus core, to explicitly physics inform the model training. This includes <strong>symbolic APIs for PDEs, domain sampling and PDE-based residuals</strong>. It also provides higher level abstraction to compose a training loop from specification of the <strong>geometry, PDEs and constraints like boundary conditions using simple symbolic APIs</strong>.</li></ul><p>We also package the entire Modulus source in a single container image to simplify the ease of use and is freely available on NGC. The container does not include the reference applications due to their size and we recommend you to download the examples directly from Github source.</p><h1 id="modulus-with-docker-image---singularity">Modulus with Docker Image - Singularity</h1><p>Once you have installed <code>Singularity</code>, to build and <strong>run Modulus Docker image</strong> with <code>Singularity</code>:</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console">singularity build Modulus.sif docker://nvcr.io/nvidia/modulus/modulus:&lt;tag&gt;<br>singularity run --writable --nv Modulus.sif<br></code></pre></td></tr></table></figure><ul><li><a href="https://github.com/NVIDIA/modulus/releases" class="uri">https://github.com/NVIDIA/modulus/releases</a></li><li><strong>tag</strong><ul><li><a href="https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/containers/modulus/tags" class="uri">https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/containers/modulus/tags</a></li><li>up to 24.12 (2025-02-21)</li><li>consider <code>singularity build Modulus.sif docker://nvcr.io/nvidia/modulus/modulus:23.08</code><ul><li>10/04/2023 2:35 AM, 11.24 GB, 1 Architecture</li><li><code>9.5G Feb 21 17:19 Modulus.sif</code></li></ul></li></ul></li></ul><p>But,</p><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-code"> $ singularity run --writable --nv Modulus.sif</span><br>INFO:    Could not find any nv files on this host!<br><span class="hljs-symbol">WARNING: </span>Could not find any nv libraries on this host!<br><span class="hljs-symbol">WARNING: </span>You may need to manually edit /home/wpsze/micromamba/envs/singularity/etc/singularity/nvliblist.conf<br>INFO:    Converting SIF file to temporary sandbox...<br><span class="hljs-symbol">WARNING: </span>Skipping mount /etc/localtime [binds]: /etc/localtime doesn&#x27;t exist in container<br><span class="hljs-symbol">WARNING: </span>By using --writable, Singularity can&#x27;t create /HOME destination automatically without overlay or underlay<br>INFO:    Cleaning up image...<br>FATAL:   container creation failed: mount /home/wpsze/micromamba/envs/singularity/var/singularity/mnt/session/HOME-&gt;/HOME error: while mounting /home/wpsze/micromamba/envs/singularity/var/singularity/mnt/session/HOME: destination /HOME doesn&#x27;t exist in container<br></code></pre></td></tr></table></figure><ul><li><a href="https://www.nas.nasa.gov/hecc/support/kb/running-a-singularity-container-image-on-pleiades_638.html">Running a Singularity Container Image on Pleiades | NASA</a><ul><li><code>WARNING: By using --writable, Singularity can't create /homeX destination ......</code></li><li><strong>Note</strong>: If you encounter the following warning message, <code>cd</code> to <code>your_image_sandbox</code> and use the <code>mkdir</code> command to create <code>homeX</code> before you retry the commands above. (The X in <code>homeX</code> represents the actual value (X=1-7) of your $HOME directory on Pleiades.)</li></ul></li></ul><h2 id="can-modulus-run-on-cpu">Can Modulus run on CPU?</h2><ul><li>Modulus is built on top of PyTorch, which supports both CPU and GPU execution. By default, Modulus will attempt to use a GPU if available, but it can fall back to CPU execution if no GPU is detected or if explicitly configured.</li><li>Running on a CPU is feasible for smaller models or prototyping, but large-scale training or complex simulations may be impractical due to performance constraints.</li></ul><p>By default, the Modulus container is optimized for GPU use and assumes CUDA availability. To run it on CPU:</p><ul><li>Avoid passing GPU resources to Singularity (e.g., no <code>--nv</code> flag).</li><li>Launch the container interactively or with a script.</li></ul><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">$ singularity <span class="hljs-built_in">run</span> Modulus.sif<br></code></pre></td></tr></table></figure><p>and, <strong>Importantly</strong>, add on <code>conf/config.yaml</code></p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">device:</span> <span class="hljs-string">cpu</span><br><span class="hljs-attr">cuda_graphs:</span> <span class="hljs-literal">False</span><br></code></pre></td></tr></table></figure><p>like, on <code>three_fin_2d/heat_sink</code> case,</p><ul><li>$ cat /home/wpsze/ML/NVIDIA-Modulus/modulus-sym/examples/three_fin_2d/conf/config.yaml</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">        <div class="fold-arrow">▶</div>config.yaml      </div>      <div class="fold-collapse collapse" id="collapse-05eef982">        <div class="fold-content">          <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># SPDX-FileCopyrightText: Copyright (c) 2023 - 2024 NVIDIA CORPORATION &amp; AFFILIATES.</span><br><span class="hljs-comment"># SPDX-FileCopyrightText: All rights reserved.</span><br><span class="hljs-comment"># SPDX-License-Identifier: Apache-2.0</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="hljs-comment"># you may not use this file except in compliance with the License.</span><br><span class="hljs-comment"># You may obtain a copy of the License at</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment">#     http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Unless required by applicable law or agreed to in writing, software</span><br><span class="hljs-comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="hljs-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="hljs-comment"># See the License for the specific language governing permissions and</span><br><span class="hljs-comment"># limitations under the License.</span><br><br><span class="hljs-attr">defaults :</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">modulus_default</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">arch:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">fully_connected</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">optimizer :</span> <span class="hljs-string">adam</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">scheduler :</span> <span class="hljs-string">tf_exponential_lr</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">loss :</span> <span class="hljs-string">sum</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">_self_</span><br><br><span class="hljs-attr">jit:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-attr">device:</span> <span class="hljs-string">cpu</span><br><span class="hljs-attr">cuda_graphs:</span> <span class="hljs-literal">False</span><br><br><span class="hljs-attr">scheduler:</span><br>  <span class="hljs-attr">decay_rate:</span> <span class="hljs-number">0.95</span><br>  <span class="hljs-attr">decay_steps:</span> <span class="hljs-number">5000</span><br><br><span class="hljs-attr">training:</span> <br>  <span class="hljs-attr">rec_validation_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_inference_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_monitor_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_constraint_freq:</span> <span class="hljs-number">2000</span><br>  <span class="hljs-attr">max_steps:</span> <span class="hljs-number">500000</span><br><br><span class="hljs-attr">batch_size:</span><br>  <span class="hljs-attr">inlet:</span> <span class="hljs-number">64</span><br>  <span class="hljs-attr">outlet:</span> <span class="hljs-number">64</span><br>  <span class="hljs-attr">hs_wall:</span> <span class="hljs-number">500</span><br>  <span class="hljs-attr">channel_wall:</span> <span class="hljs-number">2500</span><br>  <span class="hljs-attr">interior_flow:</span> <span class="hljs-number">4800</span><br>  <span class="hljs-attr">interior_heat:</span> <span class="hljs-number">4800</span><br>  <span class="hljs-attr">integral_continuity:</span> <span class="hljs-number">128</span><br>  <span class="hljs-attr">num_integral_continuity:</span> <span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="bug">Bug</h2><h3 id="root-filesystem-extraction-failed-failed-to-copy-content-in-staging-file-write-tmprootfs">root filesystem extraction failed: failed to copy content in staging file: write /tmp/rootfs</h3><ul><li><a href="https://github.com/apptainer/singularity/issues/5711">root filesystem extraction failed: command error: while getting library dependencies: exit status 127</a></li><li><a href="https://docs.sylabs.io/guides/3.7/user-guide/build_env.html#temporary-folders">Temporary Folders</a><ul><li>The location for temporary directories defaults to <code>/tmp</code>. Singularity will also respect the environment variable <code>TMPDIR</code>, and both of these locations can be overridden by setting the environment variable <code>SINGULARITY_TMPDIR</code>.</li><li>The temporary directory used during a build must be on a filesystem that has <strong>enough space to hold the entire container image</strong>, uncompressed, including any temporary files that are created and later removed during the build.</li><li>You may need to set <code>SINGULARITY_TMPDIR</code> when building a large container on a system which has a small <code>/tmp</code> filesystem.</li><li><code>$ ls -a /tmp</code></li><li>cleanup: <code>rm -r rootfs*</code></li></ul></li><li>try to add<ul><li><code>export SINGULARITY_TMPDIR="/home/wpsze/ML/NVIDIA-Modulus/singularity_tmp"</code></li><li><code>-B $SINGULARITY_TMPDIR:/tmp</code></li></ul></li></ul><h2 id="running-examples">Running Examples</h2><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console">223M./modulus<br>9.5G./Modulus.sif<br>926M./modulus-sym<br></code></pre></td></tr></table></figure><h3 id="modulus-examples">Modulus Examples</h3><p>Clone the Modulus repository in your working directory using:</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">git clone https://github.com/NVIDIA/modulus.git<br></code></pre></td></tr></table></figure><p>To verify the examples run correctly, run these commands:</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console">cd ./modulus/examples/cfd/darcy_fno/<br>pip install warp-lang<br>python train_fno_darcy.py<br></code></pre></td></tr></table></figure><p>If you see the <code>outputs/</code> directory created after the execution of the command (~5 min), the installation is successful.</p><h3 id="modulus-sym-examples">Modulus Sym examples</h3><ul><li>The modulus-sym repository has <strong>Git LFS</strong> enabled. You will need to have <strong>Git LFS</strong> installed for the clone to work correctly.</li></ul><p>Clone the Modulus Sym repository in your working directory using:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/NVIDIA/modulus-sym.git<br></code></pre></td></tr></table></figure><p>To verify the examples run correctly, run these commands:</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cd</span> ./modulus-sym/examples/helmholtz/<br><span class="hljs-keyword">python</span> helmholtz.<span class="hljs-keyword">py</span><br></code></pre></td></tr></table></figure><p>If you see the <code>outputs/</code> directory created after the execution of the command (~5 min), the installation is successful.</p><h1 id="references">References</h1><ol type="1"><li><a href="https://docs.nvidia.com/deeplearning/modulus/getting-started/index.html">NVIDIA Modulus Getting Started</a></li><li><a href="https://indico.ihep.ac.cn/event/17357/sessions/3811/attachments/62339/72133/AI%20For%20Science%20Framework%20modulus.pdf">AI FOR SCIENCE FRAMEWORK: MODULUS</a></li></ol>]]></content>
+    <content type="html"><![CDATA[<h1 id="nvidia-modulus">NVIDIA Modulus</h1><p>Modulus is an open source deep-learning framework for building, training, and fine-tuning deep learning models using state-of-the-art <strong>Physics-ML methods</strong>.</p><p>Whether you are exploring the use of Neural operators like <strong>Fourier Neural Operators</strong> or interested in <strong>Physics informed Neural Networks</strong> or a hybrid approach in between, Modulus provides you with the optimized stack that will enable you to train your models at real world scale.</p><p>Modulus code is open source and packaged in a modular fashion into two repos - <strong>Modulus Core</strong> and <strong>Modulus Sym</strong>.</p><ul><li><strong>Modulus Core</strong> provides a pytorch like experience for those proficient with python for AI. It includes all the core algorithms, network architectures and utilities to cover the broad spectrum of physics-constrained and data-driven workflows to suit the diversity of use cases in the science and engineering disciplines.</li><li><strong>Modulus Symbolic (Modulus Sym)</strong> provides pythonic APIs, algorithms and utilities to be used with Modulus core, to explicitly physics inform the model training. This includes <strong>symbolic APIs for PDEs, domain sampling and PDE-based residuals</strong>. It also provides higher level abstraction to compose a training loop from specification of the <strong>geometry, PDEs and constraints like boundary conditions using simple symbolic APIs</strong>.</li></ul><p>We also package the entire Modulus source in a single container image to simplify the ease of use and is freely available on NGC. The container does not include the reference applications due to their size and we recommend you to download the examples directly from Github source.</p><h1 id="modulus-with-docker-image---singularity">Modulus with Docker Image - Singularity</h1><p>Once you have installed <code>Singularity</code>, to build and <strong>run Modulus Docker image</strong> with <code>Singularity</code>:</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console">singularity build Modulus.sif docker://nvcr.io/nvidia/modulus/modulus:&lt;tag&gt;<br>singularity run --writable --nv Modulus.sif<br></code></pre></td></tr></table></figure><ul><li><a href="https://github.com/NVIDIA/modulus/releases" class="uri">https://github.com/NVIDIA/modulus/releases</a></li><li><strong>tag</strong><ul><li><a href="https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/containers/modulus/tags" class="uri">https://catalog.ngc.nvidia.com/orgs/nvidia/teams/modulus/containers/modulus/tags</a></li><li>up to 24.12 (2025-02-21)</li><li>consider <code>singularity build Modulus.sif docker://nvcr.io/nvidia/modulus/modulus:23.08</code><ul><li>10/04/2023 2:35 AM, 11.24 GB, 1 Architecture</li><li><code>9.5G Feb 21 17:19 Modulus.sif</code></li></ul></li></ul></li></ul><p>But,</p><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-code"> $ singularity run --writable --nv Modulus.sif</span><br>INFO:    Could not find any nv files on this host!<br><span class="hljs-symbol">WARNING: </span>Could not find any nv libraries on this host!<br><span class="hljs-symbol">WARNING: </span>You may need to manually edit /home/wpsze/micromamba/envs/singularity/etc/singularity/nvliblist.conf<br>INFO:    Converting SIF file to temporary sandbox...<br><span class="hljs-symbol">WARNING: </span>Skipping mount /etc/localtime [binds]: /etc/localtime doesn&#x27;t exist in container<br><span class="hljs-symbol">WARNING: </span>By using --writable, Singularity can&#x27;t create /HOME destination automatically without overlay or underlay<br>INFO:    Cleaning up image...<br>FATAL:   container creation failed: mount /home/wpsze/micromamba/envs/singularity/var/singularity/mnt/session/HOME-&gt;/HOME error: while mounting /home/wpsze/micromamba/envs/singularity/var/singularity/mnt/session/HOME: destination /HOME doesn&#x27;t exist in container<br></code></pre></td></tr></table></figure><ul><li><a href="https://www.nas.nasa.gov/hecc/support/kb/running-a-singularity-container-image-on-pleiades_638.html">Running a Singularity Container Image on Pleiades | NASA</a><ul><li><code>WARNING: By using --writable, Singularity can't create /homeX destination ......</code></li><li><strong>Note</strong>: If you encounter the following warning message, <code>cd</code> to <code>your_image_sandbox</code> and use the <code>mkdir</code> command to create <code>homeX</code> before you retry the commands above. (The X in <code>homeX</code> represents the actual value (X=1-7) of your $HOME directory on Pleiades.)</li></ul></li></ul><h2 id="can-modulus-run-on-cpu">Can Modulus run on CPU?</h2><ul><li>Modulus is built on top of PyTorch, which supports both CPU and GPU execution. By default, Modulus will attempt to use a GPU if available, but it can fall back to CPU execution if no GPU is detected or if explicitly configured.</li><li>Running on a CPU is feasible for smaller models or prototyping, but large-scale training or complex simulations may be impractical due to performance constraints.</li></ul><p>By default, the Modulus container is optimized for GPU use and assumes CUDA availability. To run it on CPU:</p><ul><li>Avoid passing GPU resources to Singularity (e.g., no <code>--nv</code> flag).</li><li>Launch the container interactively or with a script.</li></ul><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">$ singularity <span class="hljs-built_in">run</span> Modulus.sif<br></code></pre></td></tr></table></figure><p>and, <strong>Importantly</strong>, add on <code>conf/config.yaml</code></p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">device:</span> <span class="hljs-string">cpu</span><br><span class="hljs-attr">cuda_graphs:</span> <span class="hljs-literal">False</span><br></code></pre></td></tr></table></figure><p>like, on <code>three_fin_2d/heat_sink</code> case,</p><ul><li>$ cat /home/wpsze/ML/NVIDIA-Modulus/modulus-sym/examples/three_fin_2d/conf/config.yaml</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">        <div class="fold-arrow">▶</div>config.yaml      </div>      <div class="fold-collapse collapse" id="collapse-05eef982">        <div class="fold-content">          <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># SPDX-FileCopyrightText: Copyright (c) 2023 - 2024 NVIDIA CORPORATION &amp; AFFILIATES.</span><br><span class="hljs-comment"># SPDX-FileCopyrightText: All rights reserved.</span><br><span class="hljs-comment"># SPDX-License-Identifier: Apache-2.0</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="hljs-comment"># you may not use this file except in compliance with the License.</span><br><span class="hljs-comment"># You may obtain a copy of the License at</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment">#     http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Unless required by applicable law or agreed to in writing, software</span><br><span class="hljs-comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="hljs-comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="hljs-comment"># See the License for the specific language governing permissions and</span><br><span class="hljs-comment"># limitations under the License.</span><br><br><span class="hljs-attr">defaults :</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">modulus_default</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">arch:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">fully_connected</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">optimizer :</span> <span class="hljs-string">adam</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">scheduler :</span> <span class="hljs-string">tf_exponential_lr</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">loss :</span> <span class="hljs-string">sum</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">_self_</span><br><br><span class="hljs-attr">jit:</span> <span class="hljs-literal">false</span><br><br><span class="hljs-attr">device:</span> <span class="hljs-string">cpu</span><br><span class="hljs-attr">cuda_graphs:</span> <span class="hljs-literal">False</span><br><br><span class="hljs-attr">scheduler:</span><br>  <span class="hljs-attr">decay_rate:</span> <span class="hljs-number">0.95</span><br>  <span class="hljs-attr">decay_steps:</span> <span class="hljs-number">5000</span><br><br><span class="hljs-attr">training:</span> <br>  <span class="hljs-attr">rec_validation_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_inference_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_monitor_freq:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">rec_constraint_freq:</span> <span class="hljs-number">2000</span><br>  <span class="hljs-attr">max_steps:</span> <span class="hljs-number">500000</span><br><br><span class="hljs-attr">batch_size:</span><br>  <span class="hljs-attr">inlet:</span> <span class="hljs-number">64</span><br>  <span class="hljs-attr">outlet:</span> <span class="hljs-number">64</span><br>  <span class="hljs-attr">hs_wall:</span> <span class="hljs-number">500</span><br>  <span class="hljs-attr">channel_wall:</span> <span class="hljs-number">2500</span><br>  <span class="hljs-attr">interior_flow:</span> <span class="hljs-number">4800</span><br>  <span class="hljs-attr">interior_heat:</span> <span class="hljs-number">4800</span><br>  <span class="hljs-attr">integral_continuity:</span> <span class="hljs-number">128</span><br>  <span class="hljs-attr">num_integral_continuity:</span> <span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="bug">Bug</h2><h3 id="root-filesystem-extraction-failed-failed-to-copy-content-in-staging-file-write-tmprootfs">root filesystem extraction failed: failed to copy content in staging file: write /tmp/rootfs</h3><ul><li><a href="https://github.com/apptainer/singularity/issues/5711">root filesystem extraction failed: command error: while getting library dependencies: exit status 127</a></li><li><a href="https://docs.sylabs.io/guides/3.7/user-guide/build_env.html#temporary-folders">Temporary Folders</a><ul><li>The location for temporary directories defaults to <code>/tmp</code>. Singularity will also respect the environment variable <code>TMPDIR</code>, and both of these locations can be overridden by setting the environment variable <code>SINGULARITY_TMPDIR</code>.</li><li>The temporary directory used during a build must be on a filesystem that has <strong>enough space to hold the entire container image</strong>, uncompressed, including any temporary files that are created and later removed during the build.</li><li>You may need to set <code>SINGULARITY_TMPDIR</code> when building a large container on a system which has a small <code>/tmp</code> filesystem.</li><li><code>$ ls -a /tmp</code></li><li>cleanup: <code>rm -r rootfs*</code></li></ul></li><li>try to add<ul><li><code>export SINGULARITY_TMPDIR="/home/wpsze/ML/NVIDIA-Modulus/singularity_tmp"</code></li><li><code>-B $SINGULARITY_TMPDIR:/tmp</code></li></ul></li></ul><h2 id="running-examples">Running Examples</h2><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console">223M./modulus<br>9.5G./Modulus.sif<br>926M./modulus-sym<br></code></pre></td></tr></table></figure><h3 id="modulus-examples">Modulus Examples</h3><p>Clone the Modulus repository in your working directory using:</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">git clone https://github.com/NVIDIA/modulus.git<br></code></pre></td></tr></table></figure><p>To verify the examples run correctly, run these commands:</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console">cd ./modulus/examples/cfd/darcy_fno/<br>pip install warp-lang<br>python train_fno_darcy.py<br></code></pre></td></tr></table></figure><p>If you see the <code>outputs/</code> directory created after the execution of the command (~5 min), the installation is successful.</p><h3 id="modulus-sym-examples">Modulus Sym examples</h3><ul><li>The modulus-sym repository has <strong>Git LFS</strong> enabled. You will need to have <strong>Git LFS</strong> installed for the clone to work correctly.</li></ul><p>Clone the Modulus Sym repository in your working directory using:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/NVIDIA/modulus-sym.git<br></code></pre></td></tr></table></figure><p>To verify the examples run correctly, run these commands:</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cd</span> ./modulus-sym/examples/helmholtz/<br><span class="hljs-keyword">python</span> helmholtz.<span class="hljs-keyword">py</span><br></code></pre></td></tr></table></figure><p>If you see the <code>outputs/</code> directory created after the execution of the command (~5 min), the installation is successful.</p><h4 id="examples">Examples</h4><ol type="1"><li><a href="https://docs.nvidia.com/deeplearning/modulus/modulus-sym-v120/user_guide/foundational/scalar_transport.html">Scalar Transport: 2D Advection Diffusion</a><ol type="1"><li><code>examples/three_fin_2d/heat_sink.py</code></li></ol></li><li><a href="https://docs.nvidia.com/deeplearning/modulus/modulus-sym/user_guide/advanced/2d_heat_transfer.html">Heat Transfer with High Thermal Conductivity | 2d_heat_transfer</a><ol type="1"><li><code>examples/limerock/limerock_hFTB</code></li></ol></li><li><a href="https://docs.nvidia.com/deeplearning/modulus/modulus-sym/user_guide/advanced/parametrized_simulations.html">Parameterized 3D Heat Sink</a></li></ol><h2 id="post-processing-in-modulus">Post Processing in Modulus</h2><ol type="1"><li><a href="https://docs.nvidia.com/deeplearning/modulus/modulus-v2209/user_guide/features/post_processing.html">Post Processing in Modulus</a><ol type="1"><li>var_to_polyvtk(save_var, "./test_file")</li><li>grid_to_vtk(save_var, "./test_file", batch_index=1)</li></ol></li><li><a href="https://docs.nvidia.com/deeplearning/modulus/modulus-core/tutorials/simple_training_example.html">Simple Training and Inference recipe</a></li></ol><h2 id="load-model">Load model</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> SINGULARITY_BIND=<span class="hljs-string">&quot;/home/wpsze/ML/NVIDIA-Modulus&quot;</span><br>singularity shell Modulus.sif<br></code></pre></td></tr></table></figure><h1 id="references">References</h1><ol type="1"><li><a href="https://docs.nvidia.com/deeplearning/modulus/getting-started/index.html">NVIDIA Modulus Getting Started</a></li><li><a href="https://indico.ihep.ac.cn/event/17357/sessions/3811/attachments/62339/72133/AI%20For%20Science%20Framework%20modulus.pdf">AI FOR SCIENCE FRAMEWORK: MODULUS</a></li></ol>]]></content>
     
     
     <categories>
@@ -20,7 +20,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>PINN</tag>
       
@@ -29,10 +33,6 @@
       <tag>DeepONet</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
-      
-      <tag>MPAS</tag>
       
     </tags>
     
@@ -45,7 +45,7 @@
     <link href="/2025/02/20/MPAS-WRF-Atmospheric-radiative-transfer/"/>
     <url>/2025/02/20/MPAS-WRF-Atmospheric-radiative-transfer/</url>
     
-    <content type="html"><![CDATA[<h1 id="radiative-transfer">Radiative transfer</h1><p><strong>Radiative transfer</strong> (also called <strong>radiation transport</strong>) is the physical phenomenon of energy transfer in the form of electromagnetic radiation. The propagation of radiation through a medium is affected by <em>absorption, emission, and scattering processes</em>. The equation of radiative transfer describes these interactions mathematically.</p><h2 id="intensity">Intensity</h2><p>In physics and many other areas of science and engineering the <strong>intensity</strong> or <strong>flux of radiant energy</strong> is the <em>power</em> transferred per <em>unit area</em>, where the area is measured on the plane perpendicular to the direction of propagation of the energy. In the SI system, it has units watts per square metre (<strong>W/m2</strong>).</p><p>If a point source is radiating energy in all directions (producing a spherical wave), and no energy is absorbed or scattered by the medium, then the intensity decreases in proportion to the distance from the object squared. This is an example of the inverse-square law.</p><p>Applying the law of conservation of energy, if the net power emanating is constant,</p><p><span class="math display">\[P = \int \mathbf{I} \cdot d\mathbf{A},\]</span></p><p>where</p><ul><li><span class="math inline">\(P\)</span> is the net power (Watts) radiated;</li><li><span class="math inline">\(\mathbf{I}\)</span> is the intensity vector as a function of position;</li><li>the magnitude <span class="math inline">\(|\mathbf{I}|\)</span> is the intensity as a function of position;</li><li><span class="math inline">\(d\mathbf{A}\)</span> is a differential element of a closed surface that contains the source.</li></ul><h2 id="intensity-as-a-function-of-position-on-earths-surface">Intensity as a Function of Position on Earth’s Surface</h2><h3 id="understand-the-power-output-of-the-sun-luminosity"><strong>Understand the Power Output of the Sun (Luminosity)</strong></h3><p>The total power (or luminosity) of the Sun, <span class="math inline">\(P_{\text{Sun}}\)</span> , represents the total energy it emits per unit time across all wavelengths and directions. This is a well-known value in astrophysics, and as of my latest knowledge update, the Sun’s luminosity is approximately:</p><p><span class="math display">\[\begin{align}P/A &amp;= \sigma T^4 \\\sigma &amp;= 5.67×10^{-8}\\R_{\text{Sun}} &amp;= 695500×1000 m \\T_{\text{Sun}} &amp;= 5778 K \\P_{\text{Sun}} &amp;\approx 3.828 \times 10^{26} \, \text{W} \, (\text{watts})\end{align}\tag{1}\]</span></p><p>This is the net power radiated by the Sun into space, assuming it behaves as a <strong>near-perfect blackbody emitter</strong> at a <em>surface temperature</em> of about <span class="math inline">\(5,778 K\)</span>.</p><h3 id="earths-distance-from-the-sun">Earth’s Distance from the Sun:</h3><p>The average distance from the Sun to Earth is:</p><p><span class="math display">\[r \approx 1 \, \text{AU} = 1.496 \times 10^{11} \, \text{m}\]</span></p><p>Now, calculate <span class="math inline">\(r^2\)</span>:</p><p><span class="math display">\[r^2 = (1.496 \times 10^{11})^2 = 2.238 \times 10^{22} \, \text{m}^2\]</span></p><p>Calculate <span class="math inline">\(4 \pi r^2\)</span>:</p><p><span class="math display">\[4 \pi r^2 \approx 4 \times 3.1416 \times 2.238 \times 10^{22} \approx 2.813 \times 10^{23} \, \text{m}^2\]</span></p><p>Now, compute the intensity at Earth’s distance (top of the atmosphere, assuming no atmospheric effects):</p><p><span class="math display">\[I = \frac{3.828 \times 10^{26}}{2.813 \times 10^{23}} \approx 1,361 \, \text{W/m}^2\]</span></p><h3 id="geometry-of-earths-surface"><strong>Geometry of Earth’s Surface</strong></h3><p>Earth is a sphere with a radius <span class="math inline">\(R_{\text{Earth}} \approx 6,371 \, \text{km} = 6.371 \times 10^6 \, \text{m}\)</span>. The intensity (flux) at the top of the atmosphere <span class="math inline">\((1,361 W/m²)\)</span> is the incident flux perpendicular to the Sun’s rays. However, on Earth’s surface, the intensity varies due to:</p><ul><li>The angle of incidence (cosine effect): The flux decreases as <span class="math inline">\(\cos\theta\)</span>, where <span class="math inline">\(\theta\)</span> is the zenith angle (angle from the vertical).</li><li>The curvature of Earth: Only a portion of Earth’s surface is illuminated at any time, and the flux spreads over the illuminated hemisphere.</li></ul><h3 id="assuming-perpendicular-incidence-at-the-sub-solar-point"><strong>Assuming Perpendicular Incidence at the Sub-Solar Point</strong></h3><p>At the sub-solar point (directly under the Sun, where <span class="math inline">\(\theta = 0\)</span>), the intensity on Earth’s surface (ignoring atmospheric effects, as per the image) would still be <span class="math inline">\(1,361 W/m²\)</span>, because no energy is absorbed or scattered.</p><p>Across the rest of the illuminated hemisphere, the intensity decreases with <span class="math inline">\(\cos\theta\)</span>. For a point on Earth’s surface at zenith angle <span class="math inline">\(\theta\)</span>, the flux is:</p><p><span class="math display">\[I_{\text{surface}} = I \cdot \cos\theta = 1,361 \cdot \cos\theta \, \text{W/m}^2\]</span></p><p>The differential area element on a sphere is <span class="math inline">\(dA = R_{\text{Earth}}^2 \sin\theta \, d\theta \, d\phi\)</span>, where <span class="math inline">\(\theta\)</span> is the zenith angle (0 to <span class="math inline">\(\pi/2\)</span> for the illuminated hemisphere) and <span class="math inline">\(\phi\)</span> is the azimuthal angle (0 to <span class="math inline">\(2\pi\)</span>).</p><p>The intensity at angle <span class="math inline">\(\theta\)</span> is <span class="math inline">\(I \cdot \cos\theta\)</span>. The power <span class="math inline">\(dP\)</span> through a differential area <span class="math inline">\(dA\)</span> is:</p><p><span class="math display">\[dP = I \cdot \cos\theta \cdot dA = (1,361 \cdot \cos\theta) \cdot (R_{\text{Earth}}^2 \sin\theta \, d\theta \, d\phi)\]</span></p><p>Integrate over <span class="math inline">\(\theta\)</span> from 0 to <span class="math inline">\(\pi/2\)</span> and <span class="math inline">\(\phi\)</span> from 0 to <span class="math inline">\(2\pi\)</span>:</p><p><span class="math display">\[P_{\text{Earth}} = \int_0^{2\pi} \int_0^{\pi/2} (1,361 \cdot \cos\theta) \cdot (R_{\text{Earth}}^2 \sin\theta) \, d\theta \, d\phi\]</span></p><p>First, integrate over <span class="math inline">\(\phi\)</span>:</p><p><span class="math display">\[\int_0^{2\pi} d\phi = 2\pi\]</span></p><p>Now, integrate over <span class="math inline">\(\theta\)</span>:</p><p><span class="math display">\[\int_0^{\pi/2} (1,361 \cdot \cos\theta) \cdot (\sin\theta) \, d\theta = 1,361 \cdot R_{\text{Earth}}^2 \int_0^{\pi/2} \sin\theta \cos\theta \, d\theta\]</span></p><p>Use the substitution <span class="math inline">\(u = \sin\theta\)</span>, so <span class="math inline">\(du = \cos\theta \, d\theta\)</span>. The limits change from <span class="math inline">\(\theta = 0\)</span> to <span class="math inline">\(\pi/2\)</span> (i.e., <span class="math inline">\(u = 0\)</span> to 1):</p><p><span class="math display">\[\int_0^{\pi/2} \sin\theta \cos\theta \, d\theta = \int_0^1 u \, du = \left[ \frac{u^2}{2} \right]_0^1 = \frac{1}{2}\]</span></p><p>So:</p><p><span class="math display">\[P_{\text{Earth}} = 1,361 \cdot R_{\text{Earth}}^2 \cdot 2\pi \cdot \frac{1}{2} = 1,361 \cdot \pi \cdot R_{\text{Earth}}^2\]</span></p><p>Substitute <span class="math inline">\(R_{\text{Earth}} = 6.371 \times 10^6 \, \text{m}\)</span>:</p><p><span class="math display">\[R_{\text{Earth}}^2 = (6.371 \times 10^6)^2 = 4.059 \times 10^{13} \, \text{m}^2\]</span></p><p><span class="math display">\[P_{\text{Earth}} = 1,361 \cdot \pi \cdot 4.059 \times 10^{13}\]</span></p><p><span class="math display">\[P_{\text{Earth}} \approx 4,276 \cdot 4.059 \times 10^{13} \approx 1.736 \times 10^{17} \, \text{W}\]</span></p><p>This is the total power received by Earth’s illuminated hemisphere, ignoring atmospheric effects. However, note that the actual power received at the surface is less due to atmospheric absorption and scattering.</p><h1 id="more">More</h1><h2 id="solutions-to-the-equation-of-radiative-transfer">Solutions to the equation of radiative transfer</h2><p>Solutions to the equation of radiative transfer form an enormous body of work. The differences however, are essentially due to the various forms for the emission and absorption coefficients. If scattering is ignored, then a general steady state solution in terms of the emission and absorption coefficients may be written:</p><p><span class="math display">\[I_\nu(s)=I_\nu(s_0)e^{-\tau_\nu(s_0,s)}+\int_{s_0}^s j_\nu(s&#39;)e^{-\tau_\nu(s&#39;,s)}\,ds&#39;\]</span></p><p>where <span class="math inline">\(\tau_\nu(s_1,s_2)\)</span> is the <strong>optical depth</strong> of the medium between positions <span class="math inline">\(s_1\)</span> and <span class="math inline">\(s_2\)</span>:</p><p><span class="math display">\[\tau_\nu(s_1,s_2) \ \stackrel{\mathrm{def}}{=}\ \int_{s_1}^{s_2} \alpha_\nu(s)\,ds\]</span></p><h2 id="radiance-發射率">radiance 發射率</h2><p>光源的 <code>輻射率</code> 或 <code>輻亮度</code> <strong>(radiance)</strong>，是描述非點光源時光源單位面積強度的物理量，定義為在指定方向上的單位<strong>立體角</strong>和垂直此方向的單位<strong>面積</strong>上的<strong>輻射通量</strong>，記為<strong>L</strong>。</p><p>In radiometry, radiance is the radiant flux emitted, reflected, transmitted or received <strong>by a given surface</strong>, per unit solid angle per unit projected area. Radiance is used to characterize diffuse emission and reflection of electromagnetic radiation, and to quantify emission of neutrinos and other particles. The SI unit of radiance is the watt per steradian per square metre <span class="math inline">\((W sr^{−1} m^{−2})\)</span>. It is a directional quantity: the radiance of a surface depends on the direction from which it is being observed.</p><p>The related quantity spectral radiance is the radiance of a surface per unit frequency or wavelength, depending on whether the spectrum is taken as a function of frequency or of wavelength.</p><p>Historically, radiance was called "<strong>intensity</strong>" and spectral radiance was called "<strong>specific intensity</strong>". Many fields still use this nomenclature. It is especially dominant in heat transfer, astrophysics and astronomy. "Intensity" has many other meanings in physics, with the most common being power per unit area (<strong>so the radiance is the intensity per solid angle in this case</strong>).</p><p><span class="math display">\[L=\frac{\partial^2 \Phi}{\cos \theta \partial A \partial \Omega}\]</span></p><p>其中：<strong><span class="math inline">\(\Phi\)</span></strong> 是<strong>輻射通量</strong>，單位<strong>瓦特</strong>（W）；<strong><span class="math inline">\(\Omega\)</span></strong>是<strong>立體角</strong>，單位<strong>球面度</strong> <strong>(sr)</strong>。</p><h1 id="references">References</h1><ol type="1"><li><a href="https://en.wikipedia.org/wiki/Atmospheric_radiative_transfer_codes">Atmospheric radiative transfer codes</a></li><li><a href="https://www.ess.uci.edu/~yu/class/ess200a/lecture.2.global.pdf">lecture.2.global.pdf</a></li><li><a href="https://www.cv.nrao.edu/~sransom/web/Ch2.html">Radiation Fundamentals</a></li><li><a href="https://pages.mtu.edu/~scarn/teaching/GE4250/radiation_lecture_slides.pdf">Properties of Radiation</a></li><li><a href="https://labs.phys.utk.edu/mbreinig/phys421/modules/m5/Radiometry.html">Radiometry and Photometry (<strong>Recommend</strong>)</a><ol type="1"><li>To specify the amount of energy emitted by a source, we use the quantities.<ol type="1"><li>Energy</li><li>Power</li><li>Power per unit area</li><li>Power per unit solid angle</li><li>Power per unit solid angle per unit projected area</li></ol></li><li>To specify the amount of energy received by a detector, we use one quantity.<ol type="1"><li>Power per unit area</li></ol></li></ol></li><li><a href="https://www.ulethbridge.ca/phy/naylor/documents/pdf/btram.pdf">Chapman, I. M., Naylor, D. A., Gom, B., Querel, R. R., &amp; Davis-Imhof, P. (2010). Btram: An interactive atmospheric radiative transfer model. In 30th Canadian Symposium.</a></li></ol>]]></content>
+    <content type="html"><![CDATA[<ul><li>Read <a href="https://waipangsze.github.io/2025/02/12/MPAS-WRF-Solar-Energy/"><strong>MPAS |WRF | Solar Energy</strong></a></li></ul><h1 id="radiative-transfer">Radiative transfer</h1><p><strong>Radiative transfer</strong> (also called <strong>radiation transport</strong>) is the physical phenomenon of energy transfer in the form of electromagnetic radiation. The propagation of radiation through a medium is affected by <em>absorption, emission, and scattering processes</em>. The equation of radiative transfer describes these interactions mathematically.</p><h2 id="intensity">Intensity</h2><p>In physics and many other areas of science and engineering the <strong>intensity</strong> or <strong>flux of radiant energy</strong> is the <em>power</em> transferred per <em>unit area</em>, where the area is measured on the plane perpendicular to the direction of propagation of the energy. In the SI system, it has units watts per square metre (<strong>W/m2</strong>).</p><p>If a point source is radiating energy in all directions (producing a spherical wave), and no energy is absorbed or scattered by the medium, then the intensity decreases in proportion to the distance from the object squared. This is an example of the inverse-square law.</p><p>Applying the law of conservation of energy, if the net power emanating is constant,</p><p><span class="math display">\[P = \int \mathbf{I} \cdot d\mathbf{A},\]</span></p><p>where</p><ul><li><span class="math inline">\(P\)</span> is the net power (Watts) radiated;</li><li><span class="math inline">\(\mathbf{I}\)</span> is the intensity vector as a function of position;</li><li>the magnitude <span class="math inline">\(|\mathbf{I}|\)</span> is the intensity as a function of position;</li><li><span class="math inline">\(d\mathbf{A}\)</span> is a differential element of a closed surface that contains the source.</li></ul><h2 id="intensity-as-a-function-of-position-on-earths-surface">Intensity as a Function of Position on Earth’s Surface</h2><h3 id="understand-the-power-output-of-the-sun-luminosity"><strong>Understand the Power Output of the Sun (Luminosity)</strong></h3><p>The total power (or luminosity) of the Sun, <span class="math inline">\(P_{\text{Sun}}\)</span> , represents the total energy it emits per unit time across all wavelengths and directions. This is a well-known value in astrophysics, and as of my latest knowledge update, the Sun’s luminosity is approximately:</p><p><span class="math display">\[\begin{align}P/A &amp;= \sigma T^4 \\\sigma &amp;= 5.67×10^{-8}\\R_{\text{Sun}} &amp;= 695500×1000 m \\T_{\text{Sun}} &amp;= 5778 K \\P_{\text{Sun}} &amp;\approx 3.828 \times 10^{26} \, \text{W} \, (\text{watts})\end{align}\tag{1}\]</span></p><p>This is the net power radiated by the Sun into space, assuming it behaves as a <strong>near-perfect blackbody emitter</strong> at a <em>surface temperature</em> of about <span class="math inline">\(5,778 K\)</span>.</p><h3 id="earths-distance-from-the-sun">Earth’s Distance from the Sun:</h3><p>The average distance from the Sun to Earth is:</p><p><span class="math display">\[r \approx 1 \, \text{AU} = 1.496 \times 10^{11} \, \text{m}\]</span></p><p>Now, calculate <span class="math inline">\(r^2\)</span>:</p><p><span class="math display">\[r^2 = (1.496 \times 10^{11})^2 = 2.238 \times 10^{22} \, \text{m}^2\]</span></p><p>Calculate <span class="math inline">\(4 \pi r^2\)</span>:</p><p><span class="math display">\[4 \pi r^2 \approx 4 \times 3.1416 \times 2.238 \times 10^{22} \approx 2.813 \times 10^{23} \, \text{m}^2\]</span></p><p>Now, compute the intensity at Earth’s distance (top of the atmosphere, assuming no atmospheric effects):</p><p><span class="math display">\[I = \frac{3.828 \times 10^{26}}{2.813 \times 10^{23}} \approx 1,361 \, \text{W/m}^2\]</span></p><h3 id="geometry-of-earths-surface"><strong>Geometry of Earth’s Surface</strong></h3><p>Earth is a sphere with a radius <span class="math inline">\(R_{\text{Earth}} \approx 6,371 \, \text{km} = 6.371 \times 10^6 \, \text{m}\)</span>. The intensity (flux) at the top of the atmosphere <span class="math inline">\((1,361 W/m²)\)</span> is the incident flux perpendicular to the Sun’s rays. However, on Earth’s surface, the intensity varies due to:</p><ul><li>The angle of incidence (cosine effect): The flux decreases as <span class="math inline">\(\cos\theta\)</span>, where <span class="math inline">\(\theta\)</span> is the zenith angle (angle from the vertical).</li><li>The curvature of Earth: Only a portion of Earth’s surface is illuminated at any time, and the flux spreads over the illuminated hemisphere.</li></ul><h3 id="assuming-perpendicular-incidence-at-the-sub-solar-point"><strong>Assuming Perpendicular Incidence at the Sub-Solar Point</strong></h3><p>At the sub-solar point (directly under the Sun, where <span class="math inline">\(\theta = 0\)</span>), the intensity on Earth’s surface (ignoring atmospheric effects, as per the image) would still be <span class="math inline">\(1,361 W/m²\)</span>, because no energy is absorbed or scattered.</p><p>Across the rest of the illuminated hemisphere, the intensity decreases with <span class="math inline">\(\cos\theta\)</span>. For a point on Earth’s surface at zenith angle <span class="math inline">\(\theta\)</span>, the flux is:</p><p><span class="math display">\[I_{\text{surface}} = I \cdot \cos\theta = 1,361 \cdot \cos\theta \, \text{W/m}^2\]</span></p><p>The differential area element on a sphere is <span class="math inline">\(dA = R_{\text{Earth}}^2 \sin\theta \, d\theta \, d\phi\)</span>, where <span class="math inline">\(\theta\)</span> is the zenith angle (0 to <span class="math inline">\(\pi/2\)</span> for the illuminated hemisphere) and <span class="math inline">\(\phi\)</span> is the azimuthal angle (0 to <span class="math inline">\(2\pi\)</span>).</p><p>The intensity at angle <span class="math inline">\(\theta\)</span> is <span class="math inline">\(I \cdot \cos\theta\)</span>. The power <span class="math inline">\(dP\)</span> through a differential area <span class="math inline">\(dA\)</span> is:</p><p><span class="math display">\[dP = I \cdot \cos\theta \cdot dA = (1,361 \cdot \cos\theta) \cdot (R_{\text{Earth}}^2 \sin\theta \, d\theta \, d\phi)\]</span></p><p>Integrate over <span class="math inline">\(\theta\)</span> from 0 to <span class="math inline">\(\pi/2\)</span> and <span class="math inline">\(\phi\)</span> from 0 to <span class="math inline">\(2\pi\)</span>:</p><p><span class="math display">\[P_{\text{Earth}} = \int_0^{2\pi} \int_0^{\pi/2} (1,361 \cdot \cos\theta) \cdot (R_{\text{Earth}}^2 \sin\theta) \, d\theta \, d\phi\]</span></p><p>First, integrate over <span class="math inline">\(\phi\)</span>:</p><p><span class="math display">\[\int_0^{2\pi} d\phi = 2\pi\]</span></p><p>Now, integrate over <span class="math inline">\(\theta\)</span>:</p><p><span class="math display">\[\int_0^{\pi/2} (1,361 \cdot \cos\theta) \cdot (\sin\theta) \, d\theta = 1,361 \cdot R_{\text{Earth}}^2 \int_0^{\pi/2} \sin\theta \cos\theta \, d\theta\]</span></p><p>Use the substitution <span class="math inline">\(u = \sin\theta\)</span>, so <span class="math inline">\(du = \cos\theta \, d\theta\)</span>. The limits change from <span class="math inline">\(\theta = 0\)</span> to <span class="math inline">\(\pi/2\)</span> (i.e., <span class="math inline">\(u = 0\)</span> to 1):</p><p><span class="math display">\[\int_0^{\pi/2} \sin\theta \cos\theta \, d\theta = \int_0^1 u \, du = \left[ \frac{u^2}{2} \right]_0^1 = \frac{1}{2}\]</span></p><p>So:</p><p><span class="math display">\[P_{\text{Earth}} = 1,361 \cdot R_{\text{Earth}}^2 \cdot 2\pi \cdot \frac{1}{2} = 1,361 \cdot \pi \cdot R_{\text{Earth}}^2\]</span></p><p>Substitute <span class="math inline">\(R_{\text{Earth}} = 6.371 \times 10^6 \, \text{m}\)</span>:</p><p><span class="math display">\[R_{\text{Earth}}^2 = (6.371 \times 10^6)^2 = 4.059 \times 10^{13} \, \text{m}^2\]</span></p><p><span class="math display">\[P_{\text{Earth}} = 1,361 \cdot \pi \cdot 4.059 \times 10^{13}\]</span></p><p><span class="math display">\[P_{\text{Earth}} \approx 4,276 \cdot 4.059 \times 10^{13} \approx 1.736 \times 10^{17} \, \text{W}\]</span></p><p>This is the total power received by Earth’s illuminated hemisphere, ignoring atmospheric effects. However, note that the actual power received at the surface is less due to atmospheric absorption and scattering.</p><h1 id="more">More</h1><h2 id="solutions-to-the-equation-of-radiative-transfer">Solutions to the equation of radiative transfer</h2><p>Solutions to the equation of radiative transfer form an enormous body of work. The differences however, are essentially due to the various forms for the emission and absorption coefficients. If scattering is ignored, then a general steady state solution in terms of the emission and absorption coefficients may be written:</p><p><span class="math display">\[I_\nu(s)=I_\nu(s_0)e^{-\tau_\nu(s_0,s)}+\int_{s_0}^s j_\nu(s&#39;)e^{-\tau_\nu(s&#39;,s)}\,ds&#39;\]</span></p><p>where <span class="math inline">\(\tau_\nu(s_1,s_2)\)</span> is the <strong>optical depth</strong> of the medium between positions <span class="math inline">\(s_1\)</span> and <span class="math inline">\(s_2\)</span>:</p><p><span class="math display">\[\tau_\nu(s_1,s_2) \ \stackrel{\mathrm{def}}{=}\ \int_{s_1}^{s_2} \alpha_\nu(s)\,ds\]</span></p><h2 id="radiance-發射率">radiance 發射率</h2><p>光源的 <code>輻射率</code> 或 <code>輻亮度</code> <strong>(radiance)</strong>，是描述非點光源時光源單位面積強度的物理量，定義為在指定方向上的單位<strong>立體角</strong>和垂直此方向的單位<strong>面積</strong>上的<strong>輻射通量</strong>，記為<strong>L</strong>。</p><p>In radiometry, radiance is the radiant flux emitted, reflected, transmitted or received <strong>by a given surface</strong>, per unit solid angle per unit projected area. Radiance is used to characterize diffuse emission and reflection of electromagnetic radiation, and to quantify emission of neutrinos and other particles. The SI unit of radiance is the watt per steradian per square metre <span class="math inline">\((W sr^{−1} m^{−2})\)</span>. It is a directional quantity: the radiance of a surface depends on the direction from which it is being observed.</p><p>The related quantity spectral radiance is the radiance of a surface per unit frequency or wavelength, depending on whether the spectrum is taken as a function of frequency or of wavelength.</p><p>Historically, radiance was called "<strong>intensity</strong>" and spectral radiance was called "<strong>specific intensity</strong>". Many fields still use this nomenclature. It is especially dominant in heat transfer, astrophysics and astronomy. "Intensity" has many other meanings in physics, with the most common being power per unit area (<strong>so the radiance is the intensity per solid angle in this case</strong>).</p><p><span class="math display">\[L=\frac{\partial^2 \Phi}{\cos \theta \partial A \partial \Omega}\]</span></p><p>其中：<strong><span class="math inline">\(\Phi\)</span></strong> 是<strong>輻射通量</strong>，單位<strong>瓦特</strong>（W）；<strong><span class="math inline">\(\Omega\)</span></strong>是<strong>立體角</strong>，單位<strong>球面度</strong> <strong>(sr)</strong>。</p><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/GzqyGa8.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/6KeXzXp.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/PdvPtL0.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/R2hipMd.png" /></div></div></div><h1 id="references">References</h1><ol type="1"><li><a href="https://en.wikipedia.org/wiki/Atmospheric_radiative_transfer_codes">Atmospheric radiative transfer codes</a></li><li><a href="https://www.ess.uci.edu/~yu/class/ess200a/lecture.2.global.pdf">lecture.2.global.pdf</a></li><li><a href="https://www.cv.nrao.edu/~sransom/web/Ch2.html">Radiation Fundamentals</a></li><li><a href="https://pages.mtu.edu/~scarn/teaching/GE4250/radiation_lecture_slides.pdf">Properties of Radiation</a></li><li><a href="https://labs.phys.utk.edu/mbreinig/phys421/modules/m5/Radiometry.html">Radiometry and Photometry (<strong>Recommend</strong>)</a><ol type="1"><li>To specify the amount of energy emitted by a source, we use the quantities.<ol type="1"><li>Energy</li><li>Power</li><li>Power per unit area</li><li>Power per unit solid angle</li><li>Power per unit solid angle per unit projected area</li></ol></li><li>To specify the amount of energy received by a detector, we use one quantity.<ol type="1"><li>Power per unit area</li></ol></li></ol></li><li><a href="https://www.ulethbridge.ca/phy/naylor/documents/pdf/btram.pdf">Chapman, I. M., Naylor, D. A., Gom, B., Querel, R. R., &amp; Davis-Imhof, P. (2010). Btram: An interactive atmospheric radiative transfer model. In 30th Canadian Symposium.</a></li></ol>]]></content>
     
     
     <categories>
@@ -57,9 +57,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -92,9 +92,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -125,11 +125,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -162,9 +162,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -183,7 +183,7 @@
     <link href="/2025/02/14/MPAS-ERA5-Update-SST-and-sea-ice-fraction/"/>
     <url>/2025/02/14/MPAS-ERA5-Update-SST-and-sea-ice-fraction/</url>
     
-    <content type="html"><![CDATA[<h1 id="generating-sst-and-sea-ice-update-files">Generating SST and sea-ice update files</h1><ul><li><a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html" class="uri">https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html</a></li><li><a href="https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/">MPAS-Tutorial-NCAR-2023/mpas_tutorial | ftp</a></li></ul><p>Because MPAS-Atmosphere — at least, when run as a stand-alone model — does not contain prognostic equations for the SST and sea-ice fraction, these fields would remain constant if not updated from an external source; this is, of course, not realistic, and it will generally impact the quality of longer model simulations. Consequently, for MPAS-Atmosphere simulations longer than roughly a week, it is typically necessary to periodically update the sea-surface temperature (SST) field in the model. For real-time simulations, this is generally not an option, but it is feasible for retrospective simulations, where we have observed SST analyses available to us.</p><div class="note note-primary">            <p>Prepare <strong>intermediate files containing SST and sea-ice analyses</strong></p>          </div><h1 id="for-era5">For ERA5</h1><h2 id="intermediate-files">Intermediate files</h2><ul><li><a href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_data_util_pp.pdf">Fortran script to convert netCDF to Intermediate format</a><ul><li>Convert netCDF to Intermediate: <a href="https://www2.mmm.ucar.edu/wrf/src/netcdf-to-intermediate.f">netcdf-to-intermediate.f</a></li></ul></li></ul><h3 id="reading-intermediate-files">Reading intermediate files</h3><ul><li><a href="https://github.com/hanschen/WPS/blob/master/util/src/rd_intermediate.F">WPS/util/src/rd_intermediate.F</a></li><li><code>WPS/util/rd_intermediate.exe</code></li><li>USAGE: <code>rd_intermediate.exe &lt;filename&gt;</code></li></ul><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> /home/wpsze/WRF/WRFv440/wrf_env.sh<br><span class="hljs-built_in">ln</span> -sf /home/wpsze/WRF/WRFv440/wrf_install/WPS-4.4/bin/rd_intermediate.exe<br><span class="hljs-built_in">ln</span> -sf /home/wpsze/WRF/WRFv440/wrf_install/WPS-4.4/util/plotfmt.ncl<br>./rd_intermediate.exe <span class="hljs-variable">$1</span><br>ncl plotfmt.ncl <span class="hljs-variable">$1</span><br></code></pre></td></tr></table></figure><p>and, on termianl,</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">./read_int.sh ERA5:2022-06-30_00</span><br>......<br>================================================<br>FIELD = SEAICE<br>UNITS = fraction DESCRIPTION = Sea-Ice Fraction<br>DATE = 2022-06-30_00:00:00 FCST = 0.000000<br>SOURCE = ECMWF<br>LEVEL = 200100.000000<br>I,J DIMS = 1440, 721<br>IPROJ = 0  PROJECTION = LAT LON<br>  REF_X, REF_Y = 1.000000, 1.000000<br>  REF_LAT, REF_LON = 90.000008, 0.000000<br>  DLAT, DLON = -0.250000, 0.250000<br>  EARTH_RADIUS = 6367.470215<br>DATA(1,1)=0.927246<br><br>================================================<br>FIELD = SST<br>UNITS = K DESCRIPTION = Sea-Surface Temperature<br>DATE = 2022-06-30_00:00:00 FCST = 0.000000<br>SOURCE = ECMWF<br>LEVEL = 200100.000000<br>I,J DIMS = 1440, 721<br>IPROJ = 0  PROJECTION = LAT LON<br>  REF_X, REF_Y = 1.000000, 1.000000<br>  REF_LAT, REF_LON = 90.000008, 0.000000<br>  DLAT, DLON = -0.250000, 0.250000<br>  EARTH_RADIUS = 6367.470215<br>DATA(1,1)=271.459961<br>================================================<br>......<br></code></pre></td></tr></table></figure><h3 id="plotting-intermediate-files-plotfmt.ncl">Plotting Intermediate Files: plotfmt.ncl</h3><p>Plots the fields in the ungribbed intermediate files</p><blockquote><p>$ ncl plotfmt.ncl 'filename="FNL:2007-09-15_00"'</p></blockquote><p>See above shell script.</p><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/Z3OysPt.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/IuCdgnU.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/698XQfv.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/oZwecqP.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/vSVNCUn.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/EPqOweu.png" /></div></div></div><h2 id="summary">Summary</h2><div class="note note-primary">            <p>The ERA5.grib can be <strong>IC, LBC, FDDA</strong> and <strong>SST/Sea-Ice updated</strong> as well.</p><p>And, <strong>ERA5 corresponding interemediate file</strong> can be used.</p>          </div><h1 id="for-mpas">For MPAS</h1><h2 id="namelist.init_atmosphere">namelist.init_atmosphere</h2><p>The key namelist options that must be set are shown below; other options can be ignored.</p><p>Note in particular that we have set the <code>config_init_case</code> <strong>variable to 8!</strong> This is the initialization case used to create surface update files, instead of real-data initial conditions files.</p>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">        <div class="fold-arrow">▶</div>namelist.init_atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-6ae3e036">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs namelist.init_atmosphere">&amp;nhyd_model<br>    config_init_case = 8<br>    config_start_time = &#x27;2014-09-10_00:00:00&#x27;<br>    config_stop_time = &#x27;2014-09-20_00:00:00&#x27;<br>/<br><br>&amp;data_sources<br>    config_sfc_prefix = &#x27;SST&#x27; # SST or ERA5: the prefix of the intermediate data files containing SST and sea-ice<br>    config_fg_interval = 86400<br>/<br><br>&amp;preproc_stages<br>    config_static_interp = false<br>    config_native_gwd_static = false<br>    config_vertical_grid = false<br>    config_met_interp = false<br>    config_input_sst = true<br>    config_frac_seaice = true<br>/<br>&amp;decomposition<br>    config_block_decomp_file_prefix = &#x27;x1.10242.graph.info.part.&#x27;<br>/<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="streams.init_atmosphere">streams.init_atmosphere</h2><p>We have set both the <code>filename_template</code> and output_interval attributes of the "<code>surface</code>" stream. The <code>output_interval</code> should match the interval specified in the namelist for the <code>config_fg_interval</code> variable. The other streams ("<code>input</code>", "<code>output</code>", and "<code>lbc</code>") can remain unchanged — the input file should still be set to the name of the static file.</p><ul><li>Noted: can set <code>filename_template="sst.$Y-$M-$D_$h.$m.$s.nc"</code></li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">        <div class="fold-arrow">▶</div>streams.init_atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-9c51fa20">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs streams.init_atmosphere">&lt;immutable_stream name=&quot;surface&quot;<br>                  type=&quot;output&quot;<br>                  filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>                  filename_interval=&quot;none&quot;<br>                  packages=&quot;sfc_update&quot;<br>                  output_interval=&quot;86400&quot;/&gt;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="results">results</h2>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">        <div class="fold-arrow">▶</div>ncdump -h sst.2022-06-30_00.00.00.nc      </div>      <div class="fold-collapse collapse" id="collapse-05eef982">        <div class="fold-content">          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncdump -h sst.2022-06-30_00.00.00.nc</span><br>netcdf sst.2022-06-30_00.00.00 &#123;<br>dimensions:<br>StrLen = 64 ;<br>Time = UNLIMITED ; // (1 currently)<br>nCells = 40962 ;<br>variables:<br>char xtime(Time, StrLen) ;<br>xtime:units = &quot;YYYY-MM-DD_hh:mm:ss&quot; ;<br>xtime:long_name = &quot;Model valid time&quot; ;<br>float sst(Time, nCells) ;<br>sst:units = &quot;K&quot; ;<br>sst:long_name = &quot;sea-surface temperature&quot; ;<br>float xice(Time, nCells) ;<br>xice:units = &quot;unitless&quot; ;<br>xice:long_name = &quot;fractional area coverage of sea-ice&quot; ;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h3 id="plot">Plot</h3><ul><li><a href="https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/240km_uniform/plot_delta_sst.py" class="uri">https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/240km_uniform/plot_delta_sst.py</a></li><li><code>./plot_delta_sst.py x1.10242.static.nc x1.10242.sfc_update.nc</code></li><li>In this plot, we have masked out the SST differences over land, since the values of the field over land are not representative of actual SST differences, but may represent differences in, e.g., skin temperature or 2-m air temperature, depending on the source of the SST analyses.</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">        <div class="fold-arrow">▶</div>plot_delta_sst.py      </div>      <div class="fold-collapse collapse" id="collapse-90469042">        <div class="fold-content">          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><br><span class="hljs-keyword">import</span> Ngl<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">from</span> netCDF4 <span class="hljs-keyword">import</span> Dataset<br><span class="hljs-keyword">import</span> math<br><span class="hljs-keyword">import</span> sys<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Get the name of the file containing the static information</span><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Usage: &#x27;</span>+sys.argv[<span class="hljs-number">0</span>]+<span class="hljs-string">&#x27; [mesh filename] &lt;field filename&gt;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        exit(<span class="hljs-number">0</span>)<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># The (lat,lon) the plot is to be centered over</span><br>    <span class="hljs-comment">#</span><br>    cenLat   = <span class="hljs-number">0.0</span><br>    cenLon   = <span class="hljs-number">0.0</span><br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Projection to use for plot</span><br>    <span class="hljs-comment">#</span><br>    projection = <span class="hljs-string">&#x27;CylindricalEquidistant&#x27;</span><br><br><br>    r2d = <span class="hljs-number">180.0</span> / math.pi             <span class="hljs-comment"># radians to degrees</span><br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">2</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">1</span>])<br>        g = f<br>    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">3</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">2</span>])<br>        g = Dataset(sys.argv[<span class="hljs-number">1</span>])<br><br>    rlist = Ngl.Resources()<br><span class="hljs-comment">#    rlist.wkWidth = 1200</span><br><span class="hljs-comment">#    rlist.wkHeight = 1200</span><br><br>    rlist.wkColorMap = <span class="hljs-string">&#x27;gui_default&#x27;</span><br><br>    wks_type = <span class="hljs-string">&#x27;png&#x27;</span><br>    wks = Ngl.open_wks(wks_type, <span class="hljs-string">&#x27;delta_sst&#x27;</span>, rlist)<br><br>    lonCell = g.variables[<span class="hljs-string">&#x27;lonCell&#x27;</span>][:] * r2d<br>    latCell = g.variables[<span class="hljs-string">&#x27;latCell&#x27;</span>][:] * r2d<br><br>    res = Ngl.Resources()<br><br>    res.sfXArray             = lonCell<br>    res.sfYArray             = latCell<br><br>    res.cnFillMode           = <span class="hljs-string">&#x27;AreaFill&#x27;</span><br><br>    res.cnFillOn             = <span class="hljs-literal">True</span><br>    res.cnLinesOn            = <span class="hljs-literal">False</span><br>    res.cnLineLabelsOn       = <span class="hljs-literal">False</span><br><br>    res.cnInfoLabelOn        = <span class="hljs-literal">True</span><br><br>    res.lbLabelAutoStride    = <span class="hljs-literal">True</span><br>    res.lbBoxLinesOn         = <span class="hljs-literal">False</span><br><br>    res.mpProjection      = projection<br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;MediumRes&#x27;</span><br>    res.mpCenterLatF      = cenLat<br>    res.mpCenterLonF      = cenLon<br>    res.mpGridAndLimbOn   = <span class="hljs-literal">True</span><br>    res.mpGridAndLimbDrawOrder = <span class="hljs-string">&#x27;PreDraw&#x27;</span><br>    res.mpGridLineColor   = <span class="hljs-string">&#x27;Background&#x27;</span><br>    res.mpOutlineOn       = <span class="hljs-literal">True</span><br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;Ncarg4_1&#x27;</span><br>    res.mpDataSetName     = <span class="hljs-string">&#x27;Earth..3&#x27;</span><br>    res.mpOutlineBoundarySets = <span class="hljs-string">&#x27;Geophysical&#x27;</span><br>    res.mpPerimOn         = <span class="hljs-literal">True</span><br>    res.mpLimitMode = <span class="hljs-string">&#x27;LatLon&#x27;</span><br>    res.mpMinLonF = -<span class="hljs-number">180.0</span><br>    res.mpMaxLonF = <span class="hljs-number">180.0</span><br>    res.mpMinLatF = -<span class="hljs-number">90.0</span><br>    res.mpMaxLatF = <span class="hljs-number">90.0</span><br><br>    res.cnLevelSelectionMode = <span class="hljs-string">&#x27;ManualLevels&#x27;</span><br>    res.cnMinLevelValF = -<span class="hljs-number">2.0</span><br>    res.cnMaxLevelValF = <span class="hljs-number">2.0</span><br>    res.cnLevelSpacingF = <span class="hljs-number">0.10</span><br>    res.lbAutoManage = <span class="hljs-literal">False</span><br>    res.lbOrientation = <span class="hljs-string">&#x27;Horizontal&#x27;</span><br>    res.lbBoxEndCapStyle = <span class="hljs-string">&#x27;TriangleBothEnds&#x27;</span><br>    res.lbLabelAngleF = <span class="hljs-number">90.0</span><br>    res.lbLabelFontHeightF = <span class="hljs-number">0.01</span><br><br>    res.mpFillOn              = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Turn on map fill.</span><br>    res.mpFillAreaSpecifiers  = [<span class="hljs-string">&#x27;Land&#x27;</span>]<br>    res.mpSpecifiedFillColors = [<span class="hljs-number">0</span>]<br>    res.mpAreaMaskingOn       = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Indicate we want to </span><br>    res.mpMaskAreaSpecifiers  = [<span class="hljs-string">&#x27;Water&#x27;</span>]<br>    res.cnFillDrawOrder       = <span class="hljs-string">&#x27;Predraw&#x27;</span>       <span class="hljs-comment"># Draw contours first.</span><br><br>    fld = f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">10</span>,:] - f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">0</span>,:]<br>    <span class="hljs-built_in">map</span> = Ngl.contour_map(wks, fld, res)<br><br>    Ngl.end()<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><p><img src="https://i.imgur.com/Gs7ezqA.png" width="400" /></p><ul><li>or <code>$ ncdiff sst.nc init.nc diff-sst.nc</code></li></ul><h2 id="registry.xml">Registry.xml</h2><ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347">MPAS-Model/src/core_init_atmosphere/Registry.xml</a></li></ul><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sfc_update&quot;</span> <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Used by test cases that produce surface updates.&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sst&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;K&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;sea-surface temperature&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;xice&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;unitless&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;fractional area coverage of sea-ice&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure><h2 id="streams.atmosphere">streams.atmosphere</h2><ul><li>stream_list.atmosphere.surface</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dfb167e8" role="button" aria-expanded="false" aria-controls="collapse-dfb167e8">        <div class="fold-arrow">▶</div>streams.atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-dfb167e8">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs streams.atmosphere">&lt;stream name=&quot;surface&quot;<br>        type=&quot;input&quot;<br>        filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>        filename_interval=&quot;none&quot;<br>        input_interval=&quot;86400&quot;&gt;<br><br>    &lt;file name=&quot;stream_list.atmosphere.surface&quot;/&gt;<br><br>&lt;/stream&gt;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="namelist.atmosphere">namelist.atmosphere</h2>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">        <div class="fold-arrow">▶</div>namelist.atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-5d5d193e">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs namelist.atmosphere">&amp;physics<br>    config_sst_update = true<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="plot-diff">Plot diff</h2><p><img src="https://i.imgur.com/7shbwIg.png" width="400" /></p><h1 id="wrfmpas-a-support-forum">WRF&amp;MPAS-A Support Forum</h1><ul><li><a href="https://forum.mmm.ucar.edu/threads/mpas-tutorial-questions-about-ungrid-and-sst-data.13510/">MPAS tutorial questions about ungrid and SST data | Jun 2023</a><ul><li><ol type="1"><li>Starting from WPSV4.3, a configure option, --nowrf, has been added to allow for configuration of the WPS without reference to a compiled WRF model. if you only need the ungrib component of the WPS, you can compile WPS with this option.</li></ol></li><li><ol start="2" type="1"><li>Most of the reanalysis products like GFS, ERA5 etc include SST. When you run ungrib to extract variables from the reanalysis data, SST will be included in the intermediate file.</li></ol></li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/sst-update-on-the-lakes.13717/">SST update on the lakes | Jul 2023</a><ul><li>SST_UPDATE only works over water points, i.e., those grid points where landmask =0. Those points with lakemask =1 should correspond to points with landmask=0, and thus sst_update should apply to such points.</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/mpas-sst-update-file.8874/">MPAS SST update file | Feb 2020</a></li><li><a href="https://forum.mmm.ucar.edu/threads/updating-sst-not-working.200/">Updating SST not working | Sep 2018</a><ul><li>forrtl: severe (64): input conversion error, unit -5, file Internal List-Directed Read</li><li>The issue seems to be that parts of the timestamp string ('xtime') that are read from input files contain garbage, which confuses the parsing code in the timekeeping module.</li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="generating-sst-and-sea-ice-update-files">Generating SST and sea-ice update files</h1><ul><li><a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html" class="uri">https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html</a></li><li><a href="https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/">MPAS-Tutorial-NCAR-2023/mpas_tutorial | ftp</a></li></ul><p>Because MPAS-Atmosphere — at least, when run as a stand-alone model — does not contain prognostic equations for the SST and sea-ice fraction, these fields would remain constant if not updated from an external source; this is, of course, not realistic, and it will generally impact the quality of longer model simulations. Consequently, for MPAS-Atmosphere simulations longer than roughly a week, it is typically necessary to periodically update the sea-surface temperature (SST) field in the model. For real-time simulations, this is generally not an option, but it is feasible for retrospective simulations, where we have observed SST analyses available to us.</p><div class="note note-primary">            <p>Prepare <strong>intermediate files containing SST and sea-ice analyses</strong></p>          </div><h1 id="for-era5">For ERA5</h1><h2 id="intermediate-files">Intermediate files</h2><ul><li><a href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_data_util_pp.pdf">Fortran script to convert netCDF to Intermediate format</a><ul><li>Convert netCDF to Intermediate: <a href="https://www2.mmm.ucar.edu/wrf/src/netcdf-to-intermediate.f">netcdf-to-intermediate.f</a></li></ul></li></ul><h3 id="reading-intermediate-files">Reading intermediate files</h3><ul><li><a href="https://github.com/hanschen/WPS/blob/master/util/src/rd_intermediate.F">WPS/util/src/rd_intermediate.F</a></li><li><code>WPS/util/rd_intermediate.exe</code></li><li>USAGE: <code>rd_intermediate.exe &lt;filename&gt;</code></li></ul><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> /home/wpsze/WRF/WRFv440/wrf_env.sh<br><span class="hljs-built_in">ln</span> -sf /home/wpsze/WRF/WRFv440/wrf_install/WPS-4.4/bin/rd_intermediate.exe<br><span class="hljs-built_in">ln</span> -sf /home/wpsze/WRF/WRFv440/wrf_install/WPS-4.4/util/plotfmt.ncl<br>./rd_intermediate.exe <span class="hljs-variable">$1</span><br>ncl plotfmt.ncl <span class="hljs-variable">$1</span><br></code></pre></td></tr></table></figure><p>and, on termianl,</p><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">./read_int.sh ERA5:2022-06-30_00</span><br>......<br>================================================<br>FIELD = SEAICE<br>UNITS = fraction DESCRIPTION = Sea-Ice Fraction<br>DATE = 2022-06-30_00:00:00 FCST = 0.000000<br>SOURCE = ECMWF<br>LEVEL = 200100.000000<br>I,J DIMS = 1440, 721<br>IPROJ = 0  PROJECTION = LAT LON<br>  REF_X, REF_Y = 1.000000, 1.000000<br>  REF_LAT, REF_LON = 90.000008, 0.000000<br>  DLAT, DLON = -0.250000, 0.250000<br>  EARTH_RADIUS = 6367.470215<br>DATA(1,1)=0.927246<br><br>================================================<br>FIELD = SST<br>UNITS = K DESCRIPTION = Sea-Surface Temperature<br>DATE = 2022-06-30_00:00:00 FCST = 0.000000<br>SOURCE = ECMWF<br>LEVEL = 200100.000000<br>I,J DIMS = 1440, 721<br>IPROJ = 0  PROJECTION = LAT LON<br>  REF_X, REF_Y = 1.000000, 1.000000<br>  REF_LAT, REF_LON = 90.000008, 0.000000<br>  DLAT, DLON = -0.250000, 0.250000<br>  EARTH_RADIUS = 6367.470215<br>DATA(1,1)=271.459961<br>================================================<br>......<br></code></pre></td></tr></table></figure><h3 id="plotting-intermediate-files-plotfmt.ncl">Plotting Intermediate Files: plotfmt.ncl</h3><p>Plots the fields in the ungribbed intermediate files</p><blockquote><p>$ ncl plotfmt.ncl 'filename="FNL:2007-09-15_00"'</p></blockquote><p>See above shell script.</p><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/Z3OysPt.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/IuCdgnU.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/698XQfv.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/oZwecqP.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/vSVNCUn.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/EPqOweu.png" /></div></div></div><h2 id="skintemp-skt-vs-sst">skintemp (skt) vs sst</h2><p>Consider <code>skt - sst</code> form ERA5 grib file, they are different but why?</p><ul><li>ERA5-0p25-SL-2022063000.grib</li><li>ERA5 grib: skt - sst</li></ul><figure><img src="https://i.imgur.com/WoSHTOP.png" alt="ERA5 grib | skt - sst |" width="500" /><figcaption>ERA5 grib | skt - sst |</figcaption></figure><h3 id="solutions">Solutions</h3><ul><li><a href="https://forum.mmm.ucar.edu/threads/sst-input-resolution-and-landmask.15850/">SST input resolution and LANDMASK | Feb 2024</a><ul><li><strong>SST in ERA5 only has valid values over the ocean</strong>. When metgrid conducts horizontal interpolation, it may result in some discontinuity.</li><li><strong>TSK is skin temperature predicted by land model (over the ocean without sst update, it remains as skintemp at the initial time. if sst_update =1, tsk is updated by SST.</strong>)</li><li>I am suspicious that SST is somehow not continuous over the coast, which affects tsk later.</li><li>To overcome this problem, <strong>please use skintemp as SST</strong>. You cam simply delete the line for SST in Vtable.ECMWF , then rerun ungrib and metgrid.</li><li>I would like to confirm that in ERA5, SKINTEMP and SST over the ocean are same. This will justify that we can use SKINTEMP to replace SST.</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/metgrid-sst-interpolation-artifacts.14755/">Metgrid SST interpolation artifacts | Nov 2023</a><ul><li>One quick fix of the unrealistic SST along coastal areas is to <strong>replace SST by SKINTEMP</strong>. <strong>Please delete the line below from Vtable.ECMWF</strong>, then rerun ungrib.exe.</li><li><code>34 | 1 | 0 | | SST | K | Sea-Surface Temperature |</code></li><li>In this case SST will not be extracted from ERA5 and SKINTEMP will be used as SST. <strong>We believe this is reasonable because SST and SKINTEMP is almost the same over ocean</strong>.</li><li>In the case you attempt to use external SST instead of ERA5 SST, you need to provide landmask specifically for the external SST data, then modify METGRID.TBL so that metgrid.exe will know what landmask is used for horizontal interpolation.<ul><li>A detailed explanation can be found at <a href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/201907/duda_wps_advanced.pdf" class="uri">https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/201907/duda_wps_advanced.pdf</a>, and the slides 47-58 give an example how to process external soil data. The same approach is also applied to external SST.</li><li>the default fill-values overland is 0K (as in -273.15ºC). If you're running in high res, the interpolation of SST leads to some wonky numbers around the landmask. Probably you can set fill_missing = 285. or some other value to remedy the problem.</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/does-wrf-needs-tsk-from-global-data.9751/">does WRF needs TSK from global data | Nov 2020</a></li><li><a href="https://forum.mmm.ucar.edu/threads/strong-non-smooth-temperature-pattern-over-snow-ice-water-land-categories.10793/">Strong non-smooth temperature pattern over snow/ice/water land categories | Sep 2021</a><ul><li>I see you're using sst_update. Are you using a separate SST input data than the ERA5 data? If so, is it possible that the landsea mask for the two data types is inconsistent? Otherwise, there is a particular process necessary for processing landsea for ERA5 data.</li><li><strong>One suggestion is to use SKINTEMP only (instead of SST)</strong></li></ul></li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/issue-with-era5-sst-fields.12525/">Issue with ERA5 SST fields | Feb 2023</a><ul><li>This is an old issue. If you <strong>replace the SST by the skin temperature</strong> you will have unrealistic warm waters near the coast in summer.</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/wrf-regional-climate-simulation.10726/">WRF regional climate simulation | Sep 2021</a><ul><li>This will potentially lead to problem in WRF simulation, especially for long term climate simulation with sst_update.</li><li>To solve this issue, <strong>please use skintemp to replace SST</strong> following the steps below:<ul><li><ol type="1"><li>in Vtable.ERA-I, <strong>delete</strong> the line below:</li></ol><ul><li><code>34 | 1 | 0 | | SST | K | Sea-Surface Temperature |</code></li></ul></li><li><ol start="2" type="1"><li>rerun ungrib.exe and metgrid.exe</li></ol></li><li><ol start="3" type="1"><li>run real.exe and wrf.exe</li></ol></li></ul></li></ul></li></ul><h2 id="summary">Summary</h2><div class="note note-primary">            <p>The ERA5.grib can be <strong>IC, LBC, FDDA</strong> and <strong>SST/Sea-Ice updated</strong> as well.</p><p>And, <strong>ERA5 corresponding interemediate file</strong> can be used.</p>          </div><h1 id="for-mpas">For MPAS</h1><h2 id="code">code</h2><h3 id="mpas-init.nc-sst-issue">MPAS init.nc SST issue</h3><ul><li><code>sst = skintemp</code> that sst values is from skintemp.</li><li><code>src/core_init_atmosphere/mpas_init_atm_cases.F</code></li></ul><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-keyword">if</span> (config_met_interp) <span class="hljs-keyword">then</span><br><br>!ldf (<span class="hljs-number">2011</span>-<span class="hljs-number">11</span>-<span class="hljs-number">19</span>): added initialization <span class="hljs-keyword">of</span> the sea-surface temperature, seaice fraction, <span class="hljs-built_in">and</span><br>!seaice flag:<br>  sst = <span class="hljs-number">0.0</span><br>  xice = <span class="hljs-number">0.0</span><br>  seaice = <span class="hljs-number">0.0</span><br>!ldf <span class="hljs-keyword">end</span>.<br><br>! <span class="hljs-keyword">Set</span> SST based <span class="hljs-keyword">on</span> SKINTEMP field <span class="hljs-keyword">if</span> it wasn<span class="hljs-comment">&#x27;t found in input data</span><br><span class="hljs-keyword">if</span> (minval(sst) == <span class="hljs-number">0.0</span> .<span class="hljs-built_in">and</span>. maxval(sst) == <span class="hljs-number">0.0</span>) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-comment">&#x27;Setting SST from SKINTEMP&#x27;)</span><br>    !<span class="hljs-keyword">where</span> (landmask == <span class="hljs-number">0</span>) sst = skintemp<br>    sst = skintemp<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br></code></pre></td></tr></table></figure><p>But, ERA5's skintemp and sst are different as above.</p><p><img src="https://i.imgur.com/EIkck30.png" alt="Left) init.nc, Right) sst.nc" /> <img src="https://i.imgur.com/YHSha1w.png" alt="init.nc - sst.nc, and same as above figure of ERA5 grib file" width="500" /> <img src="https://i.imgur.com/Fwn5ZjU.png" alt="It is init.nc: skintemp - sst that has shown sst is same as skintemp in init_atmosphere step in MPAS." width="500" /></p><h2 id="namelist.init_atmosphere">namelist.init_atmosphere</h2><p>The key namelist options that must be set are shown below; other options can be ignored.</p><p>Note in particular that we have set the <code>config_init_case</code> <strong>variable to 8!</strong> This is the initialization case used to create surface update files, instead of real-data initial conditions files.</p>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">        <div class="fold-arrow">▶</div>namelist.init_atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-9c51fa20">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs namelist.init_atmosphere">&amp;nhyd_model<br>    config_init_case = 8<br>    config_start_time = &#x27;2014-09-10_00:00:00&#x27;<br>    config_stop_time = &#x27;2014-09-20_00:00:00&#x27;<br>/<br><br>&amp;data_sources<br>    config_sfc_prefix = &#x27;SST&#x27; # SST or ERA5: the prefix of the intermediate data files containing SST and sea-ice<br>    config_fg_interval = 86400<br>/<br><br>&amp;preproc_stages<br>    config_static_interp = false<br>    config_native_gwd_static = false<br>    config_vertical_grid = false<br>    config_met_interp = false<br>    config_input_sst = true<br>    config_frac_seaice = true<br>/<br>&amp;decomposition<br>    config_block_decomp_file_prefix = &#x27;x1.10242.graph.info.part.&#x27;<br>/<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="streams.init_atmosphere">streams.init_atmosphere</h2><p>We have set both the <code>filename_template</code> and output_interval attributes of the "<code>surface</code>" stream. The <code>output_interval</code> should match the interval specified in the namelist for the <code>config_fg_interval</code> variable. The other streams ("<code>input</code>", "<code>output</code>", and "<code>lbc</code>") can remain unchanged — the input file should still be set to the name of the static file.</p><ul><li>Noted: can set <code>filename_template="sst.$Y-$M-$D_$h.$m.$s.nc"</code></li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">        <div class="fold-arrow">▶</div>streams.init_atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-05eef982">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs streams.init_atmosphere">&lt;immutable_stream name=&quot;surface&quot;<br>                  type=&quot;output&quot;<br>                  filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>                  filename_interval=&quot;none&quot;<br>                  packages=&quot;sfc_update&quot;<br>                  output_interval=&quot;86400&quot;/&gt;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="results">results</h2>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">        <div class="fold-arrow">▶</div>ncdump -h sst.2022-06-30_00.00.00.nc      </div>      <div class="fold-collapse collapse" id="collapse-90469042">        <div class="fold-content">          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncdump -h sst.2022-06-30_00.00.00.nc</span><br>netcdf sst.2022-06-30_00.00.00 &#123;<br>dimensions:<br>StrLen = 64 ;<br>Time = UNLIMITED ; // (1 currently)<br>nCells = 40962 ;<br>variables:<br>char xtime(Time, StrLen) ;<br>xtime:units = &quot;YYYY-MM-DD_hh:mm:ss&quot; ;<br>xtime:long_name = &quot;Model valid time&quot; ;<br>float sst(Time, nCells) ;<br>sst:units = &quot;K&quot; ;<br>sst:long_name = &quot;sea-surface temperature&quot; ;<br>float xice(Time, nCells) ;<br>xice:units = &quot;unitless&quot; ;<br>xice:long_name = &quot;fractional area coverage of sea-ice&quot; ;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h3 id="plot">Plot</h3><ul><li><a href="https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/240km_uniform/plot_delta_sst.py" class="uri">https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/240km_uniform/plot_delta_sst.py</a></li><li><code>./plot_delta_sst.py x1.10242.static.nc x1.10242.sfc_update.nc</code></li><li>In this plot, we have masked out the SST differences over land, since the values of the field over land are not representative of actual SST differences, but may represent differences in, e.g., skin temperature or 2-m air temperature, depending on the source of the SST analyses.</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">        <div class="fold-arrow">▶</div>plot_delta_sst.py      </div>      <div class="fold-collapse collapse" id="collapse-738764b7">        <div class="fold-content">          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><br><span class="hljs-keyword">import</span> Ngl<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">from</span> netCDF4 <span class="hljs-keyword">import</span> Dataset<br><span class="hljs-keyword">import</span> math<br><span class="hljs-keyword">import</span> sys<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Get the name of the file containing the static information</span><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Usage: &#x27;</span>+sys.argv[<span class="hljs-number">0</span>]+<span class="hljs-string">&#x27; [mesh filename] &lt;field filename&gt;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        exit(<span class="hljs-number">0</span>)<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># The (lat,lon) the plot is to be centered over</span><br>    <span class="hljs-comment">#</span><br>    cenLat   = <span class="hljs-number">0.0</span><br>    cenLon   = <span class="hljs-number">0.0</span><br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Projection to use for plot</span><br>    <span class="hljs-comment">#</span><br>    projection = <span class="hljs-string">&#x27;CylindricalEquidistant&#x27;</span><br><br><br>    r2d = <span class="hljs-number">180.0</span> / math.pi             <span class="hljs-comment"># radians to degrees</span><br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">2</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">1</span>])<br>        g = f<br>    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">3</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">2</span>])<br>        g = Dataset(sys.argv[<span class="hljs-number">1</span>])<br><br>    rlist = Ngl.Resources()<br><span class="hljs-comment">#    rlist.wkWidth = 1200</span><br><span class="hljs-comment">#    rlist.wkHeight = 1200</span><br><br>    rlist.wkColorMap = <span class="hljs-string">&#x27;gui_default&#x27;</span><br><br>    wks_type = <span class="hljs-string">&#x27;png&#x27;</span><br>    wks = Ngl.open_wks(wks_type, <span class="hljs-string">&#x27;delta_sst&#x27;</span>, rlist)<br><br>    lonCell = g.variables[<span class="hljs-string">&#x27;lonCell&#x27;</span>][:] * r2d<br>    latCell = g.variables[<span class="hljs-string">&#x27;latCell&#x27;</span>][:] * r2d<br><br>    res = Ngl.Resources()<br><br>    res.sfXArray             = lonCell<br>    res.sfYArray             = latCell<br><br>    res.cnFillMode           = <span class="hljs-string">&#x27;AreaFill&#x27;</span><br><br>    res.cnFillOn             = <span class="hljs-literal">True</span><br>    res.cnLinesOn            = <span class="hljs-literal">False</span><br>    res.cnLineLabelsOn       = <span class="hljs-literal">False</span><br><br>    res.cnInfoLabelOn        = <span class="hljs-literal">True</span><br><br>    res.lbLabelAutoStride    = <span class="hljs-literal">True</span><br>    res.lbBoxLinesOn         = <span class="hljs-literal">False</span><br><br>    res.mpProjection      = projection<br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;MediumRes&#x27;</span><br>    res.mpCenterLatF      = cenLat<br>    res.mpCenterLonF      = cenLon<br>    res.mpGridAndLimbOn   = <span class="hljs-literal">True</span><br>    res.mpGridAndLimbDrawOrder = <span class="hljs-string">&#x27;PreDraw&#x27;</span><br>    res.mpGridLineColor   = <span class="hljs-string">&#x27;Background&#x27;</span><br>    res.mpOutlineOn       = <span class="hljs-literal">True</span><br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;Ncarg4_1&#x27;</span><br>    res.mpDataSetName     = <span class="hljs-string">&#x27;Earth..3&#x27;</span><br>    res.mpOutlineBoundarySets = <span class="hljs-string">&#x27;Geophysical&#x27;</span><br>    res.mpPerimOn         = <span class="hljs-literal">True</span><br>    res.mpLimitMode = <span class="hljs-string">&#x27;LatLon&#x27;</span><br>    res.mpMinLonF = -<span class="hljs-number">180.0</span><br>    res.mpMaxLonF = <span class="hljs-number">180.0</span><br>    res.mpMinLatF = -<span class="hljs-number">90.0</span><br>    res.mpMaxLatF = <span class="hljs-number">90.0</span><br><br>    res.cnLevelSelectionMode = <span class="hljs-string">&#x27;ManualLevels&#x27;</span><br>    res.cnMinLevelValF = -<span class="hljs-number">2.0</span><br>    res.cnMaxLevelValF = <span class="hljs-number">2.0</span><br>    res.cnLevelSpacingF = <span class="hljs-number">0.10</span><br>    res.lbAutoManage = <span class="hljs-literal">False</span><br>    res.lbOrientation = <span class="hljs-string">&#x27;Horizontal&#x27;</span><br>    res.lbBoxEndCapStyle = <span class="hljs-string">&#x27;TriangleBothEnds&#x27;</span><br>    res.lbLabelAngleF = <span class="hljs-number">90.0</span><br>    res.lbLabelFontHeightF = <span class="hljs-number">0.01</span><br><br>    res.mpFillOn              = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Turn on map fill.</span><br>    res.mpFillAreaSpecifiers  = [<span class="hljs-string">&#x27;Land&#x27;</span>]<br>    res.mpSpecifiedFillColors = [<span class="hljs-number">0</span>]<br>    res.mpAreaMaskingOn       = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Indicate we want to </span><br>    res.mpMaskAreaSpecifiers  = [<span class="hljs-string">&#x27;Water&#x27;</span>]<br>    res.cnFillDrawOrder       = <span class="hljs-string">&#x27;Predraw&#x27;</span>       <span class="hljs-comment"># Draw contours first.</span><br><br>    fld = f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">10</span>,:] - f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">0</span>,:]<br>    <span class="hljs-built_in">map</span> = Ngl.contour_map(wks, fld, res)<br><br>    Ngl.end()<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><p><img src="https://i.imgur.com/Gs7ezqA.png" width="400" /></p><ul><li>or <code>$ ncdiff sst.nc init.nc diff-sst.nc</code></li></ul><h2 id="registry.xml">Registry.xml</h2><ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347">MPAS-Model/src/core_init_atmosphere/Registry.xml</a></li></ul><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sfc_update&quot;</span> <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Used by test cases that produce surface updates.&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_input_sst&quot;</span>             <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span>       <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;-&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Whether to re-compute SST and sea-ice fields from surface input data set; should be set to .true. when running case 8&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">possible_values</span>=<span class="hljs-string">&quot;true or false&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sst&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;K&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;sea-surface temperature&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;xice&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;unitless&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;fractional area coverage of sea-ice&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure><h2 id="streams.atmosphere">streams.atmosphere</h2><ul><li>stream_list.atmosphere.surface</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">        <div class="fold-arrow">▶</div>streams.atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-5d5d193e">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs streams.atmosphere">&lt;stream name=&quot;surface&quot;<br>        type=&quot;input&quot;<br>        filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>        filename_interval=&quot;none&quot;<br>        input_interval=&quot;86400&quot;&gt;<br><br>    &lt;file name=&quot;stream_list.atmosphere.surface&quot;/&gt;<br><br>&lt;/stream&gt;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="namelist.atmosphere">namelist.atmosphere</h2>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bbf6858" role="button" aria-expanded="false" aria-controls="collapse-8bbf6858">        <div class="fold-arrow">▶</div>namelist.atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-8bbf6858">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs namelist.atmosphere">&amp;physics<br>    config_sst_update = true<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="plot-diff">Plot diff</h2><p><img src="https://i.imgur.com/7shbwIg.png" width="400" /></p><h1 id="for-wrf">For WRF</h1><ul><li><a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/index.php">Input SST Data into the Model | SST Example from our WRF Online Tutorial</a></li></ul><p>The WRF model physics <strong>do not predict</strong> sea-surface temperature, vegetation fraction, albedo or sea ice. For long simulations, the model provides an alternative to read-in the time-varying data and update these fields (the sst_update option). In order to use this option, one must have access to time-varying SST and sea ice fields. Twelve monthly values of vegetation fraction and albedo are available from the geogrid program. Once these fields are processed via WPS, one may activate the sst_update option within the namelist.input file.</p><p>You will need to input your SST data during the WPS process. Take a look at the <a href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/index.php">SST Example from our WRF Online Tutorial</a> for information on how to do this. Because your SST data are in <strong>netcdf format</strong>, however, you will need to write them to intermediate format in order for metgrid to incorporate the data. To do so, you can follow the instructions in <a href="http://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.1/users_guide_chap3.html#_Writing_Meteorological_Data">Chapter 3 of the WRF Users' Guide</a>. You can also find an example <a href="http://www2.mmm.ucar.edu/wrf/users/special_code.html">script for writing a netcdf file to intermediate format here</a>. Just note that this script was provided to us from a user who wrote it specifically for their application, so you will need to make modifications for your own use.</p><ul><li>SST's are typically added to the model:<ul><li><ol type="a"><li>Use the SST at the initial time as a constant field for all time periods (this is good for short runs, like real-time runs, where SST is not updated during the WRF model run)</li></ol></li><li><ol start="2" type="a"><li>As an extra input <strong>at each model input time</strong> (this is good for long-months-model runs)</li></ol></li><li><ol start="3" type="a"><li><strong>SST:* intermediate files</strong> generated from the SST input data (if you do not have these files, first run ungrib.exe)</li></ol><ul><li><code>ln -sf ungrib/Variable_Tables/Vtable.SST Vtable</code></li></ul></li></ul></li></ul><h3 id="interpolate-the-input-data-onto-our-model-domain-metgrid.exe">Interpolate the input data onto our model domain (metgrid.exe)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs namelist">start_date = &#x27;2016-10-06_00:00:00&#x27;,<br>end_date = &#x27;2016-10-08_00:00:00&#x27;,<br>interval_seconds = 21600,<br>fg_name = &#x27;FILE&#x27;, &#x27;SST&#x27;,<br></code></pre></td></tr></table></figure><ul><li><code>./metgrid.exe</code></li><li>generate <code>met_em.d01.xxx.nc</code></li></ul><h3 id="run-model">Run model</h3><ul><li>Run <code>real.exe</code></li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs namelist">&amp;time_control<br>auxinput4_inname = &quot;wrflowinp_d&lt;domain&gt;&quot;,<br>auxinput4_interval = 360,<br>io_form_auxinput4 = 2<br> <br>&amp;physics<br>sst_update = 1,<br></code></pre></td></tr></table></figure><p><strong>Note</strong>: Do not change the syntax "wrflowinp_d&lt;domain&gt;", to "wrflowinp_d01". The syntax should be left exactly as above. Input interval is in minutes.</p><ul><li>generate one more file as <code>wrflowinp_d01</code> that contains <code>SST</code>, <code>VEGFRA</code>, <code>ALBBCK</code> and <code>SEAICE</code> (if available) for each input time.</li><li>Run <code>wrf.exe</code></li><li>To check if <code>SST</code> is updated in the model, look at field <code>TSK</code> over water.</li></ul><h1 id="wrfmpas-a-support-forum">WRF&amp;MPAS-A Support Forum</h1><ul><li><a href="https://forum.mmm.ucar.edu/threads/mpas-tutorial-questions-about-ungrid-and-sst-data.13510/">MPAS tutorial questions about ungrid and SST data | Jun 2023</a><ul><li><ol type="1"><li>Starting from WPSV4.3, a configure option, --nowrf, has been added to allow for configuration of the WPS without reference to a compiled WRF model. if you only need the ungrib component of the WPS, you can compile WPS with this option.</li></ol></li><li><ol start="2" type="1"><li>Most of the reanalysis products like GFS, ERA5 etc include SST. When you run ungrib to extract variables from the reanalysis data, SST will be included in the intermediate file.</li></ol></li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/sst-update-on-the-lakes.13717/">SST update on the lakes | Jul 2023</a><ul><li>SST_UPDATE only works over water points, i.e., those grid points where landmask =0. Those points with lakemask =1 should correspond to points with landmask=0, and thus sst_update should apply to such points.</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/mpas-sst-update-file.8874/">MPAS SST update file | Feb 2020</a></li><li><a href="https://forum.mmm.ucar.edu/threads/updating-sst-not-working.200/">Updating SST not working | Sep 2018</a><ul><li>forrtl: severe (64): input conversion error, unit -5, file Internal List-Directed Read</li><li>The issue seems to be that parts of the timestamp string ('xtime') that are read from input files contain garbage, which confuses the parsing code in the timekeeping module.</li></ul></li></ul>]]></content>
     
     
     <categories>
@@ -195,9 +195,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -236,9 +236,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -269,9 +269,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -302,9 +302,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -339,9 +339,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -380,9 +380,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -423,9 +423,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -495,9 +495,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -536,11 +536,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -594,11 +594,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
       <tag>deepseek</tag>
       
@@ -625,11 +625,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ResNet</tag>
       
@@ -664,11 +664,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -693,11 +693,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
       <tag>RNN</tag>
       
@@ -724,11 +724,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -757,11 +757,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -792,11 +792,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ResNet</tag>
       
@@ -823,11 +823,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
       <tag>VAE</tag>
       
@@ -858,13 +858,13 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
-      <tag>ML</tag>
-      
       <tag>NWP</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Anemoi</tag>
       
@@ -891,11 +891,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -957,9 +957,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -1329,11 +1329,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -1567,13 +1567,13 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
-      <tag>ML</tag>
-      
       <tag>NWP</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -1635,11 +1635,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -1664,11 +1664,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -1695,11 +1695,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -1732,11 +1732,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -1790,11 +1790,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -2087,9 +2087,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -2277,9 +2277,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -2306,11 +2306,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -2337,11 +2337,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -2368,11 +2368,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -2397,9 +2397,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -2481,11 +2481,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PDE</tag>
       
@@ -2512,11 +2512,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PDE</tag>
       
@@ -2636,17 +2636,17 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>AI</tag>
-      
-      <tag>ML</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -2709,9 +2709,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -2771,9 +2771,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -2800,11 +2800,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>AI</tag>
       
       <tag>ML</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -2944,9 +2944,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -2975,9 +2975,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -3004,9 +3004,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -3035,9 +3035,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -3066,9 +3066,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -3097,9 +3097,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -3263,9 +3263,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
@@ -4742,9 +4742,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -4769,9 +4769,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -4829,9 +4829,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -5239,13 +5239,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
       <tag>gnu</tag>
       
       <tag>gcc</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
