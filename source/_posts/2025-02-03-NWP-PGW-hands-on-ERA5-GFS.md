@@ -1276,6 +1276,10 @@ plt.savefig("diff_init_rh.png", dpi=300)
 6. **Long-term Simulations:**
    - For extended runs in both MPAS and WRF, it is essential to **regularly update SST data**. This practice helps maintain the relevance of the model outputs to current climate conditions, ensuring that the simulations reflect the most recent data and improving the accuracy of long-term forecasts.
 
+{% note primary %}
+Read **[MPAS | ERA5| Update SST and sea-ice fraction](https://waipangsze.github.io/2025/02/14/MPAS-ERA5-Update-SST-and-sea-ice-fraction/)**
+{% endnote %}
+
 Integrating and interpolating climate variables in models like WRF and MPAS involves careful consideration of the variables used, the methods of interpolation, and the formats for data integration. By addressing these factors, researchers can enhance the accuracy and reliability of climate and weather predictions. Proper handling of SST and other variables in both short-term and long-term simulations is crucial for effective climate modeling and analysis.
 
 ---

@@ -106,6 +106,15 @@ Consider `skt - sst` form ERA5 grib file, they are different but why?
 - ERA5-0p25-SL-2022063000.grib
 - ERA5 grib: skt - sst 
 
+```sh
+ncvis ERA5-0p25-SL-2022063000.nc
+cdo selname,sst ERA5-0p25-SL-2022063000.nc sst.nc
+cdo selname,skt ERA5-0p25-SL-2022063000.nc skt.nc
+cdo chname,skt,sst skt.nc skt-sst.nc
+ncdiff skt-sst.nc sst.nc diff.nc
+ncvis/ncview diff.nc 
+```
+
 ![ERA5 grib | skt - sst |](https://i.imgur.com/WoSHTOP.png){width=500}
 
 ### Solutions
@@ -127,15 +136,20 @@ Consider `skt - sst` form ERA5 grib file, they are different but why?
   - [Strong non-smooth temperature pattern over snow/ice/water land categories | Sep 2021](https://forum.mmm.ucar.edu/threads/strong-non-smooth-temperature-pattern-over-snow-ice-water-land-categories.10793/)
     -  I see you're using sst_update. Are you using a separate SST input data than the ERA5 data? If so, is it possible that the landsea mask for the two data types is inconsistent? Otherwise, there is a particular process necessary for processing landsea for ERA5 data. 
     -  **One suggestion is to use SKINTEMP only (instead of SST)**
- -  [Issue with ERA5 SST fields | Feb 2023](https://forum.mmm.ucar.edu/threads/issue-with-era5-sst-fields.12525/)
-    -  This is an old issue. If you **replace the SST by the skin temperature** you will have unrealistic warm waters near the coast in summer.
- -  [WRF regional climate simulation | Sep 2021](https://forum.mmm.ucar.edu/threads/wrf-regional-climate-simulation.10726/)
-    -  This will potentially lead to problem in WRF simulation, especially for long term climate simulation with sst_update.
-    -  To solve this issue, **please use skintemp to replace SST** following the steps below:
-       -  (1) in Vtable.ERA-I, **delete** the line below:
-          -  `34 | 1 | 0 | | SST | K | Sea-Surface Temperature |`
-       -  (2) rerun ungrib.exe and metgrid.exe
-       -  (3) run real.exe and wrf.exe
+- [Issue with ERA5 SST fields | Feb 2023](https://forum.mmm.ucar.edu/threads/issue-with-era5-sst-fields.12525/)
+   - This is an old issue. If you **replace the SST by the skin temperature** you will have unrealistic warm waters near the coast in summer.
+- [WRF regional climate simulation | Sep 2021](https://forum.mmm.ucar.edu/threads/wrf-regional-climate-simulation.10726/)
+   - This will potentially lead to problem in WRF simulation, especially for long term climate simulation with sst_update.
+   - To solve this issue, **please use skintemp to replace SST** following the steps below:
+      - (1) in Vtable.ERA-I, **delete** the line below:
+         - `34 | 1 | 0 | | SST | K | Sea-Surface Temperature |`
+      - (2) rerun ungrib.exe and metgrid.exe
+      - (3) run real.exe and wrf.exe
+-  [Merge Vtable.GFS and Vtable.SST | Jan 2021](https://forum.mmm.ucar.edu/threads/merge-vtable-gfs-and-vtable-sst.9973/)
+   - It is perfectly fine that the **SST field is derived from SKINTEMP**; however, if you are not using high-resolution time-varying SST data input, there really is no need to use the sst_update option. If you are only running for 4 days, it shouldn't be necessary.
+- [Ungrib error: not reading SST | Dec 2022](https://forum.mmm.ucar.edu/threads/ungrib-error-not-reading-sst.12318/)
+  - This means the code is not familiar with a level code of 160, and if you want to use that one, you'll need to modify the ungrib/src/rd_grib2.F file to allow it to work. You can search for that part of the code by looking for "Rd_grib2 does not know" in that file. After you make any modifications, you'll need to recompile ungrib.exe.
+
 
 ## Summary
 
@@ -143,6 +157,78 @@ Consider `skt - sst` form ERA5 grib file, they are different but why?
 The ERA5.grib can be **IC, LBC, FDDA** and **SST/Sea-Ice updated** as well.
 
 And, **ERA5 corresponding interemediate file** can be used.
+{% endnote %}
+
+# Vtable
+
+- Vtable.GFS
+  - Skin temperature (can use for SST also)
+{% fold info @Vtable.GFS %}
+```
+GRIB1| Level| From |  To  | metgrid  | metgrid | metgrid                                 |GRIB2|GRIB2|GRIB2|GRIB2|
+Param| Type |Level1|Level2| Name     | Units   | Description                             |Discp|Catgy|Param|Level|
+-----+------+------+------+----------+---------+-----------------------------------------+-----------------------+
+  91 |   1  |   0  |      | SEAICE   | proprtn | Ice flag                                | 10  |  2  |  0  |   1 |
+  81 |   1  |   0  |      | LANDSEA  | proprtn | Land/Sea flag (1=land, 0 or 2=sea)      |  2  |  0  |  0  |   1 |
+  81 |   1  |   0  |      | LANDN    | proprtn |                                         |  2  |  0  | 218 |   1 |
+   7 |   1  |   0  |      | SOILHGT  | m       | Terrain field of source analysis        |  0  |  3  |  5  |   1 |
+  11 |   1  |   0  |      | SKINTEMP | K       | Skin temperature                        |  0  |  0  |  0  |   1 |
+......
+```
+{% endfold %}
+
+- Vtable.ERA-interim.pl
+{% fold info @Vtable.ERA-interim.pl %}
+```
+GRIB | Level| Level| Level| metgrid  |  metgrid | metgrid                                  |
+Code | Code |   1  |   2  | Name     |  Units   | Description                              |
+-----+------+------+------+----------+----------+------------------------------------------+
+ 235 |  1   |   0  |      | SKINTEMP | K        | Sea-Surface Temperature                  |
+  31 |  1   |   0  |      | SEAICE   | fraction | Sea-Ice Fraction                         |
+  34 |  1   |   0  |      | SST      | K        | Sea-Surface Temperature                  |
+......
+```
+{% endfold %}
+
+- Vtable.SST
+{% fold info @Vtable.SST %}
+```
+GRIB | Level| Level| Level| metgrid  |  metgrid | metgrid                                  |
+Code | Code |   1  |   2  | Name     |  Units   | Description                              |
+-----+------+------+------+----------+----------+------------------------------------------+
+ 172 |  1   |   0  |      | LANDSEA  | 0/1 Flag | Land/Sea flag                            |
+ 235 |  1   |   0  |      | SKINTEMP | K        | Sea-Surface Temperature                  |
+  31 |  1   |   0  |      | SEAICE   | fraction | Sea-Ice Fraction                         |
+-----+------+------+------+----------+----------+------------------------------------------+
+```
+{% endfold %}
+
+## For `sst = skintemp`
+
+- `Vtable.ERA-interim.pl` is modified as `Vtable.ERA5`
+- **replace the SST by the skin temperature !!**
+- **Remove** the row : `  34 |  1   |   0  |      | SST      | K        | Sea-Surface Temperature                  |`
+
+## For using ERA5 as SST source
+
+- use ERA5's `skintemp` as SST source instead of `sst` itself
+- modify `Vtable.SST` with replace `11` by `235`
+- try to keep three varibles (not only SST and SEAICE)
+
+- Vtable.ERA5.SST
+{% fold info @Vtable.ERA5.SST %}
+```
+GRIB | Level| Level| Level| metgrid  |  metgrid | metgrid                                  |
+Code | Code |   1  |   2  | Name     |  Units   | Description                              |
+-----+------+------+------+----------+----------+------------------------------------------+
+ 235 |  1   |   0  |      | SKINTEMP | K        | Sea-Surface Temperature                  |
+  31 |  1   |   0  |      | SEAICE   | fraction | Sea-Ice Fraction                         |
+ 235 |  1   |   0  |      | SST      | K        | Sea-Surface Temperature                  |
+```
+{% endfold %}
+
+{% note primary %}
+ln -sf ${TEMPLATE_DIR}/Variable_Tables/Vtable.ERA5.SST Vtable
 {% endnote %}
 
 # For MPAS
