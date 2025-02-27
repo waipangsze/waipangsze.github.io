@@ -43,6 +43,36 @@ banner_img: https://i.imgur.com/g3DB0G8.png
     - Entire MPAS-CMAQ with internal version CMAQ 5.4 is available at Zenodo (10.5281/zenodo.10982420).
     - MIO is available at Zenodo (10.5281/zenodo.10994279).
     - **data which was used in generating Figure 4 - 9, is available at Zenodo (10.5281/zenodo.10994244).**
+    -  `$ ncdump -h mpas_July_avg.nc |head -n 40`
+      {% fold info @mpas_July_avg.nc %}
+      ```
+      netcdf mpas_July_avg {
+      dimensions:
+        Time = UNLIMITED ; // (1 currently)
+        nCells = 40962 ;
+        nVertLevels = 50 ;
+        nVertices = 81920 ;
+        maxEdges = 10 ;
+        StrLen = 64 ;
+        nVertLevelsP1 = 51 ;
+      variables:
+        float O3(Time, nCells, nVertLevels) ;
+          O3:long_name = "O3 concentration" ;
+          O3:units = "ppmV" ;
+          O3:cell_methods = "Time: mean" ;
+        float hpbl(Time, nCells) ;
+          hpbl:units = "m" ;
+          hpbl:long_name = "Planetary Boundary Layer (PBL) height" ;
+          hpbl:cell_methods = "Time: mean" ;
+      ```
+      {% endfold %}
+      - {% gi 4 2-2 %}
+        ![](https://i.imgur.com/SpkDS9P.png)
+        ![](https://i.imgur.com/NhUWaaO.png)
+        ![](https://i.imgur.com/6Spm7oN.png)
+        ![](https://i.imgur.com/90b9mzX.png)
+        {% endgi %}
+
 - [Recent advancement of EPA’s global air quality modeling system: MPAS-CMAQ | 2023 | US-EPA](https://ral.ucar.edu/sites/default/files/docs//jon-willisonetalams2023mpasams.pdf)
   - {% gi 4 2-2 %}
     ![](https://i.imgur.com/s85kXsR.png)
