@@ -45,6 +45,7 @@ date: 2024-09-30 21:26:27
 ## 空氣污染
 
 - [空氣品質模式簡介與操作 - 概說 | 鳥哥](https://linux.vbird.org/enve/illustration.php#)
+- [MPAS | MPAS-CMAQ | US EPA](https://waipangsze.github.io/2025/02/27/MPAS-MPAS-CMAQ-US-EPA/)
 
 ## CFD
 

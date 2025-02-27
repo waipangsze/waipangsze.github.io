@@ -168,6 +168,38 @@ It is worth mentioning that when one chooses this method, the real program print
 Smoothly varying vertical levels can be very important for model stability. Tests have shown that two different sets of vertical levels gives different numbers of CFL prints.
 For cases with dz > dx (as can occur for dx < 1 km at the top), tests have also shown that continuous stretching works through to the model top better than having many equal dz levels.
 
+# WRF和CMAQ 垂直層sigma座標設定 
+
+- [網格類公告模式CMAQ 技術文件](https://aqmc.moenv.gov.tw/download/CMAQ/%E7%B6%B2%E6%A0%BC%E9%A1%9E%E5%85%AC%E5%91%8A%E6%A8%A1%E5%BC%8FCMAQ%E6%8A%80%E8%A1%93%E6%96%87%E4%BB%B6.pdf)
+  - 表1.3-3 WRF和CMAQ 垂直層sigma座標設定 
+
+| LEVEL | SIGMA | 氣壓(Pa) | Full LevelHeight (m) | Half LevelHeight (m) |
+|-------|-------|----------|---------------------|---------------------|
+|      | 1.000 | 100000   | 0                   |                     |
+| 1     | 0.995 | 99550    | 38                  | 19                  |
+| 2     | 0.990 | 99100    | 76                  | 57                  |
+| 3     | 0.980 | 98200    | 153                 | 115                 |
+| 4     | 0.960 | 96400    | 309                 | 231                 |
+| 5     | 0.930 | 93700    | 548                 | 429                 |
+| 6     | 0.890 | 90100    | 878                 | 713                 |
+| 7     | 0.850 | 86500    | 1221                | 1050                |
+| 8     | 0.800 | 82000    | 1671                | 1446                |
+| 9     | 0.750 | 77500    | 2146                | 1909                |
+| 10    | 0.700 | 73000    | 2649                | 2398                |
+| 11    | 0.650 | 68500    | 3185                | 2917                |
+| 12    | 0.600 | 64000    | 3757                | 3471                |
+| 13    | 0.550 | 59500    | 4371                | 4064                |
+| 14    | 0.500 | 55000    | 5033                | 4702                |
+| 15    | 0.450 | 50500    | 5751                | 5392                |
+| 16    | 0.400 | 46000    | 6537                | 6144                |
+| 17    | 0.350 | 41500    | 7404                | 6971                |
+| 18    | 0.300 | 37000    | 8370                | 7887                |
+| 19    | 0.250 | 32500    | 9462                | 8916                |
+| 20    | 0.200 | 28000    | 10716               | 10089               |
+| 21    | 0.150 | 23500    | 12191               | 11454               |
+| 22    | 0.100 | 19000    | 13981               | 13086               |
+| 23    | 0.050 | 14500    | 16256               | 15119               |
+| 24    | 0.000 | 10000    | 19384               | 17820               |
 
 # References
 
