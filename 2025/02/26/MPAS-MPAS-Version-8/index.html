@@ -19,27 +19,28 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="不可壓縮 Navier-Stokes 方程 對於不可壓縮Navier-Stokes方程，可以表示為： 動量方程： \[ \rho \frac{\partial \mathbf{u}}{\partial t} + \rho (\mathbf{u} \cdot \nabla) \mathbf{u} &#x3D; -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{f} \">
+    <meta name="description" content="Timeline  MPAS-Atmosphere Version 8.2.2 | 20 September 2024 MPAS-Atmosphere Version 8.2.1 | 7 August 2024 MPAS-Atmosphere Version 8.2.0 | 27 June 2024 MPAS-Atmosphere Version 8.1.0 | 18 April 2024 MPA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CFD | SIMPLE 算法">
-<meta property="og:url" content="https://waipangsze.github.io/2024/11/26/CFD-SIMPLE-algorithm/index.html">
+<meta property="og:title" content="MPAS | MPAS Version 8">
+<meta property="og:url" content="https://waipangsze.github.io/2025/02/26/MPAS-MPAS-Version-8/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="不可壓縮 Navier-Stokes 方程 對於不可壓縮Navier-Stokes方程，可以表示為： 動量方程： \[ \rho \frac{\partial \mathbf{u}}{\partial t} + \rho (\mathbf{u} \cdot \nabla) \mathbf{u} &#x3D; -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{f} \">
+<meta property="og:description" content="Timeline  MPAS-Atmosphere Version 8.2.2 | 20 September 2024 MPAS-Atmosphere Version 8.2.1 | 7 August 2024 MPAS-Atmosphere Version 8.2.0 | 27 June 2024 MPAS-Atmosphere Version 8.1.0 | 18 April 2024 MPA">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
-<meta property="article:published_time" content="2024-11-26T05:36:00.000Z">
-<meta property="article:modified_time" content="2024-12-02T01:05:41.621Z">
+<meta property="article:published_time" content="2025-02-26T02:50:00.000Z">
+<meta property="article:modified_time" content="2025-02-26T03:10:48.202Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="OpenFOAM">
-<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="GFS">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i.imgur.com/fFT42Yk.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>CFD | SIMPLE 算法 - wpsze</title>
+  <title>MPAS | MPAS Version 8 - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -306,13 +307,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://i.imgur.com/fFT42Yk.png') no-repeat center center; background-size: cover;">
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CFD | SIMPLE 算法"></span>
+            <span id="subtitle" data-typed-text="MPAS | MPAS Version 8"></span>
           
         </div>
 
@@ -323,8 +324,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-11-26 13:36" pubdate>
-          November 26, 2024 pm
+        <time datetime="2025-02-26 10:50" pubdate>
+          February 26, 2025 am
         </time>
       </span>
     
@@ -335,7 +336,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          100 words
         
       </span>
     
@@ -346,7 +347,7 @@
         
         
         
-          14 mins
+          1 mins
         
       </span>
     
@@ -392,123 +393,60 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CFD | SIMPLE 算法</h1>
+            <h1 id="seo-header">MPAS | MPAS Version 8</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="不可壓縮-navier-stokes-方程"><strong>不可壓縮 Navier-Stokes 方程</strong></h1>
-<p>對於不可壓縮Navier-Stokes方程，可以表示為：</p>
-<h2 id="動量方程"><strong>動量方程：</strong></h2>
-<p><span class="math display">\[
-\rho \frac{\partial \mathbf{u}}{\partial t} + \rho (\mathbf{u} \cdot \nabla) \mathbf{u} = -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{f}
-\]</span></p>
-<h2 id="穩狀"><strong>穩狀:</strong></h2>
-<p><span class="math display">\[
-\frac{\partial \mathbf{u}}{\partial t} = 0
-\]</span></p>
-<h2 id="連續方程"><strong>連續方程：</strong></h2>
-<p><span class="math display">\[
-\nabla \cdot \mathbf{u} = 0
-\]</span></p>
-<p>式中有 4 個待求的物理量：</p>
+                <h1 id="timeline">Timeline</h1>
 <ul>
-<li><span class="math inline">\(\mathbf{u}_x\)</span>：在 <span class="math inline">\(x\)</span> 方向的速度分量，</li>
-<li><span class="math inline">\(\mathbf{u}_y\)</span>：在 <span class="math inline">\(y\)</span> 方向的速度分量，</li>
-<li><span class="math inline">\(\mathbf{u}_z\)</span>：在 <span class="math inline">\(z\)</span> 方向的速度分量，</li>
-<li><span class="math inline">\(p\)</span>：壓力。</li>
+<li>MPAS-Atmosphere Version 8.2.2 | 20 September 2024</li>
+<li>MPAS-Atmosphere Version 8.2.1 | 7 August 2024</li>
+<li>MPAS-Atmosphere Version 8.2.0 | 27 June 2024</li>
+<li>MPAS-Atmosphere Version 8.1.0 | 18 April 2024</li>
+<li>MPAS-Atmosphere Version 8.0.2 | 26 March 2024</li>
+<li>MPAS-Atmosphere Version 8.0.1 | 6 July 2023</li>
+<li>MPAS-Atmosphere Version 8.0.0 | 16 June 2023</li>
 </ul>
-<p>其中：</p>
+<h1 id="links">Links</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://mpas-dev.github.io/">https://mpas-dev.github.io/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/releases">/MPAS-Model/releases</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf">MPAS-Atmosphere Users' Guide V8.2.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mmm.ucar.edu/events/133129/agenda">Joint WRF/MPAS Users Workshop 2024</a></li>
+</ol>
+<h1 id="mpas-atmosphere-version-8.0.0">MPAS-Atmosphere Version 8.0.0</h1>
 <ul>
-<li><span class="math inline">\(p\)</span> 為壓力（pressure），</li>
-<li><span class="math inline">\(\mu\)</span> 為運動黏度（dynamic viscosity），</li>
-<li><span class="math inline">\(\rho\)</span> 為流體密度，</li>
-<li><span class="math inline">\(\mathbf{f}\)</span> 為體積力，例如重力或外加力。</li>
-</ul>
-<p>在求解不可壓縮 Navier-Stokes方 程時，會遇到以下兩個主要困難：</p>
-<ol type="1">
-<li><strong>壓力的顯式求解</strong>：壓力 <span class="math inline">\(\nabla p\)</span> 隱藏在動量方程中，與速度場 <span class="math inline">\(\mathbf{u}\)</span> 相耦合，沒有顯式的壓力求解方式。</li>
-<li><strong>連續性約束</strong>：從動量方程中求解出的速度場 <span class="math inline">\(\mathbf{u}\)</span> 不一定滿足連續方程 <span class="math inline">\(\nabla \cdot \mathbf{u} = 0\)</span> 的不可壓縮性條件。</li>
-</ol>
-<h1 id="simple-演算法">SIMPLE 演算法</h1>
-<p>SIMPLE（Semi-Implicit Method for Pressure-Linked Equations）演算法是針對上述問題提出的一種數值求解方法，主要透過壓力校正來分解耦合問題。其步驟如下：</p>
-<ol type="1">
-<li><strong>動量方程離散化：</strong><br />
-將動量方程寫成矩陣形式： <span class="math display">\[
-[M] \mathbf{u} = \mathbf{b}
-\]</span> 其中 <span class="math inline">\([M]\)</span> 是係數矩陣，<span class="math inline">\(\mathbf{u}\)</span> 是速度場，<span class="math inline">\(\mathbf{b}\)</span> 是包含壓力梯度項和其它源項的向量。</li>
-</ol>
-<hr />
-<p>在不可壓縮Navier-Stokes方程中，壓力的直接求解通常利用 <strong>壓力 Poisson 方程</strong>。該方程是從動量方程與連續性條件組合推導而來，用於確保速度場滿足不可壓縮條件（<span class="math inline">\(\nabla \cdot \mathbf{u} = 0\)</span>）。推導過程如下：</p>
-<hr />
-<h2 id="壓力-poisson-方程的推導">壓力 Poisson 方程的推導</h2>
-<ol type="1">
-<li><p><strong>連續方程：</strong> <span class="math display">\[
-\nabla \cdot \mathbf{u} = 0
-\]</span></p></li>
-<li><p><strong>動量方程：</strong> <span class="math display">\[
-\rho \frac{\partial \mathbf{u}}{\partial t} + \rho (\mathbf{u} \cdot \nabla) \mathbf{u} = -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{f}
-\]</span></p>
-<p>將動量方程兩側對空間做散度運算，得到： <span class="math display">\[
-\nabla \cdot \left[ \rho \frac{\partial \mathbf{u}}{\partial t} + \rho (\mathbf{u} \cdot \nabla) \mathbf{u} \right] = -\nabla^2 p + \nabla \cdot (\mu \nabla^2 \mathbf{u}) + \nabla \cdot \mathbf{f}
-\]</span></p></li>
-<li><p><strong>利用連續性約束：</strong> 假設 <span class="math inline">\(\mathbf{u}\)</span> 不完全滿足連續性，為了修正壓力，考慮壓力與速度的相互影響，可得壓力 Poisson 方程的通用形式： <span class="math display">\[
-\nabla^2 p = \nabla \cdot \left[ \rho (\mathbf{u} \cdot \nabla) \mathbf{u} \right] - \rho \frac{\partial (\nabla \cdot \mathbf{u})}{\partial t} + \nabla \cdot \mathbf{f}.
-\]</span></p></li>
-<li><p><strong>穩態情況：</strong> 當系統處於穩態且外力項可忽略時，簡化為： <span class="math display">\[
-\nabla^2 p = \rho \nabla \cdot \left[ (\mathbf{u} \cdot \nabla) \mathbf{u} \right].
-\]</span></p></li>
-</ol>
-<hr />
-<h2 id="使用壓力-poisson-方程的目標">使用壓力 Poisson 方程的目標</h2>
+<li>Changes to the initialization include:
 <ul>
-<li><strong>修正壓力場：</strong> 確保修正後的速度場滿足不可壓縮條件。</li>
-<li><strong>耦合速度與壓力：</strong> 將壓力從動量方程顯性分離，通過 壓力 Poisson 方程 <strong>解壓力</strong>後，<strong>代入動量方程修正速度場</strong>。</li>
+<li><strong>Enable parallel remapping of static fields</strong> with arbitrary graph partition files; special CVT partition files are no longer required.</li>
+<li>Reset the default for the lower air-temperature extrapolation <strong>(config_extrap_airtemp) from 'linear' to 'lapse-rate' in the namelist</strong>. This applies to initialization and to lateral boundary condition generation for MPAS-A.</li>
+<li>Set the condition for the lower extrapolation of the horizontal velocity such that it <strong>returns the lowest analysis level value</strong> instead of a linear extrapolation when the requested level is below the analysis level.</li>
+<li>Create a new init case (13) for creating 3-d CAM-MPAS grids.</li>
+</ul></li>
+<li>Changes to the physics include:
+<ul>
+<li>Update the <strong>Noah land surface scheme to the WRF 4.5</strong> release.</li>
+<li>Update the <strong>MM5 surface layer scheme to the WRF 4.5</strong> release.</li>
+<li>Implemented the <strong>CCPP-compliant version</strong> of:
+<ul>
+<li>the revised MM5 surface layer scheme;</li>
+<li>the parameterization of the gravity-wave drag over orography;</li>
+<li>the YSU Planetary Boundary Layer scheme;</li>
+<li>the scale-aware nTiedtke parameterization of convection; and</li>
+<li>the WSM6 cloud microphysics parameterization.</li>
+</ul></li>
+<li>Correct the initialization of the <strong>maximum snow albedo over sea ice points (now set to 0.75</strong> instead of 0).</li>
+<li>Fix the option that defines the surface albedo over sea ice points. The default option is now set to zero and the default value for <strong>the surface albedo over sea ice points is set to 0.65</strong>.</li>
+<li>In the dynamics, rework the computation of the advective tendency of potential temperature needed as forcing in the <strong>nTiedtke</strong> and <strong>Grell-Freitas</strong> parameterizations of deep convection. The advective tendency of potential temperature is <strong>now computed the same way</strong> for the nTiedtke and Grell-Freitas convection schemes.</li>
+</ul></li>
 </ul>
-<hr />
-<p>壓力 Poisson 方程的解法通常基於離散化數值技術，例如有限差分法、有限體積法等，通過求解壓力校正場 <span class="math inline">\(p&#39;\)</span> 來逐步逼近最終滿足 <span class="math inline">\(\nabla \cdot \mathbf{u} = 0\)</span> 的速度場。</p>
-<p>SIMPLE (Semi-Implicit Method for Pressure Linked Equations) 是一種數值方法，用於解決不可壓縮Navier-Stokes方程中的速度和壓力耦合問題。</p>
-<hr />
-<h3 id="注意事項">注意事項</h3>
-<ol type="1">
-<li><p><strong>欠鬆弛因子的作用</strong><br />
-欠鬆弛因子在每次迭代中減小更新幅度，防止發散，提高算法穩定性。</p></li>
-<li><p><strong>網格選擇</strong><br />
-壓力和速度的網格離散化需滿足 <strong>交錯網格法（staggered grid）</strong>，以避免數值擴散或壓力震盪問題。</p></li>
-<li><p><strong>收斂條件</strong><br />
-選擇合適的殘差範圍和迭代次數限制，確保結果的準確性和計算效率。</p></li>
-</ol>
-<p>SIMPLE 是一種穩健且簡單的方法，適合處理<strong>穩態不可壓縮流體問題</strong>，但在處理瞬態或高雷諾數流體時，可能需要改進版本，如 SIMPLEC 或 PISO。</p>
-<hr />
-<p>SIMPLE演算法求解過程總結為如下4步：</p>
-<ol type="1">
-<li>由給定的初始壓力或上一迭代步壓力求解動量方程，但是求得的速度變數並不一定滿足連續性方程。</li>
-<li>根據壓力泊松方程式求解得到壓力。</li>
-<li>利用求得的壓力修正速度，使之能滿足連續性方程式.</li>
-<li>若速度不滿足動量方程，請回到步驟（1）重複循環，直到滿足為止。</li>
-</ol>
-<p>那其他的標量方程式怎麼辦？例如能量方程式、湍流方程式 <span class="math inline">\(k\)</span> 方程式及 <span class="math inline">\(\epsilon\)</span> 方程式等。這些方程式也可以放到上數求解循環中，只要放到速度修正方程式後依序求解即可。</p>
-<figure>
-<img src="https://i.imgur.com/QoJMran.png" srcset="/img/loading.gif" lazyload alt="SIMPLE" width="600" /><figcaption>SIMPLE</figcaption>
-</figure>
-<p>PISO演算法是在SIMPLE以後發展出來，最初為 <strong>瞬態</strong> <strong>不可壓縮流動</strong> 設計的一種演算法。 PISO演算法與SIMPLE演算法的差異在於速度場由速度修正方程修正後，並沒有直接回到如下動量方程進行迭代循環，而是直接進行更新H矩陣，求解壓力泊松方程，因此動量方程只是初始迭代使用過一次，此後便不再使用，因此相比 SIMPLE 演算法計算量減少，速度更快。</p>
-<div class="note note-danger">
-            <p>由於有方程式的<strong>時間導數項</strong>，<strong>PISO演算法在瞬態流動計算時候比較穩定</strong>。<strong>當時間步長比較小時，時間導數項會遠大於動量方程式對流項、擴散項、源項等其他項，而由於時間倒數項會出現矩陣對角陣上，因此小的時間步長就會使矩陣對角佔優，這種矩陣特性會使方程式的解更加穩定，花費較少的迭代步達到收斂</strong>。</p><p><span class="math display">\[\dfrac{\partial U}{\partial t} = \dfrac{U_p^{i+1} - U_p^{i}}{\Delta t}\]</span></p>
+<div class="note note-primary">
+            <p>IMPORTANT NOTE: The updated physics schemes require new look-up tables, in particular, for the Noah land-surface model. The <strong>checkout_data_files.sh</strong> script that is run at build time should correctly update these tables, but tables in other run directories will need to be manually updated.</p>
           </div>
-<p>當然從另一方面來說，由於穩態流動沒有時間導數項，因此若簡單使用SIMPLE演算法就不如PISO演算法穩定，<strong>因此SIMPLE演算法會以使用鬆弛因子的方式人工增加對角矩陣係數，使方程式求解更加穩定</strong>，具體細節這裡就不再多說了。</p>
-<p>總的來說吧，PISO演算法比較適合瞬態不可壓縮流體。當時間步長足夠小時（庫朗數&lt;1）時，就不需要人工增加對角矩陣係數，使其對角佔優，只需要做一次動量方程式求解，然後對壓力方程式及速度修正方程式進行迭代循環即可收斂。</p>
-<figure>
-<img src="https://i.imgur.com/2NqUqHH.png" srcset="/img/loading.gif" lazyload alt="PISO" width="600" /><figcaption>PISO</figcaption>
-</figure>
-<h1 id="references">References</h1>
-<ol type="1">
-<li><a target="_blank" rel="noopener" href="http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.0.pdf">第6章 回流问题流动－传热 耦合计算的数值方法</a></li>
-<li><a target="_blank" rel="noopener" href="http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf">6.4 原始变量顺序求解流场的 压力修正方法</a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/vEoW0lTb5QbfTFs7FZwGQQ">OpenFOAM编程案例 | 14 SIMPLE算法</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=OOILoJ1zuiw&amp;ab_channel=FluidMechanics101">[CFD] The SIMPLE Algorithm (to solve incompressible Navier-Stokes)</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/126368311?utm_psn=1845836334389919744">什么是SIMPLE及PISO算法？</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cfdsupport.com/OpenFOAM-Training-by-CFD-Support/node199.html">SIMPLE algorithm description</a></li>
-</ol>
+<ul>
+<li>Include changes to the initialization and to MPAS-A such that this release can be <strong>directly used in CESM/CAM</strong>.</li>
+</ul>
 
                 
               </div>
@@ -527,7 +465,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
   
   
 
@@ -542,9 +480,15 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
-        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
       
     </div>
   
@@ -556,8 +500,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CFD | SIMPLE 算法</div>
-      <div>https://waipangsze.github.io/2024/11/26/CFD-SIMPLE-algorithm/</div>
+      <div>MPAS | MPAS Version 8</div>
+      <div>https://waipangsze.github.io/2025/02/26/MPAS-MPAS-Version-8/</div>
     </div>
     <div class="license-meta">
       
@@ -569,13 +513,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>November 26, 2024</div>
+          <div>February 26, 2025</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 2, 2024</div>
+          <div>February 26, 2025</div>
         </div>
       
       
@@ -606,9 +550,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/12/02/ffmpeg/" title="Linux | ffmpeg ">
+                      <a href="/2025/02/27/MPAS-MPAS-CMAQ-US-EPA/" title="MPAS | MPAS-CMAQ | US EPA">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux | ffmpeg </span>
+                        <span class="hidden-mobile">MPAS | MPAS-CMAQ | US EPA</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -616,8 +560,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/11/25/wps-in-parallel-or-in-serial/" title="WRF | WPS in parallel or in serial">
-                        <span class="hidden-mobile">WRF | WPS in parallel or in serial</span>
+                      <a href="/2025/02/21/ML-NVIDIA-Modulus/" title="ML | NVIDIA Modulus">
+                        <span class="hidden-mobile">ML | NVIDIA Modulus</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

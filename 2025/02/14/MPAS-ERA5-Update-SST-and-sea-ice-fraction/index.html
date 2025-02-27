@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/Gs7ezqA.png">
 <meta property="article:published_time" content="2025-02-14T03:49:00.000Z">
-<meta property="article:modified_time" content="2025-02-25T09:52:18.149Z">
+<meta property="article:modified_time" content="2025-02-26T08:39:39.475Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -342,7 +342,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k words
+          1.5k words
         
       </span>
     
@@ -353,7 +353,7 @@
         
         
         
-          10 mins
+          13 mins
         
       </span>
     
@@ -443,6 +443,7 @@
 <li>ERA5-0p25-SL-2022063000.grib</li>
 <li>ERA5 grib: skt - sst</li>
 </ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">ncvis ERA5-0p25-SL-2022063000.nc<br>cdo selname,sst ERA5-0p25-SL-2022063000.nc sst.nc<br>cdo selname,skt ERA5-0p25-SL-2022063000.nc skt.nc<br>cdo chname,skt,sst skt.nc skt-sst.nc<br>ncdiff skt-sst.nc sst.nc diff.nc<br>ncvis/ncview diff.nc <br></code></pre></td></tr></table></figure>
 <figure>
 <img src="https://i.imgur.com/WoSHTOP.png" srcset="/img/loading.gif" lazyload alt="ERA5 grib | skt - sst |" width="500" /><figcaption>ERA5 grib | skt - sst |</figcaption>
 </figure>
@@ -496,10 +497,83 @@
 </ol></li>
 </ul></li>
 </ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/merge-vtable-gfs-and-vtable-sst.9973/">Merge Vtable.GFS and Vtable.SST | Jan 2021</a>
+<ul>
+<li>It is perfectly fine that the <strong>SST field is derived from SKINTEMP</strong>; however, if you are not using high-resolution time-varying SST data input, there really is no need to use the sst_update option. If you are only running for 4 days, it shouldn't be necessary.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/ungrib-error-not-reading-sst.12318/">Ungrib error: not reading SST | Dec 2022</a>
+<ul>
+<li>This means the code is not familiar with a level code of 160, and if you want to use that one, you'll need to modify the ungrib/src/rd_grib2.F file to allow it to work. You can search for that part of the code by looking for "Rd_grib2 does not know" in that file. After you make any modifications, you'll need to recompile ungrib.exe.</li>
+</ul></li>
 </ul>
 <h2 id="summary">Summary</h2>
 <div class="note note-primary">
             <p>The ERA5.grib can be <strong>IC, LBC, FDDA</strong> and <strong>SST/Sea-Ice updated</strong> as well.</p><p>And, <strong>ERA5 corresponding interemediate file</strong> can be used.</p>
+          </div>
+<h1 id="vtable">Vtable</h1>
+<ul>
+<li>Vtable.GFS
+<ul>
+<li>Skin temperature (can use for SST also) 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">
+        <div class="fold-arrow">▶</div>Vtable.GFS
+      </div>
+      <div class="fold-collapse collapse" id="collapse-9c51fa20">
+        <div class="fold-content">
+          <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">GRIB1|<span class="hljs-string"> Level</span>|<span class="hljs-string"> From </span>|<span class="hljs-string">  To  </span>|<span class="hljs-string"> metgrid  </span>|<span class="hljs-string"> metgrid </span>|<span class="hljs-string"> metgrid                                 </span>|<span class="hljs-string">GRIB2</span>|<span class="hljs-string">GRIB2</span>|<span class="hljs-string">GRIB2</span>|<span class="hljs-string">GRIB2</span>|<br>Param|<span class="hljs-string"> Type </span>|<span class="hljs-string">Level1</span>|<span class="hljs-string">Level2</span>|<span class="hljs-string"> Name     </span>|<span class="hljs-string"> Units   </span>|<span class="hljs-string"> Description                             </span>|<span class="hljs-string">Discp</span>|<span class="hljs-string">Catgy</span>|<span class="hljs-string">Param</span>|<span class="hljs-string">Level</span>|<br>-----+------+------+------+----------+---------+-----------------------------------------+-----------------------+<br>  91 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SEAICE   </span>|<span class="hljs-string"> proprtn </span>|<span class="hljs-string"> Ice flag                                </span>|<span class="hljs-string"> 10  </span>|<span class="hljs-string">  2  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">   1 </span>|<br>  81 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> LANDSEA  </span>|<span class="hljs-string"> proprtn </span>|<span class="hljs-string"> Land/Sea flag (1=land, 0 or 2=sea)      </span>|<span class="hljs-string">  2  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">   1 </span>|<br>  81 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> LANDN    </span>|<span class="hljs-string"> proprtn </span>|<span class="hljs-string">                                         </span>|<span class="hljs-string">  2  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string"> 218 </span>|<span class="hljs-string">   1 </span>|<br>   7 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SOILHGT  </span>|<span class="hljs-string"> m       </span>|<span class="hljs-string"> Terrain field of source analysis        </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">  3  </span>|<span class="hljs-string">  5  </span>|<span class="hljs-string">   1 </span>|<br>  11 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SKINTEMP </span>|<span class="hljs-string"> K       </span>|<span class="hljs-string"> Skin temperature                        </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">   1 </span>|<br>......<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></li>
+</ul></li>
+<li><p>Vtable.ERA-interim.pl 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+        <div class="fold-arrow">▶</div>Vtable.ERA-interim.pl
+      </div>
+      <div class="fold-collapse collapse" id="collapse-05eef982">
+        <div class="fold-content">
+          <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">GRIB |<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> metgrid  </span>|<span class="hljs-string">  metgrid </span>|<span class="hljs-string"> metgrid                                  </span>|<br>Code |<span class="hljs-string"> Code </span>|<span class="hljs-string">   1  </span>|<span class="hljs-string">   2  </span>|<span class="hljs-string"> Name     </span>|<span class="hljs-string">  Units   </span>|<span class="hljs-string"> Description                              </span>|<br>-----+------+------+------+----------+----------+------------------------------------------+<br> 235 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SKINTEMP </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br>  31 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SEAICE   </span>|<span class="hljs-string"> fraction </span>|<span class="hljs-string"> Sea-Ice Fraction                         </span>|<br>  34 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SST      </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br>......<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></p></li>
+<li><p>Vtable.SST 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">
+        <div class="fold-arrow">▶</div>Vtable.SST
+      </div>
+      <div class="fold-collapse collapse" id="collapse-90469042">
+        <div class="fold-content">
+          <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">GRIB |<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> metgrid  </span>|<span class="hljs-string">  metgrid </span>|<span class="hljs-string"> metgrid                                  </span>|<br>Code |<span class="hljs-string"> Code </span>|<span class="hljs-string">   1  </span>|<span class="hljs-string">   2  </span>|<span class="hljs-string"> Name     </span>|<span class="hljs-string">  Units   </span>|<span class="hljs-string"> Description                              </span>|<br>-----+------+------+------+----------+----------+------------------------------------------+<br> 172 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> LANDSEA  </span>|<span class="hljs-string"> 0/1 Flag </span>|<span class="hljs-string"> Land/Sea flag                            </span>|<br> 235 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SKINTEMP </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br>  31 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SEAICE   </span>|<span class="hljs-string"> fraction </span>|<span class="hljs-string"> Sea-Ice Fraction                         </span>|<br>-----+------+------+------+----------+----------+------------------------------------------+<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></p></li>
+</ul>
+<h2 id="for-sst-skintemp">For <code>sst = skintemp</code></h2>
+<ul>
+<li><code>Vtable.ERA-interim.pl</code> is modified as <code>Vtable.ERA5</code></li>
+<li><strong>replace the SST by the skin temperature !!</strong></li>
+<li><strong>Remove</strong> the row : <code>34 |  1   |   0  |      | SST      | K        | Sea-Surface Temperature                  |</code></li>
+</ul>
+<h2 id="for-using-era5-as-sst-source">For using ERA5 as SST source</h2>
+<ul>
+<li>use ERA5's <code>skintemp</code> as SST source instead of <code>sst</code> itself</li>
+<li>modify <code>Vtable.SST</code> with replace <code>11</code> by <code>235</code></li>
+<li><p>try to keep three varibles (not only SST and SEAICE)</p></li>
+<li><p>Vtable.ERA5.SST 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">
+        <div class="fold-arrow">▶</div>Vtable.ERA5.SST
+      </div>
+      <div class="fold-collapse collapse" id="collapse-738764b7">
+        <div class="fold-content">
+          <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">GRIB |<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> metgrid  </span>|<span class="hljs-string">  metgrid </span>|<span class="hljs-string"> metgrid                                  </span>|<br>Code |<span class="hljs-string"> Code </span>|<span class="hljs-string">   1  </span>|<span class="hljs-string">   2  </span>|<span class="hljs-string"> Name     </span>|<span class="hljs-string">  Units   </span>|<span class="hljs-string"> Description                              </span>|<br>-----+------+------+------+----------+----------+------------------------------------------+<br> 235 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SKINTEMP </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br>  31 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SEAICE   </span>|<span class="hljs-string"> fraction </span>|<span class="hljs-string"> Sea-Ice Fraction                         </span>|<br> 235 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SST      </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></p></li>
+</ul>
+<div class="note note-primary">
+            <p>ln -sf ${TEMPLATE_DIR}/Variable_Tables/Vtable.ERA5.SST Vtable</p>
           </div>
 <h1 id="for-mpas">For MPAS</h1>
 <h2 id="code">code</h2>
@@ -516,10 +590,10 @@
 <p>Note in particular that we have set the <code>config_init_case</code> <strong>variable to 8!</strong> This is the initialization case used to create surface update files, instead of real-data initial conditions files.</p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">
         <div class="fold-arrow">▶</div>namelist.init_atmosphere
       </div>
-      <div class="fold-collapse collapse" id="collapse-9c51fa20">
+      <div class="fold-collapse collapse" id="collapse-5d5d193e">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs namelist.init_atmosphere">&amp;nhyd_model<br>    config_init_case = 8<br>    config_start_time = &#x27;2014-09-10_00:00:00&#x27;<br>    config_stop_time = &#x27;2014-09-20_00:00:00&#x27;<br>/<br><br>&amp;data_sources<br>    config_sfc_prefix = &#x27;SST&#x27; # SST or ERA5: the prefix of the intermediate data files containing SST and sea-ice<br>    config_fg_interval = 86400<br>/<br><br>&amp;preproc_stages<br>    config_static_interp = false<br>    config_native_gwd_static = false<br>    config_vertical_grid = false<br>    config_met_interp = false<br>    config_input_sst = true<br>    config_frac_seaice = true<br>/<br>&amp;decomposition<br>    config_block_decomp_file_prefix = &#x27;x1.10242.graph.info.part.&#x27;<br>/<br></code></pre></td></tr></table></figure>
         </div>
@@ -532,10 +606,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bbf6858" role="button" aria-expanded="false" aria-controls="collapse-8bbf6858">
         <div class="fold-arrow">▶</div>streams.init_atmosphere
       </div>
-      <div class="fold-collapse collapse" id="collapse-05eef982">
+      <div class="fold-collapse collapse" id="collapse-8bbf6858">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs streams.init_atmosphere">&lt;immutable_stream name=&quot;surface&quot;<br>                  type=&quot;output&quot;<br>                  filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>                  filename_interval=&quot;none&quot;<br>                  packages=&quot;sfc_update&quot;<br>                  output_interval=&quot;86400&quot;/&gt;<br></code></pre></td></tr></table></figure>
         </div>
@@ -544,10 +618,10 @@
 <h2 id="results">results</h2>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8e159bd8" role="button" aria-expanded="false" aria-controls="collapse-8e159bd8">
         <div class="fold-arrow">▶</div>ncdump -h sst.2022-06-30_00.00.00.nc
       </div>
-      <div class="fold-collapse collapse" id="collapse-90469042">
+      <div class="fold-collapse collapse" id="collapse-8e159bd8">
         <div class="fold-content">
           <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncdump -h sst.2022-06-30_00.00.00.nc</span><br>netcdf sst.2022-06-30_00.00.00 &#123;<br>dimensions:<br>	StrLen = 64 ;<br>	Time = UNLIMITED ; // (1 currently)<br>	nCells = 40962 ;<br>variables:<br>	char xtime(Time, StrLen) ;<br>		xtime:units = &quot;YYYY-MM-DD_hh:mm:ss&quot; ;<br>		xtime:long_name = &quot;Model valid time&quot; ;<br>	float sst(Time, nCells) ;<br>		sst:units = &quot;K&quot; ;<br>		sst:long_name = &quot;sea-surface temperature&quot; ;<br>	float xice(Time, nCells) ;<br>		xice:units = &quot;unitless&quot; ;<br>		xice:long_name = &quot;fractional area coverage of sea-ice&quot; ;<br></code></pre></td></tr></table></figure>
         </div>
@@ -561,10 +635,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-42d133e0" role="button" aria-expanded="false" aria-controls="collapse-42d133e0">
         <div class="fold-arrow">▶</div>plot_delta_sst.py
       </div>
-      <div class="fold-collapse collapse" id="collapse-738764b7">
+      <div class="fold-collapse collapse" id="collapse-42d133e0">
         <div class="fold-content">
           <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><br><span class="hljs-keyword">import</span> Ngl<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">from</span> netCDF4 <span class="hljs-keyword">import</span> Dataset<br><span class="hljs-keyword">import</span> math<br><span class="hljs-keyword">import</span> sys<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Get the name of the file containing the static information</span><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Usage: &#x27;</span>+sys.argv[<span class="hljs-number">0</span>]+<span class="hljs-string">&#x27; [mesh filename] &lt;field filename&gt;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        exit(<span class="hljs-number">0</span>)<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># The (lat,lon) the plot is to be centered over</span><br>    <span class="hljs-comment">#</span><br>    cenLat   = <span class="hljs-number">0.0</span><br>    cenLon   = <span class="hljs-number">0.0</span><br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Projection to use for plot</span><br>    <span class="hljs-comment">#</span><br>    projection = <span class="hljs-string">&#x27;CylindricalEquidistant&#x27;</span><br><br><br>    r2d = <span class="hljs-number">180.0</span> / math.pi             <span class="hljs-comment"># radians to degrees</span><br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">2</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">1</span>])<br>        g = f<br>    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">3</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">2</span>])<br>        g = Dataset(sys.argv[<span class="hljs-number">1</span>])<br><br>    rlist = Ngl.Resources()<br><span class="hljs-comment">#    rlist.wkWidth = 1200</span><br><span class="hljs-comment">#    rlist.wkHeight = 1200</span><br><br>    rlist.wkColorMap = <span class="hljs-string">&#x27;gui_default&#x27;</span><br><br>    wks_type = <span class="hljs-string">&#x27;png&#x27;</span><br>    wks = Ngl.open_wks(wks_type, <span class="hljs-string">&#x27;delta_sst&#x27;</span>, rlist)<br><br>    lonCell = g.variables[<span class="hljs-string">&#x27;lonCell&#x27;</span>][:] * r2d<br>    latCell = g.variables[<span class="hljs-string">&#x27;latCell&#x27;</span>][:] * r2d<br><br>    res = Ngl.Resources()<br><br>    res.sfXArray             = lonCell<br>    res.sfYArray             = latCell<br><br>    res.cnFillMode           = <span class="hljs-string">&#x27;AreaFill&#x27;</span><br><br>    res.cnFillOn             = <span class="hljs-literal">True</span><br>    res.cnLinesOn            = <span class="hljs-literal">False</span><br>    res.cnLineLabelsOn       = <span class="hljs-literal">False</span><br><br>    res.cnInfoLabelOn        = <span class="hljs-literal">True</span><br><br>    res.lbLabelAutoStride    = <span class="hljs-literal">True</span><br>    res.lbBoxLinesOn         = <span class="hljs-literal">False</span><br><br>    res.mpProjection      = projection<br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;MediumRes&#x27;</span><br>    res.mpCenterLatF      = cenLat<br>    res.mpCenterLonF      = cenLon<br>    res.mpGridAndLimbOn   = <span class="hljs-literal">True</span><br>    res.mpGridAndLimbDrawOrder = <span class="hljs-string">&#x27;PreDraw&#x27;</span><br>    res.mpGridLineColor   = <span class="hljs-string">&#x27;Background&#x27;</span><br>    res.mpOutlineOn       = <span class="hljs-literal">True</span><br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;Ncarg4_1&#x27;</span><br>    res.mpDataSetName     = <span class="hljs-string">&#x27;Earth..3&#x27;</span><br>    res.mpOutlineBoundarySets = <span class="hljs-string">&#x27;Geophysical&#x27;</span><br>    res.mpPerimOn         = <span class="hljs-literal">True</span><br>    res.mpLimitMode = <span class="hljs-string">&#x27;LatLon&#x27;</span><br>    res.mpMinLonF = -<span class="hljs-number">180.0</span><br>    res.mpMaxLonF = <span class="hljs-number">180.0</span><br>    res.mpMinLatF = -<span class="hljs-number">90.0</span><br>    res.mpMaxLatF = <span class="hljs-number">90.0</span><br><br>    res.cnLevelSelectionMode = <span class="hljs-string">&#x27;ManualLevels&#x27;</span><br>    res.cnMinLevelValF = -<span class="hljs-number">2.0</span><br>    res.cnMaxLevelValF = <span class="hljs-number">2.0</span><br>    res.cnLevelSpacingF = <span class="hljs-number">0.10</span><br>    res.lbAutoManage = <span class="hljs-literal">False</span><br>    res.lbOrientation = <span class="hljs-string">&#x27;Horizontal&#x27;</span><br>    res.lbBoxEndCapStyle = <span class="hljs-string">&#x27;TriangleBothEnds&#x27;</span><br>    res.lbLabelAngleF = <span class="hljs-number">90.0</span><br>    res.lbLabelFontHeightF = <span class="hljs-number">0.01</span><br><br>    res.mpFillOn              = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Turn on map fill.</span><br>    res.mpFillAreaSpecifiers  = [<span class="hljs-string">&#x27;Land&#x27;</span>]<br>    res.mpSpecifiedFillColors = [<span class="hljs-number">0</span>]<br>    res.mpAreaMaskingOn       = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Indicate we want to </span><br>    res.mpMaskAreaSpecifiers  = [<span class="hljs-string">&#x27;Water&#x27;</span>]<br>    res.cnFillDrawOrder       = <span class="hljs-string">&#x27;Predraw&#x27;</span>       <span class="hljs-comment"># Draw contours first.</span><br><br>    fld = f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">10</span>,:] - f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">0</span>,:]<br>    <span class="hljs-built_in">map</span> = Ngl.contour_map(wks, fld, res)<br><br>    Ngl.end()<br></code></pre></td></tr></table></figure>
         </div>
@@ -585,10 +659,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c21ca059" role="button" aria-expanded="false" aria-controls="collapse-c21ca059">
         <div class="fold-arrow">▶</div>streams.atmosphere
       </div>
-      <div class="fold-collapse collapse" id="collapse-5d5d193e">
+      <div class="fold-collapse collapse" id="collapse-c21ca059">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs streams.atmosphere">&lt;stream name=&quot;surface&quot;<br>        type=&quot;input&quot;<br>        filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>        filename_interval=&quot;none&quot;<br>        input_interval=&quot;86400&quot;&gt;<br><br>    &lt;file name=&quot;stream_list.atmosphere.surface&quot;/&gt;<br><br>&lt;/stream&gt;<br></code></pre></td></tr></table></figure>
         </div>
@@ -597,10 +671,10 @@
 <h2 id="namelist.atmosphere">namelist.atmosphere</h2>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bbf6858" role="button" aria-expanded="false" aria-controls="collapse-8bbf6858">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-98e16488" role="button" aria-expanded="false" aria-controls="collapse-98e16488">
         <div class="fold-arrow">▶</div>namelist.atmosphere
       </div>
-      <div class="fold-collapse collapse" id="collapse-8bbf6858">
+      <div class="fold-collapse collapse" id="collapse-98e16488">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs namelist.atmosphere">&amp;physics<br>    config_sst_update = true<br></code></pre></td></tr></table></figure>
         </div>
@@ -750,7 +824,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 25, 2025</div>
+          <div>February 26, 2025</div>
         </div>
       
       
