@@ -19,27 +19,31 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="DNS A direct numerical simulation (DNS) is a simulation in computational fluid dynamics (CFD) in which the Navier–Stokes equations are numerically solved without any turbulence model. This means that">
+    <meta name="description" content="Read MPAS | WRF | Extract subset of GFS GRIB files  GFS Wave Model Forecast  These models are based on the 3rd generation wave model WAVEWATCH III using operational NCEP products as input. WAVEWATCH">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CFD | DNS">
-<meta property="og:url" content="https://waipangsze.github.io/2024/12/23/CFD-DNS/index.html">
+<meta property="og:title" content="MPAS | WRF | GFS-Wave GRIB files">
+<meta property="og:url" content="https://waipangsze.github.io/2025/02/28/MPAS-WRF-GFS-Wave-GRIB-files/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="DNS A direct numerical simulation (DNS) is a simulation in computational fluid dynamics (CFD) in which the Navier–Stokes equations are numerically solved without any turbulence model. This means that">
+<meta property="og:description" content="Read MPAS | WRF | Extract subset of GFS GRIB files  GFS Wave Model Forecast  These models are based on the 3rd generation wave model WAVEWATCH III using operational NCEP products as input. WAVEWATCH">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/GkV6pMK.png">
-<meta property="article:published_time" content="2024-12-23T06:06:00.000Z">
-<meta property="article:modified_time" content="2024-12-23T09:44:25.028Z">
+<meta property="og:image" content="https://i.imgur.com/s7kzxk9.png">
+<meta property="article:published_time" content="2025-02-28T06:56:00.000Z">
+<meta property="article:modified_time" content="2025-02-28T09:41:47.328Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="HPC">
-<meta property="article:tag" content="OpenFOAM">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="Wave">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i.imgur.com/GkV6pMK.png">
+<meta name="twitter:image" content="https://i.imgur.com/s7kzxk9.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>CFD | DNS - wpsze</title>
+  <title>MPAS | WRF | GFS-Wave GRIB files - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -306,13 +310,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://i.imgur.com/GkV6pMK.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/s7kzxk9.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CFD | DNS"></span>
+            <span id="subtitle" data-typed-text="MPAS | WRF | GFS-Wave GRIB files"></span>
           
         </div>
 
@@ -323,8 +327,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-23 14:06" pubdate>
-          December 23, 2024 pm
+        <time datetime="2025-02-28 14:56" pubdate>
+          February 28, 2025 pm
         </time>
       </span>
     
@@ -335,7 +339,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          65 words
+          606 words
         
       </span>
     
@@ -346,7 +350,7 @@
         
         
         
-          1 mins
+          6 mins
         
       </span>
     
@@ -392,47 +396,121 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CFD | DNS</h1>
+            <h1 id="seo-header">MPAS | WRF | GFS-Wave GRIB files</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="dns">DNS</h1>
-<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Direct_numerical_simulation">A direct numerical simulation (DNS)</a> is a simulation in computational fluid dynamics (CFD) in which the Navier–Stokes equations are numerically solved without any turbulence model. This means that the whole range of spatial and temporal scales of the turbulence must be resolved. All the spatial scales of the turbulence must be resolved in the computational mesh, from the smallest dissipative scales (Kolmogorov microscales), up to the integral scale <span class="math inline">\(L\)</span>, associated with the motions containing most of the kinetic energy.</p>
-<p>In fluid dynamics, Kolmogorov microscales are the smallest scales in turbulent flow. At the Kolmogorov scale, viscosity dominates and the turbulence kinetic energy is dissipated into thermal energy.</p>
-<table>
-
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Formula</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Kolmogorov length scale</td>
-<td><span class="math inline">\(\eta = \left( \frac{\nu^3}{\varepsilon} \right)^{1/4}\)</span></td>
-</tr>
-<tr class="even">
-<td>Kolmogorov time scale</td>
-<td><span class="math inline">\(\tau_\eta = \sqrt{ \frac{\nu}{\varepsilon} }\)</span></td>
-</tr>
-<tr class="odd">
-<td>Kolmogorov velocity scale</td>
-<td><span class="math inline">\(u_\eta = \left( \nu \varepsilon \right)^{1/4}\)</span></td>
-</tr>
-</tbody>
-</table>
-<p>where</p>
-<ul>
-<li><span class="math inline">\(\varepsilon\)</span> is the average rate of dissipation of turbulence kinetic energy per unit mass, and</li>
-<li><span class="math inline">\(\nu\)</span> is the kinematic viscosity of the fluid.</li>
+                <ul>
+<li>Read <a href="https://waipangsze.github.io/2025/02/19/MPAS-WRF-Extract-GFS-GRIB-files/"><strong>MPAS | WRF | Extract subset of GFS GRIB files</strong></a></li>
 </ul>
-<h1 id="references">References</h1>
-<ol type="1">
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzAxNzkyOTkxNw==&amp;mid=2247489154&amp;idx=1&amp;sn=b770765d2d4b2c810180a9449300e846&amp;chksm=9bdf5550aca8dc46994752a830236071d351ba846cc957932cbd199c0e14100cee6aa4aeb747&amp;scene=21#wechat_redirect">湍流是什么？（2）涡太小，量太大，值难算</a></li>
-<li></li>
-</ol>
+<h1 id="gfs-wave-model-forecast">GFS Wave Model Forecast</h1>
+<ul>
+<li>These models are based on the <strong>3rd generation wave model WAVEWATCH III</strong> using operational NCEP products as input.</li>
+<li><a target="_blank" rel="noopener" href="https://polar.ncep.noaa.gov/waves/validation/">WAVEWATCH III® Production Multigrid: July 2013 to present</a>
+<ul>
+<li>The multigrid production uses the multi-grid spectral wave model WAVEWATCH III® with operational NCEP winds and ice fields as input forcing fields. No wave data assimilation is performed. The model is run four times a day, with all available data. Validation data is available from July 2013 through to the present.</li>
+<li>Model output
+<ul>
+<li>Field output in grib2 format, available every 3 hours
+<ul>
+<li>.wind. = U-component of 10m wind, V-component of 10m wind (m/s)</li>
+<li>.hs. = significant height of combined wind waves and swell (m)</li>
+<li>.tp. = primary wave mean period (s)</li>
+<li>.dp. = primary wave direction (degrees true, i.e. 0 deg =&gt; coming from North; 90 deg =&gt; coming from East)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="grib2-output-parameters">GRiB2 Output Parameters</h2>
+<p>From <a target="_blank" rel="noopener" href="https://polar.ncep.noaa.gov/waves/Model_Description.pdf" class="uri">https://polar.ncep.noaa.gov/waves/Model_Description.pdf</a>,</p>
+<ul>
+<li>Significant Height of Combined Wind Waves and Swell (HTSGW)</li>
+<li>Direction of Combined Wind Waves and Swell (DIRPW)</li>
+<li>Mean Period of Combined Wind Waves and Swell (PERPW)</li>
+<li>Significant Height of Wind Waves (WVHGT)</li>
+<li>Mean Period of Wind Waves (WVPER)</li>
+<li>Direction of Wind Waves (WVDIR)</li>
+<li>Significant wave height of first swell partition (SWELL: 1 in sequence)</li>
+<li>Mean wave period of first swell partition (SWPER: 1 in sequence)</li>
+<li>Mean wave direction of first swell partition (SWDIR: 1 in sequence)</li>
+<li>Significant wave height of second swell partition (SWELL: 2 in sequence)</li>
+<li>Mean wave period of second swell partition (SWPER: 2 in sequence)</li>
+<li>Mean wave direction of second swell partition (SWDIR: 2 in sequence)</li>
+<li>Significant wave height of third swell partition (SWELL: 3 in sequence)</li>
+<li>Mean wave period of third swell partition (SWPER: 3 in sequence)</li>
+<li>Mean wave direction of third swell partition (SWDIR: 3 in sequence)</li>
+<li>Wind Speed (WIND)</li>
+<li>Wind Direction (WDIR)</li>
+<li>U-component of wind (UGRD)</li>
+<li>V-component of wind (VGRD)</li>
+</ul>
+<p>The multi_1 deterministic wave model is now unified with the Global Forecast System (GFS). The WAVEWATCH III wave model is one-way coupled with the atmospheric forecast model. The wave model uses three native computational grids:</p>
+<ul>
+<li>Arctic Polar 9km resolution from 50N to 90N,</li>
+<li>Global Core 10min resolution from 15S to 52N and</li>
+<li>Southern Ocean 15min resolution from 10.5S to 79.5S.</li>
+</ul>
+<p>There are <strong>4 post-processed grids</strong>: <strong>West Coast, Eastern Pacific, Atlantic Ocean all with 0.16deg resolution</strong> and <strong>a Global grid with 0.25 deg of resolution</strong>.</p>
+<ul>
+<li><strong>The unification into GFS allows for an increase in frequency of the wind forcing from 3 hours to 30 minutes</strong>. In addition, <strong>ocean</strong> currents from the <code>RTOFS</code> model are included as input to the wave model. The system runs four cycles per day (00, 06, 12 and 18Z) and the wave forecast has been extended from 180 hours to 384 hours. The wave model produces <strong>hourly forecasts from 000 to 120 hours and every 3 hours from 120 to 384 hrs</strong>.</li>
+</ul>
+<h1 id="gfs-wave-subset-download">GFS-Wave subset download</h1>
+<h2 id="nomads-data-at-ncep">NOMADS Data at NCEP</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://nomads.ncep.noaa.gov/" class="uri">https://nomads.ncep.noaa.gov/</a></li>
+<li><a target="_blank" rel="noopener" href="https://nomads.ncep.noaa.gov/gribfilter.php?ds=gfswave" class="uri">https://nomads.ncep.noaa.gov/gribfilter.php?ds=gfswave</a></li>
+<li>Example: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs URL">https://nomads.ncep.noaa.gov/cgi-bin/filter_gfswave.pl?dir=%2Fgfs.20250228%2F00%2Fwave%2Fgridded&amp;file=gfswave.t00z.global.0p16.f048.grib2&amp;var_DIRPW=on&amp;var_HTSGW=on&amp;var_PERPW=on&amp;var_SWDIR=on&amp;var_SWELL=on&amp;var_SWPER=on&amp;var_UGRD=on&amp;var_VGRD=on&amp;var_WDIR=on&amp;var_WIND=on&amp;var_WVDIR=on&amp;var_WVHGT=on&amp;var_WVPER=on&amp;lev_1_in_sequence=on&amp;lev_2_in_sequence=on&amp;lev_3_in_sequence=on&amp;lev_surface=on<br></code></pre></td></tr></table></figure></li>
+<li>Dowload script: 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>download_gfs_wave.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
+        <div class="fold-content">
+          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># define URL</span><br><span class="hljs-comment">#</span><br>workdir=/home/wpsze/mpas/GFS/GFS_Wave/<br>hr=00<br><span class="hljs-comment">#date_st=20240920</span><br>date_st=$(<span class="hljs-built_in">date</span> -d <span class="hljs-string">&quot;today -1 days&quot;</span> +%Y%m%d)<br><br><span class="hljs-comment">#wget </span><br><br><span class="hljs-keyword">for</span> iday <span class="hljs-keyword">in</span> &#123;0..0..1&#125;; <span class="hljs-keyword">do</span><br>    <br>    idate=$(<span class="hljs-built_in">date</span> -d <span class="hljs-string">&quot;<span class="hljs-variable">$date_st</span> + <span class="hljs-variable">$iday</span> days&quot;</span> +%Y%m%d)<br>    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$date_st</span> <span class="hljs-variable">$idate</span><br><span class="hljs-keyword">for</span> fhr <span class="hljs-keyword">in</span> &#123;000..120..1&#125;; <span class="hljs-keyword">do</span><br><span class="hljs-comment">#for fhr in &#123;076..76..1&#125;; do</span><br><br><br>URL=<span class="hljs-string">&quot;https://nomads.ncep.noaa.gov/cgi-bin/filter_gfswave.pl?\</span><br><span class="hljs-string">dir=%2Fgfs.<span class="hljs-variable">$&#123;idate&#125;</span>%2F<span class="hljs-variable">$&#123;hr&#125;</span>%2Fwave%2Fgridded&amp;\</span><br><span class="hljs-string">file=gfswave.t<span class="hljs-variable">$&#123;hr&#125;</span>z.global.0p16.f<span class="hljs-variable">$&#123;fhr&#125;</span>.grib2\</span><br><span class="hljs-string">&amp;var_DIRPW=on&amp;var_HTSGW=on&amp;var_PERPW=on&amp;var_SWDIR=on&amp;\</span><br><span class="hljs-string">var_SWELL=on&amp;var_SWPER=on&amp;var_UGRD=on&amp;var_VGRD=on&amp;\</span><br><span class="hljs-string">var_WDIR=on&amp;var_WIND=on&amp;var_WVDIR=on&amp;var_WVHGT=on&amp;\</span><br><span class="hljs-string">var_WVPER=on&amp;lev_1_in_sequence=on&amp;lev_2_in_sequence=on\</span><br><span class="hljs-string">&amp;lev_3_in_sequence=on&amp;lev_surface=on&quot;</span><br><br>yyyymm=<span class="hljs-variable">$&#123;idate:0:6&#125;</span><br>datapath=<span class="hljs-variable">$workdir</span>/0p25/<span class="hljs-variable">$yyyymm</span>/<span class="hljs-variable">$idate</span>/<br><span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$datapath</span><br><br><span class="hljs-comment"># download file</span><br><span class="hljs-comment">#curl &quot;$URL&quot; -o download_test$fhr.grb</span><br>wget <span class="hljs-string">&quot;<span class="hljs-variable">$URL</span>&quot;</span> -O <span class="hljs-variable">$datapath</span>/gfs.t<span class="hljs-variable">$&#123;hr&#125;</span>z.global.0p16.f<span class="hljs-variable">$&#123;fhr&#125;</span>.grib2<br><span class="hljs-comment"># add a sleep to prevent a denial of service in case of missing file</span><br><span class="hljs-built_in">sleep</span> 3<br><span class="hljs-keyword">done</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/dBuFGe4.png" srcset="/img/loading.gif" lazyload alt="https://nomads.ncep.noaa.gov/gribfilter.php?ds=gfswave" width="600" /><figcaption>https://nomads.ncep.noaa.gov/gribfilter.php?ds=gfswave</figcaption>
+</figure>
+<h1 id="grib-checking">grib checking</h1>
+<ul>
+<li><code>grib_ls gfs.t00z.global.0p16.f000.grib2</code> 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">
+        <div class="fold-arrow">▶</div>gfs.t00z.global.0p16.f000.grib2
+      </div>
+      <div class="fold-collapse collapse" id="collapse-6ae3e036">
+        <div class="fold-content">
+          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs console">gfs.t00z.global.0p16.f000.grib2<br>edition      centre       date         dataType     gridType     stepRange    typeOfLevel  level        shortName    packingType  <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            ws           grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            wdir         grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            u            grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            v            grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            swh          grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            perpw        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            dirpw        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            shww         grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  1            swell        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  2            swell        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  3            swell        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            mpww         grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  1            swper        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  2            swper        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  3            swper        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            surface      1            wvdir        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  1            swdir        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  2            swdir        grid_jpeg   <br>2            kwbc         20250227     fc           regular_ll   0            orderedSequenceData  3            swdir        grid_jpeg   <br>19 of 19 messages in gfs.t00z.global.0p16.f000.grib2<br><br>19 of 19 total messages in 1 files<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></li>
+<li>re-download dataset that only contains surface variables.</li>
+<li><code>grib_to_netcdf gfs.t00z.global.0p16.f000.grib2 -o test.nc</code></li>
+<li><code>ncvis/ncview test.nc</code></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/lflKrCy.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/PBF8xwC.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/qQ6P9fx.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/HKGKoVg.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/5svtQWO.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/1YftA55.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/s7kzxk9.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/qvL4hpP.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/Y0gEygu.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h1 id="reading">Reading</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/hko/publica/reprint/r136.pdf">兩個海波數值模式的比較 | HKO</a></li>
+<li><a target="_blank" rel="noopener" href="https://photino.cwa.gov.tw/rdcweb/lib/cd/cd01conf/dissertation/1994%20Sea/11.pdf">WAM 模式之評介 | 交通部中央氣象署</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.comc.ncku.edu.tw/wordpress/wp-content/uploads/2023/02/100%E5%B9%B4%E5%BA%A6-%E5%8F%B0%E7%81%A3%E6%B5%B7%E5%9F%9F%E4%BD%9C%E6%A5%AD%E5%8C%96WAVEWATCH-III%E6%B9%A7%E6%B5%AA%E6%95%B8%E5%80%BC%E9%A0%90%E5%A0%B1%E5%BB%BA%E7%BD%AE.pdf">台灣海域作業化 WAVEWATCH III 湧浪數值預報建置 | 2011</a>
+<ul>
+<li><img src="https://i.imgur.com/esFWqXd.png" srcset="/img/loading.gif" lazyload width="500" /></li>
+</ul></li>
+</ul>
+<h1 id="literature-review">Literature review</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/downloadpdf/view/journals/phoc/49/2/jpo-d-18-0137.1.pdf">Liu, Qingxiang, et al. "Observation-based source terms in the third-generation wave model WAVEWATCH III: Updates and verification." Journal of Physical Oceanography 49.2 (2019): 489-517.</a></li>
+<li><a target="_blank" rel="noopener" href="https://html.rhhz.net/ZGHYDXXBZRKXB/html/a972b1fe-e8d2-4f30-aa37-0d825e44073e.htm">曹赛超, 高志一, 赵栋梁. WAVEWATCH Ⅲ第三代海浪数值模式在中国东海的应用和改进[J]. 中国海洋大学学报(自然科学版), 2023, 53(8): 8-15.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.airitilibrary.com/Article/Detail/P20231229001-N202411060008-00006">林幼淳、林鼎傑、許泰文（2024）。以數值模式為基礎探討颱風季的波浪潛能。海岸及海洋工程學刊，20(1&amp;2)，75-84。https://doi.org/10.6266/JOCOE.202411_20(1_2).0006</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.comc.ncku.edu.tw/wordpress/wp-content/uploads/2023/02/106%E5%B9%B4%E5%BA%A6-WAVEWATCH-III-%E5%A4%9A%E9%87%8D%E7%B6%B2%E6%A0%BC%E6%A8%A1%E5%BC%8F%E6%87%89%E7%94%A8%E6%96%BC%E9%A2%B1%E9%A2%A8%E6%B3%A2%E6%B5%AA%E6%8E%A8%E7%AE%97%E4%B9%8B%E7%A0%94%E7%A9%B6.pdf">WAVEWATCH III 多重網格模式應用於颱風波浪推算之研究 | 2017</a></li>
+</ul>
 
                 
               </div>
@@ -451,7 +529,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
   
   
 
@@ -466,9 +544,17 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
-        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/Wave/" class="print-no-link">#Wave</a>
       
     </div>
   
@@ -480,8 +566,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CFD | DNS</div>
-      <div>https://waipangsze.github.io/2024/12/23/CFD-DNS/</div>
+      <div>MPAS | WRF | GFS-Wave GRIB files</div>
+      <div>https://waipangsze.github.io/2025/02/28/MPAS-WRF-GFS-Wave-GRIB-files/</div>
     </div>
     <div class="license-meta">
       
@@ -493,13 +579,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>December 23, 2024</div>
+          <div>February 28, 2025</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 23, 2024</div>
+          <div>February 28, 2025</div>
         </div>
       
       
@@ -530,18 +616,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/01/02/ML-CorrDiff-NVIDIA/" title="ML | CorrDiff (NVIDIA)">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ML | CorrDiff (NVIDIA)</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/12/20/ML-Genesis-AI/" title="ML | Genesis">
-                        <span class="hidden-mobile">ML | Genesis</span>
+                      <a href="/2025/02/27/MPAS-MPAS-CMAQ-US-EPA/" title="MPAS | MPAS-CMAQ | US EPA">
+                        <span class="hidden-mobile">MPAS | MPAS-CMAQ | US EPA</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
