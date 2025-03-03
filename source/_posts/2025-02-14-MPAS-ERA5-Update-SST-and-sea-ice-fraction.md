@@ -264,6 +264,19 @@ But, ERA5's skintemp and sst are different as above.
 ![init.nc - sst.nc, and same as above figure of ERA5 grib file](https://i.imgur.com/YHSha1w.png){width=500}
 ![It is init.nc: skintemp - sst that has shown sst is same as skintemp in init_atmosphere step in MPAS.](https://i.imgur.com/Fwn5ZjU.png){width=500}
 
+### Update SST on MPAS time-step,
+
+- For uptated interval = 3 hour,
+  - T=0, from SST(T=0) of init.nc
+  - T=0 to T=3, are same as SST(T=0)
+  - T>3 to T=6, are same as SST(T=3)
+  - T>6 to T=9, are same as SST(T=6)
+- For uptated interval = 6 hour,
+  - T=0, from SST(T=0) of init.nc
+  - T=0 to T=6, are same as SST(T=0)
+  - T>6 to T=12, are same as SST(T=6)
+  - T>12 to T=18, are same as SST(T=12)
+
 ## namelist.init_atmosphere
 
 The key namelist options that must be set are shown below; other options can be ignored.
