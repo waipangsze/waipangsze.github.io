@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/Gs7ezqA.png">
 <meta property="article:published_time" content="2025-02-14T03:49:00.000Z">
-<meta property="article:modified_time" content="2025-02-26T08:39:39.475Z">
+<meta property="article:modified_time" content="2025-03-03T09:13:45.465Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -585,6 +585,23 @@
 <figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-keyword">if</span> (config_met_interp) <span class="hljs-keyword">then</span><br><br>!ldf (<span class="hljs-number">2011</span>-<span class="hljs-number">11</span>-<span class="hljs-number">19</span>): added initialization <span class="hljs-keyword">of</span> the sea-surface temperature, seaice fraction, <span class="hljs-built_in">and</span><br>!seaice flag:<br>  sst = <span class="hljs-number">0.0</span><br>  xice = <span class="hljs-number">0.0</span><br>  seaice = <span class="hljs-number">0.0</span><br>!ldf <span class="hljs-keyword">end</span>.<br><br>! <span class="hljs-keyword">Set</span> SST based <span class="hljs-keyword">on</span> SKINTEMP field <span class="hljs-keyword">if</span> it wasn<span class="hljs-comment">&#x27;t found in input data</span><br><span class="hljs-keyword">if</span> (minval(sst) == <span class="hljs-number">0.0</span> .<span class="hljs-built_in">and</span>. maxval(sst) == <span class="hljs-number">0.0</span>) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-comment">&#x27;Setting SST from SKINTEMP&#x27;)</span><br>    !<span class="hljs-keyword">where</span> (landmask == <span class="hljs-number">0</span>) sst = skintemp<br>    sst = skintemp<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br></code></pre></td></tr></table></figure>
 <p>But, ERA5's skintemp and sst are different as above.</p>
 <p><img src="https://i.imgur.com/EIkck30.png" srcset="/img/loading.gif" lazyload alt="Left) init.nc, Right) sst.nc" /> <img src="https://i.imgur.com/YHSha1w.png" srcset="/img/loading.gif" lazyload alt="init.nc - sst.nc, and same as above figure of ERA5 grib file" width="500" /> <img src="https://i.imgur.com/Fwn5ZjU.png" srcset="/img/loading.gif" lazyload alt="It is init.nc: skintemp - sst that has shown sst is same as skintemp in init_atmosphere step in MPAS." width="500" /></p>
+<h3 id="update-sst-on-mpas-time-step">Update SST on MPAS time-step,</h3>
+<ul>
+<li>For uptated interval = 3 hour,
+<ul>
+<li>T=0, from SST(T=0) of init.nc</li>
+<li>T=0 to T=3, are same as SST(T=0)</li>
+<li>T&gt;3 to T=6, are same as SST(T=3)</li>
+<li>T&gt;6 to T=9, are same as SST(T=6)</li>
+</ul></li>
+<li>For uptated interval = 6 hour,
+<ul>
+<li>T=0, from SST(T=0) of init.nc</li>
+<li>T=0 to T=6, are same as SST(T=0)</li>
+<li>T&gt;6 to T=12, are same as SST(T=6)</li>
+<li>T&gt;12 to T=18, are same as SST(T=12)</li>
+</ul></li>
+</ul>
 <h2 id="namelist.init_atmosphere">namelist.init_atmosphere</h2>
 <p>The key namelist options that must be set are shown below; other options can be ignored.</p>
 <p>Note in particular that we have set the <code>config_init_case</code> <strong>variable to 8!</strong> This is the initialization case used to create surface update files, instead of real-data initial conditions files.</p>
@@ -824,7 +841,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 26, 2025</div>
+          <div>March 3, 2025</div>
         </div>
       
       
