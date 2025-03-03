@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://developer-blogs.nvidia.com/wp-content/uploads/2021/06/SimNet-featured.png
+banner_img: https://developer-blogs.nvidia.com/wp-content/uploads/2021/06/SimNet-featured.png
 ---
 
 # NVIDIA Modulus 
