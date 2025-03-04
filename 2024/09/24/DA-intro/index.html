@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.ecmwf.int/sites/default/files/elibrary/2018/covers/80835-introduction-data-assimilation_0.jpg">
 <meta property="article:published_time" content="2024-09-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-04T00:31:01.303Z">
+<meta property="article:modified_time" content="2025-03-04T09:25:22.646Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="DA">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.ecmwf.int/sites/default/files/elibrary/2018/covers/80835-introduction-data-assimilation_0.jpg">
@@ -337,7 +337,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          226 words
+          1.8k words
         
       </span>
     
@@ -348,7 +348,7 @@
         
         
         
-          2 mins
+          15 mins
         
       </span>
     
@@ -454,12 +454,83 @@ p(x,y) = \sum_{i,j} a_{ij} x^i y^j, \qquad  i+j \leq 3
 <h1 id="random-variable">Random Variable</h1>
 <h2 id="bayesian">Bayesian</h2>
 <h2 id="mathematics">Mathematics</h2>
+<h1 id="algorithms">Algorithms</h1>
+<p>The specific data assimilation algorithms can be divided into two main categories:</p>
+<ol type="1">
+<li><strong>Continuous Data Assimilation Algorithms</strong>: This includes <strong>Three-Dimensional Variational (3DVar)</strong> and <strong>Four-Dimensional Variational (4DVar)</strong> methods, which optimize the model trajectory within the assimilation window to make the model results closer to the observed data.
+<ol type="1">
+<li><span class="math display">\[x^a = x^b+BH^T(R+HBH^T)^{-1}(y-Hx^b) \qquad (1)\]</span></li>
+<li><span class="math display">\[J(x)=\frac12(x-x^\mathrm{b})B^{-1}(x-x^\mathrm{b})^\mathrm{T}+\frac12(y-Hx^\mathrm{b})R^{-1}(y-Hx^\mathrm{b}) \qquad (2)\]</span></li>
+</ol></li>
+<li><strong>Sequential Data Assimilation Algorithms</strong>: Represented by the <strong>Ensemble Kalman Filter (EnKF)</strong>, these methods dynamically update the model state to integrate observed data in real time.
+<ol type="1">
+<li><strong>Sequential?</strong> 在後續的模式積分過程中，我們不光需要積分模式，也需要將分析誤差協方差矩陣 "積分" (誤差協方差矩陣也進行"更新")，以獲得下次觀測時刻的背景誤差協方差。</li>
+<li><strong>Extended Kalman filter (EKF)</strong> <span class="math display">\[
+ \begin{aligned}
+ &amp;\boldsymbol{x}_{k} =\boldsymbol{Mx}_{k-1},  \qquad (3) \\
+ &amp;\boldsymbol{y}_k =\boldsymbol{Hx}_k,  \qquad \quad (4)\\
+ \hline
+ &amp;\boldsymbol{K}=\boldsymbol{P}_k^\mathrm{f}\boldsymbol{H}^\mathrm{T}\left[\boldsymbol{H}\boldsymbol{P}_k^\mathrm{f}\boldsymbol{H}^\mathrm{T}+\boldsymbol{R}\right]^{-1} \qquad (5)\\
+ &amp;\boldsymbol{x}_k^\mathrm{a}=\boldsymbol{x}_k^\mathrm{f}+\boldsymbol{K}\left[\boldsymbol{y}_k-\boldsymbol{H}\boldsymbol{x}_k^\mathrm{f}\right] \qquad \quad  (6) \\
+ &amp;\boldsymbol{P}_k^\mathrm{a}=(\mathbf{I}-\boldsymbol{K}\boldsymbol{H})\boldsymbol{P}_k^\mathrm{f} \qquad \qquad\qquad  (7) \\
+ \hline
+ &amp;\boldsymbol{x}_{k+1}^\mathrm{f}=\boldsymbol{M}\boldsymbol{x}_{k}^\mathrm{a} \qquad\qquad (8)  \\
+ &amp;\boldsymbol{P}_{k+1}^\mathrm{f}=\boldsymbol{M}\boldsymbol{P}_{k}^\mathrm{a}\boldsymbol{M}^\mathrm{T}+\boldsymbol{Q} \quad (9)\\
+ \hline
+ \end{aligned}
+ \]</span></li>
+<li>Take Lorenz63 as example, <strong>Extended Kalman filter (EKF)</strong> <span class="math display">\[
+   \begin{aligned}
+   &amp;\frac{dx}{dt}=\sigma(y-x) \qquad (10)\\
+   &amp;\frac{dy}{dt}=\rho x-y-xz \qquad (11)\\
+   &amp;\frac{dz}{dt}=xy-\beta z \qquad (12)\\
+   \hline
+   &amp;\boldsymbol{x}_{k} =\mathcal{M}(\boldsymbol{x}_{k-1}),  \qquad (13) \\
+   &amp;\boldsymbol{y}_k =h(\boldsymbol{x}_k),  \qquad \quad (14)  \\
+   \hline
+   &amp;x_{k}^{\mathrm{f}}=\mathcal{M}\big(x_{k-1}^{\mathrm{a}}\big) \qquad (15)\\
+   &amp;M=\frac{\partial\mathcal{M}}{\partial x}\bigg|_{x_{k-1}^{\mathrm{a}}} \qquad (16)\\
+   &amp;P_{k}^{\mathrm{f}}=MP_{k-1}^{\mathrm{a}}\boldsymbol{M}^{\mathrm{T}}+\boldsymbol{Q}\qquad (17)\\
+   \hline
+   &amp;H={\frac{\partial h}{\partial x}}\bigg|_{x_{k}^{\mathrm{f}}} \qquad (18)\\
+   &amp;K=P_{k}^{\mathrm{f}}H^{\mathrm{T}}\left(HP_{k}^{\mathrm{f}}H^{\mathrm{T}}+R\right)^{-1} \qquad (19)\\
+   &amp;x_{k}^{\mathrm{a}}=x_{k}^{\mathrm{f}}+K\left[y_{k}-h\left(x_{k}^{\mathrm{f}}\right)\right]\qquad (20) \\
+   &amp;P_{k}^{\mathrm{a}}=(\mathbf{I}-\mathbf{K}\mathbf{H})P_{k}^{\mathrm{f}}\qquad (21)\\
+   \hline
+   &amp;\boldsymbol{M}=\frac{\partial\boldsymbol{f}}{\partial\boldsymbol{x}}=\begin{bmatrix}\frac{\partial f_1}{\partial x}&amp;\frac{\partial f_1}{\partial y}&amp;\frac{\partial f_1}{\partial z}\\\frac{\partial f_2}{\partial x}&amp;\frac{\partial f_2}{\partial y}&amp;\frac{\partial f_2}{\partial z}\\\frac{\partial f_3}{\partial x}&amp;\frac{\partial f_3}{\partial y}&amp;\frac{\partial f_3}{\partial z}\end{bmatrix}=\begin{bmatrix}-\sigma&amp;\sigma&amp;0\\\rho-z&amp;-1&amp;-x\\y&amp;x&amp;-\beta\end{bmatrix}
+   \end{aligned}
+   \]</span></li>
+<li><strong>集合卡尔曼滤波器（Ensemble Kalman Filter, EnKF)</strong>
+<ol type="1">
+<li>EKF的不足</li>
+<li>有沒有特別的辦法讓 <span class="math inline">\(B\)</span> 矩陣可以演化，又不需要切線模式 <span class="math inline">\(M\)</span>，最好又能不佔用龐大的內容來保存 <span class="math inline">\(B\)</span> 呢？</li>
+<li>EnKF 的基本想法是使用機率空間內的點表示狀態變數的一種可能。在這個想法下，EnKF最具革命性的工作是<strong>使用集合來估計預報誤差協方差矩陣</strong>。</li>
+<li>在EnKF中，流依賴性不是體現在更新協方差裡面，而是更新狀態集合，然後<strong>利用不斷變化的狀態集合來用隨時計算協方差</strong>。</li>
+<li>Lorenz63模式無法提現其中的計算成本。但如前面說的，實際模式中，切線模式的積分是平方倍的計算量，變數數多的時候會變成天文數值。而在EnKF中，其實 N只要有數十個或數百個就行了。還是比較有限的計算量。兩者對比，<strong>還是EnKF可行性更高。此外，EnKF不涉及切線模式的截斷誤差，對於非線性模式也沒有太大障礙</strong>。</li>
+<li>EnKF的不足: 需要透過添加擾動來產生集合</li>
+</ol></li>
+</ol></li>
+</ol>
+<p>The computational cost of variational assimilation lies in the multiple iterations of the optimization algorithm and the potential for non-convergence. In contrast, the cost of sequential assimilation comes from the need to use ensembles to estimate uncertainty, resulting in a significant computational load from integrating multiple model runs.</p>
+<h1 id="disturbation-method">Disturbation method</h1>
+<ul>
+<li>典型的擾動方式是<strong>奇異向量（Singular Vector）擾動</strong>，即先計算初始場中的快速增長模態（奇異向量），然後在這些方向上添加擾動。這種方法能夠<strong>有效捕捉初始場中不確定性成長最快的模式，進而提高集合預報的離散度</strong>。</li>
+<li>另一個熱門的擾動方式為<strong>隨機擾動參數化傾向方案（Stochastically Perturbed Parameterization Tendencies，SPPT）</strong>，透過在物理參數化方案的傾向項中引入隨機擾動，來表徵模式不確定性。相較於完全隨機的擾動方式，上述方法產生的擾動場通常具有空間和時間上的自相關性，並確保一定的物理合理性。</li>
+</ul>
+<p>對於集合預報的結果，集合成員的平均值被視為確定性預報，主要用於評估集合預報的平均表現。確定性預報指標包括平均絕對誤差（MAE），均方根誤差（RMSE）等。而機率預報指標用於評估集合預報的機率分佈特性，衡量預報的可靠性和不確定性，包括 <strong>連續排位機率評分（CRPS），可靠性（Reliability），集合離散度（Spread）</strong>等。其中集合離散度通常由集合成員的標準差表示，用於衡量集合成員與集合平均值之間的差異。在集合預報中，集合離散度與集合平均的均方根誤差（RMSE）之間的關係被用來衡量集合預報系統的可靠性。理論上，一個可靠的集合預報系統的集合離散度應與集合平均預報誤差大致相當。這種特性在集合預報領域通常被稱為一致性（Consistency）。</p>
+<h1 id="the-inremental-method-增量法">The inremental method (增量法)</h1>
+<ul>
+<li><a href="https://link.zhihu.com/?target=https%3A//rmets.onlinelibrary.wiley.com/doi/10.1002/qj.49712051912">Courtier et al. 1994, A strategy for operational implementation of 4D-Var, using an incremental approach</a></li>
+</ul>
+<p>增量法由 Courtier 提出，此方法主要應用在三維或四維變分同化中，特別是在四維變分同化（4DVar）時。在把4DVar業務化的過程中，要考慮同化的時效性，而同化中 <span class="math inline">\(x\)</span> 向量的維度可達 <span class="math inline">\(10^7\)</span> 到 <span class="math inline">\(10^9\)</span> 。4DVar 中伴隨模式後向積分的計算量是傳統數值模式（NWP）計算量的兩倍，從而使4DVar進行一次迭代的計算量是數值模式計算量的三倍。再加上數值模式本身的非線性特點，使得同化中損失函數的收斂速度很慢。<strong>增量法理論上是用精確度換時間的方法（a cost-benefit trade-off）</strong>。增量法的使用要結合變分求解時所使用的<strong>內循環 (inner loop)</strong> 和 <strong>外循環 (outer loop)</strong> 過程。</p>
 <h1 id="references">References</h1>
 <ol type="1">
 <li>朱国富, 2015. 数值天气预报中分析同化基本方法的历史发展脉络和评述. 气象, 41(8): 986-996. DOI: 10.7519/j.issn.1000-0526.2015.08.008.</li>
 <li>朱国富, 2015. 理解大气资料同化的根本概念[J]. 气象, 41(4): 456-463. DOI:10.7519/j.issn.1000-0526.2015.04.008</li>
 <li><a target="_blank" rel="noopener" href="https://indico.cern.ch/event/289770/contributions/664473/attachments/541326/746202/DA_CERN_Perianez.pdf">2014: Data Assimilation in Numerical Weather Prediction models</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cwa.gov.tw/Data/climate/Info/lectures/100/20180517_Chen.pdf">2018: 中央氣象局全球資料同化系統</a></li>
+<li><a target="_blank" rel="noopener" href="https://curian127.github.io/From3dVarToEnKF.html">数据同化的算法演变：3DVar、EKF、EnKF (<strong>推薦</strong>)| 海洋学院，沈浙奇，2024年6月</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/410765956">资料同化中的增量法（The inremental method）</a></li>
 </ol>
 
                 
@@ -494,11 +565,11 @@ p(x,y) = \sum_{i,j} a_{ij} x^i y^j, \qquad  i+j \leq 3
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/DA/" class="print-no-link">#DA</a>
       
@@ -531,7 +602,7 @@ p(x,y) = \sum_{i,j} a_{ij} x^i y^j, \qquad  i+j \leq 3
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 4, 2024</div>
+          <div>March 4, 2025</div>
         </div>
       
       
