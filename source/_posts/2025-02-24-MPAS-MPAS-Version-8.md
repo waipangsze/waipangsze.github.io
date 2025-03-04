@@ -27,13 +27,18 @@ banner_img:
 
 1. [https://mpas-dev.github.io/](https://mpas-dev.github.io/)
 2. [/MPAS-Model/releases](https://github.com/MPAS-Dev/MPAS-Model/releases)
-3. [MPAS-Atmosphere Users' Guide V8.2.0](https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf)
-4. [Joint WRF/MPAS Users Workshop 2024](https://www.mmm.ucar.edu/events/133129/agenda)
+3. [MPAS-Atmosphere Users' Guide V5.3](https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_5.3.pdf)
+4. [MPAS-Atmosphere Users' Guide V6.3](https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_6.3.pdf)
+5. [MPAS-Atmosphere Users' Guide V7.0](https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_7.0.pdf)
+6. [MPAS-Atmosphere Users' Guide V8.2.0](https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf)
+7. [Joint WRF/MPAS Users Workshop 2024](https://www.mmm.ucar.edu/events/133129/agenda)
 
 # MPAS-Atmosphere Version 8.0.0
 
 - Changes to the initialization include:
-  - **Enable parallel remapping of static fields** with arbitrary graph partition files; special CVT partition files are no longer required.
+  - **Enable parallel remapping of static fields** with arbitrary graph partition files; special CVT partition files are no longer required.  
+    - Run init atmosphere model with **only one MPI task** specified to create static.nc
+    - Note that it is critical for this step that the initialization core is **run serially**;
   - Reset the default for the lower air-temperature extrapolation **(config_extrap_airtemp) from 'linear' to 'lapse-rate' in the namelist**. This applies to initialization and to lateral boundary condition generation for MPAS-A.
   - Set the condition for the lower extrapolation of the horizontal velocity such that it **returns the lowest analysis level value** instead of a linear extrapolation when the requested level is below the analysis level.
   - Create a new init case (13) for creating 3-d CAM-MPAS grids.
