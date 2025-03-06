@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>Relative Humidity and the Dewpoint Temperature</title>
+    <link href="/2025/03/06/Relative-Humidity-and-the-Dewpoint-Temperature/"/>
+    <url>/2025/03/06/Relative-Humidity-and-the-Dewpoint-Temperature/</url>
+    
+    <content type="html"><![CDATA[<p>Key words: Relative Humidity (rh), Dewpoint Temperature (dewpoint), Water Vapor Mixing Ratio (qv)</p><ul><li><a href="https://journals.ametsoc.org/view/journals/mwre/108/7/1520-0493_1980_108_1046_tcoept_2_0_co_2.xml">Bolton, D. (1980). The computation of equivalent potential temperature. Monthly weather review, 108(7), 1046-1053.</a></li><li><a href="https://journals.ametsoc.org/view/journals/bams/86/2/bams-86-2-225.xml">Lawrence, M. G. (2005). The relationship between relative humidity and the dewpoint temperature in moist air: A simple conversion and applications. Bulletin of the American Meteorological Society, 86(2), 225-234.</a><ul><li>How are the dewpoint temperature and relative humidity related, and is there an easy and sufficiently accurate way to convert between them without using a calculator?</li></ul></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>Meteorology</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MPAS | WRF | GFS-Wave GRIB files</title>
     <link href="/2025/02/28/MPAS-WRF-GFS-Wave-GRIB-files/"/>
     <url>/2025/02/28/MPAS-WRF-GFS-Wave-GRIB-files/</url>
@@ -20,11 +49,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -43,7 +72,7 @@
     <link href="/2025/02/27/MPAS-MPAS-CMAQ-US-EPA/"/>
     <url>/2025/02/27/MPAS-MPAS-CMAQ-US-EPA/</url>
     
-    <content type="html"><![CDATA[<h1 id="mpas-cmaq">MPAS-CMAQ</h1><ul><li><a href="https://www.epa.gov/cmaq/next-generation-air-quality-model">The Next-Generation Air Quality Model | US-EPA | Motivation for Improving Combined Meteorological and Air Quality Models</a><ul><li>New meteorological models have been developed that include seamless mesh refinement from global to local scales. These are the future of multi-scale global air quality models. Such mesh structures are ideal for air quality modeling since they cover the entire globe with a coarse mesh, but can resolve areas of interest like the United States with a much finer mesh.</li></ul></li><li><a href="https://www.epa.gov/cmaq">CMAQ: The Community Multiscale Air Quality Modeling System | US-EPA</a></li><li><a href="https://www2.mmm.ucar.edu/wrf/users/workshops/WS2024/presentations/day1/7_Willison.pdf">The 2024 Release of MPAS-CMAQ</a><ul><li>MPAS-CMAQ Design<ul><li>Unified coupler approach allows for coupling of CMAQ with either WRF or MPAS</li><li>New Model I/O (MIO)</li><li>CMAQ is treated as a column model when coupled with MPAS; horizontal transport handled in MPAS.</li></ul></li><li>MPAS Updates<ul><li>Added US EPA physics routines to MPAS</li><li>Implemented analysis FDDA as in WRF</li><li>Implemented indirect soil moisture data assimilation in PX LSM</li><li>Meteorological Evaluation</li></ul></li></ul></li><li><a href="https://forum.cmascenter.org/c/mpas-cmaq/99">CMAS Forum | MPAS-CMAQ</a></li><li><a href="https://github.com/USEPA/CMAQ/tree/MPAS_CMAQ">MPAS-CMAQ github</a><ul><li><a href="https://github.com/USEPA/CMAQ/blob/MPAS_CMAQ/DOCS/Users_Guide/PDF/MPAS_CMAQ_guide.pdf">MPAS_CMAQ_guide.pdf</a></li><li>The coupled system has been evaluated for global domains across several years (Wong et al. 2024, preprint: <a href="https://gmd.copernicus.org/preprints/gmd-2024-52/gmd-2024-52.pdf" class="uri">https://gmd.copernicus.org/preprints/gmd-2024-52/gmd-2024-52.pdf</a>).</li><li>Unified Coupler<ul><li>In this work, we adopted a simpler approach tailored for our specific application. For both the WRF-CMAQ and the MPASCMAQ coupled models, <strong>CMAQ inherits the domain structure from either WRF or MPAS</strong>, and therefore, the coupler inherits the map projection, grid alignment, and grid spacing seamlessly. For simplicity, we just need a straightforward mechanism for data exchange between the two model.</li></ul></li><li><strong>Meteorological data is made available to drive the CMAQ model, and subsequently aerosol information is passed back to the meteorological model so that it can affect the radiation calculations (aerosol radiative direct effect).</strong></li><li>The unified coupler design addresses two major characteristic differences among the WRF-CMAQ and MPAS-CMAQ coupled models.<ul><li>Firstly, the WRF model decomposes the horizonal domain with rectangular grids and stores information using a 2-D data structure. In contrast, the MPAS model decomposes the horizonal domain with an unstructured mesh and stores information using a 1-D data structure.</li><li>Secondly, in the WRF-CMAQ coupled model, the WRF time step could be sub-divided by the advection time step algorithm on the CMAQ side. In addition, two time steps of meteorological data are required and stored in a circular buffer to support interpolation. With the MPAS-CMAQ coupled model, the transport is handled in MPAS and the time step in CMAQ is fully synchronized with MPAS.</li></ul></li><li>The preliminary results show the MPAS-CMAQ coupled model performed reasonably well with respect to ozone and PM2.5 for North America, where the fine mesh is located, as well as the rest of the world. For future work, we will implement the aerosol radiative direct effect in this coupled model with a robust and flexible method to handle different CMAQ chemical mechanisms. We will also implement a switch so the aerosol radiative direct effect can be turned on or off at run time.</li><li>Code and data availability<ul><li>Entire MPAS-CMAQ with internal version CMAQ 5.4 is available at Zenodo (10.5281/zenodo.10982420).</li><li>MIO is available at Zenodo (10.5281/zenodo.10994279).</li><li><strong>data which was used in generating Figure 4 - 9, is available at Zenodo (10.5281/zenodo.10994244).</strong></li><li><code>$ ncdump -h mpas_July_avg.nc |head -n 40</code>     <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">        <div class="fold-arrow">▶</div>mpas_July_avg.nc      </div>      <div class="fold-collapse collapse" id="collapse-8f7bdefe">        <div class="fold-content">          <figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs dts">netcdf <span class="hljs-title class_">mpas_July_avg</span> <span class="hljs-punctuation">&#123;</span><br><span class="hljs-symbol">dimensions:</span><br>  T<span class="hljs-attr">ime</span> <span class="hljs-operator">=</span> UNLIMITED <span class="hljs-punctuation">;</span> <span class="hljs-comment">// (1 currently)</span><br>  nC<span class="hljs-attr">ells</span> <span class="hljs-operator">=</span> <span class="hljs-number">40962</span> <span class="hljs-punctuation">;</span><br>  nVertL<span class="hljs-attr">evels</span> <span class="hljs-operator">=</span> <span class="hljs-number">50</span> <span class="hljs-punctuation">;</span><br>  nV<span class="hljs-attr">ertices</span> <span class="hljs-operator">=</span> <span class="hljs-number">81920</span> <span class="hljs-punctuation">;</span><br>  maxE<span class="hljs-attr">dges</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span> <span class="hljs-punctuation">;</span><br>  StrL<span class="hljs-attr">en</span> <span class="hljs-operator">=</span> <span class="hljs-number">64</span> <span class="hljs-punctuation">;</span><br>  nVertLevelsP1 = <span class="hljs-number">51</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">variables:</span><br>  float O3(Time, nCells, nVertLevels) <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    O3:</span>long_<span class="hljs-attr">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;O3 concentration&quot;</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    O3:</span><span class="hljs-attr">units</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ppmV&quot;</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    O3:</span>cell_<span class="hljs-attr">methods</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Time: mean&quot;</span> <span class="hljs-punctuation">;</span><br>  float hpbl(Time, nCells) <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    hpbl:</span><span class="hljs-attr">units</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;m&quot;</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    hpbl:</span>long_<span class="hljs-attr">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Planetary Boundary Layer (PBL) height&quot;</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    hpbl:</span>cell_<span class="hljs-attr">methods</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Time: mean&quot;</span> <span class="hljs-punctuation">;</span><br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li><li><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/SpkDS9P.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/NhUWaaO.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/6Spm7oN.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/90b9mzX.png" /></div></div></div></li></ul></li></ul></li><li><a href="https://ral.ucar.edu/sites/default/files/docs//jon-willisonetalams2023mpasams.pdf">Recent advancement of EPA’s global air quality modeling system: MPAS-CMAQ | 2023 | US-EPA</a><ul><li><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/s85kXsR.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/bMwDQDX.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/stNlI2P.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/hFDPHpm.png" /></div></div></div></li></ul></li></ul><h1 id="cmaq">CMAQ</h1><p>CMAQ（Community Multiscale Air Quality 通用多尺度空氣品質）模型，是美國環保署開發的第三代空氣品質預報和評估系統（Models-3）的核心組成之一。是一套<strong>三維歐拉網格化的大氣化學和傳輸模擬系統</strong>，能夠模擬整個對流層的臭氧、酸沉降、能見度和細顆粒物。<strong>整個模式遵循「一個大氣」概念，可以同時處理從局部到半球的不同空間尺度的多個複雜的空氣品質問題</strong>，作為一個有效的第三代空氣品質模型與評估工具，其能夠支持從策略分析到大氣科學研究的各類空氣品質模擬應用。</p><ul><li><strong>三維歐拉網格化的大氣化學和傳輸模擬系統</strong>，其根據來自WRF的氣象資訊及場域內的污染排放清單，基於物理和化學反應原理模擬污染物等的變化過程，繼而得到具體時間點或時間段的預報結果</li><li>模式可預報多種污染物，其種類可達80多種。</li><li>CMAQ可模擬的空間尺度以及時間尺度都跨越了數個數量級。對模式選擇不同的時間尺度，既可用於評估長時間（每年至數年）的污染大氣學，也可用於模擬短時間內（數週至數月）的污染源擴散情況，選擇不同的空間尺度，可用於城市或特定區域的模擬。 CMAQ也具有在不同尺度下同時處理多種污染的能力。</li><li>CMAQ包含了以下的處理和化學傳遞模組：<ul><li>大氣-化學交接處理模組（MCIP）</li><li>JPROC</li><li>初始條件模組（ICON）/ 邊界模組 (BCON)<ul><li>ICON則是一開始整體領域空間的污染物初始濃度的建置</li><li>BCON則是從邊界傳輸到模擬領域的污染物濃度</li><li>BCON 與 ICON 均有兩種情境，分別是固定排放與變動排放</li></ul></li><li>化學傳輸模組（CCTM, CMAQ Chemistry-Transport Model）</li><li>排放量資料(smoke)</li></ul></li><li>CMAQ 主程式所需要的輸入資料，主要有如下幾個必須要事先準備的輸入資料：<ul><li>來自WRF大氣模式的MCIP輸出</li><li>參考MCIP大氣資料而計算的SMOKE排放量處理模組</li><li>來自最外層固定的、或上一層執行後所產生的初始資料與邊界資料</li></ul></li><li>每個排放資料均為單一的化學物質，例如平均濃度小時值的輸出檔當中，懸浮微粒相關的物種濃度有ASO4I, ASO4J, ANH4I, ANH4J, ANO3I, ANO3J, AECI, AECJ, AOTHRI, AOTHRJ…，此類物種需要與兩種懸浮微粒波峰比例進行加總之後，方可得到PM2.5與PM10的濃度值。因此，CMAQ之CCTM模式執行完畢後，尚須使用 combine模組進行污染物整合。</li></ul><p><img src="https://i.imgur.com/EKYGIut.jpeg" alt="The framework for the WRF-SMOKE-CMAQ modeling system. From Yang, Xiaochun, et al. &quot;New method for evaluating winter air quality: PM2. 5 assessment using Community Multi-Scale Air Quality Modeling (CMAQ) in Xi&#39;an.&quot; Atmospheric Environment 211 (2019): 18-28." width="500" /> <img src="https://i.imgur.com/BQmCiOd.png" width="500" /> <img src="https://i.imgur.com/g3DB0G8.png" width="500" /></p><h1 id="空氣品質模式簡介">空氣品質模式簡介</h1><ul><li><a href="https://linux.vbird.org/enve/illustration.php#">空氣品質模式簡介與操作 - 概說</a><ul><li>空氣污染物</li><li>排放量分析</li><li>空氣品質的定義</li><li>擴散模式 - 非化學反應</li><li>軌跡模式 - 非化學反應</li><li>箱模式 - 簡單化學模式</li><li>網格模式 - 複雜化學模式</li></ul></li></ul><h2 id="臭氧">臭氧</h2><p>臭氧的生成過程複雜，主要是由工廠、汽機車等所排放的廢氣之中含有具揮發性的有機物 (VOCs)、氮氧化物 (NOx) 等前驅物，在太陽光的照射下產生明顯的日變化，因此當有足夠的累積條件及陽光強度時，就會生成高濃度的臭氧。臭氧是最難控制的污染物之一，因為它不是人類活動直接排放的。取而代之的是，從車輛，發電廠，垃圾堆填區以及其他生物質和化石燃料燃燒設施中釋放出的危險化合物和一氧化二氮與陽光發生反應，形成這種二次污染物。根據香港環境保護署2019年的空氣質量監測結果，儘管政府努力減排和改善空氣質素，令整體空氣質量和其他主要污染物的水平在穩步改善，但過去20年來平均臭氧水平一直在上升，沒有下降的跡象。</p><p>臭氧是複雜的空氣污染問題，亦是區域性問題。它不是從污染源直接排出，而是由空氣中的氮氧化物（NOx）及揮發性有機化合物（VOCs）在陽光下經光化學反應形成。</p><p><a href="https://www.info.gov.hk/gia/general/202005/20/P2020052000477.htm">link</a> 臭氧會與空氣中的一些污染物（例如一氧化氮（NO））產生化學反應而被消耗。本港臭氧濃度上升幅度遠較背景水平大的主因是本地車輛減少了NOx排放，導致少了NO與臭氧反應，因而減少臭氧的消耗，令更多臭氧存在空氣中，做成量度到的臭氧濃度有較大升幅。但因為NOx及VOCs是臭氧的前驅污染物，持續減少NOx排放不但能令本港的二氧化氮水平降低，長遠更將會有助降低區域內及本港整體的臭氧濃度及超標情況。</p><h1 id="tw-行政院環境保護署">TW-行政院環境保護署</h1><ul><li><a href="https://aqmc.moenv.gov.tw/airquality_3.html">網格類模式的簡要描述</a></li><li><a href="https://aqmc.moenv.gov.tw/datasheetlist_3.html">公告模式 CMAQ 使用方式指引</a><ul><li>網格類公告模式CMAQ技術文件</li><li>公告模式CMAQ排放量工具（SMOKE）使用國網方式指引</li><li>附件二 新增污染源處理程序排放檔製作</li><li>附件四 空氣品質模式訓練教材</li></ul></li></ul><h1 id="hk-epd">HK-EPD</h1><h2 id="path-data-download">PATH Data Download</h2><ul><li><a href="https://path.epd.gov.hk/download.html">PATH v3.0 Data Download</a><ul><li>Air Quality Module<br /></li><li>Meteorology Input</li><li>Emission Input</li><li>Initial and Boundary Conditions</li><li>Emission Editor and Extractor</li><li>Standard Hourly Pollutant Output</li></ul></li><li><a href="https://path.epd.gov.hk/doc/Briefing%20on%20the%20release%20of%20updated%20PATH%2020210622%20(Final_Clean).pdf">Briefing on the release of updated PATH modelling system and air quality modelling guidelines</a></li></ul><h2 id="改善珠三角空氣質素的pm2.5研究-研究摘要"><a href="https://www.epd.gov.hk/epd/sites/default/files/epd/tc_chi/environmentinhk/air/studyrpts/files/PM2.5_study_improve_prd_chi.pdf">改善珠三角空氣質素的PM2.5研究 – 研究摘要</a></h2><ul><li>本研究以 2015 年 2 月（冬季）、7 月（颱風）、10 月（夏秋季過渡）和 12 月作為四個具代表性的月份，綜合分析其中四個典型嚴重污染事故和分析四個政策情景，探討氣象條件促成污染的比重和評估假設控制方案之成效，並根據分析結果提出相關的政策建議。</li><li>對嚴重污染事故影響最大的氣象條件，是位於珠三角地區東、東南或東北的熱帶氣旋所導致較穩定的地區性氣流。空氣污染物在此條件下快速積聚，特別在吹微弱北風或西北風時，香港及珠三角地區的南部沿海城市的污染物濃度快速升高，導致可長達一星期的高污染物水平（在夏季或秋季）。</li><li>除熱帶氣旋外，華南地區在夏季或秋季亦會有弱風情況，導致污染物積聚。當轉吹西北風，被困的污染物有機會傳到香港，往往令香港污染物的濃度上升。</li><li>在香港，空氣污染物水平在冬季亦會短暫上升，通常與增強的北或西北氣流有關。當較弱的東北風成為主導風向，加上較低溫度（即更穩定邊界層）和地表弱風，華南內陸的污染物會慢慢大量積聚。</li></ul><h1 id="wrf和cmaq-垂直層sigma座標設定">WRF和CMAQ 垂直層sigma座標設定</h1><ul><li><a href="https://aqmc.moenv.gov.tw/download/CMAQ/%E7%B6%B2%E6%A0%BC%E9%A1%9E%E5%85%AC%E5%91%8A%E6%A8%A1%E5%BC%8FCMAQ%E6%8A%80%E8%A1%93%E6%96%87%E4%BB%B6.pdf">網格類公告模式CMAQ 技術文件</a><ul><li>表1.3-3 WRF和CMAQ 垂直層sigma座標設定</li></ul></li></ul><table><thead><tr class="header"><th>LEVEL</th><th>SIGMA</th><th>氣壓(Pa)</th><th>Full LevelHeight (m)</th><th>Half LevelHeight (m)</th></tr></thead><tbody><tr class="odd"><td></td><td>1.000</td><td>100000</td><td>0</td><td></td></tr><tr class="even"><td>1</td><td>0.995</td><td>99550</td><td>38</td><td>19</td></tr><tr class="odd"><td>2</td><td>0.990</td><td>99100</td><td>76</td><td>57</td></tr><tr class="even"><td>3</td><td>0.980</td><td>98200</td><td>153</td><td>115</td></tr><tr class="odd"><td>4</td><td>0.960</td><td>96400</td><td>309</td><td>231</td></tr><tr class="even"><td>5</td><td>0.930</td><td>93700</td><td>548</td><td>429</td></tr><tr class="odd"><td>6</td><td>0.890</td><td>90100</td><td>878</td><td>713</td></tr><tr class="even"><td>7</td><td>0.850</td><td>86500</td><td>1221</td><td>1050</td></tr><tr class="odd"><td>8</td><td>0.800</td><td>82000</td><td>1671</td><td>1446</td></tr><tr class="even"><td>9</td><td>0.750</td><td>77500</td><td>2146</td><td>1909</td></tr><tr class="odd"><td>10</td><td>0.700</td><td>73000</td><td>2649</td><td>2398</td></tr><tr class="even"><td>11</td><td>0.650</td><td>68500</td><td>3185</td><td>2917</td></tr><tr class="odd"><td>12</td><td>0.600</td><td>64000</td><td>3757</td><td>3471</td></tr><tr class="even"><td>13</td><td>0.550</td><td>59500</td><td>4371</td><td>4064</td></tr><tr class="odd"><td>14</td><td>0.500</td><td>55000</td><td>5033</td><td>4702</td></tr><tr class="even"><td>15</td><td>0.450</td><td>50500</td><td>5751</td><td>5392</td></tr><tr class="odd"><td>16</td><td>0.400</td><td>46000</td><td>6537</td><td>6144</td></tr><tr class="even"><td>17</td><td>0.350</td><td>41500</td><td>7404</td><td>6971</td></tr><tr class="odd"><td>18</td><td>0.300</td><td>37000</td><td>8370</td><td>7887</td></tr><tr class="even"><td>19</td><td>0.250</td><td>32500</td><td>9462</td><td>8916</td></tr><tr class="odd"><td>20</td><td>0.200</td><td>28000</td><td>10716</td><td>10089</td></tr><tr class="even"><td>21</td><td>0.150</td><td>23500</td><td>12191</td><td>11454</td></tr><tr class="odd"><td>22</td><td>0.100</td><td>19000</td><td>13981</td><td>13086</td></tr><tr class="even"><td>23</td><td>0.050</td><td>14500</td><td>16256</td><td>15119</td></tr><tr class="odd"><td>24</td><td>0.000</td><td>10000</td><td>19384</td><td>17820</td></tr></tbody></table>]]></content>
+    <content type="html"><![CDATA[<h1 id="mpas-cmaq">MPAS-CMAQ</h1><ul><li><a href="https://www.epa.gov/cmaq/next-generation-air-quality-model">The Next-Generation Air Quality Model | US-EPA | Motivation for Improving Combined Meteorological and Air Quality Models</a><ul><li>New meteorological models have been developed that include seamless mesh refinement from global to local scales. These are the future of multi-scale global air quality models. Such mesh structures are ideal for air quality modeling since they cover the entire globe with a coarse mesh, but can resolve areas of interest like the United States with a much finer mesh.</li></ul></li><li><a href="https://www.epa.gov/cmaq">CMAQ: The Community Multiscale Air Quality Modeling System | US-EPA</a></li><li><a href="https://www2.mmm.ucar.edu/wrf/users/workshops/WS2024/presentations/day1/7_Willison.pdf">The 2024 Release of MPAS-CMAQ</a><ul><li>MPAS-CMAQ Design<ul><li>Unified coupler approach allows for coupling of CMAQ with either WRF or MPAS</li><li>New Model I/O (MIO)</li><li>CMAQ is treated as a column model when coupled with MPAS; horizontal transport handled in MPAS.</li></ul></li><li>MPAS Updates<ul><li>Added US EPA physics routines to MPAS</li><li>Implemented analysis FDDA as in WRF</li><li>Implemented indirect soil moisture data assimilation in PX LSM</li><li>Meteorological Evaluation</li></ul></li></ul></li><li><a href="https://forum.cmascenter.org/c/mpas-cmaq/99">CMAS Forum | MPAS-CMAQ</a></li><li><a href="https://github.com/USEPA/CMAQ/tree/MPAS_CMAQ">MPAS-CMAQ github</a><ul><li><a href="https://github.com/USEPA/CMAQ/blob/MPAS_CMAQ/DOCS/Users_Guide/PDF/MPAS_CMAQ_guide.pdf">MPAS_CMAQ_guide.pdf</a></li><li>The coupled system has been evaluated for global domains across several years (Wong et al. 2024, preprint: <a href="https://gmd.copernicus.org/preprints/gmd-2024-52/gmd-2024-52.pdf" class="uri">https://gmd.copernicus.org/preprints/gmd-2024-52/gmd-2024-52.pdf</a>).</li><li>Unified Coupler<ul><li>In this work, we adopted a simpler approach tailored for our specific application. For both the WRF-CMAQ and the MPASCMAQ coupled models, <strong>CMAQ inherits the domain structure from either WRF or MPAS</strong>, and therefore, the coupler inherits the map projection, grid alignment, and grid spacing seamlessly. For simplicity, we just need a straightforward mechanism for data exchange between the two model.</li></ul></li><li><strong>Meteorological data is made available to drive the CMAQ model, and subsequently aerosol information is passed back to the meteorological model so that it can affect the radiation calculations (aerosol radiative direct effect).</strong></li><li>The unified coupler design addresses two major characteristic differences among the WRF-CMAQ and MPAS-CMAQ coupled models.<ul><li>Firstly, the WRF model decomposes the horizonal domain with rectangular grids and stores information using a 2-D data structure. In contrast, the MPAS model decomposes the horizonal domain with an unstructured mesh and stores information using a 1-D data structure.</li><li>Secondly, in the WRF-CMAQ coupled model, the WRF time step could be sub-divided by the advection time step algorithm on the CMAQ side. In addition, two time steps of meteorological data are required and stored in a circular buffer to support interpolation. With the MPAS-CMAQ coupled model, the transport is handled in MPAS and the time step in CMAQ is fully synchronized with MPAS.</li></ul></li><li>The preliminary results show the MPAS-CMAQ coupled model performed reasonably well with respect to ozone and PM2.5 for North America, where the fine mesh is located, as well as the rest of the world. For future work, we will implement the aerosol radiative direct effect in this coupled model with a robust and flexible method to handle different CMAQ chemical mechanisms. We will also implement a switch so the aerosol radiative direct effect can be turned on or off at run time.</li><li>Code and data availability<ul><li>Entire MPAS-CMAQ with internal version CMAQ 5.4 is available at Zenodo (10.5281/zenodo.10982420).</li><li>MIO is available at Zenodo (10.5281/zenodo.10994279).</li><li><strong>data which was used in generating Figure 4 - 9, is available at Zenodo (10.5281/zenodo.10994244).</strong></li><li><code>$ ncdump -h mpas_July_avg.nc |head -n 40</code>     <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">        <div class="fold-arrow">▶</div>mpas_July_avg.nc      </div>      <div class="fold-collapse collapse" id="collapse-8f7bdefe">        <div class="fold-content">          <figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs dts">netcdf <span class="hljs-title class_">mpas_July_avg</span> <span class="hljs-punctuation">&#123;</span><br><span class="hljs-symbol">dimensions:</span><br>  T<span class="hljs-attr">ime</span> <span class="hljs-operator">=</span> UNLIMITED <span class="hljs-punctuation">;</span> <span class="hljs-comment">// (1 currently)</span><br>  nC<span class="hljs-attr">ells</span> <span class="hljs-operator">=</span> <span class="hljs-number">40962</span> <span class="hljs-punctuation">;</span><br>  nVertL<span class="hljs-attr">evels</span> <span class="hljs-operator">=</span> <span class="hljs-number">50</span> <span class="hljs-punctuation">;</span><br>  nV<span class="hljs-attr">ertices</span> <span class="hljs-operator">=</span> <span class="hljs-number">81920</span> <span class="hljs-punctuation">;</span><br>  maxE<span class="hljs-attr">dges</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span> <span class="hljs-punctuation">;</span><br>  StrL<span class="hljs-attr">en</span> <span class="hljs-operator">=</span> <span class="hljs-number">64</span> <span class="hljs-punctuation">;</span><br>  nVertLevelsP1 = <span class="hljs-number">51</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">variables:</span><br>  float O3(Time, nCells, nVertLevels) <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    O3:</span>long_<span class="hljs-attr">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;O3 concentration&quot;</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    O3:</span><span class="hljs-attr">units</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ppmV&quot;</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    O3:</span>cell_<span class="hljs-attr">methods</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Time: mean&quot;</span> <span class="hljs-punctuation">;</span><br>  float hpbl(Time, nCells) <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    hpbl:</span><span class="hljs-attr">units</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;m&quot;</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    hpbl:</span>long_<span class="hljs-attr">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Planetary Boundary Layer (PBL) height&quot;</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">    hpbl:</span>cell_<span class="hljs-attr">methods</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Time: mean&quot;</span> <span class="hljs-punctuation">;</span><br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li><li><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/SpkDS9P.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/NhUWaaO.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/6Spm7oN.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/90b9mzX.png" /></div></div></div></li></ul></li></ul></li><li><a href="https://ral.ucar.edu/sites/default/files/docs//jon-willisonetalams2023mpasams.pdf">Recent advancement of EPA’s global air quality modeling system: MPAS-CMAQ | 2023 | US-EPA</a><ul><li><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/s85kXsR.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/bMwDQDX.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/stNlI2P.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/hFDPHpm.png" /></div></div></div></li></ul></li></ul><h1 id="mpas-cmaq-compilation">MPAS-CMAQ compilation</h1><ul><li><a href="https://forum.mmm.ucar.edu/threads/encounter-an-error-during-mpas-compilation.20474/">Encounter an error during MPAS compilation | Lan 2025</a></li></ul><p>vim bldit_project.csh set CMAQ_HOME =/EM/wpsze/CMAQ/CMAQ-MPAS_CMAQ/CMAQ_5.5 ##改成自己的路径</p><p>./bldit_project.csh intel cd /EM/wpsze/CMAQ/CMAQ-MPAS_CMAQ/CMAQ_5.5</p><p>vim config_cmaq.csh</p><h1 id="cmaq">CMAQ</h1><p>CMAQ（Community Multiscale Air Quality 通用多尺度空氣品質）模型，是美國環保署開發的第三代空氣品質預報和評估系統（Models-3）的核心組成之一。是一套<strong>三維歐拉網格化的大氣化學和傳輸模擬系統</strong>，能夠模擬整個對流層的臭氧、酸沉降、能見度和細顆粒物。<strong>整個模式遵循「一個大氣」概念，可以同時處理從局部到半球的不同空間尺度的多個複雜的空氣品質問題</strong>，作為一個有效的第三代空氣品質模型與評估工具，其能夠支持從策略分析到大氣科學研究的各類空氣品質模擬應用。</p><ul><li><strong>三維歐拉網格化的大氣化學和傳輸模擬系統</strong>，其根據來自WRF的氣象資訊及場域內的污染排放清單，基於物理和化學反應原理模擬污染物等的變化過程，繼而得到具體時間點或時間段的預報結果</li><li>模式可預報多種污染物，其種類可達80多種。</li><li>CMAQ可模擬的空間尺度以及時間尺度都跨越了數個數量級。對模式選擇不同的時間尺度，既可用於評估長時間（每年至數年）的污染大氣學，也可用於模擬短時間內（數週至數月）的污染源擴散情況，選擇不同的空間尺度，可用於城市或特定區域的模擬。 CMAQ也具有在不同尺度下同時處理多種污染的能力。</li><li>CMAQ包含了以下的處理和化學傳遞模組：<ul><li>大氣-化學交接處理模組（MCIP）</li><li>JPROC</li><li>初始條件模組（ICON）/ 邊界模組 (BCON)<ul><li>ICON則是一開始整體領域空間的污染物初始濃度的建置</li><li>BCON則是從邊界傳輸到模擬領域的污染物濃度</li><li>BCON 與 ICON 均有兩種情境，分別是固定排放與變動排放</li></ul></li><li>化學傳輸模組（CCTM, CMAQ Chemistry-Transport Model）</li><li>排放量資料(smoke)</li></ul></li><li>CMAQ 主程式所需要的輸入資料，主要有如下幾個必須要事先準備的輸入資料：<ul><li>來自WRF大氣模式的MCIP輸出</li><li>參考MCIP大氣資料而計算的SMOKE排放量處理模組</li><li>來自最外層固定的、或上一層執行後所產生的初始資料與邊界資料</li></ul></li><li>每個排放資料均為單一的化學物質，例如平均濃度小時值的輸出檔當中，懸浮微粒相關的物種濃度有ASO4I, ASO4J, ANH4I, ANH4J, ANO3I, ANO3J, AECI, AECJ, AOTHRI, AOTHRJ…，此類物種需要與兩種懸浮微粒波峰比例進行加總之後，方可得到PM2.5與PM10的濃度值。因此，CMAQ之CCTM模式執行完畢後，尚須使用 combine模組進行污染物整合。</li></ul><p><img src="https://i.imgur.com/EKYGIut.jpeg" alt="The framework for the WRF-SMOKE-CMAQ modeling system. From Yang, Xiaochun, et al. &quot;New method for evaluating winter air quality: PM2. 5 assessment using Community Multi-Scale Air Quality Modeling (CMAQ) in Xi&#39;an.&quot; Atmospheric Environment 211 (2019): 18-28." width="500" /> <img src="https://i.imgur.com/BQmCiOd.png" width="500" /> <img src="https://i.imgur.com/g3DB0G8.png" width="500" /></p><h1 id="空氣品質模式簡介">空氣品質模式簡介</h1><ul><li><a href="https://linux.vbird.org/enve/illustration.php#">空氣品質模式簡介與操作 - 概說</a><ul><li>空氣污染物</li><li>排放量分析</li><li>空氣品質的定義</li><li>擴散模式 - 非化學反應</li><li>軌跡模式 - 非化學反應</li><li>箱模式 - 簡單化學模式</li><li>網格模式 - 複雜化學模式</li></ul></li></ul><h2 id="臭氧">臭氧</h2><p>臭氧的生成過程複雜，主要是由工廠、汽機車等所排放的廢氣之中含有具揮發性的有機物 (VOCs)、氮氧化物 (NOx) 等前驅物，在太陽光的照射下產生明顯的日變化，因此當有足夠的累積條件及陽光強度時，就會生成高濃度的臭氧。臭氧是最難控制的污染物之一，因為它不是人類活動直接排放的。取而代之的是，從車輛，發電廠，垃圾堆填區以及其他生物質和化石燃料燃燒設施中釋放出的危險化合物和一氧化二氮與陽光發生反應，形成這種二次污染物。根據香港環境保護署2019年的空氣質量監測結果，儘管政府努力減排和改善空氣質素，令整體空氣質量和其他主要污染物的水平在穩步改善，但過去20年來平均臭氧水平一直在上升，沒有下降的跡象。</p><p>臭氧是複雜的空氣污染問題，亦是區域性問題。它不是從污染源直接排出，而是由空氣中的氮氧化物（NOx）及揮發性有機化合物（VOCs）在陽光下經光化學反應形成。</p><p><a href="https://www.info.gov.hk/gia/general/202005/20/P2020052000477.htm">link</a> 臭氧會與空氣中的一些污染物（例如一氧化氮（NO））產生化學反應而被消耗。本港臭氧濃度上升幅度遠較背景水平大的主因是本地車輛減少了NOx排放，導致少了NO與臭氧反應，因而減少臭氧的消耗，令更多臭氧存在空氣中，做成量度到的臭氧濃度有較大升幅。但因為NOx及VOCs是臭氧的前驅污染物，持續減少NOx排放不但能令本港的二氧化氮水平降低，長遠更將會有助降低區域內及本港整體的臭氧濃度及超標情況。</p><h1 id="tw-行政院環境保護署">TW-行政院環境保護署</h1><ul><li><a href="https://aqmc.moenv.gov.tw/airquality_3.html">網格類模式的簡要描述</a></li><li><a href="https://aqmc.moenv.gov.tw/datasheetlist_3.html">公告模式 CMAQ 使用方式指引</a><ul><li>網格類公告模式CMAQ技術文件</li><li>公告模式CMAQ排放量工具（SMOKE）使用國網方式指引</li><li>附件二 新增污染源處理程序排放檔製作</li><li>附件四 空氣品質模式訓練教材</li></ul></li></ul><h1 id="hk-epd">HK-EPD</h1><h2 id="path-data-download">PATH Data Download</h2><ul><li><a href="https://path.epd.gov.hk/download.html">PATH v3.0 Data Download</a><ul><li>Air Quality Module<br /></li><li>Meteorology Input</li><li>Emission Input</li><li>Initial and Boundary Conditions</li><li>Emission Editor and Extractor</li><li>Standard Hourly Pollutant Output</li></ul></li><li><a href="https://path.epd.gov.hk/doc/Briefing%20on%20the%20release%20of%20updated%20PATH%2020210622%20(Final_Clean).pdf">Briefing on the release of updated PATH modelling system and air quality modelling guidelines</a></li></ul><h2 id="改善珠三角空氣質素的pm2.5研究-研究摘要"><a href="https://www.epd.gov.hk/epd/sites/default/files/epd/tc_chi/environmentinhk/air/studyrpts/files/PM2.5_study_improve_prd_chi.pdf">改善珠三角空氣質素的PM2.5研究 – 研究摘要</a></h2><ul><li>本研究以 2015 年 2 月（冬季）、7 月（颱風）、10 月（夏秋季過渡）和 12 月作為四個具代表性的月份，綜合分析其中四個典型嚴重污染事故和分析四個政策情景，探討氣象條件促成污染的比重和評估假設控制方案之成效，並根據分析結果提出相關的政策建議。</li><li>對嚴重污染事故影響最大的氣象條件，是位於珠三角地區東、東南或東北的熱帶氣旋所導致較穩定的地區性氣流。空氣污染物在此條件下快速積聚，特別在吹微弱北風或西北風時，香港及珠三角地區的南部沿海城市的污染物濃度快速升高，導致可長達一星期的高污染物水平（在夏季或秋季）。</li><li>除熱帶氣旋外，華南地區在夏季或秋季亦會有弱風情況，導致污染物積聚。當轉吹西北風，被困的污染物有機會傳到香港，往往令香港污染物的濃度上升。</li><li>在香港，空氣污染物水平在冬季亦會短暫上升，通常與增強的北或西北氣流有關。當較弱的東北風成為主導風向，加上較低溫度（即更穩定邊界層）和地表弱風，華南內陸的污染物會慢慢大量積聚。</li></ul><h1 id="wrf和cmaq-垂直層sigma座標設定">WRF和CMAQ 垂直層sigma座標設定</h1><ul><li><a href="https://aqmc.moenv.gov.tw/download/CMAQ/%E7%B6%B2%E6%A0%BC%E9%A1%9E%E5%85%AC%E5%91%8A%E6%A8%A1%E5%BC%8FCMAQ%E6%8A%80%E8%A1%93%E6%96%87%E4%BB%B6.pdf">網格類公告模式CMAQ 技術文件</a><ul><li>表1.3-3 WRF和CMAQ 垂直層sigma座標設定</li></ul></li></ul><table><thead><tr class="header"><th>LEVEL</th><th>SIGMA</th><th>氣壓(Pa)</th><th>Full LevelHeight (m)</th><th>Half LevelHeight (m)</th></tr></thead><tbody><tr class="odd"><td></td><td>1.000</td><td>100000</td><td>0</td><td></td></tr><tr class="even"><td>1</td><td>0.995</td><td>99550</td><td>38</td><td>19</td></tr><tr class="odd"><td>2</td><td>0.990</td><td>99100</td><td>76</td><td>57</td></tr><tr class="even"><td>3</td><td>0.980</td><td>98200</td><td>153</td><td>115</td></tr><tr class="odd"><td>4</td><td>0.960</td><td>96400</td><td>309</td><td>231</td></tr><tr class="even"><td>5</td><td>0.930</td><td>93700</td><td>548</td><td>429</td></tr><tr class="odd"><td>6</td><td>0.890</td><td>90100</td><td>878</td><td>713</td></tr><tr class="even"><td>7</td><td>0.850</td><td>86500</td><td>1221</td><td>1050</td></tr><tr class="odd"><td>8</td><td>0.800</td><td>82000</td><td>1671</td><td>1446</td></tr><tr class="even"><td>9</td><td>0.750</td><td>77500</td><td>2146</td><td>1909</td></tr><tr class="odd"><td>10</td><td>0.700</td><td>73000</td><td>2649</td><td>2398</td></tr><tr class="even"><td>11</td><td>0.650</td><td>68500</td><td>3185</td><td>2917</td></tr><tr class="odd"><td>12</td><td>0.600</td><td>64000</td><td>3757</td><td>3471</td></tr><tr class="even"><td>13</td><td>0.550</td><td>59500</td><td>4371</td><td>4064</td></tr><tr class="odd"><td>14</td><td>0.500</td><td>55000</td><td>5033</td><td>4702</td></tr><tr class="even"><td>15</td><td>0.450</td><td>50500</td><td>5751</td><td>5392</td></tr><tr class="odd"><td>16</td><td>0.400</td><td>46000</td><td>6537</td><td>6144</td></tr><tr class="even"><td>17</td><td>0.350</td><td>41500</td><td>7404</td><td>6971</td></tr><tr class="odd"><td>18</td><td>0.300</td><td>37000</td><td>8370</td><td>7887</td></tr><tr class="even"><td>19</td><td>0.250</td><td>32500</td><td>9462</td><td>8916</td></tr><tr class="odd"><td>20</td><td>0.200</td><td>28000</td><td>10716</td><td>10089</td></tr><tr class="even"><td>21</td><td>0.150</td><td>23500</td><td>12191</td><td>11454</td></tr><tr class="odd"><td>22</td><td>0.100</td><td>19000</td><td>13981</td><td>13086</td></tr><tr class="even"><td>23</td><td>0.050</td><td>14500</td><td>16256</td><td>15119</td></tr><tr class="odd"><td>24</td><td>0.000</td><td>10000</td><td>19384</td><td>17820</td></tr></tbody></table>]]></content>
     
     
     <categories>
@@ -55,11 +84,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -80,7 +109,7 @@
     <link href="/2025/02/26/MPAS-MPAS-Version-8/"/>
     <url>/2025/02/26/MPAS-MPAS-Version-8/</url>
     
-    <content type="html"><![CDATA[<h1 id="timeline">Timeline</h1><ul><li>MPAS-Atmosphere Version 8.2.2 | 20 September 2024</li><li>MPAS-Atmosphere Version 8.2.1 | 7 August 2024</li><li>MPAS-Atmosphere Version 8.2.0 | 27 June 2024</li><li>MPAS-Atmosphere Version 8.1.0 | 18 April 2024</li><li>MPAS-Atmosphere Version 8.0.2 | 26 March 2024</li><li>MPAS-Atmosphere Version 8.0.1 | 6 July 2023</li><li>MPAS-Atmosphere Version 8.0.0 | 16 June 2023</li></ul><h1 id="links">Links</h1><ol type="1"><li><a href="https://mpas-dev.github.io/">https://mpas-dev.github.io/</a></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases">/MPAS-Model/releases</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_5.3.pdf">MPAS-Atmosphere Users' Guide V5.3</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_6.3.pdf">MPAS-Atmosphere Users' Guide V6.3</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_7.0.pdf">MPAS-Atmosphere Users' Guide V7.0</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf">MPAS-Atmosphere Users' Guide V8.2.0</a></li><li><a href="https://www.mmm.ucar.edu/events/133129/agenda">Joint WRF/MPAS Users Workshop 2024</a></li></ol><h1 id="mpas-atmosphere-version-8.0.0">MPAS-Atmosphere Version 8.0.0</h1><ul><li>Changes to the initialization include:<ul><li><strong>Enable parallel remapping of static fields</strong> with arbitrary graph partition files; special CVT partition files are no longer required.<ul><li>Run init atmosphere model with <strong>only one MPI task</strong> specified to create static.nc</li><li>Note that it is critical for this step that the initialization core is <strong>run serially</strong>;</li></ul></li><li>Reset the default for the lower air-temperature extrapolation <strong>(config_extrap_airtemp) from 'linear' to 'lapse-rate' in the namelist</strong>. This applies to initialization and to lateral boundary condition generation for MPAS-A.</li><li>Set the condition for the lower extrapolation of the horizontal velocity such that it <strong>returns the lowest analysis level value</strong> instead of a linear extrapolation when the requested level is below the analysis level.</li><li>Create a new init case (13) for creating 3-d CAM-MPAS grids.</li></ul></li><li>Changes to the physics include:<ul><li>Update the <strong>Noah land surface scheme to the WRF 4.5</strong> release.</li><li>Update the <strong>MM5 surface layer scheme to the WRF 4.5</strong> release.</li><li>Implemented the <strong>CCPP-compliant version</strong> of:<ul><li>the revised MM5 surface layer scheme;</li><li>the parameterization of the gravity-wave drag over orography;</li><li>the YSU Planetary Boundary Layer scheme;</li><li>the scale-aware nTiedtke parameterization of convection; and</li><li>the WSM6 cloud microphysics parameterization.</li></ul></li><li>Correct the initialization of the <strong>maximum snow albedo over sea ice points (now set to 0.75</strong> instead of 0).</li><li>Fix the option that defines the surface albedo over sea ice points. The default option is now set to zero and the default value for <strong>the surface albedo over sea ice points is set to 0.65</strong>.</li><li>In the dynamics, rework the computation of the advective tendency of potential temperature needed as forcing in the <strong>nTiedtke</strong> and <strong>Grell-Freitas</strong> parameterizations of deep convection. The advective tendency of potential temperature is <strong>now computed the same way</strong> for the nTiedtke and Grell-Freitas convection schemes.</li></ul></li></ul><div class="note note-primary">            <p>IMPORTANT NOTE: The updated physics schemes require new look-up tables, in particular, for the Noah land-surface model. The <strong>checkout_data_files.sh</strong> script that is run at build time should correctly update these tables, but tables in other run directories will need to be manually updated.</p>          </div><ul><li>Include changes to the initialization and to MPAS-A such that this release can be <strong>directly used in CESM/CAM</strong>.</li></ul><h1 id="error">Error</h1><h2 id="array-global_list-above-upper-bound">array 'global_list' above upper bound</h2><ul><li>Only encounter after <code>MPASv8.2.0</code></li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">        <div class="fold-arrow">▶</div>log.init_atmosphere.0000.out      </div>      <div class="fold-collapse collapse" id="collapse-8f7bdefe">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs log">----------------------------------------------------------------------<br>Beginning MPAS-init_atmosphere Output Log File for task       0 of       6<br>    Opened at 2025/03/05 15:54:12<br>----------------------------------------------------------------------<br><br> <br> MPAS Init-Atmosphere Version 8.2.2<br> <br> <br> Output from &#x27;git describe --dirty&#x27;: unknown<br> <br> Compile-time options:<br>   Build target: gfortran<br>   OpenMP support: no<br>   OpenACC support: no<br>   Default real precision: single<br>   Compiler flags: debug<br>   I/O layer: PIO 2.x<br> <br> Run-time settings:<br>   MPI task count: 6<br> <br> Reading namelist from file namelist.init_atmosphere<br> *** Encountered an issue while attempting to read namelist record physics<br>     The following values will be used for variables in this record:<br> <br>         config_tsk_seaice_threshold = 100.000<br> <br> *** Encountered an issue while attempting to read namelist record io<br>     The following values will be used for variables in this record:<br> <br>         config_pio_num_iotasks = 0<br>         config_pio_stride = 1<br> <br> <br> ----- I/O task configuration: -----<br> <br>     I/O task count  = 6<br>     I/O task stride = 1<br> <br> Initializing MPAS_streamInfo from file streams.init_atmosphere<br> Reading streams configuration from file streams.init_atmosphere<br> Found mesh stream with filename template static.nc<br> Using io_type Parallel-NetCDF (CDF-5, large variable support) for mesh stream<br>  ** Attempting to bootstrap MPAS framework using stream: input<br> Bootstrapping framework with mesh fields from input file &#x27;static.nc&#x27;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">        <div class="fold-arrow">▶</div>log_error      </div>      <div class="fold-collapse collapse" id="collapse-dcdac752">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs log">MPASv8.1.0/8.2.0<br>free(): invalid next size (normal)<br><br>Running init_atmosphere in directory: <br>At line 183 of file mpas_block_decomp.F<br>Fortran runtime error: Index &#x27;30210&#x27; of dimension 1 of array &#x27;global_list&#x27; above upper bound of 30209<br><br>Running init_atmosphere<br>init_atmosphere_model: malloc.c:4106: _int_malloc: Assertion `(unsigned long) (size) &gt;= (unsigned long) (nb)&#x27; failed.<br><br>Running init_atmosphere<br>munmap_chunk(): invalid pointer<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><ul><li><a href="https://forum.mmm.ucar.edu/threads/errors-when-running-the-baroclinic-wave-case-for-mpas-a.17200/">errors when running the baroclinic wave case for MPAS-A</a><ul><li><code>At line 183 of file mpas_block_decomp.F: Fortran runtime error: Index '40962' of dimension 1 of array 'global_list' above upper bound of 40961</code></li><li>This is because with the clobber_mode = "'never_modify", the output file cannot be overwritten. Please delete the file 'x1.40962.init.nc' from your previous run and rerun your case.</li><li>I am not sure yet what caused this issue. Please rerun this case with the fix of the 1st issue and let me know if you still get the same error.</li><li>Your suggestion fixed the issue. I have also use the <strong>"overwrite" option</strong>, that works as well.</li></ul></li></ul><h2 id="nsoilcomps-in-static.nc"><code>nSoilComps</code> in static.nc</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs log">ERROR: At least one fields to be read from the &#x27;input&#x27; stream is dimensioned<br>ERROR: by &#x27;nSoilComps&#x27;, but the &#x27;nSoilComps&#x27; dimension is not defined<br>ERROR: in the file static.nc<br>CRITICAL ERROR: Please check the input file(s) to be read by the &#x27;input&#x27; input stream.<br></code></pre></td></tr></table></figure>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">        <div class="fold-arrow">▶</div>src/core_init_atmosphere/Registry.xml      </div>      <div class="fold-collapse collapse" id="collapse-9c51fa20">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs src/core_init_atmosphere/Registry.xml">description=&quot;The number of atmospheric levels, always one more than the number of layers&quot;/&gt;<br>&lt;dim name=&quot;nSoilComps&quot; definition=&quot;8&quot;<br>description=&quot;The number of soil textures as needed as input in the NOAH-MP land surface model&quot;/&gt;<br><br>&lt;!-- SOIL COMPOSITION fields needed for the NOAH-MP land surface scheme --&gt;<br>&lt;var name=&quot;soilcomp&quot; type=&quot;real&quot; dimensions=&quot;nSoilComps nCells&quot; units=&quot;percent&quot;<br>description=&quot;soil composition needed as input in the NOAH-MP land surface model&quot;/&gt;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">        <div class="fold-arrow">▶</div>src/core_atmosphere/physics/Registry_noahmp.xml      </div>      <div class="fold-collapse collapse" id="collapse-05eef982">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs src/core_atmosphere/physics/Registry_noahmp.xml">&lt;dim name=&quot;nSoilComps&quot; definition=&quot;8&quot;<br>description=&quot;The number of soil textures as needed as input in the NOAH-MP land surface model&quot;/&gt;<br><br>&lt;var name=&quot;soilcomp&quot; type=&quot;real&quot; dimensions=&quot;nSoilComps nCells&quot; units=&quot;unitless&quot;<br>description=&quot;soil composition needed as input in the NOAH-MP land surface model&quot;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/commit/d4a1c7f57288c6fff287a914fb98135aca391467">Commit d4a1c7f on May 31, 2024</a><ul><li><ul><li>In ./src/core_init_atmosphere, added the initialization of the static variables <strong>soilcomp, soilcl1, soilcl2, soilcl3, and soilcl4</strong> needed to run the Noah-MP land surface scheme.</li></ul></li></ul></li></ul><div class="note note-primary">            <p>The <strong>static.nc</strong> is different after <strong>Noah-MP</strong> is applied. (<strong>v8.2.2 ... v8.2.0</strong>). And, re-generate static.nc</p>          </div><h1 id="an-aerosol-climatology-file-qnwfa_qnifa_sigma_monthly.dat">An aerosol climatology file <code>QNWFA_QNIFA_SIGMA_MONTHLY.dat</code></h1><h2 id="mpas-version-8.2.0">MPAS Version 8.2.0</h2><ul><li>The <strong>aerosol-aware Thompson microphysics (as in WRF v4.1.4)</strong> is available by setting <code>config_microp_scheme = 'mp_thompson_aerosols'</code> in the <code>&amp;physics</code> namelist group.</li><li>An aerosol climatology file <strong>(QNWFA_QNIFA_SIGMA_MONTHLY.dat)</strong> is used when running the <code>init_atmosphere_model</code> program to produce initial and lateral boundary conditions for <code>nifa</code> and <code>nwfa</code>.</li><li>download: <a href="https://mpas-dev.github.io/" class="uri">https://mpas-dev.github.io/</a></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="timeline">Timeline</h1><ul><li>MPAS-Atmosphere Version 8.2.2 | 20 September 2024</li><li>MPAS-Atmosphere Version 8.2.1 | 7 August 2024</li><li>MPAS-Atmosphere Version 8.2.0 | 27 June 2024</li><li>MPAS-Atmosphere Version 8.1.0 | 18 April 2024</li><li>MPAS-Atmosphere Version 8.0.2 | 26 March 2024</li><li>MPAS-Atmosphere Version 8.0.1 | 6 July 2023</li><li>MPAS-Atmosphere Version 8.0.0 | 16 June 2023</li></ul><h1 id="links">Links</h1><ol type="1"><li><a href="https://mpas-dev.github.io/">https://mpas-dev.github.io/</a></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases">/MPAS-Model/releases</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_5.3.pdf">MPAS-Atmosphere Users' Guide V5.3</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_6.3.pdf">MPAS-Atmosphere Users' Guide V6.3</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_7.0.pdf">MPAS-Atmosphere Users' Guide V7.0</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf">MPAS-Atmosphere Users' Guide V8.2.0</a></li><li><a href="https://www.mmm.ucar.edu/events/133129/agenda">Joint WRF/MPAS Users Workshop 2024</a></li></ol><h1 id="mpas-atmosphere-version-8.0.0">MPAS-Atmosphere Version 8.0.0</h1><ul><li>Changes to the initialization include:<ul><li><strong>Enable parallel remapping of static fields</strong> with arbitrary graph partition files; special CVT partition files are no longer required.<ul><li>~Run init atmosphere model with <strong>only one MPI task</strong> specified to create static.nc~</li><li>~Note that it is critical for this step that the initialization core is <strong>run serially</strong>;~</li><li>Can parallel run !</li></ul></li><li>Reset the default for the lower air-temperature extrapolation <strong>(config_extrap_airtemp) from 'linear' to 'lapse-rate' in the namelist</strong>. This applies to initialization and to lateral boundary condition generation for MPAS-A.</li><li>Set the condition for the lower extrapolation of the horizontal velocity such that it <strong>returns the lowest analysis level value</strong> instead of a linear extrapolation when the requested level is below the analysis level.</li><li>Create a new init case (13) for creating 3-d CAM-MPAS grids.</li></ul></li><li>Changes to the physics include:<ul><li>Update the <strong>Noah land surface scheme to the WRF 4.5</strong> release.</li><li>Update the <strong>MM5 surface layer scheme to the WRF 4.5</strong> release.</li><li>Implemented the <strong>CCPP-compliant version</strong> of:<ul><li>the revised MM5 surface layer scheme;</li><li>the parameterization of the gravity-wave drag over orography;</li><li>the YSU Planetary Boundary Layer scheme;</li><li>the scale-aware nTiedtke parameterization of convection; and</li><li>the WSM6 cloud microphysics parameterization.</li></ul></li><li>Correct the initialization of the <strong>maximum snow albedo over sea ice points (now set to 0.75</strong> instead of 0).</li><li>Fix the option that defines the surface albedo over sea ice points. The default option is now set to zero and the default value for <strong>the surface albedo over sea ice points is set to 0.65</strong>.</li><li>In the dynamics, rework the computation of the advective tendency of potential temperature needed as forcing in the <strong>nTiedtke</strong> and <strong>Grell-Freitas</strong> parameterizations of deep convection. The advective tendency of potential temperature is <strong>now computed the same way</strong> for the nTiedtke and Grell-Freitas convection schemes.</li></ul></li></ul><div class="note note-primary">            <p>IMPORTANT NOTE: The updated physics schemes require new look-up tables, in particular, for the Noah land-surface model. The <strong>checkout_data_files.sh</strong> script that is run at build time should correctly update these tables, but tables in other run directories will need to be manually updated.</p>          </div><ul><li>Include changes to the initialization and to MPAS-A such that this release can be <strong>directly used in CESM/CAM</strong>.</li></ul><h1 id="enable-parallel-remapping-of-static-fields">Enable parallel remapping of static fields</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">##-- For spack init, (it takes longer startup time !!)</span><br>. /home/wpsze/spack/share/spack/setup-env.sh<br><span class="hljs-built_in">source</span> /home/wpsze/MPAS-A/intel/mpas_env_intel.sh<br><span class="hljs-comment">#ln -sf /home/wpsze/MPAS-A/intel/mpasv821/MPASv821/init_atmosphere_model</span><br><span class="hljs-built_in">ln</span> -sf /home/wpsze/MPAS-A/intel/mpasv822/MPASv822/init_atmosphere_model<br><br><span class="hljs-comment"># soft-link graph.info.part.3</span><br>mpirun -n 3 ./init_atmosphere_model<br></code></pre></td></tr></table></figure><p>and, add below in namelist.init_atmosphere</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs namelist.init_atmosphere">&amp;decomposition<br>   config_block_decomp_file_prefix = &#x27;graph.info.part.&#x27;<br>/<br></code></pre></td></tr></table></figure>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">        <div class="fold-arrow">▶</div>namelist.init_atmosphere      </div>      <div class="fold-collapse collapse" id="collapse-6ae3e036">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs namelist.init_atmosphere">&amp;nhyd_model<br>    config_init_case = 7<br>/<br>&amp;dimensions<br>    config_nvertlevels = 1<br>    config_nsoillevels = 1<br>    config_nfglevels = 1<br>    config_nfgsoillevels = 1<br>/<br>&amp;data_sources<br>    config_geog_data_path = &#x27;/home/wpsze/WRF/wrf_geog/WRF/WPS_GEOG/&#x27;<br>    config_landuse_data = &#x27;MODIFIED_IGBP_MODIS_NOAH&#x27;<br>    config_topo_data = &#x27;GMTED2010&#x27;<br>    config_vegfrac_data = &#x27;MODIS&#x27;<br>    config_albedo_data = &#x27;MODIS&#x27;<br>    config_maxsnowalbedo_data = &#x27;MODIS&#x27;<br>    config_supersample_factor = 3<br>    config_use_spechumd = false<br>/<br>&amp;preproc_stages<br>    config_static_interp = true<br>    config_native_gwd_static = true<br>    config_vertical_grid = false<br>    config_met_interp = false<br>    config_input_sst = false<br>    config_frac_seaice = false<br>/<br><br>&amp;decomposition<br>   config_block_decomp_file_prefix = &#x27;graph.info.part.&#x27;<br>/<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h1 id="error">Error</h1><h2 id="array-global_list-above-upper-bound">array 'global_list' above upper bound</h2><ul><li>Only encounter after <code>MPASv8.2.0</code></li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">        <div class="fold-arrow">▶</div>log.init_atmosphere.0000.out      </div>      <div class="fold-collapse collapse" id="collapse-9c51fa20">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs log">----------------------------------------------------------------------<br>Beginning MPAS-init_atmosphere Output Log File for task       0 of       6<br>    Opened at 2025/03/05 15:54:12<br>----------------------------------------------------------------------<br><br> <br> MPAS Init-Atmosphere Version 8.2.2<br> <br> <br> Output from &#x27;git describe --dirty&#x27;: unknown<br> <br> Compile-time options:<br>   Build target: gfortran<br>   OpenMP support: no<br>   OpenACC support: no<br>   Default real precision: single<br>   Compiler flags: debug<br>   I/O layer: PIO 2.x<br> <br> Run-time settings:<br>   MPI task count: 6<br> <br> Reading namelist from file namelist.init_atmosphere<br> *** Encountered an issue while attempting to read namelist record physics<br>     The following values will be used for variables in this record:<br> <br>         config_tsk_seaice_threshold = 100.000<br> <br> *** Encountered an issue while attempting to read namelist record io<br>     The following values will be used for variables in this record:<br> <br>         config_pio_num_iotasks = 0<br>         config_pio_stride = 1<br> <br> <br> ----- I/O task configuration: -----<br> <br>     I/O task count  = 6<br>     I/O task stride = 1<br> <br> Initializing MPAS_streamInfo from file streams.init_atmosphere<br> Reading streams configuration from file streams.init_atmosphere<br> Found mesh stream with filename template static.nc<br> Using io_type Parallel-NetCDF (CDF-5, large variable support) for mesh stream<br>  ** Attempting to bootstrap MPAS framework using stream: input<br> Bootstrapping framework with mesh fields from input file &#x27;static.nc&#x27;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">        <div class="fold-arrow">▶</div>log_error      </div>      <div class="fold-collapse collapse" id="collapse-05eef982">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs log">MPASv8.1.0/8.2.0<br>free(): invalid next size (normal)<br><br>Running init_atmosphere in directory: <br>At line 183 of file mpas_block_decomp.F<br>Fortran runtime error: Index &#x27;30210&#x27; of dimension 1 of array &#x27;global_list&#x27; above upper bound of 30209<br><br>Running init_atmosphere<br>init_atmosphere_model: malloc.c:4106: _int_malloc: Assertion `(unsigned long) (size) &gt;= (unsigned long) (nb)&#x27; failed.<br><br>Running init_atmosphere<br>munmap_chunk(): invalid pointer<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><ul><li><a href="https://forum.mmm.ucar.edu/threads/errors-when-running-the-baroclinic-wave-case-for-mpas-a.17200/">errors when running the baroclinic wave case for MPAS-A</a><ul><li><code>At line 183 of file mpas_block_decomp.F: Fortran runtime error: Index '40962' of dimension 1 of array 'global_list' above upper bound of 40961</code></li><li>This is because with the clobber_mode = "'never_modify", the output file cannot be overwritten. Please delete the file 'x1.40962.init.nc' from your previous run and rerun your case.</li><li>I am not sure yet what caused this issue. Please rerun this case with the fix of the 1st issue and let me know if you still get the same error.</li><li>Your suggestion fixed the issue. I have also use the <strong>"overwrite" option</strong>, that works as well.</li></ul></li></ul><h2 id="nsoilcomps-in-static.nc"><code>nSoilComps</code> in static.nc</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs log">ERROR: At least one fields to be read from the &#x27;input&#x27; stream is dimensioned<br>ERROR: by &#x27;nSoilComps&#x27;, but the &#x27;nSoilComps&#x27; dimension is not defined<br>ERROR: in the file static.nc<br>CRITICAL ERROR: Please check the input file(s) to be read by the &#x27;input&#x27; input stream.<br></code></pre></td></tr></table></figure>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">        <div class="fold-arrow">▶</div>src/core_init_atmosphere/Registry.xml      </div>      <div class="fold-collapse collapse" id="collapse-738764b7">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs src/core_init_atmosphere/Registry.xml">description=&quot;The number of atmospheric levels, always one more than the number of layers&quot;/&gt;<br>&lt;dim name=&quot;nSoilComps&quot; definition=&quot;8&quot;<br>description=&quot;The number of soil textures as needed as input in the NOAH-MP land surface model&quot;/&gt;<br><br>&lt;!-- SOIL COMPOSITION fields needed for the NOAH-MP land surface scheme --&gt;<br>&lt;var name=&quot;soilcomp&quot; type=&quot;real&quot; dimensions=&quot;nSoilComps nCells&quot; units=&quot;percent&quot;<br>description=&quot;soil composition needed as input in the NOAH-MP land surface model&quot;/&gt;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dfb167e8" role="button" aria-expanded="false" aria-controls="collapse-dfb167e8">        <div class="fold-arrow">▶</div>src/core_atmosphere/physics/Registry_noahmp.xml      </div>      <div class="fold-collapse collapse" id="collapse-dfb167e8">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs src/core_atmosphere/physics/Registry_noahmp.xml">&lt;dim name=&quot;nSoilComps&quot; definition=&quot;8&quot;<br>description=&quot;The number of soil textures as needed as input in the NOAH-MP land surface model&quot;/&gt;<br><br>&lt;var name=&quot;soilcomp&quot; type=&quot;real&quot; dimensions=&quot;nSoilComps nCells&quot; units=&quot;unitless&quot;<br>description=&quot;soil composition needed as input in the NOAH-MP land surface model&quot;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/commit/d4a1c7f57288c6fff287a914fb98135aca391467">Commit d4a1c7f on May 31, 2024</a><ul><li><ul><li>In ./src/core_init_atmosphere, added the initialization of the static variables <strong>soilcomp, soilcl1, soilcl2, soilcl3, and soilcl4</strong> needed to run the Noah-MP land surface scheme.</li></ul></li></ul></li></ul><div class="note note-primary">            <p>The <strong>static.nc</strong> is different after <strong>Noah-MP</strong> is applied. (<strong>v8.2.2 ... v8.2.0</strong>). And, re-generate static.nc</p>          </div><h2 id="solution">Solution</h2><ul><li><strong>Fail</strong> if using <code>gfortran</code> (v9.3.0) complier.</li><li><strong>Sucessfull</strong> if using <code>intel-mpi</code> complier.</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">        <div class="fold-arrow">▶</div>gfortran: log      </div>      <div class="fold-collapse collapse" id="collapse-5d5d193e">        <div class="fold-content">          <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-comment">----------------------------------------------------------------------</span><br>Beginning MPAS-init_atmosphere Output Log File <span class="hljs-keyword">for</span> task       <span class="hljs-number">0</span> <span class="hljs-keyword">of</span>       <span class="hljs-number">6</span><br>    Opened <span class="hljs-keyword">at</span> <span class="hljs-number">2025</span>/<span class="hljs-number">03</span>/<span class="hljs-number">06</span> <span class="hljs-number">15</span>:<span class="hljs-number">23</span>:<span class="hljs-number">51</span><br><span class="hljs-comment">----------------------------------------------------------------------</span><br><br> <br> MPAS Init-Atmosphere Version <span class="hljs-number">8.2</span><span class="hljs-number">.2</span><br> <br> <br> Output <span class="hljs-keyword">from</span> &#x27;git describe <span class="hljs-comment">--dirty&#x27;: unknown</span><br> <br> Compile-<span class="hljs-built_in">time</span> options:<br>   Build target: gfortran<br>   OpenMP support: no<br>   OpenACC support: no<br>   Default <span class="hljs-built_in">real</span> precision: single<br>   Compiler flags: debug<br>   I/O layer: PIO <span class="hljs-number">2.</span>x<br> <br> Run-<span class="hljs-built_in">time</span> settings:<br>   MPI task <span class="hljs-built_in">count</span>: <span class="hljs-number">6</span><br> <br> Reading namelist <span class="hljs-keyword">from</span> <span class="hljs-built_in">file</span> namelist.init_atmosphere<br> *** Encountered an issue <span class="hljs-keyword">while</span> attempting <span class="hljs-keyword">to</span> <span class="hljs-built_in">read</span> namelist <span class="hljs-built_in">record</span> physics<br>     The following values will be used <span class="hljs-keyword">for</span> variables <span class="hljs-keyword">in</span> this <span class="hljs-built_in">record</span>:<br> <br>         config_tsk_seaice_threshold = <span class="hljs-number">100.000</span><br> <br> *** Encountered an issue <span class="hljs-keyword">while</span> attempting <span class="hljs-keyword">to</span> <span class="hljs-built_in">read</span> namelist <span class="hljs-built_in">record</span> io<br>     The following values will be used <span class="hljs-keyword">for</span> variables <span class="hljs-keyword">in</span> this <span class="hljs-built_in">record</span>:<br> <br>         config_pio_num_iotasks = <span class="hljs-number">0</span><br>         config_pio_stride = <span class="hljs-number">1</span><br> <br> <br> <span class="hljs-comment">----- I/O task configuration: -----</span><br> <br>     I/O task <span class="hljs-built_in">count</span>  = <span class="hljs-number">6</span><br>     I/O task stride = <span class="hljs-number">1</span><br> <br> Initializing MPAS_streamInfo <span class="hljs-keyword">from</span> <span class="hljs-built_in">file</span> streams.init_atmosphere<br> Reading streams configuration <span class="hljs-keyword">from</span> <span class="hljs-built_in">file</span> streams.init_atmosphere<br> Found mesh stream <span class="hljs-keyword">with</span> filename template static.nc<br> Using io_type Parallel-NetCDF (CDF<span class="hljs-number">-5</span>, large variable support) <span class="hljs-keyword">for</span> mesh stream<br>  ** Attempting <span class="hljs-keyword">to</span> bootstrap MPAS framework using stream: input<br> Bootstrapping framework <span class="hljs-keyword">with</span> mesh fields <span class="hljs-keyword">from</span> input <span class="hljs-built_in">file</span> &#x27;static.nc&#x27;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bbf6858" role="button" aria-expanded="false" aria-controls="collapse-8bbf6858">        <div class="fold-arrow">▶</div>intel-mpi: log      </div>      <div class="fold-collapse collapse" id="collapse-8bbf6858">        <div class="fold-content">          <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-comment">----------------------------------------------------------------------</span><br>Beginning MPAS-init_atmosphere Output Log File <span class="hljs-keyword">for</span> task       <span class="hljs-number">0</span> <span class="hljs-keyword">of</span>       <span class="hljs-number">6</span><br>    Opened <span class="hljs-keyword">at</span> <span class="hljs-number">2025</span>/<span class="hljs-number">03</span>/<span class="hljs-number">06</span> <span class="hljs-number">17</span>:<span class="hljs-number">08</span>:<span class="hljs-number">04</span><br><span class="hljs-comment">----------------------------------------------------------------------</span><br><br> <br> MPAS Init-Atmosphere Version <span class="hljs-number">8.2</span><span class="hljs-number">.2</span><br> <br> <br> Output <span class="hljs-built_in">from</span> <span class="hljs-string">&#x27;git describe --dirty&#x27;</span>: unknown<br> <br> Compile-<span class="hljs-built_in">time</span> options:<br>   Build target: intel-mpi<br>   OpenMP support: no<br>   OpenACC support: no<br>   Default real precision: single<br>   Compiler flags: optimize<br>   I/O layer: PIO <span class="hljs-number">2.</span>x<br> <br> Run-<span class="hljs-built_in">time</span> settings:<br>   MPI task count: <span class="hljs-number">6</span><br> <br> Reading namelist <span class="hljs-built_in">from</span> <span class="hljs-built_in">file</span> namelist.init_atmosphere<br> *** Encountered <span class="hljs-keyword">an</span> issue <span class="hljs-keyword">while</span> attempting <span class="hljs-built_in">to</span> <span class="hljs-built_in">read</span> namelist record physics<br>     The following values will be used <span class="hljs-keyword">for</span> variables <span class="hljs-keyword">in</span> this record:<br> <br>         config_tsk_seaice_threshold = <span class="hljs-number">100.000</span><br> <br> *** Encountered <span class="hljs-keyword">an</span> issue <span class="hljs-keyword">while</span> attempting <span class="hljs-built_in">to</span> <span class="hljs-built_in">read</span> namelist record io<br>     The following values will be used <span class="hljs-keyword">for</span> variables <span class="hljs-keyword">in</span> this record:<br> <br>         config_pio_num_iotasks = <span class="hljs-number">0</span><br>         config_pio_stride = <span class="hljs-number">1</span><br> <br> <br> <span class="hljs-comment">----- I/O task configuration: -----</span><br> <br>     I/O task count  = <span class="hljs-number">6</span><br>     I/O task stride = <span class="hljs-number">1</span><br><br>......<br><br> <span class="hljs-comment">--- isice_lu   = 15</span><br> <span class="hljs-comment">--- config_frac_seaice      : F</span><br> <span class="hljs-comment">--- xice_threshold          : 0.500000</span><br> <span class="hljs-comment">--- tsk_seaice_threshold    : 100.000</span><br> <br> <span class="hljs-built_in">number</span> <span class="hljs-keyword">of</span> seaice cells converted <span class="hljs-built_in">to</span> land cells <span class="hljs-number">2</span> =         <span class="hljs-number">210</span><br> <br> ********************************************************<br>    Finished running <span class="hljs-keyword">the</span> init_atmosphere core<br> ********************************************************<br> <br> <br>  Timer information:<br>     Globals are computed across all threads <span class="hljs-keyword">and</span> processors<br> <br>  Columns:<br>     total <span class="hljs-built_in">time</span>: Global <span class="hljs-built_in">max</span> <span class="hljs-keyword">of</span> accumulated <span class="hljs-built_in">time</span> spent <span class="hljs-keyword">in</span> timer<br>     calls: Total <span class="hljs-built_in">number</span> <span class="hljs-keyword">of</span> times this timer was started / stopped.<br>     <span class="hljs-built_in">min</span>: Global <span class="hljs-built_in">min</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> spent <span class="hljs-keyword">in</span> <span class="hljs-keyword">a</span> single <span class="hljs-built_in">start</span> / <span class="hljs-built_in">stop</span><br>     <span class="hljs-built_in">max</span>: Global <span class="hljs-built_in">max</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">time</span> spent <span class="hljs-keyword">in</span> <span class="hljs-keyword">a</span> single <span class="hljs-built_in">start</span> / <span class="hljs-built_in">stop</span><br>     <span class="hljs-built_in">avg</span>: Global <span class="hljs-built_in">max</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">average</span> <span class="hljs-built_in">time</span> spent <span class="hljs-keyword">in</span> <span class="hljs-keyword">a</span> single <span class="hljs-built_in">start</span> / <span class="hljs-built_in">stop</span><br>     pct_tot: Percent <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> timer <span class="hljs-keyword">at</span> level <span class="hljs-number">1</span><br>     pct_par: Percent <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> parent timer (<span class="hljs-literal">one</span> level up)<br>     par_eff: Parallel efficiency, <span class="hljs-built_in">global</span> <span class="hljs-built_in">average</span> total <span class="hljs-built_in">time</span> / <span class="hljs-built_in">global</span> <span class="hljs-built_in">max</span> total <span class="hljs-built_in">time</span><br> <br> <br>    timer_name                                            total       calls        <span class="hljs-built_in">min</span>            <span class="hljs-built_in">max</span>            <span class="hljs-built_in">avg</span>      pct_tot   pct_par     par_eff<br>  <span class="hljs-number">1</span> total <span class="hljs-built_in">time</span>                                           <span class="hljs-number">9.53601</span>         <span class="hljs-number">1</span>        <span class="hljs-number">9.53588</span>        <span class="hljs-number">9.53601</span>        <span class="hljs-number">9.53594</span>   <span class="hljs-number">100.00</span>       <span class="hljs-number">0.00</span>       <span class="hljs-number">1.00</span><br>  <span class="hljs-number">2</span>  initialize                                          <span class="hljs-number">0.85724</span>         <span class="hljs-number">1</span>        <span class="hljs-number">0.85061</span>        <span class="hljs-number">0.85724</span>        <span class="hljs-number">0.85206</span>     <span class="hljs-number">8.99</span>       <span class="hljs-number">8.99</span>       <span class="hljs-number">0.99</span><br> <br> <span class="hljs-comment">-----------------------------------------</span><br> Total <span class="hljs-built_in">log</span> messages printed:<br>    Output messages =                  <span class="hljs-number">522</span><br>    Warning messages =                   <span class="hljs-number">1</span><br>    Error messages =                     <span class="hljs-number">0</span><br>    Critical error messages =            <span class="hljs-number">0</span><br> <span class="hljs-comment">-----------------------------------------</span><br> Logging complete.  Closing <span class="hljs-built_in">file</span> <span class="hljs-keyword">at</span> <span class="hljs-number">2025</span>/<span class="hljs-number">03</span>/<span class="hljs-number">06</span> <span class="hljs-number">17</span>:<span class="hljs-number">08</span>:<span class="hljs-number">14</span><br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h1 id="an-aerosol-climatology-file-qnwfa_qnifa_sigma_monthly.dat">An aerosol climatology file <code>QNWFA_QNIFA_SIGMA_MONTHLY.dat</code></h1><h2 id="mpas-version-8.2.0">MPAS Version 8.2.0</h2><ul><li>The <strong>aerosol-aware Thompson microphysics (as in WRF v4.1.4)</strong> is available by setting <code>config_microp_scheme = 'mp_thompson_aerosols'</code> in the <code>&amp;physics</code> namelist group.</li><li>An aerosol climatology file <strong>(QNWFA_QNIFA_SIGMA_MONTHLY.dat)</strong> is used when running the <code>init_atmosphere_model</code> program to produce initial and lateral boundary conditions for <code>nifa</code> and <code>nwfa</code>.</li><li>download: <a href="https://mpas-dev.github.io/" class="uri">https://mpas-dev.github.io/</a></li></ul><h1 id="mpi_f08"><code>mpi_f08</code></h1><p><code>mpi_f08</code> 是一種用於 Fortran 2008 的 MPI（Message Passing Interface）模組介面。 MPI 是一種用於平行運算的標準化訊息傳遞庫，廣泛用於高效能運算環境中。 <code>mpi_f08</code> 模組提供了一個現代化的接口，允許 Fortran 2008 程式使用 MPI 進行平行計算。</p><p>在 Fortran 2008 中，<code>mpi_f08</code> 模組支援新的 Fortran 語言特性，並提供了更好的與現代 Fortran 編譯器的兼容性。相較之下，傳統的 <code>mpi</code> 模組可能不支援所有 Fortran 2008 的特性，因此在支援 <code>mpi_f08</code> 的環境中，優先使用 <code>mpi_f08</code> 可以提高程式碼的可移植性和相容性。</p><p>例如，在 MPAS 模型中，如果偵測到 <code>mpi_f08</code> 模組，則會優先使用它來呼叫 Fortran MPI例程，而不是使用舊的 <code>mpi</code> 模組介面。</p><p><code>mpi_f08</code> 和 <code>mpif90</code> 是兩個不同的概念，分別與 MPI（Message Passing Interface）和 Fortran 編譯器相關。</p><h2 id="mpi_f08-1"><code>mpi_f08</code></h2><ul><li><strong>定義</strong>：<code>mpi_f08</code> 是一種用於 Fortran 2008 的 MPI 模組介面。它提供了一個現代化的接口，支援 Fortran 2008 的新特性，如非同步操作和假設類型參數。</li><li><strong>優點</strong>：<code>mpi_f08</code> 提供了更好的類型檢查和非阻塞調用支持，且與 Fortran 2008 標準完全兼容。</li><li><strong>應用</strong>：推薦用於所有新的 MPI Fortran 應用程序，因為它提供了更強的類型安全性和更好的性能優化。</li></ul><h2 id="mpif90"><code>mpif90</code></h2><ul><li><strong>定義</strong>：<code>mpif90</code> 是一種用於編譯 Fortran 90 MPI 程式的編譯器包裝器。它通常與 OpenMPI 等 MPI 實作一起使用。</li><li><strong>狀態</strong>：在 OpenMPI v1.7 中，<code>mpif90</code> 已被標記為過時，建議使用 <code>mpifort</code> 取代。</li><li><strong>應用</strong>：雖然仍然支援 <code>mpif90</code>，但建議使用 <code>mpifort</code> 來編譯所有版本的 Fortran MPI 應用程序，因為 <code>mpifort</code> 更加通用和現代化。</li></ul><p>總之，<code>mpi_f08</code> 是一個現代化的 MPI Fortran 接口，而 <code>mpif90</code> 是一個較老的編譯器包裝器，已經被 <code>mpifort</code> 所取代。</p><h1 id="referecnes">Referecnes</h1><ol type="1"><li><a href="https://forum.mmm.ucar.edu/threads/mpas-v8-2-fails-to-compile-gnu-13-2-linux64.17999/">MPAS v8.2 fails to compile GNU 13.2 Linux64 | Jul 2, 2024</a></li></ol>]]></content>
     
     
     <categories>
@@ -92,11 +121,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -125,11 +154,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>PINN</tag>
       
@@ -162,11 +191,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -197,11 +226,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -230,13 +259,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -267,11 +296,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>mesh generation</tag>
       
@@ -300,17 +329,17 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>ERA5</tag>
       
-      <tag>GFS</tag>
-      
       <tag>PGW</tag>
+      
+      <tag>GFS</tag>
       
       <tag>GRIB</tag>
       
@@ -341,11 +370,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -374,11 +403,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -407,17 +436,17 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>ERA5</tag>
       
-      <tag>GFS</tag>
-      
       <tag>PGW</tag>
+      
+      <tag>GFS</tag>
       
       <tag>GRIB</tag>
       
@@ -444,17 +473,17 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>ERA5</tag>
       
-      <tag>GFS</tag>
-      
       <tag>PGW</tag>
+      
+      <tag>GFS</tag>
       
       <tag>GRIB</tag>
       
@@ -485,17 +514,17 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>ERA5</tag>
       
-      <tag>GFS</tag>
-      
       <tag>PGW</tag>
+      
+      <tag>GFS</tag>
       
       <tag>NetCDF</tag>
       
@@ -528,17 +557,17 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>ERA5</tag>
       
-      <tag>GFS</tag>
-      
       <tag>PGW</tag>
+      
+      <tag>GFS</tag>
       
       <tag>GRIB</tag>
       
@@ -600,17 +629,17 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>ERA5</tag>
       
-      <tag>GFS</tag>
-      
       <tag>PGW</tag>
+      
+      <tag>GFS</tag>
       
       <tag>GRIB</tag>
       
@@ -829,13 +858,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -862,13 +891,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -996,13 +1025,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>MPI</tag>
       
@@ -1062,11 +1091,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -1120,9 +1149,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
       <tag>fluent</tag>
       
@@ -1374,9 +1403,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -1498,9 +1527,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -1554,9 +1583,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -1581,9 +1610,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -1769,13 +1798,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -1800,13 +1829,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>MPI</tag>
       
@@ -1837,13 +1866,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -1868,9 +1897,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -1924,9 +1953,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -1951,9 +1980,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -2024,9 +2053,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -2076,9 +2105,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -2103,11 +2132,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -2134,9 +2163,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>OpenFOAM</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -2161,9 +2190,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ECMWF</tag>
       
@@ -2192,11 +2221,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -2316,11 +2345,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -2347,11 +2376,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -2382,11 +2411,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -2411,11 +2440,11 @@
     
     <tags>
       
+      <tag>HPC</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>HPC</tag>
       
       <tag>WPS</tag>
       
@@ -2442,13 +2471,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -2473,11 +2502,11 @@
     
     <tags>
       
+      <tag>HPC</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>HPC</tag>
       
     </tags>
     
@@ -2741,11 +2770,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ECMWF</tag>
       
@@ -2814,11 +2843,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -2876,11 +2905,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -2959,9 +2988,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Urban</tag>
       
@@ -3049,11 +3078,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Google</tag>
       
@@ -3080,11 +3109,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -3109,11 +3138,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -3140,11 +3169,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -3171,11 +3200,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -3202,11 +3231,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -3246,7 +3275,7 @@
     <link href="/2024/09/21/HPC/"/>
     <url>/2024/09/21/HPC/</url>
     
-    <content type="html"><![CDATA[<h1 id="為什麼-hpc-如此重要">為什麼 HPC 如此重要？</h1><p>高效能運算 (HPC) 已不是新鮮事。數十年來，HPC 工作站和超級電腦在學術研究中扮演著不可或缺的角色，解決了複雜的問題並激發了發現和創新。近年來，數據量迅速激增，許多新的應用程式受益於 HPC 的強大功能，即跨共享資源執行運算密集型操作的能力，相較於傳統運算以更少的時間和更低的成本獲得結果。與此同時，HPC 硬體和軟體變得更容易獲得並且廣泛分佈。科學家、工程師和研究人員在一系列使用案例中仰賴著 HPC，包括天氣預報、石油和天然氣勘探、物理學、量子力學以及學術研究和商業應用的其他領域。</p><p>對於每一個涉及計算的課題組來說，購買超算機時還是建立自己的伺服器集群，成為了每個課題組的考量。筆者建議課題組針對專案需求，兩者靈活配置，不存在東風壓倒西風的說法；對於超算資源來說，短時間以較小的經費就可以撬動極大的計算資源，對於專案驗證或緊急的專案需求都是非常好的補充，對於許多大型專案的進展，沒有超算談何開展。當然回歸到課題組的實際需求，自建伺服器集群才是每個課題組最划算的算力投資。</p><h2 id="flops">FLOPS</h2><p>超級電腦速度以每秒浮點運算次數 <strong>"FLOPS" (floating-point operations per second, flops)</strong>來作量度單位，常見的表示電腦中的峰值或速度用的單位英漢對照如下：</p><ul><li>一個MFLOPS（megaFLOPS）等於每秒100萬（=<span class="math inline">\(10^6\)</span>）次的浮點運算</li><li>一個GFLOPS（gigaFLOPS）等於每秒10億（=<span class="math inline">\(10^9\)</span>）次的浮點運算</li><li>一個TFLOPS（teraFLOPS）等於每秒1兆（=<span class="math inline">\(10^{12}\)</span>）次的浮點運算</li><li>一個PFLOPS（petaFLOPS）等於每秒1千兆（=<span class="math inline">\(10^{15}\)</span>）次的浮點運算</li><li>一個EFLOPS（exaFLOPS）等於每秒100京（=<span class="math inline">\(10^{18}\)</span>）次的浮點運算</li></ul><p>此外，由於浮點積和熔加運算或乘積累加是兩次的浮點運算（每條FMA指令包括加/減及乘），因此當處理器支援FMA指令時，峰值是兩倍每秒所能執行FMA指令的數目。</p><h3 id="cpu-flops">CPU flops</h3><ul><li>计算节点 1, 每个节点配置2颗intel Xeon Gold 6248 CPU, 双精度浮点计算性能 3.20 Tflops</li><li>计算节点 1, 每个节点配置2颗intel Xeon Platinum 8358 CPU, 双精度浮点计算性能 5.32 Tflops</li><li>計算節點：2顆 Intel® Xeon® Platinum 8280 2.4GHz CPU (28 Cores/CPU) 與 192GB 主記憶體, 3 Tflops</li><li>計算節點：2顆 Intel® Xeon® Platinum 8480+ 2.0GHz CPU (56 Cores/CPU) 與 512GB 主記憶體, 6.27 Tflops</li></ul><h3 id="gpu-flops">GPU flops</h3><ul><li>NVIDIA Tesla V100，双精度浮点计算能力 924 Tflops</li></ul><h2 id="top500">TOP500</h2><ul><li><a href="https://top500.org/" class="uri">https://top500.org/</a></li></ul><h1 id="文章">文章</h1><h2 id="超級電腦爭霸戰的新一頁開始了exascale10-的-18-次方之戰-20220910"><a href="https://pansci.asia/archives/352429">超級電腦爭霸戰的新一頁開始了：Exascale（10 的 18 次方）之戰 | 2022/09/10</a></h2><ul><li>超級電腦的架構，可以說是非常的簡單：用網路線連結各台主機，讓主機間互相溝通，才能夠進行平行運算。</li><li><strong>考驗硬體的處理能力、主機間節點的連線架構、資料讀寫能力，更甚者，則是軟體是否具有 Exascale 的使用能力，也就是硬體與軟體都必須要能夠良好的契合才行。</strong></li><li>地球系統模擬中，其中一個挑戰便是進行模擬時程：挑戰一日（24 小時）的超級電腦計算可以得到多少年的模擬結果（<strong>simulated years per wall-clock day, SYPD</strong>），而此地球系統的精度為水平方向僅一公里的超高解析度，用來進行最終極的地球系統模擬：<strong>數位攣生（Digital Twins</strong>）。</li><li>Neumann 等人也預計在 2030 年代後，進行 1 公里等級的超高精度計算也將不是夢想，而在 Exascale 主機降臨前的這個年代，有些超級計算中心已經以節點（Node）做為計算資源耗費的單位（<strong>Node per hour</strong>），而非 CPU per hour，顯示出大型主機對計算資源消耗的想法以從 CPU 規模上升到了 Node 規模。</li></ul><div class="note note-danger">            <p>目前已經有部份超級電腦都在進行 SYPD 的挑戰，如中國的神威太湖之光，其已完成了每日 3.4 年的地球系統模擬，只不過其地面僅有 25 公里的水平精度，海面僅 10 公里的水平精度，還有非常多的進步空間。只可惜，這個實驗並沒有進行進行資料輸出，無法得到正確的效能結果（資料的寫入與輸出也是非常費時的），以及真正的運算結果：因為沒有資料，就沒有辦法分析。</p>          </div><h1 id="超算-價格">超算: 價格</h1><p>超算中心產品的特點：完備的軟體運行環境及豐富的軟體選擇，穩定的技術支持，按需使用，靈活充值；缺點：昂貴且不易於管理，容易不知不覺就消耗了寶貴的科研經費（筆者接觸過課題組購置數萬機時，沒有有效管理，學生學習與試誤的過程中，就消耗殆盡；）</p><ul><li>1毛 = 1/10元 (人民幣)</li><li>超算中心價格基本上在0.1-0.3元一個核時(人民幣)，單價看起來還是不貴。</li><li>通常超算中心中主流的64核心節點，一般單價在0.1元每核心時，基於此計算一台64核心的伺服器長期租用，他的成本將會是：</li><li>每天的費用：64x0.1x24=153.6元；每年的費用可能高達56064元；目前一台超算中心的64核心節點，基本市場價格也就在5萬左右；我們也核算過各類伺服器配置，基本上超算同類的運算伺服器，租賃1年的費用，就等於您訂購這台伺服器費用了。</li><li>顯然從長期使用運算資源的角度來說，顯然自建自己的伺服器叢集是課題組更划算的選擇。</li><li>其次：自有的伺服器資源，可以做到更靈活的使用，軟體安裝也非常自由；文件資料本地存儲，使用快捷簡易等優點。</li></ul><p>首先说现在的超算价格：<a href="https://www.zhihu.com/question/523757254/answer/2530239695?utm_psn=1821112184379412482">link</a></p><ul><li>以北京超级云计算中心为代表的，主流超算中心，价格通常不超过0.1元每核时（搞活动的时候0.08元左右），按照题主描述，10万核时约需要8000~1万元。论性价比的话，</li><li>我更推荐一些不太知名的，价格从0.05到0.08元每核时不等。</li><li>其次，题主描述的10万核时应该是按照自己的18核至强计算出来的。不同CPU的性能差距很大，举个例子，<strong>AMD 7601计算1小时的，AMD 7452可能40分钟甚至半小时就算完了</strong>。最后，讨论下自己搭机器与租超算的优缺点。自己搭建机器，肯定无法兼顾性能与价格，例如预算6000以内的话，估计只能买1台双路AMD 7601，可能无法满足短时间内算完全部算例的需求。好处就是机器实打实的是自己的，这10万核时的任务算完了以后，机器还可以干别的用途，甚至卖了回血也可以。而超算与之相反，可以提供最高的算力，满足短期内大量的计算需求。缺点就是算完以后自己啥都留不下。</li></ul><p>实际上并行科技早就已经将超算商业化了，对于普通人也非常友好。我有个同学，自己有计算需求，但是课题组其他人没兴趣，她就自费只充了100块钱就够用了。就像充话费一样简单，使用也非常方便，超算就是一台远程linux电脑，远没有多数人想象的多么高冷神秘。<a href="https://www.zhihu.com/question/280917515/answer/1487285453">Link</a></p><p>例子:</p><ul><li>10万核时，0.1元每核时，需要1万人民币。</li></ul><h2 id="集群">集群</h2><ul><li><a href="http://www.chinahpc.com/">北京东方超算科技有限公司, ChinaHPC</a><ul><li>成立于2013年，创始团队来自于北京市计算中心和中国科学院超级计算中心，注册资金1000万元，坐落在北京市海淀区上地信息产业基地。</li><li><a href="http://www.chinahpc.cn/">东方超算云</a><ul><li>东方超算云的大规模算力集群位于全国一体化算力网络国家枢纽节点<strong>内蒙古自治区</strong></li><li>一期建设360个18KW高密度机柜，计算节点2000台，56000CPU核心，20PB分布式并行存储容量</li><li><a href="https://cloud.chinahpc.cn/#/login">Login website</a></li><li>公共计算平台服务资源<ul><li><strong>A区资源（0.1元核心小时）</strong>; 面向HPC、AI客户; 160节点; 处理器:2*Intel® Xeon® Platinum 9242 Processor（48核心、96线程、基础主频2.3GHz）; 内存：24x16GB 2933MHz，共384GB</li><li><strong>B区资源（0.08元核心小时）</strong>：面向大规模分布式并行，追求性价比用户; 1000节点; 处理器： Intel® Xeon® Processor E5-2680 v4 （28核心，基础主频2.4GHz，最大睿频3.3GHz); 内存：8*16GB ,共128GB 内存; 网络：Mellanox FDR 56Gb Infiniband</li></ul></li></ul></li></ul></li><li><a href="https://www.nscc-tj.cn/">国家超级计算天津中心, 天河一号</a><ul><li>中國人民解放軍國防科學技術大學和天津濱海新區提供的異構超級電腦</li><li>啟用時間: 天河-1：2009年10月29日，天河-1A：2010年10月28日</li><li>天河-1A使用的開源軟體包括：Linux作業系統，SLURM作業調度系統，Lustre叢集檔案系統</li><li>0.07元/核时，配置：单节点12核 , Intel Hexa Core Xeon X5670 ；主频 2.93GHz, 内存48G，私有高速网络，免费存储1TB</li></ul></li><li><a href="http://nscc-gz.cn/Product/HighPerformanceComputingService/ServiceCharacteristics.html">国家超级计算广州中心, 天河二号</a><ul><li>中山大學廣州校區東校園</li><li>啟用時間: 2013年</li><li><code>天河二号</code>拥有约<strong>17920个计算节点</strong>，每节点配备两颗Xeon E5系列12核心的中央处理器、三个Xeon Phi 57核心的协处理器（运算加速卡），总内存容量约1.4PB，全局存储总容量约12.4PB。</li><li>0.1元/核时，配置：单节点24核 , Intel Xeon E5-2692 v2 ；主频 2.2GHz, 内存64G，内存频率：DDR3 1333MHz，免费存储500GB</li><li><a href="https://www.gov.cn/xinwen/2015-11/18/content_2967705.htm">54.9PFLOPS（理論峰值）, 实际运算速度33.86PFlops</a></li><li><a href="https://itlanyan.com/tianhe-ii-guide/">天河二号使用教程</a></li></ul></li><li><a href="https://www.nscc-tj.cn/cjjs_zy_th3">国家超级计算天津中心同国防科技大学联合研制, 天河三号, （E级）超级计算机</a><ul><li>https://baike.baidu.com/item/%E5%A4%A9%E6%B2%B3%E4%B8%89%E8%99%9F/22052788</li><li><a href="https://www.weidunews.com/article/2024-02-18/1340.html">科技媒体解构中国迄今为止最强大的超级计算机</a></li></ul></li><li><a href="https://nscc.hnu.edu.cn/info/1058/1063.htm">国家超级计算长沙中心</a><ul><li>中心拥有“天河”系列超级计算机、“天河·天马”计算集群等计算平台。其中2022年建成的天河新一代主机系统采用全国产设备，峰值计算性能达200P Flops（64 位精度），可提供1000P Ops人工智能算力（16位精度）</li><li>“天河一号”高性能计算系统, 单节点配置：2*6核Intel Xeon Westmere EP，主频2.93GHz，内存48GB，1块Nvidia M2050 GPU</li><li>CPU：0.10元/核/小时；GPU：2元/块/小时；纯CPU（120核包年）：5万元/年。含GPU（120核包年）：10万元/年。<a href="https://nscc.hnu.edu.cn/info/1004/1414.htm">国家超级计算长沙中心2019年收费基本执行标准 2019</a></li><li>存储服务：天河存储0.5万元/TB/年；其它存储0.3万元/TB/年</li></ul></li><li><a href="http://www.nsccsz.cn/nsccsz2024/index.shtml">国家超级计算深圳中心(深圳云计算中心)</a><ul><li>深圳超算一期, 深圳超算二期</li><li>高性能计算集群约有3000余计算节点，CPU约70000核，总内存容量约230TB，全局存储总容量约20PB</li></ul></li><li><a href="https://www.nsccwx.cn/">神威·太湖之光</a><ul><li>啟用時間: 2015年12月31日</li><li>部署在江蘇省無錫市的國家超級計算無錫中心，由清華大學負責營運</li><li>整机处理器个数 40960个</li><li>峰值性能为 125.436 PFlops</li><li>它的浮点运算速度达到了 90.83 PFlops（1PFlops为每秒1千万亿次浮点运算），超越第二名“天河二号”（33.06PFlops）近两倍。而且，与“天河二号”使用Intel芯片有所不同，它使用的芯片具有中国自主知识产权。<a href="https://www.cma.gov.cn/2011xwzx/2011xqxxw/2011xqxyw/201606/t20160622_314708.html">Link</a></li></ul></li><li><a href="http://www.blsc.cn/aboutus/">北京超级云计算中心</a><ul><li>成立于2011年，中国科学院和北京市政府共建，由北京北龙超级云计算有限责任公司运营</li><li>推荐使用T6区，配置：单节点96核，按核计费，Intel Xeon Platinum 9242@2.3GHz，384G内存，100Gps 高速网，免费存储500G，价格1毛/核时=0.1/核时。（用的多会有一些折扣）</li></ul></li><li><a href="https://hpc.pku.edu.cn/about.html">北京大学高性能计算校级公共平台</a><ul><li><a href="https://hpc.pku.edu.cn/ug/">北京大学高性能计算校级公共平台用户文档</a></li><li>每个CPU时0.06元, <a href="https://hpc.pku.edu.cn/guide_6.html">收费标准</a></li></ul></li><li><a href="http://hpc.ncpgr.cn/">作物遗传改良全国重点实验室生物信息计算平台</a><ul><li>生物信息高性能计算平台为华中农业大学作物遗传改良全国重点实验室公共技术平台，专注为实验室及全校用户提供高通量测序数据的存储和计算服务。</li><li>平台由155个刀片计算节点、2个GPU节点、6个八路大内存胖节点、多套并行存储组成，总体计算能力理论峰值为380万亿次，CPU核心数为5600核，存储硬件12.7PB(可用容量8.8PB)，主存储读写带宽超过45GB/s。平台预装了1000余款各类生物信息分析软件及相关使用文档、各类常用生物信息数据库，用户可使用本平台进行转录调控测序、单细胞测序、三维基因组测序、表观组测序、基因组组装注释等各类常见组学数据分析。可加速大规模重测序数据分析、复杂大基因组组装注释等需消耗大量资源的分析项目。</li><li>每个CPU时0.1元，并行存储空间每GB每月0.05元。重点室用户3折；重点实验室之外的用户不打折。根据用户上报的上一年度的文章，决定本年度的集群机时折扣。</li></ul></li><li><a href="https://hpc.whu.edu.cn/index.htm">武汉大学超级计算中心</a><ul><li>由475台CPU服务器、168台KNL服务器和174台GPU服务器组成</li><li>武汉大学超级计算中心收费办法（试行）2024年03月29日 <a href="https://hpc.whu.edu.cn/info/1008/1057.htm">link</a></li><li>普通节点 用户类型 CPU机时收费标准（元/CPU核小时）校内用户 0.06; 校外用户 0.10 <a href="https://hpc.whu.edu.cn/info/1008/1057.htm">link</a></li><li>存储空间租用服务</li><li>用户类型 收费标准（元/T年) 校内用户 120; 校外用户 500</li></ul></li><li><a href="https://scc.ustc.edu.cn/2010/0304/c386a1641/page.htm">中国科学技术大学超级计算中心</a><ul><li>瀚海 22 超级计算系统, 瀚海 20 超级计算系统, 曙光 TC4600 百万亿次超级计算系统</li><li><a href="https://scc.ustc.edu.cn/zlsc/user_doc/html/introduction/hanhai22-introduction.html">中国科大超算中心用户使用手册</a></li><li><a href="https://scc.ustc.edu.cn/2024/0228/c416a630736/page.htm">中国科学技术大学超级计算中心收费标准2023年11月15日版</a></li><li>CPU节点 0.02元/CPU核小时</li><li>免费使用1TB的存储容量，超过1TB后为30.00元/TB月</li><li>校外用户收费为校内用户的3倍</li></ul></li><li><a href="https://hpc.nuaa.edu.cn/xnpz/list.htm">南京航空航天大学 - 硬件资源 - 高性能计算中心</a><ul><li>长空1号：2020年6月建成，包含CPU计算节点62个，每个节点配置2颗intel Xeon Gold 6248 CPU，合计2480核，双精度浮点计算性能198.4Tflops；GPU节点有12个（3台4卡节点），配置均为NVIDIA Tesla V100，双精度浮点计算能力924Tflops。</li><li>长空2号：2022年9月建成，包含CPU计算节点256个，每个节点配置2颗intel Xeon Platinum 8358 CPU，合计16384核心，双精度浮点计算性能1363.15Tflops。</li><li>AI深度学习平台：AI深度学习平台是基于学校高性能计算平台硬件基础，面向人工智能、深度学习、大模型训练等领域的算力调度平台，功能涵盖数据集、算法、框架和模型的分类管理，并提供TensorFlow、PyTorch等常用深度学习框架和库。平台2024年5月正式上线运行，包含64张NVIDIA Tesla V100 GPU卡(16台4卡GPU节点)，适合开展大规模数据处理与分析、复杂算法训练等。</li></ul></li><li><a href="https://sc.hdu.edu.cn/">杭州电子科技大学超算中心</a><ul><li>曙光TC6000高性能计算集群有CPU计算节点68个</li><li><a href="https://sc.hdu.edu.cn/wp-content/uploads/2024/05/%E5%85%B3%E4%BA%8E%E5%85%AC%E5%B8%832024%E5%B9%B4%E5%BA%A6%E8%B6%85%E7%AE%97%E4%B8%AD%E5%BF%83%E6%94%B6%E8%B4%B9%E6%A0%87%E5%87%86%E7%9A%84%E9%80%9A%E7%9F%A5.pdf">关于公布 2024 年度超算中心收费标准的通知</a></li><li>校内用户 CPU 节点 0.06 元／核·小时; 存储空间 超出 200GB 部分，每100GB 费用为 10 元/月</li><li>校外用户 CPU 节点 0.12 元／核·小时; 存储空间 超出 200GB 部分，每100GB 费用为 20 元/月</li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="為什麼-hpc-如此重要">為什麼 HPC 如此重要？</h1><p>高效能運算 (HPC) 已不是新鮮事。數十年來，HPC 工作站和超級電腦在學術研究中扮演著不可或缺的角色，解決了複雜的問題並激發了發現和創新。近年來，數據量迅速激增，許多新的應用程式受益於 HPC 的強大功能，即跨共享資源執行運算密集型操作的能力，相較於傳統運算以更少的時間和更低的成本獲得結果。與此同時，HPC 硬體和軟體變得更容易獲得並且廣泛分佈。科學家、工程師和研究人員在一系列使用案例中仰賴著 HPC，包括天氣預報、石油和天然氣勘探、物理學、量子力學以及學術研究和商業應用的其他領域。</p><p>對於每一個涉及計算的課題組來說，購買超算機時還是建立自己的伺服器集群，成為了每個課題組的考量。筆者建議課題組針對專案需求，兩者靈活配置，不存在東風壓倒西風的說法；對於超算資源來說，短時間以較小的經費就可以撬動極大的計算資源，對於專案驗證或緊急的專案需求都是非常好的補充，對於許多大型專案的進展，沒有超算談何開展。當然回歸到課題組的實際需求，自建伺服器集群才是每個課題組最划算的算力投資。</p><h2 id="flops">FLOPS</h2><p>超級電腦速度以每秒浮點運算次數 <strong>"FLOPS" (floating-point operations per second, flops)</strong>來作量度單位，常見的表示電腦中的峰值或速度用的單位英漢對照如下：</p><ul><li>一個MFLOPS（megaFLOPS）等於每秒100萬（=<span class="math inline">\(10^6\)</span>）次的浮點運算</li><li>一個GFLOPS（gigaFLOPS）等於每秒10億（=<span class="math inline">\(10^9\)</span>）次的浮點運算</li><li>一個TFLOPS（teraFLOPS）等於每秒1兆（=<span class="math inline">\(10^{12}\)</span>）次的浮點運算</li><li>一個PFLOPS（petaFLOPS）等於每秒1千兆（=<span class="math inline">\(10^{15}\)</span>）次的浮點運算</li><li>一個EFLOPS（exaFLOPS）等於每秒100京（=<span class="math inline">\(10^{18}\)</span>）次的浮點運算</li></ul><p>此外，由於浮點積和熔加運算或乘積累加是兩次的浮點運算（每條FMA指令包括加/減及乘），因此當處理器支援FMA指令時，峰值是兩倍每秒所能執行FMA指令的數目。</p><h3 id="cpu-flops">CPU flops</h3><ul><li>计算节点 1, 每个节点配置2颗intel Xeon Gold 6248 CPU, 双精度浮点计算性能 3.20 Tflops</li><li>计算节点 1, 每个节点配置2颗intel Xeon Platinum 8358 CPU, 双精度浮点计算性能 5.32 Tflops</li><li>計算節點：2顆 Intel® Xeon® Platinum 8280 2.4GHz CPU (28 Cores/CPU) 與 192GB 主記憶體, 3 Tflops</li><li>計算節點：2顆 Intel® Xeon® Platinum 8480+ 2.0GHz CPU (56 Cores/CPU) 與 512GB 主記憶體, 6.27 Tflops</li></ul><h3 id="gpu-flops">GPU flops</h3><ul><li>NVIDIA Tesla V100，双精度浮点计算能力 924 Tflops</li></ul><h2 id="top500">TOP500</h2><ul><li><a href="https://top500.org/" class="uri">https://top500.org/</a></li></ul><h1 id="文章">文章</h1><h2 id="超級電腦爭霸戰的新一頁開始了exascale10-的-18-次方之戰-20220910"><a href="https://pansci.asia/archives/352429">超級電腦爭霸戰的新一頁開始了：Exascale（10 的 18 次方）之戰 | 2022/09/10</a></h2><ul><li>超級電腦的架構，可以說是非常的簡單：用網路線連結各台主機，讓主機間互相溝通，才能夠進行平行運算。</li><li><strong>考驗硬體的處理能力、主機間節點的連線架構、資料讀寫能力，更甚者，則是軟體是否具有 Exascale 的使用能力，也就是硬體與軟體都必須要能夠良好的契合才行。</strong></li><li>地球系統模擬中，其中一個挑戰便是進行模擬時程：挑戰一日（24 小時）的超級電腦計算可以得到多少年的模擬結果（<strong>simulated years per wall-clock day, SYPD</strong>），而此地球系統的精度為水平方向僅一公里的超高解析度，用來進行最終極的地球系統模擬：<strong>數位攣生（Digital Twins</strong>）。</li><li>Neumann 等人也預計在 2030 年代後，進行 1 公里等級的超高精度計算也將不是夢想，而在 Exascale 主機降臨前的這個年代，有些超級計算中心已經以節點（Node）做為計算資源耗費的單位（<strong>Node per hour</strong>），而非 CPU per hour，顯示出大型主機對計算資源消耗的想法以從 CPU 規模上升到了 Node 規模。</li></ul><div class="note note-danger">            <p>目前已經有部份超級電腦都在進行 SYPD 的挑戰，如中國的神威太湖之光，其已完成了每日 3.4 年的地球系統模擬，只不過其地面僅有 25 公里的水平精度，海面僅 10 公里的水平精度，還有非常多的進步空間。只可惜，這個實驗並沒有進行進行資料輸出，無法得到正確的效能結果（資料的寫入與輸出也是非常費時的），以及真正的運算結果：因為沒有資料，就沒有辦法分析。</p>          </div><h1 id="超算-價格">超算: 價格</h1><p>超算中心產品的特點：完備的軟體運行環境及豐富的軟體選擇，穩定的技術支持，按需使用，靈活充值；缺點：昂貴且不易於管理，容易不知不覺就消耗了寶貴的科研經費（筆者接觸過課題組購置數萬機時，沒有有效管理，學生學習與試誤的過程中，就消耗殆盡；）</p><ul><li>1毛 = 1/10元 (人民幣)</li><li>超算中心價格基本上在0.1-0.3元一個核時(人民幣)，單價看起來還是不貴。</li><li>通常超算中心中主流的64核心節點，一般單價在0.1元每核心時，基於此計算一台64核心的伺服器長期租用，他的成本將會是：</li><li>每天的費用：64x0.1x24=153.6元；每年的費用可能高達56064元；目前一台超算中心的64核心節點，基本市場價格也就在5萬左右；我們也核算過各類伺服器配置，基本上超算同類的運算伺服器，租賃1年的費用，就等於您訂購這台伺服器費用了。</li><li>顯然從長期使用運算資源的角度來說，顯然自建自己的伺服器叢集是課題組更划算的選擇。</li><li>其次：自有的伺服器資源，可以做到更靈活的使用，軟體安裝也非常自由；文件資料本地存儲，使用快捷簡易等優點。</li></ul><p>首先说现在的超算价格：<a href="https://www.zhihu.com/question/523757254/answer/2530239695?utm_psn=1821112184379412482">link</a></p><ul><li>以北京超级云计算中心为代表的，主流超算中心，价格通常不超过0.1元每核时（搞活动的时候0.08元左右），按照题主描述，10万核时约需要8000~1万元。论性价比的话，</li><li>我更推荐一些不太知名的，价格从0.05到0.08元每核时不等。</li><li>其次，题主描述的10万核时应该是按照自己的18核至强计算出来的。不同CPU的性能差距很大，举个例子，<strong>AMD 7601计算1小时的，AMD 7452可能40分钟甚至半小时就算完了</strong>。最后，讨论下自己搭机器与租超算的优缺点。自己搭建机器，肯定无法兼顾性能与价格，例如预算6000以内的话，估计只能买1台双路AMD 7601，可能无法满足短时间内算完全部算例的需求。好处就是机器实打实的是自己的，这10万核时的任务算完了以后，机器还可以干别的用途，甚至卖了回血也可以。而超算与之相反，可以提供最高的算力，满足短期内大量的计算需求。缺点就是算完以后自己啥都留不下。</li></ul><p>实际上并行科技早就已经将超算商业化了，对于普通人也非常友好。我有个同学，自己有计算需求，但是课题组其他人没兴趣，她就自费只充了100块钱就够用了。就像充话费一样简单，使用也非常方便，超算就是一台远程linux电脑，远没有多数人想象的多么高冷神秘。<a href="https://www.zhihu.com/question/280917515/answer/1487285453">Link</a></p><p>例子:</p><ul><li>10万核时，0.1元每核时，需要1万人民币。</li></ul><h2 id="集群">集群</h2><ul><li><a href="http://www.chinahpc.com/">北京东方超算科技有限公司, ChinaHPC</a><ul><li>成立于2013年，创始团队来自于北京市计算中心和中国科学院超级计算中心，注册资金1000万元，坐落在北京市海淀区上地信息产业基地。</li><li><a href="http://www.chinahpc.cn/">东方超算云</a><ul><li>东方超算云的大规模算力集群位于全国一体化算力网络国家枢纽节点<strong>内蒙古自治区</strong></li><li>一期建设360个18KW高密度机柜，计算节点2000台，56000CPU核心，20PB分布式并行存储容量</li><li><a href="https://cloud.chinahpc.cn/#/login">Login website</a></li><li>公共计算平台服务资源<ul><li><strong>A区资源（0.1元核心小时）</strong>; 面向HPC、AI客户; 160节点; 处理器:2*Intel® Xeon® Platinum 9242 Processor（48核心、96线程、基础主频2.3GHz）; 内存：24x16GB 2933MHz，共384GB</li><li><strong>B区资源（0.08元核心小时）</strong>：面向大规模分布式并行，追求性价比用户; 1000节点; 处理器： Intel® Xeon® Processor E5-2680 v4 （28核心，基础主频2.4GHz，最大睿频3.3GHz); 内存：8*16GB ,共128GB 内存; 网络：Mellanox FDR 56Gb Infiniband</li></ul></li></ul></li></ul></li><li><a href="https://www.nscc-tj.cn/">国家超级计算天津中心, 天河一号</a><ul><li>中國人民解放軍國防科學技術大學和天津濱海新區提供的異構超級電腦</li><li>啟用時間: 天河-1：2009年10月29日，天河-1A：2010年10月28日</li><li>天河-1A使用的開源軟體包括：Linux作業系統，SLURM作業調度系統，Lustre叢集檔案系統</li><li>0.07元/核时，配置：单节点12核 , Intel Hexa Core Xeon X5670 ；主频 2.93GHz, 内存48G，私有高速网络，免费存储1TB</li></ul></li><li><a href="http://nscc-gz.cn/Product/HighPerformanceComputingService/ServiceCharacteristics.html">国家超级计算广州中心, 天河二号</a><ul><li>中山大學廣州校區東校園</li><li>啟用時間: 2013年</li><li><code>天河二号</code>拥有约<strong>17920个计算节点</strong>，每节点配备两颗Xeon E5系列12核心的中央处理器、三个Xeon Phi 57核心的协处理器（运算加速卡），总内存容量约1.4PB，全局存储总容量约12.4PB。</li><li>0.1元/核时，配置：单节点24核 , Intel Xeon E5-2692 v2 ；主频 2.2GHz, 内存64G，内存频率：DDR3 1333MHz，免费存储500GB</li><li><a href="https://www.gov.cn/xinwen/2015-11/18/content_2967705.htm">54.9PFLOPS（理論峰值）, 实际运算速度33.86PFlops</a></li><li><a href="https://itlanyan.com/tianhe-ii-guide/">天河二号使用教程</a></li></ul></li><li><a href="https://www.nscc-tj.cn/cjjs_zy_th3">国家超级计算天津中心同国防科技大学联合研制, 天河三号, （E级）超级计算机</a><ul><li>https://baike.baidu.com/item/%E5%A4%A9%E6%B2%B3%E4%B8%89%E8%99%9F/22052788</li><li><a href="https://www.weidunews.com/article/2024-02-18/1340.html">科技媒体解构中国迄今为止最强大的超级计算机</a></li></ul></li><li><a href="https://nscc.hnu.edu.cn/info/1058/1063.htm">国家超级计算长沙中心</a><ul><li>中心拥有“天河”系列超级计算机、“天河·天马”计算集群等计算平台。其中2022年建成的天河新一代主机系统采用全国产设备，峰值计算性能达200P Flops（64 位精度），可提供1000P Ops人工智能算力（16位精度）</li><li>“天河一号”高性能计算系统, 单节点配置：2*6核Intel Xeon Westmere EP，主频2.93GHz，内存48GB，1块Nvidia M2050 GPU</li><li>CPU：0.10元/核/小时；GPU：2元/块/小时；纯CPU（120核包年）：5万元/年。含GPU（120核包年）：10万元/年。<a href="https://nscc.hnu.edu.cn/info/1004/1414.htm">国家超级计算长沙中心2019年收费基本执行标准 2019</a></li><li>存储服务：天河存储0.5万元/TB/年；其它存储0.3万元/TB/年</li></ul></li><li><a href="http://www.nsccsz.cn/nsccsz2024/index.shtml">国家超级计算深圳中心(深圳云计算中心)</a><ul><li>深圳超算一期, 深圳超算二期</li><li>高性能计算集群约有3000余计算节点，CPU约70000核，总内存容量约230TB，全局存储总容量约20PB</li></ul></li><li><a href="https://www.nsccwx.cn/">神威·太湖之光</a><ul><li>啟用時間: 2015年12月31日</li><li>部署在江蘇省無錫市的國家超級計算無錫中心，由清華大學負責營運</li><li>整机处理器个数 40960个</li><li>峰值性能为 125.436 PFlops</li><li>它的浮点运算速度达到了 90.83 PFlops（1PFlops为每秒1千万亿次浮点运算），超越第二名“天河二号”（33.06PFlops）近两倍。而且，与“天河二号”使用Intel芯片有所不同，它使用的芯片具有中国自主知识产权。<a href="https://www.cma.gov.cn/2011xwzx/2011xqxxw/2011xqxyw/201606/t20160622_314708.html">Link</a></li></ul></li><li><a href="http://www.blsc.cn/aboutus/">北京超级云计算中心</a><ul><li>成立于2011年，中国科学院和北京市政府共建，由北京北龙超级云计算有限责任公司运营</li><li>推荐使用T6区，配置：单节点96核，按核计费，Intel Xeon Platinum 9242@2.3GHz，384G内存，100Gps 高速网，免费存储500G，价格1毛/核时=0.1/核时。（用的多会有一些折扣）</li></ul></li><li><a href="https://hpc.pku.edu.cn/about.html">北京大学高性能计算校级公共平台</a><ul><li><a href="https://hpc.pku.edu.cn/ug/">北京大学高性能计算校级公共平台用户文档</a></li><li>每个CPU时0.06元, <a href="https://hpc.pku.edu.cn/guide_6.html">收费标准</a></li></ul></li><li><a href="http://hpc.ncpgr.cn/">作物遗传改良全国重点实验室生物信息计算平台</a><ul><li>生物信息高性能计算平台为华中农业大学作物遗传改良全国重点实验室公共技术平台，专注为实验室及全校用户提供高通量测序数据的存储和计算服务。</li><li>平台由155个刀片计算节点、2个GPU节点、6个八路大内存胖节点、多套并行存储组成，总体计算能力理论峰值为380万亿次，CPU核心数为5600核，存储硬件12.7PB(可用容量8.8PB)，主存储读写带宽超过45GB/s。平台预装了1000余款各类生物信息分析软件及相关使用文档、各类常用生物信息数据库，用户可使用本平台进行转录调控测序、单细胞测序、三维基因组测序、表观组测序、基因组组装注释等各类常见组学数据分析。可加速大规模重测序数据分析、复杂大基因组组装注释等需消耗大量资源的分析项目。</li><li>每个CPU时0.1元，并行存储空间每GB每月0.05元。重点室用户3折；重点实验室之外的用户不打折。根据用户上报的上一年度的文章，决定本年度的集群机时折扣。</li></ul></li><li><a href="https://hpc.whu.edu.cn/index.htm">武汉大学超级计算中心</a><ul><li>由475台CPU服务器、168台KNL服务器和174台GPU服务器组成</li><li>武汉大学超级计算中心收费办法（试行）2024年03月29日 <a href="https://hpc.whu.edu.cn/info/1008/1057.htm">link</a></li><li>普通节点 用户类型 CPU机时收费标准（元/CPU核小时）校内用户 0.06; 校外用户 0.10 <a href="https://hpc.whu.edu.cn/info/1008/1057.htm">link</a></li><li>存储空间租用服务</li><li>用户类型 收费标准（元/T年) 校内用户 120; 校外用户 500</li></ul></li><li><a href="https://scc.ustc.edu.cn/2010/0304/c386a1641/page.htm">中国科学技术大学超级计算中心</a><ul><li>瀚海 22 超级计算系统, 瀚海 20 超级计算系统, 曙光 TC4600 百万亿次超级计算系统</li><li><a href="https://scc.ustc.edu.cn/zlsc/user_doc/html/introduction/hanhai22-introduction.html">中国科大超算中心用户使用手册</a></li><li><a href="https://scc.ustc.edu.cn/2024/0228/c416a630736/page.htm">中国科学技术大学超级计算中心收费标准2023年11月15日版</a></li><li>CPU节点 0.02元/CPU核小时</li><li>免费使用1TB的存储容量，超过1TB后为30.00元/TB月</li><li>校外用户收费为校内用户的3倍</li></ul></li><li><a href="https://hpc.nuaa.edu.cn/xnpz/list.htm">南京航空航天大学 - 硬件资源 - 高性能计算中心</a><ul><li>长空1号：2020年6月建成，包含CPU计算节点62个，每个节点配置2颗intel Xeon Gold 6248 CPU，合计2480核，双精度浮点计算性能198.4Tflops；GPU节点有12个（3台4卡节点），配置均为NVIDIA Tesla V100，双精度浮点计算能力924Tflops。</li><li>长空2号：2022年9月建成，包含CPU计算节点256个，每个节点配置2颗intel Xeon Platinum 8358 CPU，合计16384核心，双精度浮点计算性能1363.15Tflops。</li><li>AI深度学习平台：AI深度学习平台是基于学校高性能计算平台硬件基础，面向人工智能、深度学习、大模型训练等领域的算力调度平台，功能涵盖数据集、算法、框架和模型的分类管理，并提供TensorFlow、PyTorch等常用深度学习框架和库。平台2024年5月正式上线运行，包含64张NVIDIA Tesla V100 GPU卡(16台4卡GPU节点)，适合开展大规模数据处理与分析、复杂算法训练等。</li></ul></li><li><a href="https://sc.hdu.edu.cn/">杭州电子科技大学超算中心</a><ul><li>曙光TC6000高性能计算集群有CPU计算节点68个</li><li><a href="https://sc.hdu.edu.cn/wp-content/uploads/2024/05/%E5%85%B3%E4%BA%8E%E5%85%AC%E5%B8%832024%E5%B9%B4%E5%BA%A6%E8%B6%85%E7%AE%97%E4%B8%AD%E5%BF%83%E6%94%B6%E8%B4%B9%E6%A0%87%E5%87%86%E7%9A%84%E9%80%9A%E7%9F%A5.pdf">关于公布 2024 年度超算中心收费标准的通知</a></li><li>校内用户 CPU 节点 0.06 元／核·小时; 存储空间 超出 200GB 部分，每100GB 费用为 10 元/月</li><li>校外用户 CPU 节点 0.12 元／核·小时; 存储空间 超出 200GB 部分，每100GB 费用为 20 元/月</li></ul></li></ul><h1 id="cpu">CPU</h1><ul><li><strong>Intel Xeon Phi 7250</strong> is designed for highly parallel workloads with a significant number of threads.</li><li><strong>E5-2680 v3 and v4</strong> are part of the Xeon E5 family, providing a balance of performance and efficiency for data center applications.</li><li><strong>Gold 6248R and 6342</strong> are part of the Xeon Gold series, offering high core counts and advanced memory capabilities, suitable for demanding HPC tasks.</li></ul><table><thead><tr class="header"><th>Name</th><th>Launch Date</th><th>Base Frequency (GHz)</th><th>Physical Cores</th><th>Threads</th><th>Cache (MB)</th><th>Price (Approx.)</th><th>TDP (W)</th><th>Max Memory Size</th><th>Memory Types</th><th>Instruction Set Extensions</th></tr></thead><tbody><tr class="odd"><td>Intel Xeon Phi CPU 7250</td><td>Q2'16</td><td>1.40</td><td>68</td><td>272</td><td>34</td><td>~$2,500</td><td>215</td><td>384 GB</td><td>MCDRAM, DDR4-2400</td><td>AVX-512</td></tr><tr class="even"><td>Intel Xeon CPU E5-2680 v3</td><td>Q3'14</td><td>2.50</td><td>12</td><td>24</td><td>30</td><td>~$1,745</td><td>120</td><td>768 GB</td><td>DDR4-2133</td><td>AVX 2.0</td></tr><tr class="odd"><td>Intel Xeon CPU E5-2680 v4</td><td>Q1'16</td><td>2.40</td><td>14</td><td>28</td><td>35</td><td>~$1,745</td><td>120</td><td>1.5 TB</td><td>DDR4-2400</td><td>AVX 2.0</td></tr><tr class="even"><td>Intel Xeon Gold 6248R CPU</td><td>Q1'20</td><td>3.00</td><td>24</td><td>48</td><td>35.75</td><td>~$2,700</td><td>205</td><td>1 TB</td><td>DDR4-2933</td><td>AVX-512</td></tr><tr class="odd"><td>Intel Xeon Gold 6342 CPU</td><td>Q2'21</td><td>2.80</td><td>24</td><td>48</td><td>36</td><td>~$2,529</td><td>230</td><td>6 TB</td><td>DDR4-3200</td><td>AVX-512</td></tr></tbody></table>]]></content>
     
     
     <categories>
@@ -3258,9 +3287,9 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -3285,9 +3314,9 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -3368,11 +3397,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -3399,15 +3428,15 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -3434,11 +3463,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -3903,9 +3932,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Spack</tag>
       
@@ -4173,9 +4202,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -4391,9 +4420,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>HKO</tag>
       
@@ -4474,11 +4503,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>tile files</tag>
       
@@ -4532,9 +4561,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>netcdf</tag>
       
@@ -4565,9 +4594,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -4592,9 +4621,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>netcdf</tag>
       
@@ -4698,15 +4727,15 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -4758,15 +4787,15 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -4847,9 +4876,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -4874,13 +4903,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>WRF</tag>
       
-      <tag>HPC</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -5025,15 +5054,15 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -5199,11 +5228,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -5313,13 +5342,13 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>HPC</tag>
       
       <tag>gnu</tag>
       
       <tag>gcc</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -5344,13 +5373,13 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
-      <tag>WRF</tag>
-      
       <tag>gnu</tag>
       
       <tag>gcc</tag>
+      
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -5379,11 +5408,11 @@
     
     <tags>
       
+      <tag>HPC</tag>
+      
       <tag>NWP</tag>
       
       <tag>slurm</tag>
-      
-      <tag>HPC</tag>
       
     </tags>
     
