@@ -179,6 +179,148 @@ description="soil composition needed as input in the NOAH-MP land surface model"
 The **static.nc** is different after **Noah-MP** is applied. (**v8.2.2 ... v8.2.0**). And, re-generate static.nc
 {% endnote %}
 
+## Solution
+
+- **Fail** if using `gfortran` (v9.3.0) complier.
+- **Sucessfull** if using `intel-mpi` complier.
+
+{% fold info @gfortran: log %}
+```
+----------------------------------------------------------------------
+Beginning MPAS-init_atmosphere Output Log File for task       0 of       6
+    Opened at 2025/03/06 15:23:51
+----------------------------------------------------------------------
+
+ 
+ MPAS Init-Atmosphere Version 8.2.2
+ 
+ 
+ Output from 'git describe --dirty': unknown
+ 
+ Compile-time options:
+   Build target: gfortran
+   OpenMP support: no
+   OpenACC support: no
+   Default real precision: single
+   Compiler flags: debug
+   I/O layer: PIO 2.x
+ 
+ Run-time settings:
+   MPI task count: 6
+ 
+ Reading namelist from file namelist.init_atmosphere
+ *** Encountered an issue while attempting to read namelist record physics
+     The following values will be used for variables in this record:
+ 
+         config_tsk_seaice_threshold = 100.000
+ 
+ *** Encountered an issue while attempting to read namelist record io
+     The following values will be used for variables in this record:
+ 
+         config_pio_num_iotasks = 0
+         config_pio_stride = 1
+ 
+ 
+ ----- I/O task configuration: -----
+ 
+     I/O task count  = 6
+     I/O task stride = 1
+ 
+ Initializing MPAS_streamInfo from file streams.init_atmosphere
+ Reading streams configuration from file streams.init_atmosphere
+ Found mesh stream with filename template static.nc
+ Using io_type Parallel-NetCDF (CDF-5, large variable support) for mesh stream
+  ** Attempting to bootstrap MPAS framework using stream: input
+ Bootstrapping framework with mesh fields from input file 'static.nc'
+```
+{% endfold %}
+
+{% fold info @intel-mpi: log %}
+```
+----------------------------------------------------------------------
+Beginning MPAS-init_atmosphere Output Log File for task       0 of       6
+    Opened at 2025/03/06 17:08:04
+----------------------------------------------------------------------
+
+ 
+ MPAS Init-Atmosphere Version 8.2.2
+ 
+ 
+ Output from 'git describe --dirty': unknown
+ 
+ Compile-time options:
+   Build target: intel-mpi
+   OpenMP support: no
+   OpenACC support: no
+   Default real precision: single
+   Compiler flags: optimize
+   I/O layer: PIO 2.x
+ 
+ Run-time settings:
+   MPI task count: 6
+ 
+ Reading namelist from file namelist.init_atmosphere
+ *** Encountered an issue while attempting to read namelist record physics
+     The following values will be used for variables in this record:
+ 
+         config_tsk_seaice_threshold = 100.000
+ 
+ *** Encountered an issue while attempting to read namelist record io
+     The following values will be used for variables in this record:
+ 
+         config_pio_num_iotasks = 0
+         config_pio_stride = 1
+ 
+ 
+ ----- I/O task configuration: -----
+ 
+     I/O task count  = 6
+     I/O task stride = 1
+
+......
+
+ --- isice_lu   = 15
+ --- config_frac_seaice      : F
+ --- xice_threshold          : 0.500000
+ --- tsk_seaice_threshold    : 100.000
+ 
+ number of seaice cells converted to land cells 2 =         210
+ 
+ ********************************************************
+    Finished running the init_atmosphere core
+ ********************************************************
+ 
+ 
+  Timer information:
+     Globals are computed across all threads and processors
+ 
+  Columns:
+     total time: Global max of accumulated time spent in timer
+     calls: Total number of times this timer was started / stopped.
+     min: Global min of time spent in a single start / stop
+     max: Global max of time spent in a single start / stop
+     avg: Global max of average time spent in a single start / stop
+     pct_tot: Percent of the timer at level 1
+     pct_par: Percent of the parent timer (one level up)
+     par_eff: Parallel efficiency, global average total time / global max total time
+ 
+ 
+    timer_name                                            total       calls        min            max            avg      pct_tot   pct_par     par_eff
+  1 total time                                           9.53601         1        9.53588        9.53601        9.53594   100.00       0.00       1.00
+  2  initialize                                          0.85724         1        0.85061        0.85724        0.85206     8.99       8.99       0.99
+ 
+ -----------------------------------------
+ Total log messages printed:
+    Output messages =                  522
+    Warning messages =                   1
+    Error messages =                     0
+    Critical error messages =            0
+ -----------------------------------------
+ Logging complete.  Closing file at 2025/03/06 17:08:14
+```
+{% endfold %}
+
+
 # An aerosol climatology file `QNWFA_QNIFA_SIGMA_MONTHLY.dat`
 
 ## MPAS Version 8.2.0
@@ -186,3 +328,31 @@ The **static.nc** is different after **Noah-MP** is applied. (**v8.2.2 ... v8.2.
 - The **aerosol-aware Thompson microphysics (as in WRF v4.1.4)** is available by setting `config_microp_scheme = 'mp_thompson_aerosols'` in the `&physics` namelist group.
 - An aerosol climatology file **(QNWFA_QNIFA_SIGMA_MONTHLY.dat)** is used when running the `init_atmosphere_model` program to produce initial and lateral boundary conditions for `nifa` and `nwfa`.
 - download: <https://mpas-dev.github.io/>
+
+# `mpi_f08`
+
+`mpi_f08` 是一種用於 Fortran 2008 的 MPI（Message Passing Interface）模組介面。 MPI 是一種用於平行運算的標準化訊息傳遞庫，廣泛用於高效能運算環境中。 `mpi_f08` 模組提供了一個現代化的接口，允許 Fortran 2008 程式使用 MPI 進行平行計算。
+
+在 Fortran 2008 中，`mpi_f08` 模組支援新的 Fortran 語言特性，並提供了更好的與現代 Fortran 編譯器的兼容性。相較之下，傳統的 `mpi` 模組可能不支援所有 Fortran 2008 的特性，因此在支援 `mpi_f08` 的環境中，優先使用 `mpi_f08` 可以提高程式碼的可移植性和相容性。
+
+例如，在 MPAS 模型中，如果偵測到 `mpi_f08` 模組，則會優先使用它來呼叫 Fortran MPI例程，而不是使用舊的 `mpi` 模組介面。
+
+`mpi_f08` 和 `mpif90` 是兩個不同的概念，分別與 MPI（Message Passing Interface）和 Fortran 編譯器相關。
+
+## `mpi_f08`
+
+- **定義**：`mpi_f08` 是一種用於 Fortran 2008 的 MPI 模組介面。它提供了一個現代化的接口，支援 Fortran 2008 的新特性，如非同步操作和假設類型參數。
+- **優點**：`mpi_f08` 提供了更好的類型檢查和非阻塞調用支持，且與 Fortran 2008 標準完全兼容。
+- **應用**：推薦用於所有新的 MPI Fortran 應用程序，因為它提供了更強的類型安全性和更好的性能優化。
+
+## `mpif90`
+
+- **定義**：`mpif90` 是一種用於編譯 Fortran 90 MPI 程式的編譯器包裝器。它通常與 OpenMPI 等 MPI 實作一起使用。
+- **狀態**：在 OpenMPI v1.7 中，`mpif90` 已被標記為過時，建議使用 `mpifort` 取代。
+- **應用**：雖然仍然支援 `mpif90`，但建議使用 `mpifort` 來編譯所有版本的 Fortran MPI 應用程序，因為 `mpifort` 更加通用和現代化。
+
+總之，`mpi_f08` 是一個現代化的 MPI Fortran 接口，而 `mpif90` 是一個較老的編譯器包裝器，已經被 `mpifort` 所取代。
+
+# Referecnes
+
+1. [MPAS v8.2 fails to compile GNU 13.2 Linux64 | Jul 2, 2024](https://forum.mmm.ucar.edu/threads/mpas-v8-2-fails-to-compile-gnu-13-2-linux64.17999/)

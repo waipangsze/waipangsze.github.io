@@ -81,6 +81,18 @@ banner_img: https://i.imgur.com/g3DB0G8.png
     ![](https://i.imgur.com/hFDPHpm.png)
     {% endgi %}
 
+# MPAS-CMAQ compilation
+
+- [Encounter an error during MPAS compilation | Lan 2025](https://forum.mmm.ucar.edu/threads/encounter-an-error-during-mpas-compilation.20474/)
+
+vim bldit_project.csh
+set CMAQ_HOME =/EM/wpsze/CMAQ/CMAQ-MPAS_CMAQ/CMAQ_5.5 ##改成自己的路径
+
+./bldit_project.csh intel
+cd /EM/wpsze/CMAQ/CMAQ-MPAS_CMAQ/CMAQ_5.5
+
+vim config_cmaq.csh
+
 # CMAQ
 
 CMAQ（Community Multiscale Air Quality 通用多尺度空氣品質）模型，是美國環保署開發的第三代空氣品質預報和評估系統（Models-3）的核心組成之一。是一套**三維歐拉網格化的大氣化學和傳輸模擬系統**，能夠模擬整個對流層的臭氧、酸沉降、能見度和細顆粒物。**整個模式遵循「一個大氣」概念，可以同時處理從局部到半球的不同空間尺度的多個複雜的空氣品質問題**，作為一個有效的第三代空氣品質模型與評估工具，其能夠支持從策略分析到大氣科學研究的各類空氣品質模擬應用。
