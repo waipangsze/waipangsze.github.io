@@ -37,8 +37,9 @@ banner_img:
 
 - Changes to the initialization include:
   - **Enable parallel remapping of static fields** with arbitrary graph partition files; special CVT partition files are no longer required.  
-    - Run init atmosphere model with **only one MPI task** specified to create static.nc
-    - Note that it is critical for this step that the initialization core is **run serially**;
+    - ~Run init atmosphere model with **only one MPI task** specified to create static.nc~
+    - ~Note that it is critical for this step that the initialization core is **run serially**;~
+    - Can parallel run ! 
   - Reset the default for the lower air-temperature extrapolation **(config_extrap_airtemp) from 'linear' to 'lapse-rate' in the namelist**. This applies to initialization and to lateral boundary condition generation for MPAS-A.
   - Set the condition for the lower extrapolation of the horizontal velocity such that it **returns the lowest analysis level value** instead of a linear extrapolation when the requested level is below the analysis level.
   - Create a new init case (13) for creating 3-d CAM-MPAS grids.
@@ -60,6 +61,63 @@ IMPORTANT NOTE: The updated physics schemes require new look-up tables, in parti
 {% endnote %}
 
 - Include changes to the initialization and to MPAS-A such that this release can be **directly used in CESM/CAM**.
+
+# Enable parallel remapping of static fields
+
+```sh
+##-- For spack init, (it takes longer startup time !!)
+. /home/wpsze/spack/share/spack/setup-env.sh
+source /home/wpsze/MPAS-A/intel/mpas_env_intel.sh
+#ln -sf /home/wpsze/MPAS-A/intel/mpasv821/MPASv821/init_atmosphere_model
+ln -sf /home/wpsze/MPAS-A/intel/mpasv822/MPASv822/init_atmosphere_model
+
+# soft-link graph.info.part.3
+mpirun -n 3 ./init_atmosphere_model
+```
+
+and, add below in namelist.init_atmosphere
+
+```namelist.init_atmosphere
+&decomposition
+   config_block_decomp_file_prefix = 'graph.info.part.'
+/
+```
+
+{% fold info @namelist.init_atmosphere %}
+```namelist.init_atmosphere 
+&nhyd_model
+    config_init_case = 7
+/
+&dimensions
+    config_nvertlevels = 1
+    config_nsoillevels = 1
+    config_nfglevels = 1
+    config_nfgsoillevels = 1
+/
+&data_sources
+    config_geog_data_path = '/home/wpsze/WRF/wrf_geog/WRF/WPS_GEOG/'
+    config_landuse_data = 'MODIFIED_IGBP_MODIS_NOAH'
+    config_topo_data = 'GMTED2010'
+    config_vegfrac_data = 'MODIS'
+    config_albedo_data = 'MODIS'
+    config_maxsnowalbedo_data = 'MODIS'
+    config_supersample_factor = 3
+    config_use_spechumd = false
+/
+&preproc_stages
+    config_static_interp = true
+    config_native_gwd_static = true
+    config_vertical_grid = false
+    config_met_interp = false
+    config_input_sst = false
+    config_frac_seaice = false
+/
+
+&decomposition
+   config_block_decomp_file_prefix = 'graph.info.part.'
+/
+```
+{% endfold %}
 
 # Error
 
