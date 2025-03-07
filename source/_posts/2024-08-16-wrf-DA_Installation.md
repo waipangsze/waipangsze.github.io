@@ -2,7 +2,7 @@
 layout: post
 title: WRF | WRF-DA Installation
 categories: [WRF]
-tags: [DA, Installation, gnu]
+tags: [DA, Installation, gnu, MPAS, NWP, WRF, WRFDA]
 author: wpsze
 math: true
 mathjax: true
