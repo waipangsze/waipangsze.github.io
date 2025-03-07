@@ -37,9 +37,9 @@ banner_img:
 
 - Changes to the initialization include:
   - **Enable parallel remapping of static fields** with arbitrary graph partition files; special CVT partition files are no longer required.  
-    - ~Run init atmosphere model with **only one MPI task** specified to create static.nc~
-    - ~Note that it is critical for this step that the initialization core is **run serially**;~
-    - Can parallel run ! 
+    - ~~Run init atmosphere model with **only one MPI task** specified to create static.nc~~
+    - ~~Note that it is critical for this step that the initialization core is **run serially**;~~
+    - **Can parallel run ! But keep in mind that memory issue because NCAR they just set each core real all geo-dataset instead of needed partittion.**
   - Reset the default for the lower air-temperature extrapolation **(config_extrap_airtemp) from 'linear' to 'lapse-rate' in the namelist**. This applies to initialization and to lateral boundary condition generation for MPAS-A.
   - Set the condition for the lower extrapolation of the horizontal velocity such that it **returns the lowest analysis level value** instead of a linear extrapolation when the requested level is below the analysis level.
   - Create a new init case (13) for creating 3-d CAM-MPAS grids.
