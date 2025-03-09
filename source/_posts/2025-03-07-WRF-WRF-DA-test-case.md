@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: https://i.imgur.com/RwpxULg.png
-banner_img: https://i.imgur.com/RwpxULg.png
+index_img: https://i.imgur.com/UCC2t0I.png
+banner_img: https://i.imgur.com/UCC2t0I.png
 ---
 
 # 3dvar test case
@@ -67,6 +67,8 @@ ln -sf ../WRFDA/var/build/da_wrfvar.exe .
 ./da_wrfvar.exe >& wrfda.out
 ```
 
+![](https://i.imgur.com/hijsnEh.png){width=500}
+
 | File                | Details                                                                                                                                                                                       |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | cost_fn             | Details the various components of the cost function for each outer iteration                                                                                                                  |
@@ -93,6 +95,12 @@ A number of datasets which provide observation data and/or background atmospheri
 - CISL RDA Observation datasets
 - Other radiance datasets
 
+{% gi 6 3-3%}
+![](https://i.imgur.com/qwGmXea.png)
+![](https://i.imgur.com/U33BnJT.png)
+![](https://i.imgur.com/ypKq7EP.png)
+![](https://i.imgur.com/9MDx45k.png)
+{% endgi%}
 
 ```sh
 $ ln -s OBS:2025010100 obs.2025010100
@@ -140,6 +148,8 @@ To run **OBSPROC**, type
 - Once `obsproc.exe` has completed successfully, you will see an observation data file, with the name formatted `obs_gts_YYYY-MM-DD_HH:NN:SS.3DVAR`, in the `obsproc` directory. 
 - `obs_gts_2025-01-01_00:00:00.3DVAR` is generated if sucessful
 - `ln -s ob.ascii -> obs_gts_2025-01-01_00:00:00.3DVAR`
+
+![](https://i.imgur.com/1TK81jI.png){width=500}
 
 # useful `.ncl`
 

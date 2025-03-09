@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/PdvPtL0.png
+banner_img: https://i.imgur.com/PdvPtL0.png
 ---
 
 - Read [**MPAS |WRF | Solar Energy**](https://waipangsze.github.io/2025/02/12/MPAS-WRF-Solar-Energy/)
