@@ -118,6 +118,7 @@ CMAQ（Community Multiscale Air Quality 通用多尺度空氣品質）模型，�
 ![The framework for the WRF-SMOKE-CMAQ modeling system. From Yang, Xiaochun, et al. "New method for evaluating winter air quality: PM2. 5 assessment using Community Multi-Scale Air Quality Modeling (CMAQ) in Xi'an." Atmospheric Environment 211 (2019): 18-28.](https://i.imgur.com/EKYGIut.jpeg){width=500}
 ![](https://i.imgur.com/BQmCiOd.png){width=500}
 ![](https://i.imgur.com/g3DB0G8.png){width=500}
+![](https://i.imgur.com/aK64IsW.png){width=500}
 
 # 空氣品質模式簡介
 
@@ -172,6 +173,11 @@ $$
 
 這個反應對於空氣品質有重要影響，因為NO是一種污染物，通常來自於汽車排放和工業活動，而O3則是一種主要的地面臭氧污染物。這些反應有助於減少大氣中的臭氧濃度，但同時也會產生NO₂，這也是一種有害的空氣污染物。
 
+{% gi 4 2-2%}
+![](https://i.imgur.com/SOd6pGr.png)
+![](https://i.imgur.com/ctiahcF.png)
+![](https://i.imgur.com/xUFhGT3.png)
+{% endgi %}
 
 # TW-行政院環境保護署
 

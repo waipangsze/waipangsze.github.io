@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/u13Gj88.png
+banner_img: https://i.imgur.com/u13Gj88.png
 ---
 
 - [SMOKE github](https://github.com/CEMPD/SMOKE/wiki/Running-SMOKE-using-EPA's-Emissions-Modeling-Platforms)
