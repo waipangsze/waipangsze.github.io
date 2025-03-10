@@ -29,11 +29,61 @@ Spack-stack provides a practical framework for setting up and managing software 
 
 [spack-stack: A reproducible, many-platform software stack for operational weather applications (PPT)](https://epic.noaa.gov/wp-content/uploads/2023/08/UIFCW-2023-Thu-17.-RICHERT_spack-stack-UIFCW-July-2023.pdf)
 
-spack-stack is a set of Spack configurations and extensions
-{:.info}
+{% note primary %}
+**spack-stack** is a set of Spack configurations and extensions
+{% endnote %}
 
-spack-stack is mainly a collection of Spack configuration files, but provides a Spack extension to simplify the installation process
-{:.info}
+{% note primary %}
+**spack-stack** is mainly a collection of Spack configuration files, but provides a Spack extension to simplify the installation process
+{% endnote %}
+
+- [**Introduction to spack-stack Building JEDI bundles on your own machine | 2024**](https://www2.mmm.ucar.edu/projects/mpas-jedi/tutorial/202410HOWARD/lectures/12-spackstack.pdf)
+
+# Prerequisites (Micromamba Env)
+
+## Prerequisites: Ubuntu (one-off)
+
+- <https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#prerequisites-ubuntu-one-off>
+
+{% fold info @Prerequisites: Ubuntu (one-off) %}
+```sh
+sudo su
+apt-get update
+apt-get upgrade
+
+Compilers
+apt install -y gcc g++ gfortran gdb
+
+Environment module support
+Note: lmod is available in 22.04, but is out of date: https://github.com/JCSDA/spack-stack/issues/593
+apt install -y environment-modules
+
+Misc
+apt install -y build-essential
+apt install -y libkrb5-dev
+apt install -y m4
+apt install -y git
+apt install -y git-lfs
+apt install -y bzip2
+apt install -y unzip
+apt install -y automake
+apt install -y autopoint
+apt install -y gettext
+apt install -y texlive
+apt install -y libcurl4-openssl-dev
+apt install -y libssl-dev
+apt install -y wget
+
+Note - only needed for running JCSDA's
+JEDI-Skylab system (using R2D2 localhost)
+apt install -y mysql-server
+apt install -y libmysqlclient-dev
+
+Exit root session
+exit
+
+```
+{% endfold %}
 
 # New spack-stack directory structure
 
@@ -46,8 +96,9 @@ git clone --recurse-submodules https://github.com/JCSDA/spack-stack
 
 optionally with, e.g., '-b release/1.4.1' to specify the version
 
+```sh
 source \<path to spack-stack directory\>/setup.sh
-{:.info}
+```
 
 # New environment
 
