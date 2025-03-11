@@ -1,0 +1,940 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Map of Local Climate Zones (LCZs)  LCZs source  Fast and easy Local Climate Zone mapping  My example: https:&#x2F;&#x2F;waipangsze.github.io&#x2F;2024&#x2F;10&#x2F;07&#x2F;Global-LCZ-for-Urban&#x2F;#some-regional-lcz-datasets tiff fil">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS | Convert LCZs into static.nc">
+<meta property="og:url" content="https://waipangsze.github.io/2025/03/11/MPAS-Convert-LCZs-into-static-nc/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Map of Local Climate Zones (LCZs)  LCZs source  Fast and easy Local Climate Zone mapping  My example: https:&#x2F;&#x2F;waipangsze.github.io&#x2F;2024&#x2F;10&#x2F;07&#x2F;Global-LCZ-for-Urban&#x2F;#some-regional-lcz-datasets tiff fil">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/5tUhQAG.png">
+<meta property="article:published_time" content="2025-03-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-11T23:14:59.649Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="Urban">
+<meta property="article:tag" content="UCM">
+<meta property="article:tag" content="LCZs">
+<meta property="article:tag" content="UCPs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/5tUhQAG.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS | Convert LCZs into static.nc - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/5tUhQAG.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS | Convert LCZs into static.nc"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-11 00:00" pubdate>
+          March 11, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          779 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS | Convert LCZs into static.nc</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li><a href="https://waipangsze.github.io/2024/10/07/Global-LCZ-for-Urban/"><strong>Map of Local Climate Zones (LCZs)</strong></a></li>
+</ul>
+<h1 id="lczs-source">LCZs source</h1>
+<ul>
+<li>Fast and easy Local Climate Zone mapping
+<ul>
+<li>My example: <a href="https://waipangsze.github.io/2024/10/07/Global-LCZ-for-Urban/#some-regional-lcz-datasets" class="uri">https://waipangsze.github.io/2024/10/07/Global-LCZ-for-Urban/#some-regional-lcz-datasets</a></li>
+<li><code>tiff</code> file</li>
+</ul></li>
+</ul>
+<h2 id="convert-tif-to-netcdf">Convert tif to netcdf</h2>
+<ul>
+<li>My Code: <a href="https://waipangsze.github.io/2024/10/07/Global-LCZ-for-Urban/#convert-tif-to-netcdf" class="uri">https://waipangsze.github.io/2024/10/07/Global-LCZ-for-Urban/#convert-tif-to-netcdf</a></li>
+</ul>
+<h1 id="convert-lczs-into-mpas">Convert LCZs into MPAS</h1>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>convert2LCZ.py
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os, math, time, sys, glob, logging<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">from</span> scipy <span class="hljs-keyword">import</span> stats <span class="hljs-keyword">as</span> st<br><br>logging.basicConfig(level=logging.WARNING) <span class="hljs-comment"># DEBUG, INFO, WARNING</span><br><br>in_static = xr.open_dataset(<span class="hljs-string">&quot;in_static.nc&quot;</span>)<br>lcz_dataset = xr.open_dataset(<span class="hljs-string">&quot;lcz.nc&quot;</span>)<br><br><span class="hljs-built_in">print</span>(in_static)<br><span class="hljs-built_in">print</span>(lcz_dataset)<br><br>latCell = in_static[<span class="hljs-string">&quot;latCell&quot;</span>][:].values*<span class="hljs-number">57.2957795</span><br>lonCell = in_static[<span class="hljs-string">&quot;lonCell&quot;</span>][:].values*<span class="hljs-number">57.2957795</span><br>nCells  = latCell.shape[<span class="hljs-number">0</span>]<br>dcEdge = in_static[<span class="hljs-string">&quot;dcEdge&quot;</span>][:].values <span class="hljs-comment"># meter</span><br>edgesOnCell = in_static[<span class="hljs-string">&quot;edgesOnCell&quot;</span>][:].values<br>nEdges = dcEdge.shape[<span class="hljs-number">0</span>]<br>maxEdges = edgesOnCell.shape[<span class="hljs-number">1</span>]<br>ivgtyp = in_static[<span class="hljs-string">&quot;ivgtyp&quot;</span>][:].values<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=&quot;</span>*<span class="hljs-number">40</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;nCells, nEdges, maxEdges = &quot;</span>, nCells, nEdges, maxEdges)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;latCell     = &quot;</span>, latCell.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;lonCell     = &quot;</span>, lonCell.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;dcEdge      = &quot;</span>, dcEdge.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;edgesOnCell = &quot;</span>, edgesOnCell.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;ivgtyp      = &quot;</span>, ivgtyp.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;min/max     = &quot;</span>, np.<span class="hljs-built_in">min</span>(latCell), np.<span class="hljs-built_in">max</span>(latCell), np.<span class="hljs-built_in">min</span>(lonCell), np.<span class="hljs-built_in">max</span>(lonCell))<br><br>lat = lcz_dataset[<span class="hljs-string">&quot;lat&quot;</span>][:].values<br>lon = lcz_dataset[<span class="hljs-string">&quot;lon&quot;</span>][:].values<br>Band2 = lcz_dataset[<span class="hljs-string">&quot;Band2&quot;</span>][:].values<br>nlat = lat.shape[<span class="hljs-number">0</span>]<br>nlon = lon.shape[<span class="hljs-number">0</span>]<br><br>min_lat, max_lat = np.<span class="hljs-built_in">min</span>(lat), np.<span class="hljs-built_in">max</span>(lat)<br>min_lon, max_lon = np.<span class="hljs-built_in">min</span>(lon), np.<span class="hljs-built_in">max</span>(lon)<br>dlatlon = np.<span class="hljs-built_in">abs</span>(lat[<span class="hljs-number">1</span>] - lat[<span class="hljs-number">0</span>])*<span class="hljs-number">111</span> <span class="hljs-comment"># deg to km</span><br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=&quot;</span>*<span class="hljs-number">40</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;nlat, nlon = &quot;</span>, nlat, nlon)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;lat        = &quot;</span>, lat.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;lon        = &quot;</span>, lon.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;min_lat, max_lat  = &quot;</span>, min_lat, max_lat)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;min_lon, max_lon  = &quot;</span>, min_lon, max_lon)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;diff lat/lon = &quot;</span>, lat[<span class="hljs-number">1</span>:<span class="hljs-number">5</span>]-lat[<span class="hljs-number">0</span>:<span class="hljs-number">4</span>], lon[<span class="hljs-number">1</span>:<span class="hljs-number">5</span>]-lon[<span class="hljs-number">0</span>:<span class="hljs-number">4</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Band2      = &quot;</span>, Band2.shape)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=&quot;</span>*<span class="hljs-number">40</span>)<br><span class="hljs-comment">#radius = 1km</span><br>tmp_count_urban = <span class="hljs-number">0</span><br>tmp_count_urban_change = <span class="hljs-number">0</span><br><span class="hljs-comment">##</span><br><span class="hljs-keyword">for</span> px <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(nCells): <span class="hljs-comment"># nCells</span><br>	<span class="hljs-keyword">if</span>(px%<span class="hljs-number">5000</span> == <span class="hljs-number">0</span>):<br>		<span class="hljs-built_in">print</span>(<span class="hljs-built_in">round</span>(px/nCells*<span class="hljs-number">100</span>), <span class="hljs-string">&quot; %&quot;</span>)<br>	<br>	<span class="hljs-keyword">if</span>(ivgtyp[px] == <span class="hljs-number">13</span> <span class="hljs-keyword">or</span> ivgtyp[px] == <span class="hljs-number">32</span>): <span class="hljs-comment"># 13 is urban or 32 is urban</span><br>		tmp_count_urban = tmp_count_urban + <span class="hljs-number">1</span><br>		<span class="hljs-keyword">if</span>( (min_lat &lt;= latCell[px]) <span class="hljs-keyword">and</span> (max_lat &gt;= latCell[px]) <span class="hljs-keyword">and</span> (min_lon &lt;= lonCell[px]) <span class="hljs-keyword">and</span> (max_lon &gt;= lonCell[px]) ): <span class="hljs-comment"># within LCZ dataset</span><br>			index_lat = np.argmin(np.<span class="hljs-built_in">abs</span>(lat - latCell[px]))<br>			index_lon = np.argmin(np.<span class="hljs-built_in">abs</span>(lon - lonCell[px]))<br>			tmp_info = <span class="hljs-built_in">str</span>(latCell[px] - lat[index_lat]) +<span class="hljs-string">&quot; &quot;</span>+ <span class="hljs-built_in">str</span>(lonCell[px] - lon[index_lon]) +<span class="hljs-string">&quot; &quot;</span>+ <span class="hljs-built_in">str</span>(Band2[index_lat, index_lon])<br>			logging.info(tmp_info)<br>			tmp_count_urban_change = tmp_count_urban_change +<span class="hljs-number">1</span><br>			<br>			<span class="hljs-comment">#</span><br>			<span class="hljs-comment"># LCZ: 1 to 17 </span><br>			<span class="hljs-comment"># Only 1 to 11 are used and corresponding to 31 (LCZ1) to 41 (LCZE = LCZ11, index = 15)</span><br>			<span class="hljs-comment"># LCZ E (LCZ 11): Rock and paved;</span><br>			<span class="hljs-comment">#</span><br>			<span class="hljs-keyword">if</span> ( Band2[index_lat, index_lon] &lt; <span class="hljs-number">11</span> <span class="hljs-keyword">or</span> Band2[index_lat, index_lon] == <span class="hljs-number">15</span> ):<br>				<span class="hljs-comment">#</span><br>				<span class="hljs-comment"># For select from nearest cell,</span><br>				<span class="hljs-comment"># in_static[&quot;ivgtyp&quot;][px] = Band2[index_lat, index_lon] + 30</span><br>				<span class="hljs-comment">#</span><br>				tmp_dx = np.<span class="hljs-built_in">min</span>(dcEdge[edgesOnCell[px,:]])/<span class="hljs-number">1000</span>   <span class="hljs-comment"># meter to km</span><br>				tmp_num_cell = <span class="hljs-built_in">round</span>((tmp_dx/dlatlon)/<span class="hljs-number">2</span>)          <span class="hljs-comment"># count and take half</span><br>				<br>				<span class="hljs-comment">#</span><br>				<span class="hljs-comment"># For take mode, may check the boundary of Band2</span><br>				<span class="hljs-comment"># 1) remove 11,12,13,14,16,17</span><br>				<span class="hljs-comment">#</span><br>				<br>				tmp_ar1 = Band2[index_lat-tmp_num_cell:index_lat+tmp_num_cell, index_lon-tmp_num_cell:index_lon+tmp_num_cell].flatten()<br>				tmp_ar2 = tmp_ar1<br>				<br>				<span class="hljs-comment"># only 1-10 and 15(LCZ11) are our needs on LCZ dataset.</span><br>				<span class="hljs-comment"># then, remove the test.</span><br>				<span class="hljs-keyword">for</span> py <span class="hljs-keyword">in</span> [<span class="hljs-number">11</span>,<span class="hljs-number">12</span>,<span class="hljs-number">13</span>,<span class="hljs-number">14</span>,<span class="hljs-number">16</span>,<span class="hljs-number">17</span>]:<br>					<span class="hljs-keyword">if</span> np.where(tmp_ar2 == py)[<span class="hljs-number">0</span>].size != <span class="hljs-number">0</span>: <span class="hljs-comment"># if not empyt array</span><br>						tmp_ar2 = np.delete(tmp_ar2, np.where(tmp_ar2 == py)[<span class="hljs-number">0</span>][:])<br>				<br>				tmp_array = tmp_ar2 + <span class="hljs-number">30</span><br>				tmp = st.mode(tmp_array)[<span class="hljs-number">0</span>] <span class="hljs-comment"># stats. mode. Compute the mode (most common value) along an axis of an array.</span><br>				<br>				<span class="hljs-comment"># To check wehther LCZ dataset is None value?</span><br>				<span class="hljs-comment"># Some LCZ datasets has 0 that is nothing.</span><br>				<span class="hljs-keyword">if</span> (<span class="hljs-built_in">len</span>(tmp) == <span class="hljs-number">0</span>):<br>					<span class="hljs-keyword">continue</span><br>			        <br>				<span class="hljs-keyword">if</span> (<span class="hljs-built_in">int</span>(tmp[<span class="hljs-number">0</span>]) == <span class="hljs-number">45</span>):<br>					in_static[<span class="hljs-string">&quot;ivgtyp&quot;</span>][px] = <span class="hljs-number">41</span><br>				<span class="hljs-keyword">else</span>:	<br>					in_static[<span class="hljs-string">&quot;ivgtyp&quot;</span>][px] = <span class="hljs-built_in">int</span>(tmp[<span class="hljs-number">0</span>])<br><br>			<span class="hljs-keyword">else</span>:<br>				in_static[<span class="hljs-string">&quot;ivgtyp&quot;</span>][px] = <span class="hljs-number">32</span><br>		<span class="hljs-keyword">else</span>:<br>			in_static[<span class="hljs-string">&quot;ivgtyp&quot;</span>][px] = <span class="hljs-number">32</span><br>				<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Total urban in MPAS mesh  = &quot;</span>, tmp_count_urban)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Change urban in MPAS mesh = &quot;</span>, tmp_count_urban_change)<br><span class="hljs-comment">#	in_static[&quot;ivgtyp&quot;][:] = 31/32/33</span><br>in_static.to_netcdf(<span class="hljs-string">&quot;out_static.nc&quot;</span>)<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="example">Example</h2>
+<p>A test case:</p>
+<ul>
+<li>GBA</li>
+<li>Tokyo</li>
+<li>Houston</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>Example
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
+        <div class="fold-content">
+          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs console">├── convert2LCZ.py<br>├── final_static.nc -&gt; final-process/step3/out_static.nc<br>├── GBA<br>│   ├── arcgis_lcz_colormap.clr<br>│   ├── c672ca892c88d1e078a81e7a085913396172f81c_factsheet.html<br>│   ├── c672ca892c88d1e078a81e7a085913396172f81c.kmz<br>│   ├── c672ca892c88d1e078a81e7a085913396172f81c.tif<br>│   ├── data<br>│   ├── factsheet_files<br>│   ├── figures<br>│   ├── GBA.nc -&gt; lcz_filter_v3.nc<br>│   ├── lcz_filter_v3.nc<br>│   ├── lcz_filter_v3.tif -&gt; c672ca892c88d1e078a81e7a085913396172f81c.tif<br>│   ├── log.log<br>│   ├── qgis_lcz_colormap.txt<br>│   └── run_tif2nc.sh -&gt; ../run_tif2nc.sh<br>├── final-process<br>│   ├── convert2LCZ.py -&gt; ../convert2LCZ.py<br>│   ├── lcz_filter_v3.nc -&gt; ../lcz_filter_v3.nc<br>│   ├── run_nc2LCZ.sh -&gt; ../run_nc2LCZ.sh<br>│   ├── static.nc -&gt; /home/wpsze/static.nc<br>│   ├── step1<br>│   │   ├── convert2LCZ.py -&gt; ../convert2LCZ.py<br>│   │   ├── GBA.nc -&gt; ../../../GBA/GBA.nc<br>│   │   ├── in_static.nc -&gt; static.nc<br>│   │   ├── lcz.nc -&gt; GBA.nc<br>│   │   ├── out_static.nc<br>│   │   ├── run_nc2LCZ.sh -&gt; ../run_nc2LCZ.sh<br>│   │   └── static.nc -&gt; ../static.nc<br>│   ├── step2<br>│   │   ├── convert2LCZ.py -&gt; ../../convert2LCZ.py<br>│   │   ├── in_static.nc -&gt; ../step1/out_static.nc<br>│   │   ├── lcz.nc -&gt; Tokyo.nc<br>│   │   ├── out_static.nc<br>│   │   ├── run_nc2LCZ.sh -&gt; ../run_nc2LCZ.sh<br>│   │   └── Tokyo.nc -&gt; ../../../Tokyo/Tokyo.nc<br>│   └── step3<br>│       ├── convert2LCZ.py -&gt; ../convert2LCZ.py<br>│       ├── Houston.nc -&gt; ../../../Houston/map/Houston.nc<br>│       ├── in_static.nc -&gt; ../step2/out_static.nc<br>│       ├── lcz.nc -&gt; Houston.nc<br>│       ├── out_static.nc<br>│       └── run_nc2LCZ.sh -&gt; ../run_nc2LCZ.sh<br>├── Houston<br>│   ├── 037c80744fc1034b8472f594d829c53ce1cccfa7.zip<br>│   ├── 67a3371158ad3ac12d720fde089622c259e8e400.zip<br>│   └── map<br>├── lcz_filter_v3.nc<br>├── lcz_filter_v3.tif<br>├── run_nc2LCZ.sh<br>├── run_tif2nc.sh<br>└── Tokyo<br>    ├── 67a3371158ad3ac12d720fde089622c259e8e400_factsheet.html<br>    ├── 67a3371158ad3ac12d720fde089622c259e8e400.kmz<br>    ├── 67a3371158ad3ac12d720fde089622c259e8e400.tif<br>    ├── arcgis_lcz_colormap.clr<br>    ├── data<br>    ├── factsheet_files<br>    ├── figures<br>    ├── lcz_filter_v3.nc<br>    ├── lcz_filter_v3.tif -&gt; 67a3371158ad3ac12d720fde089622c259e8e400.tif<br>    ├── log.log<br>    ├── qgis_lcz_colormap.txt<br>    ├── run_tif2nc.sh -&gt; ../run_tif2nc.sh<br>    └── Tokyo.nc -&gt; lcz_filter_v3.nc<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">
+        <div class="fold-arrow">▶</div>run_tif2nc.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-6ae3e036">
+        <div class="fold-content">
+          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate gdal<br><br>whereis gdal_translate<br><br><span class="hljs-comment"># for checking</span><br>gdal_translate --long-usage<br><br><span class="hljs-comment"># gdal_translate -of netCDF -co &quot;FOMRAT=NC4&quot; ia.tif ia.nc</span><br><br><span class="hljs-comment"># ln -s lcz_filter_v3.nc output.nc</span><br><br>gdal_translate -of netCDF -co <span class="hljs-string">&quot;FOMRAT=NC4&quot;</span> lcz_filter_v3.tif lcz_filter_v3.nc <br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/Urban/" class="print-no-link">#Urban</a>
+      
+        <a href="/tags/UCM/" class="print-no-link">#UCM</a>
+      
+        <a href="/tags/LCZs/" class="print-no-link">#LCZs</a>
+      
+        <a href="/tags/UCPs/" class="print-no-link">#UCPs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS | Convert LCZs into static.nc</div>
+      <div>https://waipangsze.github.io/2025/03/11/MPAS-Convert-LCZs-into-static-nc/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 11, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>March 12, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/10/MPAS-CMAQ-SMOKE-Emission-Inventory-processing-data/" title="MPAS-CMAQ | SMOKE | Emission Inventory processing data">
+                        <span class="hidden-mobile">MPAS-CMAQ | SMOKE | Emission Inventory processing data</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
