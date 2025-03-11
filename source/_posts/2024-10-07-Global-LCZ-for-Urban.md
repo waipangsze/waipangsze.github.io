@@ -2,7 +2,7 @@
 layout: post
 title: Map of Local Climate Zones (LCZs) 
 categories: [NWP]
-tags: [WRF, MPAS, Urban, UCM, LCZ]
+tags: [WRF, MPAS, Urban, UCM, LCZs, UCPs]
 author: wpsze
 math: true
 mathjax: true
