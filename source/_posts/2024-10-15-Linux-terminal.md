@@ -36,6 +36,7 @@ grep -irn -C 3 "xxx" ./*
 grep -irn 'pattern1\|pattern2' fileName_or_filePath
 
 find ./ -name "xxx"
+find - L ./ -name "xxx" # -L :Follow symbolic links
 find ./ -type f | wc -l # count how many files
 find ./ -size +1M       # large 1MB size
 

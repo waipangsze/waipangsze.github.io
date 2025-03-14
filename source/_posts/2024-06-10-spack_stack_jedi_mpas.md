@@ -37,7 +37,7 @@ Spack-stack provides a practical framework for setting up and managing software 
 **spack-stack** is mainly a collection of Spack configuration files, but provides a Spack extension to simplify the installation process
 {% endnote %}
 
-- [**Introduction to spack-stack Building JEDI bundles on your own machine | 2024**](https://www2.mmm.ucar.edu/projects/mpas-jedi/tutorial/202410HOWARD/lectures/12-spackstack.pdf)
+- [**Introduction to spack-stack Building JEDI bundles on your own machine | October 4, 2024**](https://www2.mmm.ucar.edu/projects/mpas-jedi/tutorial/202410HOWARD/lectures/12-spackstack.pdf)
 
 # Prerequisites (Micromamba Env)
 
