@@ -264,7 +264,48 @@ But, ERA5's skintemp and sst are different as above.
 ![init.nc - sst.nc, and same as above figure of ERA5 grib file](https://i.imgur.com/YHSha1w.png){width=500}
 ![It is init.nc: skintemp - sst that has shown sst is same as skintemp in init_atmosphere step in MPAS.](https://i.imgur.com/Fwn5ZjU.png){width=500}
 
-### Update SST on MPAS time-step,
+### core_atmosphere
+
+- `src/core_atmosphere/physics/mpas_atmphys_manager.F`
+- read sfc input
+```fortran
+type(mpas_pool_type),pointer:: sfc_input
+block => domain % blocklist
+call mpas_pool_get_subpool(block%structs,'sfc_input'   ,sfc_input   )
+```
+- physics_update_sst
+```fortran
+  !update surface boundary conditions with input sea-surface temperatures and fractional
+  !sea-ice coverage:
+  if(mpas_is_alarm_ringing(clock,sfcbdyAlarmID,ierr=ierr)) then
+      call mpas_reset_clock_alarm(clock,sfcbdyAlarmID,ierr=ierr)
+      if(config_sst_update) &
+        call physics_update_sst(domain%dminfo,config_frac_seaice,mesh,sfc_input,diag_physics)
+  endif
+```
+
+- **MPAS_stream_mgr_get_property** read sst.nc files
+
+```fortran
+!set alarm for updating the surface boundary conditions:
+ if (config_sst_update) then
+    call MPAS_stream_mgr_get_property(stream_manager, 'surface', MPAS_STREAM_PROPERTY_RECORD_INTV, stream_interval, &
+                                      direction=MPAS_STREAM_INPUT, ierr=ierr)
+    call mpas_set_timeInterval(alarmTimeStep,timeString=stream_interval,ierr=ierr)
+    alarmStartTime = startTime
+    call mpas_add_clock_alarm(clock,sfcbdyAlarmID,alarmStartTime,alarmTimeStep,ierr=ierr)
+    if(ierr /= 0) &
+       call physics_error_fatal('subroutine physics_init: error creating alarm sfcbdy')
+ endif
+``` 
+
+
+- `src/core_atmosphere/Registry.xml`
+```xml
+        <var_struct name="sfc_input" time_levs="1">
+```
+
+#### Update SST on MPAS time-step,
 
 - For uptated interval = 3 hour,
   - T=0, from SST(T=0) of init.nc
@@ -277,6 +318,25 @@ But, ERA5's skintemp and sst are different as above.
   - T>6 to T=12, are same as SST(T=6)
   - T>12 to T=18, are same as SST(T=12)
 
+## src/core_init_atmosphere/Registry.xml
+
+- [MPAS-Model/src/core_init_atmosphere/Registry.xml](https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347)
+
+```xml
+<package name="sfc_update" description="Used by test cases that produce surface updates."/>
+
+<nml_option name="config_input_sst"             type="logical"       default_value="false"
+      units="-"
+      description="Whether to re-compute SST and sea-ice fields from surface input data set; should be set to .true. when running case 8"
+      possible_values="true or false"/>
+
+<var name="sst" type="real" dimensions="nCells Time" units="K"
+        description="sea-surface temperature"
+        packages="met_stage_out;sfc_update"/>
+<var name="xice" type="real" dimensions="nCells Time" units="unitless"
+        description="fractional area coverage of sea-ice"
+        packages="met_stage_out;sfc_update"/>
+```
 ## namelist.init_atmosphere
 
 The key namelist options that must be set are shown below; other options can be ignored.
@@ -473,24 +533,13 @@ if __name__ == "__main__":
 
 - or `$ ncdiff sst.nc init.nc diff-sst.nc`
 
-## Registry.xml
-
-- [MPAS-Model/src/core_init_atmosphere/Registry.xml](https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347)
+## src/core_atmosphere/Registry.xml
 
 ```xml
-<package name="sfc_update" description="Used by test cases that produce surface updates."/>
-
-<nml_option name="config_input_sst"             type="logical"       default_value="false"
+<nml_option name="config_sst_update" type="logical" default_value="false"
       units="-"
-      description="Whether to re-compute SST and sea-ice fields from surface input data set; should be set to .true. when running case 8"
-      possible_values="true or false"/>
-
-<var name="sst" type="real" dimensions="nCells Time" units="K"
-        description="sea-surface temperature"
-        packages="met_stage_out;sfc_update"/>
-<var name="xice" type="real" dimensions="nCells Time" units="unitless"
-        description="fractional area coverage of sea-ice"
-        packages="met_stage_out;sfc_update"/>
+      description="logical for configuration of sea-surface temperature"
+      possible_values=".true. for time-varying sea-surface temperatures; .false., otherwise"/>
 ```
 
 ## streams.atmosphere

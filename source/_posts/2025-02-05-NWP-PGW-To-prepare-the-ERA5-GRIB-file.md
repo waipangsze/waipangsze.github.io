@@ -69,7 +69,7 @@ If metadata like `dataDate`, `shortName`, or `typeOfLevel` is incorrect or missi
 Set the date and variable short name (e.g., for `2-meter temperature`):
 
 ```bash
-grib_set -s dataDate=20250101,shortName=t2m era5_with_signal.grib era5_with_signal_updated.grib
+grib_set -s dataDate=20250101,dataTime=${hh}00,shortName=t2m era5_with_signal.grib era5_with_signal_updated.grib
 ```
 
 #### Example 2: Set `typeOfLevel` and `level`
@@ -105,7 +105,7 @@ INPUT_GRIB="era5_with_signal.grib"
 OUTPUT_GRIB="era5_with_signal_final.grib"
 
 # Update metadata
-grib_set -s dataDate=20250101,shortName=t2m,typeOfLevel=surface,level=2 $INPUT_GRIB $OUTPUT_GRIB
+grib_set -s dataDate=20250101,dataTime=${hh}00,shortName=t2m,typeOfLevel=surface,level=2 $INPUT_GRIB $OUTPUT_GRIB
 
 # Verify metadata
 grib_ls $OUTPUT_GRIB
@@ -137,8 +137,8 @@ cdo -f grb copy u10.nc u10.grib
 
 #### Set Metadata for Each GRIB File:
 ```bash
-grib_set -s dataDate=20250101,shortName=t2m,typeOfLevel=surface,level=2 t2m.grib t2m_final.grib
-grib_set -s dataDate=20250101,shortName=u10,typeOfLevel=surface,level=10 u10.grib u10_final.grib
+grib_set -s dataDate=20250101,dataTime=${hh}00,shortName=t2m,typeOfLevel=surface,level=2 t2m.grib t2m_final.grib
+grib_set -s dataDate=20250101,dataTime=${hh}00,shortName=u10,typeOfLevel=surface,level=10 u10.grib u10_final.grib
 ```
 
 #### Merge the GRIB Files:
@@ -156,7 +156,7 @@ cdo merge t2m_final.grib u10_final.grib era5_with_signal_final.grib
 
 2. Assign GRIB metadata:
    ```bash
-   grib_set -s dataDate=YYYYMMDD,shortName=VAR,typeOfLevel=LEVEL_TYPE,level=LEVEL era5_with_signal.grib era5_with_signal_final.grib
+   grib_set -s dataDate=YYYYMMDD,dataTime=${hh}00,shortName=VAR,typeOfLevel=LEVEL_TYPE,level=LEVEL era5_with_signal.grib era5_with_signal_final.grib
    ```
 
 3. Verify the final GRIB file:
@@ -197,8 +197,8 @@ cdo -f grb copy skt.nc skt.grib
 cdo showname sst.grib
 cdo showname skt.grib
 
-grib_set -s dataDate=${yyyymmdd},shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib
-grib_set -s dataDate=${yyyymmdd},shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib
 
 cdo showname sst_final.grib
 cdo showname skt_final.grib
@@ -224,7 +224,7 @@ cdo invertlev t_lev.grib t.grib
 
 cdo showname t.grib
 
-grib_set -s dataDate=${yyyymmdd},shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib
 
 cdo showname t_final.grib
 
@@ -246,7 +246,7 @@ cdo invertlev r_lev.grib r.grib
 
 cdo showname r.grib
 
-grib_set -s dataDate=${yyyymmdd},shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib
 
 cdo showname r_final.grib
 
@@ -289,8 +289,8 @@ cdo -f grb copy skt.nc skt.grib
 cdo showname sst.grib
 cdo showname skt.grib
 
-grib_set -s dataDate=${yyyymmdd},shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib
-grib_set -s dataDate=${yyyymmdd},shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=sst,typeOfLevel=surface,level=0 sst.grib sst_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=skt,typeOfLevel=surface,level=0 skt.grib skt_final.grib
 
 cdo showname sst_final.grib
 cdo showname skt_final.grib
@@ -316,7 +316,7 @@ cdo invertlev t_lev.grib t.grib
 
 cdo showname t.grib
 
-grib_set -s dataDate=${yyyymmdd},shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=t,typeOfLevel=isobaricInhPa t.grib t_final.grib
 
 cdo showname t_final.grib
 
@@ -338,7 +338,7 @@ cdo invertlev r_lev.grib r.grib
 
 cdo showname r.grib
 
-grib_set -s dataDate=${yyyymmdd},shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=r,typeOfLevel=isobaricInhPa r.grib r_final.grib
 
 cdo showname r_final.grib
 
@@ -356,7 +356,7 @@ cdo invertlev u_lev.grib u.grib
 
 cdo showname u.grib
 
-grib_set -s dataDate=${yyyymmdd},shortName=u,typeOfLevel=isobaricInhPa u.grib u_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=u,typeOfLevel=isobaricInhPa u.grib u_final.grib
 
 cdo showname u_final.grib
 
@@ -374,7 +374,7 @@ cdo invertlev v_lev.grib v.grib
 
 cdo showname v.grib
 
-grib_set -s dataDate=${yyyymmdd},shortName=v,typeOfLevel=isobaricInhPa v.grib v_final.grib
+grib_set -s dataDate=${yyyymmdd},dataTime=${hh}00,shortName=v,typeOfLevel=isobaricInhPa v.grib v_final.grib
 
 cdo showname v_final.grib
 
