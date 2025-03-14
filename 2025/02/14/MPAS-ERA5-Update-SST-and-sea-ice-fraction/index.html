@@ -28,14 +28,14 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/Gs7ezqA.png">
 <meta property="article:published_time" content="2025-02-14T03:49:00.000Z">
-<meta property="article:modified_time" content="2025-03-03T09:13:45.465Z">
+<meta property="article:modified_time" content="2025-03-14T03:50:22.550Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
-<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="ERA5">
-<meta property="article:tag" content="PGW">
 <meta property="article:tag" content="GFS">
+<meta property="article:tag" content="PGW">
 <meta property="article:tag" content="GRIB">
 <meta property="article:tag" content="NetCDF">
 <meta property="article:tag" content="CMIP6">
@@ -342,7 +342,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k words
+          1.6k words
         
       </span>
     
@@ -353,7 +353,7 @@
         
         
         
-          13 mins
+          14 mins
         
       </span>
     
@@ -585,7 +585,18 @@
 <figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-keyword">if</span> (config_met_interp) <span class="hljs-keyword">then</span><br><br>!ldf (<span class="hljs-number">2011</span>-<span class="hljs-number">11</span>-<span class="hljs-number">19</span>): added initialization <span class="hljs-keyword">of</span> the sea-surface temperature, seaice fraction, <span class="hljs-built_in">and</span><br>!seaice flag:<br>  sst = <span class="hljs-number">0.0</span><br>  xice = <span class="hljs-number">0.0</span><br>  seaice = <span class="hljs-number">0.0</span><br>!ldf <span class="hljs-keyword">end</span>.<br><br>! <span class="hljs-keyword">Set</span> SST based <span class="hljs-keyword">on</span> SKINTEMP field <span class="hljs-keyword">if</span> it wasn<span class="hljs-comment">&#x27;t found in input data</span><br><span class="hljs-keyword">if</span> (minval(sst) == <span class="hljs-number">0.0</span> .<span class="hljs-built_in">and</span>. maxval(sst) == <span class="hljs-number">0.0</span>) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-comment">&#x27;Setting SST from SKINTEMP&#x27;)</span><br>    !<span class="hljs-keyword">where</span> (landmask == <span class="hljs-number">0</span>) sst = skintemp<br>    sst = skintemp<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br></code></pre></td></tr></table></figure>
 <p>But, ERA5's skintemp and sst are different as above.</p>
 <p><img src="https://i.imgur.com/EIkck30.png" srcset="/img/loading.gif" lazyload alt="Left) init.nc, Right) sst.nc" /> <img src="https://i.imgur.com/YHSha1w.png" srcset="/img/loading.gif" lazyload alt="init.nc - sst.nc, and same as above figure of ERA5 grib file" width="500" /> <img src="https://i.imgur.com/Fwn5ZjU.png" srcset="/img/loading.gif" lazyload alt="It is init.nc: skintemp - sst that has shown sst is same as skintemp in init_atmosphere step in MPAS." width="500" /></p>
-<h3 id="update-sst-on-mpas-time-step">Update SST on MPAS time-step,</h3>
+<h3 id="core_atmosphere">core_atmosphere</h3>
+<ul>
+<li><code>src/core_atmosphere/physics/mpas_atmphys_manager.F</code></li>
+<li>read sfc input <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">type</span>(mpas_pool_type),<span class="hljs-keyword">pointer</span>:: sfc_input<br><span class="hljs-keyword">block</span> =&gt; domain % blocklist<br><span class="hljs-keyword">call</span> mpas_pool_get_subpool(<span class="hljs-keyword">block</span>%structs,<span class="hljs-string">&#x27;sfc_input&#x27;</span>   ,sfc_input   )<br></code></pre></td></tr></table></figure></li>
+<li><p>physics_update_sst <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!update surface boundary conditions with input sea-surface temperatures and fractional</span><br><span class="hljs-comment">!sea-ice coverage:</span><br><span class="hljs-keyword">if</span>(mpas_is_alarm_ringing(clock,sfcbdyAlarmID,ierr=ierr)) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_reset_clock_alarm(clock,sfcbdyAlarmID,ierr=ierr)<br>    <span class="hljs-keyword">if</span>(config_sst_update) &amp;<br>      <span class="hljs-keyword">call</span> physics_update_sst(domain%dminfo,config_frac_seaice,mesh,sfc_input,diag_physics)<br><span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure></p></li>
+<li><p><strong>MPAS_stream_mgr_get_property</strong> read sst.nc files</p></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!set alarm for updating the surface boundary conditions:</span><br> <span class="hljs-keyword">if</span> (config_sst_update) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> MPAS_stream_mgr_get_property(stream_manager, <span class="hljs-string">&#x27;surface&#x27;</span>, MPAS_STREAM_PROPERTY_RECORD_INTV, stream_interval, &amp;<br>                                      direction=MPAS_STREAM_INPUT, ierr=ierr)<br>    <span class="hljs-keyword">call</span> mpas_set_timeInterval(alarmTimeStep,timeString=stream_interval,ierr=ierr)<br>    alarmStartTime = startTime<br>    <span class="hljs-keyword">call</span> mpas_add_clock_alarm(clock,sfcbdyAlarmID,alarmStartTime,alarmTimeStep,ierr=ierr)<br>    <span class="hljs-keyword">if</span>(ierr /= <span class="hljs-number">0</span>) &amp;<br>       <span class="hljs-keyword">call</span> physics_error_fatal(<span class="hljs-string">&#x27;subroutine physics_init: error creating alarm sfcbdy&#x27;</span>)<br> <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>src/core_atmosphere/Registry.xml</code> <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">var_struct</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sfc_input&quot;</span> <span class="hljs-attr">time_levs</span>=<span class="hljs-string">&quot;1&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="update-sst-on-mpas-time-step">Update SST on MPAS time-step,</h4>
 <ul>
 <li>For uptated interval = 3 hour,
 <ul>
@@ -602,15 +613,20 @@
 <li>T&gt;12 to T=18, are same as SST(T=12)</li>
 </ul></li>
 </ul>
+<h2 id="srccore_init_atmosphereregistry.xml">src/core_init_atmosphere/Registry.xml</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347">MPAS-Model/src/core_init_atmosphere/Registry.xml</a></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sfc_update&quot;</span> <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Used by test cases that produce surface updates.&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_input_sst&quot;</span>             <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span>       <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;-&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Whether to re-compute SST and sea-ice fields from surface input data set; should be set to .true. when running case 8&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">possible_values</span>=<span class="hljs-string">&quot;true or false&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sst&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;K&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;sea-surface temperature&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;xice&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;unitless&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;fractional area coverage of sea-ice&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
 <h2 id="namelist.init_atmosphere">namelist.init_atmosphere</h2>
 <p>The key namelist options that must be set are shown below; other options can be ignored.</p>
 <p>Note in particular that we have set the <code>config_init_case</code> <strong>variable to 8!</strong> This is the initialization case used to create surface update files, instead of real-data initial conditions files.</p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c21ca059" role="button" aria-expanded="false" aria-controls="collapse-c21ca059">
         <div class="fold-arrow">▶</div>namelist.init_atmosphere
       </div>
-      <div class="fold-collapse collapse" id="collapse-5d5d193e">
+      <div class="fold-collapse collapse" id="collapse-c21ca059">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs namelist.init_atmosphere">&amp;nhyd_model<br>    config_init_case = 8<br>    config_start_time = &#x27;2014-09-10_00:00:00&#x27;<br>    config_stop_time = &#x27;2014-09-20_00:00:00&#x27;<br>/<br><br>&amp;data_sources<br>    config_sfc_prefix = &#x27;SST&#x27; # SST or ERA5: the prefix of the intermediate data files containing SST and sea-ice<br>    config_fg_interval = 86400<br>/<br><br>&amp;preproc_stages<br>    config_static_interp = false<br>    config_native_gwd_static = false<br>    config_vertical_grid = false<br>    config_met_interp = false<br>    config_input_sst = true<br>    config_frac_seaice = true<br>/<br>&amp;decomposition<br>    config_block_decomp_file_prefix = &#x27;x1.10242.graph.info.part.&#x27;<br>/<br></code></pre></td></tr></table></figure>
         </div>
@@ -623,10 +639,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bbf6858" role="button" aria-expanded="false" aria-controls="collapse-8bbf6858">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-98e16488" role="button" aria-expanded="false" aria-controls="collapse-98e16488">
         <div class="fold-arrow">▶</div>streams.init_atmosphere
       </div>
-      <div class="fold-collapse collapse" id="collapse-8bbf6858">
+      <div class="fold-collapse collapse" id="collapse-98e16488">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs streams.init_atmosphere">&lt;immutable_stream name=&quot;surface&quot;<br>                  type=&quot;output&quot;<br>                  filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>                  filename_interval=&quot;none&quot;<br>                  packages=&quot;sfc_update&quot;<br>                  output_interval=&quot;86400&quot;/&gt;<br></code></pre></td></tr></table></figure>
         </div>
@@ -635,10 +651,10 @@
 <h2 id="results">results</h2>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8e159bd8" role="button" aria-expanded="false" aria-controls="collapse-8e159bd8">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-1607c597" role="button" aria-expanded="false" aria-controls="collapse-1607c597">
         <div class="fold-arrow">▶</div>ncdump -h sst.2022-06-30_00.00.00.nc
       </div>
-      <div class="fold-collapse collapse" id="collapse-8e159bd8">
+      <div class="fold-collapse collapse" id="collapse-1607c597">
         <div class="fold-content">
           <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncdump -h sst.2022-06-30_00.00.00.nc</span><br>netcdf sst.2022-06-30_00.00.00 &#123;<br>dimensions:<br>	StrLen = 64 ;<br>	Time = UNLIMITED ; // (1 currently)<br>	nCells = 40962 ;<br>variables:<br>	char xtime(Time, StrLen) ;<br>		xtime:units = &quot;YYYY-MM-DD_hh:mm:ss&quot; ;<br>		xtime:long_name = &quot;Model valid time&quot; ;<br>	float sst(Time, nCells) ;<br>		sst:units = &quot;K&quot; ;<br>		sst:long_name = &quot;sea-surface temperature&quot; ;<br>	float xice(Time, nCells) ;<br>		xice:units = &quot;unitless&quot; ;<br>		xice:long_name = &quot;fractional area coverage of sea-ice&quot; ;<br></code></pre></td></tr></table></figure>
         </div>
@@ -652,10 +668,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-42d133e0" role="button" aria-expanded="false" aria-controls="collapse-42d133e0">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-4f34dce5" role="button" aria-expanded="false" aria-controls="collapse-4f34dce5">
         <div class="fold-arrow">▶</div>plot_delta_sst.py
       </div>
-      <div class="fold-collapse collapse" id="collapse-42d133e0">
+      <div class="fold-collapse collapse" id="collapse-4f34dce5">
         <div class="fold-content">
           <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><br><span class="hljs-keyword">import</span> Ngl<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">from</span> netCDF4 <span class="hljs-keyword">import</span> Dataset<br><span class="hljs-keyword">import</span> math<br><span class="hljs-keyword">import</span> sys<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Get the name of the file containing the static information</span><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Usage: &#x27;</span>+sys.argv[<span class="hljs-number">0</span>]+<span class="hljs-string">&#x27; [mesh filename] &lt;field filename&gt;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        exit(<span class="hljs-number">0</span>)<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># The (lat,lon) the plot is to be centered over</span><br>    <span class="hljs-comment">#</span><br>    cenLat   = <span class="hljs-number">0.0</span><br>    cenLon   = <span class="hljs-number">0.0</span><br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Projection to use for plot</span><br>    <span class="hljs-comment">#</span><br>    projection = <span class="hljs-string">&#x27;CylindricalEquidistant&#x27;</span><br><br><br>    r2d = <span class="hljs-number">180.0</span> / math.pi             <span class="hljs-comment"># radians to degrees</span><br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">2</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">1</span>])<br>        g = f<br>    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">3</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">2</span>])<br>        g = Dataset(sys.argv[<span class="hljs-number">1</span>])<br><br>    rlist = Ngl.Resources()<br><span class="hljs-comment">#    rlist.wkWidth = 1200</span><br><span class="hljs-comment">#    rlist.wkHeight = 1200</span><br><br>    rlist.wkColorMap = <span class="hljs-string">&#x27;gui_default&#x27;</span><br><br>    wks_type = <span class="hljs-string">&#x27;png&#x27;</span><br>    wks = Ngl.open_wks(wks_type, <span class="hljs-string">&#x27;delta_sst&#x27;</span>, rlist)<br><br>    lonCell = g.variables[<span class="hljs-string">&#x27;lonCell&#x27;</span>][:] * r2d<br>    latCell = g.variables[<span class="hljs-string">&#x27;latCell&#x27;</span>][:] * r2d<br><br>    res = Ngl.Resources()<br><br>    res.sfXArray             = lonCell<br>    res.sfYArray             = latCell<br><br>    res.cnFillMode           = <span class="hljs-string">&#x27;AreaFill&#x27;</span><br><br>    res.cnFillOn             = <span class="hljs-literal">True</span><br>    res.cnLinesOn            = <span class="hljs-literal">False</span><br>    res.cnLineLabelsOn       = <span class="hljs-literal">False</span><br><br>    res.cnInfoLabelOn        = <span class="hljs-literal">True</span><br><br>    res.lbLabelAutoStride    = <span class="hljs-literal">True</span><br>    res.lbBoxLinesOn         = <span class="hljs-literal">False</span><br><br>    res.mpProjection      = projection<br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;MediumRes&#x27;</span><br>    res.mpCenterLatF      = cenLat<br>    res.mpCenterLonF      = cenLon<br>    res.mpGridAndLimbOn   = <span class="hljs-literal">True</span><br>    res.mpGridAndLimbDrawOrder = <span class="hljs-string">&#x27;PreDraw&#x27;</span><br>    res.mpGridLineColor   = <span class="hljs-string">&#x27;Background&#x27;</span><br>    res.mpOutlineOn       = <span class="hljs-literal">True</span><br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;Ncarg4_1&#x27;</span><br>    res.mpDataSetName     = <span class="hljs-string">&#x27;Earth..3&#x27;</span><br>    res.mpOutlineBoundarySets = <span class="hljs-string">&#x27;Geophysical&#x27;</span><br>    res.mpPerimOn         = <span class="hljs-literal">True</span><br>    res.mpLimitMode = <span class="hljs-string">&#x27;LatLon&#x27;</span><br>    res.mpMinLonF = -<span class="hljs-number">180.0</span><br>    res.mpMaxLonF = <span class="hljs-number">180.0</span><br>    res.mpMinLatF = -<span class="hljs-number">90.0</span><br>    res.mpMaxLatF = <span class="hljs-number">90.0</span><br><br>    res.cnLevelSelectionMode = <span class="hljs-string">&#x27;ManualLevels&#x27;</span><br>    res.cnMinLevelValF = -<span class="hljs-number">2.0</span><br>    res.cnMaxLevelValF = <span class="hljs-number">2.0</span><br>    res.cnLevelSpacingF = <span class="hljs-number">0.10</span><br>    res.lbAutoManage = <span class="hljs-literal">False</span><br>    res.lbOrientation = <span class="hljs-string">&#x27;Horizontal&#x27;</span><br>    res.lbBoxEndCapStyle = <span class="hljs-string">&#x27;TriangleBothEnds&#x27;</span><br>    res.lbLabelAngleF = <span class="hljs-number">90.0</span><br>    res.lbLabelFontHeightF = <span class="hljs-number">0.01</span><br><br>    res.mpFillOn              = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Turn on map fill.</span><br>    res.mpFillAreaSpecifiers  = [<span class="hljs-string">&#x27;Land&#x27;</span>]<br>    res.mpSpecifiedFillColors = [<span class="hljs-number">0</span>]<br>    res.mpAreaMaskingOn       = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Indicate we want to </span><br>    res.mpMaskAreaSpecifiers  = [<span class="hljs-string">&#x27;Water&#x27;</span>]<br>    res.cnFillDrawOrder       = <span class="hljs-string">&#x27;Predraw&#x27;</span>       <span class="hljs-comment"># Draw contours first.</span><br><br>    fld = f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">10</span>,:] - f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">0</span>,:]<br>    <span class="hljs-built_in">map</span> = Ngl.contour_map(wks, fld, res)<br><br>    Ngl.end()<br></code></pre></td></tr></table></figure>
         </div>
@@ -665,21 +681,18 @@
 <ul>
 <li>or <code>$ ncdiff sst.nc init.nc diff-sst.nc</code></li>
 </ul>
-<h2 id="registry.xml">Registry.xml</h2>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347">MPAS-Model/src/core_init_atmosphere/Registry.xml</a></li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sfc_update&quot;</span> <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Used by test cases that produce surface updates.&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_input_sst&quot;</span>             <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span>       <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;-&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Whether to re-compute SST and sea-ice fields from surface input data set; should be set to .true. when running case 8&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">possible_values</span>=<span class="hljs-string">&quot;true or false&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sst&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;K&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;sea-surface temperature&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;xice&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;unitless&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;fractional area coverage of sea-ice&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="srccore_atmosphereregistry.xml">src/core_atmosphere/Registry.xml</h2>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_sst_update&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;-&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;logical for configuration of sea-surface temperature&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">possible_values</span>=<span class="hljs-string">&quot;.true. for time-varying sea-surface temperatures; .false., otherwise&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
 <h2 id="streams.atmosphere">streams.atmosphere</h2>
 <ul>
 <li>stream_list.atmosphere.surface</li>
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c21ca059" role="button" aria-expanded="false" aria-controls="collapse-c21ca059">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-b4ffcb20" role="button" aria-expanded="false" aria-controls="collapse-b4ffcb20">
         <div class="fold-arrow">▶</div>streams.atmosphere
       </div>
-      <div class="fold-collapse collapse" id="collapse-c21ca059">
+      <div class="fold-collapse collapse" id="collapse-b4ffcb20">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs streams.atmosphere">&lt;stream name=&quot;surface&quot;<br>        type=&quot;input&quot;<br>        filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>        filename_interval=&quot;none&quot;<br>        input_interval=&quot;86400&quot;&gt;<br><br>    &lt;file name=&quot;stream_list.atmosphere.surface&quot;/&gt;<br><br>&lt;/stream&gt;<br></code></pre></td></tr></table></figure>
         </div>
@@ -688,10 +701,10 @@
 <h2 id="namelist.atmosphere">namelist.atmosphere</h2>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-98e16488" role="button" aria-expanded="false" aria-controls="collapse-98e16488">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90f62c9b" role="button" aria-expanded="false" aria-controls="collapse-90f62c9b">
         <div class="fold-arrow">▶</div>namelist.atmosphere
       </div>
-      <div class="fold-collapse collapse" id="collapse-98e16488">
+      <div class="fold-collapse collapse" id="collapse-90f62c9b">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs namelist.atmosphere">&amp;physics<br>    config_sst_update = true<br></code></pre></td></tr></table></figure>
         </div>
@@ -794,17 +807,17 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
         <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
       
-        <a href="/tags/PGW/" class="print-no-link">#PGW</a>
-      
         <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/PGW/" class="print-no-link">#PGW</a>
       
         <a href="/tags/GRIB/" class="print-no-link">#GRIB</a>
       
@@ -841,7 +854,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>March 3, 2025</div>
+          <div>March 14, 2025</div>
         </div>
       
       
