@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/oOsTWeD.png">
 <meta property="article:published_time" content="2025-03-13T06:56:00.000Z">
-<meta property="article:modified_time" content="2025-03-14T09:10:21.290Z">
+<meta property="article:modified_time" content="2025-03-18T05:58:02.332Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="NWP">
@@ -337,7 +337,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          511 words
+          534 words
         
       </span>
     
@@ -424,6 +424,20 @@
 <li>./core_atmosphere/Registry.xml <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rthfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rqvfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rufddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rvfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;th_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qv_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;u_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;v_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;th_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qv_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;u_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;v_fdda_new&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="mpas_stream_manager.f">mpas_stream_manager.F</h2>
+<ul>
+<li>MPAS_stream_mgr_get_property</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">
+        <div class="fold-arrow">▶</div>MPAS_stream_mgr_get_property
+      </div>
+      <div class="fold-collapse collapse" id="collapse-6ae3e036">
+        <div class="fold-content">
+          <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">interface</span> MPAS_stream_mgr_get_property<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_int<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_char<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_logical<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">interface</span><br><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-comment">!  routine MPAS_stream_mgr_get_property_int</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!&gt; \brief Gets a property of a stream in an MPAS stream manager.</span><br><span class="hljs-comment">!&gt; \author Michael Duda, Doug Jacobsen</span><br><span class="hljs-comment">!&gt; \date   13 June 2014</span><br><span class="hljs-comment">!&gt; \details</span><br><span class="hljs-comment">!&gt;  Retrieves the value of a stream property within an MPAS stream manager.</span><br><span class="hljs-comment">!&gt;  <span class="hljs-doctag">NOTE:</span> This routine does not support streamID regular expressions</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> MPAS_stream_mgr_get_property_int(manager, streamID, propertyName, propertyValue, direction, ierr)<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
 <h2 id="core_atmospherephysicsmpas_atmphys_fdda.f">./core_atmosphere/physics/mpas_atmphys_fdda.F</h2>
 <ul>
 <li>Author comments,
@@ -570,7 +584,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>March 14, 2025</div>
+          <div>March 18, 2025</div>
         </div>
       
       
