@@ -21,4 +21,5 @@ banner_img:
   - 不同季節的比較
   - 時間及空間的變化
   - t–測試
-
+- [利用卡爾曼濾波修正每日地面氣溫預報 | 澳門地球物理暨氣象局](https://www.weather.gov.hk/tc/publica/ghm_21/files/MPaper_Choi.pdf)
+- [按天氣情境修正數值預報模式的低溫預報 | HKO | 2016](https://www.hko.gov.hk/hko/publica/reprint/r1226.pdf)
