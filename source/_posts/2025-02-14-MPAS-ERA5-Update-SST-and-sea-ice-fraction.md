@@ -235,6 +235,33 @@ ln -sf ${TEMPLATE_DIR}/Variable_Tables/Vtable.ERA5.SST Vtable
 
 ## code
 
+### mpas_stream_manager.F
+
+- MPAS_stream_mgr_get_property
+
+{% fold info @MPAS_stream_mgr_get_property %}
+```fortran
+    interface MPAS_stream_mgr_get_property
+        module procedure MPAS_stream_mgr_get_property_int
+        module procedure MPAS_stream_mgr_get_property_char
+        module procedure MPAS_stream_mgr_get_property_logical
+    end interface
+    
+    !-----------------------------------------------------------------------
+    !  routine MPAS_stream_mgr_get_property_int
+    !
+    !> \brief Gets a property of a stream in an MPAS stream manager.
+    !> \author Michael Duda, Doug Jacobsen
+    !> \date   13 June 2014
+    !> \details
+    !>  Retrieves the value of a stream property within an MPAS stream manager.
+    !>  NOTE: This routine does not support streamID regular expressions
+    !
+    !-----------------------------------------------------------------------
+    subroutine MPAS_stream_mgr_get_property_int(manager, streamID, propertyName, propertyValue, direction, ierr)
+```
+{% endfold %}
+
 ### MPAS init.nc SST issue
 
 - `sst = skintemp` that sst values is from skintemp.
