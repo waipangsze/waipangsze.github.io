@@ -33,6 +33,15 @@ $ git config --global core.editor "vim"
 $ git config --list
 ```
 
+````.gitconfig 
+[alias]
+	logg = log --graph --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+[user]
+	name = wpsze
+	email = waipangsze@gmail.com
+......
+```
+
 Follow the steps below to set the newly created tutorial directory as a Git database
 ```sh
 $ mkdir tutorial

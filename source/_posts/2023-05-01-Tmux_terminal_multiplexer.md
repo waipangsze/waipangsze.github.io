@@ -30,6 +30,12 @@ sh autogen.sh
 ./configure && make
 ```
 
+or 
+
+```sh
+micromamba install conda-forge::tmux
+```
+
 ## Edit .tmux.conf
 
 ```sh
@@ -77,7 +83,8 @@ tmux rename-session -t <old-session-name> <new-session-name>
 tmux source-file ~/.tmux.conf
 ```
 
-Actions
+## Actions
+
 ```sh
 # Move bewteen panes
 C trl + A (up,down,lef,right)
@@ -92,3 +99,10 @@ Ctrl + A |
 Ctrl + A X
 ```
 
+## 選擇文字
+
+在bash中選擇文字本不是一件難事，但是到了tmux中，情況會稍有複雜。如果一個window裡面有多個pane，普通的選擇是會橫跨並排的pane的，這讓複製文字變得困難了起來。那麼如何解決呢？答案是：使用Alt。利用Alt+滑鼠框選，我們可以控制選擇的文字範圍，就可以實現選擇單一pane裡的文字啦。 如果在tmux中啟用滑鼠模式(tmux set mouse on)的話，會發現無法直接透過滑鼠來選擇複製文字，這個時候可以用過Shift+滑鼠選擇來選擇文字。 不過對於有多個pane的窗口，選擇一個pane裡的文字就不能簡單透過Shift+滑鼠選擇來完成了，因為這樣可能會選取多個pane裡的文字。 那麼如何來實現只選擇單一pane裡的文字呢？方法很簡單，只需要多按一個鍵即可： 
+
+- `Shift + Alt + 滑鼠框選`
+  - copy: `Ctrl + Shift + C`
+  - paste: `Ctrl + Shift + V`

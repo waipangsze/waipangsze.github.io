@@ -115,7 +115,7 @@ with open('image-list.js', 'w') as f:
     <style>
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             gap: 20px;
             padding: 20px;
         }
@@ -136,7 +136,7 @@ with open('image-list.js', 'w') as f:
         .image-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
 
         .filename {
@@ -219,3 +219,17 @@ To prevent browser caching and always show the latest images, then need to clear
         }
 ...
 ```
+
+## More,
+
+### For size of image within box,
+
+```html
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+```
+
+![](https://i.imgur.com/pymFB2Y.png){width=600}
