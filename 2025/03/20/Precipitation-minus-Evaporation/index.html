@@ -1,0 +1,1020 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Precipitation minus Evaporation (P-E) To calculate Precipitation minus Evaporation (P-E) in numerical weather simulations using mixing ratio, the process involves analyzing atmospheric moisture fluxes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Precipitation minus Evaporation (P-E)">
+<meta property="og:url" content="https://waipangsze.github.io/2025/03/20/Precipitation-minus-Evaporation/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Precipitation minus Evaporation (P-E) To calculate Precipitation minus Evaporation (P-E) in numerical weather simulations using mixing ratio, the process involves analyzing atmospheric moisture fluxes">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/yprVCEl.png">
+<meta property="article:published_time" content="2025-03-20T02:40:00.000Z">
+<meta property="article:modified_time" content="2025-03-20T03:28:18.254Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="Precipitation">
+<meta property="article:tag" content="Evaporation">
+<meta property="article:tag" content="Hydrology">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/yprVCEl.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Precipitation minus Evaporation (P-E) - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/yprVCEl.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Precipitation minus Evaporation (P-E)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-20 10:40" pubdate>
+          March 20, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          585 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Precipitation minus Evaporation (P-E)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="precipitation-minus-evaporation-p-e">Precipitation minus Evaporation (P-E)</h1>
+<p>To calculate <strong>Precipitation minus Evaporation (P-E)</strong> in numerical weather simulations using mixing ratio, the process involves analyzing atmospheric moisture fluxes and thermodynamic relationships.</p>
+<p><strong>地表可用水量 (降水減蒸發，P-E)</strong> 是反映氣候乾濕程度的關鍵指標，對區域水資源、農業生產和生態系統穩定性有重要影響。熱力學理論指出，隨著全球變暖，大氣中水汽含量上升，水汽輸送增強，這會促使乾燥的地區/季節變得更乾，而濕的地區/季節變得更濕。地表可用水量季節變率增強將使得水資源在年內分配更不均衡，導致濕季更容易出現洪澇災害，而乾季更容易發生乾旱事件，給區域水資源管理和調度帶來嚴峻挑戰和壓力</p>
+<ul>
+<li><strong>Definition</strong>: P-E is the difference between the amount of precipitation (P) and evaporation (E) over a given area and time period. It represents the net supply of freshwater available for runoff, infiltration, and other hydrological processes.</li>
+<li><strong>Role in Hydrology</strong>: P-E is crucial for understanding water availability, as it influences surface water and groundwater recharge. A positive P-E indicates a surplus of water, potentially leading to increased runoff and flooding, while a negative P-E suggests a deficit, often associated with drought conditions.</li>
+</ul>
+<p>To calculate P-E, you need data on both precipitation and evaporation. Here's a general approach:</p>
+<ol type="1">
+<li><p><strong>Precipitation Data</strong>: Obtain precipitation data from sources like rain gauges, satellite imagery, or reanalysis datasets (e.g., ERA5).</p></li>
+<li><p><strong>Evaporation Data</strong>: Evaporation can be estimated using models that incorporate factors like temperature, humidity, wind speed, and solar radiation. Common methods include the Penman-Monteith equation or using reanalysis datasets.</p></li>
+<li><p><strong>Compute P-E</strong>: Subtract the evaporation from the precipitation over the desired time period (e.g., monthly or annually). <span class="math display">\[
+P - E = \text{Precipitation} - \text{Evaporation}
+\]</span></p></li>
+</ol>
+<h2 id="another-calculation-methods">Another Calculation Methods</h2>
+<h3 id="moisture-budget-equation">1. <strong>Moisture Budget Equation</strong></h3>
+<p>The fundamental relationship in atmospheric water balance is: <span class="math display">\[
+P - E = -\left(\frac{\partial q}{\partial t} + \nabla \cdot (\mathbf{v}q)\right)
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(q\)</span> = mixing ratio (kg water vapor/kg dry air)</li>
+<li><span class="math inline">\(\mathbf{v}\)</span> = horizontal wind vector</li>
+<li><span class="math inline">\(\frac{\partial q}{\partial t}\)</span> = local moisture tendency</li>
+<li><span class="math inline">\(\nabla \cdot (\mathbf{v}q)\)</span> = horizontal moisture advection</li>
+</ul>
+<p>This residual method calculates <strong>P-E</strong> as the <strong>negative sum</strong> of:</p>
+<ul>
+<li>Local moisture changes over time</li>
+<li>Net horizontal moisture flux divergence</li>
+</ul>
+<p><img src="https://i.imgur.com/6YfNHLN.png" srcset="/img/loading.gif" lazyload alt="Trenberth, Kevin E., and Christian J. Guillemot. &quot;Evaluation of the global atmospheric moisture budget as seen from analyses.&quot; Journal of Climate 8.9 (1995): 2255-2272." width="500" /> <img src="https://i.imgur.com/zlMe2hX.png" srcset="/img/loading.gif" lazyload alt="Seager, Richard, and Naomi Henderson. &quot;Diagnostic computation of moisture budgets in the ERA-Interim reanalysis with reference to analysis of CMIP-archived atmospheric model data.&quot; Journal of Climate 26.20 (2013): 7876-7901." width="500" /></p>
+<h3 id="direct-surface-flux-approach">2. <strong>Direct Surface Flux Approach</strong></h3>
+<p>For evaporation calculation using mixing ratio: <span class="math display">\[
+E = \rho_{air} \cdot C_E \cdot |\mathbf{v}| \cdot (q_{sat} - q_{air})
+\]</span> Where:</p>
+<ul>
+<li><span class="math inline">\(\rho_{air}\)</span> = air density</li>
+<li><span class="math inline">\(C_E\)</span> = bulk transfer coefficient (~1.5×10⁻³ over water)</li>
+<li><span class="math inline">\(q_{sat}\)</span> = saturation mixing ratio at surface temperature</li>
+<li><span class="math inline">\(q_{air}\)</span> = actual near-surface mixing ratio</li>
+</ul>
+<p><strong>Precipitation (P)</strong> is typically output from <strong>microphysics parameterizations</strong> in the model.</p>
+<h2 id="key-implementation-steps">Key Implementation Steps</h2>
+<p><strong>Step 1: Compute Saturation Mixing Ratio</strong><br />
+Use Tetens formula for saturation vapor pressure: <span class="math display">\[
+e_s = 6.112 \exp\left(\frac{17.67T}{T + 243.5}\right) \quad [\text{hPa}]
+\]</span></p>
+<p>Then calculate:</p>
+<p><span class="math display">\[
+q_{sat} = \frac{\varepsilon e_s}{P - e_s} \quad (\varepsilon = 0.622)
+\]</span></p>
+<p><strong>Step 2: Vertical Integration</strong><br />
+For column-integrated P-E: <span class="math display">\[
+P - E = -\frac{1}{g} \int_{sfc}^{top} \left(\frac{\partial q}{\partial t} + \nabla \cdot (\mathbf{v} q)\right) dp
+\]</span></p>
+<p><strong>Step 3: Numerical Implementation</strong><br />
+In finite difference models:</p>
+<ul>
+<li>Calculate moisture tendency between time steps</li>
+<li>Use centered differencing for advection terms</li>
+<li>Apply mass-corrected transport schemes to prevent numerical dispersion</li>
+</ul>
+<h2 id="practical-considerations">Practical Considerations</h2>
+<p><strong>Data Requirements</strong></p>
+<ul>
+<li>3D fields of mixing ratio and winds at model levels</li>
+<li>Surface pressure and temperature</li>
+<li>Precipitation outputs from convective/resolved schemes</li>
+</ul>
+<p><strong>Validation</strong><br />
+Compare results against:</p>
+<ol type="1">
+<li>Direct surface flux measurements</li>
+<li>Reanalysis-derived P-E products</li>
+<li>River basin water balance estimates</li>
+</ol>
+<p>The moisture budget method generally shows &lt;10% error for monthly means in midlatitudes but requires careful handling of tropical convection systems<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup><sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>. Recent NWP systems like ECMWF's IFS and NASA's GEOS use hybrid approaches combining both methods<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[1]</span></a></sup><sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>.</p>
+<h1 id="mpas-registry.xml">MPAS: Registry.xml</h1>
+<p>About mixing ratio,</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">var_array</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;scalars&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qv&quot;</span> <span class="hljs-attr">array_group</span>=<span class="hljs-string">&quot;moist&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;kg kg^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">                <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Water vapor mixing ratio&quot;</span>/&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qc&quot;</span> <span class="hljs-attr">array_group</span>=<span class="hljs-string">&quot;moist&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;kg kg^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">                <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Cloud water mixing ratio&quot;</span>/&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qr&quot;</span> <span class="hljs-attr">array_group</span>=<span class="hljs-string">&quot;moist&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;kg kg^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">                <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Rain water mixing ratio&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">var_array</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<h1 id="nwp-ai">NWP-AI</h1>
+<h2 id="neuralgcm">NeuralGCM</h2>
+<ul>
+<li><a href="https://waipangsze.github.io/2025/03/18/NWP-AI-NeuralGCM/"><strong>NWP | AI | NeuralGCM</strong></a></li>
+</ul>
+<hr />
+<ul>
+<li><strong>To diagnose precipitation minus evaporation rate (P − E)</strong></li>
+<li>In this work, <strong>we only diagnosed precipitation minus evaporation from NeuralGCM</strong>. However, in future work, <strong>we plan to develop a scheme to reformulate NeuralGCM to predict precipitation and evaporation separately</strong>. This could be achieved, for example, by using conventional parameterization to estimate evaporation (and then calculating precipitation by adding it to P-E). Another approach could involve training a neural network (NN) specifically to predict evaporation, potentially optimized to predict the same fluxes as those in ERA5 data.</li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.met.reading.ac.uk/~sgs02rpa/TALKS/Allan_Seminar23.pdf">GLOBAL CHANGES IN <strong>PRECIPITATION MINUS EVAPORATION</strong> | 2023</a></li>
+<li><a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/api/citations/19770012769/downloads/19770012769.pdf">Scott, Robert W., and James R. Scoggins. The <strong>moisture budget</strong> in relation to convection. No. M-216. 1977.</a></li>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/clim/8/9/1520-0442_1995_008_2255_eotgam_2_0_co_2.pdf">Trenberth, Kevin E., and Christian J. Guillemot. "<strong>Evaluation of the global atmospheric moisture budget as</strong> seen from analyses." Journal of Climate 8.9 (1995): 2255-2272. (<strong>Recommand</strong>)</a></li>
+<li><a target="_blank" rel="noopener" href="https://ocp.ldeo.columbia.edu/res/div/ocp/pub/seager/Seager_Henderson_mb.pdf">Seager, Richard, and Naomi Henderson. "<strong>Diagnostic computation of moisture budget</strong>s in the ERA-Interim reanalysis with reference to analysis of CMIP-archived atmospheric model data." Journal of Climate 26.20 (2013): 7876-7901.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ictp.it/sites/default/files/%5Bteaching-materials%5D/lecture_notes_AD_section12.pdf"><strong>Moisture budget equation</strong> and application to Sahel Drought</a></li>
+</ol>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.osti.gov/servlets/purl/6807588" class="uri">https://www.osti.gov/servlets/purl/6807588</a> <a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet/Ch04-Moist.pdf" class="uri">https://www.eoas.ubc.ca/books/Practical_Meteorology/prmet/Ch04-Moist.pdf</a> <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/downloadpdf/journals/clim/28/20/jcli-d-15-0369.1.pdf" class="uri">https://journals.ametsoc.org/downloadpdf/journals/clim/28/20/jcli-d-15-0369.1.pdf</a> <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://weather.cod.edu/notes/materials/1110/Unit2_1110.pdf" class="uri">https://weather.cod.edu/notes/materials/1110/Unit2_1110.pdf</a> <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:5" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022GL097725" class="uri">https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022GL097725</a> <a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:6" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.weather.gov/epz/wxcalc_mixingratio" class="uri">https://www.weather.gov/epz/wxcalc_mixingratio</a> <a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:7" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://atmos.uw.edu/~dennis/321/321_Lecture_15.pdf" class="uri">https://atmos.uw.edu/~dennis/321/321_Lecture_15.pdf</a> <a href="#fnref:7" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:8" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.inscc.utah.edu/~krueger/5130/precip_rate.pdf" class="uri">https://www.inscc.utah.edu/~krueger/5130/precip_rate.pdf</a> <a href="#fnref:8" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Meteorology/" class="category-chain-item">Meteorology</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/Precipitation/" class="print-no-link">#Precipitation</a>
+      
+        <a href="/tags/Evaporation/" class="print-no-link">#Evaporation</a>
+      
+        <a href="/tags/Hydrology/" class="print-no-link">#Hydrology</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Precipitation minus Evaporation (P-E)</div>
+      <div>https://waipangsze.github.io/2025/03/20/Precipitation-minus-Evaporation/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 20, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>March 20, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/20/NWP-Spectral-Method/" title="NWP | Spectral Method">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">NWP | Spectral Method</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/18/NWP-AI-NeuralGCM/" title="NWP | AI | NeuralGCM">
+                        <span class="hidden-mobile">NWP | AI | NeuralGCM</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1021 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spectral methods Spectral methods in numerical weather prediction (NWP) are advanced computational techniques that use global basis functions to solve the atmospheric governing equations with high acc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | Spectral Method">
+<meta property="og:url" content="https://waipangsze.github.io/2025/03/20/NWP-Spectral-Method/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Spectral methods Spectral methods in numerical weather prediction (NWP) are advanced computational techniques that use global basis functions to solve the atmospheric governing equations with high acc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/vziet9g.png">
+<meta property="article:published_time" content="2025-03-20T03:56:00.000Z">
+<meta property="article:modified_time" content="2025-03-20T09:16:02.332Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="ECMWF">
+<meta property="article:tag" content="spherical harmonics">
+<meta property="article:tag" content="Truncation for wave numbers">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/vziet9g.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | Spectral Method - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/vziet9g.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | Spectral Method"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-20 11:56" pubdate>
+          March 20, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          578 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | Spectral Method</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="spectral-methods">Spectral methods</h1>
+<p><strong>Spectral methods</strong> in numerical weather prediction (NWP) are advanced computational techniques that use global basis functions to solve the atmospheric governing equations with high accuracy. These methods are particularly effective for simulating large-scale weather patterns due to their exponential convergence properties when solutions are smooth. Here's a detailed breakdown:</p>
+<h2 id="core-concept-of-spectral-methods">Core Concept of Spectral Methods</h2>
+<p>Spectral methods approximate meteorological variables (e.g., wind, temperature) by expanding them into series of orthogonal basis functions, such as <strong>spherical harmonics</strong> for global atmospheric models. For example, a variable <span class="math display">\[ u(x,t) \]</span> might be written as:<br />
+<span class="math display">\[
+u(x,t) = \sum_{n=0}^N a_n(t) \phi_n(x)
+\]</span><br />
+where <span class="math inline">\(\phi_n(x)\)</span> are <strong>pre-defined basis functions</strong> (e.g., <strong>Fourier modes or Chebyshev polynomials</strong>), and <span class="math inline">\(a_n(t)\)</span> are time-dependent coefficients. Derivatives are computed analytically using the properties of these functions, avoiding the numerical errors common in finite-difference approximations.</p>
+<h3 id="ecmwf-spherical-harmonics">ECMWF: Spherical harmonics</h3>
+<p><strong>Spherical harmonics</strong> are a set of orthogonal basis functions defined on the surface of a sphere. They are used to represent atmospheric variables such as wind, temperature, and pressure in terms of a series expansion.</p>
+<p><img src="https://i.imgur.com/vziet9g.png" srcset="/img/loading.gif" lazyload alt="Some ECMWF data produced by the IFS is stored in GRIB with gridType=sh to indicate that the values are stored as spherical harmonic coefficients." /> <img src="https://i.imgur.com/ZQvmeDV.png" srcset="/img/loading.gif" lazyload alt="The figure depicts the spherical harmonic (n, m) wave number space for a triangular truncation, T." /></p>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/jpNOHrs.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/zplgjZO.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/aG9HKx7.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/kCsOEPO.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/Wny2y5F.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/Bfpm51t.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h4 id="how-to-find-the-resolution-of-a-spherical-harmonic-field-in-grib"><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/UDOC/How+to+find+the+resolution+of+a+spherical+harmonic+field+in+GRIB+-+ecCodes+GRIB+FAQ">How to find the resolution of a spherical harmonic field in GRIB</a></h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ grib_get -p J t1000.grib<br>1279<br></code></pre></td></tr></table></figure>
+<p>In this case, the value of <code>J=1279</code> indicates the triangular truncation used is <code>T1279</code>.</p>
+<p>It is not possible to relate the resolution of the spherical harmonic data directly to the resolution of the corresponding grid as this depends on the specific relationship between the spectral representation and the Gaussian grid used by the IFS. Three different relationships have been used by ECMWF over the years. For <strong>a triangular truncation of T</strong>, the corresponding Gaussian grid resolutions are:</p>
+<table>
+
+<thead>
+<tr class="header">
+<th>Relationship</th>
+<th>Gaussian grid resoluion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>linear grid: the shortest wavelength is represented by 2 grid point</td>
+<td>N = (T + 1) / 2</td>
+</tr>
+<tr class="even">
+<td>quadratic grid: the shortest wavelength is represented by 3 grid points</td>
+<td>N = 3 (T+1) / 4</td>
+</tr>
+<tr class="odd">
+<td>cubic grid: the shortest wavelength is represented by 4 grid points</td>
+<td>N = T + 1</td>
+</tr>
+</tbody>
+</table>
+<p>where <strong>N</strong> corresponds to the number of latitude lines between the poles and the equator. However, to determine which relationship was used when the data were produced requires interrogation of a corresponding grid point field.</p>
+<p><img src="https://i.imgur.com/p6IPoiG.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="gridpoint-equivalency-of-spectral-resolution">Gridpoint Equivalency of Spectral Resolution</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://lyqx.sinaapp.com/wfiles/mstructure_dynamics/navmenu.php_tab_1_page_7_3_0_type_flash.htm">Gridpoint Equivalency of Spectral Resolution</a></li>
+</ul>
+<p>It takes about five to seven grid points to get reasonable approximations of most weather features. Still more points per wave feature are often necessary to get a good forecast. Because spectral and gridpoint models preserve information in different ways, no precise equivalent grid spacing can be given for a spectral model resolution.</p>
+<p>The approximate grid spacing with the same accuracy as a spectral model can then be represented as <span class="math inline">\(\Delta X \sim 360° / 3N\)</span>; where <span class="math inline">\(N\)</span> is the number of waves.</p>
+<p><span class="math display">\[
+\Delta X \sim 360° / 3N
+\]</span></p>
+<p>For a <code>T80</code> model, this results in <strong>maximum grid spacing</strong> for equivalent accuracy of about 1.5° ~ 160 km (assuming 1° ~ 111 km).</p>
+<p>We can approximate the grid spacing to obtain equivalent accuracy to a spectral model with a fixed number of waves using a simple approach. <strong>First, we assume that three grid points are sufficient to capture the information contained in each of a series of continuous waves</strong>.</p>
+<p>The dynamics of spectral models retain far better wave representation than gridpoint models with this grid spacing. <strong>However, the spectral model physics is calculated on a grid, with about three times as many grid lengths as number of waves used to represent the data.</strong> Since it takes five to seven grid points to represent 'wavy' data well and even more for features that include discontinuities, the resolution of the physics is poorer than the above formulation indicates and degrades the quality of the spectral model forecast.</p>
+<h2 id="txxlyy">TxxLyy</h2>
+<p>For example, <strong>T42L9</strong> refers to a specific configuration of a global spectral model used in numerical weather prediction (NWP). Here's a breakdown of what each part means:</p>
+<ul>
+<li><p><strong>T42</strong>: This indicates the <strong>triangular truncation</strong> of the spectral model. In this case, the maximum wavenumber (or degree) is 42. This means that the model includes spherical harmonics up to degree 42, which corresponds to a horizontal resolution of <strong>approximately 2.8 degrees (about 300 km)</strong> at the equator.</p></li>
+<li><p><strong>L9</strong>: This denotes the <strong>vertical resolution</strong> of the model. In this case, the model has 9 vertical layers. The vertical layers are typically defined by a set of levels in the atmosphere, often using a hybrid coordinate system that combines pressure and height coordinates.</p></li>
+</ul>
+<p>The <strong>T42L9</strong> model is a relatively low-resolution model compared to modern standards, which often use higher resolutions like T1279L91 (used by ECMWF's IFS) or T574L64 (used by some versions of the GFS). However, the T42L9 model can still be useful for research purposes or as a dynamic kernel in simpler forecasting systems, such as the self-memorial T42 model (SMT42) mentioned in some studies.</p>
+<h2 id="advantages-in-nwp">Advantages in NWP</h2>
+<ul>
+<li><strong>Exponential Convergence</strong>: For smooth solutions, spectral methods <strong>achieve errors decreasing faster than any polynomial of the grid size</strong>, making them highly efficient for large-scale simulations.<br />
+</li>
+<li><strong>Global Representation</strong>: Unlike finite-element or finite-volume methods, which approximate solutions locally, <strong>spectral methods inherently model atmospheric waves (e.g., Rossby waves) across the entire domain, crucial for global weather prediction</strong>.<br />
+</li>
+<li><strong>Computational Efficiency</strong>: Operations like differentiation are performed in spectral space <strong>via transforms (e.g., Fast Fourier Transforms), reducing computational cost</strong> compared to traditional grid-based methods.</li>
+</ul>
+<h2 id="implementation-in-nwp-models">Implementation in NWP Models</h2>
+<p>Most global NWP models (e.g., <em>ECMWF’s IFS</em>) use spectral methods for <strong>horizontal discretization</strong>, combined with finite-difference or finite-volume techniques in the vertical direction. The process involves:</p>
+<ol type="1">
+<li><strong>Transform</strong>: Convert grid-point data to spectral coefficients using spherical harmonic transforms.<br />
+</li>
+<li><strong>Spectral Computation</strong>: Solve dynamical equations (e.g., momentum, continuity) in spectral space.<br />
+</li>
+<li><strong>Inverse Transform</strong>: Convert results back to physical space for parameterizations (e.g., cloud physics).</li>
+</ol>
+<p>For example, the <strong>PEAK model</strong> (Primitive-Equation Atmospheric Research Model Kernel) demonstrates how spectral discretization handles the shallow-water equations and primitive equations, balancing accuracy and computational cost.</p>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li><strong>Localized Features</strong>: <strong>Sharp gradients (e.g., thunderstorms) are poorly resolved due to the global nature of basis functions</strong>, often requiring hybrid approaches.<br />
+</li>
+<li><strong>Spectral Truncation</strong>: Retaining only a finite number of basis functions introduces aliasing errors in nonlinear terms, mitigated via techniques like dealiasing.</li>
+</ul>
+<h2 id="comparison-to-finite-methods">Comparison to Finite Methods</h2>
+<table>
+
+<thead>
+<tr class="header">
+<th><strong>Aspect</strong></th>
+<th><strong>Spectral Methods</strong></th>
+<th><strong>Finite-Difference/Volume</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Accuracy</strong></td>
+<td>Exponential for smooth solutions</td>
+<td>Polynomial (e.g., <span class="math inline">\(O(h^2)\)</span>)</td>
+</tr>
+<tr class="even">
+<td><strong>Domain Handling</strong></td>
+<td>Global</td>
+<td>Local</td>
+</tr>
+<tr class="odd">
+<td><strong>Computational Cost</strong></td>
+<td>Lower for high accuracy</td>
+<td>Higher for equivalent resolution</td>
+</tr>
+<tr class="even">
+<td><strong>Shock Capture</strong></td>
+<td>Poor (no built-in dissipation)</td>
+<td>Better with flux limiters</td>
+</tr>
+</tbody>
+</table>
+<h2 id="applications">Applications</h2>
+<p>Spectral methods dominate <strong>global NWP</strong> due to their efficiency in simulating planetary-scale dynamics. Regional models, which require localized precision, often prefer finite-volume methods. In summary, <strong>spectral methods excel in global NWP by leveraging smooth basis functions for accurate, efficient simulations of large-scale atmospheric behavior</strong>, <strong>while hybrid models address their limitations in resolving localized phenomena</strong>.</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://sites.google.com/view/spectralnwpmodels">Ehrendorfer, Martin. Spectral numerical weather prediction models. Society for Industrial and Applied Mathematics, 2011.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/sites/default/files/elibrary/2016/17262-new-grid-ifs.pdf">A new grid for the IFS | 2016</a>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/newsletter/152/computing/new-ecmwf-interpolation-package-mir">The new ECMWF interpolation package MIR | 2017</a></li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/UDOC/How+to+access+the+data+values+of+a+spherical+harmonic+field+in+GRIB+-+ecCodes+GRIB+FAQ">How to access the data values of a <strong>spherical harmonic field</strong> in GRIB | 2023</a></li>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/downloadpdf/view/journals/mwre/141/10/mwr-d-13-00016.1.pdf">Wedi, Nils P., Mats Hamrud, and George Mozdzynski. "<strong>A fast spherical harmonics transform</strong> for global NWP and climate models." Monthly Weather Review 141.10 (2013): 3450-3461. | ECMEF</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/sites/default/files/elibrary/1983/10253-spectral-technique.pdf">The spectral technique | Reading | 1983 | M. Jarraud and A.J. Simmons</a></li>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/downloadpdf/view/journals/mwre/129/1/1520-0493_2001_129_0152_cbwtah_2.0.co_2.pdf">Chu, Peter C., Xiong-Shan Chen, and Chenwu Fan. "Comparison between wavenumber truncation and horizontal diffusion methods in spectral models." Monthly weather review 129.1 (2001): 152-158.</a></li>
+<li><a target="_blank" rel="noopener" href="https://imdpune.gov.in/training/training%20notes/07_10_21_Lecture%20Notes%20on_Spectral%20Modelling_%20RKrishnan.pdf">Spectral Technique in Atmospheric Modelling | 07 October, 2021</a></li>
+<li><a target="_blank" rel="noopener" href="https://photino.cwa.gov.tw/rdcweb/lib/cd/cd01conf/dissertation/1993-1/58.pdf">中央氣象局第二代全球波譜模式之介紹 | 1993</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zgbk.com/ecph/words?SiteID=1&amp;ID=48405&amp;SubID=76732">截谱模式 | 《中国⼤百科全书》第三版⽹络版 | 2022</a></li>
+<li><a target="_blank" rel="noopener" href="http://qxqk.nmc.cn/html/2010/7/20100707.html">国家气象中心业务数值预报发展的回顾与展望 | 2010</a>
+<ol type="1">
+<li><strong>从T42L9到T213L31</strong>，中期预报模式从建立到逐步发展完善，模式在分辨率的提高，物理过程的改进、完善，数值计算技术及计算机应用技术等方面都取得了明显的进步，客观分析、初值化、资料同化方法及资料的有效利用技术等也有所提高，模式的有效预报时效明显延长，降水落区预报的可用性明显改善。</li>
+<li>目前，国家气象中心的业务数值预报已建立起比较完整的数值天气预报业务体系，中期预报模式已由<strong>T213L31 (水平分辨率约为60 km)</strong>升级为<strong>TL639L60 (水平分辨率约为28 km)</strong>；区域预报模式已由我国自行研制的 <strong>GRAPES-MESO</strong> 中尺度预报模式(水平分辨率为0.15°×0.15°)取代了原区域预报模式HLAFS；
+<ol type="1">
+<li><span class="math inline">\((360°/213/3)*111km \sim 62.5km\)</span></li>
+</ol></li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="http://qxqk.nmc.cn/html/2021/6/20210601.html">中央气象台全球中期数值预报业务系统的发展 | 2021 | 沈学顺</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/ECMWF/" class="print-no-link">#ECMWF</a>
+      
+        <a href="/tags/spherical-harmonics/" class="print-no-link">#spherical harmonics</a>
+      
+        <a href="/tags/Truncation-for-wave-numbers/" class="print-no-link">#Truncation for wave numbers</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | Spectral Method</div>
+      <div>https://waipangsze.github.io/2025/03/20/NWP-Spectral-Method/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 20, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>March 20, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/20/Precipitation-minus-Evaporation/" title="Precipitation minus Evaporation (P-E)">
+                        <span class="hidden-mobile">Precipitation minus Evaporation (P-E)</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
