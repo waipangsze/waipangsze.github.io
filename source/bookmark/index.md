@@ -25,20 +25,20 @@ date: 2024-09-30 21:26:27
 - [我是好豪 | 台灣 | 資料科學家](https://haosquare.com/category/data-science/)
 - [seeing-theory.brown.edu](https://seeing-theory.brown.edu/)
 
-## 天氣
+## 數值天氣
 
 - [香港天文台 | 天氣隨筆](https://www.hko.gov.hk/tc/forecaster_blog/index.htm)
 - [香港天文台職員編寫的報告及短文](https://www.hko.gov.hk/tc/publica/pubpaper.htm)
 - [2024 臺大數值天氣預報課程 WRF區域模式實作](https://rain.as.ntu.edu.tw/course_wrf.html)
 - [ECMWF | eLearning - online resources](https://learning.ecmwf.int/)
   - [MOOC ML](https://learning.ecmwf.int/course/index.php?categoryid=1)
-- [興趣使然的天氣分析 Mahoshojo](https://www.pixnet.net/pcard/Mahoshojo?utm_source=PIXNET&utm_medium=post_card&utm_term&utm_content=359914739)
+- [興趣使然的天氣分析 | Mahoshojo](https://www.pixnet.net/pcard/Mahoshojo?utm_source=PIXNET&utm_medium=post_card&utm_term&utm_content=359914739)
 - [风中飞舞](https://blog.perillaroc.wang/)
   - An operations engineer for meteorological information at CEMC/CMA.
-- [WRF & MPAS-A Support Forum](https://forum.mmm.ucar.edu/)
+- [沈浙奇 | 河海大学海洋学院](https://curian127.github.io/)
+  - [数据同化的算法演变：3DVar、EKF、EnKF (**推薦**)| 海洋学院，沈浙奇，2024年6月](https://curian127.github.io/From3dVarToEnKF.html)
+  - [微信公众號](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkxNjczOTc3Nw==&action=getalbum&album_id=3873066994576556039&scene=173&subscene=&sessionid=svr_955f66a00a8&enterid=1742432287&from_msgid=2247485004&from_itemidx=1&count=3&nolastread=1#wechat_redirect)
 - [CUHK Atmospheric Dynamics Group](https://atmosphericdynamicsgroup.github.io/)
-
-- [3‧3 氣團和鋒面](https://www.openclass.chc.edu.tw/storage/53/112/%E8%AA%B2%E7%A8%8B%E8%B3%87%E6%96%99.pdf/4C3VihbySO8GtN9cW21cTbki5D2cQnaVqPRQgaM6.pdf#page=0.00)
 - [香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)
 - [时间、历法与 NetCDF 中的时间坐标](https://mp.weixin.qq.com/s/E9s2zHbyX2LmJVcR9rEFxw)
 
@@ -64,6 +64,7 @@ date: 2024-09-30 21:26:27
 
 - [WRF-ARW Modeling System](https://github.com/wrf-model/WRF)
   - [WRF 使用手冊](https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/overview.html)
+  - [WRF & MPAS-A Support Forum](https://forum.mmm.ucar.edu/)
   - [**WRF Users Guide documentation !!**](https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/index.html)
   - [Development Team Announcements > **Frequently Asked Questions**](https://forum.mmm.ucar.edu/forums/frequently-asked-questions.115/)
   - [WRF Data, Utilities, & Post-processing Kelly Werner January 2021 **(Useful)**](https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_data_util_pp.pdf#page=16.00)
