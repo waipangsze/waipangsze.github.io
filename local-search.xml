@@ -20,11 +20,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -84,11 +84,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>Precipitation</tag>
       
@@ -107,7 +107,7 @@
     <link href="/2025/03/18/NWP-AI-NeuralGCM/"/>
     <url>/2025/03/18/NWP-AI-NeuralGCM/</url>
     
-    <content type="html"><![CDATA[<ul><li><a href="https://waipangsze.github.io/2024/10/09/AI-for-Numerical-Weather-Prediction-NWP/">NWP | AI for Numerical Weather Prediction (NWP)</a></li></ul><hr /><p><strong>NeuralGCM</strong> is trained through a sophisticated process that combines differentiable physical modeling with machine learning optimization techniques. Here's a breakdown of its training methodology:</p><h2 id="core-training-components">Core Training Components</h2><p><strong>1. Hybrid Architecture Integration</strong></p><ul><li>Combines a <strong>differentiable dynamical core</strong> (handling large-scale atmospheric physics) with a <strong>neural network physics module</strong> (modeling unresolved processes like cloud formation).</li><li>The dynamical core solves discretized governing equations using JAX-based solvers, while neural networks parameterize subgrid-scale phenomena.</li></ul><p><strong>2. End-to-End Online Training</strong></p><ul><li>Uses <strong>stochastic gradient descent (SGD)</strong> to optimize both physical and neural components simultaneously.</li><li>Implements extended backpropagation through hundreds of simulation steps (up to 5-day weather trajectories).</li><li>Gradually increases rollout length during training:<ul><li>Starts with 6-hour forecasts</li><li>Progressively extends to 5-day predictions</li></ul></li></ul><p><strong>3. Data Integration &amp; Loss Optimization</strong></p><ul><li>Trained on ERA5 reanalysis data for atmospheric variables</li><li>Incorporates satellite precipitation data from IMERG V07 using:<ul><li>Continuous Ranked Probability Score (CRPS) minimization</li><li>Physical consistency preservation techniques</li></ul></li><li>Loss function compares model outputs with observational ground truth</li></ul><h2 id="key-optimization-features">Key Optimization Features</h2><p><strong>Stochastic Gradient Descent Implementation</strong></p><ul><li>Updates model parameters using randomly selected data batches</li><li>Balances computational efficiency with convergence stability through:<ul><li>Learning rate scheduling</li><li>Data shuffling between epochs</li><li>Mini-batch processing</li></ul></li></ul><p><strong>Training Protocol</strong></p><ul><li><strong>Deterministic models</strong>: Focus on single trajectory optimization</li><li><strong>Stochastic models</strong>: Incorporate uncertainty quantification</li><li>Employs checkpointing for model persistence and analysis</li></ul><h2 id="performance-enhancements">Performance Enhancements</h2><ul><li>Achieves <strong>2-15 day forecast accuracy</strong> surpassing ECMWF ensembles</li><li>Reduces climate simulation errors by 10-20% compared to traditional GCMs</li><li>Enables laptop-scale climate modeling through computational efficiency gains</li></ul><p>This training approach enables NeuralGCM to maintain physical consistency while learning from observational data, resulting in improved forecasting capability and computational efficiency compared to conventional climate models.</p><h1 id="references">References</h1><ol type="1"><li><a href="https://www.nature.com/articles/s41586-024-07744-y">Kochkov, Dmitrii, et al. "Neural general circulation models for weather and climate." Nature 632.8027 (2024): 1060-1066.</a></li><li><a href="https://arxiv.org/abs/2311.07222">Neural General Circulation Models for Weather and Climate | arxiv</a></li><li><a href="https://mp.weixin.qq.com/s/wgJHpQ0Ww_IjoTPcuoDrbQ">NeuralGCM：大活来了，AI天气预报进入下半场？ | 2023-12</a></li></ol>]]></content>
+    <content type="html"><![CDATA[<ul><li><a href="https://waipangsze.github.io/2024/10/09/AI-for-Numerical-Weather-Prediction-NWP/">NWP | AI for Numerical Weather Prediction (NWP)</a></li></ul><hr /><p><strong>NeuralGCM</strong> is trained through a sophisticated process that combines differentiable physical modeling with machine learning optimization techniques. Here's a breakdown of its training methodology:</p><h2 id="core-training-components">Core Training Components</h2><p><strong>1. Hybrid Architecture Integration</strong></p><ul><li>Combines a <strong>differentiable dynamical core</strong> (handling large-scale atmospheric physics) with a <strong>neural network physics module</strong> (modeling unresolved processes like cloud formation).</li><li>The dynamical core solves discretized governing equations using JAX-based solvers, while neural networks parameterize subgrid-scale phenomena.<ul><li>A key innovation of <code>NeuralGCM</code> is that we rewrote the <a href="https://github.com/google-research/dinosaur"><strong>numerical solver for large-scale processes</strong></a> from scratch in <strong>JAX</strong>.</li><li>This allowed us to use gradient-based optimization to tune the behavior of the <strong>coupled system “online”</strong> over many time-steps.</li><li><strong>Another bonus of writing the entire model in JAX is that it runs efficiently on TPUs and GPUs</strong>, in contrast to traditional climate models that mostly run on CPUs.</li></ul></li><li><a href="https://github.com/neuralgcm/dinosaur"><strong>Dinosaur: Differentiable Dynamics for Global Atmospheric Modeling</strong></a><ul><li><strong>Dinosaur</strong> is an old-fashioned (some might say prehistoric) dynamical core for global atmospheric modeling, <strong>re-written in JAX</strong> to meet the needs of modern AI weather/climate models:<ul><li><strong>Dynamics</strong>: Dinosaur uses <em>spectral methods</em> to solve the shallow water equations and the primitive equations (moist and dry) on <em>sigma coordinates</em>.</li><li><strong>Auto-diff</strong>: Dinosaur supports both forward- and backward-mode automatic differentiation in JAX. <strong>This enables "online training" of hybrid AI/physics models</strong>.</li><li><strong>Acceleration</strong>: Dinosaur is designed to <strong>run efficiently on modern accelerator hardware (GPU/TPU)</strong>, including parallelization across multiple devices.</li></ul></li></ul></li></ul><h3 id="structure-of-the-neuralgcm-model">Structure of the NeuralGCM model</h3><figure><img src="https://i.imgur.com/gLe27TW.png" alt="Structure of the NeuralGCM model." /><figcaption>Structure of the NeuralGCM model.</figcaption></figure><p><img src="https://i.imgur.com/wgfMkyu.png" /></p><ol type="1"><li>Implemented in JAX, a library for highperformance code in Python that supports automatic differentiation.</li><li>Our learned physics module uses the single-column approach of GCMs, whereby information only from a single atmospheric column is used to predict the impact of unresolved processes occurring within that column.</li></ol><p><img src="https://i.imgur.com/qyqI8z9.png" /></p><p><strong>2. End-to-End Online Training</strong></p><ul><li>Uses <strong>stochastic gradient descent (SGD)</strong> to optimize both physical and neural components simultaneously.</li><li>Implements extended backpropagation through hundreds of simulation steps (up to 5-day weather trajectories).</li><li>Gradually increases rollout length during training:<ul><li>Starts with 6-hour forecasts</li><li>Progressively extends to 5-day predictions</li></ul></li></ul><p><strong>3. Data Integration &amp; Loss Optimization</strong></p><ul><li>Trained on ERA5 reanalysis data for atmospheric variables</li><li>Incorporates satellite precipitation data from IMERG V07 using:<ul><li>Continuous Ranked Probability Score (CRPS) minimization</li><li>Physical consistency preservation techniques</li></ul></li><li>Loss function compares model outputs with observational ground truth</li></ul><h2 id="key-optimization-features">Key Optimization Features</h2><p><strong>Stochastic Gradient Descent Implementation</strong></p><ul><li>Updates model parameters using randomly selected data batches</li><li>Balances computational efficiency with convergence stability through:<ul><li>Learning rate scheduling</li><li>Data shuffling between epochs</li><li>Mini-batch processing</li></ul></li></ul><p><strong>Training Protocol</strong></p><ul><li><strong>Deterministic models</strong>: Focus on single trajectory optimization</li><li><strong>Stochastic models</strong>: Incorporate uncertainty quantification</li><li>Employs checkpointing for model persistence and analysis</li></ul><h2 id="performance-enhancements">Performance Enhancements</h2><ul><li>Achieves <strong>2-15 day forecast accuracy</strong> surpassing ECMWF ensembles</li><li>Reduces climate simulation errors by 10-20% compared to traditional GCMs</li><li>Enables laptop-scale climate modeling through computational efficiency gains</li></ul><p>This training approach enables NeuralGCM to maintain physical consistency while learning from observational data, resulting in improved forecasting capability and computational efficiency compared to conventional climate models.</p><h1 id="references">References</h1><ol type="1"><li><a href="https://www.nature.com/articles/s41586-024-07744-y">Kochkov, Dmitrii, et al. "Neural general circulation models for weather and climate." Nature 632.8027 (2024): 1060-1066.</a></li><li><a href="https://arxiv.org/abs/2311.07222">Neural General Circulation Models for Weather and Climate | arxiv</a></li><li><a href="https://research.google/blog/fast-accurate-climate-modeling-with-neuralgcm/">Fast, accurate climate modeling with NeuralGCM (<strong>Recommend</strong>)</a></li><li><a href="https://mp.weixin.qq.com/s/wgJHpQ0Ww_IjoTPcuoDrbQ">NeuralGCM：大活来了，AI天气预报进入下半场？ | 2023-12</a></li></ol>]]></content>
     
     
     <categories>
@@ -148,11 +148,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>IC</tag>
       
@@ -181,11 +181,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>FDDA</tag>
       
@@ -212,9 +212,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Urban</tag>
       
@@ -247,11 +247,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -284,11 +284,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -321,11 +321,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -354,11 +354,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
     </tags>
     
@@ -383,11 +383,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -418,11 +418,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -455,11 +455,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -488,11 +488,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>PINN</tag>
       
@@ -525,11 +525,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -560,11 +560,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -593,13 +593,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>UCM</tag>
       
@@ -630,11 +630,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>mesh generation</tag>
       
@@ -663,17 +663,17 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>ERA5</tag>
       
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -704,11 +704,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -737,11 +737,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ERA5</tag>
       
@@ -770,17 +770,17 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>ERA5</tag>
       
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -807,17 +807,17 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>ERA5</tag>
       
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -848,17 +848,17 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>ERA5</tag>
       
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
+      
+      <tag>PGW</tag>
       
       <tag>NetCDF</tag>
       
@@ -891,17 +891,17 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>ERA5</tag>
       
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -963,17 +963,17 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>ERA5</tag>
       
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -1192,13 +1192,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>UCM</tag>
       
@@ -1225,13 +1225,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>UCM</tag>
       
@@ -1359,13 +1359,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>MPI</tag>
       
@@ -1425,11 +1425,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -2132,13 +2132,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
     </tags>
     
@@ -2163,13 +2163,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
       <tag>MPI</tag>
       
@@ -2200,13 +2200,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
     </tags>
     
@@ -2466,11 +2466,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -2524,9 +2524,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>ECMWF</tag>
       
@@ -2555,11 +2555,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
     </tags>
     
@@ -2679,11 +2679,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -2710,11 +2710,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -2745,11 +2745,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
     </tags>
     
@@ -2774,11 +2774,11 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>HPC</tag>
       
       <tag>WPS</tag>
       
@@ -2805,13 +2805,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
+      <tag>HPC</tag>
       
     </tags>
     
@@ -2836,11 +2836,11 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -3030,7 +3030,7 @@
     <link href="/2024/10/22/ML-Automatic-Differentiation/"/>
     <url>/2024/10/22/ML-Automatic-Differentiation/</url>
     
-    <content type="html"><![CDATA[<p>In mathematics and computer algebra, automatic differentiation (auto-differentiation, autodiff, or AD), also called algorithmic differentiation, computational differentiation, is a set of techniques to evaluate the partial derivative of a function specified by a computer program.</p><p>Automatic differentiation exploits the fact that every computer calculation, no matter how complicated, executes a sequence of elementary arithmetic operations (addition, subtraction, multiplication, division, etc.) and elementary functions (exp, log, sin, cos, etc.). By applying the chain rule repeatedly to these operations, partial derivatives of arbitrary order can be computed automatically, accurately to working precision, and using at most a small constant factor of more arithmetic operations than the original program.</p><h1 id="references">References</h1><ol type="1"><li><a href="https://huggingface.co/blog/andmholm/what-is-automatic-differentiation">What's Automatic Differentiation?</a></li><li><a href="https://fancyerii.github.io/books/autodiff/">自动微分</a></li></ol>]]></content>
+    <content type="html"><![CDATA[<p>In mathematics and computer algebra, automatic differentiation (auto-differentiation, autodiff, or AD), also called algorithmic differentiation, computational differentiation, is a set of techniques to <strong>evaluate the partial derivative of a function specified</strong> by a computer program.</p><p>Automatic differentiation exploits the fact that every computer calculation, no matter how complicated, executes a sequence of elementary arithmetic operations (addition, subtraction, multiplication, division, etc.) and elementary functions (exp, log, sin, cos, etc.). By applying the chain rule repeatedly to these operations, partial derivatives of arbitrary order can be computed automatically, accurately to working precision, and using at most a small constant factor of more arithmetic operations than the original program.</p><ul><li>計算一個函數<strong>導數</strong>的方法</li><li>自動微分是利用電腦自動化<strong>求導</strong>的技術</li></ul><h1 id="references">References</h1><ol type="1"><li><a href="https://huggingface.co/blog/andmholm/what-is-automatic-differentiation">What's Automatic Differentiation?</a></li><li><a href="https://fancyerii.github.io/books/autodiff/">自动微分</a></li><li><a href="https://indico.ihep.ac.cn/event/17315/attachments/64130/75771/%E8%87%AA%E5%8A%A8%E5%BE%AE%E5%88%86.pdf">自动微分</a></li><li><a href="https://vlight.me/2018/04/01/curvature-and-automatic-differentiation/">曲率与自动微分</a></li></ol>]]></content>
     
     
     <categories>
@@ -3104,11 +3104,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>ECMWF</tag>
       
@@ -3177,11 +3177,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
     </tags>
     
@@ -3239,11 +3239,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
     </tags>
     
@@ -3322,9 +3322,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Urban</tag>
       
@@ -3414,11 +3414,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>Google</tag>
       
@@ -3445,11 +3445,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
     </tags>
     
@@ -3474,11 +3474,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -3505,11 +3505,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -3536,11 +3536,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -3567,11 +3567,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -3623,9 +3623,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -3650,9 +3650,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -3733,11 +3733,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -3764,15 +3764,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -3799,11 +3799,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -3832,15 +3832,15 @@
     
     <tags>
       
-      <tag>NWP</tag>
+      <tag>MPAS</tag>
       
-      <tag>gnu</tag>
+      <tag>NWP</tag>
       
       <tag>WRF</tag>
       
-      <tag>Installation</tag>
+      <tag>gnu</tag>
       
-      <tag>MPAS</tag>
+      <tag>Installation</tag>
       
       <tag>DA</tag>
       
@@ -4129,31 +4129,6 @@
   
   
   <entry>
-    <title>ssh setup</title>
-    <link href="/2024/06/05/ssh/"/>
-    <url>/2024/06/05/ssh/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://en.wikipedia.org/wiki/Secure_Shell">The Secure Shell Protocol (SSH)</a> is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login and command-line execution.</p><p>SSH was designed for Unix-like operating systems as a replacement for Telnet and unsecured remote Unix shell protocols, such as the Berkeley Remote Shell (rsh) and the related rlogin and rexec protocols, which all use insecure, plaintext methods of authentication, like passwords.</p><p>安全外殼協定（Secure Shell Protocol，簡稱SSH）是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境[1]。SSH通過在網路中建立安全隧道來實現SSH客戶端與伺服器之間的連線[2]。SSH最常見的用途是遠端登入系統，人們通常利用SSH來傳輸命令列介面和遠端執行命令。SSH使用頻率最高的場合是類Unix系統，但是Windows作業系統也能有限度地使用SSH。2015年，微軟宣布將在未來的作業系統中提供原生SSH協定支援[3]，Windows 10 1803版本已提供OpenSSH工具</p><h1 id="generate-a-key-pair">Generate a key pair</h1><p>In you local PC,</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh-keygen<br>or<br>$ ssh-keygen -t rsa<br></code></pre></td></tr></table></figure><p>where -t rsa option specifies that the type of the key should be RSA. Other choices include DSA, ECDSA, and ED25519. Select the protocol your SSH connection will use.</p><p>and id_rsa/id_rsa.pub are generated on .ssh.</p><ul><li>id_rsa contains the private key.</li><li>id_rsa.pub contains the public key.</li></ul><h1 id="id_rsa.pub">id_rsa.pub</h1><p>Copy id_rsa.pub to remote machine .ssh/authorized_keys</p><h1 id="ssh-login-without-password">ssh login without password</h1><p>In your SSH session with the remote machine, update the permissions of the .ssh directory and authorized_keys file in case they need it:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">chmod</span> 700 ~/.ssh<br>$ <span class="hljs-built_in">chmod</span> 600 ~/.ssh/authorized_keys<br></code></pre></td></tr></table></figure><p>Now, close your connection and your Terminal or Command Prompt. When you reopen it and try to connect to the remote server again from the client where you have your private key saved, you should receive a request to enter the passphrase instead of your username and password.</p><p>Reference: 1. <a href="https://www.strongdm.com/blog/ssh-passwordless-login">How to Set Up SSH Passwordless Login (Step-by-Step Tutorial)</a></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>Linux</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>ssh</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>WRF | WRF uses Pnetcdf</title>
     <link href="/2024/06/05/WRF-install-pnetcdf/"/>
     <url>/2024/06/05/WRF-install-pnetcdf/</url>
@@ -4175,6 +4150,31 @@
       <tag>Installation</tag>
       
       <tag>Pnetcdf</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ssh setup</title>
+    <link href="/2024/06/05/ssh/"/>
+    <url>/2024/06/05/ssh/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://en.wikipedia.org/wiki/Secure_Shell">The Secure Shell Protocol (SSH)</a> is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login and command-line execution.</p><p>SSH was designed for Unix-like operating systems as a replacement for Telnet and unsecured remote Unix shell protocols, such as the Berkeley Remote Shell (rsh) and the related rlogin and rexec protocols, which all use insecure, plaintext methods of authentication, like passwords.</p><p>安全外殼協定（Secure Shell Protocol，簡稱SSH）是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境[1]。SSH通過在網路中建立安全隧道來實現SSH客戶端與伺服器之間的連線[2]。SSH最常見的用途是遠端登入系統，人們通常利用SSH來傳輸命令列介面和遠端執行命令。SSH使用頻率最高的場合是類Unix系統，但是Windows作業系統也能有限度地使用SSH。2015年，微軟宣布將在未來的作業系統中提供原生SSH協定支援[3]，Windows 10 1803版本已提供OpenSSH工具</p><h1 id="generate-a-key-pair">Generate a key pair</h1><p>In you local PC,</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh-keygen<br>or<br>$ ssh-keygen -t rsa<br></code></pre></td></tr></table></figure><p>where -t rsa option specifies that the type of the key should be RSA. Other choices include DSA, ECDSA, and ED25519. Select the protocol your SSH connection will use.</p><p>and id_rsa/id_rsa.pub are generated on .ssh.</p><ul><li>id_rsa contains the private key.</li><li>id_rsa.pub contains the public key.</li></ul><h1 id="id_rsa.pub">id_rsa.pub</h1><p>Copy id_rsa.pub to remote machine .ssh/authorized_keys</p><h1 id="ssh-login-without-password">ssh login without password</h1><p>In your SSH session with the remote machine, update the permissions of the .ssh directory and authorized_keys file in case they need it:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">chmod</span> 700 ~/.ssh<br>$ <span class="hljs-built_in">chmod</span> 600 ~/.ssh/authorized_keys<br></code></pre></td></tr></table></figure><p>Now, close your connection and your Terminal or Command Prompt. When you reopen it and try to connect to the remote server again from the client where you have your private key saved, you should receive a request to enter the passphrase instead of your username and password.</p><p>Reference: 1. <a href="https://www.strongdm.com/blog/ssh-passwordless-login">How to Set Up SSH Passwordless Login (Step-by-Step Tutorial)</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ssh</tag>
       
     </tags>
     
@@ -4276,9 +4276,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>Installation</tag>
       
       <tag>Spack</tag>
       
@@ -4546,9 +4546,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -4764,9 +4764,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -4847,11 +4847,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>tile files</tag>
       
@@ -4905,9 +4905,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>netcdf</tag>
       
@@ -4938,9 +4938,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -4965,9 +4965,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>netcdf</tag>
       
@@ -5071,15 +5071,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -5131,15 +5131,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -5220,9 +5220,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -5247,13 +5247,13 @@
     
     <tags>
       
-      <tag>HPC</tag>
+      <tag>MPAS</tag>
       
       <tag>WRF</tag>
       
-      <tag>WPS</tag>
+      <tag>HPC</tag>
       
-      <tag>MPAS</tag>
+      <tag>WPS</tag>
       
     </tags>
     
@@ -5398,15 +5398,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -5572,11 +5572,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -5686,9 +5686,9 @@
     
     <tags>
       
-      <tag>HPC</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>HPC</tag>
       
       <tag>gnu</tag>
       
@@ -5719,11 +5719,11 @@
       
       <tag>NWP</tag>
       
+      <tag>WRF</tag>
+      
       <tag>gnu</tag>
       
       <tag>gcc</tag>
-      
-      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -5752,11 +5752,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>slurm</tag>
       
       <tag>HPC</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
