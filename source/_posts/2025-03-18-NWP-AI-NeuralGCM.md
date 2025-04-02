@@ -81,6 +81,11 @@ We train a range of NeuralGCM models at horizontal resolutions with grid spacing
 
 ![My understanding: To hold learned physics tendencies constant for multiple ODE time-steps to reduce computational expense, typically corresponding to 30 minutes of simulation time.](https://i.imgur.com/O6gyFxx.png)
 
+- <https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-recurrent-neural-networks>
+  - Recurrent neural networks, also known as RNNs, are a class of neural networks that allow previous outputs to be used as inputs while having hidden states.
+  - NeuralGCM NN part, it is **recurrent**.
+![](https://i.imgur.com/VVuAWBk.png){width=500}
+
 - We **gradually increased the rollout length from 6 hours to 5 days**, which we found to be critical because our models are not accurate for multi-day prediction early in training.
 
 ## **2. End-to-End Online Training**
