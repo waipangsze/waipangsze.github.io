@@ -1,0 +1,953 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="中國氣象局（China Meteorological Administration，縮寫：CMA），是中華人民共和國國務院負責氣象行政管理與科學研究的副部級直屬事業單位。 CMA-GFS (原名为GRAPES-GFS) 作为我国自主研发的新一代全球数值预报模式，从初始场、变分同化、模式框架等核心技术均实现了自主化。CMA-GFS全球模式从2001年开始组织数值预报团队启动研发，2016年实现业务化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | CMA | CMA_GFS real time data">
+<meta property="og:url" content="https://waipangsze.github.io/2025/04/02/NWP-CMA-CMA_GFS-real-time-data/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="中國氣象局（China Meteorological Administration，縮寫：CMA），是中華人民共和國國務院負責氣象行政管理與科學研究的副部級直屬事業單位。 CMA-GFS (原名为GRAPES-GFS) 作为我国自主研发的新一代全球数值预报模式，从初始场、变分同化、模式框架等核心技术均实现了自主化。CMA-GFS全球模式从2001年开始组织数值预报团队启动研发，2016年实现业务化">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/TtrCqKa.png">
+<meta property="article:published_time" content="2025-04-02T08:15:00.000Z">
+<meta property="article:modified_time" content="2025-04-02T09:54:55.894Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="CMA">
+<meta property="article:tag" content="CMA_GFS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/TtrCqKa.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | CMA | CMA_GFS real time data - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/TtrCqKa.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | CMA | CMA_GFS real time data"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-02 16:15" pubdate>
+          April 2, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | CMA | CMA_GFS real time data</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>中國氣象局（China Meteorological Administration，縮寫：CMA）</strong>，是中華人民共和國國務院負責氣象行政管理與科學研究的副部級直屬事業單位。</p>
+<p><strong>CMA-GFS (原名为GRAPES-GFS)</strong> 作为我国自主研发的新一代全球数值预报模式，从初始场、变分同化、模式框架等核心技术均实现了自主化。CMA-GFS全球模式从2001年开始组织数值预报团队启动研发，2016年实现业务化并面向全国下发产品。该模式每天运行4次，分别是00、06、12、18 UTC，时间分辨率为3小时，空间分辨率为0.25˚ × 0.25˚，预报时长为10天(240小时)，提供了全球基础要素场和诊断要素场，基础要素场主要包括各层次的高度场、温度场、东西风场、湿度场、比湿场、露点场及海平面气压场、10 m东西风场、2 m温度场、2 m比湿场、2 m露点场、降水量等，诊断要素场主要包括10 m阵风、能量指数、最高最低温度、云量及各层次的涡度散度、垂直速度及相当位温等。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://bbs.06climate.com/forum.php?mod=viewthread&amp;tid=108570&amp;extra=page%3D1&amp;page=1">CMA-MESO 3km的模式预报场能作为WRF的初始场吗？ | 2023-8-11</a>
+<ul>
+<li>等压面数据用CMA MESO 预报场，地面数据用CLDAS网格产品可以吗WPS里的Vtable没有现成的选项，有考虑自己写Vtable文件</li>
+<li>我知道<strong>GRAPES-GFS全球版本可以</strong>，中尺度版本可能与这个不同。</li>
+<li>这是全球版本数据：<a target="_blank" rel="noopener" href="http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/" class="uri">http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/</a></li>
+<li><strong>CMA-GFS成功了，但是分辨率不够</strong>，我又用了CALMET降尺度，<strong>用 CMA-GFS的话 改Vtable文件 就可以</strong>，MESO数据缺很多土壤数据</li>
+<li>不好意思，我的 Vtable文件是老师给的，不能外传，<strong>你可以用python读取grib文件信息对应修改一下，改Vtable.ECWMF就可以</strong></li>
+</ul></li>
+<li>Github
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WPS/pull/236">Adding support for CMA-GFS in WPS | Oct 10, 2023</a></li>
+<li>The CMA-GFS grib2 datasets is now able to be ingested by the ungrib program. The GRAPES_GFS(here in after referred to as CMA_GFS), the new generation of Global/Regional Assimilation and Prediction Enhanced System which is independently developped by China Meteorological Administration (CMA), has been put into formal operation. So we are committed to solving the problem of WPS correctly handling CMA_GFS forecast data.</li>
+<li>one <code>Vtable files(Vtable.CMA_GFS)</code> has been created with the fields required by the WRF model. Modifications to the ungrib source code: <strong>Adding support for code 738</strong> in <code>rd_grid2.F</code> because model levels of CMA_GFS are on generalized vertical height coordinates.</li>
+<li>The <strong>CMA_GFS real time data is here</strong>: <a target="_blank" rel="noopener" href="http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/" class="uri">http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/</a></li>
+<li><strong>I've tested the program with an Intel compiler and it passed without errors. CMA_GFS forecast data were also used to test, the results are normal.</strong></li>
+<li>[<em>Dec 22, 2024</em>] These changes permit ungribbing of the CMA model output. <strong>Tests on derecho were successful</strong>. <strong>Note that the global CMA output files are very large and time-consuming to download</strong>.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI2NTk2MzU3NA==&amp;mid=2247485543&amp;idx=1&amp;sn=e4155bbc8ee16350c57dbf733e3d2386&amp;chksm=ea94193edde39028ec6ec2ecfd5095521c6d1e0a627357bcc8a67ca093c2e462d01ff4a1660e&amp;scene=178&amp;cur_album_id=2858702555684864004#rd">WRF基础 | CMA-GFS运行WRF | Jan 2025</a></li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>rd_grib2.F
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs rd_grib2.F">line 738:  &amp;               (gfld%ipdtmpl(1) .eq. g2code(2,j)) .and.  !! Added by Dr.Haiqing SONG, 20181201<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>Vtable.CMA_GFS
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs Vtable.CMA_GFS">GRIB1| Level| From |  To  | metgrid  | metgrid | metgrid                                 |GRIB2|GRIB2|GRIB2|GRIB2|<br>Param| Type |Level1|Level2| Name     | Units   | Description                             |Discp|Catgy|Param|Level|<br>-----+------+------+------+----------+---------+-----------------------------------------+-----------------------+<br>  11 | 100  |   *  |      | TT       | K       | Temperature                             |  0  |  0  |  0  | 100 |<br>  33 | 100  |   *  |      | UU       | m s-1   | U                                       |  0  |  2  |  2  | 100 |<br>  34 | 100  |   *  |      | VV       | m s-1   | V                                       |  0  |  2  |  3  | 100 |<br>  52 | 100  |   *  |      | RH       | %       | Relative Humidity                       |  0  |  1  |  1  | 100 |<br>   7 | 100  |   *  |      | HGT      | m       | Height                                  |  0  |  3  |  5  | 100 |<br>  11 | 105  |   2  |      | TT       | K       | Temperature       at 2 m                |  0  |  0  |  0  | 103 |<br>  52 | 105  |   2  |      | RH       | %       | Relative Humidity at 2 m                |  0  |  1  |  1  | 103 |<br>  33 | 105  |  10  |      | UU       | m s-1   | U                 at 10 m               |  0  |  2  |  2  | 103 |<br>  34 | 105  |  10  |      | VV       | m s-1   | V                 at 10 m               |  0  |  2  |  3  | 103 |<br>   1 |   1  |   0  |      | PSFC     | Pa      | Surface Pressure                        |  0  |  3  |  0  |   1 |<br>   2 | 102  |   0  |      | PMSL     | Pa      | Sea-level Pressure                      |  0  |  3  |  1  | 101 |<br> 144 | 112  |   0  |  10  | SM000010 | fraction| Soil Moist 0-10 cm below grn layer (Up) |  0  |  1  |  0  | 106 |<br> 144 | 112  |  10  |  40  | SM010040 | fraction| Soil Moist 10-40 cm below grn layer     |  0  |  1  |  0  | 106 |<br> 144 | 112  |  40  | 100  | SM040100 | fraction| Soil Moist 40-100 cm below grn layer    |  0  |  1  |  0  | 106 |<br> 144 | 112  | 100  | 200  | SM100200 | fraction| Soil Moist 100-200 cm below gr layer    |  0  |  1  |  0  | 106 |<br>  85 | 112  |   0  |  10  | ST000010 | K       | T 0-10 cm below ground layer (Upper)    |  0  |  0  |  0  | 106 |<br>  85 | 112  |  10  |  40  | ST010040 | K       | T 10-40 cm below ground layer (Upper)   |  0  |  0  |  0  | 106 |<br>  85 | 112  |  40  | 100  | ST040100 | K       | T 40-100 cm below ground layer (Upper)  |  0  |  0  |  0  | 106 |<br>  85 | 112  | 100  | 200  | ST100200 | K       | T 100-200 cm below ground layer (Bottom)|  0  |  0  |  0  | 106 |<br>  11 |   1  |   0  |      | SKINTEMP | K       | Skin temperature                        |  0  |  0  |  0  |   1 |<br>   7 |   1  |   0  |      | SOILHGT  | m       | Terrain field of source analysis        |  0  |  3  |  5  |   1 |<br>  81 |   1  |   0  |      | LANDSEA  | proprtn | Land/Sea flag (1=land, 0 or 2=sea)      |  2  |  0  |  0  |   1 |<br>  65 |   1  |   0  |      | SNOW     | kg m-2  | Water equivalent snow depth             |  0  |  1  | 13  |   1 |<br>     |   1  |   0  |      | SNOWH    | m       | Physical Snow Depth                     |  0  |  1  |     |   1 |<br>  33 |   6  |   0  |      | UMAXW    | m s-1   | U                 at max wind           |  0  |  2  |  2  |   6 |<br>  34 |   6  |   0  |      | VMAXW    | m s-1   | V                 at max wind           |  0  |  2  |  3  |   6 |<br>   2 |   6  |   0  |      | PMAXW    | Pa      | Pressure of max wind level              |  0  |  3  |  0  |   6 |<br>     |   6  |   0  |      | PMAXWNN  | Pa      | PMAXW, used for nearest neighbor interp |  0  |  3  |  0  |   6 |<br>   2 |   6  |   0  |      | TMAXW    | K       | Temperature at max wind level           |  0  |  0  |  0  |   6 |<br>   7 |   6  |   0  |      | HGTMAXW  | m       | Height of max wind level                |  0  |  3  |  5  |   6 |<br>  33 |   7  |   0  |      | UTROP    | m s-1   | U                 at tropopause         |  0  |  2  |  2  |   7 |<br>  34 |   7  |   0  |      | VTROP    | m s-1   | V                 at tropopause         |  0  |  2  |  3  |   7 |<br>   2 |   7  |   0  |      | PTROP    | Pa      | Pressure of tropopause                  |  0  |  3  |  0  |   7 |<br>     |   7  |   0  |      | PTROPNN  | Pa      | PTROP, used for nearest neighbor interp |  0  |  3  |  0  |   7 |<br>   2 |   7  |   0  |      | TTROP    | K       | Temperature at tropopause               |  0  |  0  |  0  |   7 |<br>   7 |   7  |   0  |      | HGTTROP  | m       | Height of tropopause                    |  0  |  3  |  5  |   7 |<br>-----+------+------+------+----------+---------+-----------------------------------------+-----------------------+<br>#  This Vtable was created for CMA/CMA_GFS model data from the CMA server.(http://cemc.cma.cn/intro.html?idx=1)<br>#  The GRAPES_GFS(here in after referred to as CMA_GFS), the new generation of Global/Regional Assimilation and Prediction Enhanced System<br>#  which is independently developped by China Meteorological Administration (CMA), has been put into formal operation.<br>#  The data was accesed from:http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/thh00/    (note hh at end)<br>#  Developed by Dr. Haiqing SONG from Inner Mongolia Meteorological Service of China Meteorological Administration(CMA).<br>#  E-mail:haiqingsong@emails.imau.edu.cn<br>#  wgrib2 -var filename.grib2<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h1 id="cma">CMA</h1>
+<p>数据介绍</p>
+<p>CMA-GFS 是我国自主研发的新一代全球数值预报模式，该模式由同化分系统和全球模式分系统两部分组成，于2016年6月业务化运行，向全国实时分发产品。2018年7月四维变分同化实现业务运行。2020年CMA-GFS升级为3.0，模式水平分辨率为25km，模式层顶0.1hPa，垂直分层87层。2022年CMA-GFS升级为3.3版本。2023年CMA-GFS升级为4.0版本</p>
+<figure>
+<img src="https://i.imgur.com/KDTgahf.png" srcset="/img/loading.gif" lazyload alt="https://data.cma.cn/data/detail/dataCode/F.0003.0008.S001.html" width="400" /><figcaption>https://data.cma.cn/data/detail/dataCode/F.0003.0008.S001.html</figcaption>
+</figure>
+<h2 id="httpdata.wis.cma.cndcpc_wmc_bjopennwpgmf_gra">http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/</h2>
+<ul>
+<li>Index of /DCPC_WMC_BJ/open/nwp/gmf_gra/</li>
+</ul>
+<p><img src="https://i.imgur.com/H9MM6QW.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h1 id="ungrib">ungrib</h1>
+<ul>
+<li>re-compile <strong>WPS</strong> (<strong>WRFv450-CMA-GFS</strong>)</li>
+</ul>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs tap">-rw-rw-r--<span class="hljs-number"> 1 </span>wpsze wpsze 3.2G Apr <span class="hljs-number"> 2 </span>16:56 CMA:2025-01-12_00<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 62 </span>Apr <span class="hljs-number"> 2 </span>16:50 GRIBFILE.AAA -&gt; Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2<br>-rw-rw-r--<span class="hljs-number"> 1 </span>wpsze wpsze <span class="hljs-number"> 272 </span>Apr <span class="hljs-number"> 2 </span>16:50 namelist.wps<br>-rwxrwxr-x<span class="hljs-number"> 1 </span>wpsze wpsze 1.7K Apr <span class="hljs-number"> 2 </span>16:51 run_ungrid.sh*<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 67 </span>Apr <span class="hljs-number"> 2 </span>16:51 ungrib.exe -&gt; /home/wpsze/WRF/WRFv450-CMA-GFS/wrf_install/WPS-4.5/ungrib/ungrib.exe*<br>-rw-rw-r--<span class="hljs-number"> 1 </span>wpsze wpsze  30K Apr <span class="hljs-number"> 2 </span>16:57 ungrib.log<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 14 </span>Apr <span class="hljs-number"> 2 </span>16:51 Vtable -&gt; Vtable.CMA_GFS<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 87 </span>Apr <span class="hljs-number"> 2 </span>16:49 Vtable.CMA_GFS -&gt; /home/wpsze/WRF/WRFv450-CMA-GFS/wrf_install/WPS-4.5/ungrib/Variable_Tables/Vtable.CMA_GFS<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 81 </span>Apr <span class="hljs-number"> 2 </span>16:49 Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2 -&gt; ../202501/20250112/Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2<br></code></pre></td></tr></table></figure>
+<h1 id="wrf">WRF</h1>
+<ul>
+<li>ungrib.exe: done</li>
+<li>metgrib.exe: done</li>
+<li>real.exe: done</li>
+<li>wrf.exe: Segmentation Fault</li>
+</ul>
+<h1 id="mpas">MPAS</h1>
+<h2 id="mpasv7.3">MPASv7.3</h2>
+<h3 id="init_atmosphere_model">init_atmosphere_model</h3>
+<h4 id="error">Error</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs log">ERROR: ********************************************************************************<br>ERROR: LANDSEA field not found in meteorological data file CMA:2025-01-12_00<br>CRITICAL ERROR: ********************************************************************************<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/CMA/" class="print-no-link">#CMA</a>
+      
+        <a href="/tags/CMA-GFS/" class="print-no-link">#CMA_GFS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | CMA | CMA_GFS real time data</div>
+      <div>https://waipangsze.github.io/2025/04/02/NWP-CMA-CMA_GFS-real-time-data/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 2, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>April 2, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/02/NWP-DA-Kalman-Filter/" title="NWP | DA | Kalman Filter">
+                        <span class="hidden-mobile">NWP | DA | Kalman Filter</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

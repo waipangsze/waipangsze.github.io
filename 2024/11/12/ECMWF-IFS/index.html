@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.ecmwf.int/sites/default/files/flags-council-chamber-650px.jpg">
 <meta property="article:published_time" content="2024-11-12T02:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-27T09:50:12.510Z">
+<meta property="article:modified_time" content="2025-04-02T02:51:02.493Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="WPS">
@@ -339,7 +339,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.7k words
+          6.8k words
         
       </span>
     
@@ -350,7 +350,7 @@
         
         
         
-          56 mins
+          57 mins
         
       </span>
     
@@ -568,6 +568,7 @@
 <li><em>[Jan 15, 2025]</em> As requested, I am providing the corrected rd_grib2F file for WPS 4.5 and my Vtable.ECMWF_GRIB2 file. For the new WPS 4.6 version, I have not yet prepared a correction for the IFS model.</li>
 <li><em>[Jan 16, 2025]</em> <strong>I run WPS using your rd_grib2.F and Vtable. All work fine</strong>. Thank you! The met-em file I generated only has 14 pressure levels in the vertical, --- is this what you got?</li>
 <li><em>[Jan 16, 2025]</em> Yes, <strong>the IFS model provided by ECMWF has only 14 pressure levels</strong>. I made a simulation with the operational IFS model at 137 hybrid levels, which we have access to at the Institute of Meteorology and Water Management. The results are similar to the results from the IFS model, which is provided as open data. This is good news.</li>
+<li><em>[14 Jan, 2025]</em> I have <strong>already tested this Vtable.ECMWF with the new operational IFS data and it doesn't work either</strong>. I reported this here.</li>
 </ul></li>
 </ul>
 <div class="note note-primary">
@@ -598,6 +599,13 @@
         </div>
       </div>
     </div>
+<h4 id="vtable.ecmwf_grib2vtable.ecmwf">Vtable.ECMWF_GRIB2/Vtable.ECMWF</h4>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console">-rw-rw-r-- 1 wpsze wpsze 321M Apr  1 16:27 ERA5:2025-03-26_00-ECMWF_GRIB2<br>-rw-rw-r-- 1 wpsze wpsze 286M Apr  1 14:26 ERA5:2025-03-26_00-Vtable.ECMWF<br></code></pre></td></tr></table></figure>
+<ul>
+<li>The intermediate file (ERA5.xxx) by Vtable.ECMWF_GRIB2 is larger file size than that of Vtable.ECMWF</li>
+<li>ERA5.xxx by Vtable.ECMWF is fail in init_atmosphere_model step.</li>
+</ul>
+<h3 id="init_atmosphere_model">init_atmosphere_model</h3>
 <h4 id="error">Error</h4>
 <ul>
 <li>MPASv7.3 init_atmosphere_model</li>
@@ -613,8 +621,9 @@
 <li>It generally indicates that there are grid cells that have a soil temperature value less than or equal to zero.</li>
 <li><strong>Use WPSv4.6 with above renewd Vtable and rd_grib2.F</strong></li>
 </ul>
-<h5 id="done">Done</h5>
+<h4 id="done">Done</h4>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">MPAS-120km_2022063000.init.nc<br></code></pre></td></tr></table></figure>
+<p>and MPASv7.3 runs (./atmosphere_model) with IFS successfully as well (<strong>both with Vtable.ECMWF_GRIB2 above</strong>).</p>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/news/2024/ecmwf-releases-much-larger-open-dataset">ECMWF releases a much larger open dataset | 29 February 2024</a></li>
@@ -696,7 +705,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>March 27, 2025</div>
+          <div>April 2, 2025</div>
         </div>
       
       
