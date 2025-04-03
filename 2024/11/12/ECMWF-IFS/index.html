@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.ecmwf.int/sites/default/files/flags-council-chamber-650px.jpg">
 <meta property="article:published_time" content="2024-11-12T02:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-02T02:51:02.493Z">
+<meta property="article:modified_time" content="2025-04-03T06:20:22.040Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="WPS">
@@ -339,7 +339,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.8k words
+          7.1k words
         
       </span>
     
@@ -350,7 +350,7 @@
         
         
         
-          57 mins
+          60 mins
         
       </span>
     
@@ -424,11 +424,13 @@
 <p>規格如下：</p>
 <ul>
 <li>解析度從 0.4° 提升至 <strong>0.25°</strong></li>
+<li>0.25° x 0.25° lat/lon grid or any multiple thereof (global or sub-area)</li>
+<li>On model (Reduced Gaussian) n320 grid</li>
 <li>地表變因：2 公尺氣溫、地表溫度、降水量、氣壓、10 公尺風速</li>
 <li>9 個大氣壓力層位提供溫度、濕度或風速數據</li>
 <li><strong>10 天預報，時間間隔 3 小時</strong></li>
 <li>15 天集合預報，包含 51 個集合成員</li>
-<li><strong>每天更新 4 次</strong></li>
+<li><strong>每天更新 4 次</strong> (00/06/12/18)</li>
 <li>最新測試版的人工智慧/綜合預測系統（<strong>AIFS</strong>）的中尺度資料也可提供0.25 x 0.25度的解析度</li>
 <li>歐洲中期天氣預報中心（ECMWF）對次季節到季節尺度（<strong>S2S</strong>）資料集的貢獻，作為全球計劃的一部分，<strong>現在可以在48小時延遲後獲取，而不是之前的三週延遲</strong>
 <ul>
@@ -487,6 +489,264 @@
 </tbody>
 </table>
 <p>from <a target="_blank" rel="noopener" href="https://codes.ecmwf.int/grib/format/mars/stream/" class="uri">https://codes.ecmwf.int/grib/format/mars/stream/</a></p>
+<figure>
+<img src="https://i.imgur.com/j5aMuFL.png" srcset="/img/loading.gif" lazyload alt="Time available (UTC)" width="400" /><figcaption>Time available (UTC)</figcaption>
+</figure>
+<h1 id="variables">Variables</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/forecasts/datasets/set-ix">Deterministic AIFS forecast (Set IX - AIFS)</a></li>
+</ul>
+<h2 id="single-level---forecast">Single level - forecast</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Short Name</th>
+<th>ID</th>
+<th>Long Name</th>
+<th>Units</th>
+<th>Additional information</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>z</td>
+<td>129</td>
+<td>Geopotential</td>
+<td>m^2 s^-2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>msl</td>
+<td>151</td>
+<td>Mean sea level pressure</td>
+<td>Pa</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sdor</td>
+<td>160</td>
+<td>Standard deviation of sub-gridscale orography</td>
+<td>m</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>slor</td>
+<td>163</td>
+<td>Slope of sub-gridscale orography</td>
+<td>Numeric</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>10u</td>
+<td>165</td>
+<td>10 metre U wind component</td>
+<td>m s^-1</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>10v</td>
+<td>166</td>
+<td>10 metre V wind component</td>
+<td>m s^-1</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2t</td>
+<td>167</td>
+<td>2 metre temperature</td>
+<td>K</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2d</td>
+<td>168</td>
+<td>2 metre dewpoint temperature</td>
+<td>K</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>ssrd</td>
+<td>169</td>
+<td>Surface short-wave (solar) radiation downwards</td>
+<td>J m^-2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>lsm</td>
+<td>172</td>
+<td>Land-sea mask</td>
+<td>(0-1)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>strd</td>
+<td>175</td>
+<td>Surface long-wave (thermal) radiation downwards</td>
+<td>J m^-2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>lcc</td>
+<td>3073</td>
+<td>Low cloud cover</td>
+<td>%</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>mcc</td>
+<td>3074</td>
+<td>Medium cloud cover</td>
+<td>%</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>hcc</td>
+<td>3075</td>
+<td>High cloud cover</td>
+<td>%</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>rowe</td>
+<td>231002</td>
+<td>Runoff water equivalent (surface plus subsurface)</td>
+<td>kg m^-2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>cp</td>
+<td>228143</td>
+<td>Convective precipitation</td>
+<td>kg m^-2</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>sf</td>
+<td>228144</td>
+<td>Snowfall</td>
+<td>kg m^-2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>tcc</td>
+<td>228164</td>
+<td>Total cloud cover</td>
+<td>%</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>tp</td>
+<td>228228</td>
+<td>Total precipitation</td>
+<td>kg m^-2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>100u</td>
+<td>228246</td>
+<td>100 metre U wind component</td>
+<td>m s^-1</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>100v</td>
+<td>228247</td>
+<td>100 metre V wind component</td>
+<td>m s^-1</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pressure-level---forecast">Pressure level - forecast</h2>
+<ul>
+<li>All parameters are available at levels 1000, 925, 850, 700, 600, 500, 400, 300, 250, 200, 150, 100, 50 hPa</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>SHORT NAME</th>
+<th>ID</th>
+<th>LONG NAME</th>
+<th>UNITS</th>
+<th>ADDITIONAL INFORMATION</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>z</td>
+<td>129</td>
+<td>Geopotential</td>
+<td>m^2 s^-2</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>130</td>
+<td>Temperature</td>
+<td>K</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>u</td>
+<td>131</td>
+<td>U component of wind</td>
+<td>m s^-1</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>v</td>
+<td>132</td>
+<td>V component of wind</td>
+<td>m s^-1</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>q</td>
+<td>133</td>
+<td>Specific humidity</td>
+<td>kg kg^-1</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>w</td>
+<td>135</td>
+<td>Vertical velocity</td>
+<td>Pa s^-1</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="soil-level---forecast">Soil level - forecast</h2>
+<ul>
+<li>All parameters are available at levels 1, 2</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>SHORT NAME</th>
+<th>ID</th>
+<th>LONG NAME</th>
+<th>UNITS</th>
+<th>ADDITIONAL INFORMATION</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>vsw</td>
+<td>260199</td>
+<td>Volumetric soil moisture</td>
+<td>m^3 m^-3</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>sot</td>
+<td>260360</td>
+<td>Soil temperature</td>
+<td>K</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h1 id="ecmwf-ifs-high-resolution-operational-forecasts">ECMWF IFS High-Resolution Operational Forecasts</h1>
 <h2 id="from-rda.ucar">From rda.ucar</h2>
 <ul>
@@ -612,7 +872,7 @@
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs log">ERROR: extrap_type == 2 not implemented for target_z &gt;= zf(1,nz)<br>ERROR: *****************************************************************<br>ERROR: Error in interpolation of t(k,iCell) for k=  46, iCell=         1<br>CRITICAL ERROR: ********************************************************<br></code></pre></td></tr></table></figure>
 <ul>
-<li>set 'linear'</li>
+<li>set 'linear',</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs namelist">&amp;interpolation_control<br>    config_extrap_airtemp = &#x27;linear&#x27;<br>/<br></code></pre></td></tr></table></figure>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log">CRITICAL ERROR: Error in interpolation of st_fg to MPAS grid: num_st = 27244<br></code></pre></td></tr></table></figure>
@@ -624,6 +884,28 @@
 <h4 id="done">Done</h4>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">MPAS-120km_2022063000.init.nc<br></code></pre></td></tr></table></figure>
 <p>and MPASv7.3 runs (./atmosphere_model) with IFS successfully as well (<strong>both with Vtable.ECMWF_GRIB2 above</strong>).</p>
+<h1 id="cronjob">cronjob</h1>
+<p>For <code>00z</code>,</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-42d133e0" role="button" aria-expanded="false" aria-controls="collapse-42d133e0">
+        <div class="fold-arrow">▶</div>wpsze_download_IFS-cronjob-00z.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-42d133e0">
+        <div class="fold-content">
+          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-comment"># https://data.ecmwf.int/ecpds/home/opendata/20250402/00z/ifs/0p25/oper/20250402000000-0h-oper-fc.grib2</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate venv<br><br>BASE_DIR=$(<span class="hljs-built_in">pwd</span>)<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Base Dir = <span class="hljs-variable">$&#123;BASE_DIR&#125;</span>&quot;</span><br><br><span class="hljs-keyword">for</span> ifsday <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 0 1 3); <span class="hljs-keyword">do</span> <span class="hljs-comment"># day-shift = 0, 1, 2, 3</span><br><br>    YYYYMMDDHH=$(<span class="hljs-built_in">date</span> -d <span class="hljs-string">&quot;today - <span class="hljs-variable">$&#123;ifsday&#125;</span> day&quot;</span> +%Y%m%d00)<br><br>    yyyy=<span class="hljs-variable">$&#123;YYYYMMDDHH:0:4&#125;</span><br>    mm=<span class="hljs-variable">$&#123;YYYYMMDDHH:4:2&#125;</span><br>    <span class="hljs-built_in">dd</span>=<span class="hljs-variable">$&#123;YYYYMMDDHH:6:2&#125;</span><br>    hh=<span class="hljs-variable">$&#123;YYYYMMDDHH:8:2&#125;</span><br><br>    yyyymm=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><br>    yyyymmdd=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span><br><br>    tmp_dir=<span class="hljs-string">&quot;./<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>&quot;</span><br>    <span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Current Dir: <span class="hljs-subst">$(pwd)</span>&quot;</span><br><br>    limit_cpu_core=15<br>    count_cpu_core=1<br><br>    <span class="hljs-comment">#============== 00z ===================================</span><br>    tmp_ifs_fname=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;YYYYMMDDHH&#125;</span>0000-0h-oper-fc.grib2&quot;</span><br><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Now, <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span> ... &quot;</span><br><br>    <span class="hljs-keyword">if</span> [[ ! -f <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>&quot;</span> ]]; <span class="hljs-keyword">then</span>	<br>	    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Downloading ... <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>&quot;</span><br>	    <span class="hljs-comment">#wget --no-check-certificate https://data.ecmwf.int/forecasts/$&#123;yyyy&#125;$&#123;mm&#125;$&#123;dd&#125;/00z/ifs/0p25/oper/$&#123;tmp_ifs_fname&#125;</span><br>	    wget --no-check-certificate https://data.ecmwf.int/ecpds/home/opendata/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>/00z/ifs/0p25/oper/<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span> exists ... &quot;</span><br>    <span class="hljs-keyword">fi</span><br><br>    res=$(( <span class="hljs-variable">$&#123;count_cpu_core&#125;</span> % <span class="hljs-variable">$&#123;limit_cpu_core&#125;</span> ))<br>    <span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;res&#125;</span> == 0 ]]; <span class="hljs-keyword">then</span><br>	    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;please wait <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>, <span class="hljs-variable">$&#123;count_cpu_core&#125;</span>, <span class="hljs-variable">$&#123;res&#125;</span>.&quot;</span><br>	    <span class="hljs-built_in">wait</span><br>    <span class="hljs-keyword">fi</span><br>    <br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;BASE_DIR&#125;</span><br><span class="hljs-keyword">done</span>    <br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="dissemination-schedule">Dissemination schedule</h2>
+<figure>
+<img src="https://i.imgur.com/j5aMuFL.png" srcset="/img/loading.gif" lazyload alt="Time available (UTC)" width="400" /><figcaption>Time available (UTC)</figcaption>
+</figure>
+<ul>
+<li><strong>HKT = UTC + 8</strong></li>
+<li>How to set the crontab: <code>$ crontab -e</code></li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">crontab -l</span><br>30 17 * * * cd /home/wpsze/mpas/IFS; sh wpsze_download_IFS-cronjob-00z.sh <br></code></pre></td></tr></table></figure>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/news/2024/ecmwf-releases-much-larger-open-dataset">ECMWF releases a much larger open dataset | 29 February 2024</a></li>
@@ -705,7 +987,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>April 2, 2025</div>
+          <div>April 3, 2025</div>
         </div>
       
       
