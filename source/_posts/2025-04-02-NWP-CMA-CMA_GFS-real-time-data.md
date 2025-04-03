@@ -196,6 +196,11 @@ rm lsm_nan.nc lsm.nc
           edition      centre       typeOfLevel  level        dataDate     stepRange    shortName    packingType  gridType     
           1         ecmf         surface      0            20250401     0            unknown      grid_simple  regular_ll  
           ```
+      - check:
+            ```sh
+            $ wgrib2 -var lsm.grib 
+            1:0:LAND
+            ``` 
     - Solution: `cdo -f grb2 copy lsm.nc lsm.grib` on `extract_landseamask.sh`
       - check: `$ grib_ls lsm.grib`
           ```console
