@@ -86,10 +86,10 @@ banner_img: https://i.imgur.com/g3DB0G8.png
 - [Encounter an error during MPAS compilation | Lan 2025](https://forum.mmm.ucar.edu/threads/encounter-an-error-during-mpas-compilation.20474/)
 
 vim bldit_project.csh
-set CMAQ_HOME =/EM/wpsze/CMAQ/CMAQ-MPAS_CMAQ/CMAQ_5.5 ##改成自己的路径
+set CMAQ_HOME =/home/wpsze/CMAQ/CMAQ-MPAS_CMAQ/CMAQ_5.5 ##改成自己的路径
 
 ./bldit_project.csh intel
-cd /EM/wpsze/CMAQ/CMAQ-MPAS_CMAQ/CMAQ_5.5
+cd /home/wpsze/CMAQ/CMAQ-MPAS_CMAQ/CMAQ_5.5
 
 vim config_cmaq.csh
 

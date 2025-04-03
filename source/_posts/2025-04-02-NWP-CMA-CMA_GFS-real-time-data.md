@@ -140,3 +140,71 @@ ERROR: *************************************************************************
 ERROR: LANDSEA field not found in meteorological data file CMA:2025-01-12_00
 CRITICAL ERROR: ********************************************************************************
 ```
+
+# cronjob
+
+{% fold info @wpsze_download_CMA_GFS-cronjob-00z.sh %}
+```sh
+#!/bin/sh
+#################################################################
+# http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/Z_NAFP_C_BABJ_20250401000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2
+#################################################################
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate venv
+
+BASE_DIR=$(pwd)
+echo "Base Dir = ${BASE_DIR}"
+
+for ifsday in $(seq 0 1 1); do # day-shift = 0, 1
+
+    YYYYMMDDHH=$(date -d "today - ${ifsday} day" +%Y%m%d00)
+
+    yyyy=${YYYYMMDDHH:0:4}
+    mm=${YYYYMMDDHH:4:2}
+    dd=${YYYYMMDDHH:6:2}
+    hh=${YYYYMMDDHH:8:2}
+
+    yyyymm=${yyyy}${mm}
+    yyyymmdd=${yyyy}${mm}${dd}
+
+    tmp_dir="./${yyyy}${mm}/${yyyy}${mm}${dd}"
+    mkdir -p ${tmp_dir}
+    cd ${tmp_dir}
+    echo "Current Dir: $(pwd)"
+
+    limit_cpu_core=15
+    count_cpu_core=1
+
+    #============== 00z ===================================
+    tmp_cma_gfs_fname="Z_NAFP_C_BABJ_${YYYYMMDDHH}0000_P_NWPC-GRAPES-GFS-GLB-00000.grib2"
+
+    echo "Now, ${tmp_cma_gfs_fname} ... "
+
+    if [[ ! -f "${tmp_cma_gfs_fname}" ]]; then	
+	    echo "Downloading ... ${tmp_cma_gfs_fname}"
+	    #wget --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/Z_NAFP_C_BABJ_20250401000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2
+	    wget --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/${tmp_cma_gfs_fname}
+    else
+        echo "${tmp_cma_gfs_fname} exists ... "
+    fi
+
+    res=$(( ${count_cpu_core} % ${limit_cpu_core} ))
+    if [[ ${res} == 0 ]]; then
+	    echo "please wait ${tmp_cma_gfs_fname}, ${count_cpu_core}, ${res}."
+	    wait
+    fi
+    
+    cd ${BASE_DIR}
+done    
+```
+{% endfold %}
+
+- **HKT = UTC + 8**
+- How to set the crontab: `$ crontab -e`
+
+
+```console
+$ crontab -l
+00 16 * * * cd /home/wpsze/mpas/CMA_GFS; sh wpsze_download_CMA_GFS-cronjob-00z.sh
+00 16 * * * cd /home/wpsze/mpas/CMA_GFS; sh wpsze_download_CMA_GFS-cronjob-12z.sh
+```
