@@ -122,6 +122,18 @@ lrwxrwxrwx 1 wpsze wpsze   81 Apr  2 16:49 Z_NAFP_C_BABJ_20250112000000_P_NWPC-G
 
 # WRF
 
+- geogrid
+  - `LANDMASK` is added here.
+    ```console
+    float LANDMASK(Time, south_north, west_east) ;
+		LANDMASK:FieldType = 104 ;
+		LANDMASK:MemoryOrder = "XY " ;
+		LANDMASK:units = "none" ;
+		LANDMASK:description = "Landmask : 1=land, 0=water" ;
+		LANDMASK:stagger = "M" ;
+		LANDMASK:sr_x = 1 ;
+		LANDMASK:sr_y = 1 ;
+    ```
 - ungrib.exe: done
 - metgrib.exe: done
 - real.exe: done
@@ -140,6 +152,59 @@ ERROR: *************************************************************************
 ERROR: LANDSEA field not found in meteorological data file CMA:2025-01-12_00
 CRITICAL ERROR: ********************************************************************************
 ```
+
+- seems CMA_GFS doesn't contain `LANDSEA`
+
+But, in **static.nc**, landmask is included. So, why does init_atmosphere_model have to check **LANDSEA**?
+
+```console
+	int landmask(nCells) ;
+		landmask:units = "unitless" ;
+		landmask:long_name = "land-ocean mask (1=land ; 0=ocean)" ;
+```
+
+- [Error while running ungrib.exe with IFS global data | Oct 28, 2023](https://forum.mmm.ucar.edu/threads/error-while-running-ungrib-exe-with-ifs-global-data.14439/#post-38395)
+  - I tried removing all the fields that do not work with the new namelist record. **However, MPAS needs the LANDSEA mask to work but I don't know how to add it in the Intermediate Files**.
+  - Landsea mask values in ECMWF data lie between 0 and 1, which is different to WRF static data that have values of either 0 (grid box is fully covered by water) or 1 (grid box is fully covered with land). Please see the website below that describes landsea mask in ECMWRF: <https://confluence.ecmwf.int/display/FUG/Section+2.1.3.1+Land-Sea+Mask>
+  - **I am suspicious that Landsea mask values in IFS global data follow the rule of ECMWF data, i.e., its values could be between 0 and 1. This might give rise to troubles when we run MPAS initialization**.
+- [generating initial files in 2 separate stages | Jan 2025](https://forum.mmm.ucar.edu/threads/generating-initial-files-in-2-separate-stages.20522/)
+  - for instance, I found that landsea mask is a necessary parameter for processing pressure level data.
+
+##### Take IFS's land sea mask
+
+- `./extract_landseamask.sh`
+
+```sh
+#!/bin/bash
+
+cdo selname,lsm 20250401000000-0h-oper-fc.grib2 lsm_nan.nc
+
+cdo setmissval,-999 lsm_nan.nc lsm.nc
+
+cdo -f grb copy lsm.nc lsm.grib
+
+cdo showname lsm.grib
+
+rm lsm_nan.nc lsm.nc 
+```
+
+- ungrib step
+  - `ln -s lsm.grib GRIBFILE.AAB` # the CMA_GFS.grib2 is GRIBFILE.AAA
+    - Error: `gb_info: can only decode GRIB edition 2.`
+      - check: `$ grib_ls lsm.grib`
+          ```console
+          edition      centre       typeOfLevel  level        dataDate     stepRange    shortName    packingType  gridType     
+          1         ecmf         surface      0            20250401     0            unknown      grid_simple  regular_ll  
+          ```
+    - Solution: `cdo -f grb2 copy lsm.nc lsm.grib` on `extract_landseamask.sh`
+      - check: `$ grib_ls lsm.grib`
+          ```console
+          edition      centre       date         dataType     gridType     stepRange    typeOfLevel  level        shortName    packingType  
+          2            ecmf         20250401     fc           regular_ll   0            surface      0            lsm          grid_simple 
+          ```
+  - But `init_atmosphere_model` still exists: `ERROR: LANDSEA field not found in meteorological data file CMA:2025-01-12_00`
+  - [not yet] Done and check: ` $ ncl plotfmt.ncl 'filename="CMA:2025-01-12_00"'`
+
 
 # cronjob
 
