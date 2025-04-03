@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/TtrCqKa.png">
 <meta property="article:published_time" content="2025-04-02T08:15:00.000Z">
-<meta property="article:modified_time" content="2025-04-03T02:06:00.889Z">
+<meta property="article:modified_time" content="2025-04-03T09:48:47.923Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -338,7 +338,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k words
+          1.7k words
         
       </span>
     
@@ -349,7 +349,7 @@
         
         
         
-          13 mins
+          14 mins
         
       </span>
     
@@ -462,6 +462,10 @@
 <figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs tap">-rw-rw-r--<span class="hljs-number"> 1 </span>wpsze wpsze 3.2G Apr <span class="hljs-number"> 2 </span>16:56 CMA:2025-01-12_00<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 62 </span>Apr <span class="hljs-number"> 2 </span>16:50 GRIBFILE.AAA -&gt; Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2<br>-rw-rw-r--<span class="hljs-number"> 1 </span>wpsze wpsze <span class="hljs-number"> 272 </span>Apr <span class="hljs-number"> 2 </span>16:50 namelist.wps<br>-rwxrwxr-x<span class="hljs-number"> 1 </span>wpsze wpsze 1.7K Apr <span class="hljs-number"> 2 </span>16:51 run_ungrid.sh*<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 67 </span>Apr <span class="hljs-number"> 2 </span>16:51 ungrib.exe -&gt; /home/wpsze/WRF/WRFv450-CMA-GFS/wrf_install/WPS-4.5/ungrib/ungrib.exe*<br>-rw-rw-r--<span class="hljs-number"> 1 </span>wpsze wpsze  30K Apr <span class="hljs-number"> 2 </span>16:57 ungrib.log<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 14 </span>Apr <span class="hljs-number"> 2 </span>16:51 Vtable -&gt; Vtable.CMA_GFS<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 87 </span>Apr <span class="hljs-number"> 2 </span>16:49 Vtable.CMA_GFS -&gt; /home/wpsze/WRF/WRFv450-CMA-GFS/wrf_install/WPS-4.5/ungrib/Variable_Tables/Vtable.CMA_GFS<br>lrwxrwxrwx<span class="hljs-number"> 1 </span>wpsze wpsze  <span class="hljs-number"> 81 </span>Apr <span class="hljs-number"> 2 </span>16:49 Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2 -&gt; ../202501/20250112/Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2<br></code></pre></td></tr></table></figure>
 <h1 id="wrf">WRF</h1>
 <ul>
+<li>geogrid
+<ul>
+<li><code>LANDMASK</code> is added here. <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs console">  float LANDMASK(Time, south_north, west_east) ;<br>LANDMASK:FieldType = 104 ;<br>LANDMASK:MemoryOrder = &quot;XY &quot; ;<br>LANDMASK:units = &quot;none&quot; ;<br>LANDMASK:description = &quot;Landmask : 1=land, 0=water&quot; ;<br>LANDMASK:stagger = &quot;M&quot; ;<br>LANDMASK:sr_x = 1 ;<br>LANDMASK:sr_y = 1 ;<br></code></pre></td></tr></table></figure></li>
+</ul></li>
 <li>ungrib.exe: done</li>
 <li>metgrib.exe: done</li>
 <li>real.exe: done</li>
@@ -472,13 +476,53 @@
 <h3 id="init_atmosphere_model">init_atmosphere_model</h3>
 <h4 id="error">Error</h4>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs log">ERROR: ********************************************************************************<br>ERROR: LANDSEA field not found in meteorological data file CMA:2025-01-12_00<br>CRITICAL ERROR: ********************************************************************************<br></code></pre></td></tr></table></figure>
+<ul>
+<li>seems CMA_GFS doesn't contain <code>LANDSEA</code></li>
+</ul>
+<p>But, in <strong>static.nc</strong>, landmask is included. So, why does init_atmosphere_model have to check <strong>LANDSEA</strong>?</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs console">int landmask(nCells) ;<br>	landmask:units = &quot;unitless&quot; ;<br>	landmask:long_name = &quot;land-ocean mask (1=land ; 0=ocean)&quot; ;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/error-while-running-ungrib-exe-with-ifs-global-data.14439/#post-38395">Error while running ungrib.exe with IFS global data | Oct 28, 2023</a>
+<ul>
+<li>I tried removing all the fields that do not work with the new namelist record. <strong>However, MPAS needs the LANDSEA mask to work but I don't know how to add it in the Intermediate Files</strong>.</li>
+<li>Landsea mask values in ECMWF data lie between 0 and 1, which is different to WRF static data that have values of either 0 (grid box is fully covered by water) or 1 (grid box is fully covered with land). Please see the website below that describes landsea mask in ECMWRF: <a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/FUG/Section+2.1.3.1+Land-Sea+Mask" class="uri">https://confluence.ecmwf.int/display/FUG/Section+2.1.3.1+Land-Sea+Mask</a></li>
+<li><strong>I am suspicious that Landsea mask values in IFS global data follow the rule of ECMWF data, i.e., its values could be between 0 and 1. This might give rise to troubles when we run MPAS initialization</strong>.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/generating-initial-files-in-2-separate-stages.20522/">generating initial files in 2 separate stages | Jan 2025</a>
+<ul>
+<li>for instance, I found that landsea mask is a necessary parameter for processing pressure level data.</li>
+</ul></li>
+</ul>
+<h5 id="take-ifss-land-sea-mask">Take IFS's land sea mask</h5>
+<ul>
+<li><code>./extract_landseamask.sh</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br>cdo selname,lsm 20250401000000-0h-oper-fc.grib2 lsm_nan.nc<br><br>cdo setmissval,-999 lsm_nan.nc lsm.nc<br><br>cdo -f grb copy lsm.nc lsm.grib<br><br>cdo showname lsm.grib<br><br><span class="hljs-built_in">rm</span> lsm_nan.nc lsm.nc <br></code></pre></td></tr></table></figure>
+<ul>
+<li>ungrib step
+<ul>
+<li><code>ln -s lsm.grib GRIBFILE.AAB</code> # the CMA_GFS.grib2 is GRIBFILE.AAA
+<ul>
+<li>Error: <code>gb_info: can only decode GRIB edition 2.</code>
+<ul>
+<li>check: <code>$ grib_ls lsm.grib</code> <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console">edition      centre       typeOfLevel  level        dataDate     stepRange    shortName    packingType  gridType     <br>1         ecmf         surface      0            20250401     0            unknown      grid_simple  regular_ll  <br></code></pre></td></tr></table></figure></li>
+</ul></li>
+<li>Solution: <code>cdo -f grb2 copy lsm.nc lsm.grib</code> on <code>extract_landseamask.sh</code>
+<ul>
+<li>check: <code>$ grib_ls lsm.grib</code> <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console">edition      centre       date         dataType     gridType     stepRange    typeOfLevel  level        shortName    packingType  <br>2            ecmf         20250401     fc           regular_ll   0            surface      0            lsm          grid_simple <br></code></pre></td></tr></table></figure></li>
+</ul></li>
+</ul></li>
+<li>But <code>init_atmosphere_model</code> still exists: <code>ERROR: LANDSEA field not found in meteorological data file CMA:2025-01-12_00</code></li>
+<li>[not yet] Done and check: <code>$ ncl plotfmt.ncl 'filename="CMA:2025-01-12_00"'</code></li>
+</ul></li>
+</ul>
 <h1 id="cronjob">cronjob</h1>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bbf6858" role="button" aria-expanded="false" aria-controls="collapse-8bbf6858">
         <div class="fold-arrow">▶</div>wpsze_download_CMA_GFS-cronjob-00z.sh
       </div>
-      <div class="fold-collapse collapse" id="collapse-05eef982">
+      <div class="fold-collapse collapse" id="collapse-8bbf6858">
         <div class="fold-content">
           <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-comment"># http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/Z_NAFP_C_BABJ_20250401000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate venv<br><br>BASE_DIR=$(<span class="hljs-built_in">pwd</span>)<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Base Dir = <span class="hljs-variable">$&#123;BASE_DIR&#125;</span>&quot;</span><br><br><span class="hljs-keyword">for</span> ifsday <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 0 1 1); <span class="hljs-keyword">do</span> <span class="hljs-comment"># day-shift = 0, 1</span><br><br>    YYYYMMDDHH=$(<span class="hljs-built_in">date</span> -d <span class="hljs-string">&quot;today - <span class="hljs-variable">$&#123;ifsday&#125;</span> day&quot;</span> +%Y%m%d00)<br><br>    yyyy=<span class="hljs-variable">$&#123;YYYYMMDDHH:0:4&#125;</span><br>    mm=<span class="hljs-variable">$&#123;YYYYMMDDHH:4:2&#125;</span><br>    <span class="hljs-built_in">dd</span>=<span class="hljs-variable">$&#123;YYYYMMDDHH:6:2&#125;</span><br>    hh=<span class="hljs-variable">$&#123;YYYYMMDDHH:8:2&#125;</span><br><br>    yyyymm=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><br>    yyyymmdd=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span><br><br>    tmp_dir=<span class="hljs-string">&quot;./<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>&quot;</span><br>    <span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Current Dir: <span class="hljs-subst">$(pwd)</span>&quot;</span><br><br>    limit_cpu_core=15<br>    count_cpu_core=1<br><br>    <span class="hljs-comment">#============== 00z ===================================</span><br>    tmp_cma_gfs_fname=<span class="hljs-string">&quot;Z_NAFP_C_BABJ_<span class="hljs-variable">$&#123;YYYYMMDDHH&#125;</span>0000_P_NWPC-GRAPES-GFS-GLB-00000.grib2&quot;</span><br><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Now, <span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span> ... &quot;</span><br><br>    <span class="hljs-keyword">if</span> [[ ! -f <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span>&quot;</span> ]]; <span class="hljs-keyword">then</span>	<br>	    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Downloading ... <span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span>&quot;</span><br>	    <span class="hljs-comment">#wget --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/Z_NAFP_C_BABJ_20250401000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2</span><br>	    wget --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/<span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span> exists ... &quot;</span><br>    <span class="hljs-keyword">fi</span><br><br>    res=$(( <span class="hljs-variable">$&#123;count_cpu_core&#125;</span> % <span class="hljs-variable">$&#123;limit_cpu_core&#125;</span> ))<br>    <span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;res&#125;</span> == 0 ]]; <span class="hljs-keyword">then</span><br>	    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;please wait <span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span>, <span class="hljs-variable">$&#123;count_cpu_core&#125;</span>, <span class="hljs-variable">$&#123;res&#125;</span>.&quot;</span><br>	    <span class="hljs-built_in">wait</span><br>    <span class="hljs-keyword">fi</span><br>    <br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;BASE_DIR&#125;</span><br><span class="hljs-keyword">done</span>    <br></code></pre></td></tr></table></figure>
         </div>
