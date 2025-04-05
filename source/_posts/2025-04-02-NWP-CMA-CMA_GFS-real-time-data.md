@@ -145,7 +145,7 @@ lrwxrwxrwx 1 wpsze wpsze   81 Apr  2 16:49 Z_NAFP_C_BABJ_20250112000000_P_NWPC-G
 
 ### init_atmosphere_model
 
-#### Error
+#### Error 1
 
 ```log
 ERROR: ********************************************************************************
@@ -210,6 +210,29 @@ rm lsm_nan.nc lsm.nc
   - But `init_atmosphere_model` still exists: `ERROR: LANDSEA field not found in meteorological data file CMA:2025-01-12_00`
   - [not yet] Done and check: ` $ ncl plotfmt.ncl 'filename="CMA:2025-01-12_00"'`
 
+#### Error 2
+
+```log
+CRITICAL ERROR: Error in interpolation of st_fg to MPAS grid: num_st = 18
+```
+
+- [Error creating initial conditions with NCEP FNL ds083.2 | May 8, 2024](https://forum.mmm.ucar.edu/threads/error-creating-initial-conditions-with-ncep-fnl-ds083-2.17113/)
+  - I'm trying to create the initial conditions file for MPAS (v8.1) using data obtained from the NCEP FNL ds083.2
+  - Just had to change `config_nfgsoillevels` to **2** and `config_extrap_airtemp` to **linear** in `namelist.init_atmosphere`. Once those two modifications were made `init_atmosphere_model` and `atmosphere_model` ran without issues.
+  - Note that **FNL data only contains 2-level of soil information**, which is why we need to set **config_nfgsoillevels=2**. **The top of the FNL data is 10 hpa, and therefore extrapolation is needed if MPAS top level is above 10 hpa**.
+  - For the option of `config_extrap_airtemp`, would you please let me know what is the model top of your MPAS run? Thanks.
+- [Initial condition CRITICAL ERROR: Error in interpolation of st_fg to MPAS | Feb 16, 2024](https://forum.mmm.ucar.edu/threads/initial-condition-critical-error-error-in-interpolation-of-st_fg-to-mpas.15807/)
+- ['Error in interpolation of st_fg to MPAS grid' with variable-resolution mesh simulation | Jul 23, 2020](https://forum.mmm.ucar.edu/threads/error-in-interpolation-of-st_fg-to-mpas-grid-with-variable-resolution-mesh-simulation.9387/)
+  - **The error message generally indicates that there are grid cells that have a soil temperature value less than or equal to zero.**
+  - I solved the problem by downloading the "Vtable from the RDR page/WRF" and using WPS version 4.0 or higher.
+- [CRITICAL ERROR: Error in interpolation of st_fg to MPAS grid | Start dateMay 3, 2019](https://forum.mmm.ucar.edu/threads/critical-error-error-in-interpolation-of-st_fg-to-mpas-grid.5382/)
+  - This error message is an indication that there were one or more points in the MPAS mesh that received a zero or negative value for soil temperature.
+  - Can you also verify that there are soil moisture and soil temperature fields in your WPS intermediate file, and that the number of soil levels in your intermediate files matches the value of the config_nfgsoillevels in your namelist.init_atmosphere file?
+- [CRITICAL ERROR: Error in interpolation of st_fg to MPAS grid: num_st = 18642 | Apr 12, 2023](https://forum.mmm.ucar.edu/threads/critical-error-error-in-interpolation-of-st_fg-to-mpas-grid-num_st-18642.12857/)
+  - **MPAS can only process soil data at specific levels with specific field names. If your input soil data are on levels or with names unrecognized by MPAS, then it won't work**.
+  - Please take a look at the code **"mpas_init_atm_cases.F"**, and the lines 3908 - 4118 process soil temperature data. This might give you some idea how MPAS works.
+- [Trying to Use RAP as IC/BC | Start dateJun 26, 2019](https://forum.mmm.ucar.edu/threads/trying-to-use-rap-as-ic-bc.5549/)
+  - The message "Error in interpolation of st_fg to MPAS grid: num_st = XXXX" is **generally indicative of an issue with the soil temperature**. Would it be possible to use some of the utilities that come with the WRF Pre-processing System (WPS) to check that there are valid soil temperature data in your intermediate file? Specifically, you could use the "`rd_intermediate`" utility to check that there are fields named, e.g., ST000010, and you could use the "`int2nc`" utility to convert the intermediate file to netCDF format, where it would be easier to view the soil fields with, e.g., `ncview`.
 
 # cronjob
 
