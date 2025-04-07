@@ -1293,6 +1293,7 @@ Integrating and interpolating climate variables in models like WRF and MPAS invo
    2. `cfgrib/xarray_to_grib.py:252: FutureWarning: GRIB write support is experimental, DO NOT RELY ON IT!`
 4. [Converting NetCDF to GRIB | 2014](https://code.mpimet.mpg.de/boards/1/topics/2907)
    1. `cdo -v -f grb -copy sstatlantic_addhifreq.nc ofile.grb`
+      1. `cdo -v -f grb2 -copy sstatlantic_addhifreq.nc ofile.grb` if grib2 format.
    2. The large GRIB file has data with 2602x1402=3648004 grid points. CDO stores netCDF double precision floats to 24bit packed GRIB per default. The result is a GRIB record with 10944120 bytes. The max. record length in the GRIB1 standard is 8388607 bytes. **CDO uses the ECMWF extension of the GRIB1 standard for larger GRIB records**. These large GRIB records can only be read by CDO or tools from the ECMWF.
    3. You can create a 16bit GRIB record to reduce the record size:
       1. `cdo -b 16 -f grb copy file.nc file.grb`

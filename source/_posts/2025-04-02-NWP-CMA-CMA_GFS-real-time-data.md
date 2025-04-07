@@ -181,9 +181,13 @@ cdo selname,lsm 20250401000000-0h-oper-fc.grib2 lsm_nan.nc
 
 cdo setmissval,-999 lsm_nan.nc lsm.nc
 
-cdo -f grb copy lsm.nc lsm.grib
+cdo -f grb2 copy lsm.nc lsm.grib
 
 cdo showname lsm.grib
+
+grib_set -s centre=babj,dataDate=20250112,dataTime=0000,shortName=lsm,typeOfLevel=surface,level=0 lsm.grib lsm_final.grib
+
+cdo showname lsm_final.grib
 
 rm lsm_nan.nc lsm.nc 
 ```
@@ -233,6 +237,72 @@ CRITICAL ERROR: Error in interpolation of st_fg to MPAS grid: num_st = 18
   - Please take a look at the code **"mpas_init_atm_cases.F"**, and the lines 3908 - 4118 process soil temperature data. This might give you some idea how MPAS works.
 - [Trying to Use RAP as IC/BC | Start dateJun 26, 2019](https://forum.mmm.ucar.edu/threads/trying-to-use-rap-as-ic-bc.5549/)
   - The message "Error in interpolation of st_fg to MPAS grid: num_st = XXXX" is **generally indicative of an issue with the soil temperature**. Would it be possible to use some of the utilities that come with the WRF Pre-processing System (WPS) to check that there are valid soil temperature data in your intermediate file? Specifically, you could use the "`rd_intermediate`" utility to check that there are fields named, e.g., ST000010, and you could use the "`int2nc`" utility to convert the intermediate file to netCDF format, where it would be easier to view the soil fields with, e.g., `ncview`.
+
+##### check grib2 file
+
+In general, **GFS/ERA5/IFS 0.25 deg grib files** show
+
+```log
+# Earth assumed spherical with radius of 6 371 229.0 m  (grib2/tables/25/3.2.table)                 
+shapeOfTheEarth = 6;                                                                                
+Ni = 1440;                                                                                          
+Nj = 721;                                                                                        
+```
+
+But, in CMA_GFS grib file, it has shown
+
+```log
+#==============   MESSAGE 1 ( length=205 )                 ==============  
+GRIB {                                                                     
+  # Meteorological products (grib2/tables/4/0.0.table)                     
+  discipline = 0;                                                          
+  editionNumber = 2;                                                       
+  # Beijing  (RSMC)  (common/c-11.table)                                   
+  centre = 38;                                                             
+  subCentre = 0;                                                           
+  # Analysis (grib2/tables/4/1.2.table)                                    
+  significanceOfReferenceTime = 0;                                         
+  dataDate = 20250112;                                                     
+  dataTime = 0;    
+......
+# Earth assumed spherical with radius of 6,371,229.0 m (grib2/tables/4/3.2.table)                  
+shapeOfTheEarth = 6;                                                                               
+Ni = 2880;                                                                                         
+Nj = 1440;
+```
+
+which **is not 0.25 deg but 0.125 deg**. Therefore, `LANDSEA` of IFS can not be used for CMA_GFS.
+
+#### Take GFS's land sea mask
+
+```python
+import os
+import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+```
+
+# CMA_GFS [TODO]
+
+```sh
+aaaaa
+```
+
+```python
+import os
+import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+
+GFS_file = "/home/wpsze/mpas/CMA_GFS/test/ungrib/lsm_0p125.nc"
+GFS_nc = xr.open_dataset(GFS_file)
+GFS_nc = GFS_nc.rename({'lat': 'latitude', 'lon': 'longitude'})
+plt.imshow(lsm[0,:,:])
+lsm = lsm[:,::-1,:]
+#================== Save =================================================
+# Save the result to a new NetCDF file
+lsm.to_netcdf(f'/home/wpsze/mpas/CMA_GFS/test/ungrib/new_lsm.nc', format='NETCDF4')
+```
 
 # cronjob
 
