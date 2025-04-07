@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/TtrCqKa.png">
 <meta property="article:published_time" content="2025-04-02T08:15:00.000Z">
-<meta property="article:modified_time" content="2025-04-03T09:57:17.186Z">
+<meta property="article:modified_time" content="2025-04-07T09:57:08.002Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
-<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="CMA">
 <meta property="article:tag" content="CMA_GFS">
 <meta name="twitter:card" content="summary_large_image">
@@ -80,7 +80,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -93,6 +93,20 @@
 
   
 
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
   
 
   
@@ -338,7 +352,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          1.9k words
         
       </span>
     
@@ -349,7 +363,7 @@
         
         
         
-          14 mins
+          16 mins
         
       </span>
     
@@ -474,7 +488,7 @@
 <h1 id="mpas">MPAS</h1>
 <h2 id="mpasv7.3">MPASv7.3</h2>
 <h3 id="init_atmosphere_model">init_atmosphere_model</h3>
-<h4 id="error">Error</h4>
+<h4 id="error-1">Error 1</h4>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs log">ERROR: ********************************************************************************<br>ERROR: LANDSEA field not found in meteorological data file CMA:2025-01-12_00<br>CRITICAL ERROR: ********************************************************************************<br></code></pre></td></tr></table></figure>
 <ul>
 <li>seems CMA_GFS doesn't contain <code>LANDSEA</code></li>
@@ -497,7 +511,7 @@
 <ul>
 <li><code>./extract_landseamask.sh</code></li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br>cdo selname,lsm 20250401000000-0h-oper-fc.grib2 lsm_nan.nc<br><br>cdo setmissval,-999 lsm_nan.nc lsm.nc<br><br>cdo -f grb copy lsm.nc lsm.grib<br><br>cdo showname lsm.grib<br><br><span class="hljs-built_in">rm</span> lsm_nan.nc lsm.nc <br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br>cdo selname,lsm 20250401000000-0h-oper-fc.grib2 lsm_nan.nc<br><br>cdo setmissval,-999 lsm_nan.nc lsm.nc<br><br>cdo -f grb2 copy lsm.nc lsm.grib<br><br>cdo showname lsm.grib<br><br>grib_set -s centre=babj,dataDate=20250112,dataTime=0000,shortName=lsm,typeOfLevel=surface,level=0 lsm.grib lsm_final.grib<br><br>cdo showname lsm_final.grib<br><br><span class="hljs-built_in">rm</span> lsm_nan.nc lsm.nc <br></code></pre></td></tr></table></figure>
 <ul>
 <li>ungrib step
 <ul>
@@ -517,13 +531,55 @@
 <li>[not yet] Done and check: <code>$ ncl plotfmt.ncl 'filename="CMA:2025-01-12_00"'</code></li>
 </ul></li>
 </ul>
+<h4 id="error-2">Error 2</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log">CRITICAL ERROR: Error in interpolation of st_fg to MPAS grid: num_st = 18<br></code></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/error-creating-initial-conditions-with-ncep-fnl-ds083-2.17113/">Error creating initial conditions with NCEP FNL ds083.2 | May 8, 2024</a>
+<ul>
+<li>I'm trying to create the initial conditions file for MPAS (v8.1) using data obtained from the NCEP FNL ds083.2</li>
+<li>Just had to change <code>config_nfgsoillevels</code> to <strong>2</strong> and <code>config_extrap_airtemp</code> to <strong>linear</strong> in <code>namelist.init_atmosphere</code>. Once those two modifications were made <code>init_atmosphere_model</code> and <code>atmosphere_model</code> ran without issues.</li>
+<li>Note that <strong>FNL data only contains 2-level of soil information</strong>, which is why we need to set <strong>config_nfgsoillevels=2</strong>. <strong>The top of the FNL data is 10 hpa, and therefore extrapolation is needed if MPAS top level is above 10 hpa</strong>.</li>
+<li>For the option of <code>config_extrap_airtemp</code>, would you please let me know what is the model top of your MPAS run? Thanks.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/initial-condition-critical-error-error-in-interpolation-of-st_fg-to-mpas.15807/">Initial condition CRITICAL ERROR: Error in interpolation of st_fg to MPAS | Feb 16, 2024</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/error-in-interpolation-of-st_fg-to-mpas-grid-with-variable-resolution-mesh-simulation.9387/">'Error in interpolation of st_fg to MPAS grid' with variable-resolution mesh simulation | Jul 23, 2020</a>
+<ul>
+<li><strong>The error message generally indicates that there are grid cells that have a soil temperature value less than or equal to zero.</strong></li>
+<li>I solved the problem by downloading the "Vtable from the RDR page/WRF" and using WPS version 4.0 or higher.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/critical-error-error-in-interpolation-of-st_fg-to-mpas-grid.5382/">CRITICAL ERROR: Error in interpolation of st_fg to MPAS grid | Start dateMay 3, 2019</a>
+<ul>
+<li>This error message is an indication that there were one or more points in the MPAS mesh that received a zero or negative value for soil temperature.</li>
+<li>Can you also verify that there are soil moisture and soil temperature fields in your WPS intermediate file, and that the number of soil levels in your intermediate files matches the value of the config_nfgsoillevels in your namelist.init_atmosphere file?</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/critical-error-error-in-interpolation-of-st_fg-to-mpas-grid-num_st-18642.12857/">CRITICAL ERROR: Error in interpolation of st_fg to MPAS grid: num_st = 18642 | Apr 12, 2023</a>
+<ul>
+<li><strong>MPAS can only process soil data at specific levels with specific field names. If your input soil data are on levels or with names unrecognized by MPAS, then it won't work</strong>.</li>
+<li>Please take a look at the code <strong>"mpas_init_atm_cases.F"</strong>, and the lines 3908 - 4118 process soil temperature data. This might give you some idea how MPAS works.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/trying-to-use-rap-as-ic-bc.5549/">Trying to Use RAP as IC/BC | Start dateJun 26, 2019</a>
+<ul>
+<li>The message "Error in interpolation of st_fg to MPAS grid: num_st = XXXX" is <strong>generally indicative of an issue with the soil temperature</strong>. Would it be possible to use some of the utilities that come with the WRF Pre-processing System (WPS) to check that there are valid soil temperature data in your intermediate file? Specifically, you could use the "<code>rd_intermediate</code>" utility to check that there are fields named, e.g., ST000010, and you could use the "<code>int2nc</code>" utility to convert the intermediate file to netCDF format, where it would be easier to view the soil fields with, e.g., <code>ncview</code>.</li>
+</ul></li>
+</ul>
+<h5 id="check-grib2-file">check grib2 file</h5>
+<p>In general, <strong>GFS/ERA5/IFS 0.25 deg grib files</strong> show</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs log"># Earth assumed spherical with radius of 6 371 229.0 m  (grib2/tables/25/3.2.table)                 <br>shapeOfTheEarth = 6;                                                                                <br>Ni = 1440;                                                                                          <br>Nj = 721;                                                                                        <br></code></pre></td></tr></table></figure>
+<p>But, in CMA_GFS grib file, it has shown</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs log">#==============   MESSAGE 1 ( length=205 )                 ==============  <br>GRIB &#123;                                                                     <br>  # Meteorological products (grib2/tables/4/0.0.table)                     <br>  discipline = 0;                                                          <br>  editionNumber = 2;                                                       <br>  # Beijing  (RSMC)  (common/c-11.table)                                   <br>  centre = 38;                                                             <br>  subCentre = 0;                                                           <br>  # Analysis (grib2/tables/4/1.2.table)                                    <br>  significanceOfReferenceTime = 0;                                         <br>  dataDate = 20250112;                                                     <br>  dataTime = 0;    <br>......<br># Earth assumed spherical with radius of 6,371,229.0 m (grib2/tables/4/3.2.table)                  <br>shapeOfTheEarth = 6;                                                                               <br>Ni = 2880;                                                                                         <br>Nj = 1440;<br></code></pre></td></tr></table></figure>
+<p>which <strong>is not 0.25 deg but 0.125 deg</strong>. Therefore, <code>LANDSEA</code> of IFS can not be used for CMA_GFS.</p>
+<h4 id="take-gfss-land-sea-mask">Take GFS's land sea mask</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br></code></pre></td></tr></table></figure>
+<h1 id="cma_gfs-todo">CMA_GFS [TODO]</h1>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">aaaaa<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><br>GFS_file = <span class="hljs-string">&quot;/home/wpsze/mpas/CMA_GFS/test/ungrib/lsm_0p125.nc&quot;</span><br>GFS_nc = xr.open_dataset(GFS_file)<br>GFS_nc = GFS_nc.rename(&#123;<span class="hljs-string">&#x27;lat&#x27;</span>: <span class="hljs-string">&#x27;latitude&#x27;</span>, <span class="hljs-string">&#x27;lon&#x27;</span>: <span class="hljs-string">&#x27;longitude&#x27;</span>&#125;)<br>plt.imshow(lsm[<span class="hljs-number">0</span>,:,:])<br>lsm = lsm[:,::-<span class="hljs-number">1</span>,:]<br><span class="hljs-comment">#================== Save =================================================</span><br><span class="hljs-comment"># Save the result to a new NetCDF file</span><br>lsm.to_netcdf(<span class="hljs-string">f&#x27;/home/wpsze/mpas/CMA_GFS/test/ungrib/new_lsm.nc&#x27;</span>, <span class="hljs-built_in">format</span>=<span class="hljs-string">&#x27;NETCDF4&#x27;</span>)<br></code></pre></td></tr></table></figure>
 <h1 id="cronjob">cronjob</h1>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8e159bd8" role="button" aria-expanded="false" aria-controls="collapse-8e159bd8">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-4f34dce5" role="button" aria-expanded="false" aria-controls="collapse-4f34dce5">
         <div class="fold-arrow">▶</div>wpsze_download_CMA_GFS-cronjob-00z.sh
       </div>
-      <div class="fold-collapse collapse" id="collapse-8e159bd8">
+      <div class="fold-collapse collapse" id="collapse-4f34dce5">
         <div class="fold-content">
           <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-comment"># http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/Z_NAFP_C_BABJ_20250401000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate venv<br><br>BASE_DIR=$(<span class="hljs-built_in">pwd</span>)<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Base Dir = <span class="hljs-variable">$&#123;BASE_DIR&#125;</span>&quot;</span><br><br><span class="hljs-keyword">for</span> ifsday <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 0 1 1); <span class="hljs-keyword">do</span> <span class="hljs-comment"># day-shift = 0, 1</span><br><br>    YYYYMMDDHH=$(<span class="hljs-built_in">date</span> -d <span class="hljs-string">&quot;today - <span class="hljs-variable">$&#123;ifsday&#125;</span> day&quot;</span> +%Y%m%d00)<br><br>    yyyy=<span class="hljs-variable">$&#123;YYYYMMDDHH:0:4&#125;</span><br>    mm=<span class="hljs-variable">$&#123;YYYYMMDDHH:4:2&#125;</span><br>    <span class="hljs-built_in">dd</span>=<span class="hljs-variable">$&#123;YYYYMMDDHH:6:2&#125;</span><br>    hh=<span class="hljs-variable">$&#123;YYYYMMDDHH:8:2&#125;</span><br><br>    yyyymm=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><br>    yyyymmdd=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span><br><br>    tmp_dir=<span class="hljs-string">&quot;./<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>&quot;</span><br>    <span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Current Dir: <span class="hljs-subst">$(pwd)</span>&quot;</span><br><br>    limit_cpu_core=15<br>    count_cpu_core=1<br><br>    <span class="hljs-comment">#============== 00z ===================================</span><br>    tmp_cma_gfs_fname=<span class="hljs-string">&quot;Z_NAFP_C_BABJ_<span class="hljs-variable">$&#123;YYYYMMDDHH&#125;</span>0000_P_NWPC-GRAPES-GFS-GLB-00000.grib2&quot;</span><br><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Now, <span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span> ... &quot;</span><br><br>    <span class="hljs-keyword">if</span> [[ ! -f <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span>&quot;</span> ]]; <span class="hljs-keyword">then</span>	<br>	    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Downloading ... <span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span>&quot;</span><br>	    <span class="hljs-comment">#wget --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/Z_NAFP_C_BABJ_20250401000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2</span><br>	    wget --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/<span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span> exists ... &quot;</span><br>    <span class="hljs-keyword">fi</span><br><br>    res=$(( <span class="hljs-variable">$&#123;count_cpu_core&#125;</span> % <span class="hljs-variable">$&#123;limit_cpu_core&#125;</span> ))<br>    <span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;res&#125;</span> == 0 ]]; <span class="hljs-keyword">then</span><br>	    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;please wait <span class="hljs-variable">$&#123;tmp_cma_gfs_fname&#125;</span>, <span class="hljs-variable">$&#123;count_cpu_core&#125;</span>, <span class="hljs-variable">$&#123;res&#125;</span>.&quot;</span><br>	    <span class="hljs-built_in">wait</span><br>    <span class="hljs-keyword">fi</span><br>    <br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;BASE_DIR&#125;</span><br><span class="hljs-keyword">done</span>    <br></code></pre></td></tr></table></figure>
         </div>
@@ -567,11 +623,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
-      
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/CMA/" class="print-no-link">#CMA</a>
       
@@ -606,7 +662,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>April 3, 2025</div>
+          <div>April 7, 2025</div>
         </div>
       
       
