@@ -81,7 +81,7 @@ The relation between EDR and the dissipation rate can be evaluated using **dimen
 Putting it together, when we express the EDR in terms of these scales, we often end up with:
 
 $$
-\text{EDR} \sim \left( \frac{u'}{L^3} \right) \sim \epsilon^{1/3}
+\text{EDR} \sim \left( \frac{u'}{L^{1/3}} \right) \sim \epsilon^{1/3}
 $$
 
 This is why the EDR can be approximated as the one-third power of the energy dissipation rate in certain contexts. It captures the relationship between the energy scale and the turbulent structures present in the flow. 
