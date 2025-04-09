@@ -94,11 +94,21 @@ This is why the EDR can be approximated as the one-third power of the energy dis
 - [Eddy Dissipation Rate (EDR) Profile Determined from a Minisodar in Terrain-disrupted Airflow | 2007](https://my.weather.gov.hk/tc/publica/reprint/files/r718.pdf)
 - [Estimate of Eddy Dissipation Rate Using Spectrum Width Observed by the Hong Kong TDWR Radar | 2009](https://www.hko.gov.hk/en/publica/reprint/files/r848.pdf)
 - [Performance of LIDAR-based Turbulence Detection Algorithm | 2008](https://www.hko.gov.hk/hko/publica/reprint/r758.pdf)
-- [Chan, P. W., P. Zhang, and R. Doviak. "Calculation and application of eddy dissipation rate map based on spectrum width data of a S-band radar in Hong Kong." Mausam 67.2 (2016): 411-422.](https://repository.library.noaa.gov/view/noaa/32176)
+- [Chan, P. W., P. Zhang, and R. Doviak. "Calculation and application of eddy dissipation rate map based on spectrum width data of a S-band radar in Hong Kong." Mausam 67.2 (**2016**): 411-422.](https://repository.library.noaa.gov/view/noaa/32176)
   - The spectrum width data of an S-band radar in Hong Kong are used to calculate the map of eddy dissipation rate (EDR) with the objective of providing turbulence alerting service for the en-route aircraft in the Pearl River Delta region. 
   - The calculation methodology is different from that reported in the existing literature by also removing the wind shear contribution in determining the **radar-based EDR**. 
   - Time series graph for comparing $EDR^{1/3}$ between **aircraft (blue) and radar (pink)**. Comparison of $EDR^{1/3}$ between aircraft and radar for the second turbulence case
     - ![Time series graph for comparing EDR^{1/3} between aircraft (blue) and radar (pink). Comparison of EDR^{1/3} between aircraft and radar for the second turbulence case](https://i.imgur.com/U5B7Ofi.png){width=450}
+- [Chan, Pak Wai, Kai Kwong Lai, and Qiu Sheng Li. "High‐resolution simulation of a severe case of low‐level windshear at the Hong Kong International Airport: Turbulence intensity and sensitivity to turbulence parameterization scheme." Atmospheric Science Letters 23.7 (**2022**): e1090.](https://rmets.onlinelibrary.wiley.com/doi/pdf/10.1002/asl.1090)
+  - **Large eddy simulations** are performed for a severe windshear case of terrain-induced airflow disturbances at the Hong Kong International Airport.
+    - (i) to investigate the performance of large eddy simulation in **capturing the turbulence intensity** to be encountered by the aircraft; and 
+    - (ii) to **find out the impact of the choice of turbulence parameterization scheme** on the simulation results.
+  - The common metric for turbulence intensity for aviation application is the cube root of eddy dissipation rate (EDR), $EDR^{1/3}$ , which is the dissipation rate of the turbulent kinetic energy.
+  - Structure Function
+    {% gi 4 2-2 %}
+    ![](https://i.imgur.com/BWNsCvg.png)
+    ![](https://i.imgur.com/cxNR0hN.png)
+    {% endgi %}
 
 # Literature Review
 

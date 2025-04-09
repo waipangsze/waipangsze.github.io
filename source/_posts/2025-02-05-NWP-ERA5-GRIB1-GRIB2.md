@@ -655,3 +655,8 @@ Param| Type |Level1|Level2| Name     | Units    | Description                   
 6. [GRIB格式介绍 (**推薦**)](https://perillaroc.github.io/eccodes-tutorial-cn/01-introduction/)
    1. GRIB 格式是面向二进制的数据交换格式，无法直接阅读，需要使用软件进行解码和编码。
    2. 使用16进制编辑器打开 GRIB 文件的示例，除了最开始4个字节外，其余部分都无法解析成文本。 后面将会看到前4个字节对应的 ASCII 编码内容 GRIB 正是 GRIB 文件的标志。
+7. [GRIB2文件不同打包方式的加载速度对比 | November 07, 2024](https://blog.perillaroc.wang/post/2024/10/2024-10-19-grib-notebook-load-speed-with-different-grib2-packing-type/)
+   1. 不同中心生成的 GRIB2 数据使用不同的打包方式：
+      1. CMA 天气预报模式：JPEG2000 压缩 (grid_jpeg)
+      2. ECMWF 公开数据：CCSDS 无损压缩 (grid_ccsds)
+      3. NCEP GFS：复杂打包 (grid_complex_spatial_differencing)
