@@ -2,7 +2,7 @@
 layout: post
 title: NWP | CMA | CMA_GFS real time data
 categories: NWP
-tags: [NWP, WRF, MPAS, CMA, CMA_GFS]
+tags: [NWP, WRF, MPAS, CMA, CMA_GFS, Land-sea mask]
 author: wpsze
 date: 2025-04-02 16:15:00
 math: true
@@ -104,13 +104,225 @@ CMA-GFS 是我国自主研发的新一代全球数值预报模式，该模式由
 
 ![](https://i.imgur.com/H9MM6QW.png){width=500}
 
+# grib2 file
+
+- `./g2print.exe Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2` 
+
+{% fold info @log %}
+```log
+ ungrib - grib edition num           2
+ reading from grib file = Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2                                                          
+      unknown model and orig center   
+---------------------------------------------------------------------------------------
+ rec Prod Cat Param  Lvl    Lvl      Lvl     Prod    Name            Time          Fcst
+ num Disc     num    code   one      two     Templ                                 hour
+---------------------------------------------------------------------------------------
+   1   0    1  10       1       0       0       8     ACPCP    2025-01-12_00:00:00   00  PDT4.8  
+   2   0    1   9       1       0       0       8     NCPCP    2025-01-12_00:00:00   00  PDT4.8  
+   3   0    1   8       1       0       0       8     APCP     2025-01-12_00:00:00   00  PDT4.8  
+   4   0    1  29       1       0       0       8     ASNOW    2025-01-12_00:00:00   00  PDT4.8  
+   5   0    0   0       1       0       0       0     TMP      2025-01-12_00:00:00   00          
+   6   0    5   5       1       0       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+   7   0    4   9       1       0       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+   8   2    0  24       1       0       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+   9   0    0  10       1       0       0       8     LHTFL    2025-01-12_00:00:00   00  PDT4.8  
+  10   0    5   4       1       0       0       8     ULWRF    2025-01-12_00:00:00   00  PDT4.8  
+  11   0    5   4       8********       0       8     ULWRF    2025-01-12_00:00:00   00  PDT4.8  
+  12   0    5   8       1       0       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  13   0    5 224       1       0       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  14   0    5 224       8********       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  15   0    4   8       1       0       0       8     USWRF    2025-01-12_00:00:00   00  PDT4.8  
+  16   0    4   9       8********       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  17   0    4   8       8********       0       8     USWRF    2025-01-12_00:00:00   00  PDT4.8  
+  18   0    4  11       1       0       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  19   0    4  53       1       0       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  20   0    4  11       8********       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  21   0    4  53       8********       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  22   0    3 228       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+  23   0    3   5       1       0       0       0     HGT      2025-01-12_00:00:00   00          
+  24   0    1   0     103       2       0       0     SPFH     2025-01-12_00:00:00   00          
+  25   0    0   0     103       2       0       0     TMP      2025-01-12_00:00:00   00          
+  26   0    2   2     103      10       0       0     UGRD     2025-01-12_00:00:00   00          
+  27   0    2   3     103      10       0       0     VGRD     2025-01-12_00:00:00   00          
+  28   0    6   1       1       0********       0     TCDC     2025-01-12_00:00:00   00          
+  29   0    6   3       1       0********       0     LCDC     2025-01-12_00:00:00   00          
+  30   0    6   4       1       0********       0     MCDC     2025-01-12_00:00:00   00          
+  31   0    6   5       1       0********       0     HCDC     2025-01-12_00:00:00   00          
+  32   0    1  64      10********       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+  33   0    1  69      10********       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+  34   0    1  70      10********       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+  35   0    3  18       1       0       0       0     HPBL     2025-01-12_00:00:00   00          
+  36   0    2 227       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+  37   0    2 228       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+  38   0    1  11       1       0       0       0     SNOD     2025-01-12_00:00:00   00          
+  39   0   19   1       1       0       0       0     ALBDO    2025-01-12_00:00:00   00          
+  40   0    0   4     103       2       0       8     TMAX     2025-01-12_00:00:00   00  PDT4.8  
+  41   0    0   5     103       2       0       8     TMIN     2025-01-12_00:00:00   00  PDT4.8  
+  42   0    1 231     103       2       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  43   0    1 232     103       2       0       8     UNKNOWN  2025-01-12_00:00:00   00  PDT4.8  
+  44   0    3   0       1       0       0       0     PRES     2025-01-12_00:00:00   00          
+  45   0    3   1     101       0       0       0     PRMSL    2025-01-12_00:00:00   00          
+  46   0    2   2     103      30       0       0     UGRD     2025-01-12_00:00:00   00          
+  47   0    2   2     103      50       0       0     UGRD     2025-01-12_00:00:00   00          
+  48   0    2   2     103      70       0       0     UGRD     2025-01-12_00:00:00   00          
+  49   0    2   2     103     100       0       0     UGRD     2025-01-12_00:00:00   00          
+  50   0    2   2     103     120       0       0     UGRD     2025-01-12_00:00:00   00          
+  51   0    2   2     103     140       0       0     UGRD     2025-01-12_00:00:00   00          
+  52   0    2   2     103     160       0       0     UGRD     2025-01-12_00:00:00   00          
+  53   0    2   2     103     180       0       0     UGRD     2025-01-12_00:00:00   00          
+  54   0    2   2     103     200       0       0     UGRD     2025-01-12_00:00:00   00          
+  55   0    2   3     103      30       0       0     VGRD     2025-01-12_00:00:00   00          
+  56   0    2   3     103      50       0       0     VGRD     2025-01-12_00:00:00   00          
+  57   0    2   3     103      70       0       0     VGRD     2025-01-12_00:00:00   00          
+  58   0    2   3     103     100       0       0     VGRD     2025-01-12_00:00:00   00          
+  59   0    2   3     103     120       0       0     VGRD     2025-01-12_00:00:00   00          
+  60   0    2   3     103     140       0       0     VGRD     2025-01-12_00:00:00   00          
+  61   0    2   3     103     160       0       0     VGRD     2025-01-12_00:00:00   00          
+  62   0    2   3     103     180       0       0     VGRD     2025-01-12_00:00:00   00          
+  63   0    2   3     103     200       0       0     VGRD     2025-01-12_00:00:00   00          
+  64   0    3   5     100  100000       0       0     HGT      2025-01-12_00:00:00   00          
+  65   0    3   5     100   97500       0       0     HGT      2025-01-12_00:00:00   00          
+  66   0    3   5     100   95000       0       0     HGT      2025-01-12_00:00:00   00          
+  67   0    3   5     100   92500       0       0     HGT      2025-01-12_00:00:00   00          
+  68   0    3   5     100   90000       0       0     HGT      2025-01-12_00:00:00   00          
+  69   0    3   5     100   85000       0       0     HGT      2025-01-12_00:00:00   00          
+  70   0    3   5     100   80000       0       0     HGT      2025-01-12_00:00:00   00          
+  71   0    3   5     100   75000       0       0     HGT      2025-01-12_00:00:00   00          
+  72   0    3   5     100   70000       0       0     HGT      2025-01-12_00:00:00   00          
+  73   0    3   5     100   65000       0       0     HGT      2025-01-12_00:00:00   00          
+  74   0    3   5     100   60000       0       0     HGT      2025-01-12_00:00:00   00          
+  75   0    3   5     100   55000       0       0     HGT      2025-01-12_00:00:00   00          
+  76   0    3   5     100   50000       0       0     HGT      2025-01-12_00:00:00   00          
+  77   0    3   5     100   45000       0       0     HGT      2025-01-12_00:00:00   00          
+  78   0    3   5     100   40000       0       0     HGT      2025-01-12_00:00:00   00          
+  79   0    3   5     100   35000       0       0     HGT      2025-01-12_00:00:00   00          
+  80   0    3   5     100   30000       0       0     HGT      2025-01-12_00:00:00   00          
+  81   0    3   5     100   27500       0       0     HGT      2025-01-12_00:00:00   00          
+  82   0    3   5     100   25000       0       0     HGT      2025-01-12_00:00:00   00          
+  83   0    3   5     100   22500       0       0     HGT      2025-01-12_00:00:00   00          
+  84   0    3   5     100   20000       0       0     HGT      2025-01-12_00:00:00   00          
+  85   0    3   5     100   17500       0       0     HGT      2025-01-12_00:00:00   00          
+  86   0    3   5     100   15000       0       0     HGT      2025-01-12_00:00:00   00          
+  87   0    3   5     100   12500       0       0     HGT      2025-01-12_00:00:00   00          
+  88   0    3   5     100   10000       0       0     HGT      2025-01-12_00:00:00   00          
+  89   0    3   5     100    7000       0       0     HGT      2025-01-12_00:00:00   00          
+  90   0    3   5     100    5000       0       0     HGT      2025-01-12_00:00:00   00          
+  91   0    3   5     100    3000       0       0     HGT      2025-01-12_00:00:00   00          
+  92   0    3   5     100    2000       0       0     HGT      2025-01-12_00:00:00   00          
+  93   0    3   5     100    1000       0       0     HGT      2025-01-12_00:00:00   00          
+  94   0    3   5     100     700       0       0     HGT      2025-01-12_00:00:00   00          
+  95   0    3   5     100     500       0       0     HGT      2025-01-12_00:00:00   00          
+  96   0    3   5     100     400       0       0     HGT      2025-01-12_00:00:00   00          
+  97   0    3   5     100     300       0       0     HGT      2025-01-12_00:00:00   00          
+  98   0    3   5     100     200       0       0     HGT      2025-01-12_00:00:00   00          
+  99   0    3   5     100     150       0       0     HGT      2025-01-12_00:00:00   00          
+ 100   0    3   5     100     100       0       0     HGT      2025-01-12_00:00:00   00          
+ 101   0    3   5     100      50       0       0     HGT      2025-01-12_00:00:00   00          
+ 102   0    3   5     100      20       0       0     HGT      2025-01-12_00:00:00   00          
+ 103   0    3   5     100      10       0       0     HGT      2025-01-12_00:00:00   00          
+ 104   0    0   0     100  100000       0       0     TMP      2025-01-12_00:00:00   00          
+ 105   0    0   0     100   97500       0       0     TMP      2025-01-12_00:00:00   00          
+ 106   0    0   0     100   95000       0       0     TMP      2025-01-12_00:00:00   00          
+ 107   0    0   0     100   92500       0       0     TMP      2025-01-12_00:00:00   00          
+ 108   0    0   0     100   90000       0       0     TMP      2025-01-12_00:00:00   00          
+ 109   0    0   0     100   85000       0       0     TMP      2025-01-12_00:00:00   00          
+ 110   0    0   0     100   80000       0       0     TMP      2025-01-12_00:00:00   00          
+ 111   0    0   0     100   75000       0       0     TMP      2025-01-12_00:00:00   00          
+ 112   0    0   0     100   70000       0       0     TMP      2025-01-12_00:00:00   00          
+ 113   0    0   0     100   65000       0       0     TMP      2025-01-12_00:00:00   00          
+ 114   0    0   0     100   60000       0       0     TMP      2025-01-12_00:00:00   00          
+ 115   0    0   0     100   55000       0       0     TMP      2025-01-12_00:00:00   00          
+ 116   0    0   0     100   50000       0       0     TMP      2025-01-12_00:00:00   00          
+ 117   0    0   0     100   45000       0       0     TMP      2025-01-12_00:00:00   00          
+ 118   0    0   0     100   40000       0       0     TMP      2025-01-12_00:00:00   00          
+ 119   0    0   0     100   35000       0       0     TMP      2025-01-12_00:00:00   00          
+ 120   0    0   0     100   30000       0       0     TMP      2025-01-12_00:00:00   00          
+ 121   0    0   0     100   27500       0       0     TMP      2025-01-12_00:00:00   00          
+ 122   0    0   0     100   25000       0       0     TMP      2025-01-12_00:00:00   00          
+ 123   0    0   0     100   22500       0       0     TMP      2025-01-12_00:00:00   00          
+ 124   0    0   0     100   20000       0       0     TMP      2025-01-12_00:00:00   00          
+ 125   0    0   0     100   17500       0       0     TMP      2025-01-12_00:00:00   00          
+ 126   0    0   0     100   15000       0       0     TMP      2025-01-12_00:00:00   00          
+ 127   0    0   0     100   12500       0       0     TMP      2025-01-12_00:00:00   00          
+ 128   0    0   0     100   10000       0       0     TMP      2025-01-12_00:00:00   00          
+ 129   0    0   0     100    7000       0       0     TMP      2025-01-12_00:00:00   00          
+ 130   0    0   0     100    5000       0       0     TMP      2025-01-12_00:00:00   00          
+ 131   0    0   0     100    3000       0       0     TMP      2025-01-12_00:00:00   00          
+ 132   0    0   0     100    2000       0       0     TMP      2025-01-12_00:00:00   00          
+ 133   0    0   0     100    1000       0       0     TMP      2025-01-12_00:00:00   00          
+ 134   0    0   0     100     700       0       0     TMP      2025-01-12_00:00:00   00          
+ 135   0    0   0     100     500       0       0     TMP      2025-01-12_00:00:00   00          
+ 136   0    0   0     100     400       0       0     TMP      2025-01-12_00:00:00   00          
+ 137   0    0   0     100     300       0       0     TMP      2025-01-12_00:00:00   00          
+ 138   0    0   0     100     200       0       0     TMP      2025-01-12_00:00:00   00          
+ 139   0    0   0     100     150       0       0     TMP      2025-01-12_00:00:00   00          
+ 140   0    0   0     100     100       0       0     TMP      2025-01-12_00:00:00   00          
+ 141   0    0   0     100      50       0       0     TMP      2025-01-12_00:00:00   00          
+ 142   0    0   0     100      20       0       0     TMP      2025-01-12_00:00:00   00          
+ 143   0    0   0     100      10       0       0     TMP      2025-01-12_00:00:00   00 
+ ......
+ 852   0   19   0       1       0       0       0     VIS      2025-01-12_00:00:00   00          
+ 853   0   19 224       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+ 854   0   19 225       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+ 855   0    2  22     103      10       0       0     GUST     2025-01-12_00:00:00   00          
+ 856   0    1  19       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+ 857   0    6  12       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+ 858   0    6  11       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+ 859   0    6  13       1       0       0       0     CEIL     2025-01-12_00:00:00   00          
+ 860   0    4 228       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+ 861   0    4 227       1       0       0       0     UNKNOWN  2025-01-12_00:00:00   00          
+   Successful completion of g2print  
+ ```
+{% endfold %}
+
+## Pressure level
+
+There are **40** pressure levels, **1000hPa up to 0.1hPa (~30km)**
+
+## Land sea mask
+
+- `./g2print.exe final_cma_lsm.grib2` <--- **Land sea mask**
+
+{% fold info @Land sea mask %}
+```log
+ ungrib - grib edition num           2
+ reading from grib file = final_cma_lsm.grib2                                                                                                    
+      unknown model and orig center   
+---------------------------------------------------------------------------------------
+ rec Prod Cat Param  Lvl    Lvl      Lvl     Prod    Name            Time          Fcst
+ num Disc     num    code   one      two     Templ                                 hour
+---------------------------------------------------------------------------------------
+   1   2    0   0       1       0       0       0     LAND     2025-01-12_00:00:00   00          
+  
+  
+   Successful completion of g2print  
+```
+{% endfold %}
+
 # ungrib
+
+- ~~re-compile **WPS** (**WRFv450-CMA-GFS**)~~
+
+```
+-rw-rw-r-- 1 wpsze wpsze 3.2G Apr  2 16:56 CMA:2025-01-12_00
+lrwxrwxrwx 1 wpsze wpsze   62 Apr  2 16:50 GRIBFILE.AAA -> Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2
+-rw-rw-r-- 1 wpsze wpsze  272 Apr  2 16:50 namelist.wps
+-rwxrwxr-x 1 wpsze wpsze 1.7K Apr  2 16:51 run_ungrid.sh*
+lrwxrwxrwx 1 wpsze wpsze   67 Apr  2 16:51 ungrib.exe -> /home/wpsze/WRF/WRFv450-CMA-GFS/wrf_install/WPS-4.5/ungrib/ungrib.exe*
+-rw-rw-r-- 1 wpsze wpsze  30K Apr  2 16:57 ungrib.log
+lrwxrwxrwx 1 wpsze wpsze   14 Apr  2 16:51 Vtable -> Vtable.CMA_GFS
+lrwxrwxrwx 1 wpsze wpsze   87 Apr  2 16:49 Vtable.CMA_GFS -> /home/wpsze/WRF/WRFv450-CMA-GFS/wrf_install/WPS-4.5/ungrib/Variable_Tables/Vtable.CMA_GFS
+lrwxrwxrwx 1 wpsze wpsze   81 Apr  2 16:49 Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2 -> ../202501/20250112/Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2
+```
+
+*[2025-04-09]* After create a land-sea mask field for CMA_GFS (see below section), **GRIBFILE.AAB**,
 
 - re-compile **WPS** (**WRFv450-CMA-GFS**)
 
 ```
 -rw-rw-r-- 1 wpsze wpsze 3.2G Apr  2 16:56 CMA:2025-01-12_00
 lrwxrwxrwx 1 wpsze wpsze   62 Apr  2 16:50 GRIBFILE.AAA -> Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2
+lrwxrwxrwx 1 wpsze wpsze   20 Apr  8 18:01 GRIBFILE.AAB -> final_cma_lsm.grib2
 -rw-rw-r-- 1 wpsze wpsze  272 Apr  2 16:50 namelist.wps
 -rwxrwxr-x 1 wpsze wpsze 1.7K Apr  2 16:51 run_ungrid.sh*
 lrwxrwxrwx 1 wpsze wpsze   67 Apr  2 16:51 ungrib.exe -> /home/wpsze/WRF/WRFv450-CMA-GFS/wrf_install/WPS-4.5/ungrib/ungrib.exe*
@@ -134,10 +346,49 @@ lrwxrwxrwx 1 wpsze wpsze   81 Apr  2 16:49 Z_NAFP_C_BABJ_20250112000000_P_NWPC-G
 		LANDMASK:sr_x = 1 ;
 		LANDMASK:sr_y = 1 ;
     ```
-- ungrib.exe: done
-- metgrib.exe: done
-- real.exe: done
-- wrf.exe: Segmentation Fault
+- ungrib.exe
+  - We have to update the **LANDMASK** for CMA_GFS (see below section)
+  - **final_cma_lsm.grib2**
+    - ungrib this grib2 individually and generate a intermediate file **CMA_GFS_landmask**
+    - CMA_GFS_landmask is **constant field**.
+- metgrib.exe
+  - namelist.wps
+    ```namelist.wps
+    &metgrid
+    fg_name = 'CMA_GFS',
+    io_form_metgrid = 2, 
+    constants_name = 'CMA_GFS_landmask',
+    opt_metgrid_tbl_path = './'
+    /
+    ```
+  - **!  Successful completion of metgrid.  !**
+    {% fold info @log %}
+    ```log
+    Processing domain 1 of 2
+        CMA_GFS_landmask
+    Processing 2025-01-12_00
+        CMA_GFS
+    Processing 2025-01-12_03
+        CMA_GFS
+    Processing 2025-01-12_06
+        CMA_GFS
+    Processing domain 2 of 2
+        CMA_GFS_landmask
+    Processing 2025-01-12_00
+        CMA_GFS
+    Processing 2025-01-12_03
+        CMA_GFS
+    Processing 2025-01-12_06
+        CMA_GFS
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !  Successful completion of metgrid.  !
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ```
+    {% endfold %}
+- real.exe
+  - **real_em: SUCCESS COMPLETE REAL_EM INIT**
+- wrf.exe
+  - **wrf: SUCCESS COMPLETE WRF**
 
 # MPAS
 
@@ -170,7 +421,7 @@ But, in **static.nc**, landmask is included. So, why does init_atmosphere_model 
 - [generating initial files in 2 separate stages | Jan 2025](https://forum.mmm.ucar.edu/threads/generating-initial-files-in-2-separate-stages.20522/)
   - for instance, I found that landsea mask is a necessary parameter for processing pressure level data.
 
-##### Take IFS's land sea mask
+##### Take IFS's land sea mask (Wrong!!)
 
 - `./extract_landseamask.sh`
 
@@ -273,20 +524,79 @@ Nj = 1440;
 
 which **is not 0.25 deg but 0.125 deg**. Therefore, `LANDSEA` of IFS can not be used for CMA_GFS.
 
-#### Take GFS's land sea mask
+#### Take GFS's land sea mask (Wrong!!)
 
-```python
-import os
-import numpy as np
-import xarray as xr
-import matplotlib.pyplot as plt
+{% note primary %}
+The GFS land mask is not suitable for use with CMA_GFS.
+{% endnote %}
+
+#### Solution (Successful)
+
+Move to next section **"CMA_GFS Land Sea Mask"**
+
+For MPASv7.3, it is **Successful**.
+
+- **Successful completion of program ungrib.exe**
+- **Finished running the init_atmosphere core**
+- **Finished running the atmosphere core**
+
+{% gi 4 3-1 %}
+![](https://i.imgur.com/pdB6QnM.png)
+![](https://i.imgur.com/f4xvs04.png)
+![](https://i.imgur.com/lyWsoLX.png)
+{% endgi %}
+
+### atmosphere_model
+
+- **Finished running the atmosphere core**
+
+# CMA_GFS Land Sea Mask
+
+{% note primary %}
+If the GFS land mask is not suitable for use with CMA_GFS, the presence of 0K values could lead to problems. Is it possible for us to utilize this information to create a land-sea mask specifically for CMA_GFS from CMA_GFS?
+{% endnote %}
+
+## check grib2's soil temperature
+
+{% gi 4 3-1 %}
+![](https://i.imgur.com/So0DDy5.png)
+![](https://i.imgur.com/JuV2vgI.png)
+![](https://i.imgur.com/GbUafcp.png)
+![](https://i.imgur.com/ZVtQcM4.png)
+{% endgi %}
+
+## Solution
+
+- We are required to **create a land mask using the same source data as CMA_GFS to ensure consistency in our results**. In this case, I will utilize the soil temperature data at depths of 1-2 meters, as this data shows a value of 0 in ocean areas.
+
+### wgrib2
+
+```log
+$ wgrib2 Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2
+
+464:416263005:d=2025011200:TMP:0-0.1 m below ground:anl:
+465:418796241:d=2025011200:TMP:0.1-0.4 m below ground:anl:
+466:421201726:d=2025011200:TMP:0.4-1 m below ground:anl:
+467:423468299:d=2025011200:TMP:1-2 m below ground:anl:
+468:424559640:d=2025011200:SPFH:0-0.1 m below ground:anl:
+469:426189296:d=2025011200:SPFH:0.1-0.4 m below ground:anl:
+470:427793124:d=2025011200:SPFH:0.4-1 m below ground:anl:
+471:429405783:d=2025011200:SPFH:1-2 m below ground:anl:
 ```
 
-# CMA_GFS [TODO]
+- `467:423468299:d=2025011200:TMP:1-2 m below ground:anl:` is our target.
+
+### extract and generate new grib2 for landmask
+
+1. convert grib2 to nc file,
 
 ```sh
-aaaaa
+wgrib2 Z_NAFP_C_BABJ_20250112000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2 -match ':TMP:1-2 m below ground:' -grib TMP_1_2m.grib2
+
+grib_to_netcdf TMP_1_2m.grib2 -o TMP_1_2m.nc
 ```
+
+2. modify/create landmask field for CMA_GFS,
 
 ```python
 import os
@@ -294,14 +604,65 @@ import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
 
-GFS_file = "/home/wpsze/mpas/CMA_GFS/test/ungrib/lsm_0p125.nc"
-GFS_nc = xr.open_dataset(GFS_file)
-GFS_nc = GFS_nc.rename({'lat': 'latitude', 'lon': 'longitude'})
-plt.imshow(lsm[0,:,:])
-lsm = lsm[:,::-1,:]
+TMP_1_2m_file = "/home/wpsze/mpas/CMA_GFS/test/ungrib/TMP_1_2m.nc"
+TMP_1_2m_nc = xr.open_dataset(TMP_1_2m_file)
+
+# plt.imshow(TMP_1_2m_nc['t'][0,:,:])
+
+# Check for non-zero values and assign them to 1
+TMP_1_2m_nc['t'] = TMP_1_2m_nc['t'].where(TMP_1_2m_nc['t'] == 0, 1)
+
+# plt.imshow(TMP_1_2m_nc['t'][0,:,:])
+
+TMP_1_2m_nc = TMP_1_2m_nc.rename({'t': 'lsm'})
+TMP_1_2m_nc['lsm'] = TMP_1_2m_nc['lsm'].assign_attrs(
+                standard_name = "land_binary_mask",
+        		long_name = "Land-sea mask",
+        		units = "(0 - 1)")
+
 #================== Save =================================================
 # Save the result to a new NetCDF file
-lsm.to_netcdf(f'/home/wpsze/mpas/CMA_GFS/test/ungrib/new_lsm.nc', format='NETCDF4')
+TMP_1_2m_nc.to_netcdf(f'/home/wpsze/mpas/CMA_GFS/test/ungrib/new_TMP_1_2m.nc', format='NETCDF4')
+```
+
+- Left: original soil temperature; Right: our created Land sea mask field for CMA_GFS
+
+{% gi 5 2-3 %}
+![](https://i.imgur.com/5O95DVb.png)
+![](https://i.imgur.com/r01Obgx.png)
+{% endgi %}
+
+3. convert landmask nc file to grib2
+ 
+```sh
+cdo -f grb2 copy new_TMP_1_2m.nc new_TMP_1_2m.grib2
+
+# check
+grib_ls new_TMP_1_2m.grib2
+wgrib2 new_TMP_1_2m.grib2
+
+grib_set -r -w packingType=grid_ieee -s centre=babj,shortName=lsm,typeOfLevel=surface,level=0,dataType=an,packingType=grid_jpeg new_TMP_1_2m.grib2 final_TMP_1_2m.grib2
+
+mv final_TMP_1_2m.grib2 final_cma_lsm.grib2
+```
+
+- `./g2print.exe final_cma_lsm.grib2`
+- `2 0 0 1` here correpsonds to `Vtable.CMA_GFS`
+  - **LANDSEA**
+  - `| LANDSEA  | proprtn | Land/Sea flag (1=land, 0 or 2=sea)      |  2  |  0  |  0  |   1 |`
+
+```log
+ ungrib - grib edition num           2
+ reading from grib file = final_cma_lsm.grib2                                                                                                    
+      unknown model and orig center   
+---------------------------------------------------------------------------------------
+ rec Prod Cat Param  Lvl    Lvl      Lvl     Prod    Name            Time          Fcst
+ num Disc     num    code   one      two     Templ                                 hour
+---------------------------------------------------------------------------------------
+   1   2    0   0       1       0       0       0     LAND     2025-01-12_00:00:00   00          
+  
+  
+   Successful completion of g2print  
 ```
 
 # cronjob
