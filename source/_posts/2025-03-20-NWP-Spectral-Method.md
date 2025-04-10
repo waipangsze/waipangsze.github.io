@@ -122,6 +122,12 @@ For example, the **PEAK model** (Primitive-Equation Atmospheric Research Model K
 
 Spectral methods dominate **global NWP** due to their efficiency in simulating planetary-scale dynamics. Regional models, which require localized precision, often prefer finite-volume methods. In summary, **spectral methods excel in global NWP by leveraging smooth basis functions for accurate, efficient simulations of large-scale atmospheric behavior**, **while hybrid models address their limitations in resolving localized phenomena**.
 
+# TL639L60全球模式简称T639
+
+- <https://data.cma.cn/article/getLeft/id/319/keyIndex/3.html>
+
+TL639L60全球模式简称T639,是通过对T213L31模式进行性能升级发展而来。T639是全球谱模式，T代表模式可分辨的最大水平波数，波数越高对应的模式水平分辨率越高，T639可分辨率639个波。L代表模式垂直层次，T639采用地形追随-等压面混合坐标，垂直方向有60层，模式顶到达0.1百帕。T639南北方向采用了线性高斯格点，相当于用两个格点分辨一个波，在字符T后面小写的L表示线性的意思（Linear）。T639模式有1280′640个格点，相当于水平30公里分辨率。T639全球模式（台风）1-15天集合预报系统2014年8月5日正式投入业务运行。采用了增长模繁殖法（BGM）初值扰动，增加了物理过程扰动。同时基于BGM扰动背景场特点，设计了台风集合预报涡旋初始化方案和流程；实现了集合预报以及台风集合预报一体化运行。
+
 # References
 
 1. [Ehrendorfer, Martin. Spectral numerical weather prediction models. Society for Industrial and Applied Mathematics, 2011.](https://sites.google.com/view/spectralnwpmodels)

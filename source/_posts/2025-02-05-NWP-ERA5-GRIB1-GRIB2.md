@@ -21,6 +21,10 @@ banner_img: https://i.imgur.com/yzuPf2q.png
 [**ERA5 CDS upgrade (2024 Sep)**](https://waipangsze.github.io/2024/08/16/ERA5-2024-upgrade/)
 {% endnote %}
 
+---
+
+# GRIB
+
 GRIB is a WMO format for gridded data. GRIB is used by the operational meteorological centers for storage and the exchange of gridded fields. GRIB's major advantages are files are typically 1/2 to 1/3 of the size of normal binary files (floats), the fields are self describing, and GRIB is an open, international standard.
 
 GRIB stands for "General Regularly distributed Information in Binary form" and is a WMO (World Meteorological Organisation) standard format for archiving and exchanging gridded data. GRIB is a binary format, and the data is packed to increase storage efficiency. GRIB messages are often concatenated together to form a GRIB file. GRIB files usually have the extension .grib, .grb or .gb.
@@ -43,9 +47,105 @@ ECMWF provides and supports [ecCodes](https://confluence.ecmwf.int/display/ECC/e
 
 > Please be aware that when reading GRIB files where the range of valid data values includes '9999' that some software may incorrectly indicate that these data points are missing. This is because 9999 is the default missing value indicator. 
 
-[Metview](https://confluence.ecmwf.int/display/METV/Metview) is a software tool from ECMWF which allows users to read, process and visualise GRIB 1 and GRIB 2 data (see Metview documentation).
+- [Metview](https://confluence.ecmwf.int/display/METV/Metview) is a software tool from ECMWF which allows users to read, process and visualise GRIB 1 and GRIB 2 data (see Metview documentation).
 
-[WGRIB](https://www.cpc.ncep.noaa.gov/products/wesley/wgrib.html) is a program to manipulate, inventory and decode GRIB files. The program is known to work on machines ranging from 486s to Cray supercomputers. (One fellow even ported it to a 286!) The program is Y2K friendly (NCO Y2K testing procedure).
+- [WGRIB](https://www.cpc.ncep.noaa.gov/products/wesley/wgrib.html) is a program to manipulate, inventory and decode GRIB files. The program is known to work on machines ranging from 486s to Cray supercomputers. (One fellow even ported it to a 286!) The program is Y2K friendly (NCO Y2K testing procedure).
+
+- [WPS | ungrib | util](https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_data_util_pp.pdf)
+  - `$ ./g1print.exe GFS.grib` and `$ ./g2print.exe ERA5.grib`
+  - `$ ./int2nc.exe FILE:yyyy-mm-dd_hh` for intermediate file
+  - `$ ncl plotfmt.ncl ‘filename=“FNL:2007-09-15_00”’` for intermediate file
+  - `$ ./rd_intermediate.exe FILE:yyyy-mm-dd_hh` for read these data you created and examine whether they are in correct format [Link](https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.4/users_guide_chap3.html#_Writing_Meteorological_Data)
+
+# Examples
+
+- `./g1print.exe ERA5.grib`
+  - **ERA5: 37 pressure levels (from 100hPa to 0.1hPa)**
+
+{% fold info @./g1print.exe ERA5.grib %}
+```console
+Copen: File = /home/wpsze/mpas/ERA5/202404/20240423/ERA5.grib                                                             
+Fortran Unit = 0
+UNIX File descriptor: 3
+
+----------------------------------------------------
+ rec GRIB GRIB  Lvl  Lvl  Lvl         Time      Fcst
+ Num Code name  Code one  two                   hour
+----------------------------------------------------
+   1 129 Z        100    1    0  2024-04-23_00:00 + 00
+   2 157 R        100    1    0  2024-04-23_00:00 + 00
+   3 133 Q        100    1    0  2024-04-23_00:00 + 00
+   4 130 T        100    1    0  2024-04-23_00:00 + 00
+   5 131 U        100    1    0  2024-04-23_00:00 + 00
+   6 132 V        100    1    0  2024-04-23_00:00 + 00  
+......
+ 221 131 U        100 1000    0  2024-04-23_00:00 + 00
+ 222 132 V        100 1000    0  2024-04-23_00:00 + 00
+***** End-Of-File on C unit   3
+```
+{% endfold %}
+
+- `./g2print.exe GFS.grib`
+  - **GFS: 41 pressure levels (from 100hPa to 1hPa)**
+
+{% fold info @./g2print.exe GFS.grib %}
+```console
+ ungrib - grib edition num           2
+ reading from grib file = /home/wpsze/mpas/GFS/202504/20250409/GFS.grib                                                                
+      NCEP GFS Analysis               
+---------------------------------------------------------------------------------------
+ rec Prod Cat Param  Lvl    Lvl      Lvl     Prod    Name            Time          Fcst
+ num Disc     num    code   one      two     Templ                                 hour
+---------------------------------------------------------------------------------------
+   1   0    3   1     101       0       0       0     PRMSL    2025-04-09_00:00:00   00          
+   2   0    1  22     105       1       0       0     CLMR     2025-04-09_00:00:00   00          
+   3   0    1  23     105       1       0       0     ICMR     2025-04-09_00:00:00   00          
+   4   0    1  24     105       1       0       0     RWMR     2025-04-09_00:00:00   00          
+   5   0    1  25     105       1       0       0     SNMR     2025-04-09_00:00:00   00    
+......
+ 696   0    2 192     109       0       0       0     VWSH     2025-04-09_00:00:00   00          
+   Successful completion of g2print 
+```
+{% endfold %}
+
+- `./rd_intermediate.exe ERA5:2022-06-30_00`
+
+{% fold info @./rd_intermediate.exe ERA5:2022-06-30_00 %}
+```console
+================================================
+FIELD = TT
+UNITS = K DESCRIPTION = Temperature
+DATE = 2022-06-30_00:00:00 FCST = 0.000000
+SOURCE = ECMWF
+LEVEL = 200100.000000
+I,J DIMS = 1440, 721
+IPROJ = 0  PROJECTION = LAT LON
+  REF_X, REF_Y = 1.000000, 1.000000
+  REF_LAT, REF_LON = 90.000008, 0.000000
+  DLAT, DLON = -0.250000, 0.250000
+  EARTH_RADIUS = 6367.470215
+DATA(1,1)=274.108765
+================================================
+......
+================================================
+FIELD = LANDSEA
+UNITS = 0/1 Flag DESCRIPTION = Land/Sea flag
+DATE = 2022-06-30_00:00:00 FCST = 0.000000
+SOURCE = ECMWF
+LEVEL = 200100.000000
+I,J DIMS = 1440, 721
+IPROJ = 0  PROJECTION = LAT LON
+  REF_X, REF_Y = 1.000000, 1.000000
+  REF_LAT, REF_LON = 90.000008, 0.000000
+  DLAT, DLON = -0.250000, 0.250000
+  EARTH_RADIUS = 6367.470215
+DATA(1,1)=0.000000
+
+================================================
+......
+SUCCESSFUL COMPLETION OF PROGRAM RD_INTERMEDIATE
+```
+{% endfold %}
 
 {% fold info @cdo showname %}
 ```console
