@@ -131,7 +131,8 @@ H.inventory().param.unique()
 H.inventory(":10[u|v]:")
 
 # Download the full GRIB2 file
-H.download(save_dir="./")
+H.download(save_dir="/home/wpsze/mpas/IFS/herbie/")
+# result: PosixPath('/home/wpsze/mpas/IFS/herbie/ifs/20240301/20240301000000-12h-oper-fc.grib2')
 
 # Get 2-m temperature as an xarray Dataset
 ds = H.xarray(":2t:", verbose=True)
@@ -139,7 +140,7 @@ ds
 ds.t2m.plot()
 ```
 
-![](https://i.imgur.com/o1xSqZN.png){width=400}
+![](https://i.imgur.com/o1xSqZN.png)
 
 ## GFS
 

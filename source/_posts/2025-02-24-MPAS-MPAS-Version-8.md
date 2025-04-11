@@ -238,6 +238,9 @@ description="soil composition needed as input in the NOAH-MP land surface model"
 The **static.nc** is different after **Noah-MP** is applied. (**v8.2.2 ... v8.2.0**). And, re-generate static.nc
 {% endnote %}
 
+- [Error while trying to create static.nc | Nov 6, 2024](https://forum.mmm.ucar.edu/threads/error-while-trying-to-create-static-nc.19776/)
+  - Even if you don't intend to use the Noah-MP LSM in your simulations, **the MPAS v8.2 release still requires the five new Noah-MP static fields** `soilcomp, soilcl1, soilcl2, soilcl3, and soilcl4` to be processed along with other static fields in the init_atmosphere core. Downloading updated static geographical datasets from <https://www2.mmm.ucar.edu/projects/mpas/mpas_static.tar.bz2> and referring to those with the `config_geog_data_path` namelist option in your `namelist.init_atmosphere` file should resolve the error you're seeing.
+
 ## Solution
 
 - **Fail** if using `gfortran` (v9.3.0) complier.
