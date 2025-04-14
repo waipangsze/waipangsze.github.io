@@ -19,27 +19,32 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Allrun All OpenFOAM tutorials have Allrun and Allclean scripts which call some mysterious RunFunctions from even more mysterious sources. Source OpenFOAM first,              source &#x2F;home&#x2F;wpsze&#x2F;openfoa">
+    <meta name="description" content="https:&#x2F;&#x2F;mpas-dev.github.io&#x2F; &#x2F;MPAS-Model&#x2F;releases MPAS-Atmosphere Users&#39; Guide V4.0 MPAS-Atmosphere Users&#39; Guide V5.3 MPAS-Atmosphere Users&#39; Guide V6.3 MPAS-Atmosphere Users&#39; Guide V7.0 MPAS-Atmospher">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CFD | OpenFOAM | Allrun">
-<meta property="og:url" content="https://waipangsze.github.io/2024/12/03/openfoam-Allrun/index.html">
+<meta property="og:title" content="MPAS | Mesh Connectivity (graph.info) file for the mesh">
+<meta property="og:url" content="https://waipangsze.github.io/2025/04/14/MPAS-Mesh-Connectivity-graph-info-file-for-the-mesh/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="Allrun All OpenFOAM tutorials have Allrun and Allclean scripts which call some mysterious RunFunctions from even more mysterious sources. Source OpenFOAM first,              source &#x2F;home&#x2F;wpsze&#x2F;openfoa">
+<meta property="og:description" content="https:&#x2F;&#x2F;mpas-dev.github.io&#x2F; &#x2F;MPAS-Model&#x2F;releases MPAS-Atmosphere Users&#39; Guide V4.0 MPAS-Atmosphere Users&#39; Guide V5.3 MPAS-Atmosphere Users&#39; Guide V6.3 MPAS-Atmosphere Users&#39; Guide V7.0 MPAS-Atmospher">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
-<meta property="article:published_time" content="2024-12-03T04:49:00.000Z">
-<meta property="article:modified_time" content="2024-12-04T07:41:55.737Z">
+<meta property="og:image" content="https://i.imgur.com/GOFUeXW.png">
+<meta property="article:published_time" content="2025-04-14T03:12:00.000Z">
+<meta property="article:modified_time" content="2025-04-14T03:30:41.185Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
-<meta property="article:tag" content="OpenFOAM">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="mesh">
+<meta property="article:tag" content="graph.info">
+<meta property="article:tag" content="grid.nc">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i.imgur.com/fFT42Yk.png">
+<meta name="twitter:image" content="https://i.imgur.com/GOFUeXW.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>CFD | OpenFOAM | Allrun - wpsze</title>
+  <title>MPAS | Mesh Connectivity (graph.info) file for the mesh - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -320,13 +325,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://i.imgur.com/fFT42Yk.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/GOFUeXW.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CFD | OpenFOAM | Allrun"></span>
+            <span id="subtitle" data-typed-text="MPAS | Mesh Connectivity (graph.info) file for the mesh"></span>
           
         </div>
 
@@ -337,8 +342,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-03 12:49" pubdate>
-          December 3, 2024 pm
+        <time datetime="2025-04-14 11:12" pubdate>
+          April 14, 2025 am
         </time>
       </span>
     
@@ -349,7 +354,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          155 words
+          153 words
         
       </span>
     
@@ -406,73 +411,51 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CFD | OpenFOAM | Allrun</h1>
+            <h1 id="seo-header">MPAS | Mesh Connectivity (graph.info) file for the mesh</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="allrun">Allrun</h1>
-<p>All OpenFOAM tutorials have <code>Allrun</code> and <code>Allclean</code> scripts which call some mysterious RunFunctions from even more mysterious sources.</p>
-<p>Source OpenFOAM first,</p>
-<div class="note note-danger">
-            <p>source /home/wpsze/openfoam/openfoam8/source_openfoam.sh</p>
-          </div>
-<h2 id="the-manual-way">The Manual Way</h2>
-<p>To be honest, one could easily get along without those functions. Just call <code>OpenFOAM</code> applications by their name:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br> <br><span class="hljs-comment"># background mesh for Snappy</span><br>blockMesh &gt; log.blockMesh<br> <br><span class="hljs-comment"># decompose and mesh</span><br>decomposePar -force &gt; log.decomposePar<br>mpirun -np 4 snappyHexMesh -overwrite &gt; log.snappyHexMesh<br>mpirun -np 4 checkMesh &gt; log.checkMesh<br>mpirun -np 4 renumberMesh -overwrite &gt; log.renumberMesh<br> <br><span class="hljs-comment"># see an explanation below</span><br><span class="hljs-built_in">rm</span> -r 0<br><span class="hljs-built_in">cp</span> -r 0.orig 0<br> <br><span class="hljs-comment"># run the solver</span><br>mpirun -np 4 simpleFoam<br></code></pre></td></tr></table></figure>
-<p>As you can see, it works just fine, but it does get a little verbose and repetitive. And if you decide to change the number of processors, you have to edit <code>system/decomposeParDict</code> and every parallel-running application call in all your scripts.</p>
-<h2 id="runfunctions-to-the-rescue"><code>RunFunctions</code> to the Rescue</h2>
-<p>These functions are defined in <code>$WM_PROJECT_DIR/bin/tools/RunFunctions</code> so if you want to use them, you have to tell Bash where they are (<strong>mind the dot at the beginning</strong>):</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/shs</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;0%/*&#125;</span> || <span class="hljs-built_in">exit</span> 1    <span class="hljs-comment"># run from this directory</span><br><br>. <span class="hljs-variable">$&#123;WM_PROJECT_DIR:?&#125;</span>/bin/tools/RunFunctions<br> <br><span class="hljs-comment"># background mesh for Snappy</span><br>runApplication blockMesh<br> <br><span class="hljs-comment"># decompose and mesh</span><br>runApplication decomposePar -force<br>runParallel snappyHexMesh -overwrite<br>runParallel checkMesh<br>runParallel renumberMesh -overwrite<br> <br><span class="hljs-comment"># restore 0/ directory</span><br>restore0Dir<br> <br><span class="hljs-comment"># run the solver</span><br>runParallel $(getApplication)<br></code></pre></td></tr></table></figure>
-<h3 id="runapplication">runApplication</h3>
-<p><code>runApplication</code> will, as the name suggests, run the specified application.</p>
+                <ol type="1">
+<li><a target="_blank" rel="noopener" href="https://mpas-dev.github.io/">https://mpas-dev.github.io/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/releases">/MPAS-Model/releases</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_4.0.pdf">MPAS-Atmosphere Users' Guide V4.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_5.3.pdf">MPAS-Atmosphere Users' Guide V5.3</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_6.3.pdf">MPAS-Atmosphere Users' Guide V6.3</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_7.0.pdf">MPAS-Atmosphere Users' Guide V7.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf">MPAS-Atmosphere Users' Guide V8.2.0</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mmm.ucar.edu/events/133129/agenda">Joint WRF/MPAS Users Workshop 2024</a></li>
+</ol>
+<hr />
+<h1 id="mpas-atmosphere-meshes">MPAS-Atmosphere Meshes</h1>
 <ul>
-<li><strong>It will redirect the app’s output to a log file.</strong></li>
-<li><strong>Also, if the log exists, it will not run!</strong></li>
-<li>If you don’t care about existing logs, you can overwrite it with <code>-o</code> option:
-<ul>
-<li><code>runApplication -o decomposePar -force</code></li>
-</ul></li>
-<li>If you run the app multiple times and want the same log, append to an existing one with <code>-a</code> option:
-<ul>
-<li><code>runApplication -a decomposePar -force</code></li>
-</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/site/access_code/meshes.html" class="uri">https://www2.mmm.ucar.edu/projects/mpas/site/access_code/meshes.html</a></li>
 </ul>
-<h3 id="runparallel">runParallel</h3>
-<p>The same as runApplication but it will first <strong>read</strong> <code>system/decomposeParDict</code> to get number of processors. It will then run your app in parallel with MPI. The same logging options apply as to runApplication.</p>
-<h3 id="getapplication">getApplication</h3>
-<p>This will <strong>read</strong> <code>system/controlDict</code>.application and return that command. You will usually need this just to avoid hard-coding solvers. According to DRY principle, <strong>it is already specified in controlDict and that should be enough</strong>.</p>
-<p>Instead, feed getApplication’s output to runApplication / runParallel:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">runApplication $(getApplication)<br></code></pre></td></tr></table></figure>
-<p>That saves you quite some steps:</p>
+<p>Several resolutions of quasi-uniform and refined meshes are available for download. Each mesh download provides the following:</p>
 <ul>
-<li>Matching decomposeParDict.numberOfSubdomains</li>
-<li>Matching controlDict.application</li>
-<li>Invoking MPI</li>
-<li>Keeping log files and whatsit.</li>
+<li>an SCVT mesh on the unit sphere</li>
+<li><strong>the mesh connectivity (graph.info) file for the mesh</strong></li>
+<li>partitionings of the mesh (e.g., graph.info.part.32) for various MPI task counts</li>
 </ul>
-<h3 id="restore0dir">restore0Dir</h3>
-<p>If you run <code>potentialFoam</code>, <code>setFields</code> and similar apps, they <strong>will overwrite boundary conditions</strong> that you meticulously prepared in your <code>0/</code> directory.</p>
-<p>To prevent that from happening, it is wise to keep your boundary conditions in a directory where solvers can’t touch them and copy them to <code>0/</code> just before runs. It’s easy to do that by hand but <code>restore0Dir</code> will also take care of some other stuff (<code>#include</code> directives, parallel runs, …).</p>
-<p>Anyway, a line saved is a line less to maintain.</p>
-<h1 id="cleanfunctions">CleanFunctions</h1>
-<p>There are more goodies that come in hand with RunFunctions! Type this into shell:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> <span class="hljs-variable">$WM_PROJECT_DIR</span>/bin/tools/CleanFunctions<br></code></pre></td></tr></table></figure>
-<p>and take a scroll through the output to find commands such as:</p>
-<ul>
-<li>cleanDynamicCode</li>
-<li>cleanSnappyFiles</li>
-<li>cleanPostProcessing</li>
-<li>cleanCase</li>
-<li>cleanCase0</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;0%/*&#125;</span> || <span class="hljs-built_in">exit</span> 1    <span class="hljs-comment"># run from this directory</span><br><br><span class="hljs-comment"># Source tutorial clean functions</span><br>. <span class="hljs-variable">$WM_PROJECT_DIR</span>/bin/tools/CleanFunctions<br><br>cleanCase<br></code></pre></td></tr></table></figure>
+<p>Additionally, for quasi-uniform meshes, “static” files using the default datasets are available. The static file downloads provide single-precision static files in CDF-5/64-bit data format and mesh connectivity files.</p>
+<h1 id="metis">Metis</h1>
+<p>METIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices. The algorithms implemented in METIS are based on the multilevel recursive-bisection, multilevel k-way, and multi-constraint partitioning schemes developed in our lab.</p>
+<p>Download: - <a target="_blank" rel="noopener" href="http://glaros.dtc.umn.edu/gkhome/metis/metis/download" class="uri">http://glaros.dtc.umn.edu/gkhome/metis/metis/download</a></p>
+<p><a href="https://waipangsze.github.io/2024/05/31/MPAS_install_metis_error/"><strong>MPAS | install Metis</strong></a></p>
+<h2 id="gpmetis">gpmetis</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">gpmetis -minconn -contig -niter=200 graph.info &lt;num_core&gt;<br></code></pre></td></tr></table></figure>
+<p>which num_core = 12 or ...</p>
+<h1 id="if-generating-graph.info-for-new-mesh">If generating graph.info for new mesh</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs limited_area/mesh.py">def create_graph_file(self, graphFname):<br>    &quot;&quot;&quot; Create a graph.info file for the current mesh &quot;&quot;&quot;<br><br>    # In the limited_area program, this function will always create<br>    # a graph.info file for a regional mesh. Thus, the variables here<br>    # are not preloaded and are being read from disk<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs limited_area/limited_area.py">def create_partiton_fname(self, name, mesh, **kwargs):<br>    &quot;&quot;&quot; Generate the filename for the regional graph.info file&quot;&quot;&quot;<br>    return name+&#x27;.graph.info&#x27;<br></code></pre></td></tr></table></figure>
 <h1 id="references">References</h1>
 <ol type="1">
-<li><a target="_blank" rel="noopener" href="https://damogranlabs.com/2020/10/runfunctions-a-quick-cheatsheet/">RunFunctions: a Quick Cheatsheet</a></li>
-<li><a target="_blank" rel="noopener" href="https://ml-cfd.com/openfoam/basic/2020/06/12/3-ways-to-run-tutorials-in-OpenFOAM.html">3 ways to run tutorials in OpenFOAM</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.openfoam.com/documentation/user-guide/3-running-applications/3.2-running-applications-in-parallel">3.2 Running applications in parallel</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.amd.com/zh-tw/developer/zen-software-studio/applications/spack/hpc-applications-openfoam.html">Build OpenFOAM using Spack</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/gpmetis-error.19844/#post-48136">gpmetis error | Nov 12, 2024</a>
+<ol type="1">
+<li>should probably look like <code>512 513 514 509 510 511</code></li>
+<li>Here's the part of the MPAS-Limited-Area tool that should be writing this connectivity info: <a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Limited-Area/blob/v2.1/limited_area/mesh.py#L180-L186">MPAS-Limited-Area/limited_area/mesh.py at v2.1 · MPAS-Dev/MPAS-Limited-Area</a>.</li>
+<li>We've merge changes to support NumPy 2.x into the <a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Limited-Area/pull/47">MPAS-Limited-Area main branch through MPAS-Dev/MPAS-Limited-Area PR #47</a>. Thanks again for finding this issue!</li>
+</ol></li>
 </ol>
 
                 
@@ -492,7 +475,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
   
   
 
@@ -509,7 +492,17 @@
       
         <a href="/tags/HPC/" class="print-no-link">#HPC</a>
       
-        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/mesh/" class="print-no-link">#mesh</a>
+      
+        <a href="/tags/graph-info/" class="print-no-link">#graph.info</a>
+      
+        <a href="/tags/grid-nc/" class="print-no-link">#grid.nc</a>
       
     </div>
   
@@ -521,8 +514,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CFD | OpenFOAM | Allrun</div>
-      <div>https://waipangsze.github.io/2024/12/03/openfoam-Allrun/</div>
+      <div>MPAS | Mesh Connectivity (graph.info) file for the mesh</div>
+      <div>https://waipangsze.github.io/2025/04/14/MPAS-Mesh-Connectivity-graph-info-file-for-the-mesh/</div>
     </div>
     <div class="license-meta">
       
@@ -534,13 +527,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>December 3, 2024</div>
+          <div>April 14, 2025</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 4, 2024</div>
+          <div>April 14, 2025</div>
         </div>
       
       
@@ -571,18 +564,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/12/04/latex-Formula-Recognition/" title="LaTex | Formula Recognition | 數學公式識別軟體">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">LaTex | Formula Recognition | 數學公式識別軟體</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/12/02/ffmpeg/" title="Linux | ffmpeg ">
-                        <span class="hidden-mobile">Linux | ffmpeg </span>
+                      <a href="/2025/04/10/MPAS-Vertical-Levels-and-Heights/" title="MPAS | Vertical Levels and Heights">
+                        <span class="hidden-mobile">MPAS | Vertical Levels and Heights</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
