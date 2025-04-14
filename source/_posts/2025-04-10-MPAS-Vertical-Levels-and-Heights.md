@@ -1,7 +1,7 @@
 ---
 layout: post
 title: MPAS | Vertical Levels and Heights
-categories: [WRF]
+categories: [MPAS]
 tags: [WRF, MPAS, HPC, NWP, UCM]
 author: wpsze
 date: 2025-04-10 14:19:00

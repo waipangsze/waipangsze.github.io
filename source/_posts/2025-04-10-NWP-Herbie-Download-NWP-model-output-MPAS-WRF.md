@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/dPlkBuU.png
+banner_img: https://i.imgur.com/dPlkBuU.png
 ---
 
 #  Herbie
@@ -110,6 +110,17 @@ ECMWF provides data for two different models
 | "waef"   	| ensemble forecast, ocean wave fields,                                                               	| 00z, 06z, 12z, 18z   	|
 | "mmsf"   	| multi-model seasonal forecasts fields from the ECMWF model only.                                    	| ?                    	|
 
+```sh
+#!/bin/bash
+
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate herbie-data
+
+time python main_herbie.py
+```
+
+- `$ time python main_herbie.py`
+
 ```python
 from herbie import Herbie
 
@@ -120,27 +131,48 @@ import numpy as np
 from herbie import paint
 from herbie.toolbox import EasyMap, pc
 
-H = Herbie("2024-03-1", model="ifs", product="oper", fxx=12)
-H.grib, H.idx
+from datetime import date, timedelta
 
-# Show the inventory
-H.inventory()
-H.inventory().param.unique()
+def daterange(start_date: date, end_date: date):
+    days = int((end_date - start_date).days)
+    for n in range(days):
+        yield start_date + timedelta(n)
 
-# Show just 10-m U and V wind
-H.inventory(":10[u|v]:")
+start_date = date(2013, 1, 1)
+end_date = date(2013, 1, 6)
+for single_date in daterange(start_date, end_date):
+    tmp = str(single_date.strftime("%Y-%m-%d")) +" 00:00:00"
+    tmp_save_fd = tmp[:4]+tmp[5:7]+tmp[8:10]
+    print(tmp, tmp_save_fd)
+    H = Herbie(tmp, model="ifs", product="oper") #, fxx=12)
+    H.inventory()
+    H.inventory().param.unique()
+    H.download(save_dir="/home/wpsze/mpas/IFS/herbie/")
 
-# Download the full GRIB2 file
-H.download(save_dir="/home/wpsze/mpas/IFS/herbie/")
-# result: PosixPath('/home/wpsze/mpas/IFS/herbie/ifs/20240301/20240301000000-12h-oper-fc.grib2')
+#H = Herbie("2024-03-01 00:00:00", model="ifs", product="oper", fxx=12)
+#H = Herbie("2024-04-01 12:00:00", model="ifs", product="oper") #, fxx=12) # 00/12 UTC
+#H.grib, H.idx
 
-# Get 2-m temperature as an xarray Dataset
-ds = H.xarray(":2t:", verbose=True)
-ds
-ds.t2m.plot()
+#-- Show the inventory
+#H.inventory()
+#H.inventory().param.unique()
+
+#-- Show just 10-m U and V wind
+#H.inventory(":10[u|v]:")
+
+#-- Download the full GRIB2 file
+#-- overwrite (bool) – If True, overwrite existing files. Default will skip downloading if the full file exists. Not applicable when when search is not None because file subsets might be unique.
+#H.download(save_dir="/home/wpsze/mpas/IFS/herbie/")
+#-- result: PosixPath('/home/wpsze/mpas/IFS/herbie/ifs/20240301/20240301000000-12h-oper-fc.grib2')
+
+#-- Get 2-m temperature as an xarray Dataset
+#ds = H.xarray(":2t:", verbose=True)
+#ds
+#ds.t2m.plot()
 ```
 
 ![](https://i.imgur.com/o1xSqZN.png)
+![](https://i.imgur.com/dPlkBuU.png)
 
 ## GFS
 
