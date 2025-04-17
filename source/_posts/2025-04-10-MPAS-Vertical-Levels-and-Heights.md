@@ -46,6 +46,10 @@ Klemp, J. B. (2011). A Terrain-Following Coordinate with Smoothed Coordinate Sur
 ![](https://i.imgur.com/Wowl0HL.png)
 {% endgi %}
 
+# Literature Review
+
+- [Skamarock, W. C., C. Snyder, J. B. Klemp, and S. Park, 2019: Vertical Resolution Requirements in Atmospheric Simulation. Mon. Wea. Rev., 147, 2641–2656, https://doi.org/10.1175/MWR-D-19-0043.1.](https://journals.ametsoc.org/view/journals/mwre/147/7/mwr-d-19-0043.1.xml)
+
 # MPASv8.1.0
 
 ## Separate Stream for Invariant Fields

@@ -157,6 +157,9 @@ for single_date in daterange(start_date, end_date):
 #H.inventory()
 #H.inventory().param.unique()
 
+#-- Show the search_help
+#print(H.search_help)
+
 #-- Show just 10-m U and V wind
 #H.inventory(":10[u|v]:")
 
@@ -167,12 +170,95 @@ for single_date in daterange(start_date, end_date):
 
 #-- Get 2-m temperature as an xarray Dataset
 #ds = H.xarray(":2t:", verbose=True)
-#ds
-#ds.t2m.plot()
+#ds.t2m.plot(cmap="Spectral_r", figsize=[8, 4])
 ```
 
 ![](https://i.imgur.com/o1xSqZN.png)
 ![](https://i.imgur.com/dPlkBuU.png)
+
+{% fold info @H.search_help %}
+```log
+Use regular expression to search for lines in the index file.
+Here are some examples you can use for the ecCodes-style `search`
+
+Look at the ECMWF GRIB Parameter Database
+https://apps.ecmwf.int/codes/grib/param-db
+
+
+product=`oper` or `enfo`
+======================== ==============================================
+search=                  GRIB messages that will be downloaded
+======================== ==============================================
+":2t:"                   2-m temperature
+":2d:"                   2-m dew point temperature
+":10u:"                  10-m u wind vector
+":10v:"                  10-m v wind vector
+":10[uv]:                10-m u and 10-m v wind
+":[tuvr]:"               Temp, u/v wind, RH (all levels)
+":500:"                  All variables on the 500 hPa level
+":gh:500"                Geopotential height only at 500 hPa
+":gh:"                   Geopotential height (all pressure levels)
+":t:"                    Temperature (all pressure levels)
+":q:"                    Specific Humidity (all pressure levels)
+":r:"                    Relative humidity (all pressure levels)
+":v:"                    v wind vector (all pressure levels)
+":u:"                    u wind vector (all pressure levels)
+":w:"                    Vertical velocity (Pascals per second)
+":lsm:"                  Land-sea mask
+":ttr:"                  Top net long-wave (thermal) radiation
+":ssrd:"                 Surface short-wave (solar) radiation downwards
+":ssr:"                  Surface net short-wave (solar) radiation
+":strd:"                 Surface long-wave (thermal) radiation downwards
+":str:"                  Surface net long-wave (thermal) radiation
+":swvl1:"                Volumetric soil water layer 1 (depth 0 meters)
+":swvl2:"                Volumetric soil water layer 2 (depth 7 meters)
+":swvl3:"                Volumetric soil water layer 3 (depth 28 meters)
+":swvl4:"                Volumetric soil water layer 4 (depth 100 meters)
+":skt:"                  Skin (surface) temperature
+":d:"                    Divergence (all levels)
+":st:"                   Soil temperature
+":stl2:"                 Soil temperature level 2 (depth 7 meters)
+":tp:"                   Total precipitation
+":ro:"                   Run-off
+":asn:"                  Snow albedo
+":msl:"                  Mean sea level pressure
+":sp:"                   Surface pressure
+":cape:"                 CAPE
+":tcwv:"                 Total column vertically integrated water vapor
+":vo:"                   Relative vorticity
+
+product=`wave` or `waef`
+======================== ==============================================
+search=                  GRIB messages that will be downloaded
+======================== ==============================================
+":swh:"                  Significant height of wind waves + swell
+":mwp:"                  Mean wave period
+":mwd:"                  Mean wave direction
+":pp1d:"                 Peak wave period
+":mp2:"                  Mean zero-crossing wave period
+
+If you need help with regular expression, search the web or look at
+this cheatsheet: https://www.petefreitag.com/cheatsheets/regex/.
+
+Here is an example: https://regex101.com/r/niNjwp/1
+```
+{% endfold %}
+
+### Problem
+
+- The grib files from `ecmwf.ini` and from `aws` are different. It will make different/debug on the `ungrib` step and `init_atmosphere_model` step.
+  - Not all different.
+
+It is because,
+
+- [ECMWF Near-Realtime IFS Atmospheric Forecasts | Earth Engine Data Catalog](https://developers.google.com/earth-engine/datasets/catalog/ECMWF_NRT_FORECAST_IFS_OPER?hl=zh-TW)
+  - **資料集可用性 2024-11-12T12:00:00Z–2025-04-16T12:00:00Z**
+  - **自 2024/11/12 推出Cycle 49r1 以來**，Earth Engine 就會提供產品；早期產品則不包含在內。
+    - old one: 145 items
+    - new one: 160 items
+
+![IFS:2024-04-26_00.nc](https://i.imgur.com/Ox9xzuB.png)
+![IFS:2025-03-26_00.nc](https://i.imgur.com/nr6Nkjg.png)
 
 ## GFS
 
