@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://www.ecmwf.int/sites/default/files/flags-council-chamber-650px.jpg">
 <meta property="article:published_time" content="2024-11-12T02:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-10T03:31:50.636Z">
+<meta property="article:modified_time" content="2025-04-17T06:41:34.738Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="WPS">
@@ -762,7 +762,7 @@
 </tbody>
 </table>
 <h1 id="rda.ucar-ecmwf-ifs-high-resolution-operational-forecasts">rda.ucar: ECMWF IFS High-Resolution Operational Forecasts</h1>
-<h2 id="from-rda.ucar">From rda.ucar</h2>
+<h2 id="from-rda.ucar-not-use">From rda.ucar (Not use)</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://rda.ucar.edu/datasets/d113001/#" class="uri">https://rda.ucar.edu/datasets/d113001/#</a>
 <ul>
@@ -773,7 +773,7 @@
 </ul>
 <p><img src="https://i.imgur.com/GvUcfD5.png" srcset="/img/loading.gif" lazyload width="400" /></p>
 <h1 id="herbia">Herbia</h1>
-<p><a href="https://waipangsze.github.io/2025/04/10/NWP-Herbie-Download-NWP-model-output-MPAS-WRF/">NWP | Herbie | Download NWP model output (grib2) | MPAS | WRF</a></p>
+<p><a href="https://waipangsze.github.io/2025/04/10/NWP-Herbie-Download-NWP-model-output-MPAS-WRF/"><strong>NWP | Herbie | Download NWP model output (grib2) | MPAS | WRF</strong></a></p>
 <h1 id="download-script">Download script</h1>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/sh</span><br><span class="hljs-comment">#################################################################</span><br><span class="hljs-comment"># https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p25/oper/</span><br><span class="hljs-comment"># https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p25/oper/20241117000000-114h-oper-fc.grib2</span><br><span class="hljs-comment">#################################################################</span><br><br>yyyy=<span class="hljs-string">&#x27;2024&#x27;</span><br>mm=<span class="hljs-string">&#x27;11&#x27;</span><br><span class="hljs-built_in">dd</span>=<span class="hljs-string">&#x27;17&#x27;</span><br>hh=<span class="hljs-string">&#x27;00&#x27;</span><br>yyyymm=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><br>yyyymmddhh=<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span><span class="hljs-variable">$&#123;hh&#125;</span><br><br>tmp_dir=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>&quot;</span><br><span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Current <span class="hljs-variable">$&#123;tmp_dir&#125;</span>&quot;</span><br><br>limit_cpu_core=15<br>count_cpu_core=1<br><br><span class="hljs-keyword">for</span> ifsfile <span class="hljs-keyword">in</span> $(<span class="hljs-built_in">seq</span> 0 3 6); <span class="hljs-keyword">do</span> <span class="hljs-comment"># Forecast time = 12, 24, 36, 48, 60, 72, 84, 96, 108, 130, 142, 154</span><br><br>    tmp_ifs_fname=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;yyyymmddhh&#125;</span>0000-<span class="hljs-variable">$&#123;ifsfile&#125;</span>h-oper-fc.grib2&quot;</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Now, <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span> ... &quot;</span><br>    <br>    <span class="hljs-keyword">if</span> [[ ! -f <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>&quot;</span> ]]; <span class="hljs-keyword">then</span>	<br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Downloading ... <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>&quot;</span><br>		wget --no-check-certificate https://data.ecmwf.int/forecasts/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>/<span class="hljs-variable">$&#123;hh&#125;</span>z/ifs/0p25/oper/<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span><br>	<span class="hljs-keyword">else</span><br>	    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span> exists ... &quot;</span><br>    <span class="hljs-keyword">fi</span><br>    <br>	res=$(( <span class="hljs-variable">$&#123;count_cpu_core&#125;</span> % <span class="hljs-variable">$&#123;limit_cpu_core&#125;</span> ))<br>	<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;res&#125;</span> == 0 ]]; <span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;please wait <span class="hljs-variable">$&#123;tmp_ifs_fname&#125;</span>, <span class="hljs-variable">$&#123;count_cpu_core&#125;</span>, <span class="hljs-variable">$&#123;res&#125;</span>.&quot;</span><br>		<span class="hljs-built_in">wait</span><br>	<span class="hljs-keyword">fi</span><br>    <br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
 <p>read_grib2.py</p>
@@ -925,7 +925,15 @@
 <ul>
 <li>The message "Error in interpolation of st_fg to MPAS grid: num_st = XXXX" is <strong>generally indicative of an issue with the soil temperature</strong>. Would it be possible to use some of the utilities that come with the WRF Pre-processing System (WPS) to check that there are valid soil temperature data in your intermediate file? Specifically, you could use the "<code>rd_intermediate</code>" utility to check that there are fields named, e.g., ST000010, and you could use the "<code>int2nc</code>" utility to convert the intermediate file to netCDF format, where it would be easier to view the soil fields with, e.g., <code>ncview</code>.</li>
 </ul></li>
-<li><strong>Use WPSv4.6 with above renewd Vtable and rd_grib2.F</strong></li>
+<li><strong>Use WPSv4.6 with above renewed Vtable and rd_grib2.F</strong></li>
+</ul>
+<h1 id="parameter-config_nfglevels">parameter "config_nfglevels"</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/configuration-problem-for-parameter-config_nfglevels.10690/">configuration problem for parameter "config_nfglevels" | Sep 2, 2021</a>
+<ul>
+<li><strong>If you have 37 isobaric levels of atmospheric data, plus surface fields (u10, v10, t2, etc.), that would give a total of 38 levels</strong> from the perspective of the init_atmosphere_model program. As the error message states, config_nfglevels <strong>must therefore be set to at least 38</strong> -- so value of 38, 39, 40, 41, etc. should all work.</li>
+<li>Internally, the 'config_nfglevels' namelist option is used by the init_atmosphere_model program to allocate 3-d arrays to hold the horizontally interpolated first-guess ("fg" in the config_nfglevels name) fields. Allocating too few vertical levels in these 3-d arrays is problematic, but allocating extra levels -- which will simply go unused -- isn't a problem, though it does waste memory.</li>
+</ul></li>
 </ul>
 <h4 id="done">Done</h4>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">MPAS-120km_2022063000.init.nc<br></code></pre></td></tr></table></figure>
@@ -1033,7 +1041,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>April 10, 2025</div>
+          <div>April 17, 2025</div>
         </div>
       
       
