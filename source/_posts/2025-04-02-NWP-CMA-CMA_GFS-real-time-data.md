@@ -646,6 +646,10 @@ grib_set -r -w packingType=grid_ieee -s centre=babj,shortName=lsm,typeOfLevel=su
 mv final_TMP_1_2m.grib2 final_cma_lsm.grib2
 ```
 
+- Make sure the **datetime is updated with your run**.
+
+> **grib_set -r -w packingType=grid_ieee -s centre=babj,shortName=lsm,typeOfLevel=surface,level=0,dataType=an,packingType=grid_jpeg,dataDate=20250416,dataTime=0000 new_TMP_1_2m.grib2 final_TMP_1_2m.grib2**
+
 - `./g2print.exe final_cma_lsm.grib2`
 - `2 0 0 1` here correpsonds to `Vtable.CMA_GFS`
   - **LANDSEA**
