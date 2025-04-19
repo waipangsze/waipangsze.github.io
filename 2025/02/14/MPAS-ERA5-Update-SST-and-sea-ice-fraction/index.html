@@ -1,0 +1,1477 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Generating SST and sea-ice update files  https:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;projects&#x2F;mpas&#x2F;tutorial&#x2F;Howard2024&#x2F;index.html MPAS-Tutorial-NCAR-2023&#x2F;mpas_tutorial | ftp  Because MPAS-Atmosphere — at least, when ru">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS | ERA5| Update SST and sea-ice fraction">
+<meta property="og:url" content="https://waipangsze.github.io/2025/02/14/MPAS-ERA5-Update-SST-and-sea-ice-fraction/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Generating SST and sea-ice update files  https:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;projects&#x2F;mpas&#x2F;tutorial&#x2F;Howard2024&#x2F;index.html MPAS-Tutorial-NCAR-2023&#x2F;mpas_tutorial | ftp  Because MPAS-Atmosphere — at least, when ru">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/Gs7ezqA.png">
+<meta property="article:published_time" content="2025-02-14T03:49:00.000Z">
+<meta property="article:modified_time" content="2025-04-19T14:03:15.027Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="PGW">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="GRIB">
+<meta property="article:tag" content="NetCDF">
+<meta property="article:tag" content="CMIP6">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/Gs7ezqA.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS | ERA5| Update SST and sea-ice fraction - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/Gs7ezqA.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS | ERA5| Update SST and sea-ice fraction"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-14 11:49" pubdate>
+          February 14, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS | ERA5| Update SST and sea-ice fraction</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="generating-sst-and-sea-ice-update-files">Generating SST and
+sea-ice update files</h1>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html"
+class="uri">https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/index.html</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/">MPAS-Tutorial-NCAR-2023/mpas_tutorial
+| ftp</a></li>
+</ul>
+<p>Because MPAS-Atmosphere — at least, when run as a stand-alone model —
+does not contain prognostic equations for the SST and sea-ice fraction,
+these fields would remain constant if not updated from an external
+source; this is, of course, not realistic, and it will generally impact
+the quality of longer model simulations. Consequently, for
+MPAS-Atmosphere simulations longer than roughly a week, it is typically
+necessary to periodically update the sea-surface temperature (SST) field
+in the model. For real-time simulations, this is generally not an
+option, but it is feasible for retrospective simulations, where we have
+observed SST analyses available to us.</p>
+<div class="note note-primary">
+            <p>Prepare <strong>intermediate files containing SST and sea-iceanalyses</strong></p>
+          </div>
+<h1 id="for-era5">For ERA5</h1>
+<h2 id="intermediate-files">Intermediate files</h2>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_data_util_pp.pdf">Fortran
+script to convert netCDF to Intermediate format</a>
+<ul>
+<li>Convert netCDF to Intermediate: <a
+target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/src/netcdf-to-intermediate.f">netcdf-to-intermediate.f</a></li>
+</ul></li>
+</ul>
+<h3 id="reading-intermediate-files">Reading intermediate files</h3>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://github.com/hanschen/WPS/blob/master/util/src/rd_intermediate.F">WPS/util/src/rd_intermediate.F</a></li>
+<li><code>WPS/util/rd_intermediate.exe</code></li>
+<li>USAGE: <code>rd_intermediate.exe &lt;filename&gt;</code></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">source</span> /home/wpsze/WRF/WRFv440/wrf_env.sh<br><span class="hljs-built_in">ln</span> -sf /home/wpsze/WRF/WRFv440/wrf_install/WPS-4.4/bin/rd_intermediate.exe<br><span class="hljs-built_in">ln</span> -sf /home/wpsze/WRF/WRFv440/wrf_install/WPS-4.4/util/plotfmt.ncl<br>./rd_intermediate.exe <span class="hljs-variable">$1</span><br>ncl plotfmt.ncl <span class="hljs-variable">$1</span><br></code></pre></td></tr></table></figure>
+<p>and, on termianl,</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_">$ </span><span class="language-bash">./read_int.sh ERA5:2022-06-30_00</span><br>......<br>================================================<br>FIELD = SEAICE<br>UNITS = fraction DESCRIPTION = Sea-Ice Fraction<br>DATE = 2022-06-30_00:00:00 FCST = 0.000000<br>SOURCE = ECMWF<br>LEVEL = 200100.000000<br>I,J DIMS = 1440, 721<br>IPROJ = 0  PROJECTION = LAT LON<br>  REF_X, REF_Y = 1.000000, 1.000000<br>  REF_LAT, REF_LON = 90.000008, 0.000000<br>  DLAT, DLON = -0.250000, 0.250000<br>  EARTH_RADIUS = 6367.470215<br>DATA(1,1)=0.927246<br><br>================================================<br>FIELD = SST<br>UNITS = K DESCRIPTION = Sea-Surface Temperature<br>DATE = 2022-06-30_00:00:00 FCST = 0.000000<br>SOURCE = ECMWF<br>LEVEL = 200100.000000<br>I,J DIMS = 1440, 721<br>IPROJ = 0  PROJECTION = LAT LON<br>  REF_X, REF_Y = 1.000000, 1.000000<br>  REF_LAT, REF_LON = 90.000008, 0.000000<br>  DLAT, DLON = -0.250000, 0.250000<br>  EARTH_RADIUS = 6367.470215<br>DATA(1,1)=271.459961<br>================================================<br>......<br></code></pre></td></tr></table></figure>
+<h3 id="plotting-intermediate-files-plotfmt.ncl">Plotting Intermediate
+Files: plotfmt.ncl</h3>
+<p>Plots the fields in the ungribbed intermediate files</p>
+<blockquote>
+<p>$ ncl plotfmt.ncl 'filename="FNL:2007-09-15_00"'</p>
+</blockquote>
+<p>See above shell script.</p>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/Z3OysPt.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/IuCdgnU.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/698XQfv.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/oZwecqP.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/vSVNCUn.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/EPqOweu.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h2 id="skintemp-skt-vs-sst">skintemp (skt) vs sst</h2>
+<p>Consider <code>skt - sst</code> form ERA5 grib file, they are
+different but why?</p>
+<ul>
+<li>ERA5-0p25-SL-2022063000.grib</li>
+<li>ERA5 grib: skt - sst</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">ncvis ERA5-0p25-SL-2022063000.nc<br>cdo selname,sst ERA5-0p25-SL-2022063000.nc sst.nc<br>cdo selname,skt ERA5-0p25-SL-2022063000.nc skt.nc<br>cdo chname,skt,sst skt.nc skt-sst.nc<br>ncdiff skt-sst.nc sst.nc diff.nc<br>ncvis/ncview diff.nc <br></code></pre></td></tr></table></figure>
+<figure>
+<img src="https://i.imgur.com/WoSHTOP.png" srcset="/img/loading.gif" lazyload width="500"
+alt="ERA5 grib | skt - sst |" />
+<figcaption aria-hidden="true">ERA5 grib | skt - sst |</figcaption>
+</figure>
+<h3 id="solutions">Solutions</h3>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/sst-input-resolution-and-landmask.15850/">SST
+input resolution and LANDMASK | Feb 2024</a>
+<ul>
+<li><strong>SST in ERA5 only has valid values over the ocean</strong>.
+When metgrid conducts horizontal interpolation, it may result in some
+discontinuity.</li>
+<li><strong>TSK is skin temperature predicted by land model (over the
+ocean without sst update, it remains as skintemp at the initial time. if
+sst_update =1, tsk is updated by SST.</strong>)</li>
+<li>I am suspicious that SST is somehow not continuous over the coast,
+which affects tsk later.</li>
+<li>To overcome this problem, <strong>please use skintemp as
+SST</strong>. You cam simply delete the line for SST in Vtable.ECMWF ,
+then rerun ungrib and metgrid.</li>
+<li>I would like to confirm that in ERA5, SKINTEMP and SST over the
+ocean are same. This will justify that we can use SKINTEMP to replace
+SST.</li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/metgrid-sst-interpolation-artifacts.14755/">Metgrid
+SST interpolation artifacts | Nov 2023</a>
+<ul>
+<li>One quick fix of the unrealistic SST along coastal areas is to
+<strong>replace SST by SKINTEMP</strong>. <strong>Please delete the line
+below from Vtable.ECMWF</strong>, then rerun ungrib.exe.</li>
+<li><code>34 | 1 | 0 | | SST | K | Sea-Surface Temperature |</code></li>
+<li>In this case SST will not be extracted from ERA5 and SKINTEMP will
+be used as SST. <strong>We believe this is reasonable because SST and
+SKINTEMP is almost the same over ocean</strong>.</li>
+<li>In the case you attempt to use external SST instead of ERA5 SST, you
+need to provide landmask specifically for the external SST data, then
+modify METGRID.TBL so that metgrid.exe will know what landmask is used
+for horizontal interpolation.
+<ul>
+<li>A detailed explanation can be found at <a
+target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/201907/duda_wps_advanced.pdf"
+class="uri">https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/201907/duda_wps_advanced.pdf</a>,
+and the slides 47-58 give an example how to process external soil data.
+The same approach is also applied to external SST.</li>
+<li>the default fill-values overland is 0K (as in -273.15ºC). If you're
+running in high res, the interpolation of SST leads to some wonky
+numbers around the landmask. Probably you can set fill_missing = 285. or
+some other value to remedy the problem.</li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/does-wrf-needs-tsk-from-global-data.9751/">does
+WRF needs TSK from global data | Nov 2020</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/strong-non-smooth-temperature-pattern-over-snow-ice-water-land-categories.10793/">Strong
+non-smooth temperature pattern over snow/ice/water land categories | Sep
+2021</a>
+<ul>
+<li>I see you're using sst_update. Are you using a separate SST input
+data than the ERA5 data? If so, is it possible that the landsea mask for
+the two data types is inconsistent? Otherwise, there is a particular
+process necessary for processing landsea for ERA5 data.</li>
+<li><strong>One suggestion is to use SKINTEMP only (instead of
+SST)</strong></li>
+</ul></li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/issue-with-era5-sst-fields.12525/">Issue
+with ERA5 SST fields | Feb 2023</a>
+<ul>
+<li>This is an old issue. If you <strong>replace the SST by the skin
+temperature</strong> you will have unrealistic warm waters near the
+coast in summer.</li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/wrf-regional-climate-simulation.10726/">WRF
+regional climate simulation | Sep 2021</a>
+<ul>
+<li>This will potentially lead to problem in WRF simulation, especially
+for long term climate simulation with sst_update.</li>
+<li>To solve this issue, <strong>please use skintemp to replace
+SST</strong> following the steps below:
+<ul>
+<li><ol type="1">
+<li>in Vtable.ERA-I, <strong>delete</strong> the line below:</li>
+</ol>
+<ul>
+<li><code>34 | 1 | 0 | | SST | K | Sea-Surface Temperature |</code></li>
+</ul></li>
+<li><ol start="2" type="1">
+<li>rerun ungrib.exe and metgrid.exe</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>run real.exe and wrf.exe</li>
+</ol></li>
+</ul></li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/merge-vtable-gfs-and-vtable-sst.9973/">Merge
+Vtable.GFS and Vtable.SST | Jan 2021</a>
+<ul>
+<li>It is perfectly fine that the <strong>SST field is derived from
+SKINTEMP</strong>; however, if you are not using high-resolution
+time-varying SST data input, there really is no need to use the
+sst_update option. If you are only running for 4 days, it shouldn't be
+necessary.</li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/ungrib-error-not-reading-sst.12318/">Ungrib
+error: not reading SST | Dec 2022</a>
+<ul>
+<li>This means the code is not familiar with a level code of 160, and if
+you want to use that one, you'll need to modify the
+ungrib/src/rd_grib2.F file to allow it to work. You can search for that
+part of the code by looking for "Rd_grib2 does not know" in that file.
+After you make any modifications, you'll need to recompile
+ungrib.exe.</li>
+</ul></li>
+</ul>
+<h2 id="summary">Summary</h2>
+<div class="note note-primary">
+            <p>The ERA5.grib can be <strong>IC, LBC, FDDA</strong> and<strong>SST/Sea-Ice updated</strong> as well.</p><p>And, <strong>ERA5 corresponding interemediate file</strong> can beused.</p>
+          </div>
+<h1 id="vtable">Vtable</h1>
+<ul>
+<li><p>Vtable.GFS</p>
+<ul>
+<li>Skin temperature (can use for SST also) 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">
+        <div class="fold-arrow">▶</div>Vtable.GFS
+      </div>
+      <div class="fold-collapse collapse" id="collapse-9c51fa20">
+        <div class="fold-content">
+          <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">GRIB1|<span class="hljs-string"> Level</span>|<span class="hljs-string"> From </span>|<span class="hljs-string">  To  </span>|<span class="hljs-string"> metgrid  </span>|<span class="hljs-string"> metgrid </span>|<span class="hljs-string"> metgrid                                 </span>|<span class="hljs-string">GRIB2</span>|<span class="hljs-string">GRIB2</span>|<span class="hljs-string">GRIB2</span>|<span class="hljs-string">GRIB2</span>|<br>Param|<span class="hljs-string"> Type </span>|<span class="hljs-string">Level1</span>|<span class="hljs-string">Level2</span>|<span class="hljs-string"> Name     </span>|<span class="hljs-string"> Units   </span>|<span class="hljs-string"> Description                             </span>|<span class="hljs-string">Discp</span>|<span class="hljs-string">Catgy</span>|<span class="hljs-string">Param</span>|<span class="hljs-string">Level</span>|<br>-----+------+------+------+----------+---------+-----------------------------------------+-----------------------+<br>  91 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SEAICE   </span>|<span class="hljs-string"> proprtn </span>|<span class="hljs-string"> Ice flag                                </span>|<span class="hljs-string"> 10  </span>|<span class="hljs-string">  2  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">   1 </span>|<br>  81 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> LANDSEA  </span>|<span class="hljs-string"> proprtn </span>|<span class="hljs-string"> Land/Sea flag (1=land, 0 or 2=sea)      </span>|<span class="hljs-string">  2  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">   1 </span>|<br>  81 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> LANDN    </span>|<span class="hljs-string"> proprtn </span>|<span class="hljs-string">                                         </span>|<span class="hljs-string">  2  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string"> 218 </span>|<span class="hljs-string">   1 </span>|<br>   7 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SOILHGT  </span>|<span class="hljs-string"> m       </span>|<span class="hljs-string"> Terrain field of source analysis        </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">  3  </span>|<span class="hljs-string">  5  </span>|<span class="hljs-string">   1 </span>|<br>  11 |<span class="hljs-string">   1  </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SKINTEMP </span>|<span class="hljs-string"> K       </span>|<span class="hljs-string"> Skin temperature                        </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">  0  </span>|<span class="hljs-string">   1 </span>|<br>......<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></li>
+</ul></li>
+<li><p>Vtable.ERA-interim.pl 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+        <div class="fold-arrow">▶</div>Vtable.ERA-interim.pl
+      </div>
+      <div class="fold-collapse collapse" id="collapse-05eef982">
+        <div class="fold-content">
+          <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">GRIB |<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> metgrid  </span>|<span class="hljs-string">  metgrid </span>|<span class="hljs-string"> metgrid                                  </span>|<br>Code |<span class="hljs-string"> Code </span>|<span class="hljs-string">   1  </span>|<span class="hljs-string">   2  </span>|<span class="hljs-string"> Name     </span>|<span class="hljs-string">  Units   </span>|<span class="hljs-string"> Description                              </span>|<br>-----+------+------+------+----------+----------+------------------------------------------+<br> 235 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SKINTEMP </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br>  31 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SEAICE   </span>|<span class="hljs-string"> fraction </span>|<span class="hljs-string"> Sea-Ice Fraction                         </span>|<br>  34 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SST      </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br>......<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></p></li>
+<li><p>Vtable.SST 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">
+        <div class="fold-arrow">▶</div>Vtable.SST
+      </div>
+      <div class="fold-collapse collapse" id="collapse-90469042">
+        <div class="fold-content">
+          <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">GRIB |<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> metgrid  </span>|<span class="hljs-string">  metgrid </span>|<span class="hljs-string"> metgrid                                  </span>|<br>Code |<span class="hljs-string"> Code </span>|<span class="hljs-string">   1  </span>|<span class="hljs-string">   2  </span>|<span class="hljs-string"> Name     </span>|<span class="hljs-string">  Units   </span>|<span class="hljs-string"> Description                              </span>|<br>-----+------+------+------+----------+----------+------------------------------------------+<br> 172 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> LANDSEA  </span>|<span class="hljs-string"> 0/1 Flag </span>|<span class="hljs-string"> Land/Sea flag                            </span>|<br> 235 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SKINTEMP </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br>  31 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SEAICE   </span>|<span class="hljs-string"> fraction </span>|<span class="hljs-string"> Sea-Ice Fraction                         </span>|<br>-----+------+------+------+----------+----------+------------------------------------------+<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></p></li>
+</ul>
+<h2 id="for-sst-skintemp">For <code>sst = skintemp</code></h2>
+<ul>
+<li><code>Vtable.ERA-interim.pl</code> is modified as
+<code>Vtable.ERA5</code></li>
+<li><strong>replace the SST by the skin temperature !!</strong></li>
+<li><strong>Remove</strong> the row :
+<code>34 |  1   |   0  |      | SST      | K        | Sea-Surface Temperature                  |</code></li>
+</ul>
+<h2 id="for-using-era5-as-sst-source">For using ERA5 as SST source</h2>
+<ul>
+<li><p>use ERA5's <code>skintemp</code> as SST source instead of
+<code>sst</code> itself</p></li>
+<li><p>modify <code>Vtable.SST</code> with replace <code>11</code> by
+<code>235</code></p></li>
+<li><p>try to keep three varibles (not only SST and SEAICE)</p></li>
+<li><p>Vtable.ERA5.SST 
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">
+        <div class="fold-arrow">▶</div>Vtable.ERA5.SST
+      </div>
+      <div class="fold-collapse collapse" id="collapse-738764b7">
+        <div class="fold-content">
+          <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">GRIB |<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> Level</span>|<span class="hljs-string"> metgrid  </span>|<span class="hljs-string">  metgrid </span>|<span class="hljs-string"> metgrid                                  </span>|<br>Code |<span class="hljs-string"> Code </span>|<span class="hljs-string">   1  </span>|<span class="hljs-string">   2  </span>|<span class="hljs-string"> Name     </span>|<span class="hljs-string">  Units   </span>|<span class="hljs-string"> Description                              </span>|<br>-----+------+------+------+----------+----------+------------------------------------------+<br> 235 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SKINTEMP </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br>  31 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SEAICE   </span>|<span class="hljs-string"> fraction </span>|<span class="hljs-string"> Sea-Ice Fraction                         </span>|<br> 235 |<span class="hljs-string">  1   </span>|<span class="hljs-string">   0  </span>|<span class="hljs-string">      </span>|<span class="hljs-string"> SST      </span>|<span class="hljs-string"> K        </span>|<span class="hljs-string"> Sea-Surface Temperature                  </span>|<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div></p></li>
+</ul>
+<div class="note note-primary">
+            <p>ln -sf ${TEMPLATE_DIR}/Variable_Tables/Vtable.ERA5.SST Vtable</p>
+          </div>
+<h1 id="for-mpas">For MPAS</h1>
+<h2 id="code">code</h2>
+<h3 id="mpas_stream_manager.f">mpas_stream_manager.F</h3>
+<ul>
+<li>MPAS_stream_mgr_get_property</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dfb167e8" role="button" aria-expanded="false" aria-controls="collapse-dfb167e8">
+        <div class="fold-arrow">▶</div>MPAS_stream_mgr_get_property
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dfb167e8">
+        <div class="fold-content">
+          <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">interface</span> MPAS_stream_mgr_get_property<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_int<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_char<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_logical<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">interface</span><br><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-comment">!  routine MPAS_stream_mgr_get_property_int</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!&gt; \brief Gets a property of a stream in an MPAS stream manager.</span><br><span class="hljs-comment">!&gt; \author Michael Duda, Doug Jacobsen</span><br><span class="hljs-comment">!&gt; \date   13 June 2014</span><br><span class="hljs-comment">!&gt; \details</span><br><span class="hljs-comment">!&gt;  Retrieves the value of a stream property within an MPAS stream manager.</span><br><span class="hljs-comment">!&gt;  <span class="hljs-doctag">NOTE:</span> This routine does not support streamID regular expressions</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> MPAS_stream_mgr_get_property_int(manager, streamID, propertyName, propertyValue, direction, ierr)<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h3 id="mpas-init.nc-sst-issue">MPAS init.nc SST issue</h3>
+<ul>
+<li><code>sst = skintemp</code> that sst values is from skintemp.</li>
+<li><code>src/core_init_atmosphere/mpas_init_atm_cases.F</code></li>
+</ul>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-keyword">if</span> (config_met_interp) <span class="hljs-keyword">then</span><br><br>!ldf (<span class="hljs-number">2011</span>-<span class="hljs-number">11</span>-<span class="hljs-number">19</span>): added initialization <span class="hljs-keyword">of</span> the sea-surface temperature, seaice fraction, <span class="hljs-built_in">and</span><br>!seaice flag:<br>  sst = <span class="hljs-number">0.0</span><br>  xice = <span class="hljs-number">0.0</span><br>  seaice = <span class="hljs-number">0.0</span><br>!ldf <span class="hljs-keyword">end</span>.<br><br>! <span class="hljs-keyword">Set</span> SST based <span class="hljs-keyword">on</span> SKINTEMP field <span class="hljs-keyword">if</span> it wasn<span class="hljs-comment">&#x27;t found in input data</span><br><span class="hljs-keyword">if</span> (minval(sst) == <span class="hljs-number">0.0</span> .<span class="hljs-built_in">and</span>. maxval(sst) == <span class="hljs-number">0.0</span>) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-comment">&#x27;Setting SST from SKINTEMP&#x27;)</span><br>    !<span class="hljs-keyword">where</span> (landmask == <span class="hljs-number">0</span>) sst = skintemp<br>    sst = skintemp<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br></code></pre></td></tr></table></figure>
+<p>But, ERA5's skintemp and sst are different as above.</p>
+<p><img src="https://i.imgur.com/EIkck30.png" srcset="/img/loading.gif" lazyload
+alt="Left) init.nc, Right) sst.nc" /> <img
+src="https://i.imgur.com/YHSha1w.png" srcset="/img/loading.gif" lazyload width="500"
+alt="init.nc - sst.nc, and same as above figure of ERA5 grib file" />
+<img src="https://i.imgur.com/Fwn5ZjU.png" srcset="/img/loading.gif" lazyload width="500"
+alt="It is init.nc: skintemp - sst that has shown sst is same as skintemp in init_atmosphere step in MPAS." /></p>
+<h3 id="core_atmosphere">core_atmosphere</h3>
+<ul>
+<li><p><code>src/core_atmosphere/physics/mpas_atmphys_manager.F</code></p></li>
+<li><p>read sfc input <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">type</span>(mpas_pool_type),<span class="hljs-keyword">pointer</span>:: sfc_input<br><span class="hljs-keyword">block</span> =&gt; domain % blocklist<br><span class="hljs-keyword">call</span> mpas_pool_get_subpool(<span class="hljs-keyword">block</span>%structs,<span class="hljs-string">&#x27;sfc_input&#x27;</span>   ,sfc_input   )<br></code></pre></td></tr></table></figure></p></li>
+<li><p>physics_update_sst <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!update surface boundary conditions with input sea-surface temperatures and fractional</span><br><span class="hljs-comment">!sea-ice coverage:</span><br><span class="hljs-keyword">if</span>(mpas_is_alarm_ringing(clock,sfcbdyAlarmID,ierr=ierr)) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_reset_clock_alarm(clock,sfcbdyAlarmID,ierr=ierr)<br>    <span class="hljs-keyword">if</span>(config_sst_update) &amp;<br>      <span class="hljs-keyword">call</span> physics_update_sst(domain%dminfo,config_frac_seaice,mesh,sfc_input,diag_physics)<br><span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure></p></li>
+<li><p><strong>MPAS_stream_mgr_get_property</strong> read sst.nc
+files</p></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!set alarm for updating the surface boundary conditions:</span><br> <span class="hljs-keyword">if</span> (config_sst_update) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> MPAS_stream_mgr_get_property(stream_manager, <span class="hljs-string">&#x27;surface&#x27;</span>, MPAS_STREAM_PROPERTY_RECORD_INTV, stream_interval, &amp;<br>                                      direction=MPAS_STREAM_INPUT, ierr=ierr)<br>    <span class="hljs-keyword">call</span> mpas_set_timeInterval(alarmTimeStep,timeString=stream_interval,ierr=ierr)<br>    alarmStartTime = startTime<br>    <span class="hljs-keyword">call</span> mpas_add_clock_alarm(clock,sfcbdyAlarmID,alarmStartTime,alarmTimeStep,ierr=ierr)<br>    <span class="hljs-keyword">if</span>(ierr /= <span class="hljs-number">0</span>) &amp;<br>       <span class="hljs-keyword">call</span> physics_error_fatal(<span class="hljs-string">&#x27;subroutine physics_init: error creating alarm sfcbdy&#x27;</span>)<br> <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>src/core_atmosphere/Registry.xml</code> <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">var_struct</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sfc_input&quot;</span> <span class="hljs-attr">time_levs</span>=<span class="hljs-string">&quot;1&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="update-sst-on-mpas-time-step">Update SST on MPAS time-step,</h4>
+<ul>
+<li>For uptated interval = 3 hour,
+<ul>
+<li>T=0, from SST(T=0) of init.nc</li>
+<li>T=0 to T=3, are same as SST(T=0)</li>
+<li>T&gt;3 to T=6, are same as SST(T=3)</li>
+<li>T&gt;6 to T=9, are same as SST(T=6)</li>
+</ul></li>
+<li>For uptated interval = 6 hour,
+<ul>
+<li>T=0, from SST(T=0) of init.nc</li>
+<li>T=0 to T=6, are same as SST(T=0)</li>
+<li>T&gt;6 to T=12, are same as SST(T=6)</li>
+<li>T&gt;12 to T=18, are same as SST(T=12)</li>
+</ul></li>
+</ul>
+<h2
+id="srccore_init_atmosphereregistry.xml">src/core_init_atmosphere/Registry.xml</h2>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_init_atmosphere/Registry.xml#L347">MPAS-Model/src/core_init_atmosphere/Registry.xml</a></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sfc_update&quot;</span> <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Used by test cases that produce surface updates.&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_input_sst&quot;</span>             <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span>       <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;-&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;Whether to re-compute SST and sea-ice fields from surface input data set; should be set to .true. when running case 8&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">possible_values</span>=<span class="hljs-string">&quot;true or false&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sst&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;K&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;sea-surface temperature&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;xice&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;unitless&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;fractional area coverage of sea-ice&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;met_stage_out;sfc_update&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="namelist.init_atmosphere">namelist.init_atmosphere</h2>
+<p>The key namelist options that must be set are shown below; other
+options can be ignored.</p>
+<p>Note in particular that we have set the <code>config_init_case</code>
+<strong>variable to 8!</strong> This is the initialization case used to
+create surface update files, instead of real-data initial conditions
+files.</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-98e16488" role="button" aria-expanded="false" aria-controls="collapse-98e16488">
+        <div class="fold-arrow">▶</div>namelist.init_atmosphere
+      </div>
+      <div class="fold-collapse collapse" id="collapse-98e16488">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs namelist.init_atmosphere">&amp;nhyd_model<br>    config_init_case = 8<br>    config_start_time = &#x27;2014-09-10_00:00:00&#x27;<br>    config_stop_time = &#x27;2014-09-20_00:00:00&#x27;<br>/<br><br>&amp;data_sources<br>    config_sfc_prefix = &#x27;SST&#x27; # SST or ERA5: the prefix of the intermediate data files containing SST and sea-ice<br>    config_fg_interval = 86400<br>/<br><br>&amp;preproc_stages<br>    config_static_interp = false<br>    config_native_gwd_static = false<br>    config_vertical_grid = false<br>    config_met_interp = false<br>    config_input_sst = true<br>    config_frac_seaice = true<br>/<br>&amp;decomposition<br>    config_block_decomp_file_prefix = &#x27;x1.10242.graph.info.part.&#x27;<br>/<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="streams.init_atmosphere">streams.init_atmosphere</h2>
+<p>We have set both the <code>filename_template</code> and
+output_interval attributes of the "<code>surface</code>" stream. The
+<code>output_interval</code> should match the interval specified in the
+namelist for the <code>config_fg_interval</code> variable. The other
+streams ("<code>input</code>", "<code>output</code>", and
+"<code>lbc</code>") can remain unchanged — the input file should still
+be set to the name of the static file.</p>
+<ul>
+<li>Noted: can set
+<code>filename_template="sst.$Y-$M-$D_$h.$m.$s.nc"</code></li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-1607c597" role="button" aria-expanded="false" aria-controls="collapse-1607c597">
+        <div class="fold-arrow">▶</div>streams.init_atmosphere
+      </div>
+      <div class="fold-collapse collapse" id="collapse-1607c597">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs streams.init_atmosphere">&lt;immutable_stream name=&quot;surface&quot;<br>                  type=&quot;output&quot;<br>                  filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>                  filename_interval=&quot;none&quot;<br>                  packages=&quot;sfc_update&quot;<br>                  output_interval=&quot;86400&quot;/&gt;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="results">results</h2>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-4f34dce5" role="button" aria-expanded="false" aria-controls="collapse-4f34dce5">
+        <div class="fold-arrow">▶</div>ncdump -h sst.2022-06-30_00.00.00.nc
+      </div>
+      <div class="fold-collapse collapse" id="collapse-4f34dce5">
+        <div class="fold-content">
+          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncdump -h sst.2022-06-30_00.00.00.nc</span><br>netcdf sst.2022-06-30_00.00.00 &#123;<br>dimensions:<br>	StrLen = 64 ;<br>	Time = UNLIMITED ; // (1 currently)<br>	nCells = 40962 ;<br>variables:<br>	char xtime(Time, StrLen) ;<br>		xtime:units = &quot;YYYY-MM-DD_hh:mm:ss&quot; ;<br>		xtime:long_name = &quot;Model valid time&quot; ;<br>	float sst(Time, nCells) ;<br>		sst:units = &quot;K&quot; ;<br>		sst:long_name = &quot;sea-surface temperature&quot; ;<br>	float xice(Time, nCells) ;<br>		xice:units = &quot;unitless&quot; ;<br>		xice:long_name = &quot;fractional area coverage of sea-ice&quot; ;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h3 id="plot">Plot</h3>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/240km_uniform/plot_delta_sst.py"
+class="uri">https://ftp.cptec.inpe.br/pesquisa/das/MPAS-Tutorial-NCAR-2023/mpas_tutorial/240km_uniform/plot_delta_sst.py</a></li>
+<li><code>./plot_delta_sst.py x1.10242.static.nc x1.10242.sfc_update.nc</code></li>
+<li>In this plot, we have masked out the SST differences over land,
+since the values of the field over land are not representative of actual
+SST differences, but may represent differences in, e.g., skin
+temperature or 2-m air temperature, depending on the source of the SST
+analyses.</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05b78603" role="button" aria-expanded="false" aria-controls="collapse-05b78603">
+        <div class="fold-arrow">▶</div>plot_delta_sst.py
+      </div>
+      <div class="fold-collapse collapse" id="collapse-05b78603">
+        <div class="fold-content">
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><br><span class="hljs-keyword">import</span> Ngl<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">from</span> netCDF4 <span class="hljs-keyword">import</span> Dataset<br><span class="hljs-keyword">import</span> math<br><span class="hljs-keyword">import</span> sys<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Get the name of the file containing the static information</span><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">3</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Usage: &#x27;</span>+sys.argv[<span class="hljs-number">0</span>]+<span class="hljs-string">&#x27; [mesh filename] &lt;field filename&gt;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#x27;</span>)<br>        exit(<span class="hljs-number">0</span>)<br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># The (lat,lon) the plot is to be centered over</span><br>    <span class="hljs-comment">#</span><br>    cenLat   = <span class="hljs-number">0.0</span><br>    cenLon   = <span class="hljs-number">0.0</span><br><br>    <span class="hljs-comment">#</span><br>    <span class="hljs-comment"># Projection to use for plot</span><br>    <span class="hljs-comment">#</span><br>    projection = <span class="hljs-string">&#x27;CylindricalEquidistant&#x27;</span><br><br><br>    r2d = <span class="hljs-number">180.0</span> / math.pi             <span class="hljs-comment"># radians to degrees</span><br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">2</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">1</span>])<br>        g = f<br>    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(sys.argv) == <span class="hljs-number">3</span>:<br>        f = Dataset(sys.argv[<span class="hljs-number">2</span>])<br>        g = Dataset(sys.argv[<span class="hljs-number">1</span>])<br><br>    rlist = Ngl.Resources()<br><span class="hljs-comment">#    rlist.wkWidth = 1200</span><br><span class="hljs-comment">#    rlist.wkHeight = 1200</span><br><br>    rlist.wkColorMap = <span class="hljs-string">&#x27;gui_default&#x27;</span><br><br>    wks_type = <span class="hljs-string">&#x27;png&#x27;</span><br>    wks = Ngl.open_wks(wks_type, <span class="hljs-string">&#x27;delta_sst&#x27;</span>, rlist)<br><br>    lonCell = g.variables[<span class="hljs-string">&#x27;lonCell&#x27;</span>][:] * r2d<br>    latCell = g.variables[<span class="hljs-string">&#x27;latCell&#x27;</span>][:] * r2d<br><br>    res = Ngl.Resources()<br><br>    res.sfXArray             = lonCell<br>    res.sfYArray             = latCell<br><br>    res.cnFillMode           = <span class="hljs-string">&#x27;AreaFill&#x27;</span><br><br>    res.cnFillOn             = <span class="hljs-literal">True</span><br>    res.cnLinesOn            = <span class="hljs-literal">False</span><br>    res.cnLineLabelsOn       = <span class="hljs-literal">False</span><br><br>    res.cnInfoLabelOn        = <span class="hljs-literal">True</span><br><br>    res.lbLabelAutoStride    = <span class="hljs-literal">True</span><br>    res.lbBoxLinesOn         = <span class="hljs-literal">False</span><br><br>    res.mpProjection      = projection<br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;MediumRes&#x27;</span><br>    res.mpCenterLatF      = cenLat<br>    res.mpCenterLonF      = cenLon<br>    res.mpGridAndLimbOn   = <span class="hljs-literal">True</span><br>    res.mpGridAndLimbDrawOrder = <span class="hljs-string">&#x27;PreDraw&#x27;</span><br>    res.mpGridLineColor   = <span class="hljs-string">&#x27;Background&#x27;</span><br>    res.mpOutlineOn       = <span class="hljs-literal">True</span><br>    res.mpDataBaseVersion = <span class="hljs-string">&#x27;Ncarg4_1&#x27;</span><br>    res.mpDataSetName     = <span class="hljs-string">&#x27;Earth..3&#x27;</span><br>    res.mpOutlineBoundarySets = <span class="hljs-string">&#x27;Geophysical&#x27;</span><br>    res.mpPerimOn         = <span class="hljs-literal">True</span><br>    res.mpLimitMode = <span class="hljs-string">&#x27;LatLon&#x27;</span><br>    res.mpMinLonF = -<span class="hljs-number">180.0</span><br>    res.mpMaxLonF = <span class="hljs-number">180.0</span><br>    res.mpMinLatF = -<span class="hljs-number">90.0</span><br>    res.mpMaxLatF = <span class="hljs-number">90.0</span><br><br>    res.cnLevelSelectionMode = <span class="hljs-string">&#x27;ManualLevels&#x27;</span><br>    res.cnMinLevelValF = -<span class="hljs-number">2.0</span><br>    res.cnMaxLevelValF = <span class="hljs-number">2.0</span><br>    res.cnLevelSpacingF = <span class="hljs-number">0.10</span><br>    res.lbAutoManage = <span class="hljs-literal">False</span><br>    res.lbOrientation = <span class="hljs-string">&#x27;Horizontal&#x27;</span><br>    res.lbBoxEndCapStyle = <span class="hljs-string">&#x27;TriangleBothEnds&#x27;</span><br>    res.lbLabelAngleF = <span class="hljs-number">90.0</span><br>    res.lbLabelFontHeightF = <span class="hljs-number">0.01</span><br><br>    res.mpFillOn              = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Turn on map fill.</span><br>    res.mpFillAreaSpecifiers  = [<span class="hljs-string">&#x27;Land&#x27;</span>]<br>    res.mpSpecifiedFillColors = [<span class="hljs-number">0</span>]<br>    res.mpAreaMaskingOn       = <span class="hljs-literal">True</span>            <span class="hljs-comment"># Indicate we want to </span><br>    res.mpMaskAreaSpecifiers  = [<span class="hljs-string">&#x27;Water&#x27;</span>]<br>    res.cnFillDrawOrder       = <span class="hljs-string">&#x27;Predraw&#x27;</span>       <span class="hljs-comment"># Draw contours first.</span><br><br>    fld = f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">10</span>,:] - f.variables[<span class="hljs-string">&#x27;sst&#x27;</span>][<span class="hljs-number">0</span>,:]<br>    <span class="hljs-built_in">map</span> = Ngl.contour_map(wks, fld, res)<br><br>    Ngl.end()<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<p><img src="https://i.imgur.com/Gs7ezqA.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<ul>
+<li>or <code>$ ncdiff sst.nc init.nc diff-sst.nc</code></li>
+</ul>
+<h2
+id="srccore_atmosphereregistry.xml">src/core_atmosphere/Registry.xml</h2>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_sst_update&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;-&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;logical for configuration of sea-surface temperature&quot;</span></span><br><span class="hljs-tag">      <span class="hljs-attr">possible_values</span>=<span class="hljs-string">&quot;.true. for time-varying sea-surface temperatures; .false., otherwise&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="streams.atmosphere">streams.atmosphere</h2>
+<ul>
+<li>stream_list.atmosphere.surface</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90f62c9b" role="button" aria-expanded="false" aria-controls="collapse-90f62c9b">
+        <div class="fold-arrow">▶</div>streams.atmosphere
+      </div>
+      <div class="fold-collapse collapse" id="collapse-90f62c9b">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs streams.atmosphere">&lt;stream name=&quot;surface&quot;<br>        type=&quot;input&quot;<br>        filename_template=&quot;x1.10242.sfc_update.nc&quot;<br>        filename_interval=&quot;none&quot;<br>        input_interval=&quot;86400&quot;&gt;<br><br>    &lt;file name=&quot;stream_list.atmosphere.surface&quot;/&gt;<br><br>&lt;/stream&gt;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="namelist.atmosphere">namelist.atmosphere</h2>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-0994800d" role="button" aria-expanded="false" aria-controls="collapse-0994800d">
+        <div class="fold-arrow">▶</div>namelist.atmosphere
+      </div>
+      <div class="fold-collapse collapse" id="collapse-0994800d">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs namelist.atmosphere">&amp;physics<br>    config_sst_update = true<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="plot-diff">Plot diff</h2>
+<p><img src="https://i.imgur.com/7shbwIg.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h1 id="for-wrf">For WRF</h1>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/index.php">Input
+SST Data into the Model | SST Example from our WRF Online
+Tutorial</a></li>
+</ul>
+<p>The WRF model physics <strong>do not predict</strong> sea-surface
+temperature, vegetation fraction, albedo or sea ice. For long
+simulations, the model provides an alternative to read-in the
+time-varying data and update these fields (the sst_update option). In
+order to use this option, one must have access to time-varying SST and
+sea ice fields. Twelve monthly values of vegetation fraction and albedo
+are available from the geogrid program. Once these fields are processed
+via WPS, one may activate the sst_update option within the
+namelist.input file.</p>
+<p>You will need to input your SST data during the WPS process. Take a
+look at the <a
+target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/OnLineTutorial/CASES/SST/index.php">SST
+Example from our WRF Online Tutorial</a> for information on how to do
+this. Because your SST data are in <strong>netcdf format</strong>,
+however, you will need to write them to intermediate format in order for
+metgrid to incorporate the data. To do so, you can follow the
+instructions in <a
+target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.1/users_guide_chap3.html#_Writing_Meteorological_Data">Chapter
+3 of the WRF Users' Guide</a>. You can also find an example <a
+target="_blank" rel="noopener" href="http://www2.mmm.ucar.edu/wrf/users/special_code.html">script for
+writing a netcdf file to intermediate format here</a>. Just note that
+this script was provided to us from a user who wrote it specifically for
+their application, so you will need to make modifications for your own
+use.</p>
+<ul>
+<li>SST's are typically added to the model:
+<ul>
+<li><ol type="a">
+<li>Use the SST at the initial time as a constant field for all time
+periods (this is good for short runs, like real-time runs, where SST is
+not updated during the WRF model run)</li>
+</ol></li>
+<li><ol start="2" type="a">
+<li>As an extra input <strong>at each model input time</strong> (this is
+good for long-months-model runs)</li>
+</ol></li>
+<li><ol start="3" type="a">
+<li><strong>SST:* intermediate files</strong> generated from the SST
+input data (if you do not have these files, first run ungrib.exe)</li>
+</ol>
+<ul>
+<li><code>ln -sf ungrib/Variable_Tables/Vtable.SST Vtable</code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3
+id="interpolate-the-input-data-onto-our-model-domain-metgrid.exe">Interpolate
+the input data onto our model domain (metgrid.exe)</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs namelist">start_date = &#x27;2016-10-06_00:00:00&#x27;,<br>end_date = &#x27;2016-10-08_00:00:00&#x27;,<br>interval_seconds = 21600,<br>fg_name = &#x27;FILE&#x27;, &#x27;SST&#x27;,<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>./metgrid.exe</code></li>
+<li>generate <code>met_em.d01.xxx.nc</code></li>
+</ul>
+<h3 id="run-model">Run model</h3>
+<ul>
+<li>Run <code>real.exe</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs namelist">&amp;time_control<br>auxinput4_inname = &quot;wrflowinp_d&lt;domain&gt;&quot;,<br>auxinput4_interval = 360,<br>io_form_auxinput4 = 2<br> <br>&amp;physics<br>sst_update = 1,<br></code></pre></td></tr></table></figure>
+<p><strong>Note</strong>: Do not change the syntax
+"wrflowinp_d&lt;domain&gt;", to "wrflowinp_d01". The syntax should be
+left exactly as above. Input interval is in minutes.</p>
+<ul>
+<li>generate one more file as <code>wrflowinp_d01</code> that contains
+<code>SST</code>, <code>VEGFRA</code>, <code>ALBBCK</code> and
+<code>SEAICE</code> (if available) for each input time.</li>
+<li>Run <code>wrf.exe</code></li>
+<li>To check if <code>SST</code> is updated in the model, look at field
+<code>TSK</code> over water.</li>
+</ul>
+<h1 id="wrfmpas-a-support-forum">WRF&amp;MPAS-A Support Forum</h1>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/mpas-tutorial-questions-about-ungrid-and-sst-data.13510/">MPAS
+tutorial questions about ungrid and SST data | Jun 2023</a>
+<ul>
+<li><ol type="1">
+<li>Starting from WPSV4.3, a configure option, --nowrf, has been added
+to allow for configuration of the WPS without reference to a compiled
+WRF model. if you only need the ungrib component of the WPS, you can
+compile WPS with this option.</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>Most of the reanalysis products like GFS, ERA5 etc include SST. When
+you run ungrib to extract variables from the reanalysis data, SST will
+be included in the intermediate file.</li>
+</ol></li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/sst-update-on-the-lakes.13717/">SST
+update on the lakes | Jul 2023</a>
+<ul>
+<li>SST_UPDATE only works over water points, i.e., those grid points
+where landmask =0. Those points with lakemask =1 should correspond to
+points with landmask=0, and thus sst_update should apply to such
+points.</li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/mpas-sst-update-file.8874/">MPAS
+SST update file | Feb 2020</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/updating-sst-not-working.200/">Updating
+SST not working | Sep 2018</a>
+<ul>
+<li>forrtl: severe (64): input conversion error, unit -5, file Internal
+List-Directed Read</li>
+<li>The issue seems to be that parts of the timestamp string ('xtime')
+that are read from input files contain garbage, which confuses the
+parsing code in the timekeeping module.</li>
+</ul></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/PGW/" class="print-no-link">#PGW</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/GRIB/" class="print-no-link">#GRIB</a>
+      
+        <a href="/tags/NetCDF/" class="print-no-link">#NetCDF</a>
+      
+        <a href="/tags/CMIP6/" class="print-no-link">#CMIP6</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS | ERA5| Update SST and sea-ice fraction</div>
+      <div>https://waipangsze.github.io/2025/02/14/MPAS-ERA5-Update-SST-and-sea-ice-fraction/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 14, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>April 19, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/17/MPAS-Variable-resolution-mesh-generation/" title="MPAS | Variable-resolution mesh generation">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | Variable-resolution mesh generation</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/12/MPAS-WRF-Solar-Energy/" title="MPAS | WRF | Solar Energy">
+                        <span class="hidden-mobile">MPAS | WRF | Solar Energy</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1436 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Overview of Graph Neural Networks (GNNs) Graph Neural Networks (GNNs) are a specialized type of neural network designed to process and analyze graph-structured data. Unlike traditional neural networks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML | GNN Graph Neural Network Model">
+<meta property="og:url" content="https://waipangsze.github.io/2024/12/12/ML-GNN/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Overview of Graph Neural Networks (GNNs) Graph Neural Networks (GNNs) are a specialized type of neural network designed to process and analyze graph-structured data. Unlike traditional neural networks">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/SU2M541.png">
+<meta property="article:published_time" content="2024-12-12T06:55:00.000Z">
+<meta property="article:modified_time" content="2025-04-19T14:03:15.023Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="ECMWF">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="ML">
+<meta property="article:tag" content="pytorch">
+<meta property="article:tag" content="GNN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/SU2M541.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ML | GNN Graph Neural Network Model - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/SU2M541.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ML | GNN Graph Neural Network Model"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-12 14:55" pubdate>
+          December 12, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ML | GNN Graph Neural Network Model</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="overview-of-graph-neural-networks-gnns">Overview of Graph Neural
+Networks (GNNs)</h1>
+<p>Graph Neural Networks (GNNs) are a specialized type of neural network
+designed to process and analyze graph-structured data. Unlike
+traditional neural networks that operate on structured data (like images
+or text), GNNs can directly handle the complex relationships represented
+in graphs, making them particularly useful for tasks where data is
+interconnected.</p>
+<h2 id="what-is-a-graph">What is a Graph?</h2>
+<p>A graph is a mathematical structure consisting of
+<strong>nodes</strong> (or vertices) and <strong>edges</strong>
+(connections between nodes). Formally, a graph $ G $ can be defined as $
+G = (V, E) $, where $ V $ is the set of nodes and $ E $ is the set of
+edges. Graphs can represent various types of data, such as social
+networks, molecular structures, and transportation systems.</p>
+<h2 id="how-gnns-work">How GNNs Work</h2>
+<p>GNNs utilize a process called <strong>message passing</strong>, where
+information is exchanged between neighboring nodes. Each node updates
+its state by aggregating information from its neighbors, allowing the
+network to learn representations that capture the structure and features
+of the graph. The final output for each node is known as its
+<strong>embedding</strong>, which encapsulates the node's information in
+relation to its neighbors. (Message passing layers are
+permutation-equivariant layers mapping a graph into an updated
+representation of the same graph.)</p>
+<h2 id="types-of-gnns">Types of GNNs</h2>
+<p>There are several variations of GNNs, each suited for different
+applications:</p>
+<ul>
+<li><strong>Graph Convolutional Networks (GCNs)</strong>: These networks
+extend convolutional neural networks (CNNs) to graph data by learning
+features from neighboring nodes through convolution-like
+operations.</li>
+<li><strong>Recurrent Graph Neural Networks (RGNNs)</strong>: RGNNs are
+designed for handling temporal or sequential data on graphs, leveraging
+recurrent mechanisms to model dependencies over time.</li>
+<li><strong>Gated Graph Neural Networks (GGNNs)</strong>: These networks
+introduce gating mechanisms to better manage long-range dependencies
+within graph structures.</li>
+<li><strong>Graph Autoencoders</strong>: Used primarily for unsupervised
+learning tasks such as link prediction, these models encode graph data
+into lower-dimensional representations and then attempt to reconstruct
+the original graph.</li>
+</ul>
+<h2 id="applications-of-gnns">Applications of GNNs</h2>
+<p>GNNs are versatile and can be applied in various domains:</p>
+<ul>
+<li><strong>Node Classification</strong>: Predicting labels for nodes in
+a graph, often used in social networks or citation networks.</li>
+<li><strong>Link Prediction</strong>: Estimating the likelihood of
+connections between nodes, useful in recommendation systems.</li>
+<li><strong>Graph Classification</strong>: Classifying entire graphs
+based on their structure and node features, applicable in molecular
+chemistry and bioinformatics.</li>
+</ul>
+<p><img src="https://i.imgur.com/9cs4ilH.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Graph Neural Networks represent a significant advancement in machine
+learning by enabling the analysis of complex relational data. Their
+ability to learn from the structure and features of graphs opens up new
+possibilities across numerous fields, from social sciences to biology
+and beyond. As research continues to evolve, GNNs are likely to become
+increasingly integral to understanding and leveraging interconnected
+data.</p>
+<h1 id="a-gentle-introduction-to-graph-neural-networks-recommend"><a
+target="_blank" rel="noopener" href="https://distill.pub/2021/gnn-intro/">A Gentle Introduction to
+Graph Neural Networks (<strong>Recommend</strong>)</a></h1>
+<div class="note note-danger">
+            <p>A GNN is an optimizable transformation on all attributes of the graph(nodes, edges, global-context) that preserves graph symmetries(permutation invariances).</p>
+          </div>
+<p>We’re going to build GNNs using the “message passing neural network”
+framework proposed by <a
+target="_blank" rel="noopener" href="https://proceedings.mlr.press/v70/gilmer17a/gilmer17a.pdf">Gilmer
+et al.</a> using the Graph Nets architecture schematics introduced by <a
+target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Andrea-Tacchetti/publication/325557043_Relational_inductive_biases_deep_learning_and_graph_networks/links/5cd0ad38299bf14d957cca5c/Relational-inductive-biases-deep-learning-and-graph-networks.pdf">Battaglia
+et al.</a></p>
+<p>GNNs adopt a <strong>“graph-in, graph-out” architecture</strong>
+meaning that these model types accept a graph as input, with information
+loaded into its nodes, edges and global-context, and progressively
+transform these embeddings, without changing the connectivity of the
+input graph.</p>
+<ul>
+<li>What types of problems have graph structured data?
+<ul>
+<li>We have described some examples of graphs in the wild, but what
+tasks do we want to perform on this data? There are three general types
+of prediction tasks on graphs: <strong>graph-level, node-level, and
+edge-level</strong>.
+<ul>
+<li>In a <code>graph-level task</code>, we predict a single property for
+a whole graph.</li>
+<li>For a <code>node-level task</code>, we predict some property for
+each node in a graph.</li>
+<li>For an <code>edge-level task</code>, we want to predict the property
+or presence of edges in a graph.</li>
+</ul></li>
+<li>For the three levels of prediction problems described above
+(graph-level, node-level, and edge-level), we will show that all of the
+following problems can be solved with a single model class, the GNN. But
+first, let’s take a tour through the three classes of graph prediction
+problems in more detail, and provide concrete examples of each.</li>
+</ul></li>
+</ul>
+<p><img src="https://i.imgur.com/lTzKFu6.png" srcset="/img/loading.gif" lazyload width="600" /> <img
+src="https://i.imgur.com/QzUIet1.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<p>However, it is not always so simple. For instance, you might have
+information in the graph stored in edges, but no information in nodes,
+but still need to make predictions on nodes. We need a way to collect
+information from edges and give them to nodes for prediction. We can do
+this by pooling. <code>Pooling proceeds</code> in two steps:</p>
+<ol type="1">
+<li>For each item to be pooled, gather each of their embeddings and
+concatenate them into a matrix.</li>
+<li>The gathered embeddings are then aggregated, usually via a sum
+operation.</li>
+</ol>
+<p>We represent the <strong>pooling operation</strong> by the letter
+<span class="math inline">\(\rho\)</span>, and denote that we are
+gathering information from edges to nodes as <span
+class="math inline">\(p_{E_n \to V_{n}}\)</span>.</p>
+<p><img src="https://i.imgur.com/IuZEdeO.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<p><img src="https://i.imgur.com/SU2M541.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h2
+id="other-types-of-graphs-multigraphs-hypergraphs-hypernodes-hierarchical-graphs">Other
+types of graphs (multigraphs, hypergraphs, hypernodes, hierarchical
+graphs)</h2>
+<p>We can also consider nested graphs, where for example a node
+represents a graph, also called a <a
+target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/174608.174610">hypernode
+graph</a>. Nested graphs are useful for <strong>representing
+hierarchical information</strong>. For example, we can consider a
+network of molecules, where a node represents a molecule and an edge is
+shared between two molecules if we have a way (reaction) of transforming
+one to the other <a
+target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article-pdf/34/13/i457/50316205/bioinformatics_34_13_i457.pdf">(1)</a>,
+<a
+target="_blank" rel="noopener" href="https://www.nature.com/articles/s41467-020-19267-x.pdf">(2)</a>.
+In this case, we can learn on a nested graph by having a GNN that learns
+representations at the molecule level and another at the reaction
+network level, and alternate between them during training.</p>
+<p><img src="https://i.imgur.com/36EVPAi.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h2 id="gnn-introduction"><a
+target="_blank" rel="noopener" href="https://web.stanford.edu/class/cs224w/index.html#content">GNN
+introduction</a></h2>
+<ul>
+<li>A graph G can be defined as G = (V, E), where V is the set of nodes,
+and E are the edges between them.</li>
+<li>If there are directional dependencies between nodes then edges are
+directed. If not, edges are undirected.</li>
+<li>A graph is often represented by A, an adjacency matrix.</li>
+<li>If a graph has n nodes, A has a dimension of (n × n).</li>
+<li>Sometimes the nodes have a set of features (for example, a user
+profile). If the node has f numbers of features, then the node feature
+matrix X has a dimension of (n × f).</li>
+</ul>
+<p><img src="https://i.imgur.com/0efkNVa.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<ul>
+<li>In graph theory, we implement the concept of Node Embedding. It
+means mapping nodes to a d- dimensional embedding space (low dimensional
+space rather than the actual dimension of the graph), so that similar
+nodes in the graph are embedded close to each other. Our goal is to map
+nodes so that similarity in the embedding space approximates similarity
+in the network.
+<ul>
+<li>Let’s define <span class="math inline">\(u\)</span> and <span
+class="math inline">\(v\)</span> as two nodes in a graph.</li>
+<li><span class="math inline">\(x_u\)</span> and <span
+class="math inline">\(x_v\)</span> are two feature vectors.</li>
+<li>Now we’ll define the encoder function Enc(u) and Enc(v), which
+convert the feature vectors to <span class="math inline">\(z_u\)</span>
+and <span class="math inline">\(z_v\)</span>.</li>
+<li>Note: the similarity function could be Euclidean distance.</li>
+</ul></li>
+<li>So the challenge now is how to come up with the encoder function?
+<ul>
+<li>The encoder function should be able to perform :
+<ul>
+<li>Locality (local network neighborhoods)</li>
+<li>Aggregate information</li>
+<li>Stacking multiple layers (computation)</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/NhNdI8o.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/OU2SPdQ.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/NFIF847.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/fKZQc9J.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/zT4XYSp.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<p>where <span class="math inline">\(h_v^k\)</span> is Hidden state of
+node <span class="math inline">\(v\)</span> on step <span
+class="math inline">\(k\)</span>.</p>
+<p>Now, to train the model we need to define a loss function on the
+embeddings.</p>
+<ul>
+<li>We can feed the embeddings into any loss function and run stochastic
+gradient descent to train the weight parameters.
+<ul>
+<li>Training can be unsupervised or supervised:
+<ul>
+<li><strong>Unsupervised training</strong>:
+<ul>
+<li>Use only the graph structure: similar nodes have similar embeddings.
+Unsupervised loss function can be a loss based on node proximity in the
+graph, or random walks. (Node clustering is a typical unsupervised
+learning task.)</li>
+</ul></li>
+<li><strong>Supervised training</strong>:
+<ul>
+<li>Train model for a supervised task like node classification, normal
+or anomalous node.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="note note-primary">
+            <p>和周圍位置的資訊一起收集，進到運算，然後傳到下一層，重複這個步驟…那不就是卷積神經網路(CNN)嗎?沒錯，在CNN裡，相鄰位置集結資訊的是圖片的畫素，而在這裡，GNN的訊息傳遞收集的是相鄰位置的端點/連結。差別在於：CNN有固定的規格，而訊息傳遞端看關聯性決定，比較有彈性。</p><p>我們再以端點的訊息傳遞為例。第一層的GNN，收集的是某個端點周圍，有直接關連性的端點的資訊。再堆疊一層之後，雖然重複這個步驟，但別忘了，它周圍那些端點，在上一層也跟他做過一樣的動作—蒐集周圍直接關聯性的資訊。所以在第二層，這個端點可以藉由只集結周圍有直接關聯性的端點的資訊，就收集到間接關聯性端點的資訊了。如此層層疊加，疊到一定層數的時候，一個端點可能可以囊括整個圖像一大部分，甚至是整體端點的資訊，只是所含資訊量的比重，隨端點關聯性遠近有所不同而已。</p>
+          </div>
+<h2 id="node-embeddings">Node embeddings</h2>
+<h3 id="graph-representation-learning">Graph Representation
+Learning</h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/ZxYLdMW.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/FHPzwuF.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<p>why embedding?</p>
+<ul>
+<li>Task: Map nodes into an embedding space
+<ul>
+<li>Similarity of embeddings between nodes indicates their similarity in
+the network. For example:</li>
+<li>Both nodes are close to each other (connected by an edge)</li>
+<li>Encode network information</li>
+<li>Potentially used for many downstream predictions</li>
+</ul></li>
+<li>Encoder + Decoder Framework</li>
+<li>We will now learn node similarity definition that uses
+<strong>random walks</strong>, and how to optimize embeddings for such a
+similarity measure.
+<ul>
+<li>This is <strong>unsupervised</strong>/self-supervised way of
+learning node embeddings.
+<ul>
+<li>We are <strong>not</strong> utilizing node labels</li>
+<li>We are <strong>not</strong> utilizing node features</li>
+<li>The goal is to directly estimate a set of coordinates(i.e., the
+embedding) of a node so that some aspect of the network structure
+(captured by DEC) is preserved.</li>
+<li>These embeddings are task independent</li>
+<li><strong>They are not trained for a specific task but can be used for
+any task</strong>.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><img src="https://i.imgur.com/f9iPbQC.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h3 id="a-zt-z">A = Z^T Z ?</h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/P93DVQz.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/RNoveXJ.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h3 id="singular-value-decomposition-svd">singular value decomposition
+(SVD)</h3>
+<p>In linear algebra, the singular value decomposition (SVD) is a
+factorization of a real or complex matrix into a rotation, followed by a
+rescaling followed by another rotation. It generalizes the
+eigendecomposition of a square normal matrix with an orthonormal
+eigenbasis to any ⁠<span class="math inline">\(m\times n\)</span>⁠ matrix.
+It is related to the polar decomposition.</p>
+<p><img src="https://i.imgur.com/GyTLhY3.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h3 id="eigendecomposition-of-a-matrix">Eigendecomposition of a
+matrix</h3>
+<p>like eigen-vector/eigen-values, take first d-dim values?</p>
+<p><img src="https://i.imgur.com/NSU9aE6.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<h4 id="cholesky-decomposition-what-we-need">Cholesky decomposition
+(What we need!!)</h4>
+<p>The Cholesky decomposition of a Hermitian positive-definite matrix
+A,</p>
+<p><span class="math display">\[
+A = L L^*
+\]</span></p>
+<p><img src="https://i.imgur.com/CWYksHg.png" srcset="/img/loading.gif" lazyload width="500" /> <img
+src="https://i.imgur.com/AXe1taX.png" srcset="/img/loading.gif" lazyload data-widht="500" /></p>
+<p>But,</p>
+<div class="note note-primary">
+            <p>There are various methods for calculating the Cholesky decomposition.<strong>The computational complexity of commonly used algorithms is<span class="math inline">\(O(n^3)\)</span> in general</strong>.</p>
+          </div>
+<h3 id="graph-is-permutation-invariant">Graph is <em>permutation
+invariant</em></h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/DlVGg6t.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/F7ZSTtn.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/V2Z75Pk.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/SDAY91T.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<div class="note note-primary">
+            <p><strong>Graph neural networks consist of multiple permutationequivariant / invariant functions</strong></p>
+          </div>
+<ul>
+<li>This explains why the <strong>naïve MLP approach fails for
+graphs</strong></li>
+</ul>
+<div class="note note-primary">
+            <p>Next: Design graph neural networks that are permutation invariant /equivariant <strong>by passing and aggregating information fromneighbors</strong>!</p>
+          </div>
+<h3 id="graph-convolutional-networks-massage-passing">Graph
+Convolutional Networks &amp; massage passing</h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/Z6UI3cN.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/j4A5H4S.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<ol type="1">
+<li>The rows of input node features and output embeddings are
+aligned</li>
+</ol>
+<div class="note note-primary">
+            <p>和周圍位置的資訊一起收集，進到運算，然後傳到下一層，重複這個步驟…那不就是卷積神經網路(CNN)嗎?沒錯，在CNN裡，相鄰位置集結資訊的是圖片的畫素，而在這裡，GNN的訊息傳遞收集的是相鄰位置的端點/連結。差別在於：CNN有固定的規格，而訊息傳遞端看關聯性決定，比較有彈性。</p><p>我們再以端點的訊息傳遞為例。第一層的GNN，收集的是某個端點周圍，有直接關連性的端點的資訊。再堆疊一層之後，雖然重複這個步驟，但別忘了，它周圍那些端點，在上一層也跟他做過一樣的動作—蒐集周圍直接關聯性的資訊。所以在第二層，這個端點可以藉由只集結周圍有直接關聯性的端點的資訊，就收集到間接關聯性端點的資訊了。如此層層疊加，疊到一定層數的時候，一個端點可能可以囊括整個圖像一大部分，甚至是整體端點的資訊，只是所含資訊量的比重，隨端點關聯性遠近有所不同而已。</p>
+          </div>
+<h3 id="training-model-loss-function">Training model: loss
+function?</h3>
+<ul>
+<li>How do we train the GCN to generate embeddings? Need to define a
+<strong>loss function</strong> on the embeddings.</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/UVUEGLk.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/veQIjnw.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/GtwlKjp.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/5aN9B9C.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/S7MPU0P.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/8jRfivB.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/yCUS4U7.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h3 id="capability">Capability</h3>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/U0OY62w.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/c4IAQhi.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/rGc3QZs.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h3 id="toy-model-interactive-visualiztion-of-gnn">Toy model:
+Interactive Visualiztion of GNN</h3>
+<p>GNN 101: Visual Learning of Graph Neural Networks in Your Web
+Browser</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://visual-intelligence-umn.github.io/GNN-101"
+class="uri">https://visual-intelligence-umn.github.io/GNN-101</a></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/3XObrn8.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/L9KMlJq.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h1 id="gnn-vs-cnn">GNN vs CNN</h1>
+<p><img src="https://i.imgur.com/BmgKRhE.png" srcset="/img/loading.gif" lazyload width="500" /></p>
+<ul>
+<li>CNN can be seen as a special GNN with fixed neighbor size and
+ordering:
+<ul>
+<li>The size of the filter is pre-defined for a CNN.</li>
+<li>The advantage of GNN is it processes arbitrary graphs with different
+degrees for each node.</li>
+</ul></li>
+<li>CNN is not permutation invariant/equivariant.
+<ul>
+<li>Switching the order of pixels leads to different outputs.</li>
+</ul></li>
+</ul>
+<div class="note note-primary">
+            <p>和周圍位置的資訊一起收集，進到運算，然後傳到下一層，重複這個步驟…那不就是卷積神經網路(CNN)嗎?沒錯，在CNN裡，相鄰位置集結資訊的是圖片的畫素，而在這裡，GNN的訊息傳遞收集的是相鄰位置的端點/連結。差別在於：CNN有固定的規格，而訊息傳遞端看關聯性決定，比較有彈性。</p><p>我們再以端點的訊息傳遞為例。第一層的GNN，收集的是某個端點周圍，有直接關連性的端點的資訊。再堆疊一層之後，雖然重複這個步驟，但別忘了，它周圍那些端點，在上一層也跟他做過一樣的動作—蒐集周圍直接關聯性的資訊。所以在第二層，這個端點可以藉由只集結周圍有直接關聯性的端點的資訊，就收集到間接關聯性端點的資訊了。如此層層疊加，疊到一定層數的時候，一個端點可能可以囊括整個圖像一大部分，甚至是整體端點的資訊，只是所含資訊量的比重，隨端點關聯性遠近有所不同而已。</p>
+          </div>
+<div class="note note-primary">
+            <ul><li><strong>GNN is a general architecture</strong><ul><li><strong>CNN can be viewed as a special GNN</strong></li></ul></li></ul>
+          </div>
+<h1 id="gnn-vs-transformer">GNN vs Transformer</h1>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/zAfVR5g.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/rR1efwk.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/7OObt20.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<ul>
+<li>A nice blog plot for this: <a
+target="_blank" rel="noopener" href="https://towardsdatascience.com/transformers-are-graph-neural-networks-bca9f75412aa"
+class="uri">https://towardsdatascience.com/transformers-are-graph-neural-networks-bca9f75412aa</a></li>
+</ul>
+<h1 id="gnn-framework">GNN Framework</h1>
+<h2 id="gnn-layer">GNN layer</h2>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/hsgTIGD.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/2gceJOo.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/lMJQzR8.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/1j3LoP2.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/Tzd7dkw.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h2 id="different-gnn-layer">Different GNN layer</h2>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/nfsUrA5.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/1vxH2wW.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/DkH1XRR.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/z6PE4z4.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/wAJktVl.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h2 id="some-practices-on-gnn-layer">Some Practices on GNN layer</h2>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/PiNqHRa.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/gMtJNND.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/MhV5wA0.png" srcset="/img/loading.gif" lazyload width="500" /></div><div class="group-image-wrap"><img
+src="https://i.imgur.com/rIERKYc.png" srcset="/img/loading.gif" lazyload width="500" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img
+src="https://i.imgur.com/N1xN3NF.png" srcset="/img/loading.gif" lazyload width="500" /></div></div></div>
+<h1 id="class-of-gnn">Class of GNN</h1>
+<figure>
+<img src="https://i.imgur.com/9QG4bGC.png" srcset="/img/loading.gif" lazyload
+alt="Chami, I., Abu-El-Haija, S., Perozzi, B., Ré, C., &amp; Murphy, K. (2022). Machine learning on graphs: A model and comprehensive taxonomy. Journal of Machine Learning Research, 23(89), 1-64." />
+<figcaption aria-hidden="true">Chami, I., Abu-El-Haija, S., Perozzi, B.,
+Ré, C., &amp; Murphy, K. (2022). Machine learning on graphs: A model and
+comprehensive taxonomy. Journal of Machine Learning Research, 23(89),
+1-64.</figcaption>
+</figure>
+<h1 id="laplacian-matrix">Laplacian matrix</h1>
+<p>In the mathematical field of graph theory, the Laplacian matrix, also
+called the graph Laplacian, admittance matrix, Kirchhoff matrix or
+discrete Laplacian, is a matrix representation of a graph. Named after
+Pierre-Simon Laplace, the graph Laplacian matrix can be viewed as a
+matrix form of the negative discrete Laplace operator on a graph
+approximating the negative continuous Laplacian obtained by the finite
+difference method.</p>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://archwalker.github.io/blog/2019/06/16/GNN-Spectral-Graph.html">拉普拉斯矩阵,
+谱分解, 图上的傅里叶变换</a></li>
+</ul>
+<p><img src="https://i.imgur.com/3BzmSWo.png" srcset="/img/loading.gif" lazyload width="800" /></p>
+<h2 id="laplacian-matrix-normalization">Laplacian matrix
+normalization</h2>
+<p><img src="https://i.imgur.com/Ium26nb.png" srcset="/img/loading.gif" lazyload width="800" /> <img
+src="https://i.imgur.com/1YSc7iN.png" srcset="/img/loading.gif" lazyload width="800" /></p>
+<h2 id="inductive-learning-transductive-learning">Inductive learning,
+Transductive learning</h2>
+<p>Inductive Inference 我們利用training
+data這五個點，得到一個function，再利用這個function去predict test
+data的label。</p>
+<p>Transductive Inference 在使用transductive
+inference的時候，除了training data以外，我們還可以得知test
+data的一些資訊。如在上圖中，我們可以得知test
+data的cluster情況，而藉此我們更可以正確判斷node是屬於哪一個category。</p>
+<p>Inductive Inference雖然不能利用到test
+data的資訊，但如果我們有夠多的training data，而且test data 和training
+data 是來自於同一個distribution，則Inductive
+Inference還是會有好的效果。而Inductive
+Inference最大的優點在於，當有新的test data時，可以套用從training
+data學到的同一個function來predict。相反的，Transductive
+Inference可以利用test data的資訊，這對於手邊沒有很多training
+data的情況很有幫助，但缺點就是當有新的test
+data進來時，我們需要重新訓練function，因為新的data會提供新的訊息。</p>
+<h1 id="further">Further</h1>
+<h2 id="computational-graphs">Computational graphs</h2>
+<h2 id="expressivity-power-of-gnn">Expressivity Power of GNN</h2>
+<h2 id="a-classical-expressivity-test-is-graph-isomorphism">A classical
+expressivity test is Graph isomorphism</h2>
+<h2 id="graph-transformers">Graph Transformers</h2>
+<h2 id="heterogeneous-graphs">Heterogeneous Graphs</h2>
+<h3 id="relational-gcn">Relational GCN</h3>
+<h2 id="knowledge-graphs">Knowledge Graphs</h2>
+<h2 id="gnns-for-recommender-systems">GNNs for recommender systems</h2>
+<h1
+id="regional-data-driven-weather-modeling-with-a-global-stretched-grid">Regional
+data-driven weather modeling with a global stretched-grid</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2409.02891">Nipen, Thomas Nils, et
+al. "Regional data-driven weather modeling with a global
+stretched-grid." arXiv preprint arXiv:2409.02891 (2024).</a></li>
+</ul>
+<p><img src="https://i.imgur.com/4C4jXs3.png" srcset="/img/loading.gif" lazyload width="600" /> <img
+src="https://i.imgur.com/KIhFwXW.png" srcset="/img/loading.gif" lazyload width="600" /> <img
+src="https://i.imgur.com/cG9STZy.png" srcset="/img/loading.gif" lazyload width="600" /></p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://distill.pub/2021/gnn-intro/">A Gentle Introduction
+to Graph Neural Networks (<strong>Recommend</strong>)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://web.stanford.edu/class/cs224w/index.html#content">CS224W:
+Machine Learning with Graphs (<strong>Recommend</strong>)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://archwalker.github.io/blog/2019/06/16/GNN-Spectral-Graph.html">拉普拉斯矩阵,
+谱分解, 图上的傅里叶变换 (<strong>Recommend</strong>)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/136521625?utm_psn=1861545495794683904">图神经网络从入门到入门</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/619400627">时空图神经网络综述</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://tzuruey.medium.com/graphs-networks-636fc9fddd63">Graphs
+Networks 分類</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.datacamp.com/tutorial/comprehensive-introduction-graph-neural-networks-gnns-tutorial">A
+Comprehensive Introduction to Graph Neural Networks (GNNs)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.kaggle.com/code/iogbonna/introduction-to-graph-neural-network-with-pytorch">Introduction
+to Graph Neural Network with Pytorch</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://papers.baulab.info/papers/Scarselli-2009.pdf">Scarselli,
+F., Gori, M., Tsoi, A. C., Hagenbuchner, M., &amp; Monfardini, G.
+(2008). <strong>The graph neural network model</strong>. IEEE
+transactions on neural networks, 20(1), 61-80.</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1810.00826">Xu, K., Hu, W., Leskovec,
+J., &amp; Jegelka, S. (2018). <strong>How powerful are graph neural
+networks?</strong>. arXiv preprint arXiv:1810.00826.</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S2666651021000012">Zhou,
+J., Cui, G., Hu, S., Zhang, Z., Yang, C., Liu, Z., ... &amp; Sun, M.
+(2020). <strong>Graph neural networks: A review of methods and
+applications</strong>. AI open, 1, 57-81.</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/ielaam/5962385/9312808/9046288-aam.pdf">Wu,
+Z., Pan, S., Chen, F., Long, G., Zhang, C., &amp; Philip, S. Y. (2020).
+<strong>A comprehensive survey on graph neural networks</strong>. IEEE
+transactions on neural networks and learning systems, 32(1),
+4-24.</a></li>
+<li><a
+target="_blank" rel="noopener" href="http://proceedings.mlr.press/v70/gilmer17a/gilmer17a.pdf">Neural
+Message Passing for Quantum Chemistry J. Gilmer, S.S. Schoenholz, P.F.
+Riley, O. Vinyals, G.E. Dahl. Proceedings of the 34th International
+Conference on Machine Learning, Vol 70, pp. 1263--1272. PMLR.
+2017.</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Andrea-Tacchetti/publication/325557043_Relational_inductive_biases_deep_learning_and_graph_networks/links/5cd0ad38299bf14d957cca5c/Relational-inductive-biases-deep-learning-and-graph-networks.pdf">Relational
+inductive biases, deep learning, and graph networks P.W. Battaglia, J.B.
+Hamrick, V. Bapst, A. Sanchez-Gonzalez, V. Zambaldi, M. Malinowski, A.
+Tacchetti, D. Raposo, A. Santoro, R. Faulkner, C. Gulcehre, F. Song, A.
+Ballard, J. Gilmer, G. Dahl, A. Vaswani, K. Allen, C. Nash, V. Langston,
+C. Dyer, N. Heess, D. Wierstra, P. Kohli, M. Botvinick, O. Vinyals, Y.
+Li, R. Pascanu. 2018.</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://dl.acm.org/doi/pdf/10.1145/174608.174610">Poulovassilis,
+A., &amp; Levene, M. (1994). <strong>A nested-graph model for the
+representation and manipulation of complex objects</strong>. ACM
+Transactions on Information Systems (TOIS), 12(1), 35-68.</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://academic.oup.com/bioinformatics/article-pdf/34/13/i457/50316205/bioinformatics_34_13_i457.pdf">Zitnik,
+M., Agrawal, M., &amp; Leskovec, J. (2018). <strong>Modeling
+polypharmacy side effects with graph convolutional networks</strong>.
+Bioinformatics, 34(13), i457-i466.</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.nature.com/articles/s41467-020-19267-x.pdf">Stocker,
+S., Csanyi, G., Reuter, K., &amp; Margraf, J. T. (2020). <strong>Machine
+learning in chemical reaction space</strong>. Nature communications,
+11(1), 5505.</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ML/" class="category-chain-item">ML</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/ECMWF/" class="print-no-link">#ECMWF</a>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+        <a href="/tags/pytorch/" class="print-no-link">#pytorch</a>
+      
+        <a href="/tags/GNN/" class="print-no-link">#GNN</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ML | GNN Graph Neural Network Model</div>
+      <div>https://waipangsze.github.io/2024/12/12/ML-GNN/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 12, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>April 19, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/13/ML-Unet/" title="ML | U-Net">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ML | U-Net</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/12/ML-pytorch/" title="ML | PyTorch">
+                        <span class="hidden-mobile">ML | PyTorch</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

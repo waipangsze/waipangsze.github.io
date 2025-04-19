@@ -19,18 +19,22 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Linux 12345678910111213141516171819202122232425# -m displays percentages# -N displays line numbers# -i ignores case when searching# h Display the help interface# Q quits less commandless -miN file # a">
+    <meta name="description" content="Linux 123456789101112131415161718192021222324252627# -m displays percentages# -N displays line numbers# -i ignores case when searching# h Display the help interface# Q quits less commandless -miN file">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux | Terminal Command">
 <meta property="og:url" content="https://waipangsze.github.io/2024/10/15/Linux-terminal/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="Linux 12345678910111213141516171819202122232425# -m displays percentages# -N displays line numbers# -i ignores case when searching# h Display the help interface# Q quits less commandless -miN file # a">
+<meta property="og:description" content="Linux 123456789101112131415161718192021222324252627# -m displays percentages# -N displays line numbers# -i ignores case when searching# h Display the help interface# Q quits less commandless -miN file">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/WZjshPy.png">
 <meta property="article:published_time" content="2024-10-15T08:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-02T02:19:30.790Z">
+<meta property="article:modified_time" content="2025-04-19T14:03:15.023Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
+<meta property="article:tag" content="shell script">
+<meta property="article:tag" content="bashrc">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Terminal">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/WZjshPy.png">
   
@@ -76,7 +80,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -89,6 +93,20 @@
 
   
 
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
   
 
   
@@ -202,18 +220,6 @@
           
           
           
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>About Me</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -241,6 +247,22 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
                     <i class="iconfont icon-plan"></i>
                     <span>Meteorology</span>
@@ -249,12 +271,32 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/monitor/" target="_self">
                     
-                    <span>Real Time Monitor</span>
+                    <span>Real Time Monitoring</span>
                   </a>
                 
               </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
             </li>
           
         
@@ -281,7 +323,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/WZjshPy.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -310,7 +352,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          433 words
+          446 words
         
       </span>
     
@@ -373,7 +415,7 @@
               <div class="markdown-body">
                 
                 <p>Linux</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs sh"><br><span class="hljs-comment"># -m displays percentages</span><br><span class="hljs-comment"># -N displays line numbers</span><br><span class="hljs-comment"># -i ignores case when searching</span><br><span class="hljs-comment"># h Display the help interface</span><br><span class="hljs-comment"># Q quits less command</span><br>less -miN file <span class="hljs-comment"># alias less=&#x27;less -miN&#x27;</span><br><br>sh run.sh | <span class="hljs-built_in">tee</span> output.txt<br><span class="hljs-comment"># If you want to print the error output to the screen and the file at the same time</span><br>sh run.sh 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> lsls.log<br><br>sh run.sh &gt;/dev/null 2&gt;&amp;1 &amp;<br><br><span class="hljs-comment"># -C : Print Around Lines</span><br>grep -irn -C 3 <span class="hljs-string">&quot;xxx&quot;</span> file<br>grep -irn -C 3 <span class="hljs-string">&quot;xxx&quot;</span> ./*<br><br>find ./ -name <span class="hljs-string">&quot;xxx&quot;</span><br>find ./ -<span class="hljs-built_in">type</span> f | <span class="hljs-built_in">wc</span> -l <span class="hljs-comment"># count how many files</span><br>find ./ -size +1M       <span class="hljs-comment"># large 1MB size</span><br><br>ldd xxx<br><br>rename IMG img IMG* <span class="hljs-comment"># IMG001.jpg to img001.jpg</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs sh"><br><span class="hljs-comment"># -m displays percentages</span><br><span class="hljs-comment"># -N displays line numbers</span><br><span class="hljs-comment"># -i ignores case when searching</span><br><span class="hljs-comment"># h Display the help interface</span><br><span class="hljs-comment"># Q quits less command</span><br>less -miN file <span class="hljs-comment"># alias less=&#x27;less -miN&#x27;</span><br><br>sh run.sh | <span class="hljs-built_in">tee</span> output.txt<br><span class="hljs-comment"># If you want to print the error output to the screen and the file at the same time</span><br>sh run.sh 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> lsls.log<br><br>sh run.sh &gt;/dev/null 2&gt;&amp;1 &amp;<br><br><span class="hljs-comment"># -C : Print Around Lines</span><br>grep -irn -C 3 <span class="hljs-string">&quot;xxx&quot;</span> file<br>grep -irn -C 3 <span class="hljs-string">&quot;xxx&quot;</span> ./*<br>grep -irn <span class="hljs-string">&#x27;pattern1\|pattern2&#x27;</span> fileName_or_filePath<br><br>find ./ -name <span class="hljs-string">&quot;xxx&quot;</span><br>find - L ./ -name <span class="hljs-string">&quot;xxx&quot;</span> <span class="hljs-comment"># -L :Follow symbolic links</span><br>find ./ -<span class="hljs-built_in">type</span> f | <span class="hljs-built_in">wc</span> -l <span class="hljs-comment"># count how many files</span><br>find ./ -size +1M       <span class="hljs-comment"># large 1MB size</span><br><br>ldd xxx<br><br>rename IMG img IMG* <span class="hljs-comment"># IMG001.jpg to img001.jpg</span><br></code></pre></td></tr></table></figure>
 <h1 id="find-delete">Find &amp; Delete</h1>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Find files smaller than 100M: -print or -delete</span><br>find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.nc&quot;</span> -size -100M -<span class="hljs-built_in">print</span><br>find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.nc&quot;</span> -size -100M -delete<br><br><span class="hljs-comment"># Find files larger than 100M: -print or -delete</span><br>find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.nc&quot;</span> -size +100M -<span class="hljs-built_in">print</span><br>find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.nc&quot;</span> -size +100M -delete<br><br><span class="hljs-comment"># if your &quot;find&quot; does not support delete:</span><br>find . -<span class="hljs-built_in">type</span> f ! -name <span class="hljs-string">&#x27;*.mp3&#x27;</span> ! -name <span class="hljs-string">&#x27;*.mp4&#x27;</span> -size +1M -<span class="hljs-built_in">exec</span> <span class="hljs-built_in">rm</span> &#123;&#125; \;<br></code></pre></td></tr></table></figure>
 <h1 id="for-client-node">For client node,</h1>
@@ -428,7 +470,7 @@ class="uri">https://superuser.com/questions/299694/is-there-a-directory-history-
     
       <span class="category-chain">
         
-  <a href="/categories/Terminal/" class="category-chain-item">Terminal</a>
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
   
   
 
@@ -444,6 +486,14 @@ class="uri">https://superuser.com/questions/299694/is-there-a-directory-history-
       <i class="iconfont icon-tags"></i>
       
         <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/shell-script/" class="print-no-link">#shell script</a>
+      
+        <a href="/tags/bashrc/" class="print-no-link">#bashrc</a>
+      
+        <a href="/tags/Linux/" class="print-no-link">#Linux</a>
+      
+        <a href="/tags/Terminal/" class="print-no-link">#Terminal</a>
       
     </div>
   
@@ -474,7 +524,7 @@ class="uri">https://superuser.com/questions/299694/is-there-a-directory-history-
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 2, 2024</div>
+          <div>April 19, 2025</div>
         </div>
       
       
@@ -600,6 +650,16 @@ class="uri">https://superuser.com/questions/299694/is-there-a-directory-history-
 
 
 
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
 
     
 

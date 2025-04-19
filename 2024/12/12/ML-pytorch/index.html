@@ -1,0 +1,937 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="PyTorch 2017 年初由 Facebook 開源的另一套建立在 Torch 之上的深度學習框架 PyTorch 因其語法簡潔優雅、概念直觀和易上手的特性，甫推出便迅速走紅，儼然已成為瓜分深度學習市場的有力競爭者。 PyTorch is an optimized tensor library for deep learning using GPUs and CPUs. Automatic d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML | PyTorch">
+<meta property="og:url" content="https://waipangsze.github.io/2024/12/12/ML-pytorch/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="PyTorch 2017 年初由 Facebook 開源的另一套建立在 Torch 之上的深度學習框架 PyTorch 因其語法簡潔優雅、概念直觀和易上手的特性，甫推出便迅速走紅，儼然已成為瓜分深度學習市場的有力競爭者。 PyTorch is an optimized tensor library for deep learning using GPUs and CPUs. Automatic d">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/AAFS6jD.png">
+<meta property="article:published_time" content="2024-12-12T02:56:00.000Z">
+<meta property="article:modified_time" content="2025-04-19T14:03:15.023Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="PINN">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="DeepONet">
+<meta property="article:tag" content="ML">
+<meta property="article:tag" content="pytorch">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/AAFS6jD.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ML | PyTorch - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/AAFS6jD.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ML | PyTorch"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-12 10:56" pubdate>
+          December 12, 2024 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ML | PyTorch</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="pytorch">PyTorch</h1>
+<p>2017 年初由 Facebook 開源的另一套建立在 Torch 之上的深度學習框架
+PyTorch
+因其語法簡潔優雅、概念直觀和易上手的特性，甫推出便迅速走紅，儼然已成為瓜分深度學習市場的有力競爭者。</p>
+<p>PyTorch is an optimized tensor library for deep learning using GPUs
+and CPUs. Automatic differentiation is done with a tape-based system at
+both a functional and neural network layer level. This functionality
+brings a high level of flexibility and speed as a deep learning
+framework and provides accelerated NumPy-like functionality.</p>
+<p>To check if your GPU driver and CUDA/ROCm is enabled and accessible
+by PyTorch,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-built_in">print</span>(torch.__version__)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.is_available() = &quot;</span>, torch.cuda.is_available())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.device_count() = &quot;</span>, torch.cuda.device_count())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.current_device() =&quot;</span>, torch.cuda.current_device())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.device(0) = &quot;</span>, torch.cuda.device(<span class="hljs-number">0</span>))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;torch.cuda.get_device_name(0) = &quot;</span>, torch.cuda.get_device_name(<span class="hljs-number">0</span>))<br></code></pre></td></tr></table></figure>
+<p>General usage,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 导⼊包和版本查询</span><br><span class="hljs-keyword">import</span> torch <br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn <br><span class="hljs-keyword">import</span> torchvision <br><br><span class="hljs-built_in">print</span>(torch.__version__) <br><span class="hljs-built_in">print</span>(torch.version.cuda) <br><span class="hljs-built_in">print</span>(torch.backends.cudnn.version()) <br><span class="hljs-built_in">print</span>(torch.cuda.get_device_name(<span class="hljs-number">0</span>))<br><br><br><span class="hljs-comment"># 可复现性在硬件设备（CPU、GPU）不同时，完全的可复现性⽆法保证，即使随机种⼦相同。但是，在同⼀个设备上，应该保证可复现性。具体做法是，在程序开始的时候固定torch的随机种⼦，同时也把numpy的随机种⼦固定。</span><br><br>np.random.seed(<span class="hljs-number">0</span>) <br>torch.manual_seed(<span class="hljs-number">0</span>) <br>torch.cuda.manual_seed_all(<span class="hljs-number">0</span>) <br>torch.backends.cudnn.deterministic = <span class="hljs-literal">True</span> <br>torch.backends.cudnn.benchmark = <span class="hljs-literal">False</span><br></code></pre></td></tr></table></figure>
+<h1 id="example">Example</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-number">1.</span>导入Pyorch 库：<br><span class="hljs-comment"># 导入PyTorch库，用于构建和训练神经网络</span><br><span class="hljs-keyword">import</span> torch<br><span class="hljs-comment"># 导入神经网络模块，用于定义神经网络结构</span><br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn<br><span class="hljs-comment"># 导入优化器模块，用于定义模型的优化算法</span><br><span class="hljs-keyword">import</span> torch.optim <span class="hljs-keyword">as</span> optim<br><span class="hljs-comment"># 导入函数al模块，用于使用各种激活函数和损失函数</span><br><span class="hljs-keyword">import</span> torch.nn.functional <span class="hljs-keyword">as</span> F<br><span class="hljs-comment"># 导入数据加载和数据集模块，用于处理和加载训练数据</span><br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> DataLoader, Dataset<br><span class="hljs-comment"># 导入变换模块，用于对图像数据进行预处理</span><br><span class="hljs-keyword">from</span> torchvision <span class="hljs-keyword">import</span> transforms<br><br><span class="hljs-number">2.</span>检查 GPU 支持：<br><span class="hljs-comment"># 根据环境选择合适的计算设备</span><br>device = torch.device(<span class="hljs-string">&quot;cuda&quot;</span> <span class="hljs-keyword">if</span> torch.cuda.is_available() <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;cpu&quot;</span>)<br><br><span class="hljs-number">3.</span>创建自定义数据集：<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomDataset</span>(<span class="hljs-title class_ inherited__">Dataset</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    自定义数据集类，继承自torch.utils.data.Dataset。</span><br><span class="hljs-string">    用于封装任意数据和其对应的标签，方便在神经网络模型中使用。</span><br><span class="hljs-string">    </span><br><span class="hljs-string">    参数:</span><br><span class="hljs-string">    - data: 数据集，可以是任意形式，如numpy数组或Pandas DataFrame。</span><br><span class="hljs-string">    - labels: 数据集的标签，通常是一个一维数组或列表。</span><br><span class="hljs-string">    - transform: 可选的数据转换函数，用于在获取数据项时对其进行转换。</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, data, labels, transform=<span class="hljs-literal">None</span></span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        初始化自定义数据集类。</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-variable language_">self</span>.data = data<br>        <span class="hljs-variable language_">self</span>.labels = labels<br>        <span class="hljs-variable language_">self</span>.transform = transform<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__len__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        返回数据集的大小。</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        返回:</span><br><span class="hljs-string">        - 数据集的样本数量。</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.data)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, index</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        根据索引获取数据项。</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        参数:</span><br><span class="hljs-string">        - index: 索引值，用于获取数据集中的特定样本。</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        返回:</span><br><span class="hljs-string">        - x: 数据项。</span><br><span class="hljs-string">        - y: 数据项的标签。</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        x = <span class="hljs-variable language_">self</span>.data[index]<br>        y = <span class="hljs-variable language_">self</span>.labels[index]<br><br>        <span class="hljs-comment"># 如果提供了数据转换函数，则应用该函数对数据项进行转换</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.transform:<br>            x = <span class="hljs-variable language_">self</span>.transform(x)<br><br>        <span class="hljs-keyword">return</span> x, y<br><br><span class="hljs-number">4.</span>使用数据增强：<br><span class="hljs-comment"># 定义一个转换器，用于将图像转换为一系列预处理步骤的组合</span><br>transform = transforms.Compose([<br>    <span class="hljs-comment"># 随机水平翻转图像，增加数据集的多样性</span><br>    transforms.RandomHorizontalFlip(),<br>    <span class="hljs-comment"># 随机旋转图像，旋转角度在(-10, 10)之间，以增强模型的泛化能力</span><br>    transforms.RandomRotation(<span class="hljs-number">10</span>),<br>    <span class="hljs-comment"># 将图像转换为Tensor，以便于在PyTorch模型中使用</span><br>    transforms.ToTensor(),<br>])<br><br><span class="hljs-number">5.</span>数据加载：<br><span class="hljs-comment"># 创建训练数据集实例</span><br><span class="hljs-comment"># 参数:</span><br><span class="hljs-comment"># - train_data: 训练数据输入</span><br><span class="hljs-comment"># - train_labels: 训练数据标签</span><br><span class="hljs-comment"># - transform: 数据转换函数</span><br>train_dataset = CustomDataset(train_data, train_labels, transform=transform)<br><br><span class="hljs-comment"># 创建数据加载器</span><br><span class="hljs-comment"># 参数:</span><br><span class="hljs-comment"># - train_dataset: 训练数据集实例</span><br><span class="hljs-comment"># - batch_size: 每个批次的数据大小</span><br><span class="hljs-comment"># - shuffle: 是否在每个epoch开始时打乱数据顺序</span><br>train_loader = DataLoader(train_dataset, batch_size=<span class="hljs-number">64</span>, shuffle=<span class="hljs-literal">True</span>)<br><br><span class="hljs-number">6.</span>定义神经网络模型：<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Net</span>(nn.Module):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    定义一个神经网络模型。继承自torch.nn.Module。</span><br><span class="hljs-string">    该模型包括一个卷积层和两个全连接层。</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        初始化模型并定义各层。</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-built_in">super</span>(Net, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-variable language_">self</span>.conv1 = nn.Conv2d(<span class="hljs-number">1</span>, <span class="hljs-number">32</span>, kernel_size=<span class="hljs-number">3</span>)  <span class="hljs-comment"># 卷积层：输入通道数1，输出通道数32，卷积核大小3x3</span><br>        <span class="hljs-variable language_">self</span>.fc1 = nn.Linear(<span class="hljs-number">32</span> * <span class="hljs-number">28</span> * <span class="hljs-number">28</span>, <span class="hljs-number">128</span>)  <span class="hljs-comment"># 全连接层：输入大小32*28*28，输出大小128</span><br>        <span class="hljs-variable language_">self</span>.fc2 = nn.Linear(<span class="hljs-number">128</span>, <span class="hljs-number">10</span>)  <span class="hljs-comment"># 全连接层：输入大小128，输出大小10</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        定义模型的前向传播过程。</span><br><span class="hljs-string">        :param x: 输入数据，一个张量</span><br><span class="hljs-string">        :return: 模型输出，一个张量</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        x = F.relu(<span class="hljs-variable language_">self</span>.conv1(x))  <span class="hljs-comment"># 经过卷积层后使用ReLU激活函数</span><br>        x = x.view(x.size(<span class="hljs-number">0</span>), -<span class="hljs-number">1</span>)  <span class="hljs-comment"># 将张量展平</span><br>        x = F.relu(<span class="hljs-variable language_">self</span>.fc1(x))  <span class="hljs-comment"># 经过第一个全连接层后使用ReLU激活函数</span><br>        x = <span class="hljs-variable language_">self</span>.fc2(x)  <span class="hljs-comment"># 第二个全连接层的输出，此处不使用激活函数</span><br>        <span class="hljs-keyword">return</span> x<br><br><span class="hljs-number">7.</span>实例化模型和优化器：<br><span class="hljs-comment">#实例化神经网络模型并转移到指定设备上</span><br>model = Net().to(device)  <br><br><span class="hljs-comment">#初始化优化器，使用Adam算法优化模型参数</span><br><span class="hljs-comment">#学习率设置为0.001，以适应大多数深度学习模型的训练需求</span><br>optimizer = optim.Adam(model.parameters(), lr=<span class="hljs-number">0.001</span>)<br><br><span class="hljs-number">8.</span>定义损失函数：<br><span class="hljs-comment"># 定义损失函数为交叉熵损失，用于分类任务中</span><br>criterion = nn.CrossEntropyLoss()<br><br><span class="hljs-number">9.</span>训练模型：<br><span class="hljs-comment"># 迭代训练模型，共进行num_epochs轮</span><br><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_epochs):  <br>    <span class="hljs-comment"># 遍历训练数据加载器，获取批次索引、数据和目标标签</span><br>    <span class="hljs-keyword">for</span> batch_idx, (data, target) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(train_loader):  <br>        <span class="hljs-comment"># 将数据和目标标签移动到指定设备（如GPU）</span><br>        data, target = data.to(device), target.to(device)  <br><br>        <span class="hljs-comment"># 清空梯度，避免累积</span><br>        optimizer.zero_grad()  <br>        <span class="hljs-comment"># 前向传播，获取模型输出</span><br>        output = model(data)  <br>        <span class="hljs-comment"># 计算模型输出与目标标签之间的损失</span><br>        loss = criterion(output, target)  <br>        <span class="hljs-comment"># 反向传播，计算梯度</span><br>        loss.backward()  <br>        <span class="hljs-comment"># 更新模型权重</span><br>        optimizer.step()  <br><br>        <span class="hljs-comment"># 按照日志间隔打印训练信息</span><br>        <span class="hljs-keyword">if</span> batch_idx % log_interval == <span class="hljs-number">0</span>:  <br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Train Epoch: <span class="hljs-subst">&#123;epoch&#125;</span> [<span class="hljs-subst">&#123;batch_idx * <span class="hljs-built_in">len</span>(data)&#125;</span>/<span class="hljs-subst">&#123;<span class="hljs-built_in">len</span>(train_loader.dataset)&#125;</span> (<span class="hljs-subst">&#123;<span class="hljs-number">100.</span> * batch_idx / <span class="hljs-built_in">len</span>(train_loader):<span class="hljs-number">.0</span>f&#125;</span>%)]\tLoss: <span class="hljs-subst">&#123;loss.item():<span class="hljs-number">.6</span>f&#125;</span>&quot;</span>)<br><br><span class="hljs-number">10.</span>评估模型：<br>model.<span class="hljs-built_in">eval</span>()  <span class="hljs-comment"># 将模型设置为评估模式，以禁用dropout等仅在训练时需要的特性</span><br>test_loss = <span class="hljs-number">0</span>  <span class="hljs-comment"># 初始化测试损失为0</span><br>correct = <span class="hljs-number">0</span>  <span class="hljs-comment"># 初始化正确预测的数量为0</span><br><span class="hljs-keyword">with</span> torch.no_grad():  <span class="hljs-comment"># 在不需要计算梯度的上下文中进行评估，以减少内存消耗</span><br>    <span class="hljs-keyword">for</span> data, target <span class="hljs-keyword">in</span> test_loader:  <span class="hljs-comment"># 遍历测试数据集</span><br>        data, target = data.to(device), target.to(device)  <span class="hljs-comment"># 将数据和目标移动到指定设备</span><br>        output = model(data)  <span class="hljs-comment"># 前向传播，获取模型的输出</span><br>        test_loss += criterion(output, target).item()  <span class="hljs-comment"># 计算并累加测试损失</span><br>pred = output.argmax(dim=<span class="hljs-number">1</span>, keepdim=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># 获取预测的类别索引</span><br>correct += pred.eq(target.view_as(pred)).<span class="hljs-built_in">sum</span>().item()  <span class="hljs-comment"># 计算并累加正确预测的数量</span><br><br>test_loss /= <span class="hljs-built_in">len</span>(test_loader.dataset)  <span class="hljs-comment"># 计算平均测试损失</span><br>test_accuracy = <span class="hljs-number">100.</span> * correct / <span class="hljs-built_in">len</span>(test_loader.dataset)  <span class="hljs-comment"># 计算测试准确率</span><br><br><span class="hljs-comment"># 打印测试集的平均损失和准确率</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;Test set: Average loss: <span class="hljs-subst">&#123;test_loss:<span class="hljs-number">.4</span>f&#125;</span>, Accuracy: <span class="hljs-subst">&#123;correct&#125;</span>/<span class="hljs-subst">&#123;<span class="hljs-built_in">len</span>(test_loader.dataset)&#125;</span> (<span class="hljs-subst">&#123;test_accuracy:<span class="hljs-number">.0</span>f&#125;</span>%)&#x27;</span>)<br><br><span class="hljs-number">11.</span>保存和加载模型：<br><span class="hljs-comment"># 保存模型的参数状态</span><br>torch.save(model.state_dict(), <span class="hljs-string">&#x27;model.pth&#x27;</span>)  <br><br><span class="hljs-comment"># 实例化一个新的模型对象</span><br>model = Net()  <br><span class="hljs-comment"># 加载保存的模型参数状态到新的模型对象中</span><br>model.load_state_dict(torch.load(<span class="hljs-string">&#x27;model.pth&#x27;</span>))  <br><span class="hljs-comment"># 将模型移动到指定的设备上，例如CPU或GPU</span><br>model.to(device)<br><br><span class="hljs-number">12.</span>使用 GPU 加速：<br><span class="hljs-comment"># 将模型移动到指定设备上，以适应不同硬件环境（如GPU或CPU）</span><br>model = model.to(device)  <br><br><span class="hljs-comment"># 将数据移动到指定设备上，确保数据与模型在同一硬件环境</span><br>data = data.to(device)  <br><br><span class="hljs-comment"># 将目标值移动到指定设备上，保证目标与数据、模型一致</span><br>target = target.to(device)<br><br><span class="hljs-number">13.</span>使用 TensorBoard 进行可视化：<br><span class="hljs-keyword">from</span> torch.utils.tensorboard <span class="hljs-keyword">import</span> SummaryWriter<br>  <br><span class="hljs-comment"># 创建一个SummaryWriter对象，用于将训练过程中的损失和准确率等数据写入TensorBoard日志文件</span><br>writer = SummaryWriter()<br>  <br><span class="hljs-comment"># 遍历训练的每个周期(epoch)</span><br><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_epochs):<br>    <span class="hljs-comment"># 进行训练和记录...</span><br>    <span class="hljs-comment"># 记录当前周期的训练损失</span><br>    writer.add_scalar(<span class="hljs-string">&#x27;Loss/train&#x27;</span>, loss.item(), epoch)<br>    <span class="hljs-comment"># 记录当前周期的训练准确率</span><br>    writer.add_scalar(<span class="hljs-string">&#x27;Accuracy/train&#x27;</span>, accuracy, epoch)<br>    <span class="hljs-comment"># ...</span><br>  <br><span class="hljs-comment"># 关闭SummaryWriter对象，确保所有数据被正确写入日志文件</span><br>writer.close()<br><br><span class="hljs-number">14.</span>调整学习率：<br><span class="hljs-comment"># 初始化学习率调度器，以便在训练过程中按策略调整学习率</span><br>scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=<span class="hljs-number">10</span>, gamma=<span class="hljs-number">0.1</span>)  <br><br><span class="hljs-comment"># 开始训练过程，迭代指定的轮次</span><br><span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_epochs):  <br>    <span class="hljs-comment"># 更新学习率调度器，根据当前轮次调整学习率</span><br>    scheduler.step()  <span class="hljs-comment"># 更新学习率  </span><br>    <span class="hljs-comment"># 进行训练...</span><br><br><span class="hljs-number">15.</span>使用预训练模型：<br><span class="hljs-comment"># 导入torchvision中的models模块，用于访问预定义的模型架构和预训练模型</span><br><span class="hljs-keyword">import</span> torchvision.models <span class="hljs-keyword">as</span> models<br>  <br><span class="hljs-comment"># 初始化一个预训练的ResNet-18模型</span><br><span class="hljs-comment"># ResNet-18是一个深度卷积神经网络，具有18层，广泛应用于图像分类任务中</span><br><span class="hljs-comment"># 参数pretrained=True表示使用ImageNet数据集预训练的模型权重</span><br>model = models.resnet18(pretrained=<span class="hljs-literal">True</span>)<br><br><span class="hljs-number">16.</span>迁移学习：<br><span class="hljs-comment"># 遍历模型的所有参数</span><br><span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> model.parameters():  <br>    param.requires_grad = <span class="hljs-literal">False</span>  <span class="hljs-comment"># 冻结模型参数，防止在训练过程中更新这些参数</span><br>  <br><span class="hljs-comment"># 替换最后的全连接层以适应新的类别数</span><br>model.fc = nn.Linear(model.fc.in_features, num_classes)<br></code></pre></td></tr></table></figure>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a
+target="_blank" rel="noopener" href="https://dev.to/hyperkai/check-pytorch-version-cpu-and-gpucuda-in-pytorch-6jk">Check
+PyTorch version, CPU and GPU(CUDA) in PyTorch</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/bcIC27Xo_LAaLUegElzOsg">Pytorch
+高频使用代码集锦</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ydlzsZ3wuZt-0CRHeYy3GQ">包含代码逐行解读！PyTorch真的不难，常见的用法就这么多！</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ML/" class="category-chain-item">ML</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/PINN/" class="print-no-link">#PINN</a>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/DeepONet/" class="print-no-link">#DeepONet</a>
+      
+        <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+        <a href="/tags/pytorch/" class="print-no-link">#pytorch</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ML | PyTorch</div>
+      <div>https://waipangsze.github.io/2024/12/12/ML-pytorch/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 12, 2024</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>April 19, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/12/ML-GNN/" title="ML | GNN Graph Neural Network Model">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ML | GNN Graph Neural Network Model</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/10/maths-ROC/" title="Maths | ROC Curves">
+                        <span class="hidden-mobile">Maths | ROC Curves</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
