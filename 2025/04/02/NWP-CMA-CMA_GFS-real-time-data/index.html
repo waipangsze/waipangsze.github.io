@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/TtrCqKa.png">
 <meta property="article:published_time" content="2025-04-02T08:15:00.000Z">
-<meta property="article:modified_time" content="2025-04-09T03:40:23.920Z">
+<meta property="article:modified_time" content="2025-04-23T01:10:40.202Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="CMA">
 <meta property="article:tag" content="CMA_GFS">
 <meta property="article:tag" content="Land-sea mask">
@@ -684,6 +684,12 @@
 </ol>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh">cdo -f grb2 copy new_TMP_1_2m.nc new_TMP_1_2m.grib2<br><br><span class="hljs-comment"># check</span><br>grib_ls new_TMP_1_2m.grib2<br>wgrib2 new_TMP_1_2m.grib2<br><br>grib_set -r -w packingType=grid_ieee -s centre=babj,shortName=lsm,typeOfLevel=surface,level=0,dataType=an,packingType=grid_jpeg new_TMP_1_2m.grib2 final_TMP_1_2m.grib2<br><br><span class="hljs-built_in">mv</span> final_TMP_1_2m.grib2 final_cma_lsm.grib2<br></code></pre></td></tr></table></figure>
 <ul>
+<li>Make sure the <strong>datetime is updated with your run</strong>.</li>
+</ul>
+<blockquote>
+<p><strong>grib_set -r -w packingType=grid_ieee -s centre=babj,shortName=lsm,typeOfLevel=surface,level=0,dataType=an,packingType=grid_jpeg,dataDate=20250416,dataTime=0000 new_TMP_1_2m.grib2 final_TMP_1_2m.grib2</strong></p>
+</blockquote>
+<ul>
 <li><code>./g2print.exe final_cma_lsm.grib2</code></li>
 <li><code>2 0 0 1</code> here correpsonds to <code>Vtable.CMA_GFS</code>
 <ul>
@@ -744,9 +750,9 @@
       
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
-      
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/CMA/" class="print-no-link">#CMA</a>
       
@@ -783,7 +789,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>April 9, 2025</div>
+          <div>April 23, 2025</div>
         </div>
       
       
@@ -909,6 +915,16 @@
 
 
 
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
 
     
 
