@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/3h7OC3S.png
+banner_img: https://i.imgur.com/3h7OC3S.png
 ---
 
 - [**Pseudo-Global Warming (PGW) - Future Projection**](https://waipangsze.github.io/2024/09/30/PGW/)
@@ -22,8 +22,21 @@ banner_img:
 # PGW Literature Review on MPAS-A
 
 - [Nunez Ocasio, Kelly M., and Erin M. Dougherty. "The effect of **pseudo‐global warming** on the weather‐climate system of Africa in a convection‐permitting model." Geophysical Research Letters 51.24 (2024): e2024GL112341.](https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2024GL112341)
+  - This study uses the **pseudo‐global warming (PGW) method** in convection‐permitting simulations to assess the impact of anthropogenic warming on Africa's weather‐climate system prior to and during Hurricane Helene's (2006) formation.
+  - **To our knowledge, no study have used the PGW method to examine tropical precipitation with the MPAS‐A model.**
   - **MPAS‐A version 8.0.1 with the Limited‐Area configuration**
+  - **A 15‐km–3‐km variable‐resolution** mesh was used with the an elliptically shaped 3‐km highresolution refinement region of the mesh.
+    - **At 3 km, deep convection was explicitly resolved**.
+  - ![](https://i.imgur.com/3h7OC3S.png)
+  - To simulate the period of 1200 UTC 8 September–1800 UTC 13 September 2006
+    - In addition to initializing the model at **1200 UTC on 8 September**, two other sets of experiments were completed: initializing the model at **00 UTC on 5 September** and initializing at **00 UTC on 6 September**.
+    - **A limitation of the study** is that it uses *only one future projection scenario* and one climate model for simulations of short integration time.
+  - **The dataset (Download)** 
+    - [MPAS-A pseudo-global warming (PGW) experiment with convection-permitting resolution and regional configuration using the Model for Prediction Across Scales (MPAS) version 8.0.1](https://gdex.ucar.edu/dataset/448.html)
+      - ![](https://i.imgur.com/KiMlEds.png){width=300}
 - [Kelly Marie Núñez Ocasio, Erin Dougherty, Zachary Moon, et al. Response of African Easterly Waves to a **Warming Climate**: A Convection-Permitting Approach. ESS Open Archive . April 24, 2025.](https://essopenarchive.org/doi/full/10.22541/essoar.174547926.68665522/v1)
+  - The **MPAS-A version 8.0.1 (Skamarock et al., 2012) regional convection-permitting data** used here, as described by Nunez Ocasio and Dougherty (2024a).
+  - The **buffer region between the 15-km resolution mesh and the refined 3-km resolution area ensures smooth transitions** from coarse to fine resolution while maintaining computational efficiency and effectively reducing any artificial features from the nested domain-type boundaries as in other models like WRF.
 
 # African easterly wave (AEW) tropical cyclogenesis (TCG) 
 
