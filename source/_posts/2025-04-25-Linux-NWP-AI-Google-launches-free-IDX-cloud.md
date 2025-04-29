@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Linux | NWP | Google launches free IDX cloud hosting service
-categories: [MPAS]
+categories: [Linux]
 tags: [Linux, WRF, MPAS, HPC, NWP, Google]
 author: wpsze
 date: 2025-04-25 11:01:00
