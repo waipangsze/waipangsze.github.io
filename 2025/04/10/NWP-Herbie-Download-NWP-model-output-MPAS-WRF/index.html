@@ -28,12 +28,12 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/dPlkBuU.png">
 <meta property="article:published_time" content="2025-04-10T03:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-17T06:42:56.939Z">
+<meta property="article:modified_time" content="2025-04-30T03:35:12.653Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
-<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="WPS">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="IFS">
 <meta property="article:tag" content="GFS">
 <meta property="article:tag" content="GEFS">
@@ -550,7 +550,7 @@
 <li><code>$ time python main_herbie.py</code></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> herbie <span class="hljs-keyword">import</span> Herbie<br><br><span class="hljs-keyword">import</span> cartopy.crs <span class="hljs-keyword">as</span> ccrs<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><span class="hljs-keyword">from</span> herbie <span class="hljs-keyword">import</span> paint<br><span class="hljs-keyword">from</span> herbie.toolbox <span class="hljs-keyword">import</span> EasyMap, pc<br><br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> date, timedelta<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">daterange</span>(<span class="hljs-params">start_date: date, end_date: date</span>):<br>    days = <span class="hljs-built_in">int</span>((end_date - start_date).days)<br>    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(days):<br>        <span class="hljs-keyword">yield</span> start_date + timedelta(n)<br><br>start_date = date(<span class="hljs-number">2013</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)<br>end_date = date(<span class="hljs-number">2013</span>, <span class="hljs-number">1</span>, <span class="hljs-number">6</span>)<br><span class="hljs-keyword">for</span> single_date <span class="hljs-keyword">in</span> daterange(start_date, end_date):<br>    tmp = <span class="hljs-built_in">str</span>(single_date.strftime(<span class="hljs-string">&quot;%Y-%m-%d&quot;</span>)) +<span class="hljs-string">&quot; 00:00:00&quot;</span><br>    tmp_save_fd = tmp[:<span class="hljs-number">4</span>]+tmp[<span class="hljs-number">5</span>:<span class="hljs-number">7</span>]+tmp[<span class="hljs-number">8</span>:<span class="hljs-number">10</span>]<br>    <span class="hljs-built_in">print</span>(tmp, tmp_save_fd)<br>    H = Herbie(tmp, model=<span class="hljs-string">&quot;ifs&quot;</span>, product=<span class="hljs-string">&quot;oper&quot;</span>) <span class="hljs-comment">#, fxx=12)</span><br>    H.inventory()<br>    H.inventory().param.unique()<br>    H.download(save_dir=<span class="hljs-string">&quot;/home/wpsze/mpas/IFS/herbie/&quot;</span>)<br><br><span class="hljs-comment">#H = Herbie(&quot;2024-03-01 00:00:00&quot;, model=&quot;ifs&quot;, product=&quot;oper&quot;, fxx=12)</span><br><span class="hljs-comment">#H = Herbie(&quot;2024-04-01 12:00:00&quot;, model=&quot;ifs&quot;, product=&quot;oper&quot;) #, fxx=12) # 00/12 UTC</span><br><span class="hljs-comment">#H.grib, H.idx</span><br><br><span class="hljs-comment">#-- Show the inventory</span><br><span class="hljs-comment">#H.inventory()</span><br><span class="hljs-comment">#H.inventory().param.unique()</span><br><br><span class="hljs-comment">#-- Show the search_help</span><br><span class="hljs-comment">#print(H.search_help)</span><br><br><span class="hljs-comment">#-- Show just 10-m U and V wind</span><br><span class="hljs-comment">#H.inventory(&quot;:10[u|v]:&quot;)</span><br><br><span class="hljs-comment">#-- Download the full GRIB2 file</span><br><span class="hljs-comment">#-- overwrite (bool) – If True, overwrite existing files. Default will skip downloading if the full file exists. Not applicable when when search is not None because file subsets might be unique.</span><br><span class="hljs-comment">#H.download(save_dir=&quot;/home/wpsze/mpas/IFS/herbie/&quot;)</span><br><span class="hljs-comment">#-- result: PosixPath(&#x27;/home/wpsze/mpas/IFS/herbie/ifs/20240301/20240301000000-12h-oper-fc.grib2&#x27;)</span><br><br><span class="hljs-comment">#-- Get 2-m temperature as an xarray Dataset</span><br><span class="hljs-comment">#ds = H.xarray(&quot;:2t:&quot;, verbose=True)</span><br><span class="hljs-comment">#ds.t2m.plot(cmap=&quot;Spectral_r&quot;, figsize=[8, 4])</span><br></code></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/o1xSqZN.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/dPlkBuU.png" srcset="/img/loading.gif" lazyload /></p>
+<p><img src="https://i.imgur.com/o1xSqZN.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/dPlkBuU.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/vCWDYAP.png" srcset="/img/loading.gif" lazyload /></p>
 
     <div class="fold">
       <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
@@ -632,11 +632,11 @@
       
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/WPS/" class="print-no-link">#WPS</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/IFS/" class="print-no-link">#IFS</a>
       
@@ -681,7 +681,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>April 17, 2025</div>
+          <div>April 30, 2025</div>
         </div>
       
       
