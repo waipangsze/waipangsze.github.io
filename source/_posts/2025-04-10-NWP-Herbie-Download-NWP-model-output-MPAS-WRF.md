@@ -175,6 +175,7 @@ for single_date in daterange(start_date, end_date):
 
 ![](https://i.imgur.com/o1xSqZN.png)
 ![](https://i.imgur.com/dPlkBuU.png)
+![](https://i.imgur.com/vCWDYAP.png)
 
 {% fold info @H.search_help %}
 ```log
