@@ -356,6 +356,26 @@ wrf_install/WPS-4.4/ungrib.exe -> ungrib/src/ungrib.exe*
 ==========================================================================
 ```
 
+### Bug: ./configure: 919: [: unexpected operator
+
+- [(RESOLVED) WRF configure issue](https://forum.mmm.ucar.edu/threads/resolved-wrf-configure-issue.11474/)
+  - Error
+    ```log
+    NetCDF version: 4.8.1
+    Enabled NetCDF-4/HDF-5: yes
+    NetCDF built with PnetCDF: no
+    ./configure: 919: [: unexpected operator
+    ```
+  - **./configure: 919: [: unexpected operator**
+
+Solution: [Bugfix: Correct string test in configure. #1735](https://github.com/wrf-model/WRF/pull/1735/files)
+
+### Bug: ./clean: cannot execute: required file not found
+
+or ` ./compile: cannot execute: required file not found`
+
+- miss **/bin/csh**
+
 # References
 
 1. [How to install Intel OneAPI Base and HPC Toolkits](https://kb.brightcomputing.com/knowledge-base/how-to-install-intel-oneapi-base-and-hpc-toolkits/#installing-the-intel-oneapi-hpc-toolkit)
