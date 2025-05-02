@@ -28,6 +28,7 @@ sh run.sh | tee output.txt
 # If you want to print the error output to the screen and the file at the same time
 sh run.sh 2>&1 | tee lsls.log
 
+nohup sh run.sh >/dev/null 2>&1 &
 sh run.sh >/dev/null 2>&1 &
 
 # -C : Print Around Lines
@@ -44,6 +45,15 @@ ldd xxx
 
 rename IMG img IMG* # IMG001.jpg to img001.jpg
 ```
+
+| 执行命令           | 状态                                                                                                                                              |   |
+|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| ./mylog.sh         | 结果会输出到终端 使用Ctrl + C发送SIGINT信号或关闭session发送SIGHUP信号，程序关闭                                                                  |   |
+| ./mylog.sh &       | 结果会输出到终端 使用Ctrl + C发送SIGINT信号，程序免疫                                                         关闭session发送SIGHUP信号，程序关闭 |   |
+| nohup ./mylog.sh   | 结果默认会输出到nohup.out 使用Ctrl + C发送SIGINT信号，程序关闭 关闭session发送SIGHUP信号，程序免疫                                                |   |
+| nohup ./mylog.sh & | 同时免疫SIGINT和SIGHUP信号                                                                                                                        |   |
+
+- Form [nohup &的用法、进程查看以及终止 ](https://www.cnblogs.com/mianbaoshu/p/12073028.html)
 
 # Find & Delete
 
