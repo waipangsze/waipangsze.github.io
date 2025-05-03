@@ -17,3 +17,7 @@ date: 2024-09-14 21:29:47
 
 <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=-FD52b9oydXY9a4RbTCAxGTeHgh-1YTFnwSX0jxQlA0&cl=ffffff&w=a"></script>
 
+# Windy.com
+
+<h2 class="nn_tabs-title"><a id="風向風速" class="anchor nn_tabs-sm-scroll"></a>風向風速</h2>
+<iframe width="100%" height="500" src="https://embed.windy.com/embed2.html?lat=22.374&lon=114.131&detailLat=22.374&detailLon=114.131&width=650&height=500&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=m%2Fs&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>

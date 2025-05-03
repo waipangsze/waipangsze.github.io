@@ -6,6 +6,17 @@ author: wpsze
 date: 2024-10-06 12:55:11
 ---
 
+# Windy.com
+
+<h2 class="nn_tabs-title"><a id="風向溫度" class="anchor nn_tabs-sm-scroll"></a>風向溫度</h2>
+<iframe width="100%" height="500" src="https://embed.windy.com/embed2.html?lat=22.374&lon=114.131&detailLat=22.374&detailLon=114.131&width=650&height=500&zoom=7&level=surface&overlay=temp&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=m%2Fs&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
+
+<h2 class="nn_tabs-title"><a id="風向風速" class="anchor nn_tabs-sm-scroll"></a>風向風速</h2>
+<iframe width="100%" height="500" src="https://embed.windy.com/embed2.html?lat=22.374&lon=114.131&detailLat=22.374&detailLon=114.131&width=650&height=500&zoom=7&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=m%2Fs&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
+
+<h2 class="nn_tabs-title"><a id="雷達回波" class="anchor nn_tabs-sm-scroll"></a>雷達回波</h2>
+<iframe width="100%" height="500" src="https://embed.windy.com/embed2.html?lat=22.374&lon=114.131&detailLat=22.374&detailLon=114.131&width=650&height=500&zoom=7&level=surface&overlay=radar&product=radar&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=m%2Fs&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe>
+
 # 北極濤動/北極震盪/Arctic Oscillation（AO)
 
 [北極濤動（AO）](https://www.weather.gov.hk/tc/climate_change/ao.htm) (又稱北極震盪) 是指北半球中緯度地區（約北緯45度）與北極地區氣壓形勢差別的變化。它是一個代表北極地區大氣環流的重要氣候指數，可分為正位相和負位相。
