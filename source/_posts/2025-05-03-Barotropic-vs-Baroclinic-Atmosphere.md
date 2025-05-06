@@ -9,8 +9,8 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2025-05-03 10:00:00
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/mEK5MFd.png
+banner_img: https://i.imgur.com/mEK5MFd.png
 ---
 
 # Barotropic vs. Baroclinic Atmosphere

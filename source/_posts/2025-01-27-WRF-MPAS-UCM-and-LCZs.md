@@ -303,7 +303,7 @@ Generally 10m wind is computed based on the `Monin-Obukhov similarity theory`; h
 
 - <https://forum.mmm.ucar.edu/threads/how-is-10m-wind-speed-computed.75/> 
 
-# Applications (papers)
+# Literature Review
 
 - [Chen, Fei, et al. "**Utilizing the coupled WRF/LSM/Urban modeling system with detailed urban classification** to simulate the urban heat island phenomena over the Greater Houston area." Fifth Symposium on the Urban Environment. Vol. 25. American Meteorological Society Vancouver, BC, Canada, 2004.](https://ams.confex.com/ams/pdfpapers/79765.pdf)
 - [Kusaka, Hiroyuki, and Fujio Kimura. "**Coupling a single-layer urban canopy model with a simple atmospheric model**: Impact on urban heat island simulation for an idealized case." Journal of the Meteorological Society of Japan. Ser. II 82.1 (2004): 67-80.](https://www.jstage.jst.go.jp/article/jmsj/82/1/82_1_67/_pdf)
@@ -335,7 +335,10 @@ Generally 10m wind is computed based on the `Monin-Obukhov similarity theory`; h
 
 - [Urban Climatic Map and Standards for Wind Environment | 2011](https://www.tpb.gov.hk/en/papers/TPB/1001-tpb_8972.pdf)
   - <https://www.eeb.gov.hk/sites/default/files/susdev/html/en/council/SSCPaper02-12Att2e.pdf>
-  - 
+
+## TW CWA: 天氣分析與預報研討會
+
+- [Urban Canopy Model對高解析度模式預報影響之探討 | 林伯勳、洪景山 | 2017.09.13](https://conf.cwa.gov.tw/media/cwa_past_conferences/106/2017_ppt/A2/A2-37-2017_%E5%A4%A9%E6%B0%A3%E5%88%86%E6%9E%90%E8%88%87%E9%A0%90%E5%A0%B1%E8%A8%8E%E8%AB%96%E6%9C%83_%E6%9E%97%E4%BC%AF%E5%8B%B3_V2.pdf)
 
 # References
 
