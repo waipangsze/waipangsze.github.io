@@ -9,8 +9,8 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2025-05-07 13:57:00
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/L1m8XkL.png
+banner_img: https://i.imgur.com/L1m8XkL.png
 ---
 
 # Radar Reflectivity(雷達回波)
