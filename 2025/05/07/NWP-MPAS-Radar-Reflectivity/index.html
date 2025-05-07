@@ -1,0 +1,1073 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Radar Reflectivity(雷達回波) 在描述雷達回波圖時，總是避免不了用到一個單位 —— dBZ 。 「dBZ」 是表示雷達回波強度的物理量，可用來估算降雨和降雪強度及預測諸如冰雹、強風等災害性天氣出現的可能性。一般來說，它的數值越大，降雨、降雪的可能性越大，強度也越強。  當回波強度大於或等於40dBZ時，出現雷雨天氣的可能性較大； 當它的值在45dBZ或以上時，出現暴雨、冰雹、強風">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | MPAS | Radar Reflectivity">
+<meta property="og:url" content="https://waipangsze.github.io/2025/05/07/NWP-MPAS-Radar-Reflectivity/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Radar Reflectivity(雷達回波) 在描述雷達回波圖時，總是避免不了用到一個單位 —— dBZ 。 「dBZ」 是表示雷達回波強度的物理量，可用來估算降雨和降雪強度及預測諸如冰雹、強風等災害性天氣出現的可能性。一般來說，它的數值越大，降雨、降雪的可能性越大，強度也越強。  當回波強度大於或等於40dBZ時，出現雷雨天氣的可能性較大； 當它的值在45dBZ或以上時，出現暴雨、冰雹、強風">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/qlXeo9X.png">
+<meta property="og:image" content="https://www.hko.gov.hk/tc/education/images/fig_00192_radmetc2.jpg">
+<meta property="og:image" content="https://i.imgur.com/OzcuZ10.png">
+<meta property="og:image" content="https://www.hko.gov.hk/tc/education/images/fig_00188_TDWR_1.jpg">
+<meta property="og:image" content="https://www.hko.gov.hk/tc/education/images/fig_00188_TDWR_2c.jpg">
+<meta property="og:image" content="https://www.hko.gov.hk/tc/education/weather/weather-phenomena/images/fig_00550-Fig2_hailprocess.png">
+<meta property="og:image" content="https://www.hko.gov.hk/tc/education/weather/weather-phenomena/images/fig_00550-Fig3_radar.png">
+<meta property="og:image" content="https://i.imgur.com/jHCknCO.png">
+<meta property="og:image" content="https://i.imgur.com/L1m8XkL.png">
+<meta property="og:image" content="https://i.imgur.com/PV1XcQV.png">
+<meta property="og:image" content="https://i.imgur.com/xjC2wWn.png">
+<meta property="og:image" content="https://i.imgur.com/L1m8XkL.png">
+<meta property="og:image" content="https://i.imgur.com/o6Dh12x.png">
+<meta property="article:published_time" content="2025-05-07T05:57:00.000Z">
+<meta property="article:modified_time" content="2025-05-07T09:11:38.847Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="Meteorology">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/qlXeo9X.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | MPAS | Radar Reflectivity - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | MPAS | Radar Reflectivity"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-07 13:57" pubdate>
+          May 7, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          32 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | MPAS | Radar Reflectivity</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="radar-reflectivity雷達回波">Radar Reflectivity(雷達回波)</h1>
+<p>在描述雷達回波圖時，總是避免不了用到一個單位 —— <strong>dBZ</strong> 。</p>
+<p><strong>「dBZ」 是表示雷達回波強度的物理量</strong>，可用來估算降雨和降雪強度及預測諸如冰雹、強風等災害性天氣出現的可能性。一般來說，它的數值越大，降雨、降雪的可能性越大，強度也越強。</p>
+<ul>
+<li>當回波強度<strong>大於或等於40dBZ</strong>時，出現雷雨天氣的可能性較大；</li>
+<li><strong>當它的值在45dBZ或以上</strong>時，出現暴雨、冰雹、強風等強烈對流天氣的可能性較大。</li>
+</ul>
+<p>當然，判斷具體出現什麼天氣時，除了回波強度（dBZ）外，還要綜合考慮回波高度、回波面積、回波移動速度和方向以及演變情況等因素。 <strong>「Z」是雷達反射因子</strong>，與雨滴譜直徑的六次方成正比，單位是 <span class="math inline">\(mm^6/m^3\)</span> ；「dB」是分貝（decibel的縮寫），也可以理解為一個運算符號，<strong>dBZ和Z的換算關係是：dBZ　＝10log（Z）</strong> 。</p>
+<h2 id="雷達反射率因子z值">雷達反射率因子Z值</h2>
+<p>雷達反射率因子Z值的大小，<strong>只取決於雲、雨滴譜</strong>的情況，反映了氣象目標內部降水粒子的尺度和數密度，常用來表示氣象目標的強度。</p>
+<ul>
+<li>Z值既可透過<strong>雲霧物理觀測的方法求得</strong>，</li>
+<li>也可以透過<strong>雷達氣象方程式推算</strong>出來。</li>
+</ul>
+<p>Z和粒子直徑的6次方成正比，顯示少數大水滴將提供散射回波功率的絕大部分。由於<strong>雷達反射率因子 Z 只取決於氣象目標本身而與雷達參數和距離無關</strong>，所以不同參數的雷達測得的值可以互相比較。</p>
+<h2 id="radar-bands">Radar Bands</h2>
+<p>Weather watch meteorological radars operate within the microwave region of the electromagnetic spectrum (around 1 – 100 GHz), though there are meteorological applications for radars outside the microwave region as shown in the table.</p>
+<p><strong>The most commonly used radars for weather surveillance are in the 5 and 10 cm wavelengths (around 6 and 3 GHz resp.)</strong></p>
+<ul>
+<li>The part of the spectrum <strong>near 10cm wavelength is commonly called "S" band</strong>, and</li>
+<li>the part <strong>around 5cm wavelength is called "C" band</strong>.</li>
+</ul>
+<p>Radar systems are also commercially available at <strong>X band (~3cm wavelength) that are typically used on ships, boats and aircraft</strong>. These radars are more compact because of the smaller antenna size, but suffer more from attenuation in anything over moderate precipitation.</p>
+<figure>
+<img src="https://i.imgur.com/qlXeo9X.png" srcset="/img/loading.gif" lazyload alt="Radar band frequencies and wavelengths" width="400" /><figcaption>Radar band frequencies and wavelengths</figcaption>
+</figure>
+<h1 id="hko-educational-resources">HKO Educational Resources</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/education/meteorological-instruments/weather-radar/00192-weather-radar-observations-in-hong-kong.html">天氣雷達觀測 | HKO</a>
+<ul>
+<li>RADAR (雷達)一詞是 RAdio Detection And Ranging 的縮寫，意思是以無線電波探測及測距。雷達發明於二次世界大戰前夕，最初用於軍事上。其後雷達應用涵蓋多個領域，其中一項重要的用途是天氣監察。透過探測大氣中的雨點，天氣雷達能非常有效地監察在香港出現的惡劣天氣，例如熱帶氣旋、雷暴和大雨。</li>
+<li>雷達不停發出微波脈沖，經大氣中的雨點反射，通過量度這些反射回來的訊號，就能探測到大氣中的降雨。一般來說，<strong>反射回來的訊號越強，雨勢就越大</strong>。至於<strong>雨區與雷達之間的距離</strong>，則可利用微波往返雨區所需的時間而計算出來。</li>
+<li>近年來多普勒天氣雷達越趨普及，它能夠量度<strong>雨點移近(或遠離)雷達的速度</strong>。
+<ul>
+<li><img src="https://www.hko.gov.hk/tc/education/images/fig_00192_radmetc2.jpg" srcset="/img/loading.gif" lazyload width="400" /></li>
+<li><img src="https://i.imgur.com/OzcuZ10.png" srcset="/img/loading.gif" lazyload width="400" /></li>
+</ul></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/wxinfo/radars/radar_gallery/index.htm"><strong>天文台的雷達圖像廊</strong></a>
+<ul>
+<li><strong>圖像廊搜羅了在惡劣天氣下所拍攝到的雷達圖像，如熱帶氣旋、暴雨、雹暴及雷暴。</strong></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/education/meteorological-instruments/weather-radar/00188-on-terminal-doppler-weather-radar.html">淺談機場多普勒天氣雷達（TDWR） | 2012 | HKO</a>
+<ul>
+<li><strong>機場多普勒天氣雷達的任務是探測機場範圍的低空風切變</strong>，相比主要用來探測雨區發展和移動的天氣雷達其技術更為先進。<strong>機場多普勒天氣雷達利用多普勒原理，探測雷達方向的徑向風速。</strong></li>
+<li>微下擊暴流的生命週期短，一般只維持約數分鐘。在雷暴活躍期間，雷達須作頻密掃描，以捕捉雷暴區氣流的急速變化。
+<ul>
+<li><img src="https://www.hko.gov.hk/tc/education/images/fig_00188_TDWR_1.jpg" srcset="/img/loading.gif" lazyload width="400" /></li>
+<li><img src="https://www.hko.gov.hk/tc/education/images/fig_00188_TDWR_2c.jpg" srcset="/img/loading.gif" lazyload width="400" /></li>
+</ul></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/education/meteorological-instruments/weather-radar/00187-extraordinary-lightning-protection-system-for-weather-radar-stations.html">天氣雷達站的非一般避雷系統 | 2013 | HKO</a>
+<ul>
+<li><strong>天文台一直遵守天氣雷達站避雷接地電阻必須不多於1歐姆的嚴格要求</strong>，以儘量減低受雷擊而影響雷達運作的機會。除了香港天文台，國際上也採用同等標準規範天氣雷達站的設計，世界氣象組織(WMO)轄下的儀器和觀測方法委員會(CIMO)在其IOM第88號報告[3]中便指出了這項要求。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/education/meteorological-instruments/weather-radar/00458-profiling-rain-areas-using-radar.html">利用雷達探測雨區的形相態 | 2015 | HKO</a>
+<ul>
+<li>天文台於2015年啟用新的<strong>大老山雙偏振多普勒雷達</strong>（圖二）。跟傳統的單偏振（電磁波的電場或磁場在單一平面上變化）雷達不同，新雷達能夠發射及<strong>接收水平和垂直兩個不同偏振方向的電磁波脈沖</strong>（圖三）。由於水滴的大小和冰的形態會導致不同偏振電磁波反射後的特性出現差異，利用水平和垂直偏振回波特性的差別，有助於判斷雨區的成分，以及雨量的多少。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/education/meteorological-instruments/weather-radar/00522-how-to-interpret-velocity-field-from-doppler-weather-radar.html">如何解讀多普勒天氣雷達的風場 | 2019 | HKO</a>
+<ul>
+<li>由於雨點會被風帶動，所以這是一個估算風速值頗好的方法。可是，<strong>必須注意的是此速度是沿著雷達波束方向的風的分量，即徑向風速</strong>。若風與雷達波束平行，徑向風速的值與真實風速相等，若風與雷達波束成垂直方向，徑向風速的值會變為零。徑向風速為零的線稱為零徑速線。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/education/weather/weather-phenomena/00550-hail-and-hook-echo.html">冰雹與鈎狀回波 | 2020 | HKO</a>
+<ul>
+<li>冰雹是強雷暴中產生的大冰粒。強雷暴出現時，大氣的垂直運動十分猛烈。由於大氣對流層的温度一般隨高度增加而下降，當較暖濕空氣上升時，空氣中的水分會遇冷凝結。<strong>由於上升氣流猛烈，水汽會被帶到凍結層以上並不斷打滾，凝結成冰粒。打滾過程冰粒不斷吸收水分，像＂雪球＂般越滾越大，最後當上升氣流不能再承托冰粒重量時，這些超重的冰粒便會跌落地面，形成落雹</strong>[1]（圖二）。
+<ul>
+<li><img src="https://www.hko.gov.hk/tc/education/weather/weather-phenomena/images/fig_00550-Fig2_hailprocess.png" srcset="/img/loading.gif" lazyload alt="圖二 強雷暴引致落雹的過程。" width="400" /></li>
+</ul></li>
+<li>天氣雷達是天文台監測冰雹的主要工具，雷達圖所顯示的回波反射率及其形狀為識別冰雹提供了重要線索。冰雹形成於強雷暴中，在雷達圖中除了有很強的回波反射率外，有時甚至會出現一種呈＂鈎＂狀的回波結構，稱為「鈎狀回波」，如2014年3月30日晚上的<strong>雷達圖便出現了清晰可見的鈎狀回波特徵</strong>（圖三）。
+<ul>
+<li><img src="https://www.hko.gov.hk/tc/education/weather/weather-phenomena/images/fig_00550-Fig3_radar.png" srcset="/img/loading.gif" lazyload /></li>
+</ul></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/education/meteorological-instruments/weather-radar/00689-application-of-phased-array-weather-radar-in-monitoring-inclement-weather.html">應用相控陣天氣雷達監測惡劣天氣 | 2023 | HKO</a>
+<ul>
+<li>「相控陣天氣雷達」(Phased Array Weather Radar (PAWR)) 是「相位控制陣列天氣雷達」的簡稱，它由眾多獨立控制的小型天線收發單元組成，並排列成天線陣面，<strong>通過控制各單元發射無線電波的相位差來改變雷達波束的發射方向</strong>。相控陣雷達的優點是體積細小，可同時發射多個波束，利用機械及電子掃描方法在最短1分鐘內完成分層最高達68層的立體掃描，比現有的大帽山及大老山天氣雷達分別6分鐘和12層的掃描加密達5至6倍，可提供時間和空間上更高解像度的雷達圖像，幫助監測快速演變的中尺度惡劣天氣，如局地暴雨、冰雹和龍捲風等。</li>
+<li>天文台位於大欖角的機場多普勒天氣雷達於2018年8月29日早上成功偵察到一個在馬灣附近發展的<strong>水龍捲</strong>。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/%E6%9C%80%E6%96%B0%E6%B6%88%E6%81%AF/108809/%E3%80%8E%E6%B0%A3%E8%B1%A1%E5%86%B7%E7%9F%A5%E8%AD%98%E3%80%8F%EF%BC%9A%E6%96%B0%E5%A4%A7%E5%B8%BD%E5%B1%B1%E5%A4%A9%E6%B0%A3%E9%9B%B7%E9%81%94">『氣象冷知識』：新大帽山天氣雷達 | 2024 | HKO</a>
+<ul>
+<li>自1999年起服務香港24年的大帽山天氣雷達已於去年底退役，<strong>並於今年換上更先進的雙偏振S波段多普勒天氣雷達</strong>。新雷達的安裝過程橫跨冬、春二季，天文台同事及工作人員從零下兩度的寒風，到潮濕大霧的春天，均日以繼夜緊守全港最高山峰辛勤工作，最終成功在雨季來臨前完成安裝新雷達，支援天文台監測惡劣天氣。最新一集『氣象冷知識』會帶大家前往大帽山雷達重地，由科學主任和雷達機械師揭開新雷達安裝的難忘歷程。</li>
+<li><strong>香港天文台新大帽山天氣雷達已於2024年3月完成安裝，並正式投入業務運作</strong>，提供重要的觀測數據監測各類惡劣天氣，包括雷暴、暴雨和熱帶氣旋。<strong>新雷達是香港第二台雙偏振 S 波段多普勒天氣雷達</strong>，可更精確監測冰雹和降雨率，並配備更先進的硬件和軟件，提供更高質量的雷達產品以支援天氣分析。新雷達與大老山雷達24 小時全天候協同運作來監測惡劣天氣。</li>
+<li><iframe width="560" height="315" src="https://www.youtube.com/embed/5fthr7X0mik" title="新大帽山天氣雷達" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/education/meteorological-instruments/weather-radar/00729-Phased-Array-Weather-Radar-and-Low-Altitude-Weather.html">相控陣天氣雷達與低空天氣 | 2025 | HKO</a>
+<ul>
+<li><strong>天文台於2021年在沙螺灣設置了一台相控陣天氣雷達 (Phased Array Weather Radar (PAWR))</strong>，經過3年多的運作，證實能有效探測對本港具高影響的惡劣天氣，為未來籌建掃描範圍覆蓋全港的相控陣天氣雷達網絡打下堅實的科學基礎。</li>
+<li>沙螺灣相控陣天氣雷達可在<strong>一分鐘內完成最高達68層的立體掃描，並提供空間解像度低至30米</strong>的雷達圖像。相比之下，天文台兩台分別在<strong>大帽山和大老山的長程雷達需6分鐘完成12層立體掃描，雷達圖像空間解像度為150米</strong>。</li>
+<li>相比大帽山和大老山的長程天氣雷達，相控陣天氣雷達可以六分之一的時間及五倍的解像度完成對大氣的立體掃描，能有效捕捉快速變化的惡劣天氣如龍捲風、冰雹、強烈雷暴及其引發的強陣風。</li>
+</ul></li>
+</ul>
+<h2 id="課程">課程</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/en/education/edu03course/coursenotes/files/radar_satellite_notes.pdf">天氣雷達及衛星圖像基礎講座.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/en/wxinfo/radars/radar_gallery/files/Radar-50years.pdf">香港天氣雷達觀測五十周年紀念 | 1959-2009</a>
+<ul>
+<li><img src="https://i.imgur.com/jHCknCO.png" srcset="/img/loading.gif" lazyload width="300" /></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.meteam.org/lecture/tutors/tutor(v1).pdf">氣象章課程 – 教導組（童軍支部）</a></li>
+</ul>
+<h2 id="hko-reprint">HKO Reprint</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/en/publica/reprint/files/r523.pdf">多普勒激光雷達在香港國際機場的應用 | 2023</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/en/publica/reprint/files/r774.pdf">Dual Doppler radar analysis of 3-dimensional winds for heavy rain events in southern China | 2008</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/hko/publica/reprint/r1339.pdf">利用 S 波段遠程天氣雷達作快速掃描監測暴雨及熱帶氣旋發展之初探 | 2018 年 1 月</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/hko/publica/reprint/r1357.pdf">利用大帽山天氣雷達快速掃瞄資料進行對流尺度循環集合同化 | 2019</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/aviat/articles/files/17th_gd_hk_macao_article_2.pdf">多普勒激光雷達在熱帶氣旋方面的觀測</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/hko/publica/reprint/r368.pdf">REMOTE-SENSING THE WEATHER TO SUPPORT THE HONG KONG AIRPORT</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/sites/default/files/elibrary/2009/15178-hong-kong-observatorys-operational-data-management-systems.pdf">The Hong Kong Observatory’s Operational Data Management Systems | 2009</a></li>
+</ul>
+<h2 id="hko-observations">HKO Observations</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.hko.gov.hk/tc/wxinfo/radars/radar_range1.htm">HKO | 天氣雷達圖像 (64 公里範圍, 3 公里高)</a></li>
+<li><a target="_blank" rel="noopener" href="https://envf.ust.hk/dataview/hko_radar/current/">Radar Images from Hong Kong Observatory | HKUST</a></li>
+</ul>
+<h2 id="hko-literature-review">HKO Literature Review</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.mdpi.com/2076-3417/15/4/2223">Chan Y-w, Chan P-w, Cheung P. Observation of Downburst Associated with Intense Thunderstorms Encountered by an Aircraft at Hong Kong International Airport. Applied Sciences. 2025; 15(4):2223. https://doi.org/10.3390/app15042223</a>
+<ul>
+<li>Three-dimensional wind field retrieval has been conducted from the radars, and the wind data so obtained are compared with the vertical velocity and eddy dissipation rate measured onboard the aircraft during the encountering of two <strong>microbursts</strong>.</li>
+<li><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/L1m8XkL.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/PV1XcQV.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/xjC2wWn.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"></div></div></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="http://www.iapjournals.ac.cn/aas/article/doi/10.1007/s00376-024-3286-8">Yang, Z. W., P. W. Chan, Y. W. Chan, K. Zhao, H. Q. Chen, C. R. Chen, and Y. Y. Xu, 2025: Application of three-dimensional wind fields and dual-polarization signals of an X-band Phased Array Weather Radar in diagnosing vertical motion and cloud electrification in convective storms. Adv. Atmos. Sci., 42(5), 968−980, https://doi.org/10.1007/s00376-024-3286-8.</a>
+<ul>
+<li><strong>香港天文台于2021年在沙螺湾 (Sha Lo Wan (SLW)) 气流剖析仪站部署了一部X波段相控阵天气雷达 (X-band dual-polarization Phased Array Weather Radar (PAWR) )</strong>，以提升对香港高影响天气的监测能力。该相控阵雷达具备快速立体扫描能力，<strong>可在1分钟内完成对目标区域的扫描，空间分辨率达到30米</strong>。本研究利用沙螺湾相控阵雷达所提供的双偏振参数，包括差分反射率(<span class="math inline">\(Z_{DR}\)</span>) 、差传播相位常数（<span class="math inline">\(K_{DP}\)</span>) 及粒子相态分类产品，结合数据变分同化技术构建的三维风场，对<strong>中尺度对流风暴的垂直运动和闪电特性进行了深入分析</strong>，并验证沙螺湾相控阵雷达的观测数据。本研究选取分别发生在2022年9月18日及2023年6月17日的两个中尺度对流风暴事件作为研究个例。</li>
+<li>In addition to the <strong>SLW PAWR</strong>, <strong>HKO’s S-band radars at Tai Mo Shan (TMS) and Tate’s Cairn (TC)</strong>, as well as the <strong>C-band Terminal Doppler Weather Radar (TDWR) at Brothers Point (BP)</strong> and the dense automatic weather station (AWS) network operated by HKO are used for analysis in the aforementioned <strong>two mesoscale convective storms (MCS) cases</strong>.
+<ul>
+<li><img src="https://i.imgur.com/L1m8XkL.png" srcset="/img/loading.gif" lazyload width="400" /></li>
+<li><img src="https://i.imgur.com/o6Dh12x.png" srcset="/img/loading.gif" lazyload width="400" /></li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="wrf">WRF</h1>
+<h2 id="wrf_dbz">wrf_dbz</h2>
+<p>Calculates simulated equivalent radar reflectivity factor [dBZ] from WRF model output. <a target="_blank" rel="noopener" href="https://www.ncl.ucar.edu/Document/Functions/Built-in/wrf_dbz.shtml">link</a></p>
+<p>This function computes equivalent reflectivity factor [dBZ] at each model grid point assuming spherical particles of constant density, with exponential size distributions. This function is based on <strong>“dbzcalc.f” in RIP</strong>.</p>
+<ul>
+<li><code>dbz = wrf_user_getvar(a,"dbz",-1)</code> ; calculate dbz for all times in file</li>
+<li><code>mdbz = wrf_user_getvar(a,"mdbz",-1)</code> ; calculate max dbz for all times in file</li>
+</ul>
+<h1 id="mpas">MPAS</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/core_atmosphere/physics/mpas_atmphys_driver_microphysics.F#L656">src/core_atmosphere/physics/mpas_atmphys_driver_microphysics.F#L656</a></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!MPAS driver for parameterization of cloud microphysics processes.</span><br><span class="hljs-comment">!Laura D. Fowler (send comments to laura@ucar.edu).</span><br><span class="hljs-comment">!2013-05-01.</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">! subroutines in mpas_atmphys_driver_microphysics:</span><br><span class="hljs-comment">! ------------------------------------------------</span><br><span class="hljs-comment">! allocate_microphysics     : allocate local arrays for parameterization of cloud microphysics.</span><br><span class="hljs-comment">! deallocate_microphysics   : deallocate local arrays for parameterization of cloud microphysics.</span><br><span class="hljs-comment">! microphysics_init         : initialization of individual cloud microphysics schemes.</span><br><span class="hljs-comment">! driver_microphysics       : main driver (called from mpas_atm_time_integration).</span><br><span class="hljs-comment">! precip_from_MPAS          : initialize timestep local arrays for precipitation.</span><br><span class="hljs-comment">! precip_to_MPAS            : copy local arrays to MPAS arrays.</span><br><span class="hljs-comment">! compute_radar_reflectivity: compute radar reflectivities.</span><br><span class="hljs-comment">! compute_relhum            : compute relative humidity.</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">! WRF physics called from microphysics_driver:</span><br><span class="hljs-comment">! --------------------------------------------</span><br><span class="hljs-comment">! * module_mp_kessler : Kessler cloud microphysics.</span><br><span class="hljs-comment">! * module_mp_thompson: Thompson cloud microphysics.</span><br><span class="hljs-comment">! * module_mp_wsm6    : WSM6 cloud microphysics.</span><br>...<br>       <span class="hljs-keyword">do</span> j = jts,jte<br>       <span class="hljs-keyword">do</span> i = its,ite<br>          <span class="hljs-keyword">do</span> k = kts,kte<br>             p1d(k) = pres_p(i,k,j)<br>             t1d(k) = th_p(i,k,j) * pi_p(i,k,j)<br>             qv1d(k)  = qv_p(i,k,j)<br>             qr1d(k)  = qr_p(i,k,j)<br>             qs1d(k)  = qs_p(i,k,j)<br>             qg1d(k)  = qg_p(i,k,j)<br>             dBZ1d(k) = -<span class="hljs-number">35._RKIND</span><br>             zp(k) = z_p(i,k,j) - z_p(i,<span class="hljs-number">1</span>,j) + <span class="hljs-number">0.5</span>*dz_p(i,k,j) <span class="hljs-comment">! height AGL</span><br>          <span class="hljs-keyword">enddo</span><br><br>          <span class="hljs-keyword">call</span> refl10cm_wsm6(qv1d,qr1d,qs1d,qg1d,t1d,p1d,dBZ1d,kts,kte)<br><br>          kp = <span class="hljs-number">1</span><br>          <span class="hljs-keyword">do</span> k = kts,kte<br>             dBZ1d(k) = <span class="hljs-built_in">max</span>(-<span class="hljs-number">35._RKIND</span>,dBZ1d(k))<br>             <span class="hljs-keyword">if</span>(zp(k) <span class="hljs-keyword">.lt.</span> <span class="hljs-number">1000.</span>) kp = k<br>          <span class="hljs-keyword">enddo</span><br>          refl10cm_max(i) = <span class="hljs-built_in">maxval</span>(dBZ1d(:))<br>          w1 = (zp(kp+<span class="hljs-number">1</span>)-<span class="hljs-number">1000.</span>)/(zp(kp+<span class="hljs-number">1</span>)-zp(kp))<br>          w2 = <span class="hljs-number">1.0</span> - w1<br>          refl10cm_1km(i) = w1*dBZ1d(kp) + w2*dBZ1d(kp+<span class="hljs-number">1</span>)<br>          refl10cm_1km_max(i) = <span class="hljs-built_in">max</span>(refl10cm_1km_max(i),refl10cm_1km(i))<br>       <span class="hljs-keyword">enddo</span><br>       <span class="hljs-keyword">enddo</span><br>...<br></code></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;refl10cm_max&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;dBZ&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;10 cm maximum radar reflectivity&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;mp_thompson_in;mp_thompson_aers_in;mp_wsm6_in&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;refl10cm_1km&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;dBZ&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;diagnosed 10 cm radar reflectivity at 1 km AGL&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;mp_thompson_in;mp_thompson_aers_in;mp_wsm6_in&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;refl10cm_1km_max&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;dBZ&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;maximum diagnosed 10 cm radar reflectivity at 1 km AGL since last output time&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">packages</span>=<span class="hljs-string">&quot;mp_thompson_in;mp_thompson_aers_in;mp_wsm6_in&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">
+        <div class="fold-arrow">▶</div>mpas_atmphys_driver_microphysics.F#L656
+      </div>
+      <div class="fold-collapse collapse" id="collapse-6ae3e036">
+        <div class="fold-content">
+          <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!=================================================================================================================</span><br> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> compute_radar_reflectivity(configs,diag_physics,its,ite)<br><span class="hljs-comment">!=================================================================================================================</span><br><br><span class="hljs-comment">!input arguments:</span><br> <span class="hljs-keyword">type</span>(mpas_pool_type),<span class="hljs-keyword">intent</span>(<span class="hljs-keyword">in</span>):: configs<br> <span class="hljs-keyword">integer</span>,<span class="hljs-keyword">intent</span>(<span class="hljs-keyword">in</span>):: its,ite<br><br><span class="hljs-comment">!inout arguments:</span><br> <span class="hljs-keyword">type</span>(mpas_pool_type),<span class="hljs-keyword">intent</span>(inout):: diag_physics<br><br><span class="hljs-comment">!local pointers:</span><br> <span class="hljs-keyword">character</span>(len=StrKIND),<span class="hljs-keyword">pointer</span>:: microp_scheme<br> <span class="hljs-keyword">real</span>(<span class="hljs-keyword">kind</span>=RKIND),<span class="hljs-keyword">dimension</span>(:),<span class="hljs-keyword">pointer</span>:: refl10cm_max,refl10cm_1km,refl10cm_1km_max<br><br><span class="hljs-comment">!local variables and arrays:</span><br> <span class="hljs-keyword">integer</span>:: i,j,k,kp<br> <span class="hljs-keyword">real</span>(<span class="hljs-keyword">kind</span>=RKIND),<span class="hljs-keyword">dimension</span>(:),<span class="hljs-keyword">allocatable</span>:: qv1d,qc1d,qr1d,qs1d,qg1d,t1d,p1d,nr1d,dBZ1d,zp<br> <span class="hljs-keyword">real</span>(<span class="hljs-keyword">kind</span>=RKIND):: w1,w2<br><br><span class="hljs-comment">!-----------------------------------------------------------------------------------------------------------------</span><br><br> <span class="hljs-keyword">call</span> mpas_pool_get_config(configs,<span class="hljs-string">&#x27;config_microp_scheme&#x27;</span>,microp_scheme)<br><br> <span class="hljs-keyword">call</span> mpas_pool_get_array(diag_physics,<span class="hljs-string">&#x27;refl10cm_max&#x27;</span>,refl10cm_max)<br> <span class="hljs-keyword">call</span> mpas_pool_get_array(diag_physics,<span class="hljs-string">&#x27;refl10cm_1km&#x27;</span>,refl10cm_1km)<br> <span class="hljs-keyword">call</span> mpas_pool_get_array(diag_physics,<span class="hljs-string">&#x27;refl10cm_1km_max&#x27;</span>,refl10cm_1km_max)<br><br> microp_select: <span class="hljs-keyword">select</span> <span class="hljs-keyword">case</span>(<span class="hljs-built_in">trim</span>(microp_scheme))<br>    <span class="hljs-keyword">case</span> (<span class="hljs-string">&quot;mp_kessler&quot;</span>)<br>       <span class="hljs-keyword">call</span> physics_error_fatal(<span class="hljs-string">&#x27;--- calculation of radar reflectivity is not available&#x27;</span> // &amp;<br>                                 <span class="hljs-string">&#x27;with kessler cloud microphysics&#x27;</span>)<br><br>    <span class="hljs-keyword">case</span> (<span class="hljs-string">&quot;mp_wsm6&quot;</span>)<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(p1d)  ) <span class="hljs-built_in">allocate</span>(p1d(kts:kte)  )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(t1d)  ) <span class="hljs-built_in">allocate</span>(t1d(kts:kte)  )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qv1d) ) <span class="hljs-built_in">allocate</span>(qv1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qr1d) ) <span class="hljs-built_in">allocate</span>(qr1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qs1d) ) <span class="hljs-built_in">allocate</span>(qs1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qg1d) ) <span class="hljs-built_in">allocate</span>(qg1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(dBz1d)) <span class="hljs-built_in">allocate</span>(dBZ1d(kts:kte))<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(zp)   ) <span class="hljs-built_in">allocate</span>(zp(kts:kte)   )<br><br>       <span class="hljs-keyword">do</span> j = jts,jte<br>       <span class="hljs-keyword">do</span> i = its,ite<br>          <span class="hljs-keyword">do</span> k = kts,kte<br>             p1d(k) = pres_p(i,k,j)<br>             t1d(k) = th_p(i,k,j) * pi_p(i,k,j)<br>             qv1d(k)  = qv_p(i,k,j)<br>             qr1d(k)  = qr_p(i,k,j)<br>             qs1d(k)  = qs_p(i,k,j)<br>             qg1d(k)  = qg_p(i,k,j)<br>             dBZ1d(k) = -<span class="hljs-number">35._RKIND</span><br>             zp(k) = z_p(i,k,j) - z_p(i,<span class="hljs-number">1</span>,j) + <span class="hljs-number">0.5</span>*dz_p(i,k,j) <span class="hljs-comment">! height AGL</span><br>          <span class="hljs-keyword">enddo</span><br><br>          <span class="hljs-keyword">call</span> refl10cm_wsm6(qv1d,qr1d,qs1d,qg1d,t1d,p1d,dBZ1d,kts,kte)<br><br>          kp = <span class="hljs-number">1</span><br>          <span class="hljs-keyword">do</span> k = kts,kte<br>             dBZ1d(k) = <span class="hljs-built_in">max</span>(-<span class="hljs-number">35._RKIND</span>,dBZ1d(k))<br>             <span class="hljs-keyword">if</span>(zp(k) <span class="hljs-keyword">.lt.</span> <span class="hljs-number">1000.</span>) kp = k<br>          <span class="hljs-keyword">enddo</span><br>          refl10cm_max(i) = <span class="hljs-built_in">maxval</span>(dBZ1d(:))<br>          w1 = (zp(kp+<span class="hljs-number">1</span>)-<span class="hljs-number">1000.</span>)/(zp(kp+<span class="hljs-number">1</span>)-zp(kp))<br>          w2 = <span class="hljs-number">1.0</span> - w1<br>          refl10cm_1km(i) = w1*dBZ1d(kp) + w2*dBZ1d(kp+<span class="hljs-number">1</span>)<br>          refl10cm_1km_max(i) = <span class="hljs-built_in">max</span>(refl10cm_1km_max(i),refl10cm_1km(i))<br>       <span class="hljs-keyword">enddo</span><br>       <span class="hljs-keyword">enddo</span><br><br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(p1d)  ) <span class="hljs-built_in">deallocate</span>(p1d  )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(t1d)  ) <span class="hljs-built_in">deallocate</span>(t1d  )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qv1d) ) <span class="hljs-built_in">deallocate</span>(qv1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qr1d) ) <span class="hljs-built_in">deallocate</span>(qr1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qs1d) ) <span class="hljs-built_in">deallocate</span>(qs1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qg1d) ) <span class="hljs-built_in">deallocate</span>(qg1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(dBz1d)) <span class="hljs-built_in">deallocate</span>(dBZ1d)<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(zp)   ) <span class="hljs-built_in">deallocate</span>(zp   )<br><br>    <span class="hljs-keyword">case</span> (<span class="hljs-string">&quot;mp_thompson&quot;</span>,<span class="hljs-string">&quot;mp_thompson_aerosols&quot;</span>)<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(p1d)  ) <span class="hljs-built_in">allocate</span>(p1d(kts:kte)  )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(t1d)  ) <span class="hljs-built_in">allocate</span>(t1d(kts:kte)  )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qv1d) ) <span class="hljs-built_in">allocate</span>(qv1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qc1d) ) <span class="hljs-built_in">allocate</span>(qc1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qr1d) ) <span class="hljs-built_in">allocate</span>(qr1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qs1d) ) <span class="hljs-built_in">allocate</span>(qs1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(qg1d) ) <span class="hljs-built_in">allocate</span>(qg1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(nr1d) ) <span class="hljs-built_in">allocate</span>(nr1d(kts:kte) )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(dBz1d)) <span class="hljs-built_in">allocate</span>(dBZ1d(kts:kte))<br>       <span class="hljs-keyword">if</span>(<span class="hljs-keyword">.not.</span><span class="hljs-built_in">allocated</span>(zp)   ) <span class="hljs-built_in">allocate</span>(zp(kts:kte)   )<br><br>       <span class="hljs-keyword">do</span> j = jts,jte<br>       <span class="hljs-keyword">do</span> i = its,ite<br>          <span class="hljs-keyword">do</span> k = kts,kte<br>             p1d(k) = pres_p(i,k,j)<br>             t1d(k) = th_p(i,k,j) * pi_p(i,k,j)<br>             qv1d(k)  = qv_p(i,k,j)<br>             qc1d(k)  = qc_p(i,k,j)<br>             qr1d(k)  = qr_p(i,k,j)<br>             qs1d(k)  = qs_p(i,k,j)<br>             qg1d(k)  = qg_p(i,k,j)<br>             nr1d(k)  = nr_p(i,k,j)<br>             dBZ1d(k) = -<span class="hljs-number">35._RKIND</span><br>             zp(k) = z_p(i,k,j) - z_p(i,<span class="hljs-number">1</span>,j) + <span class="hljs-number">0.5</span>*dz_p(i,k,j) <span class="hljs-comment">! height AGL</span><br>          <span class="hljs-keyword">enddo</span><br><br>          <span class="hljs-keyword">call</span> calc_refl10cm(qv1d,qc1d,qr1d,nr1d,qs1d,qg1d,t1d,p1d,dBZ1d,kts,kte,i,j)<br><br>          kp = <span class="hljs-number">1</span><br>          <span class="hljs-keyword">do</span> k = kts,kte<br>             dBZ1d(k) = <span class="hljs-built_in">max</span>(-<span class="hljs-number">35._RKIND</span>,dBZ1d(k))<br>             <span class="hljs-keyword">if</span>(zp(k) <span class="hljs-keyword">.lt.</span> <span class="hljs-number">1000.</span>) kp = k<br>          <span class="hljs-keyword">enddo</span><br>          refl10cm_max(i) = <span class="hljs-built_in">maxval</span>(dBZ1d(:))<br>          w1 = (zp(kp+<span class="hljs-number">1</span>)-<span class="hljs-number">1000.</span>)/(zp(kp+<span class="hljs-number">1</span>)-zp(kp))<br>          w2 = <span class="hljs-number">1.0</span> - w1<br>          refl10cm_1km(i) = w1*dBZ1d(kp) + w2*dBZ1d(kp+<span class="hljs-number">1</span>)<br>          refl10cm_1km_max(i) = <span class="hljs-built_in">max</span>(refl10cm_1km_max(i),refl10cm_1km(i))<br>       <span class="hljs-keyword">enddo</span><br>       <span class="hljs-keyword">enddo</span><br><br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(p1d)  ) <span class="hljs-built_in">deallocate</span>(p1d  )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(t1d)  ) <span class="hljs-built_in">deallocate</span>(t1d  )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qv1d) ) <span class="hljs-built_in">deallocate</span>(qv1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qc1d) ) <span class="hljs-built_in">deallocate</span>(qc1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qr1d) ) <span class="hljs-built_in">deallocate</span>(qr1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qs1d) ) <span class="hljs-built_in">deallocate</span>(qs1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(qg1d) ) <span class="hljs-built_in">deallocate</span>(qg1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(nr1d) ) <span class="hljs-built_in">deallocate</span>(nr1d )<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(dBz1d)) <span class="hljs-built_in">deallocate</span>(dBZ1d)<br>       <span class="hljs-keyword">if</span>(<span class="hljs-built_in">allocated</span>(zp)   ) <span class="hljs-built_in">deallocate</span>(zp   )<br><br>    <span class="hljs-keyword">case</span> <span class="hljs-keyword">default</span><br> <span class="hljs-keyword">end</span> <span class="hljs-keyword">select</span> microp_select<br><br> <span class="hljs-keyword">end</span> <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> compute_radar_reflectivity<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/Meteorology/" class="print-no-link">#Meteorology</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | MPAS | Radar Reflectivity</div>
+      <div>https://waipangsze.github.io/2025/05/07/NWP-MPAS-Radar-Reflectivity/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 7, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>May 7, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/03/Barotropic-vs-Baroclinic-Atmosphere/" title="Barotropic vs. Baroclinic Atmosphere">
+                        <span class="hidden-mobile">Barotropic vs. Baroclinic Atmosphere</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

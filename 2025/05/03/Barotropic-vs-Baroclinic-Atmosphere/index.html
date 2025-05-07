@@ -1,0 +1,1098 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Barotropic vs. Baroclinic Atmosphere  Barotropic 正壓 Baroclinic 斜壓  正壓與斜壓的數學差異在於等壓面與等密度面是否平行：平行為正壓，不平行為斜壓。低緯度通常平行，高緯度則有夾角。可通過判斷 \(\nabla P \times \nabla \rho\) 是否為零來確認。 在大氣中討論正壓與斜壓時，通常聚焦於不穩定性，即正壓不穩定與斜壓">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Barotropic vs. Baroclinic Atmosphere">
+<meta property="og:url" content="https://waipangsze.github.io/2025/05/03/Barotropic-vs-Baroclinic-Atmosphere/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Barotropic vs. Baroclinic Atmosphere  Barotropic 正壓 Baroclinic 斜壓  正壓與斜壓的數學差異在於等壓面與等密度面是否平行：平行為正壓，不平行為斜壓。低緯度通常平行，高緯度則有夾角。可通過判斷 \(\nabla P \times \nabla \rho\) 是否為零來確認。 在大氣中討論正壓與斜壓時，通常聚焦於不穩定性，即正壓不穩定與斜壓">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/mEK5MFd.png">
+<meta property="article:published_time" content="2025-05-03T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-07T01:48:35.290Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/mEK5MFd.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Barotropic vs. Baroclinic Atmosphere - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/mEK5MFd.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Barotropic vs. Baroclinic Atmosphere"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-03 10:00" pubdate>
+          May 3, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Barotropic vs. Baroclinic Atmosphere</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="barotropic-vs.-baroclinic-atmosphere">Barotropic vs. Baroclinic Atmosphere</h1>
+<ul>
+<li>Barotropic 正壓</li>
+<li>Baroclinic 斜壓</li>
+</ul>
+<p>正壓與斜壓的數學差異在於等壓面與等密度面是否平行：平行為正壓，不平行為斜壓。低緯度通常平行，高緯度則有夾角。可通過判斷 <span class="math inline">\(\nabla P \times \nabla \rho\)</span> 是否為零來確認。</p>
+<p>在大氣中討論正壓與斜壓時，通常聚焦於不穩定性，即正壓不穩定與斜壓不穩定。不穩定是指在特定環境配置下，小擾動會持續放大。</p>
+<p><strong>正壓不穩定（水平風切）</strong>：<br />
+當渦度（類似角速度）變化劇烈時易發生。數學條件為存在一點，其南側渦度為負，北側為正（或相反），即渦度符號相反，反映強烈變化。<br />
+在熱帶，ITCZ南側風越過赤道轉為西南風，北側為東北風，形成強烈風切與渦度變化，促進小擾動成長，引發正壓不穩定。<br />
+熱帶氣旋（如颱風）中，眼區渦度小，眼牆渦度大，渦度變化劇烈，易形成正壓不穩定。</p>
+<p><strong>斜壓不穩定（垂直風切）</strong>：<br />
+由水平溫度梯度（如南北溫差大）驅動。根據熱力風平衡，大溫差導致強垂直風切，從而引發不穩定。</p>
+<h1 id="正壓與斜壓">正壓與斜壓</h1>
+<p>以下是對<strong>正壓</strong>（barotropic）與<strong>斜壓</strong>（baroclinic）條件、其數學差異以及在大氣不穩定性（正壓不穩定與斜壓不穩定）中角色的更詳細闡述，特別針對熱帶氣旋的相關性進行深入探討。</p>
+<hr />
+<h2 id="正壓與斜壓數學與物理上的區別"><strong>1. 正壓與斜壓：數學與物理上的區別</strong></h2>
+<p>正壓與斜壓的區別在於<strong>等壓面</strong>（isobaric surfaces，<span class="math inline">\(P = \text{常數}\)</span>）與<strong>等密度面</strong>（isopycnal surfaces，<span class="math inline">\(\rho = \text{常數}\)</span>）是否平行。這一關係決定了大氣流動的基本動力學特性。</p>
+<ul>
+<li><strong>正壓條件</strong>：
+<ul>
+<li><strong>定義</strong>：當等壓面與等密度面平行時，稱為正壓大氣。</li>
+<li><strong>數學判斷</strong>：壓力梯度（<span class="math inline">\(\nabla P\)</span>）與密度梯度（<span class="math inline">\(\nabla \rho\)</span>）平行，因此它們的叉積為零： <span class="math display">\[
+\nabla P \times \nabla \rho = 0
+\]</span></li>
+<li><strong>物理意義</strong>：在正壓大氣中，等壓面上的密度不隨位置變化，這通常出現在溫度梯度微弱的地區，如低緯度（熱帶）。此時，大氣運動近似為二維流動，動力學主要由水平風切（wind shear）和渦度（vorticity，旋轉量）主導。</li>
+<li><strong>範例</strong>：在熱帶地區，由於溫度場較均勻，等壓面與等密度面幾乎平行，屬於正壓環境。</li>
+</ul></li>
+<li><strong>斜壓條件</strong>：
+<ul>
+<li><strong>定義</strong>：當等壓面與等密度面不平行，彼此形成夾角時，稱為斜壓大氣。</li>
+<li><strong>數學判斷</strong>：壓力梯度與密度梯度的叉積不為零： <span class="math display">\[
+\nabla P \times \nabla \rho \neq 0
+\]</span></li>
+<li><strong>物理意義</strong>：斜壓條件源於水平溫度梯度，導致等壓面上的密度變化。這在溫帶和高緯度較常見，因為這些地區存在顯著的溫度對比（例如極地冷空氣與副熱帶暖空氣之間），使等密度面相對於等壓面傾斜。</li>
+<li><strong>範例</strong>：在中緯度，急流（jet stream）與強烈的水平溫度梯度相關，導致斜壓條件和垂直風切。</li>
+</ul></li>
+<li><strong>地理分佈</strong>：
+<ul>
+<li><strong>低緯度（熱帶）</strong>：由於水平溫度梯度較弱，大氣通常為正壓，等壓面與等密度面平行。</li>
+<li><strong>高緯度（中至極地）</strong>：強烈的溫度梯度（例如極地冷空氣與副熱帶暖空氣之間）導致斜壓條件，等壓面與等密度面形成夾角。</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="大氣不穩定性正壓不穩定與斜壓不穩定"><strong>2. 大氣不穩定性：正壓不穩定與斜壓不穩定</strong></h2>
+<p>在大氣科學中，討論正壓與斜壓時，通常聚焦於<strong>不穩定性</strong>（instability），即在特定大氣配置下，小擾動（perturbations）可能指數增長，導致顯著的天氣現象，如氣旋、風暴或熱帶氣旋。不穩定性發生在滿足特定條件時，使擾動得以放大。</p>
+<h3 id="正壓不穩定與水平風切相關"><strong>正壓不穩定（與水平風切相關）</strong></h3>
+<ul>
+<li><strong>定義</strong>：正壓不穩定發生在正壓大氣中，當水平風切導致<strong>渦度</strong>（vorticity，類似角速度的旋轉量）梯度強烈變化時，小擾動會放大，形成波動或渦旋。</li>
+<li><strong>數學條件</strong>：
+<ul>
+<li>正壓不穩定需要渦度梯度的符號反轉。具體來說，對東西向（緯向，zonal）氣流，絕對渦度（absolute vorticity，<span class="math inline">\(\eta = \zeta + f\)</span>，其中<span class="math inline">\(\zeta\)</span>為相對渦度，<span class="math inline">\(f\)</span>為科氏力參數）的南北向（經向，meridional）梯度必須在某處改變符號： <span class="math display">\[
+\frac{\partial \eta}{\partial y} = 0 \text{，且兩側符號相反}
+\]</span></li>
+<li>這表示存在一個區域，北側渦度梯度為正，南側為負（或反之）。</li>
+</ul></li>
+<li><strong>物理機制</strong>：
+<ul>
+<li>強烈的水平風切形成高渦度和低渦度的區域，例如急流或剪切區，一側渦度為正，另一側為負。</li>
+<li>小擾動（例如波動）在這種剪切區中可從平均氣流中提取動能，導致擾動增長。</li>
+</ul></li>
+<li><strong>大氣中的範例</strong>：
+<ul>
+<li><strong>熱帶輻合帶（ITCZ）</strong>：在熱帶，ITCZ是貿易風匯聚的區域。夏季時，ITCZ南側的風在越過赤道後因科氏力轉為西南風，北側則為東北風，形成強烈的水平風切區，伴隨顯著的渦度梯度：
+<ul>
+<li>ITCZ南側：負渦度（南半球氣旋性）。</li>
+<li>ITCZ北側：正渦度（北半球氣旋性）。</li>
+<li>這種渦度梯度滿足正壓不穩定的條件，使小擾動（例如東風波）成長為較大的系統。</li>
+</ul></li>
+<li><strong>熱帶氣旋</strong>：在熱帶氣旋（如颱風）中，平靜的風眼渦度幾乎為零，而眼牆因快速旋轉具有極高渦度。這種劇烈的徑向渦度梯度為正壓不穩定提供了理想環境，小擾動（例如眼牆中的中尺度渦旋）可通過提取氣旋平均氣流的動能而增長，影響氣旋的結構或強度。</li>
+</ul></li>
+<li><strong>關鍵特徵</strong>：
+<ul>
+<li>正壓不穩定是純水平過程，不涉及垂直運動或溫度梯度。</li>
+<li>其能量來源是平均氣流的動能（風切），而非位能。</li>
+</ul></li>
+</ul>
+<h3 id="斜壓不穩定與垂直風切相關"><strong>斜壓不穩定（與垂直風切相關）</strong></h3>
+<ul>
+<li><strong>定義</strong>：斜壓不穩定發生在斜壓大氣中，當強烈的水平溫度梯度導致垂直風切時，擾動通過將位能轉化為動能而增長。</li>
+<li><strong>數學條件</strong>：
+<ul>
+<li>斜壓不穩定需要顯著的經向溫度梯度（<span class="math inline">\(\frac{\partial T}{\partial y}\)</span>）及其伴隨的垂直風切，這由<strong>熱力風平衡</strong>（thermal wind balance）描述： <span class="math display">\[
+\frac{\partial \mathbf{v}_g}{\partial z} \propto -\frac{\partial T}{\partial y}
+\]</span> 其中<span class="math inline">\(\mathbf{v}_g\)</span>為地轉風，<span class="math inline">\(z\)</span>為高度。</li>
+<li>必要條件通常通過<strong>Charney-Stern準則</strong>表達，涉及位渦（potential vorticity）梯度在溫度梯度存在時改變符號。</li>
+</ul></li>
+<li><strong>物理機制</strong>：
+<ul>
+<li>水平溫度梯度（例如南側暖空氣，北側冷空氣）導致對流層頂傾斜和垂直風切。</li>
+<li>擾動（例如波動）隨高度傾斜，可釋放儲存在溫度梯度中的可用位能（available potential energy），將其轉化為動能，促進擾動增長。</li>
+<li>這是一個三維過程，涉及水平和垂直運動（例如暖空氣上升，冷空氣下沉）。</li>
+</ul></li>
+<li><strong>大氣中的範例</strong>：
+<ul>
+<li><strong>中緯度氣旋</strong>：在中緯度，斜壓不穩定驅動溫帶氣旋的形成。極鋒（polar front）上的強溫度梯度（冷極地空氣與暖副熱帶空氣之間）在急流中產生垂直風切，促進波動增長。</li>
+<li><strong>急流動力學</strong>：急流的垂直風切與溫度梯度相關，是斜壓不穩定的熱點，導致天氣尺度天氣系統的發展。</li>
+</ul></li>
+<li><strong>關鍵特徵</strong>：
+<ul>
+<li>斜壓不穩定的能量來源是水平溫度梯度中的可用位能。</li>
+<li>它涉及垂直運動，對中緯度天氣系統至關重要。</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="熱帶氣旋的相關性"><strong>3. 熱帶氣旋的相關性</strong></h2>
+<p>熱帶氣旋（例如颱風、颶風）是複雜的系統，受正壓和斜壓過程的共同影響，但由於熱帶地區主要為正壓環境，正壓不穩定在其形成和增強中更為關鍵。</p>
+<ul>
+<li><strong>熱帶氣旋中的正壓不穩定</strong>：
+<ul>
+<li><strong>結構</strong>：熱帶氣旋的風眼平靜，渦度幾乎為零，而眼牆因劇烈旋轉具有高渦度。這種徑向渦度梯度的劇烈變化為正壓不穩定提供了條件。</li>
+<li><strong>機制</strong>：小擾動（例如眼牆中的中尺度渦旋）可通過從氣旋平均氣流中提取動能而增長，導致眼牆替換週期或不對稱結構的形成。</li>
+<li><strong>ITCZ的貢獻</strong>：ITCZ的強風切和渦度梯度為初始擾動（例如熱帶波）的發展提供了有利環境，這些擾動可通過正壓不穩定演變為熱帶氣旋。</li>
+<li><strong>範例</strong>：大西洋的東風波在ITCZ的正壓不穩定環境中放大，常成為颶風的前身。</li>
+</ul></li>
+<li><strong>斜壓影響</strong>：
+<ul>
+<li>雖然熱帶氣旋主要在正壓環境中形成，但斜壓效應在與中緯度系統的交互中可能發揮作用。例如：
+<ul>
+<li>當熱帶氣旋向高緯移動時，可能進入斜壓區（例如中緯度鋒面），引發溫帶轉換（extratropical transition）。在此過程中，斜壓不穩定可通過引入垂直風切和溫度梯度增強氣旋的發展。</li>
+<li>上層低壓槽（斜壓特徵）可通過增強氣旋的流出或引入垂直風切，調節熱帶氣旋的強度。</li>
+</ul></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="總結正壓與斜壓的關鍵差異與應用"><strong>4. 總結：正壓與斜壓的關鍵差異與應用</strong></h2>
+<table>
+
+<thead>
+<tr class="header">
+<th><strong>面向</strong></th>
+<th><strong>正壓不穩定</strong></th>
+<th><strong>斜壓不穩定</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>大氣條件</strong></td>
+<td>等壓面與等密度面平行 (<span class="math inline">\(\nabla P \times \nabla \rho = 0\)</span>)</td>
+<td>等壓面與等密度面不平行 (<span class="math inline">\(\nabla P \times \nabla \rho \neq 0\)</span>)</td>
+</tr>
+<tr class="even">
+<td><strong>驅動因素</strong></td>
+<td>水平風切（渦度梯度）</td>
+<td>水平溫度梯度（垂直風切）</td>
+</tr>
+<tr class="odd">
+<td><strong>能量來源</strong></td>
+<td>平均氣流的動能</td>
+<td>溫度梯度中的可用位能</td>
+</tr>
+<tr class="even">
+<td><strong>主要區域</strong></td>
+<td>熱帶（例如ITCZ、熱帶氣旋）</td>
+<td>中高緯度（例如急流、極鋒）</td>
+</tr>
+<tr class="odd">
+<td><strong>數學條件</strong></td>
+<td>渦度梯度改變符號 (<span class="math inline">\(\frac{\partial \eta}{\partial y} = 0\)</span>)</td>
+<td>位渦梯度在溫度梯度存在時改變符號</td>
+</tr>
+<tr class="even">
+<td><strong>範例</strong></td>
+<td>東風波、眼牆中尺度渦旋</td>
+<td>溫帶氣旋、急流波動</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>熱帶氣旋</strong>：主要由熱帶的正壓不穩定驅動，ITCZ或眼牆的渦度梯度扮演關鍵角色。斜壓不穩定在氣旋向溫帶轉換時變得重要。</li>
+<li><strong>數學工具</strong>：
+<ul>
+<li>正壓不穩定：分析渦度場（<span class="math inline">\(\zeta\)</span>）及其經向梯度。</li>
+<li>斜壓不穩定：檢查溫度梯度（<span class="math inline">\(\frac{\partial T}{\partial y}\)</span>）和熱力風平衡下的垂直風切。</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="補充說明"><strong>5. 補充說明</strong></h2>
+<ul>
+<li><strong>不穩定性的重要性</strong>：正壓和斜壓不穩定對理解天氣系統的發展至關重要。正壓不穩定主導熱帶地區的天氣現象（如熱帶波和氣旋），而斜壓不穩定則控制中緯度天氣（如風暴和鋒面）。</li>
+<li><strong>實際應用</strong>：
+<ul>
+<li><strong>天氣預報</strong>：識別易發生正壓不穩定的區域（如ITCZ剪切區）有助於預測熱帶氣旋的形成；斜壓不穩定則為中緯度風暴預報提供依據。</li>
+<li><strong>氣候背景</strong>：溫度梯度的變化（例如因全球暖化）可能影響斜壓不穩定的頻率或強度，從而改變中緯度天氣模式。</li>
+</ul></li>
+</ul>
+<p>需更深入的數學推導（例如正壓不穩定的 Rayleigh-Kuo 準則或斜壓不穩定的 Eady 模型），或針對特定面向（如熱帶氣旋動力學或中緯度風暴）的進一步探討！</p>
+<h1 id="reference">Reference</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://hackmd.io/@hchs-earthscience/ByXxg-mE5">正壓大氣vs.斜壓大氣</a></li>
+<li><a target="_blank" rel="noopener" href="https://conf.cwa.gov.tw/media/cwa_past_conferences/105/2016_ppt_all/Session/Session1/1-12-%E7%94%B1%E9%9D%9E%E5%9C%B0%E8%BD%89%E9%A2%A8%E6%95%88%E6%87%89%E6%8E%A2%E8%A8%8E%E5%8F%B0%E7%81%A3%E6%9A%A8%E6%9D%B1%E4%BA%9E%E5%9C%B0%E5%8D%80%E5%86%B7%E5%AD%A3%E4%B8%BB%E8%A6%81%E5%A4%A9%E6%B0%A3%E5%AF%A6%E5%8B%99%E7%A0%94%E7%A9%B6(105%E7%A0%94%E8%A8%8E%E6%9C%83)_%E6%9E%97%E5%AE%9A%E5%AE%9C.pdf">由非地轉風效應探討臺灣暨東亞地區冷季主要天氣實務研究 中央氣象局 預報中心 林定宜</a></li>
+<li><a target="_blank" rel="noopener" href="https://photino.cwa.gov.tw/rdcweb/lib/cd/cd07mb/MB/PDF/34/No.2/01.pdf">斜壓和正壓不穩定的介紹</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Meteorology/" class="category-chain-item">Meteorology</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Barotropic vs. Baroclinic Atmosphere</div>
+      <div>https://waipangsze.github.io/2025/05/03/Barotropic-vs-Baroclinic-Atmosphere/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 3, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>May 7, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/07/NWP-MPAS-Radar-Reflectivity/" title="NWP | MPAS | Radar Reflectivity">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">NWP | MPAS | Radar Reflectivity</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/29/MPAS-PGW-Literature-Review/" title="MPAS | PGW Literature Review">
+                        <span class="hidden-mobile">MPAS | PGW Literature Review</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
