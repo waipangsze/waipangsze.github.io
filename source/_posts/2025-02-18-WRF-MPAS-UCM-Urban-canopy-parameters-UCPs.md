@@ -2,7 +2,7 @@
 layout: post
 title: WRF | MPAS | UCM Urban canopy parameters (UCPs)
 categories: [WRF]
-tags: [WRF, MPAS, HPC, NWP, UCM, LCZs, UCPs]
+tags: [WRF, MPAS, HPC, NWP, UCM, LCZs, UCPs, HKO]
 author: wpsze
 date: 2025-02-18 16:22:00
 math: true

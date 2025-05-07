@@ -2,7 +2,7 @@
 layout: post
 title: WRF | Predicting lightning activity using WRF-ELEC model  
 categories: [WRF]
-tags: [WRF-ELEC, Lightning]
+tags: [WRF-ELEC, Lightning, HKO]
 author: wpsze
 math: true
 mathjax: true
