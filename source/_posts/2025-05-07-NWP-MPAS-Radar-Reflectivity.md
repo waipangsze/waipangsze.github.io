@@ -359,6 +359,16 @@ This function computes equivalent reflectivity factor [dBZ] at each model grid p
 ```
 {% endfold %}
 
+![](https://i.imgur.com/jMUSCCy.png)
+
+```ncl
+else if (variable_plotted .eq. "refl10cm_max") then
+    res@cnLevelSelectionMode = "ExplicitLevels"   ; set explicit contour levels
+    ;color = "WhiteBlueGreenYellowRed"
+    color = (/"#ffffff", "#01A0F6", "#07EBEC", "#6DFA3D", "#00D806", "#019000", "#FFFF00", "#E7BF00", "#FF9000", "#FF0000", "#D60001", "#C00000", "#FF00EF", "#9601B4", "#AD90F0"/) ; Total = 1+14
+    res@cnLevels    = (/5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70 /)   ; set levels for CMA
+```
+
 # Perplexity 的回答
 
 The key equations and concepts related to weather radar, especially for **S-band and C-band radars, radar reflectivity (Z), dBZ, and raindrop diameter** are as follows:
