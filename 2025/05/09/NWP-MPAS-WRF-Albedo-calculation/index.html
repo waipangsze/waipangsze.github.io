@@ -1,0 +1,1010 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Albedo  Description of albedo calculation | Aug 30, 2018               If you map data to the 24-category USGS data, then albedo will be given at the model start time, based on the LANDUSE.TBL. Since">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | MPAS | WRF| Albedo calculation">
+<meta property="og:url" content="https://waipangsze.github.io/2025/05/09/NWP-MPAS-WRF-Albedo-calculation/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Albedo  Description of albedo calculation | Aug 30, 2018               If you map data to the 24-category USGS data, then albedo will be given at the model start time, based on the LANDUSE.TBL. Since">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/pP0QkKo.png">
+<meta property="article:published_time" content="2025-05-09T02:10:00.000Z">
+<meta property="article:modified_time" content="2025-05-09T06:19:21.747Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="Meteorology">
+<meta property="article:tag" content="Albedo">
+<meta property="article:tag" content="static.nc">
+<meta property="article:tag" content="geogrid.exe">
+<meta property="article:tag" content="LANDUSE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/pP0QkKo.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | MPAS | WRF| Albedo calculation - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/pP0QkKo.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | MPAS | WRF| Albedo calculation"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-09 10:10" pubdate>
+          May 9, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | MPAS | WRF| Albedo calculation</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="albedo">Albedo</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/description-of-albedo-calculation.96/">Description of albedo calculation | Aug 30, 2018</a></li>
+</ul>
+<div class="note note-primary">
+            <ul><li>If you map data to the 24-category USGS data, then albedo will be given at the model start time, based on the LANDUSE.TBL. Since the initial value is dependent on the landuse type,</li><li>however, the <strong>Noah LSM</strong> does not use the albedo (or any other land properties) from the LANDUSE.TBL. <strong>It uses values from the VEGPARM.TBL, and albedo is computed based on vegetation fraction, and bounded by the max and min values given in the VEGPARM.TBL.</strong></li></ul>
+          </div>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/use-of-vegparm-tbl-and-landuse-tbl.73/">Use of VEGPARM.TBL and LANDUSE.TBL | Aug 30, 2018</a></li>
+</ul>
+<div class="note note-primary">
+            <ul><li>WRF</li><li>The LANDUSE.TBL was used by all land surface model (LSM) options prior to Version 3.1.</li><li>The <strong>VEGPARM.TBL is used by the Noah and RUC LSMs</strong>.</li><li>The <strong>PX LSM uses data defined in module_sf_ssib.F</strong>.</li><li><strong>The model reads fields from LANDUSE.TBL first, but then may be overwritten by values in VEGPARM.TBL if there is an overlap</strong>.</li></ul>
+          </div>
+<h2 id="landuse.tbl">LANDUSE.TBL</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/run/LANDUSE.TBL" class="uri">https://github.com/wrf-model/WRF/blob/master/run/LANDUSE.TBL</a></li>
+<li>ALBD: Surface albedo</li>
+<li>SLMO: Surface moisture availability</li>
+<li>SFEM: Surface emissivity</li>
+<li>SFZO: Surface roughness</li>
+<li>THERIN: Surface thermal inertia</li>
+<li>SFHC: Soil heat capacity</li>
+</ul>
+<p><img src="https://i.imgur.com/F8UBLRf.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h2 id="vegparm.tbl">VEGPARM.TBL</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/yyr/wrf/blob/master/run/VEGPARM.TBL" class="uri">https://github.com/yyr/wrf/blob/master/run/VEGPARM.TBL</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/phys/module_sf_noahdrv.F">WRF/phys/module_sf_noahdrv.F</a> <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!-----SPECIFY VEGETATION RELATED CHARACTERISTICS :</span><br><span class="hljs-comment">!             ALBBCK: SFC albedo (in percentage)</span><br><span class="hljs-comment">!                 Z0: Roughness length (m)</span><br><span class="hljs-comment">!             SHDFAC: Green vegetation fraction (in percentage)</span><br><span class="hljs-comment">!  <span class="hljs-doctag">Note:</span> The ALBEDO, Z0, and SHDFAC values read from the following table</span><br><span class="hljs-comment">!          ALBEDO, amd Z0 are specified in LAND-USE TABLE; and SHDFAC is</span><br><span class="hljs-comment">!          the monthly green vegetation data</span><br><span class="hljs-comment">!             CMXTBL: MAX CNPY Capacity (m)</span><br><span class="hljs-comment">!             NROTBL: Rooting depth (layer)</span><br><span class="hljs-comment">!              RSMIN: Mimimum stomatal resistance (s m-1)</span><br><span class="hljs-comment">!              RSMAX: Max. stomatal resistance (s m-1)</span><br><span class="hljs-comment">!                RGL: Parameters used in radiation stress function</span><br><span class="hljs-comment">!                 HS: Parameter used in vapor pressure deficit functio</span><br><span class="hljs-comment">!               TOPT: Optimum transpiration air temperature. (K)</span><br><span class="hljs-comment">!             CMCMAX: Maximum canopy water capacity</span><br><span class="hljs-comment">!             CFACTR: Parameter used in the canopy inteception calculati</span><br><span class="hljs-comment">!               SNUP: Threshold snow depth (in water equivalent m) that</span><br><span class="hljs-comment">!                     implies 100% snow cover</span><br><span class="hljs-comment">!                LAI: Leaf area index (dimensionless)</span><br><span class="hljs-comment">!             MAXALB: Upper bound on maximum albedo over deep snow</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!-----READ IN VEGETAION PROPERTIES FROM VEGPARM.TBL</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="description-of-min-and-max-albedo">Description of MIN and MAX albedo</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/description-of-min-and-max-albedo.99/">Description of MIN and MAX albedo | Aug 30, 2018</a></li>
+</ul>
+<div class="note note-primary">
+            <p>If you take a look in the <strong>WRF/run/VEGPARM.TBL</strong> file, you will see <strong>ALBEDOMIN</strong> and <strong>ALBEDOMAX</strong>, corresponding to each landuse type.</p><ul><li>The <strong>Noah LSM scheme</strong> reads this file, then calculates albedo based on the vegetation cover fraction, and the max/min albedo. For more details, you can see the file <em>WRF/phys/module_sf_noahlsm.F</em>.</li></ul>
+          </div>
+<h3 id="usemonalb-monthly-albedo">usemonalb (monthly albedo)</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/eeacb821626feb34c62c3c1e169594d886d13adb/run/README.namelist#L998" class="uri">https://github.com/wrf-model/WRF/blob/eeacb821626feb34c62c3c1e169594d886d13adb/run/README.namelist#L998</a></li>
+<li><strong>(recommended for sst_update=1)</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs namelist">sst_update                          = 0        ! time-varying sea-surface temp (0=no, 1=yes). If selected real <br>                                                 puts SST, XICE, ALBEDO and VEGFRA in wrflowinp_d01 file, and wrf updates <br>                                                 these from it at same interval as boundary file. Also requires<br>                                                 namelists in &amp;time_control: auxinput4_interval, auxinput4_end_h,<br>                                                 auxinput4_inname = &quot;wrflowinp_d&lt;domain&gt;&quot;, and io_form_auxinput4<br>usemonalb                           = .false.  ! use monthly albedo map instead of table value<br>                                                 (recommended for sst_update=1)<br>rdmaxalb                            = .true.   ! use snow albedo from geogrid; false means using values from table<br>rdlai2d                             = .false.  ! use LAI from input; false means using values from table<br>                                                 if sst_update=1, LAI will also be in wrflowinp file<br></code></pre></td></tr></table></figure>
+<h1 id="more">More,</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/modify-landuse-and-greenfrac.9479/#post-18194">Modify landuse and GREENFRAC | Aug 25, 2020</a>
+<ul>
+<li>As <strong>GREENFRAC</strong> is a 12-monthly field from geogrid, during the real.exe process, it will be interpolated to the model start time, and stored in the array "vegfra." It will also be included in wrflowinp_d* since you are using <strong>sst_update</strong>. As for modifying other variables, I guess it depends whether you think those particular variables will be affected in the area of your modifications.</li>
+<li><strong>ALBEDO12M</strong> isn't even actually used during real/wrf unless you set <code>usemonalb= .true.</code> in the namelist (it will be interpolated to <strong>"albbck" during real</strong>).</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/monthly-albedo.15849/">monthly albedo | Feb 19, 2024</a>
+<ul>
+<li>You are right that <strong>albedo over the ocean is not updated even if sst_update =1</strong>.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/HanXiang0721/Note-Numerical-Methods/blob/master/WRF%E4%B8%AD%E4%BF%AE%E6%94%B9%E5%8F%8D%E7%85%A7%E7%8E%87.md">WRF中修改反照率</a>
+<ul>
+<li>wrf本身的 albedo是根据 Vtable定的，所以是不停变化的。首先要将albedo改为月的 albedo，方法是在 namelist.input 中的 &amp;physics 中加入 usemonalb = .true.命令，然后就是利用ncl修改即可。在模式中单纯修改反照率，如果面积过大，就会造成地面平衡破坏太严重，模式易于崩溃。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2297389">如何在WRF中使用2020年（最新）土地利用类型数据集？</a>
+<ul>
+<li>WRF中土地利用类型最高分辨率是30s，且主要分为MODIS和USGS两种，<strong>其中MODIS数据是从2000年（有的也说是2001年）的MODIS卫星遥感数据</strong>，按照IGBP20分类标准得到的，<strong>总共有21类（含第21类—Lake）</strong>,<strong>USGS数据则是1992~1993年的，总共分为24类</strong>，具体类型可以参考userguide，这些数据时间都比较久远了，如果进行最新模拟的话相差20年了，所以进行了替换。</li>
+</ul></li>
+</ul>
+<h1 id="literature-review">Literature Review</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://photino.cwa.gov.tw/rdcweb/lib/cd/cd01conf/dissertation/2009-1/029.pdf">WRF模式東亞地區土地利用資料庫之更新與個案研究 | 交通部中央氣象署</a>
+<ul>
+<li><strong>USGS-24 vs MODIS-20</strong></li>
+<li><img src="https://i.imgur.com/IjGhY1M.png" srcset="/img/loading.gif" lazyload width="400" /></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="http://www.itpcas.cas.cn/new_kycg/new_kyjz/202204/t20220421_6434280.html">AAS：卫星产品改进WRF模式反照率方案极大提升了青藏高原降雪模拟能力 | 2022-04-21</a>
+<ul>
+<li>地表反照率表征地面对太阳辐射的吸收和反射能力，是地表能量平衡的关键参数。青藏高原冬春季降雪频繁，地表反照率在降雪和随后的积雪演变过程中剧烈变化，对地表能量平衡和水循环有很大影响。</li>
+<li>团队利用卫星遥感反演的反照率数据，综合考虑雪深和雪龄对反照率的影响，对Noah陆面过程模式中地表反照率方案进行青藏高原本地优化</li>
+<li><strong>模式采用改进的反照率方案显著降低青藏高原反照率的高估，显著提高 模拟反照率 与 卫星反演反照率 之间的相关性</strong>，改善了气温模拟的冷偏差，更准确模拟出强降雪的空间分布特征，并突破了Noah默认的反照率方案影响因子的局限性，为进一步改进反照率参数化方案提供参考，也为卫星遥感数据产品在数值模拟中的应用提供新视角。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.dlyj.ac.cn/CN/10.11821/dlyj020210005">陆云波, 王伦澈, 牛自耕, 王绍强, 王力哲. 2000—2017年中国区域地表反照率变化及其影响因子[J]. 地理研究, 2022, 41(2): 562-579 https://doi.org/10.11821/dlyj020210005</a>
+<ul>
+<li><img src="https://i.imgur.com/5LzNyNZ.png" srcset="/img/loading.gif" lazyload width="400" /></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="http://www.iapjournals.ac.cn/qhhj//article/qhyhjyj/2021/6/648">高婷, 沈润平, 李磊, 等. 2021. 基于MODIS数据地表反照率时空变化特征及影响因子研究[J]. 气候与环境研究, 26(6): 648−662. DOI: 10.3878/j.issn.1006-9585.2021.20160</a>
+<ul>
+<li>淮河流域地表反照率与归一化植被指数（Normalized Difference Vegetation Index，NDVI）、地表温度、气温和降水在大部分区域呈正相关</li>
+</ul></li>
+</ul>
+<h1 id="wrfda-crtm">WRFDA, CRTM</h1>
+<p>WRFDA observation operator H uses a <strong>radiative transfer model (e.g., CRTM or RTTOV)</strong> to <strong>compute brightness temperatures</strong> from model profiles of temperature, humidity, and surface properties like surface emissivity.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/api/citations/20230008420/downloads/CRTM%20BAMS%20Paper_Mar12_2023_Rev1a.docx" class="uri">https://ntrs.nasa.gov/api/citations/20230008420/downloads/CRTM%20BAMS%20Paper_Mar12_2023_Rev1a.docx</a></li>
+</ul>
+<p><strong>The CRTM surface model includes surface emissivity/reflectivity for various surface types</strong>, including snow, ice, land, and water/ocean.</p>
+<h1 id="mpas">MPAS</h1>
+<h2 id="noah-lsm">Noah LSM</h2>
+<p>The <strong>Noah LSM</strong> does not use the albedo (or any other land properties) from the LANDUSE.TBL. <strong>It uses values from the VEGPARM.TBL, and albedo is computed based on vegetation fraction, and bounded by the max and min values given in the VEGPARM.TBL.</strong></p>
+<h2 id="for-climatologically-varying-surface-albedo">for climatologically varying surface albedo</h2>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_sfc_albedo&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;-&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;logical for configuration of surface albedo&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">possible_values</span>=<span class="hljs-string">&quot;.true. for climatologically varying surface albedo; .false. for fixed input data&quot;</span>/&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_sfc_snowalbedo&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;-&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;logical for configuration of maximum surface albedo for snow&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">possible_values</span>=<span class="hljs-string">&quot;.true. for geographical distribution; .false. for fixed input data&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/N1zPer9.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/kGDTiGb.png" srcset="/img/loading.gif" lazyload alt="For climatologically varying surface albedo" /></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/Meteorology/" class="print-no-link">#Meteorology</a>
+      
+        <a href="/tags/Albedo/" class="print-no-link">#Albedo</a>
+      
+        <a href="/tags/static-nc/" class="print-no-link">#static.nc</a>
+      
+        <a href="/tags/geogrid-exe/" class="print-no-link">#geogrid.exe</a>
+      
+        <a href="/tags/LANDUSE/" class="print-no-link">#LANDUSE</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | MPAS | WRF| Albedo calculation</div>
+      <div>https://waipangsze.github.io/2025/05/09/NWP-MPAS-WRF-Albedo-calculation/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 9, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>May 9, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/07/NWP-MPAS-Radar-Reflectivity/" title="NWP | MPAS | Radar Reflectivity">
+                        <span class="hidden-mobile">NWP | MPAS | Radar Reflectivity</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
