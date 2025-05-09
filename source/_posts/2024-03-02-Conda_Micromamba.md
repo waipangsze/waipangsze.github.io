@@ -53,6 +53,8 @@ conda remove -n ENV_NAME --all
 # Micromamba
 Micromamba is a standalone version of Mamba which is an alternative to Conda. This stack delivers a custom anaconda/miniconda type deployment based on the communities conda-forge channel with micromamba as the package manager. For more information visit [micromamba documentation](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html).
 
+micromamba 是 mamba-org 基於 mamba 所構建的小型 docker 鏡像， mamba 是建立在 conda 上的升級版包管理工具，最主要的性能優化是可以多線程運行 conda，可以同時在選定的所有 conda channel 搜尋並下載安裝包，解決了 conda 下載緩慢的問題。
+
 ## Installation
 ```sh
 wget micro.mamba.pm/install.sh
