@@ -19,15 +19,15 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MPAS | mesh generation MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR&#x2F;MMM   來自 Perplexity 的回答 Comprehensive Guide to METIS Graph Partitioning and">
+    <meta name="description" content="MPAS | mesh generation MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR&#x2F;MMM   MPAS  MPAS partitioning 60-15 km mesh for 896 cores | May 10, 2019  gp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MPAS | graph.info">
 <meta property="og:url" content="https://waipangsze.github.io/2025/05/11/MPAS-graph-info/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="MPAS | mesh generation MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR&#x2F;MMM   來自 Perplexity 的回答 Comprehensive Guide to METIS Graph Partitioning and">
+<meta property="og:description" content="MPAS | mesh generation MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR&#x2F;MMM   MPAS  MPAS partitioning 60-15 km mesh for 896 cores | May 10, 2019  gp">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-05-11T06:24:00.000Z">
-<meta property="article:modified_time" content="2025-05-11T06:52:44.528Z">
+<meta property="article:modified_time" content="2025-05-11T09:38:22.328Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -353,7 +353,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          511 words
+          662 words
         
       </span>
     
@@ -364,7 +364,7 @@
         
         
         
-          5 mins
+          6 mins
         
       </span>
     
@@ -425,6 +425,89 @@ href="https://waipangsze.github.io/2025/02/17/MPAS-Variable-resolution-mesh-gene
 <li><a
 target="_blank" rel="noopener" href="http://www.gpsarc.ncu.edu.tw/MPAS2023/slide/MPAS_A/14-Mesh%20generation.pdf">MPAS-Atmosphere
 Mesh Generation | Michael G. Duda | NCAR/MMM</a></li>
+</ul>
+<hr />
+<h1 id="mpas">MPAS</h1>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/mpas-partitioning-60-15-km-mesh-for-896-cores.5414/">MPAS
+partitioning 60-15 km mesh for 896 cores | May 10, 2019</a>
+<ul>
+<li><code>gpmetis -minconn -contig -niter=200 x4.535554.graph.info 896</code></li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/gpmetis-error.19844/">gpmetis
+error | Nov 12, 2024</a>
+<ul>
+<li>Here's the part of the MPAS-Limited-Area tool that should be writing
+this connectivity info: <a
+target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Limited-Area/blob/v2.1/limited_area/mesh.py#L180-L186">MPAS-Limited-Area/limited_area/mesh.py
+at v2.1 · MPAS-Dev/MPAS-Limited-Area</a> .</li>
+<li>We've merge changes to support NumPy 2.x into the MPAS-Limited-Area
+main branch through <a
+target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Limited-Area/pull/47">MPAS-Dev/MPAS-Limited-Area
+PR #47</a>. Thanks again for finding this issue!</li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/where-can-we-find-the-metis-graph-partitioning-software-web-site-not-active.13661/#post-45758">Where
+can we find the metis graph-partitioning software? (Web site not active)
+| Jul 15, 2023</a>
+<ul>
+<li>The link in the user's guide (p. 12) to the METIS software (<a
+target="_blank" rel="noopener" href="http://glaros.dtc.umn.edu/gkhome/views/metis"
+class="uri">http://glaros.dtc.umn.edu/gkhome/views/metis</a>) doesn't go
+anywhere. It looks like the glaros.dtc.umn.edu site is no longer
+active.</li>
+<li>Thanks for spotting this. It looks like Metis is now available from
+a <a
+href="GitHub%20-%20KarypisLab/METIS:%20METIS%20-%20Serial%20Graph%20Partitioning%20and%20Fill-reducing%20Matrix%20Ordering">GitHub
+repository at: GitHub - KarypisLab/METIS: METIS - Serial Graph
+Partitioning and Fill-reducing Matrix Ordering</a> . It also appears
+that GKlib must first be installed before installing Metis; you can find
+GKlib at <a target="_blank" rel="noopener" href="https://github.com/KarypisLab/GKlib">GitHub -
+KarypisLab/GKlib: A library of various helper routines and frameworks
+used by many of the lab's software</a> .</li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/metis-decomposition.10600/">METIS
+Decomposition | Aug 2, 2021</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/3-km-mesh.276/#post-860">3-km
+mesh | Oct 15, 2018</a>
+<ul>
+<li>I've just added a link to the 3-km mesh files on the MPAS-Atmosphere
+mesh download page. The download only includes a few mesh partition
+files, so it will probably be necessary to install Metis
+(http://glaros.dtc.umn.edu/gkhome/metis/metis/overview) to create
+partition files appropriate to your machine. Here's an example command:
+<ul>
+<li><code>gpmetis -minconn -contig -niter=200 x1.65536002.graph.info 16384</code></li>
+</ul></li>
+<li><code>config_native_gwd_static = false</code></li>
+<li>Processing the static fields (especially the GWDO fields) for these
+larger meshes can be a bit tricky. I've found on Cheyenne, for example,
+that I need to undersubscribe nodes to gain access to enough aggregate
+memory, and I ended up processing terrain, land use, etc. separately
+from the GWDO fields.</li>
+<li>The GWDO processing is not memory efficient right now: each MPI rank
+reads in the entire 30-arc-second global terrain dataset, which is about
+3.7 GB when typecast into 32-bit reals. So, to avoid exceeding the
+amount of memory on any node, you'll need to use just a few MPI ranks
+per node. Unlike the terrain, land use, etc. fields, the GWDO fields
+don't require any special CVT partition file to be processed in
+parallel, so you can just use Metis to create an
+x1.65536002.graph.info.part.16 file as needed.</li>
+<li>Testing without the GWDO fields should be fine if you just set
+config_gwdo_scheme = 'off' in your &amp;physics namelist. The
+parameterization of gravity wave drag by orogoraphy may not be as
+important on a 3-km mesh, anyway. Any time you'd like to follow-up on
+the GWDO field processing, though, feel free to post here!</li>
+<li>Michael: thanks for your suggestion...that's what I figured. The GWD
+is probably not needed for the 3 km mesh.</li>
+</ul></li>
+<li><a
+target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/generating-2d-meshes-for-mountain-waves.409/#post-1254">Generating
+2D meshes for mountain waves | Nov 12, 2018</a></li>
 </ul>
 <hr />
 <h1 id="來自-perplexity-的回答">來自 Perplexity 的回答</h1>
@@ -666,16 +749,6 @@ into preprocessing tools or expanding METIS’s support for heterogeneous
 graph formats. For researchers and engineers, mastering
 <code>graph.info</code> generation is essential for harnessing METIS’s
 full potential in high-performance computing applications.</p>
-<h1 id="mpas">MPAS</h1>
-<ul>
-<li><a
-target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/mpas-partitioning-60-15-km-mesh-for-896-cores.5414/">MPAS
-partitioning 60-15 km mesh for 896 cores | May 10, 2019</a>
-<ul>
-<li><code>gpmetis -minconn -contig -niter=200 x4.535554.graph.info 896</code></li>
-</ul></li>
-<li></li>
-</ul>
 <h1 id="citations">Citations:</h1>
 <section class="footnotes">
 <div class="footnote-list">
