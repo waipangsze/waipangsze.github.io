@@ -19,6 +19,29 @@ banner_img:
 
 ---
 
+# MPAS
+
+- [MPAS partitioning 60-15 km mesh for 896 cores | May 10, 2019](https://forum.mmm.ucar.edu/threads/mpas-partitioning-60-15-km-mesh-for-896-cores.5414/)
+  - `gpmetis -minconn -contig -niter=200 x4.535554.graph.info 896`
+- [gpmetis error | Nov 12, 2024](https://forum.mmm.ucar.edu/threads/gpmetis-error.19844/)
+  - Here's the part of the MPAS-Limited-Area tool that should be writing this connectivity info: [MPAS-Limited-Area/limited_area/mesh.py at v2.1 · MPAS-Dev/MPAS-Limited-Area](https://github.com/MPAS-Dev/MPAS-Limited-Area/blob/v2.1/limited_area/mesh.py#L180-L186) .
+  - We've merge changes to support NumPy 2.x into the MPAS-Limited-Area main branch through [MPAS-Dev/MPAS-Limited-Area PR #47](https://github.com/MPAS-Dev/MPAS-Limited-Area/pull/47). Thanks again for finding this issue!
+- [Where can we find the metis graph-partitioning software? (Web site not active) | Jul 15, 2023](https://forum.mmm.ucar.edu/threads/where-can-we-find-the-metis-graph-partitioning-software-web-site-not-active.13661/#post-45758)
+  - The link in the user's guide (p. 12) to the METIS software (<http://glaros.dtc.umn.edu/gkhome/views/metis>) doesn't go anywhere. It looks like the glaros.dtc.umn.edu site is no longer active.
+  - Thanks for spotting this. It looks like Metis is now available from a [GitHub repository at: GitHub - KarypisLab/METIS: METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering](GitHub - KarypisLab/METIS: METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering) . It also appears that GKlib must first be installed before installing Metis; you can find GKlib at [GitHub - KarypisLab/GKlib: A library of various helper routines and frameworks used by many of the lab's software](https://github.com/KarypisLab/GKlib) .
+- [METIS Decomposition | Aug 2, 2021](https://forum.mmm.ucar.edu/threads/metis-decomposition.10600/)
+- [3-km mesh | Oct 15, 2018](https://forum.mmm.ucar.edu/threads/3-km-mesh.276/#post-860)
+  - I've just added a link to the 3-km mesh files on the MPAS-Atmosphere mesh download page. The download only includes a few mesh partition files, so it will probably be necessary to install Metis (http://glaros.dtc.umn.edu/gkhome/metis/metis/overview) to create partition files appropriate to your machine. Here's an example command:
+    - `gpmetis -minconn -contig -niter=200 x1.65536002.graph.info 16384`
+  - `config_native_gwd_static = false`
+  - Processing the static fields (especially the GWDO fields) for these larger meshes can be a bit tricky. I've found on Cheyenne, for example, that I need to undersubscribe nodes to gain access to enough aggregate memory, and I ended up processing terrain, land use, etc. separately from the GWDO fields.
+  - The GWDO processing is not memory efficient right now: each MPI rank reads in the entire 30-arc-second global terrain dataset, which is about 3.7 GB when typecast into 32-bit reals. So, to avoid exceeding the amount of memory on any node, you'll need to use just a few MPI ranks per node. Unlike the terrain, land use, etc. fields, the GWDO fields don't require any special CVT partition file to be processed in parallel, so you can just use Metis to create an x1.65536002.graph.info.part.16 file as needed.
+  - Testing without the GWDO fields should be fine if you just set config_gwdo_scheme = 'off' in your &physics namelist. The parameterization of gravity wave drag by orogoraphy may not be as important on a 3-km mesh, anyway. Any time you'd like to follow-up on the GWDO field processing, though, feel free to post here!
+  - Michael: thanks for your suggestion...that's what I figured. The GWD is probably not needed for the 3 km mesh.
+- [Generating 2D meshes for mountain waves | Nov 12, 2018](https://forum.mmm.ucar.edu/threads/generating-2d-meshes-for-mountain-waves.409/#post-1254)
+
+---
+
 # 來自 Perplexity 的回答
 
 # Comprehensive Guide to METIS Graph Partitioning and Generating graph.info Files  
@@ -170,12 +193,6 @@ For graphs exceeding memory limits:
 ## Conclusion  
 
 The `graph.info` file is a foundational component of METIS’s graph partitioning workflow, requiring meticulous attention to formatting rules. By adhering to the structured header and vertex line specifications, users can avoid common errors and leverage `gpmetis` to optimize computational workflows. Future enhancements could involve integrating automated validation directly into preprocessing tools or expanding METIS’s support for heterogeneous graph formats. For researchers and engineers, mastering `graph.info` generation is essential for harnessing METIS’s full potential in high-performance computing applications.
-
-# MPAS
-
-- [MPAS partitioning 60-15 km mesh for 896 cores | May 10, 2019](https://forum.mmm.ucar.edu/threads/mpas-partitioning-60-15-km-mesh-for-896-cores.5414/)
-  - `gpmetis -minconn -contig -niter=200 x4.535554.graph.info 896`
-- 
 
 # Citations:
 

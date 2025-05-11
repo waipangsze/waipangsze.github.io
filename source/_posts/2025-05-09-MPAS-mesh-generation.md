@@ -15,6 +15,7 @@ banner_img:
 
 - [**MPAS | Variable-resolution mesh generation**](https://waipangsze.github.io/2025/02/17/MPAS-Variable-resolution-mesh-generation/)
 - [MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR/MMM](http://www.gpsarc.ncu.edu.tw/MPAS2023/slide/MPAS_A/14-Mesh%20generation.pdf)
+- [**MPAS | graph.info**](https://waipangsze.github.io/2025/05/11/MPAS-graph-info/)
 
 ---
 
