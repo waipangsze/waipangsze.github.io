@@ -2,7 +2,7 @@
 layout: post
 title: MPAS | mesh generation
 categories: [MPAS]
-tags: [NWP, MPAS, WRF, Meteorology, mesh generation, MPAS-Tools, jigsaw, Lloyd iteration]
+tags: [NWP, MPAS, WRF, mesh generation, MPAS-Tools, jigsaw, Lloyd iteration]
 author: wpsze
 math: true
 mathjax: true
