@@ -117,6 +117,8 @@ Generating MPAS meshes is a complex process with several challenges:
 # 4) Use it with $ micromamba activate mpas-tools
 #
 # - To install jigsaw use conda https://github.com/dengwirda/jigsaw-geo-python/ )
+# 5) $ micromamba install conda-forge::jigsaw
+# 6) $ micromamba install conda-forge::jigsawpy
 ```
 
 {% fold info @dev-spec.yml  %}
@@ -174,15 +176,78 @@ planar_hex --nx=100 --ny=50 --dc=5000. --npx --npy --outFileName=mesh_5km.nc
 This creates a 5 km-resolution mesh spanning 100×50 grid cells, non-periodic in both directions[^4][^5]. The `dc` parameter specifies cell center-to-center distance. For periodic domains (e.g., channel flows), omit `--npx`/`--npy`.  
 
 ### Spherical Mesh Construction  
+
+The `mpas_tools.mesh.creation.build_mesh module` is used create an MPAS mesh using the **JIGSAW and JIGSAW-Python (jigsawpy) packages**.
+
 High-resolution global meshes require **JIGSAW**, a *computational geometry package integrated with MPAS-Tools*. A typical workflow involves:  
 
 1. Defining a **density function** controlling regional resolution[^7].  
 2. Generating initial seeds via Monte Carlo sampling[^7].  
 3. Iterative Lloyd relaxation to optimize cell centroids[^7].  
 
+- Here is a simple example script for creating a uniform MPAS mesh with 240-km resolution:
+  - Spherical meshes are constructed with the function `mpas_tools.mesh.creation.build_mesh.build_spherical_mesh()`. The user provides a 2D array `cellWidth` of cell sizes in kilometers along 1D arrays for the longitude and latitude (the cell widths must be on a lon/lat tensor grid) and the radius of the earth in meters.
+  - The result is an MPAS mesh file, called `base_mesh.nc` by default, as well as several intermediate files: `mesh.log`, `mesh-HFUN.msh`, `mesh.jig`, `mesh-MESH.msh`, `mesh.msh`, and `mesh_triangles.nc`.
+
 ```python  
-from mpas_tools.mesh.creation import jigsaw_to_netcdf  
-jigsaw_to_netcdf("input.msh", "global_mesh.nc", on_sphere=True, sphere_radius=6371e3)  
+#!/usr/bin/env python
+import numpy as np
+from mpas_tools.ocean import build_spherical_mesh
+
+
+def cellWidthVsLatLon():
+    """
+    Create cell width array for this mesh on a regular latitude-longitude grid.
+    Returns
+    -------
+    cellWidth : ndarray
+        m x n array of cell width in km
+    lon : ndarray
+        longitude in degrees (length n and between -180 and 180)
+    lat : ndarray
+        longitude in degrees (length m and between -90 and 90)
+    """
+    dlat = 10
+    dlon = 10
+    constantCellWidth = 240
+
+    nlat = int(180/dlat) + 1
+    nlon = int(360/dlon) + 1
+
+    lat = np.linspace(-90., 90., nlat)
+    lon = np.linspace(-180., 180., nlon)
+
+    cellWidth = constantCellWidth * np.ones((lat.size, lon.size))
+    return cellWidth, lon, lat
+
+
+def main():
+    cellWidth, lon, lat = cellWidthVsLatLon()
+    build_spherical_mesh(cellWidth, lon, lat, out_filename='base_mesh.nc')
+
+
+if __name__ == '__main__':
+    main() 
+```
+
+```console
+ $ ncdump -h base_mesh.nc 
+netcdf base_mesh {
+dimensions:
+	nCells = 10383 ;
+	nEdges = 31143 ;
+	nVertices = 20762 ;
+	maxEdges = 8 ;
+	maxEdges2 = 16 ;
+	TWO = 2 ;
+	vertexDegree = 3 ;
+	Time = UNLIMITED ; // (0 currently)
+variables:
+	double latCell(nCells) ;
+		latCell:long_name = "latitudes of cell centres" ;
+	double lonCell(nCells) ;
+		lonCell:long_name = "longitudes of cell centres" ;
+...
 ```
 
 ### Mesh Conversion and Validation  
@@ -281,122 +346,21 @@ ds_mesh.to_netcdf("uniform_50km.nc")
   - **output = "uniform_50km.nc"**
 - Don't use python automation because no **graph.info** is generated
 - Q: Difference between CLI and python?
-  - `-rw-rw-r-- 1 wpsze wpsze 69M May  9 16:39 python_uniform_500km.nc`
-  - `-rw-rw-r-- 1 wpsze wpsze 68M May  9 17:42 uniform_500km.nc`
+  - `-rw-rw-r-- 1 wpsze wpsze 69M May  9 16:39 python_uniform_50km.nc`
+  - `-rw-rw-r-- 1 wpsze wpsze 68M May  9 17:42 uniform_50km.nc`
 
 {% fold info @processing %}
 ```console
  $ python test.py 
-cullCell
-int32
-Running: MpasCellCuller.x /tmp/tmpnh29ojeu/ds_in.nc /tmp/tmpnh29ojeu/ds_out.nc
-
-
-************************************************************
-MPAS_CELL_CULLER:
-  C++ version
-  Remove cells/edges/vertices from a NetCDF MPAS Mesh file. 
-
-
-  Compiled on Apr 13 2025 at 19:31:04.
-************************************************************
-
-
-Reading input grid.
-Read dimensions:
-    nCells = 65884
-    nVertices = 131768
-    nEdges = 197652
-    vertexDegree = 3
-    maxEdges = 6
-    Spherical? = 0
-    Periodic? = 0
-Marking cells for removal.
-Removing 1084 cells.
-Marking vertices for removal.
-Removing 1088 vertices.
-Marking edges for removal.
-Removing 2173 edges.
-Writing grid dimensions
-Writing grid attributes
-Writing grid coordinates
-Mapping and writing cell fields and culled_graph.info
-Mapping and writing edge fields
-Mapping and writing vertex fields
-Outputting cell map
-
-Running: MpasMeshConverter.x /tmp/tmpo_5y0kx7/mesh_in.nc /tmp/tmpo_5y0kx7/mesh_out.nc
-
-
-************************************************************
-MPAS_MESH_CONVERTER:
-  C++ version
-  Convert a NetCDF file describing Cell Locations, 
-  Vertex Location, and Connectivity into a valid MPAS mesh.
-
-
-  Compiled on Apr 13 2025 at 19:30:59.
-************************************************************
-
-
-Reading input grid.
-Read dimensions:
-    nCells = 64800
-    nVertices = 130680
-    vertexDegree = 3
-    Spherical? = 0
-    Periodic? = 0
-Built 64800 cells.
-Built 130680 vertices.
-Build prelimiary cell connectivity.
-Order vertices on cell.
-Build complete cell mask.
-Build and order edges, dvEdge, and dcEdge.
-Built 195479 edge indices...
-Build and order vertex arrays,
-Build and order cell arrays,
-Build areaCell, areaTriangle, and kiteAreasOnVertex.
-     Found 0 incomplete cells. Each is marked with an area of -1.
-Build edgesOnEdge and weightsOnEdge.
-Build angleEdge.
-Building mesh qualities.
-	Mesh contains: 0 obtuse triangles.
-Writing grid dimensions
-Writing grid attributes
-Writing grid coordinates
-Writing cell connectivity
-Writing edge connectivity
-Writing vertex connectivity
-Writing cell parameters
-Writing edge parameters
-Writing vertex parameters
-Writing mesh qualities
-Reading and writing meshDensity
-Write graph.info file
+xxx
 ```
 {% endfold %}
 
-generated output file **uniform_500km.nc**,
+generated output file **uniform_50km.nc**,
 
 ```
- $ ncdump -h uniform_500km.nc 
-netcdf uniform_500km {
-dimensions:
-	Time = UNLIMITED ; // (0 currently)
-	nCells = 64800 ;
-	nEdges = 195479 ;
-	nVertices = 130680 ;
-	maxEdges = 6 ;
-	maxEdges2 = 12 ;
-	TWO = 2 ;
-	vertexDegree = 3 ;
-variables:
-	double latCell(nCells) ;
-		latCell:_FillValue = NaN ;
-		latCell:long_name = "latitudes of cell centres" ;
-	double lonCell(nCells) ;
-		lonCell:_FillValue = NaN ;
-		lonCell:long_name = "longitudes of cell centres" ;
+ $ ncdump -h uniform_50km.nc 
+xxxx
 ```
 
 - bug
@@ -405,6 +369,7 @@ variables:
 
 
 # Script for Generating a Variable-Resolution Mesh
+
 A **variable-resolution mesh** allows higher resolution in specific regions (e.g., 60-15 km, where 15 km cells are used in a refined area). To create a script for generating such a mesh:
 
 - **Tool Choice**: Jigsaw-GEO is ideal for defining custom resolution functions, with MPAS-Tools used to convert outputs to MPAS format.
@@ -495,6 +460,10 @@ refine_mesh(
     output="final_3km.nc"  
 )  
 ```
+
+# geojson file
+
+- <https://mpas-dev.github.io/MPAS-Tools/0.26.0/mesh_creation.html#signed-distance-functions>
 
 # Conclusion  
 
