@@ -19,25 +19,27 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR&#x2F;MMM   Key Points  MPAS Mesh: A grid of hexagonal and pentagonal cells used in the MPAS-Atmosphere m">
+    <meta name="description" content="MPAS | Mesh Connectivity (graph.info) file for the mesh WRF | MPAS | MPI | halo&#x2F;ghost cell MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR&#x2F;MMM MPAS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MPAS | mesh generation">
 <meta property="og:url" content="https://waipangsze.github.io/2025/05/09/MPAS-mesh-generation/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR&#x2F;MMM   Key Points  MPAS Mesh: A grid of hexagonal and pentagonal cells used in the MPAS-Atmosphere m">
+<meta property="og:description" content="MPAS | Mesh Connectivity (graph.info) file for the mesh WRF | MPAS | MPI | halo&#x2F;ghost cell MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR&#x2F;MMM MPAS">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/ZtMq9O5.png">
 <meta property="article:published_time" content="2025-05-09T07:24:00.000Z">
-<meta property="article:modified_time" content="2025-05-09T09:46:51.146Z">
+<meta property="article:modified_time" content="2025-05-12T02:48:23.367Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="NWP">
-<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="mesh generation">
 <meta property="article:tag" content="Lloyd iteration">
-<meta property="article:tag" content="Meteorology">
+<meta property="article:tag" content="graph.info">
 <meta property="article:tag" content="MPAS-Tools">
 <meta property="article:tag" content="jigsaw">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/ZtMq9O5.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -324,7 +326,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/ZtMq9O5.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -364,7 +366,7 @@
         
         
         
-          12 mins
+          13 mins
         
       </span>
     
@@ -416,8 +418,11 @@
               <div class="markdown-body">
                 
                 <ul>
+<li><a href="https://waipangsze.github.io/2025/04/14/MPAS-Mesh-Connectivity-graph-info-file-for-the-mesh/"><strong>MPAS | Mesh Connectivity (graph.info) file for the mesh</strong></a></li>
+<li><a href="https://waipangsze.github.io/2024/12/07/wrf-mpas-MPI-halocell-ghostcell/"><strong>WRF | MPAS | MPI | halo/ghost cell</strong></a></li>
 <li><a href="https://waipangsze.github.io/2025/02/17/MPAS-Variable-resolution-mesh-generation/"><strong>MPAS | Variable-resolution mesh generation</strong></a></li>
 <li><a target="_blank" rel="noopener" href="http://www.gpsarc.ncu.edu.tw/MPAS2023/slide/MPAS_A/14-Mesh%20generation.pdf">MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR/MMM</a></li>
+<li><a href="https://waipangsze.github.io/2025/05/11/MPAS-graph-info/"><strong>MPAS | graph.info</strong></a></li>
 </ul>
 <hr />
 <h1 id="key-points">Key Points</h1>
@@ -542,7 +547,7 @@
 </ul></li>
 </ul>
 <h1 id="installing-mpas-tools">** Installing MPAS-Tools</h1>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#  Based on </span><br><span class="hljs-comment">#  https://mpas-dev.github.io/MPAS-Tools/0.26.0/mesh_creation.html</span><br><span class="hljs-comment">#  and Jigsaw scripts: https://github.com/dengwirda/jigsaw-python/tree/master/tests</span><br><span class="hljs-comment">#  </span><br><span class="hljs-comment"># Pre-requisites:</span><br><span class="hljs-comment"># 0) Install the conda enviroment MPAS-Tools</span><br><span class="hljs-comment"># 1) Get the requirements https://github.com/MPAS-Dev/MPAS-Tools/blob/master/conda_package/dev-spec.txt</span><br><span class="hljs-comment"># 2) Create enviroment</span><br><span class="hljs-comment">#     $ micromamba config --add channels conda-forge</span><br><span class="hljs-comment">#     $ micromamba env create --name mpas-tools --file dev-spec.txt (not used)</span><br><span class="hljs-comment">#     $ micromamba env create --name mpas-tools --file dev-spec.yml</span><br><span class="hljs-comment"># 3) Install the mpas-tools pack</span><br><span class="hljs-comment">#     $ micromamba install conda-forge::mpas_tools</span><br><span class="hljs-comment"># 4) Use it with $ micromamba activate mpas-tools</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># - To install jigsaw use conda https://github.com/dengwirda/jigsaw-geo-python/ )</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#  Based on </span><br><span class="hljs-comment">#  https://mpas-dev.github.io/MPAS-Tools/0.26.0/mesh_creation.html</span><br><span class="hljs-comment">#  and Jigsaw scripts: https://github.com/dengwirda/jigsaw-python/tree/master/tests</span><br><span class="hljs-comment">#  </span><br><span class="hljs-comment"># Pre-requisites:</span><br><span class="hljs-comment"># 0) Install the conda enviroment MPAS-Tools</span><br><span class="hljs-comment"># 1) Get the requirements https://github.com/MPAS-Dev/MPAS-Tools/blob/master/conda_package/dev-spec.txt</span><br><span class="hljs-comment"># 2) Create enviroment</span><br><span class="hljs-comment">#     $ micromamba config --add channels conda-forge</span><br><span class="hljs-comment">#     $ micromamba env create --name mpas-tools --file dev-spec.txt (not used)</span><br><span class="hljs-comment">#     $ micromamba env create --name mpas-tools --file dev-spec.yml</span><br><span class="hljs-comment"># 3) Install the mpas-tools pack</span><br><span class="hljs-comment">#     $ micromamba install conda-forge::mpas_tools</span><br><span class="hljs-comment"># 4) Use it with $ micromamba activate mpas-tools</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># - To install jigsaw use conda https://github.com/dengwirda/jigsaw-geo-python/ )</span><br><span class="hljs-comment"># 5) $ micromamba install conda-forge::jigsaw</span><br><span class="hljs-comment"># 6) $ micromamba install conda-forge::jigsawpy</span><br></code></pre></td></tr></table></figure>
 
     <div class="fold">
       <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
@@ -561,6 +566,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">planar_hex --nx=100 --ny=50 --dc=5000. --npx --npy --outFileName=mesh_5km.nc  <br></code></pre></td></tr></table></figure>
 <p>This creates a 5 km-resolution mesh spanning 100×50 grid cells, non-periodic in both directions<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup><sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>. The <code>dc</code> parameter specifies cell center-to-center distance. For periodic domains (e.g., channel flows), omit <code>--npx</code>/<code>--npy</code>.</p>
 <h3 id="spherical-mesh-construction">Spherical Mesh Construction</h3>
+<p>The <code>mpas_tools.mesh.creation.build_mesh module</code> is used create an MPAS mesh using the <strong>JIGSAW and JIGSAW-Python (jigsawpy) packages</strong>.</p>
 <p>High-resolution global meshes require <strong>JIGSAW</strong>, a <em>computational geometry package integrated with MPAS-Tools</em>. A typical workflow involves:</p>
 <ol type="1">
 <li>Defining a <strong>density function</strong> controlling regional resolution<sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>.<br />
@@ -569,7 +575,15 @@
 </li>
 <li>Iterative Lloyd relaxation to optimize cell centroids<sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>.</li>
 </ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> mpas_tools.mesh.creation <span class="hljs-keyword">import</span> jigsaw_to_netcdf  <br>jigsaw_to_netcdf(<span class="hljs-string">&quot;input.msh&quot;</span>, <span class="hljs-string">&quot;global_mesh.nc&quot;</span>, on_sphere=<span class="hljs-literal">True</span>, sphere_radius=<span class="hljs-number">6371e3</span>)  <br></code></pre></td></tr></table></figure>
+<ul>
+<li>Here is a simple example script for creating a uniform MPAS mesh with 240-km resolution:
+<ul>
+<li>Spherical meshes are constructed with the function <code>mpas_tools.mesh.creation.build_mesh.build_spherical_mesh()</code>. The user provides a 2D array <code>cellWidth</code> of cell sizes in kilometers along 1D arrays for the longitude and latitude (the cell widths must be on a lon/lat tensor grid) and the radius of the earth in meters.</li>
+<li>The result is an MPAS mesh file, called <code>base_mesh.nc</code> by default, as well as several intermediate files: <code>mesh.log</code>, <code>mesh-HFUN.msh</code>, <code>mesh.jig</code>, <code>mesh-MESH.msh</code>, <code>mesh.msh</code>, and <code>mesh_triangles.nc</code>.</li>
+</ul></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">from</span> mpas_tools.ocean <span class="hljs-keyword">import</span> build_spherical_mesh<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">cellWidthVsLatLon</span>():<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    Create cell width array for this mesh on a regular latitude-longitude grid.</span><br><span class="hljs-string">    Returns</span><br><span class="hljs-string">    -------</span><br><span class="hljs-string">    cellWidth : ndarray</span><br><span class="hljs-string">        m x n array of cell width in km</span><br><span class="hljs-string">    lon : ndarray</span><br><span class="hljs-string">        longitude in degrees (length n and between -180 and 180)</span><br><span class="hljs-string">    lat : ndarray</span><br><span class="hljs-string">        longitude in degrees (length m and between -90 and 90)</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    dlat = <span class="hljs-number">10</span><br>    dlon = <span class="hljs-number">10</span><br>    constantCellWidth = <span class="hljs-number">240</span><br><br>    nlat = <span class="hljs-built_in">int</span>(<span class="hljs-number">180</span>/dlat) + <span class="hljs-number">1</span><br>    nlon = <span class="hljs-built_in">int</span>(<span class="hljs-number">360</span>/dlon) + <span class="hljs-number">1</span><br><br>    lat = np.linspace(-<span class="hljs-number">90.</span>, <span class="hljs-number">90.</span>, nlat)<br>    lon = np.linspace(-<span class="hljs-number">180.</span>, <span class="hljs-number">180.</span>, nlon)<br><br>    cellWidth = constantCellWidth * np.ones((lat.size, lon.size))<br>    <span class="hljs-keyword">return</span> cellWidth, lon, lat<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    cellWidth, lon, lat = cellWidthVsLatLon()<br>    build_spherical_mesh(cellWidth, lon, lat, out_filename=<span class="hljs-string">&#x27;base_mesh.nc&#x27;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main() <br></code></pre></td></tr></table></figure>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">ncdump -h base_mesh.nc</span> <br>netcdf base_mesh &#123;<br>dimensions:<br>	nCells = 10383 ;<br>	nEdges = 31143 ;<br>	nVertices = 20762 ;<br>	maxEdges = 8 ;<br>	maxEdges2 = 16 ;<br>	TWO = 2 ;<br>	vertexDegree = 3 ;<br>	Time = UNLIMITED ; // (0 currently)<br>variables:<br>	double latCell(nCells) ;<br>		latCell:long_name = &quot;latitudes of cell centres&quot; ;<br>	double lonCell(nCells) ;<br>		lonCell:long_name = &quot;longitudes of cell centres&quot; ;<br>...<br></code></pre></td></tr></table></figure>
 <h3 id="mesh-conversion-and-validation">Mesh Conversion and Validation</h3>
 <p>Post-processing tools ensure MPAS compatibility:</p>
 <ul>
@@ -631,23 +645,23 @@
 <li>Don't use python automation because no <strong>graph.info</strong> is generated</li>
 <li>Q: Difference between CLI and python?
 <ul>
-<li><code>-rw-rw-r-- 1 wpsze wpsze 69M May  9 16:39 python_uniform_500km.nc</code></li>
-<li><code>-rw-rw-r-- 1 wpsze wpsze 68M May  9 17:42 uniform_500km.nc</code></li>
+<li><code>-rw-rw-r-- 1 wpsze wpsze 69M May  9 16:39 python_uniform_50km.nc</code></li>
+<li><code>-rw-rw-r-- 1 wpsze wpsze 68M May  9 17:42 uniform_50km.nc</code></li>
 </ul></li>
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dfb167e8" role="button" aria-expanded="false" aria-controls="collapse-dfb167e8">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">
         <div class="fold-arrow">▶</div>processing
       </div>
-      <div class="fold-collapse collapse" id="collapse-dfb167e8">
+      <div class="fold-collapse collapse" id="collapse-5d5d193e">
         <div class="fold-content">
-          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">python test.py</span> <br>cullCell<br>int32<br>Running: MpasCellCuller.x /tmp/tmpnh29ojeu/ds_in.nc /tmp/tmpnh29ojeu/ds_out.nc<br><br><br>************************************************************<br>MPAS_CELL_CULLER:<br>  C++ version<br>  Remove cells/edges/vertices from a NetCDF MPAS Mesh file. <br><br><br>  Compiled on Apr 13 2025 at 19:31:04.<br>************************************************************<br><br><br>Reading input grid.<br>Read dimensions:<br>    nCells = 65884<br>    nVertices = 131768<br>    nEdges = 197652<br>    vertexDegree = 3<br>    maxEdges = 6<br>    Spherical? = 0<br>    Periodic? = 0<br>Marking cells for removal.<br>Removing 1084 cells.<br>Marking vertices for removal.<br>Removing 1088 vertices.<br>Marking edges for removal.<br>Removing 2173 edges.<br>Writing grid dimensions<br>Writing grid attributes<br>Writing grid coordinates<br>Mapping and writing cell fields and culled_graph.info<br>Mapping and writing edge fields<br>Mapping and writing vertex fields<br>Outputting cell map<br><br>Running: MpasMeshConverter.x /tmp/tmpo_5y0kx7/mesh_in.nc /tmp/tmpo_5y0kx7/mesh_out.nc<br><br><br>************************************************************<br>MPAS_MESH_CONVERTER:<br>  C++ version<br>  Convert a NetCDF file describing Cell Locations, <br>  Vertex Location, and Connectivity into a valid MPAS mesh.<br><br><br>  Compiled on Apr 13 2025 at 19:30:59.<br>************************************************************<br><br><br>Reading input grid.<br>Read dimensions:<br>    nCells = 64800<br>    nVertices = 130680<br>    vertexDegree = 3<br>    Spherical? = 0<br>    Periodic? = 0<br>Built 64800 cells.<br>Built 130680 vertices.<br>Build prelimiary cell connectivity.<br>Order vertices on cell.<br>Build complete cell mask.<br>Build and order edges, dvEdge, and dcEdge.<br>Built 195479 edge indices...<br>Build and order vertex arrays,<br>Build and order cell arrays,<br>Build areaCell, areaTriangle, and kiteAreasOnVertex.<br>     Found 0 incomplete cells. Each is marked with an area of -1.<br>Build edgesOnEdge and weightsOnEdge.<br>Build angleEdge.<br>Building mesh qualities.<br>	Mesh contains: 0 obtuse triangles.<br>Writing grid dimensions<br>Writing grid attributes<br>Writing grid coordinates<br>Writing cell connectivity<br>Writing edge connectivity<br>Writing vertex connectivity<br>Writing cell parameters<br>Writing edge parameters<br>Writing vertex parameters<br>Writing mesh qualities<br>Reading and writing meshDensity<br>Write graph.info file<br></code></pre></td></tr></table></figure>
+          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console"><span class="hljs-meta prompt_"> $ </span><span class="language-bash">python test.py</span> <br>xxx<br></code></pre></td></tr></table></figure>
         </div>
       </div>
     </div>
-<p>generated output file <strong>uniform_500km.nc</strong>,</p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs dts"> $ ncdump -h uniform_500km.nc <br>netcdf <span class="hljs-title class_">uniform_500km</span> <span class="hljs-punctuation">&#123;</span><br><span class="hljs-symbol">dimensions:</span><br>	T<span class="hljs-attr">ime</span> <span class="hljs-operator">=</span> UNLIMITED <span class="hljs-punctuation">;</span> <span class="hljs-comment">// (0 currently)</span><br>	nC<span class="hljs-attr">ells</span> <span class="hljs-operator">=</span> <span class="hljs-number">64800</span> <span class="hljs-punctuation">;</span><br>	nE<span class="hljs-attr">dges</span> <span class="hljs-operator">=</span> <span class="hljs-number">195479</span> <span class="hljs-punctuation">;</span><br>	nV<span class="hljs-attr">ertices</span> <span class="hljs-operator">=</span> <span class="hljs-number">130680</span> <span class="hljs-punctuation">;</span><br>	maxE<span class="hljs-attr">dges</span> <span class="hljs-operator">=</span> <span class="hljs-number">6</span> <span class="hljs-punctuation">;</span><br>	maxEdges2 = <span class="hljs-number">12</span> <span class="hljs-punctuation">;</span><br>	TWO = <span class="hljs-number">2</span> <span class="hljs-punctuation">;</span><br>	vertexD<span class="hljs-attr">egree</span> <span class="hljs-operator">=</span> <span class="hljs-number">3</span> <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">variables:</span><br>	double latCell(nCells) <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">		latCell:</span>_FillV<span class="hljs-attr">alue</span> <span class="hljs-operator">=</span> NaN <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">		latCell:</span>long_<span class="hljs-attr">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;latitudes of cell centres&quot;</span> <span class="hljs-punctuation">;</span><br>	double lonCell(nCells) <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">		lonCell:</span>_FillV<span class="hljs-attr">alue</span> <span class="hljs-operator">=</span> NaN <span class="hljs-punctuation">;</span><br><span class="hljs-symbol">		lonCell:</span>long_<span class="hljs-attr">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;longitudes of cell centres&quot;</span> <span class="hljs-punctuation">;</span><br></code></pre></td></tr></table></figure>
+<p>generated output file <strong>uniform_50km.nc</strong>,</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crystal"> <span class="hljs-variable">$ </span>ncdump -h uniform_50km.nc <br>xxxx<br></code></pre></td></tr></table></figure>
 <ul>
 <li>bug
 <ul>
@@ -680,6 +694,10 @@
 <h3 id="incremental-refinement-workflow">Incremental Refinement Workflow</h3>
 <p>For a 15 -&gt; 3 km mesh:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> mpas_tools.mesh.incremental <span class="hljs-keyword">import</span> refine_mesh  <br><br>refine_mesh(  <br>    initial_mesh=<span class="hljs-string">&quot;coarse_15km.nc&quot;</span>,  <br>    levels=<span class="hljs-number">3</span>,          <span class="hljs-comment"># 15 → 7.5 → 3.75 → 1.875 km  </span><br>    density_func=topography_based_rho,  <br>    output=<span class="hljs-string">&quot;final_3km.nc&quot;</span>  <br>)  <br></code></pre></td></tr></table></figure>
+<h1 id="geojson-file">geojson file</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mpas-dev.github.io/MPAS-Tools/0.26.0/mesh_creation.html#signed-distance-functions" class="uri">https://mpas-dev.github.io/MPAS-Tools/0.26.0/mesh_creation.html#signed-distance-functions</a></li>
+</ul>
 <h1 id="conclusion">Conclusion</h1>
 <p>MPAS's unstructured mesh framework overcomes limitations of traditional climate model grids but introduces complex toolchain dependencies. While quasi-uniform meshes are straightforward with <code>planar_hex</code>, <strong>variable-resolution generation demands careful density function design and computational resources</strong>. Key challenges persist in parallel scalability and mesh quality automation. Future development should prioritize GPU-accelerated Lloyd iterations and machine learning-based density optimization to democratize high-resolution climate modeling.</p>
 <p>The provided scripts offer starting points, but production-grade implementation requires integrating HPC scheduling, mesh validation suites, and performance profiling-a testament to the intricate interplay between computational geometry and climate system modeling.</p>
@@ -801,17 +819,17 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/mesh-generation/" class="print-no-link">#mesh generation</a>
       
         <a href="/tags/Lloyd-iteration/" class="print-no-link">#Lloyd iteration</a>
       
-        <a href="/tags/Meteorology/" class="print-no-link">#Meteorology</a>
+        <a href="/tags/graph-info/" class="print-no-link">#graph.info</a>
       
         <a href="/tags/MPAS-Tools/" class="print-no-link">#MPAS-Tools</a>
       
@@ -846,7 +864,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>May 9, 2025</div>
+          <div>May 12, 2025</div>
         </div>
       
       
@@ -876,6 +894,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/05/11/MPAS-graph-info/" title="MPAS | graph.info (Mesh Connectivity file)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | graph.info (Mesh Connectivity file)</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

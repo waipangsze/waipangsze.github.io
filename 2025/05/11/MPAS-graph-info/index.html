@@ -1,0 +1,1150 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="MPAS | Mesh Connectivity (graph.info) file for the mesh WRF | MPAS | MPI | halo&#x2F;ghost cell MPAS | mesh generation MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS | graph.info (Mesh Connectivity file)">
+<meta property="og:url" content="https://waipangsze.github.io/2025/05/11/MPAS-graph-info/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="MPAS | Mesh Connectivity (graph.info) file for the mesh WRF | MPAS | MPI | halo&#x2F;ghost cell MPAS | mesh generation MPAS | Variable-resolution mesh generation MPAS-Atmosphere Mesh Generation | Michael">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/hvaWxeW.png">
+<meta property="article:published_time" content="2025-05-11T06:24:00.000Z">
+<meta property="article:modified_time" content="2025-05-12T02:50:38.289Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="mesh generation">
+<meta property="article:tag" content="Lloyd iteration">
+<meta property="article:tag" content="graph.info">
+<meta property="article:tag" content="MPAS-Tools">
+<meta property="article:tag" content="jigsaw">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/hvaWxeW.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS | graph.info (Mesh Connectivity file) - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/hvaWxeW.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS | graph.info (Mesh Connectivity file)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-11 14:24" pubdate>
+          May 11, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          670 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS | graph.info (Mesh Connectivity file)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li><a href="https://waipangsze.github.io/2025/04/14/MPAS-Mesh-Connectivity-graph-info-file-for-the-mesh/"><strong>MPAS | Mesh Connectivity (graph.info) file for the mesh</strong></a></li>
+<li><a href="https://waipangsze.github.io/2024/12/07/wrf-mpas-MPI-halocell-ghostcell/"><strong>WRF | MPAS | MPI | halo/ghost cell</strong></a></li>
+<li><a href="https://waipangsze.github.io/2025/05/09/MPAS-mesh-generation/"><strong>MPAS | mesh generation</strong></a></li>
+<li><a href="https://waipangsze.github.io/2025/02/17/MPAS-Variable-resolution-mesh-generation/"><strong>MPAS | Variable-resolution mesh generation</strong></a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gpsarc.ncu.edu.tw/MPAS2023/slide/MPAS_A/14-Mesh%20generation.pdf">MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR/MMM</a></li>
+</ul>
+<hr />
+<h1 id="mpas">MPAS</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/mpas-partitioning-60-15-km-mesh-for-896-cores.5414/">MPAS partitioning 60-15 km mesh for 896 cores | May 10, 2019</a>
+<ul>
+<li><code>gpmetis -minconn -contig -niter=200 x4.535554.graph.info 896</code></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/gpmetis-error.19844/">gpmetis error | Nov 12, 2024</a>
+<ul>
+<li>Here's the part of the MPAS-Limited-Area tool that should be writing this connectivity info: <a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Limited-Area/blob/v2.1/limited_area/mesh.py#L180-L186">MPAS-Limited-Area/limited_area/mesh.py at v2.1 · MPAS-Dev/MPAS-Limited-Area</a> .</li>
+<li>We've merge changes to support NumPy 2.x into the MPAS-Limited-Area main branch through <a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Limited-Area/pull/47">MPAS-Dev/MPAS-Limited-Area PR #47</a>. Thanks again for finding this issue!</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/where-can-we-find-the-metis-graph-partitioning-software-web-site-not-active.13661/#post-45758">Where can we find the metis graph-partitioning software? (Web site not active) | Jul 15, 2023</a>
+<ul>
+<li>The link in the user's guide (p. 12) to the METIS software (<a target="_blank" rel="noopener" href="http://glaros.dtc.umn.edu/gkhome/views/metis" class="uri">http://glaros.dtc.umn.edu/gkhome/views/metis</a>) doesn't go anywhere. It looks like the glaros.dtc.umn.edu site is no longer active.</li>
+<li>Thanks for spotting this. It looks like Metis is now available from a <a href="GitHub%20-%20KarypisLab/METIS:%20METIS%20-%20Serial%20Graph%20Partitioning%20and%20Fill-reducing%20Matrix%20Ordering">GitHub repository at: GitHub - KarypisLab/METIS: METIS - Serial Graph Partitioning and Fill-reducing Matrix Ordering</a> . It also appears that GKlib must first be installed before installing Metis; you can find GKlib at <a target="_blank" rel="noopener" href="https://github.com/KarypisLab/GKlib">GitHub - KarypisLab/GKlib: A library of various helper routines and frameworks used by many of the lab's software</a> .</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/metis-decomposition.10600/">METIS Decomposition | Aug 2, 2021</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/3-km-mesh.276/#post-860">3-km mesh | Oct 15, 2018</a>
+<ul>
+<li>I've just added a link to the 3-km mesh files on the MPAS-Atmosphere mesh download page. The download only includes a few mesh partition files, so it will probably be necessary to install Metis (http://glaros.dtc.umn.edu/gkhome/metis/metis/overview) to create partition files appropriate to your machine. Here's an example command:
+<ul>
+<li><code>gpmetis -minconn -contig -niter=200 x1.65536002.graph.info 16384</code></li>
+</ul></li>
+<li><code>config_native_gwd_static = false</code></li>
+<li>Processing the static fields (especially the GWDO fields) for these larger meshes can be a bit tricky. I've found on Cheyenne, for example, that I need to undersubscribe nodes to gain access to enough aggregate memory, and I ended up processing terrain, land use, etc. separately from the GWDO fields.</li>
+<li>The GWDO processing is not memory efficient right now: each MPI rank reads in the entire 30-arc-second global terrain dataset, which is about 3.7 GB when typecast into 32-bit reals. So, to avoid exceeding the amount of memory on any node, you'll need to use just a few MPI ranks per node. Unlike the terrain, land use, etc. fields, the GWDO fields don't require any special CVT partition file to be processed in parallel, so you can just use Metis to create an x1.65536002.graph.info.part.16 file as needed.</li>
+<li>Testing without the GWDO fields should be fine if you just set config_gwdo_scheme = 'off' in your &amp;physics namelist. The parameterization of gravity wave drag by orogoraphy may not be as important on a 3-km mesh, anyway. Any time you'd like to follow-up on the GWDO field processing, though, feel free to post here!</li>
+<li>Michael: thanks for your suggestion...that's what I figured. The GWD is probably not needed for the 3 km mesh.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/generating-2d-meshes-for-mountain-waves.409/#post-1254">Generating 2D meshes for mountain waves | Nov 12, 2018</a></li>
+</ul>
+<hr />
+<h1 id="來自-perplexity-的回答">來自 Perplexity 的回答</h1>
+<h1 id="comprehensive-guide-to-metis-graph-partitioning-and-generating-graph.info-files">Comprehensive Guide to METIS Graph Partitioning and Generating graph.info Files</h1>
+<p>METIS is a widely-used software suite for partitioning unstructured graphs, meshes, and sparse matrices, enabling efficient parallel computations and reducing computational overhead in large-scale simulations<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>. Among its tools, <code>gpmetis</code> is a command-line program specifically designed for partitioning graphs. A critical component of using <code>gpmetis</code> is the preparation of a properly formatted input file, often referred to as <code>graph.info</code>. This report provides a detailed exploration of the structure and generation of <code>graph.info</code> files, addressing common pitfalls and offering actionable guidance for users.</p>
+<h2 id="understanding-the-graph.info-file">Understanding the graph.info File</h2>
+<h3 id="definition-and-purpose">Definition and Purpose</h3>
+<p>The <code>graph.info</code> file is a plain-text input file that adheres to METIS’s graph format specifications<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[1]</span></a></sup><sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>. It describes an undirected graph’s structure, including vertices, edges, and optional metadata such as vertex weights or edge weights. This file serves as the primary input for <code>gpmetis</code>, which partitions the graph into a user-specified number of subgraphs while minimizing communication costs or edge cuts<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>.</p>
+<h3 id="file-structure-requirements">File Structure Requirements</h3>
+<p>A valid <code>graph.info</code> file must follow these structural rules<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup></p>
+<ol type="1">
+<li><strong>Header Line</strong>: The first line (excluding comments) specifies:
+<ul>
+<li><code>n</code>: Number of vertices.<br />
+</li>
+<li><code>m</code>: Number of edges (counted once per pair, not twice).<br />
+</li>
+<li>Optional parameters:
+<ul>
+<li><code>fmt</code>: A 3-bit integer encoding the presence of vertex weights, edge weights, or vertex sizes.<br />
+</li>
+<li><code>ncon</code>: Number of vertex weight constraints (for multi-constraint partitioning).<br />
+</li>
+</ul></li>
+</ul></li>
+<li><strong>Vertex Lines</strong>: Each subsequent line corresponds to a vertex and includes:
+<ul>
+<li><strong>Weights</strong> (if <code>fmt</code> specifies them): One or more integers representing vertex weights.<br />
+</li>
+<li><strong>Adjacency List</strong>: A space-separated list of adjacent vertices. If edge weights are enabled, each vertex in the adjacency list is followed by its edge weight.</li>
+</ul></li>
+</ol>
+<h4 id="example-of-a-valid-graph.info-file">Example of a Valid graph.info File</h4>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">4 </span><span class="hljs-number">5</span> <span class="hljs-number">001</span>  <br><span class="hljs-symbol">1 </span><span class="hljs-number">2</span> <span class="hljs-number">3</span>  <br><span class="hljs-symbol">2 </span><span class="hljs-number">1</span> <span class="hljs-number">4</span>  <br><span class="hljs-symbol">3 </span><span class="hljs-number">4</span>  <br><span class="hljs-symbol">4 </span><span class="hljs-number">3</span>  <br></code></pre></td></tr></table></figure>
+<p>This represents a graph with 4 vertices and 5 edges. The <code>fmt</code> value <code>001</code> indicates edge weights are present. Vertex 1 is connected to vertices 2 (weight 3) and 3 (weight 4), and so on<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>.</p>
+<h3 id="common-formatting-errors">Common Formatting Errors</h3>
+<p>A frequent error arises when the header’s edge count <code>m</code> does not match the actual edges listed in the file. For example, a user reported that specifying <code>5980</code> edges in the header resulted in an error because the file contained no edges<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[2]</span></a></sup>. This discrepancy often stems from:</p>
+<ul>
+<li>Incorrectly counting edges (e.g., counting bidirectional edges twice).<br />
+</li>
+<li>Misformatted adjacency lists (e.g., using <code>np.int32(512)</code> syntax instead of plain integers)<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[2]</span></a></sup>.<br />
+</li>
+<li>Missing edge weights when <code>fmt</code> requires them.</li>
+</ul>
+<h2 id="generating-graph.info-files">Generating graph.info Files</h2>
+<h3 id="step-by-step-generation-process">Step-by-Step Generation Process</h3>
+<p>To create a valid <code>graph.info</code> file, follow these steps:</p>
+<h4 id="define-the-graph-structure">1. Define the Graph Structure</h4>
+<ul>
+<li><strong>Vertices</strong>: Determine the total number of vertices (<code>n</code>).<br />
+</li>
+<li><strong>Edges</strong>: List all undirected edges, ensuring each pair is counted once. For example, an edge between vertices 1 and 2 should appear only once, either in vertex 1’s or vertex 2’s adjacency list<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>.</li>
+</ul>
+<h4 id="choose-metadata-parameters">2. Choose Metadata Parameters</h4>
+<ul>
+<li><strong>Vertex Weights</strong>: Include these if balancing computational load across partitions.<br />
+</li>
+<li><strong>Edge Weights</strong>: Add these if optimizing for communication costs between partitions.<br />
+</li>
+<li><strong>Multi-Constraint Partitioning</strong>: Specify <code>ncon</code> if vertices have multiple weights (e.g., computational and memory constraints)<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>.</li>
+</ul>
+<h4 id="write-the-header-line">3. Write the Header Line</h4>
+<p>Construct the header line using the formula:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">n m <span class="hljs-selector-attr">[fmt]</span> <span class="hljs-selector-attr">[ncon]</span>  <br></code></pre></td></tr></table></figure>
+<p>For example, a graph with 100 vertices, 200 edges, vertex weights, and edge weights would use <code>fmt=011</code><sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup></p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">100 </span><span class="hljs-number">200</span> <span class="hljs-number">011</span>  <br></code></pre></td></tr></table></figure>
+<h4 id="populate-vertex-lines">4. Populate Vertex Lines</h4>
+<p>For each vertex, list its weights (if applicable) followed by its adjacency list. For edge weights, append the weight after each adjacent vertex:</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">...</span>     <span class="hljs-string">...</span>  <br></code></pre></td></tr></table></figure>
+<h4 id="validate-the-file">5. Validate the File</h4>
+<p>Use METIS’s <code>graphchk</code> utility to verify the file’s integrity<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">graphchk</span> graph.<span class="hljs-literal">info</span>  <br></code></pre></td></tr></table></figure>
+<p>This tool checks for inconsistencies, such as mismatched edge counts or invalid vertex indices.</p>
+<h3 id="automated-generation-methods">Automated Generation Methods</h3>
+<p>For complex graphs, consider these approaches:</p>
+<ul>
+<li><strong>Mesh-to-Graph Conversion</strong>: Use <code>m2gmetis</code> to convert finite element meshes into METIS-compatible graphs<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>.<br />
+</li>
+<li><strong>Scripting</strong>: Write Python or MATLAB scripts to generate adjacency lists from raw data, ensuring proper formatting.<br />
+</li>
+<li><strong>Preprocessing Tools</strong>: Leverage libraries like <code>NetworkX</code> to export graphs in METIS format.</li>
+</ul>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+<h3 id="mismatched-edge-counts">Mismatched Edge Counts</h3>
+<p>If <code>gpmetis</code> reports a discrepancy between the header’s edge count and the actual edges:</p>
+<ul>
+<li>Recalculate edges, ensuring bidirectional pairs are not double-counted.<br />
+</li>
+<li>Use <code>graphchk</code> to identify missing or extraneous edges<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>.</li>
+</ul>
+<h3 id="syntax-errors-in-vertex-lines">Syntax Errors in Vertex Lines</h3>
+<ul>
+<li>Avoid non-integer formats (e.g., <code>np.int32(512)</code>)-use plain integers<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[2]</span></a></sup>.<br />
+</li>
+<li>Ensure adjacency lists are space-separated, not comma-separated.</li>
+</ul>
+<h3 id="multi-constraint-partitioning-failures">Multi-Constraint Partitioning Failures</h3>
+<p>If <code>gpmetis</code> ignores vertex weights:</p>
+<ul>
+<li>Verify <code>fmt</code>’s second bit is set (e.g., <code>010</code> for vertex weights).<br />
+</li>
+<li>Include <code>ncon</code> in the header if using multiple weight constraints<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>.</li>
+</ul>
+<h2 id="advanced-configuration-for-gpmetis">Advanced Configuration for gpmetis</h2>
+<h3 id="command-line-options">Command-Line Options</h3>
+<p><code>gpmetis</code> supports flags to refine partitioning:</p>
+<ul>
+<li><code>-minconn</code>: Minimize maximum connectivity between partitions.<br />
+</li>
+<li><code>-contig</code>: Enforce contiguous partitions.<br />
+</li>
+<li><code>-niter=200</code>: Increase refinement iterations for higher quality<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[2]</span></a></sup>.</li>
+</ul>
+<p>Example usage:</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">gpmetis -minconn -contig <span class="hljs-attribute">-niter</span>=200 graph.<span class="hljs-built_in">info</span> 36  <br></code></pre></td></tr></table></figure>
+<p>This partitions <code>graph.info</code> into 36 subgraphs with contiguous, low-connectivity partitions<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[2]</span></a></sup>.</p>
+<h3 id="handling-large-graphs">Handling Large Graphs</h3>
+<p>For graphs exceeding memory limits:</p>
+<ul>
+<li>Use <code>-ptype=rb</code> (recursive bisection) instead of <code>-ptype=kway</code> (k-way partitioning).<br />
+</li>
+<li>Enable disk-based partitioning with <code>-dbglvl=2</code> to monitor memory usage<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>The <code>graph.info</code> file is a foundational component of METIS’s graph partitioning workflow, requiring meticulous attention to formatting rules. By adhering to the structured header and vertex line specifications, users can avoid common errors and leverage <code>gpmetis</code> to optimize computational workflows. Future enhancements could involve integrating automated validation directly into preprocessing tools or expanding METIS’s support for heterogeneous graph formats. For researchers and engineers, mastering <code>graph.info</code> generation is essential for harnessing METIS’s full potential in high-performance computing applications.</p>
+<h1 id="citations">Citations:</h1>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://people.sc.fsu.edu/~jburkardt/data/metis_graph/metis_graph.html" class="uri">https://people.sc.fsu.edu/~jburkardt/data/metis_graph/metis_graph.html</a> <a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/gpmetis-error.19844/" class="uri">https://forum.mmm.ucar.edu/threads/gpmetis-error.19844/</a> <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://infogram.com" class="uri">https://infogram.com</a> <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.lrz.de/services/software/mathematik/metis/metis_5_0.pdf" class="uri">https://www.lrz.de/services/software/mathematik/metis/metis_5_0.pdf</a> <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:5" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://courses.csail.mit.edu/6.895/fall03/projects/papers/kasheff.pdf" class="uri">https://courses.csail.mit.edu/6.895/fall03/projects/papers/kasheff.pdf</a> <a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:6" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/6-895-theory-of-parallel-systems-sma-5509-fall-2003/6f825562feec8333c6a400a67f1bfebd_kasheff.pdf" class="uri">https://ocw.mit.edu/courses/6-895-theory-of-parallel-systems-sma-5509-fall-2003/6f825562feec8333c6a400a67f1bfebd_kasheff.pdf</a> <a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:7" class="footnote-text"><span><a target="_blank" rel="noopener" href="http://ppl.cs.illinois.edu/doxygen/charm/cmdline__m2gmetis_8c.shtml" class="uri">http://ppl.cs.illinois.edu/doxygen/charm/cmdline__m2gmetis_8c.shtml</a> <a href="#fnref:7" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:8" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://manpages.debian.org/unstable/metis/gpmetis.1" class="uri">https://manpages.debian.org/unstable/metis/gpmetis.1</a> <a href="#fnref:8" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:9" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://github.com/KarypisLab/METIS" class="uri">https://github.com/KarypisLab/METIS</a> <a href="#fnref:9" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:10" class="footnote-text"><span><a target="_blank" rel="noopener" href="http://docs.ros.org/en/kinetic/api/gtsam/html/cmdline__gpmetis_8c.html" class="uri">http://docs.ros.org/en/kinetic/api/gtsam/html/cmdline__gpmetis_8c.html</a> <a href="#fnref:10" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:11" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://mpas-dev.github.io/MPAS-Tools/0.30.0/seaice/partition.html" class="uri">https://mpas-dev.github.io/MPAS-Tools/0.30.0/seaice/partition.html</a> <a href="#fnref:11" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:12" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.cfd-online.com/Forums/main/233704-mesh-graph-partitioning-alternative-gpmetis.html" class="uri">https://www.cfd-online.com/Forums/main/233704-mesh-graph-partitioning-alternative-gpmetis.html</a> <a href="#fnref:12" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:13" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://lihpc-computational-geometry.github.io/metis-rs/metis/struct.Graph.html" class="uri">https://lihpc-computational-geometry.github.io/metis-rs/metis/struct.Graph.html</a> <a href="#fnref:13" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:14" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/METIS" class="uri">https://en.wikipedia.org/wiki/METIS</a> <a href="#fnref:14" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:15" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/mpas-partitioning-60-15-km-mesh-for-896-cores.5414/" class="uri">https://forum.mmm.ucar.edu/threads/mpas-partitioning-60-15-km-mesh-for-896-cores.5414/</a> <a href="#fnref:15" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:16" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://github.com/scibuilder/metis/blob/master/programs/gpmetis.c" class="uri">https://github.com/scibuilder/metis/blob/master/programs/gpmetis.c</a> <a href="#fnref:16" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:17" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31779778/how-to-partition-the-graph-with-edge-weights-using-metis-such-that-the-edgecut-i" class="uri">https://stackoverflow.com/questions/31779778/how-to-partition-the-graph-with-edge-weights-using-metis-such-that-the-edgecut-i</a> <a href="#fnref:17" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:18" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/where-can-we-find-the-metis-graph-partitioning-software-web-site-not-active.13661/" class="uri">https://forum.mmm.ucar.edu/threads/where-can-we-find-the-metis-graph-partitioning-software-web-site-not-active.13661/</a> <a href="#fnref:18" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:19" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.cfd-online.com/Forums/main/233704-mesh-graph-partitioning-alternative-gpmetis.html" class="uri">https://www.cfd-online.com/Forums/main/233704-mesh-graph-partitioning-alternative-gpmetis.html</a> <a href="#fnref:19" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:20" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/metis-decomposition.10600/" class="uri">https://forum.mmm.ucar.edu/threads/metis-decomposition.10600/</a> <a href="#fnref:20" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:21" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/gpmetis-error.19844/" class="uri">https://forum.mmm.ucar.edu/threads/gpmetis-error.19844/</a> <a href="#fnref:21" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:22" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://singularityhub.github.io/shpc-registry/" class="uri">https://singularityhub.github.io/shpc-registry/</a> <a href="#fnref:22" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/mesh-generation/" class="print-no-link">#mesh generation</a>
+      
+        <a href="/tags/Lloyd-iteration/" class="print-no-link">#Lloyd iteration</a>
+      
+        <a href="/tags/graph-info/" class="print-no-link">#graph.info</a>
+      
+        <a href="/tags/MPAS-Tools/" class="print-no-link">#MPAS-Tools</a>
+      
+        <a href="/tags/jigsaw/" class="print-no-link">#jigsaw</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS | graph.info (Mesh Connectivity file)</div>
+      <div>https://waipangsze.github.io/2025/05/11/MPAS-graph-info/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 11, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>May 12, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/09/MPAS-mesh-generation/" title="MPAS | mesh generation">
+                        <span class="hidden-mobile">MPAS | mesh generation</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

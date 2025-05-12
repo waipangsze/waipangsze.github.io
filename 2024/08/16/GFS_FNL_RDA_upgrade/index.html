@@ -26,15 +26,20 @@
 <meta property="og:site_name" content="wpsze">
 <meta property="og:description" content="RDA team RDA - Research Data Archive RDA Data Services Unavailable July 30, 2024  July 26, 2024 Posted by: RDA Team  Update on July 31, 2024: standard data file download, THREDDS access, and Globus tr">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-08-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-08T08:25:22.597Z">
+<meta property="og:image" content="https://rda.ucar.edu/images/ds_logos/gfs4c_452_432.png">
+<meta property="article:published_time" content="2024-08-16T07:24:00.000Z">
+<meta property="article:modified_time" content="2025-05-12T02:46:17.537Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="WPS">
 <meta property="article:tag" content="IC&#x2F;BC">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="FNL">
+<meta property="article:tag" content="RDA">
 <meta property="article:tag" content="NCEP">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://rda.ucar.edu/images/ds_logos/gfs4c_452_432.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -321,7 +326,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://rda.ucar.edu/images/ds_logos/gfs4c_452_432.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -338,8 +343,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-08-16 00:00" pubdate>
-          August 16, 2024 am
+        <time datetime="2024-08-16 15:24" pubdate>
+          August 16, 2024 pm
         </time>
       </span>
     
@@ -350,7 +355,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          75 words
+          922 words
         
       </span>
     
@@ -361,7 +366,7 @@
         
         
         
-          1 mins
+          8 mins
         
       </span>
     
@@ -427,6 +432,38 @@
 <li>old one: https://rda.ucar.edu/data/ds084.1/</li>
 <li>new one: https://data.rda.ucar.edu/d084001/</li>
 </ul>
+<h1 id="年与2020年gfs资料驱动wrf的差异">2019年与2020年GFS资料驱动wrf的差异</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ICJ59yUE2D3UnFlPngZRJA">笔记 | 2019年与2020年GFS资料驱动wrf的差异</a>
+<ul>
+<li>GFS是美国国家环境预报中心 (NCEP) 运行的全球数值天气预报系统。GFS系统会定期进行版本更新，引入新的物理过程、更高的分辨率、更多垂直层次或改进同化方案等，这些更新可能导致输出资料的格式、包含的变量或垂直层次结构发生变化。</li>
+<li>GFS v15 版本于2019年6月上线，而 GFS v16 版本于2021年3月上线。因此，2019年的GFS资料主要对应 GFS v15 或之前的版本（取决于具体获取时间），而2020年的资料则主要对应 GFS v16（在v16上线前可能是v15）。WRF的前处理系统（WPS）需要正确识别和处理输入气象资料的格式和变量。GFS版本之间的差异很可能影响了WPS处理不同年份GFS资料所需的配置。特别是GFS v16相较于早期版本，在垂直分辨率等方面有所提升。</li>
+<li>2019 GFS 资料处理
+<ul>
+<li>num_metgrid_levels = 32: 指定了metgrid程序需要处理的垂直层次数量。对于2019年的GFS资料，只能设置为32。</li>
+<li>sfcp_to_sfcp = .true. 和 use_surface = .true.：作者指出，2019年的GFS资料可能缺乏某些地面或近地面变量，或者其格式使得WPS难以自动识别地面信息。设置这两个参数为.true. 可以强制metgrid使用可用的地面气压（PSFC）等信息进行垂直插值和网格映射，确保地面数据的正确处理。</li>
+<li>常见错误：
+<ul>
+<li>如果在处理2019年GFS资料时没有添加sfcp_to_sfcp = .true. 和 use_surface = .true.，WPS可能会报错</li>
+<li>这个错误提示metgrid在需要使用地面气压（PSFC）时发现sfcp_to_sfcp标志为.false.。这也印证了对于2019年数据，需要明确告诉metgrid如何处理地面气压。</li>
+<li>网上有帖子也提到，类似错误有时也可能由其他气象资料（如ECMWF数据）的地面和高空资料间隔不一致引起。</li>
+</ul></li>
+</ul></li>
+<li>2020年 GFS 资料处理
+<ul>
+<li>num_metgrid_levels = 34: 对于2020年的GFS资料，WPS期望处理的垂直层次数量为34。这可能了2020年使用的GFS版本（ likely GFS v16 data format）在输出资料中提供了更多的垂直层次。</li>
+<li>sfcp_to_sfcp 和 use_surface: 这两项在处理2020年GFS资料时需要移除或设置为.false.。这说明2020年的GFS资料格式对于WPS（WRF 4.2.2版本）来说，其地面信息的组织方式使得WPS能够更顺畅地自动处理，不再需要额外的强制设置。</li>
+<li>常见错误：
+<ul>
+<li>如果在处理2020年GFS资料时仍然沿用2019年的设置（特别是num_metgrid_levels = 32 或保留了sfcp_to_sfcp = .true. 和 use_surface = .true.），可能会遇到以下问题：
+<ul>
+<li>层次错误： 如果num_metgrid_levels设置小于资料实际包含的层次，或者与WPS对该版本资料的期望不符，会导致错误。将num_metgrid_levels设置为34与2020年GFS资料的特性相符。</li>
+<li>边界条件相关错误： 可能出现 "Maybe this is a global domain, but the polar flag was not set in the bdy_control namelist." 这样的错误。虽然这个错误通常与全球模拟域或极区处理有关，但在本例中，可能是由于错误的数据处理参数（如保留了不必要的sfcp_to_sfcp等）干扰了WPS正确识别数据类型或进行内插，间接导致了与边界条件处理相关的逻辑错误。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
 
                 
               </div>
@@ -460,13 +497,19 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/WPS/" class="print-no-link">#WPS</a>
       
         <a href="/tags/IC-BC/" class="print-no-link">#IC/BC</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/FNL/" class="print-no-link">#FNL</a>
+      
+        <a href="/tags/RDA/" class="print-no-link">#RDA</a>
       
         <a href="/tags/NCEP/" class="print-no-link">#NCEP</a>
       
@@ -499,7 +542,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 8, 2024</div>
+          <div>May 12, 2025</div>
         </div>
       
       
@@ -530,9 +573,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/08/16/ERA5-2024-upgrade/" title="ERA5 CDS upgrade (2024 Sep)">
+                      <a href="/2024/08/20/DA-obs-introduction/" title="DA-Meteorological Data Encoding(氣象數據編碼)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ERA5 CDS upgrade (2024 Sep)</span>
+                        <span class="hidden-mobile">DA-Meteorological Data Encoding(氣象數據編碼)</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -540,8 +583,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/08/16/wrf-DA_Installation/" title="WRF | WRF-DA Installation">
-                        <span class="hidden-mobile">WRF | WRF-DA Installation</span>
+                      <a href="/2024/08/16/ERA5-2024-upgrade/" title="ERA5 CDS upgrade (2024 Sep)">
+                        <span class="hidden-mobile">ERA5 CDS upgrade (2024 Sep)</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
