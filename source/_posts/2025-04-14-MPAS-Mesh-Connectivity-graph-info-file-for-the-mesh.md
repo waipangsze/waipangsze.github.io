@@ -2,7 +2,7 @@
 layout: post
 title: MPAS | Mesh Connectivity (graph.info) file for the mesh
 categories: [MPAS]
-tags: [WRF, MPAS, HPC, NWP, graph.info, grid.nc, mesh]
+tags: [WRF, MPAS, HPC, NWP, graph.info, grid.nc, mesh generation]
 author: wpsze
 date: 2025-04-14 11:12:00
 math: true

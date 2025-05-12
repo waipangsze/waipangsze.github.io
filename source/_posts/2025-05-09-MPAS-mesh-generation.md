@@ -2,17 +2,19 @@
 layout: post
 title: MPAS | mesh generation
 categories: [MPAS]
-tags: [NWP, MPAS, WRF, mesh generation, MPAS-Tools, jigsaw, Lloyd iteration]
+tags: [NWP, MPAS, WRF, mesh generation, MPAS-Tools, jigsaw, Lloyd iteration, graph.info]
 author: wpsze
 math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2025-05-09 15:24:00
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/ZtMq9O5.png
+banner_img: https://i.imgur.com/ZtMq9O5.png
 ---
 
+- [**MPAS | Mesh Connectivity (graph.info) file for the mesh**](https://waipangsze.github.io/2025/04/14/MPAS-Mesh-Connectivity-graph-info-file-for-the-mesh/)
+- [**WRF | MPAS | MPI | halo/ghost cell**](https://waipangsze.github.io/2024/12/07/wrf-mpas-MPI-halocell-ghostcell/)
 - [**MPAS | Variable-resolution mesh generation**](https://waipangsze.github.io/2025/02/17/MPAS-Variable-resolution-mesh-generation/)
 - [MPAS-Atmosphere Mesh Generation | Michael G. Duda | NCAR/MMM](http://www.gpsarc.ncu.edu.tw/MPAS2023/slide/MPAS_A/14-Mesh%20generation.pdf)
 - [**MPAS | graph.info**](https://waipangsze.github.io/2025/05/11/MPAS-graph-info/)
