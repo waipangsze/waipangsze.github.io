@@ -471,3 +471,6 @@ Citations:
 [^19]: <https://www.eecweathertech.com/pdf/EEC-The-Chicago-storm.pdf>
 [^20]: <https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022GL099332>
 
+# Reference
+
+1. [中国气象局 天气雷达基数据和单站产品格式](https://www.cma.gov.cn/zfxxgk/gknr/flfgbz/bz/202307/P020230712582565380137.pdf)
