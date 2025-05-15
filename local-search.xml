@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>ecFlow | ECF_DATE is empty?</title>
+    <link href="/2025/05/15/ecFlow-ECF-DATE-is-empty/"/>
+    <url>/2025/05/15/ecFlow-ECF-DATE-is-empty/</url>
+    
+    <content type="html"><![CDATA[<ul><li><a href="https://waipangsze.github.io/2024/06/07/ecflow/">ecFlow -- Installation &amp; Usage</a></li></ul><hr /><h1 id="key-points">Key Points</h1><ul><li>It seems likely that <code>ECF_DATE</code> is empty because the suite definition in <code>ecFlow</code> lacks a clock attribute, which is needed to generate the date.</li><li>Research suggests that defining a <code>clock</code> (<code>real</code> or <code>hybrid</code>) in the suite is essential for <code>ECF_DATE</code> to be populated.</li><li>The evidence leans toward ensuring the clock is correctly set in either text-based or Python-based suite definitions.</li></ul><h2 id="background-on-ecflow-and-ecf_date">Background on ecFlow and ECF_DATE</h2><p>ecFlow, developed by the European Centre for Medium-Range Weather Forecasts (ECMWF), is a client/server workflow management system designed to handle complex workflows, especially in meteorological and environmental simulations. It enables the execution of numerous programs with dependencies on each other and on time, providing robustness against hardware and software failures with restart capabilities. A critical component of ecFlow is its ability to manage time-dependent tasks, which relies on generated variables such as ECF_DATE.</p><p><code>ECF_DATE</code> is a generated variable that represents the current date of the suite's clock, formatted typically as YYYYMMDD. This variable is essential for scheduling and triggering tasks based on date dependencies. The documentation, such as the "Dates and Clocks" page (<a href="https://confluence.ecmwf.int/display/ECFLOW/Dates%2Band%2BClocks">Dates and Clocks</a>), indicates that ECF_DATE is derived from the suite's clock, which can be either real (synchronized with the system clock) or hybrid (fixed date with system time).</p><p>Once a suite is complete, it is repeated automatically, with the next date. The value of the date is contained in the ecFlow variable ECF_DATE, and the value of the time is in ECF_TIME. ECF_CLOCK contains other information such as the day of week. A job should always use the ecFlow variables, and not directly access the system date. If a hybrid clock is defined for a suite, any node held by a date dependency will be set to complete at the beginning of the suite, without the node ever being despatched. Otherwise the suite would never complete.</p><p>The documentation, such as the "Generated Variables" page (<a href="https://confluence.ecmwf.int/display/ECFLOW/Generated%2BVariables">Generated Variables</a>), reinforces that variables like ECF_DATE are available at the suite level and may be overridden, but their generation depends on the clock. The "Variables and Substitution" page (<a href="https://confluence.ecmwf.int/display/ECFLOW/Variables%2Band%2BSubstitution">Variables and Substitution</a>) further notes that undefined variables can cause tasks to abort, which aligns with the expectation that an empty ECF_DATE would disrupt date-dependent operations.</p><h2 id="why-ecf_date-might-be-empty">Why ECF_DATE Might Be Empty</h2><p><code>ECF_DATE</code> is a generated variable in <code>ecFlow</code> that relies on the <strong>suite's clock to provide the current date</strong>. If this clock isn't defined, <code>ECF_DATE</code> will remain empty, affecting time-dependent tasks in your workflow.</p><h2 id="how-to-fix-it">How to Fix It</h2><p>To resolve this, add a clock to your suite definition:</p><ul><li>For text-based definitions, use <code>clock real</code> or <code>clock hybrid</code> at the suite level.</li><li>For Python API, use <code>suite.add(Clock("real"))</code> or similar, depending on your setup.</li></ul><table><thead><tr class="header"><th><strong>Clock Type</strong></th><th><strong>Description</strong></th><th><strong>Impact on ECF_DATE</strong></th></tr></thead><tbody><tr class="odd"><td>Real</td><td>Synchronized with system clock (UTC)</td><td>ECF_DATE reflects current system date</td></tr><tr class="even"><td>Hybrid</td><td>Fixed date, time follows system clock</td><td>ECF_DATE is fixed for suite duration</td></tr></tbody></table><ul><li><strong>Text-Based Suite Definition</strong>:<ul><li>Add the <code>clock</code> keyword to the suite definition. For example: <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs applescript">suite my_workflow<br>clock <span class="hljs-built_in">real</span><br><span class="hljs-comment"># Other definitions...</span><br>endsuite<br></code></pre></td></tr></table></figure></li><li>The clock can be set to <code>real</code> for system synchronization or <code>hybrid</code> for a fixed date, as seen in examples from the "ecFlow@ECMWF" page.</li><li>After updating, reload the suite using <code>ecflow_client --load your_suite.def</code> to ensure the server recognizes the changes.</li></ul></li><li><strong>Python API</strong>:<ul><li>Use the <code>Clock</code> class from the ecFlow Python API. For instance: <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> ecflow <span class="hljs-keyword">import</span> Suite, Clock<br> <br>suite = Suite(<span class="hljs-string">&quot;my_workflow&quot;</span>)<br>suite.add(Clock(<span class="hljs-string">&quot;real&quot;</span>))<br><span class="hljs-comment"># Other definitions...</span><br></code></pre></td></tr></table></figure></li><li>The GitHub documentation for the Clock class (<a href="https://github.com/ecmwf/ecflow/blob/develop/docs/python_api/Clock.rst">Clock Class</a>) indicates it specifies the clock type used by the suite, with options for gain to offset the date, which is useful for simulations running on historical data.</li></ul></li></ul><h2 id="checking-your-setup">Checking Your Setup</h2><p>After updating, reload the suite into the ecFlow server and verify <code>ECF_DATE</code> using the <code>ecFlow UI</code> or <strong>CLI command</strong> <code>ecflow_client --get /your_suite | grep ECF_DATE</code>.</p><h1 id="my-ecf_date-issue">My ECF_DATE issue</h1><h2 id="ecf_servercheckpoint-files">ecf_server/checkpoint files</h2><p><strong>Question:</strong> <code>ECF_DATE</code> is empty (no value).</p><p>This issue typically indicates a problem with the <strong>checkpoint file</strong>, which contains the status information for the ecflow workflow. <strong>When this file is corrupted or improperly configured</strong>, it caseues the workflow from operating normally.</p><p><strong>Steps to Resolve:</strong></p><ol type="1"><li><p><strong>Remove Checkpoint Files:</strong></p><ul><li>Navigate to the <code>ecflow_server</code> directory. This is where the checkpoint files are stored.</li><li>Delete any existing checkpoint files. This action clears any corrupted or outdated status information that may be causing the issue.</li></ul></li><li><p><strong>Restart the Server:</strong></p><ul><li>Run the command <code>./start.sh</code> in your terminal. This script will restart the ecflow server and reinitialize the workflow environment.</li></ul></li><li><p><strong>Restart the Workflow:</strong></p><ul><li>Open the <code>ecflow_ui</code> (the Ecflow User Interface).</li><li>Select the <strong>"Restart"</strong> option from the menu, and then choose "<strong>Begin</strong>". This will initiate the workflow from a fresh state, allowing it to proceed without the previous checkpoint issues.</li></ul></li></ol><p>By following these steps, you should be able to resolve the empty <code>ECF_DATE</code> issue and restore normal functionality to the ecflow workflow.</p><p><img src="https://i.imgur.com/YLNenhb.png" /> <img src="https://i.imgur.com/dZZ2gwP.png" /></p><h1 id="reference">Reference</h1><ol type="1"><li><a href="https://perillaroc.github.io/ecflow-tutorial-cn/chap04/data-and-clock/">日期和时钟 | ecFlow教程</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/Dates+and+Clocks">Dates and Clocks | ecmwf</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/Dates%2Band%2BClocks">Dates and Clocks ecFlow ECMWF Confluence Wiki</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/ecFlow%40ECMWF">ecFlow@ECMWF ecFlow ECMWF Confluence Wiki</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/Generated%2BVariables">Generated Variables ecFlow ECMWF Confluence Wiki</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/Variables%2Band%2BSubstitution">Variables and Substitution ecFlow ECMWF Confluence Wiki</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/date">date ecFlow ECMWF Confluence Wiki</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/Using%2Becflow_ui">Using ecflow_ui ecFlow ECMWF Confluence Wiki</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/Simulation">Simulation ecFlow ECMWF Confluence Wiki</a></li><li><a href="https://confluence.ecmwf.int/display/ECFLOW/Time%2BTriggers">Time Triggers ecFlow ECMWF Confluence Wiki</a></li><li><a href="https://github.com/ecmwf/ecflow/blob/develop/docs/python_api/Clock.rst">Clock Class ecFlow GitHub Documentation</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>MPAS</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Spack</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>Micromamba</tag>
+      
+      <tag>ecFlow</tag>
+      
+      <tag>Conda</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Linux | Linux 權限詳解（chmod)</title>
     <link href="/2025/05/14/Linux-chmod/"/>
     <url>/2025/05/14/Linux-chmod/</url>
@@ -4667,11 +4702,11 @@
     
     <tags>
       
+      <tag>Spack</tag>
+      
       <tag>MPAS</tag>
       
       <tag>DA</tag>
-      
-      <tag>Spack</tag>
       
       <tag>Spack-Stack</tag>
       
@@ -4698,11 +4733,15 @@
     
     <tags>
       
+      <tag>Spack</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
+      
       <tag>Installation</tag>
       
       <tag>Micromamba</tag>
-      
-      <tag>Spack</tag>
       
       <tag>ecFlow</tag>
       
@@ -4887,11 +4926,11 @@
     
     <tags>
       
+      <tag>Spack</tag>
+      
       <tag>MPAS</tag>
       
       <tag>Installation</tag>
-      
-      <tag>Spack</tag>
       
       <tag>Intel</tag>
       
