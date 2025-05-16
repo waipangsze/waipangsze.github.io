@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>Telegram | Push Notification | Bot</title>
+    <link href="/2025/05/16/Telegram-Push-Notification-Bot/"/>
+    <url>/2025/05/16/Telegram-Push-Notification-Bot/</url>
+    
+    <content type="html"><![CDATA[<h1 id="push-notifications-with-a-telegram-bot">push notifications with a Telegram bot</h1><p>To <strong>set up push notifications with a Telegram bot</strong>, you'll need to create a bot using <code>BotFather</code>, obtain its token, and then use the <code>Telegram Bot API</code> to send messages.</p><p>The guide to set up push notifications with a Telegram bot:</p><ol type="1"><li><strong>Create a Bot with BotFather</strong>:<ul><li>Open Telegram and search for <code>@BotFather</code>.</li><li>Start a conversation with BotFather chat and send <code>/newbot</code>.</li><li>Follow the prompts to name your bot and choose a unique username (must end with "_bot").</li><li>BotFather will provide you with an API token, which is your bot's unique identifier.</li><li>get its <strong>API token</strong> (e.g., <code>123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11</code>).</li></ul></li><li><strong>Get Your Chat ID</strong>:<ul><li>Message your bot (e.g., send <code>/start</code>).</li><li>Use the <code>getUpdates</code> API to find your chat ID: <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">https:</span>//api.telegram<span class="hljs-meta">.org</span>/bot&lt;YourBotToken&gt;/getUpdates<br></code></pre></td></tr></table></figure><ul><li>Open this URL in a browser or use a tool like <code>wget</code> or <code>curl</code>. Look for <code>"chat":&#123;"id":&lt;YourChatID&gt;</code> in the response.</li><li><code>cat getUpdates | grep -i chat</code> to look for chat ID.</li></ul></li></ul></li><li><strong>Send Push Notifications</strong>:<ul><li>Use the <code>sendMessage</code> API to send notifications. Make a POST request or use a simple GET request like: <figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs perl">https:<span class="hljs-regexp">//api</span>.telegram.org/bot<span class="hljs-string">&#123;bot_token&#125;</span>/sendMessage?chat_id=<span class="hljs-string">&#123;chat_id&#125;</span>&amp;text=<span class="hljs-string">&#123;notification_text&#125;</span><br>https:<span class="hljs-regexp">//api</span>.telegram.org/bot&lt;YourBotToken&gt;/sendMessage?chat_id=&lt;YourChatID&gt;&amp;text=Hello,<span class="hljs-variable">%2</span>0this<span class="hljs-variable">%2</span>0is<span class="hljs-variable">%2</span>0a<span class="hljs-variable">%20notification</span>!<br></code></pre></td></tr></table></figure></li><li>You can test this in a browser, with <code>curl</code>, or in code.</li></ul></li><li><strong>Implement in Code</strong> (e.g., Python with <code>requests</code>):<ul><li><code>conda install anaconda::requests</code> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">send_notification</span>(<span class="hljs-params">bot_token, chat_id, message</span>):<br>    url = <span class="hljs-string">f&quot;https://api.telegram.org/bot<span class="hljs-subst">&#123;bot_token&#125;</span>/sendMessage&quot;</span><br>    params = &#123;<span class="hljs-string">&quot;chat_id&quot;</span>: chat_id, <span class="hljs-string">&quot;text&quot;</span>: message&#125;<br>    response = requests.get(url, params=params)<br>    <span class="hljs-keyword">return</span> response.json()<br><br><span class="hljs-comment"># Example usage</span><br>token = <span class="hljs-string">&quot;your_bot_token&quot;</span><br>chat_id = <span class="hljs-string">&quot;your_chat_id&quot;</span><br>send_notification(token, chat_id, <span class="hljs-string">&quot;Test notification!&quot;</span>)<br></code></pre></td></tr></table></figure></li></ul></li><li><strong>Optional Enhancements</strong>:<ul><li><strong>Formatting</strong>: Use <code>parse_mode=Markdown</code> or <code>HTML</code> in the API for styled messages.<ul><li>You can also include other parameters like <code>parse_mode</code> for formatting (e.g., <strong>Markdown</strong>) and <code>disable_web_page_preview</code></li></ul></li><li><strong>Error Handling</strong>: Check the API response for errors (e.g., <code>response.ok</code> in Python).</li><li><strong>Automation</strong>: Integrate with your app or server to trigger notifications on events.</li></ul></li></ol><h1 id="important-considerations">Important Considerations:</h1><ul><li><strong>Bot Token Security</strong>:<ul><li><strong>Keep your bot's API token safe and secure</strong>, as anyone with the token can use it to send messages.</li></ul></li><li><strong>Chat ID Management</strong>:<ul><li>If you're sending notifications to multiple users or groups, you'll need a way to store and manage their chat IDs.</li></ul></li><li><strong>Error Handling</strong>:<ul><li>Implement error handling to gracefully handle issues like invalid chat IDs or network problems.</li></ul></li><li><strong>Telegram Bot API Documentation</strong>:<ul><li>Refer to the official Telegram Bot API documentation for detailed information on available methods and parameters.</li></ul></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>Telegram</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>MPAS</tag>
+      
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ecFlow</tag>
+      
+      <tag>micromamba</tag>
+      
+      <tag>Bot</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>ecFlow | alias</title>
     <link href="/2025/05/16/ecFlow-alias/"/>
     <url>/2025/05/16/ecFlow-alias/</url>
@@ -20,17 +55,17 @@
     
     <tags>
       
-      <tag>ecFlow</tag>
-      
-      <tag>Spack</tag>
-      
-      <tag>Micromamba</tag>
-      
-      <tag>Conda</tag>
-      
       <tag>MPAS</tag>
       
       <tag>WRF</tag>
+      
+      <tag>Micromamba</tag>
+      
+      <tag>Spack</tag>
+      
+      <tag>ecFlow</tag>
+      
+      <tag>Conda</tag>
       
     </tags>
     
@@ -55,17 +90,17 @@
     
     <tags>
       
-      <tag>ecFlow</tag>
-      
-      <tag>Spack</tag>
-      
-      <tag>Micromamba</tag>
-      
-      <tag>Conda</tag>
-      
       <tag>MPAS</tag>
       
       <tag>WRF</tag>
+      
+      <tag>Micromamba</tag>
+      
+      <tag>Spack</tag>
+      
+      <tag>ecFlow</tag>
+      
+      <tag>Conda</tag>
       
     </tags>
     
@@ -125,9 +160,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>mesh generation</tag>
       
@@ -164,9 +199,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>mesh generation</tag>
       
@@ -203,9 +238,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Meteorology</tag>
       
@@ -242,9 +277,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -275,9 +310,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -304,9 +339,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -337,9 +372,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -372,9 +407,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -434,9 +469,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -471,9 +506,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -504,13 +539,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
+      
+      <tag>GFS</tag>
       
       <tag>IFS</tag>
       
@@ -549,9 +584,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -584,9 +619,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>CMA</tag>
       
@@ -619,9 +654,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -656,9 +691,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -693,9 +728,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -757,9 +792,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Precipitation</tag>
       
@@ -821,9 +856,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>IC</tag>
       
@@ -854,9 +889,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>FDDA</tag>
       
@@ -920,15 +955,15 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>CMAQ</tag>
+      <tag>WRF</tag>
+      
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
       
-      <tag>GFS</tag>
+      <tag>CMAQ</tag>
       
       <tag>SMOKE</tag>
       
@@ -957,13 +992,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>rainc</tag>
       
@@ -994,9 +1029,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -1027,9 +1062,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -1056,13 +1091,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>Wave</tag>
       
@@ -1091,17 +1126,17 @@
       
       <tag>MPAS</tag>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>CMAQ</tag>
       
       <tag>US EPA</tag>
-      
-      <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
     </tags>
     
@@ -1128,13 +1163,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
     </tags>
     
@@ -1161,9 +1196,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>PINN</tag>
       
@@ -1198,13 +1233,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>RRTM</tag>
       
@@ -1233,13 +1268,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
     </tags>
     
@@ -1266,9 +1301,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -1305,9 +1340,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>mesh generation</tag>
       
@@ -1338,13 +1373,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>PGW</tag>
       
@@ -1379,13 +1414,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
     </tags>
     
@@ -1412,13 +1447,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
     </tags>
     
@@ -1445,13 +1480,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>PGW</tag>
       
@@ -1482,13 +1517,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>PGW</tag>
       
@@ -1523,13 +1558,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>PGW</tag>
       
@@ -1566,13 +1601,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>PGW</tag>
       
@@ -1638,13 +1673,13 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>PGW</tag>
       
@@ -1867,9 +1902,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -1900,9 +1935,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -2034,9 +2069,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -2100,9 +2135,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -2807,9 +2842,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -2838,9 +2873,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -2875,9 +2910,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -3230,9 +3265,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3420,9 +3455,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3447,9 +3482,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -3480,9 +3515,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -3509,9 +3544,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -3538,9 +3573,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3779,9 +3814,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>ECMWF</tag>
       
@@ -3852,9 +3887,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3914,9 +3949,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -4089,9 +4124,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Google</tag>
       
@@ -4120,9 +4155,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -4149,9 +4184,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
@@ -4180,9 +4215,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
@@ -4211,9 +4246,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
@@ -4242,9 +4277,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -4410,9 +4445,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -4443,11 +4478,11 @@
       
       <tag>WRF</tag>
       
-      <tag>GFS</tag>
-      
       <tag>WPS</tag>
       
       <tag>IC/BC</tag>
+      
+      <tag>GFS</tag>
       
       <tag>FNL</tag>
       
@@ -4482,11 +4517,11 @@
       
       <tag>WRF</tag>
       
-      <tag>ERA5</tag>
-      
       <tag>WPS</tag>
       
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -4513,19 +4548,19 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>MPAS</tag>
-      
-      <tag>WRF</tag>
       
       <tag>NWP</tag>
       
-      <tag>gnu</tag>
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
       <tag>WRFDA</tag>
+      
+      <tag>gnu</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -4737,11 +4772,11 @@
     
     <tags>
       
-      <tag>Spack</tag>
-      
       <tag>MPAS</tag>
       
       <tag>DA</tag>
+      
+      <tag>Spack</tag>
       
       <tag>Spack-Stack</tag>
       
@@ -4768,19 +4803,19 @@
     
     <tags>
       
-      <tag>ecFlow</tag>
-      
-      <tag>Spack</tag>
-      
-      <tag>Micromamba</tag>
-      
-      <tag>Conda</tag>
-      
-      <tag>Installation</tag>
-      
       <tag>MPAS</tag>
       
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
+      
+      <tag>Micromamba</tag>
+      
+      <tag>Spack</tag>
+      
+      <tag>ecFlow</tag>
+      
+      <tag>Conda</tag>
       
     </tags>
     
@@ -4830,9 +4865,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
       <tag>Pnetcdf</tag>
       
@@ -4961,11 +4996,11 @@
     
     <tags>
       
-      <tag>Spack</tag>
+      <tag>MPAS</tag>
       
       <tag>Installation</tag>
       
-      <tag>MPAS</tag>
+      <tag>Spack</tag>
       
       <tag>Intel</tag>
       
@@ -5150,9 +5185,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5177,9 +5212,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5231,9 +5266,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5287,9 +5322,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5314,9 +5349,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5341,9 +5376,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5368,9 +5403,9 @@
     
     <tags>
       
-      <tag>Micromamba</tag>
-      
       <tag>conda</tag>
+      
+      <tag>Micromamba</tag>
       
     </tags>
     
@@ -5760,11 +5795,11 @@
       
       <tag>WRF</tag>
       
-      <tag>ERA5</tag>
-      
       <tag>WPS</tag>
       
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -5820,11 +5855,11 @@
       
       <tag>WRF</tag>
       
-      <tag>ERA5</tag>
-      
       <tag>WPS</tag>
       
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -5992,9 +6027,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -6087,11 +6122,11 @@
       
       <tag>WRF</tag>
       
-      <tag>ERA5</tag>
-      
       <tag>WPS</tag>
       
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -6261,11 +6296,11 @@
       
       <tag>WRF</tag>
       
-      <tag>GFS</tag>
-      
       <tag>WPS</tag>
       
       <tag>IC/BC</tag>
+      
+      <tag>GFS</tag>
       
       <tag>FNL</tag>
       
@@ -6408,17 +6443,17 @@
     
     <tags>
       
-      <tag>Installation</tag>
+      <tag>NWP</tag>
       
       <tag>WRF</tag>
-      
-      <tag>NWP</tag>
       
       <tag>gnu</tag>
       
       <tag>gcc</tag>
       
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
