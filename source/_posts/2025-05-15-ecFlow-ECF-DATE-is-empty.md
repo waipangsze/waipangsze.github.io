@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ecFlow | ECF_DATE is empty?
-categories: [MPAS]
+categories: [ecFlow]
 tags: [ecFlow, Spack, Micromamba, Conda, WRF, MPAS]
 author: wpsze
 date: 2025-05-15 13:58:00

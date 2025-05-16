@@ -102,7 +102,9 @@ How can I display the absolute path in bash prompt?
 # PS1='\u@\h:\w\$ '
 # Replace the "\w" with "\$PWD"
 # PS1=[\u@\h ]\$PWD$
-PS1="$(clock_prompt)$python_venv${hostname}:${_omb_prompt_bold_teal}\${PWD} $(scm_prompt_char_info)${ret_status}$ ${_omb_prompt_normal}"
+# PS1="$(clock_prompt)$python_venv${hostname}:${_omb_prompt_bold_teal}\${PWD} $(scm_prompt_char_info)${ret_status}$ ${_omb_prompt_normal}"
+# or
+PS1="$(clock_prompt)$python_venv${hostname}:${_omb_prompt_bold_teal}\${PWD} $(scm_prompt_char_info)${ret_status} \n $ ${_omb_prompt_normal}"
 ```
 
 The key here is **\w** gives the full path while **\W** gives only the directory.
