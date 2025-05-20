@@ -19,21 +19,22 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Data assimilation (DA)    4D-Var for Dummies | 2009 Linearised physics: the heart of ECMWF’s 4D-Var | 2023 WRF 多重解析度四維變分資料同化方法之研究 | 劉志權 | 2019 25 years of 4D-Var: how machine learning can improve the">
+    <meta name="description" content="Data assimilation (DA)   What Are Tangent Linear and Adjoint Models? A mathematical explanation of the tangent linear and adjoint models in the context of variational data assimilation such as WRFDA:">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NWP | DA | 4D-Var">
-<meta property="og:url" content="https://waipangsze.github.io/2025/03/20/NWP-DA-4Dvar/index.html">
+<meta property="og:title" content="NWP | 4D-Var | Tangent Linear and Adjoint Models">
+<meta property="og:url" content="https://waipangsze.github.io/2025/03/20/NWP-DA-4Dvar-Tangent-Linear-and-Adjoint-Models/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="Data assimilation (DA)    4D-Var for Dummies | 2009 Linearised physics: the heart of ECMWF’s 4D-Var | 2023 WRF 多重解析度四維變分資料同化方法之研究 | 劉志權 | 2019 25 years of 4D-Var: how machine learning can improve the">
+<meta property="og:description" content="Data assimilation (DA)   What Are Tangent Linear and Adjoint Models? A mathematical explanation of the tangent linear and adjoint models in the context of variational data assimilation such as WRFDA:">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/aymZVsL.png">
 <meta property="article:published_time" content="2025-03-20T09:35:00.000Z">
-<meta property="article:modified_time" content="2025-04-02T06:42:13.039Z">
+<meta property="article:modified_time" content="2025-05-20T08:50:02.066Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="DA">
+<meta property="article:tag" content="WRFDA">
 <meta property="article:tag" content="4Dvar">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/aymZVsL.png">
@@ -42,7 +43,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>NWP | DA | 4D-Var - wpsze</title>
+  <title>NWP | 4D-Var | Tangent Linear and Adjoint Models - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -329,7 +330,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="NWP | DA | 4D-Var"></span>
+            <span id="subtitle" data-typed-text="NWP | 4D-Var | Tangent Linear and Adjoint Models"></span>
           
         </div>
 
@@ -352,7 +353,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          40 words
+          544 words
         
       </span>
     
@@ -363,7 +364,7 @@
         
         
         
-          1 mins
+          5 mins
         
       </span>
     
@@ -409,7 +410,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">NWP | DA | 4D-Var</h1>
+            <h1 id="seo-header">NWP | 4D-Var | Tangent Linear and Adjoint Models</h1>
             
             
               <div class="markdown-body">
@@ -418,14 +419,127 @@
 <li><a href="https://waipangsze.github.io/2024/09/24/DA-intro/"><strong>Data assimilation (DA)</strong></a></li>
 </ul>
 <hr />
+<h1 id="what-are-tangent-linear-and-adjoint-models">What Are Tangent Linear and Adjoint Models?</h1>
+<p>A mathematical explanation of the tangent linear and adjoint models in the context of variational data assimilation such as WRFDA:</p>
+<h2 id="tangent-linear-model-tlm">Tangent Linear Model (TLM)</h2>
+<p>Let the nonlinear forecast model be represented as a nonlinear operator <span class="math inline">\(\mathbf{M}\)</span> that evolves the model state <span class="math inline">\(\mathbf{x}\)</span> from time <span class="math inline">\(t_i\)</span> to <span class="math inline">\(t_{i+1}\)</span>:</p>
+<p><span class="math display">\[
+\mathbf{x}_{i+1} = \mathbf{M}_i(\mathbf{x}_i)
+\]</span></p>
+<p>The tangent linear model is the linearization of <span class="math inline">\(\mathbf{M}\)</span> around a reference trajectory <span class="math inline">\(\mathbf{x}_i\)</span>. It describes how a small perturbation <span class="math inline">\(\delta \mathbf{x}_i\)</span> in the initial state evolves:</p>
+<p><span class="math display">\[
+\delta \mathbf{x}_{i+1} = \mathbf{M}_i&#39;(\mathbf{x}_i) \, \delta \mathbf{x}_i
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{M}_i&#39;(\mathbf{x}_i) = \frac{\partial \mathbf{M}_i}{\partial \mathbf{x}} \bigg|_{\mathbf{x}_i}\)</span> is the Jacobian (linearized operator) of <span class="math inline">\(\mathbf{M}_i\)</span> evaluated at <span class="math inline">\(\mathbf{x}_i\)</span>.</p>
+<p>T<strong>his linearization allows efficient computation of how small changes in the initial state affect the forecast trajectory</strong>, which is critical for calculating the cost function in 4D-Var data assimilation.</p>
+<p>In practical terms, the TLM is used to propagate small perturbations (or errors) in the initial conditions forward in time. For example, <strong>if there is a small error in the initial temperature, the TLM helps predict how this error grows or diminishes over the forecast period</strong>. This is crucial for understanding the sensitivity of the model to initial conditions and for assessing how uncertainties evolve, which is a fundamental aspect of data assimilation.</p>
+<h2 id="adjoint-model-adm">Adjoint Model (ADM)</h2>
+<p>The adjoint model is the transpose (or adjoint) of the tangent linear model operator TLM, a concept rooted in linear algebra and optimization theory. <strong>It propagates sensitivities backward in time and is used to compute the gradient of the cost function <span class="math inline">\(J\)</span> with respect to the initial conditions or control variables</strong>.</p>
 <ul>
+<li><strong>While the TLM propagates perturbations forward, the ADM works backward</strong>, computing the gradient of a scalar function (such as the cost function in 4DVAR) with respect to the initial conditions or other control variables.</li>
+<li>In data assimilation, <strong>the cost function typically measures the mismatch between the model’s trajectory and the observational data</strong>, weighted by their respective uncertainties. <strong>The ADM efficiently calculates how much each component of the initial conditions contributes to this mismatch</strong>. For instance, it can determine how a small change in initial wind speed at a specific location affects the overall forecast error, enabling targeted adjustments.</li>
+<li><strong>This capability is vital for optimization algorithms in 4DVAR</strong>, which iteratively adjust the initial conditions to minimize the cost function. The ADM’s efficiency in computing gradients makes it indispensable for large-scale weather prediction systems, where direct computation would be computationally prohibitive.</li>
+</ul>
+<p>If the tangent linear model operator is <span class="math inline">\(\mathbf{M}_i&#39;\)</span>, then the adjoint operator is <span class="math inline">\(\mathbf{M}_i&#39;^*\)</span>, defined such that for any vectors <span class="math inline">\(\mathbf{a}\)</span> and <span class="math inline">\(\mathbf{b}\)</span>:</p>
+<p><span class="math display">\[
+\langle \mathbf{a}, \mathbf{M}_i&#39; \mathbf{b} \rangle = \langle \mathbf{M}_i&#39;^* \mathbf{a}, \mathbf{b} \rangle
+\]</span></p>
+<p>where <span class="math inline">\(\langle \cdot, \cdot \rangle\)</span> is the inner product.</p>
+<p>The adjoint model evolves the gradient of the cost function backward:</p>
+<p><span class="math display">\[
+\lambda_i = \mathbf{M}_i&#39;^* \lambda_{i+1}
+\]</span></p>
+<p>where <span class="math inline">\(\lambda_i\)</span> is the adjoint variable at time <span class="math inline">\(t_i\)</span>, representing the sensitivity of the cost function to the model state at time <span class="math inline">\(t_i\)</span>.</p>
+<h2 id="cost-function-and-gradient-in-4d-var">Cost Function and Gradient in 4D-Var</h2>
+<p>The 4D-Var cost function <span class="math inline">\(J\)</span> typically measures the misfit between the model trajectory and observations plus a background term:</p>
+<p><span class="math display">\[
+J(\mathbf{x}_0) = \frac{1}{2} (\mathbf{x}_0 - \mathbf{x}_b)^T \mathbf{B}^{-1} (\mathbf{x}_0 - \mathbf{x}_b) + \frac{1}{2} \sum_{i=0}^N \left( \mathbf{y}_i - \mathbf{H}_i(\mathbf{x}_i) \right)^T \mathbf{R}_i^{-1} \left( \mathbf{y}_i - \mathbf{H}_i(\mathbf{x}_i) \right)
+\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(\mathbf{x}_0\)</span> is the initial state to optimize,</li>
+<li><span class="math inline">\(\mathbf{x}_b\)</span> is the background state,</li>
+<li><span class="math inline">\(\mathbf{B}\)</span> is the background error covariance,</li>
+<li><span class="math inline">\(\mathbf{y}_i\)</span> are observations at time <span class="math inline">\(t_i\)</span>,</li>
+<li><span class="math inline">\(\mathbf{H}_i\)</span> is the observation operator,</li>
+<li><span class="math inline">\(\mathbf{R}_i\)</span> is the observation error covariance.</li>
+</ul>
+<p>The gradient of <span class="math inline">\(J\)</span> with respect to <span class="math inline">\(\mathbf{x}_0\)</span> is computed efficiently using the adjoint model:</p>
+<p><span class="math display">\[
+\nabla_{\mathbf{x}_0} J = \mathbf{B}^{-1} (\mathbf{x}_0 - \mathbf{x}_b) - \sum_{i=0}^N \mathbf{M}_{0 \to i}&#39;^* \mathbf{H}_i&#39;^* \mathbf{R}_i^{-1} \left( \mathbf{y}_i - \mathbf{H}_i(\mathbf{x}_i) \right)
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{M}_{0 \to i}&#39;^*\)</span> is the adjoint propagator from time <span class="math inline">\(t_i\)</span> back to <span class="math inline">\(t_0\)</span>, and <span class="math inline">\(\mathbf{H}_i&#39;\)</span> is the linearized observation operator.</p>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/fUORsqe.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/WwEjOcz.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h2 id="integration-in-wrfda-and-4dvar">Integration in WRFDA and 4DVAR</h2>
+<p>In WRFDA, the TLM and ADM are critical components of the 4DVAR system. The 4DVAR process involves finding the initial conditions that, <strong>when evolved through the WRF model, best fit the observations over a time window</strong>. This is achieved by minimizing a cost function that balances the background (prior) information and the observational data.</p>
+<ul>
+<li><strong>Role of TLM</strong>: The TLM is used to propagate the model forward, simulating how perturbations in the initial conditions evolve over time. <strong>This is essential for understanding the dynamics of error growth and for computing the model’s response to small changes</strong>.</li>
+<li><strong>Role of ADM</strong>: The ADM computes the gradient of the cost function with respect to the initial conditions, guiding the optimization process. This gradient information is used in iterative algorithms (e.g., conjugate gradient methods) to adjust the initial state iteratively, improving the fit to observations</li>
+</ul>
+<hr />
+<h3 id="summary">Summary</h3>
+<table>
+
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Mathematical Expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nonlinear model</td>
+<td><span class="math inline">\(\mathbf{x}_{i+1} = \mathbf{M}_i(\mathbf{x}_i)\)</span></td>
+<td>Forecast model evolution</td>
+</tr>
+<tr class="even">
+<td>Tangent linear model</td>
+<td><span class="math inline">\(\delta \mathbf{x}_{i+1} = \mathbf{M}_i&#39;(\mathbf{x}_i) \delta \mathbf{x}_i\)</span></td>
+<td>Linearized evolution of perturbations</td>
+</tr>
+<tr class="odd">
+<td>Adjoint model</td>
+<td><span class="math inline">\(\lambda_i = \mathbf{M}_i&#39;^* \lambda_{i+1}\)</span></td>
+<td>Backward propagation of sensitivities</td>
+</tr>
+<tr class="even">
+<td>Cost function gradient</td>
+<td><span class="math inline">\(\nabla_{\mathbf{x}_0} J = \mathbf{B}^{-1}(\mathbf{x}_0 - \mathbf{x}_b) - \sum_i \mathbf{M}_{0 \to i}&#39;^* \mathbf{H}_i&#39;^* \mathbf{R}_i^{-1} (\mathbf{y}_i - \mathbf{H}_i(\mathbf{x}_i))\)</span></td>
+<td>Gradient used for optimization in 4D-Var</td>
+</tr>
+</tbody>
+</table>
+<p>This framework enables efficient computation of gradients needed for optimization in variational data assimilation, making the assimilation of observations into models computationally feasible.</p>
+<hr />
+<h3 id="references">References</h3>
+<ul>
+<li>ECMWF tutorial on tangent linear and adjoint models for variational data assimilation.
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/sites/default/files/elibrary/2018/18542-tangent-linear-and-adjoint-models-data-assimilation.pdf" class="uri">https://www.ecmwf.int/sites/default/files/elibrary/2018/18542-tangent-linear-and-adjoint-models-data-assimilation.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.atmos.umd.edu/~dkleist/docs/da/ECMWF_DA_TUTORIAL/Benedetti-Tangent_linear_adjoint_models.pdf" class="uri">https://www2.atmos.umd.edu/~dkleist/docs/da/ECMWF_DA_TUTORIAL/Benedetti-Tangent_linear_adjoint_models.pdf</a></li>
+</ul></li>
+<li>Mathematical foundations of variational data assimilation and adjoint methods.
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.scielo.br/j/rbmet/a/ZP8nwSWzS9TsPLSTYjsYBGH/?lang=en" class="uri">https://www.scielo.br/j/rbmet/a/ZP8nwSWzS9TsPLSTYjsYBGH/?lang=en</a></li>
+</ul></li>
+<li>Description of tangent linear and adjoint models in 4D-Var data assimilation.
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gmao.gsfc.nasa.gov/pubs/docs/Yang131.pdf" class="uri">https://gmao.gsfc.nasa.gov/pubs/docs/Yang131.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/mwre/151/1/MWR-D-22-0164.1.xml" class="uri">https://journals.ametsoc.org/view/journals/mwre/151/1/MWR-D-22-0164.1.xml</a></li>
+</ul></li>
+</ul>
+<hr />
+<h1 id="references-1">References</h1>
+<ol type="1">
 <li><a target="_blank" rel="noopener" href="https://gmao.gsfc.nasa.gov/events/adjoint_workshop-8/present/Sunday/Kepert1.pdf">4D-Var for Dummies | 2009</a></li>
+<li><a target="_blank" rel="noopener" href="https://events.ecmwf.int/event/376/contributions/4287/attachments/2460/4259/M_Chrust_ADJOINT.pdf">Tangent linear and adjoint models for variational data assimilation</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/newsletter/175/earth-system-science/linearised-physics-heart-ecmwfs-4d-var">Linearised physics: the heart of ECMWF’s 4D-Var | 2023</a></li>
 <li><a target="_blank" rel="noopener" href="http://mopl.as.ntu.edu.tw/web/ASJ/46/46-4-1.pdf">WRF 多重解析度四維變分資料同化方法之研究 | 劉志權 | 2019</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/en/about/media-centre/news/2022/25-years-4d-var-how-machine-learning-can-improve-use-observations">25 years of 4D-Var: how machine learning can improve the use of observations | EMCWF | 2022</a></li>
 <li><a target="_blank" rel="noopener" href="https://www2.atmos.umd.edu/~ekalnay/pubs/4DVarEnKFKalnaySAMSI.ppt.pdf">The Future of Data Assimilation: 4D-Var or Ensemble Kalman Filter?4D-Var or Ensemble Kalman Filter</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.myroms.org/wiki/4DVar_Tutorial_Introduction">ROMS 4D-Var data assimilation algorithms</a></li>
-</ul>
+</ol>
 
                 
               </div>
@@ -459,13 +573,15 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
         <a href="/tags/DA/" class="print-no-link">#DA</a>
+      
+        <a href="/tags/WRFDA/" class="print-no-link">#WRFDA</a>
       
         <a href="/tags/4Dvar/" class="print-no-link">#4Dvar</a>
       
@@ -479,8 +595,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>NWP | DA | 4D-Var</div>
-      <div>https://waipangsze.github.io/2025/03/20/NWP-DA-4Dvar/</div>
+      <div>NWP | 4D-Var | Tangent Linear and Adjoint Models</div>
+      <div>https://waipangsze.github.io/2025/03/20/NWP-DA-4Dvar-Tangent-Linear-and-Adjoint-Models/</div>
     </div>
     <div class="license-meta">
       
@@ -498,7 +614,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>April 2, 2025</div>
+          <div>May 20, 2025</div>
         </div>
       
       
