@@ -33,6 +33,7 @@ banner_img: https://i.imgur.com/dmB2ImA.png
 6. [MPAS-Atmosphere Users' Guide V7.0](https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_7.0.pdf)
 7. [MPAS-Atmosphere Users' Guide V8.2.0](https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf)
 8. [Joint WRF/MPAS Users Workshop 2024](https://www.mmm.ucar.edu/events/133129/agenda)
+9. [Joint WRF/MPAS Users Workshop 2025](https://www.mmm.ucar.edu/events/133265/agenda)
 
 # MPAS-Atmosphere Version 8.0.0
 
