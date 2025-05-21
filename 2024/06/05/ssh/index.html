@@ -27,7 +27,7 @@
 <meta property="og:description" content="The Secure Shell Protocol (SSH) is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login and command-line e">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-06-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-08T08:24:34.341Z">
+<meta property="article:modified_time" content="2025-05-21T01:53:15.857Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="ssh">
 <meta name="twitter:card" content="summary_large_image">
@@ -346,7 +346,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          227 words
+          381 words
         
       </span>
     
@@ -357,7 +357,7 @@
         
         
         
-          2 mins
+          4 mins
         
       </span>
     
@@ -426,7 +426,26 @@
 <p>In your SSH session with the remote machine, update the permissions of the .ssh directory and authorized_keys file in case they need it:</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">chmod</span> 700 ~/.ssh<br>$ <span class="hljs-built_in">chmod</span> 600 ~/.ssh/authorized_keys<br></code></pre></td></tr></table></figure>
 <p>Now, close your connection and your Terminal or Command Prompt. When you reopen it and try to connect to the remote server again from the client where you have your private key saved, you should receive a request to enter the passphrase instead of your username and password.</p>
-<p>Reference: 1. <a target="_blank" rel="noopener" href="https://www.strongdm.com/blog/ssh-passwordless-login">How to Set Up SSH Passwordless Login (Step-by-Step Tutorial)</a></p>
+<h1 id="linux---ssh-透過-proxy-jump-bastion-site-至遠端主機">Linux - SSH 透過 Proxy jump (Bastion Site) 至遠端主機</h1>
+<ul>
+<li>單一主機
+<ul>
+<li><code>ssh -J &lt;bastion-host&gt; &lt;remote-host&gt;</code></li>
+</ul></li>
+<li>多重主機
+<ul>
+<li><code>ssh -J &lt;bastion1&gt;,&lt;bastion2&gt; &lt;remote&gt;</code></li>
+<li>Client 只開放允許 bastion 主機連線， serverA 有防火牆規則阻絕只能透過 bastion 主機連線， serverB 只能透過 serverA 連線。</li>
+</ul></li>
+</ul>
+<h2 id="設定-ssh_config-檔案">設定 ssh_config 檔案</h2>
+<p>上述透過指令很方便可以達成，如果每次都有多台不同主機要連線，可以藉由<strong>設定 ssh_config (~/.ssh/config)來快速自動連線</strong>，而不用輸入一長串指令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs config">### The Bastion Host<br>Host bastion-host-nickname<br>  HostName bastion-hostname-IP<br><br>### The Remote Host<br>Host remote-host-nickname<br>  HostName remote-hostname-IP<br>  ProxyJump bastion-host-nickname-IP<br>  User xxx<br></code></pre></td></tr></table></figure>
+<h1 id="reference">Reference:</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.strongdm.com/blog/ssh-passwordless-login">How to Set Up SSH Passwordless Login (Step-by-Step Tutorial)</a></li>
+<li><a target="_blank" rel="noopener" href="https://how64bit.com/posts/linux/2023/linux-ssh-proxy-jump/">Linux - SSH 透過 Proxy jump (Bastion Site) 至遠端主機</a></li>
+</ol>
 
                 
               </div>
@@ -491,7 +510,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 8, 2024</div>
+          <div>May 21, 2025</div>
         </div>
       
       
@@ -522,9 +541,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/06/07/spack/" title="Spack">
+                      <a href="/2024/06/05/WRF-install-pnetcdf/" title="WRF | WRF uses Pnetcdf">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Spack</span>
+                        <span class="hidden-mobile">WRF | WRF uses Pnetcdf</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -532,8 +551,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/06/05/WRF-install-pnetcdf/" title="WRF | WRF uses Pnetcdf">
-                        <span class="hidden-mobile">WRF | WRF uses Pnetcdf</span>
+                      <a href="/2024/06/04/MPAS_config_microp_re/" title="MPAS | use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG">
+                        <span class="hidden-mobile">MPAS | use_mp_re/config_microp_re -- use effective radii computed in mp schemes in RRTMG</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
