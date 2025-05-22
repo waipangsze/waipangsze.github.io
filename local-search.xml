@@ -4,6 +4,72 @@
   
   
   <entry>
+    <title>MPAS | WRF | CCPP Scientific Documentation</title>
+    <link href="/2025/05/22/MPAS-WRF-CCPP-Scientific-Documentation/"/>
+    <url>/2025/05/22/MPAS-WRF-CCPP-Scientific-Documentation/</url>
+    
+    <content type="html"><![CDATA[<h1 id="ccpp-scientific-documentation">CCPP Scientific Documentation</h1><p><img src="https://i.imgur.com/MTwxL8Z.png" /></p><p>The scientific documentation for the parameterizations and suites available in the <strong>Common Community Physics Package (CCPP)</strong>.</p><p>The <strong>CCPP-Physics</strong> (available through h&lt;ttps://github.com/NCAR/ccpp-physics/&gt;) is envisioned to contain parameterizations used in the Unified Forecast System (UFS) applications for weather through seasonal prediction timescales, encompassing the current operational GFS schemes, as well as developmental schemes under consideration for upcoming operational implementations. The UFS can be configured for multiple applications, including the UFS Short-Range Weather (SRW) Application (available through <a href="https://github.com/ufs-community/ufs-srweather-app/" class="uri">https://github.com/ufs-community/ufs-srweather-app/</a>), which targets predictions of atmospheric behavior on a limited spatial domain and on time scales from less than an hour out to several days, and the UFS Medium-Range Weather (MRW) Application (available through <a href="https://github.com/ufs-community/ufs-mrweather-app/" class="uri">https://github.com/ufs-community/ufs-mrweather-app/</a>)(which targets predictions of global atmospheric behavior out to about two weeks), the Subseasonal-to-Seasonal (S2S) Application (which predicts the Earth System out to several months), and the Hurricane Application (which predicts tropical cyclones).</p><p>Both the CCPP Framework and the CCPP Physics are developed as open source code, follow industry-standard code management practices, and are freely distributed through GitHub (<a href="https://github.com/NCAR/ccpp-physics" class="uri">https://github.com/NCAR/ccpp-physics</a> and <a href="https://github.com/NCAR/ccpp-framework" class="uri">https://github.com/NCAR/ccpp-framework</a>). This documentation is housed in repository <a href="https://github.com/NCAR/ccpp-doc" class="uri">https://github.com/NCAR/ccpp-doc</a>.</p><p><img src="https://i.imgur.com/GNYieMV.png" /></p><h1 id="links">Links</h1><ul><li><a href="https://dtcenter.ucar.edu/GMTB/v7.0.0/sci_doc/index.html" class="uri">https://dtcenter.ucar.edu/GMTB/v7.0.0/sci_doc/index.html</a></li><li><a href="https://ccpp-techdoc.readthedocs.io/en/latest/Overview.html#" class="uri">https://ccpp-techdoc.readthedocs.io/en/latest/Overview.html#</a></li><li><a href="https://insidecires.colorado.edu/rendezvous/uploads/Rendezvous_2021_7510_1619231239.pdf">The Common Community Physics Package (CCPP): a shared infrastructure for model physics for operations and research</a></li></ul><h1 id="example">Example</h1><ul><li><strong>module_bl_mynn Module Reference</strong></li></ul><p><img src="https://i.imgur.com/clsUFXq.png" /> <img src="https://i.imgur.com/fs4O27B.png" /></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>MPAS</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>NWP</tag>
+      
+      <tag>CCPP</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>MPAS | WRF | MYNN</title>
+    <link href="/2025/05/22/MPAS-WRF-MYNN/"/>
+    <url>/2025/05/22/MPAS-WRF-MYNN/</url>
+    
+    <content type="html"><![CDATA[<h1 id="mynn-pbl-scheme">MYNN PBL scheme</h1><p>The <strong>Turbulent Kinetic Energy (TKE) budget equation</strong> in the <strong>Mellor-Yamada-Nakanishi-Niino (MYNN) PBL</strong> scheme of the WRF model and how they are outputted. The MYNN scheme is an improved version of the classic Mellor-Yamada scheme (Mellor and Yamada 1982), and it is able to output the TKE budget equation terms on the default WRF history file. These outputs were unbalanced with the equivalent terms used in MYNN to integrate the TKE budget equation. <strong>It was fixed on WRF 4.2.2 version code for tests released on WRF 4.5 (CCPP version).</strong></p><p>The <strong>MYNN-EDMF scheme</strong> represents the local mixing using an eddy-diffusivity approach tied to turbulent kinetic energy (TKE). The nonlocal mixing, important for convective boundary layers, is represented using a mass-flux approach. The scheme can be run with either a <strong>2.5 or 3.0 closure and includes a partial-condensation scheme</strong>, commonly referred to as a cloud PDF or statistical-cloud scheme, to represent the effects of subgrid-scale (SGS) clouds on buoyancy. <strong>This module was originally translated from Nakanishi and Niino (2009) and put into the WRF model by Mariusz Pagowski NOAA/GSD and CIRA/CSU in 2008</strong>. It was extensively modified by Joseph Olson and Jaymes Kenyon of NOAA/GSD and CU/CIRES.</p><hr /><h1 id="literature-review">Literature Review</h1><ul><li><a href="https://www.gfdl.noaa.gov/bibliography/related_files/glm7301.pdf">Mellor, George L. "<strong>Analytic prediction of the properties of stratified planetary surface layers</strong>." J. Atmos. Sci 30.9 (1973): 1061-1069.</a></li><li><a href="https://rcfftp.soest.hawaii.edu/kelvin/OCN665/OCN665_full/papers/MellorYamada1982.pdf">Mellor, George L., and Tetsuji Yamada. "<strong>Development of a turbulence closure model for geophysical fluid problems.</strong>" Reviews of Geophysics 20.4 (1982): 851-875.</a><ul><li>Applications of <strong>second-moment turbulent closure hypotheses</strong> to geophysical fluid problems have developed rapidly since 1973, when genuine predictive skill in coping with the effects of stratification was demonstrated.</li><li><ol start="2" type="1"><li><strong>The Basic Model</strong></li></ol><ul><li>The Closure Assumptions</li><li>The Level 4 Model (Melior and Yarnada, 1974)</li><li>The Level 3 Model</li><li>The Level 2.5 Model</li><li>The Level 2 Model</li><li>The Boundary Layer Apporximation: Level 2.5</li><li>The Boundary Layer Apporximation: Level 2</li></ul></li></ul></li><li><a href="https://www.researchgate.net/profile/Mikio-Nakanishi-2/publication/226023953_An_Improved_Mellor-Yamada_Level-3_Model_Its_Numerical_Stability_and_Application_to_a_Regional_Prediction_of_Advection_Fog/links/0deec5330d21abae7b000000/An-Improved-Mellor-Yamada-Level-3-Model-Its-Numerical-Stability-and-Application-to-a-Regional-Prediction-of-Advection-Fog.pdf">Nakanishi, Mikio, and Hiroshi Niino. "<strong>An improved Mellor–Yamada level-3 model: Its numerical stability and application to a regional prediction of advection fog.</strong>" Boundary-layer meteorology 119 (2006): 397-407.</a></li><li><a href="https://www.jstage.jst.go.jp/article/jmsj/87/5/87_5_895/_pdf">Nakanishi, Mikio, and Hiroshi Niino. "<strong>Development of an improved turbulence closure model for the atmospheric boundary layer.</strong>" Journal of the Meteorological Society of Japan. Ser. II 87.5 (2009): 895-912.</a></li></ul><h1 id="a-description-of-the-mynn-edmf-scheme-and-the-coupling-to-other-components-in-wrfarw-march-2019">A Description of the MYNN-EDMF Scheme and the Coupling to Other Components in WRF–ARW (March 2019)</h1><ul><li><a href="https://www.atmos.albany.edu/facstaff/rfovell/NWP/noaa_19837_DS1.pdf" class="uri">https://www.atmos.albany.edu/facstaff/rfovell/NWP/noaa_19837_DS1.pdf</a></li></ul><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/mXipGBJ.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/0uL1eqw.png" /></div></div></div><h1 id="turbulent-kinetic-energy-budget-for-mynn-edmf-pbl-scheme-in-wrf-model-2023">Turbulent Kinetic Energy Budget for MYNN-EDMF PBL Scheme in WRF model (2023)</h1><p>The aim of this technical note is to describe the Turbulent Kinetic Energy (TKE) budget equation in the Mellor-Yamada-Nakanishi-Niino (MYNN) PBL scheme of the WRF model and how they are outputted. The MYNN scheme is an improved version of the classic Mellor-Yamada scheme (Mellor and Yamada 1982), and it is able to output the TKE budget equation terms on the default WRF history file. These outputs were unbalanced with the equivalent terms used in MYNN to integrate the TKE budget equation. It was fixed on WRF 4.2.2 version code for tests released on WRF 4.5 (CCPP version).</p><p>Besides the TKE output fix, a new set of similarity relationship equations was implemented in the MYNN scheme to provide the lower boundary conditions for TKE budget equation terms.</p><ul><li>[<strong>Turbulent Kinetic Energy Budget for MYNN-EDMF PBL Scheme in WRF model</strong> | <strong>Technical note</strong> UFSM/GruMA 001/2023]<ul><li><img src="https://i.imgur.com/piiTKYD.png" width="400" /></li></ul></li></ul><p><img src="https://i.imgur.com/H8sm0RX.png" /></p><h2 id="output-all-tke-budget-equation-terms">output all TKE budget equation terms</h2><p><img src="https://i.imgur.com/KepL4Sl.png" /></p><h1 id="second-moment-models">Second-moment models</h1><h2 id="turbulence">Turbulence:</h2><ul><li><a href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2014MS000376">Heinze, R., Mironov, D., &amp; Raasch, S. (2015). Second‐moment budgets in cloud topped boundary layers: A large‐eddy simulation study. Journal of Advances in Modeling Earth Systems, 7(2), 510-536.</a></li></ul><p>In NWP, turbulence is often parameterized using second-moment schemes. <strong>These schemes predict the budget equations for the second-order moments of fluctuating velocity and scalar fields</strong>, which helps to better represent the effects of turbulent mixing on the atmosphere.</p><h1 id="level-2.5-vs-3">Level 2.5 vs 3 ?</h1><h2 id="key-points">Key Points</h2><ul><li>Research suggests Level 2.5 in the MYNN PBL scheme focuses on TKE, while Level 3 includes more detailed turbulence variables, offering higher accuracy but at a higher computational cost.</li><li>It seems likely that Level 2.5 is simpler and better for general forecasting, while Level 3 suits complex scenarios like cloudy conditions.</li><li>The evidence leans toward distinguishing them in WRF by setting <code>bl_mynn_closure = 2.5</code> for Level 2.5 and <code>bl_mynn_closure = 3.0</code> for Level 3, with <code>bl_pbl_physics = 5</code>.</li></ul><h2 id="what-are-level-2.5-and-level-3-in-the-mynn-pbl-scheme">What Are Level 2.5 and Level 3 in the MYNN PBL Scheme?</h2><p>The MYNN PBL scheme, used in models like WRF, helps simulate how the atmosphere mixes near the surface. Level 2.5 and Level 3 are different ways to handle this mixing, based on how detailed the calculations are.</p><ul><li><strong>Level 2.5</strong>: This level mainly tracks <strong>turbulent kinetic energy (TKE)</strong>, which measures the energy of air turbulence. It <strong>estimates other details</strong>, like temperature changes, using simpler formulas. It’s less demanding on computers and good for everyday weather predictions.</li><li><strong>Level 3</strong>: This level goes further, <strong>tracking TKE and additional details like temperature and moisture variations directly</strong>. It’s more accurate, especially for complex situations like cloudy skies, but it needs more computing power.</li></ul><h2 id="how-to-distinguish-them">How to Distinguish Them</h2><p>In WRF, you can choose between these levels by adjusting the settings:</p><ul><li>For Level 2.5, set <code>bl_pbl_physics = 5</code> and <code>bl_mynn_closure = 2.5</code>.</li><li>For Level 3, set <code>bl_pbl_physics = 5</code> and <code>bl_mynn_closure = 3.0</code>.</li></ul><p>This tells the model which level of detail to use for mixing calculations.</p><hr /><h2 id="survey-note-detailed-explanation-of-mynn-pbl-scheme-levels-in-wrf">Survey Note: Detailed Explanation of MYNN PBL Scheme Levels in WRF</h2><p>The Mellor-Yamada-Nakanishi-Niino (MYNN) Planetary Boundary Layer (PBL) scheme is a critical component of numerical weather prediction models like the Weather Research and Forecasting (WRF) model, designed to parameterize turbulent mixing within the planetary boundary layer. This layer, closest to the Earth’s surface, significantly influences weather patterns, especially near-surface conditions. The MYNN scheme, rooted in the Mellor-Yamada turbulence closure framework, offers different levels of complexity, notably Level 2.5 and Level 3, which cater to varying needs in accuracy and computational efficiency. This section provides a comprehensive analysis based on available documentation and user discussions, ensuring a thorough understanding for researchers and practitioners.</p><h3 id="background-on-mynn-pbl-scheme">Background on MYNN PBL Scheme</h3><p>The MYNN scheme is a second-order turbulence closure model, an advancement over earlier Mellor-Yamada schemes, tuned using large-eddy simulation (LES) data to improve predictions, particularly over oceanic surfaces (<a href="https://link.springer.com/article/10.1007/s10546-016-0187-0">Improvement of the Mellor–Yamada–Nakanishi–Niino Planetary Boundary-Layer Scheme Based on Observational Data in China | Boundary-Layer ...</a>). It was integrated into WRF-ARW version 3.1 by Mariusz Pagowski of NOAA’s Global Systems Division, aiming to enhance turbulence representation for operational systems like Rapid Refresh (RAP) and High-Resolution Rapid Refresh (HRRR) (<a href="https://repository.library.noaa.gov/view/noaa/19837">Noaa</a>). The scheme’s flexibility allows it to operate at different closure levels, balancing computational cost with physical realism.</p><h3 id="detailed-description-of-level-2.5">Detailed Description of Level 2.5</h3><p><strong>Level 2.5</strong> is a partially prognostic closure model within the MYNN framework. It focuses on solving a prognostic equation for turbulent kinetic energy (TKE), denoted as (q^2/2), where (q^2) represents <strong>twice the TKE</strong>. This level simplifies the parameterization by <strong>diagnosing other second-order moments</strong>, <em>such as temperature variance ((θ^2)), momentum fluxes ((u'w'), (v'w')), and heat fluxes ((w'θ')), using algebraic relationships rather than prognostic equations</em>. This approach reduces computational demand, making it suitable for operational forecasting where efficiency is crucial.</p><ul><li><strong>Key Features</strong>:<ul><li><strong>Prognostic variable: TKE only.</strong></li><li><strong>Diagnostic variables: Other second-order moments, computed via simplified formulas.</strong></li><li>Closure assumptions: Neglects time tendencies and advection of most second-order moments, with pressure correlations highly parameterized.</li><li>Stability functions: Based on gradient Richardson number, accounting for stratification effects.</li></ul></li><li><strong>Applications</strong>: Level 2.5 is often the default choice for general weather forecasting, particularly in clear boundary layers under stable or neutral conditions, due to its robustness and lower computational cost. It is noted for stability in simulations, as seen in user discussions where MYNN 2.5 runs successfully for extended periods compared to Level 3 (<a href="http://forum.wrfforum.com/viewtopic.php?f=9&amp;t=3938">WRF User's Forum • View topic - MYNN level 3 PBL scheme</a>).</li></ul><h3 id="detailed-description-of-level-3">Detailed Description of Level 3</h3><p>Level 3 represents a more complex closure, extending beyond TKE to include prognostic equations for additional second-order moments, such as scalar variances (e.g., temperature variance (θ^2), moisture variance (q^2), and covariances like (θ'q')). This level retains more terms in the turbulence equations, including partial contributions from pressure covariances and third-order transport terms, aligning closer to a full second-order closure model.</p><ul><li><strong>Key Features</strong>:<ul><li>Prognostic variables: TKE and scalar variances, reducing the reliance on diagnostic computations.</li><li>Diagnostic variables: Fewer, as more moments are explicitly evolved over time.</li><li>Closure assumptions: Includes more detailed parameterization of pressure terms and transport, enhancing representation of non-local mixing.</li><li>Stability functions: May include additional dependencies on prognostic scalar variances, improving accuracy under complex stability conditions.</li></ul></li><li><strong>Applications</strong>: Level 3 is preferred for research simulations where scalar variances are critical, such as in foggy conditions, cloud formation, or urban boundary layers. It performs better in scenarios with strong stratification or cloud interactions, as suggested by studies comparing PBL schemes (<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015JD023927">Investigation of PBL schemes combining the WRF model simulations with scanning water vapor differential absorption lidar measurements - Milovac ...</a>). However, it is computationally more expensive, and user reports indicate potential instability, with crashes noted in simulations (<a href="http://forum.wrfforum.com/viewtopic.php?f=6&amp;t=4017">WRF User's Forum • View topic - Problem with MYNN2.5 and MYNN3 PBL schemes</a>).</li></ul><h3 id="comparative-analysis-level-2.5-vs.-level-3">Comparative Analysis: Level 2.5 vs. Level 3</h3><p>The distinction between Level 2.5 and Level 3 lies in their approach to turbulence parameterization, affecting both accuracy and computational demand. The following table summarizes the key differences:</p><table><thead><tr class="header"><th><strong>Aspect</strong></th><th><strong>Level 2.5</strong></th><th><strong>Level 3</strong></th></tr></thead><tbody><tr class="odd"><td><strong>Prognostic Variables</strong></td><td>Only TKE ((q^2/2))</td><td>TKE + scalar variances (e.g., (θ^2), (q^2), (θ'q'))</td></tr><tr class="even"><td><strong>Diagnostic Variables</strong></td><td>Most second-order moments (e.g., (θ^2), (u'w'))</td><td>Fewer, as more moments are prognostic</td></tr><tr class="odd"><td><strong>Complexity</strong></td><td>Simpler, fewer equations</td><td>More complex, additional equations</td></tr><tr class="even"><td><strong>Computational Cost</strong></td><td>Lower</td><td>Higher</td></tr><tr class="odd"><td><strong>Accuracy</strong></td><td>Good for general PBL cases</td><td>Better for complex cases (e.g., clouds, fog)</td></tr><tr class="even"><td><strong>Pressure Terms</strong></td><td>Highly parameterized</td><td>Less parameterized, more explicit terms</td></tr><tr class="odd"><td><strong>Applications</strong></td><td>Operational forecasting, general use</td><td>Research, complex PBL (e.g., cloudy BL)</td></tr></tbody></table><p>This comparison highlights that Level 2.5 is efficient for broad applications, while Level 3 offers enhanced detail for specialized studies, at the cost of increased computational resources.</p><h3 id="implementation-in-wrf">Implementation in WRF</h3><p>In the WRF model, the MYNN PBL scheme is selected via the <code>bl_pbl_physics</code> namelist parameter, set to 5 for MYNN. The choice between Level 2.5 and Level 3 is controlled by the <code>bl_mynn_closure</code> option, as detailed in user forums and documentation (<a href="https://forum.mmm.ucar.edu/threads/wrf-namelist-setting-mynn3.18733/post-45436">WRF namelist setting ---MYNN3 | WRF &amp; MPAS-A Support Forum</a>). Specifically:</p><ul><li><strong>Level 2.5</strong>: Set <code>bl_mynn_closure = 2.5</code>.</li><li><strong>Level 3</strong>: Set <code>bl_mynn_closure = 3.0</code>.</li></ul><p>Note that <code>bl_mynn_closure</code> should be set as a single value (e.g., <code>bl_mynn_closure = 3.0,</code>) and not as multiple domain values (e.g., <code>3.0,3.0,3.0,</code>) to avoid namelist errors, as observed in user error reports. Additional options, such as <code>bl_mynn_mixscalars = 1</code>, can activate prognostic equations for scalar variances, aligning with Level 3 functionality (<a href="https://dtcenter.ucar.edu/GMTB/v4.0/sci_doc/group__gsd__mynn__edmf.html">CCPP Scientific Documentation: GSD MYNN-EDMF PBL Scheme Module</a>).</p><h3 id="practical-considerations">Practical Considerations</h3><p>The choice between Level 2.5 and Level 3 depends on the simulation’s objectives. Level 2.5 is often sufficient for operational forecasting, given its stability and efficiency, as seen in simulations running for a year on a 5 km grid (<a href="http://forum.wrfforum.com/viewtopic.php?f=9&amp;t=3938">WRF User's Forum • View topic - MYNN level 3 PBL scheme</a>). Conversely, Level 3 is recommended for research, especially in scenarios requiring detailed scalar variance representation, such as cloudy boundary layers, but users should be aware of potential instability, with reports of crashes after short simulation periods (<a href="http://forum.wrfforum.com/viewtopic.php?f=6&amp;t=4017">WRF User's Forum • View topic - Problem with MYNN2.5 and MYNN3 PBL schemes</a>).</p><h3 id="conclusion">Conclusion</h3><p>In summary, Level 2.5 and Level 3 in the MYNN PBL scheme offer different levels of turbulence closure, with Level 2.5 focusing on TKE and diagnosing other moments for efficiency, and Level 3 prognosing additional moments for higher accuracy. Distinguishing them in WRF involves setting <code>bl_mynn_closure</code> to 2.5 or 3.0, respectively, with <code>bl_pbl_physics = 5</code>. This understanding is derived from a synthesis of WRF documentation, user forums, and scientific literature, acknowledging the complexity and ongoing research in PBL parameterization.</p><h2 id="key-citations">Key Citations</h2><ul><li><a href="http://forum.wrfforum.com/viewtopic.php?f=9&amp;t=3938">WRF User's Forum MYNN level 3 PBL scheme</a></li><li><a href="https://forum.mmm.ucar.edu/threads/wrf-namelist-setting-mynn3.18733/post-45436">WRF namelist setting MYNN3 WRF &amp; MPAS-A Support Forum</a></li><li><a href="https://link.springer.com/article/10.1007/s10546-016-0187-0">Improvement of the Mellor–Yamada–Nakanishi–Niino Planetary Boundary-Layer Scheme Based on Observational Data in China</a></li><li><a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015JD023927">Investigation of PBL schemes combining WRF model simulations with scanning water vapor differential absorption lidar measurements</a></li><li><a href="http://forum.wrfforum.com/viewtopic.php?f=6&amp;t=4017">WRF User's Forum Problem with MYNN2.5 and MYNN3 PBL schemes</a></li><li><a href="https://dtcenter.ucar.edu/GMTB/v4.0/sci_doc/group__gsd__mynn__edmf.html">CCPP Scientific Documentation GSD MYNN-EDMF PBL Scheme Module</a></li></ul><h1 id="wrf">WRF</h1><h2 id="namelist">namelist</h2><ul><li><a href="https://github.com/wrf-model/WRF/blob/master/run/README.namelist" class="uri">https://github.com/wrf-model/WRF/blob/master/run/README.namelist</a></li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><code class="hljs namelist">&amp;physics<br>sf_sfclay_physics (max_dom)         surface-layer option (old bl_sfclay_physics option)<br>                                    = 0, no surface-layer<br>                                    = 1, Revised MM5 Monin-Obukhov scheme (Jimenez, renamed in v3.6)<br>                                    = 2, Monin-Obukhov (Janjic) scheme<br>                                    = 3, NCEP Global Forecast System scheme <br>                                    = 4, QNSE surface layer<br>                                    = 5, MYNN surface layer<br>                                    = 7, Pleim-Xiu surface layer<br>                                    = 10, TEMF surface layer<br>                                    = 91, Old MM5 scheme (previously option 1)<br>bl_pbl_physics (max_dom)            boundary-layer option<br>                                    = 0, no boundary-layer <br>                                    = 1, YSU scheme<br>                                    = 2, Mellor-Yamada-Janjic TKE scheme<br>                                    = 3, Hybrid EDMF GFS scheme <br>                                    = 4, Eddy-diffusivity Mass Flux, Quasi-Normal Scale Elimination PBL<br>                                    = 5, MYNN 2.5 level TKE scheme, works with<br>                                         sf_sfclay_physics=1 or 2 as well as 5<br>                                         (option 6 removed in 4.5, replaced by bl_mynn_closure options)<br>bl_mynn_closure                          = 2.5: level 2.5<br>                                           2.6: level 2.6<br>                                           3.0: level 3.0                                         <br>                                    = 7, ACM2 (Pleim) PBL<br>                                    = 8, Bougeault and Lacarrere (BouLac) PBL<br>                                    = 9, UW boundary layer scheme from CAM5 (CESM 1_0_1)<br>                                    = 10, TEMF (Total Energy Mass Flux) scheme<br>                                         sf_sfclay_physics=10<br>                                    = 11, Shin-Hong &#x27;scale-aware&#x27; PBL scheme<br>                                    = 12, Grenier-Bretherton-McCaa scheme<br>                                    = 16, TKE+TKE dissipation rate (epsilon) scheme<br>                                          works with surface layer options 1,91,2,5.<br>                                    = 17, TKE+TKE dissipation rate+TPE (temparature variance) scheme<br>                                    = 99, MRF scheme<br><br>tke_budget (max_dom)                = 0,       ! default off; = 1 adds MYNN tke budget terms to output (new in 4.5)<br>                                                 (replacing bl_mynn_tkebudget in prior versions)<br>bl_mynn_tkeadvect (max_dom)         = .false., ! default off; = .true. do MYNN tke advection<br>icloud_bl                                        option to couple the subgrid-scale clouds from the PBL scheme (MYNN only) <br>                                                 to radiation schemes <br>                                    0:  no coupling; 1: activate coupling to radiation (default)<br>bl_mynn_cloudmix (max_dom)          = 0 ! default off; =1 activates mixing of qc and qi in MYNN<br>                                    0: no mixing of qc &amp; qi; 1: mixing activated (default). <br>                                       Note qnc and qni are mixed when scalar_pblmix =1.<br>bl_mynn_mixlength                   option to change mixing length formulation in MYNN<br>                                    0: original as in Nakanishi and Niino 2009, <br>                                    1: RAP/HRRR (including BouLac in free atmosphere), <br>                                    2: experimental (default; includes cloud-specific mixing length and a scale-aware mixing <br>                                       length, following Ito et al. 2015, BLM). Option 2 has been well tested with <br>                                       the edmf options.<br>bl_mynn_cloudpdf                    option to switch to different cloud PDFs to represent subgrid clouds<br>                                    0: original (Sommeria and Deardorf 1977); <br>                                    1: Kuwano et al 2010, similar to option 0, but uses resolved scale gradients <br>                                       as opposed to higher order moments ; <br>                                    2: from Chaboureau and Bechtold (2002, JAS, with mods, default) <br>bl_mynn_edmf (max_dom)              = 1   ! activate mass-flux option in MYNN, 0: mass-flux option off<br>                                            Related (hidden) options: <br>bl_mynn_edmf_mom (max_dom)          = 1   ! - activates momentum transport in MYNN mass-flux scheme <br>                                          (assuming bl_mynn_edmf &gt; 0); 0=off (default)<br>                                      0    no momentum transport; 1: momentum transport activated (default)<br>bl_mynn_edmf_tke (max_dom)          = 0,  ! default; = 1 activates TKE transport in MYNN mass-flux scheme <br>                                           (assuming bl_mynn_edmf &gt; 0)<br>                                      0    no TKE transport (default);1: activate TKE transport<br>bl_mynn_output (max_dom)            = 0,  ! do not output extra arrays<br>                                      1    allocate and output extra 3D arrays from MYNN PBL<br>bl_mynn_mixscalars (max_dom)        = 0   ! off, 1: activate mixing of scalars<br>bl_mynn_mixqt (max_dom)             = 0   ! mixing moisture species separately, 1: mixing total water<br><br> shcu_physics (max_dom)              independent shallow cumulus option (not tied to deep convection)<br>                                    = 0, no independent shallow cumulus<br>                                    = 1, Grell 3D ensemble scheme (use with cu_physics=93 or 5) (PLACEHOLDER: SWITCH NOT YET IMPLEMENTED--use ishallow)<br>                                    = 2, Park and Bretherton shallow cumulus from CAM5 (CESM 1_0_1)<br>                                    = 3, GRIMS shallow cumulus from YSU group<br>                                    = 4, NSAS shallow cululus scheme. Must be used with KIAPS SAS cumulus scheme (cu_physics = 14)<br>                                    = 5, Deng cumulus scheme (including both shallow and deep convections) from PSU and WRF-Solar.<br>                                         However the deep part isn&#x27;t very active. Not recommended to use alone for deep convection <br>                                         case. Could work well for grid sizes 3-9 km.<br>                                         This scheme only works with MYJ PBL scheme, and should not be combined with icloud=3<br>                                         This scheme can also work with MYNN PBL scheme, but one should turn off EDMF (bl_mynn_edmf=0)<br><br>iz0tlnd                             = 0        ! thermal roughness length for sfclay (0 = old, 1 = veg dependent Chen-Zhang Czil,<br>                                                     2 = Zilitinkevitch (czil=0.1))<br>                                                     for mynn sfc (0=Zilitinkevitch (def),1=Chen-Zhang,2=mod Yang,3=const zt)<br><br>spp_pbl (max_dom)                   = 0        ! Perturb parameters of MYNN PBL scheme only<br><br>pert_mynn             = .false.  ! Activates perturbations to the MYNN PBL parameterization<br>pert_mynn_qv          = 0.0<br>pert_mynn_qc          = 0.0<br>pert_mynn_t           = 0.0<br>pert_mynn_qke         = 0.0<br></code></pre></td></tr></table></figure><h1 id="mpas">MPAS</h1><ul><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf">MPAS-Atmosphere Model User’s Guide Version 8.2.0</a></li></ul><p><img src="https://i.imgur.com/cpVkHp4.png" /> <img src="https://i.imgur.com/Zz6asM2.png" /></p><ul><li>Registry.xml</li></ul><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_tkeadvect&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;= true:do MYNN TKE advection&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_tkebudget&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:option to add the MYNN TKE budget terms to output&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_closure&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;2.5&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;2.5 level or 3.0 level for the MYNN TKE turbulence closure&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_cloudpdf&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;switch to different cloud PDFs to represent subgrid clouds in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_mixlength&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;mixing length in the MYNN PBL scheme:=0(Nakanishi and Niino 2009);=1(RAP/HRRR);=2(Ito et al. 2015)&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_stfunc&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_topdown&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_scaleaware&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_dheat_opt&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate the EDMF option in the MYNN PBL scheme (=0 otherwise)&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf_dd&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate the EDMF downdraft option in the MYNN PBL scheme (=0 otherwise)&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf_mom&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate momentum transport with the EDMF option of the MYNN PBL scheme(=0 otherwise)&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf_tke&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate TKE transport with the EDMF option of the MYNN PBL scheme (=0 otherwise)&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf_output&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=0:suppress the allocation of variables needed in the EDMF option of the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_mixscalars&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate mixing of scalars in the MYNN PBL scheme (=0 otherwise)&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_mixclouds&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;1:activate mixing of cloud condensates in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_mixqt&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=0:activatevmixing of moisture species separately;= 1:activate mixing of total water in the mynn PBL scheme&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_a&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;unitless&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF relative updraft area of moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_w&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;m s^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF vertical velocity of  moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_qt&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;kg kg^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF total water mixing ratio in moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_qc&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;kg kg^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF liquid water mixing ratio in moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_thl&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;K&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF liquid-ice water potential temperature in moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_ent&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;m^&#123;-1&#125;&quot;</span></span><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>MPAS</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>NWP</tag>
+      
+      <tag>PBL</tag>
+      
+      <tag>MYNN</tag>
+      
+      <tag>TKE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>South Asian High | 南亞高壓</title>
     <link href="/2025/05/18/South-Asian-High/"/>
     <url>/2025/05/18/South-Asian-High/</url>
@@ -22,9 +88,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -49,13 +115,13 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>ecFlow</tag>
       
-      <tag>NWP</tag>
+      <tag>MPAS</tag>
       
       <tag>WRF</tag>
       
-      <tag>ecFlow</tag>
+      <tag>NWP</tag>
       
       <tag>micromamba</tag>
       
@@ -84,17 +150,17 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
-      <tag>WRF</tag>
-      
-      <tag>Micromamba</tag>
+      <tag>ecFlow</tag>
       
       <tag>Spack</tag>
       
-      <tag>ecFlow</tag>
+      <tag>Micromamba</tag>
       
       <tag>Conda</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -119,17 +185,17 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
-      <tag>WRF</tag>
-      
-      <tag>Micromamba</tag>
+      <tag>ecFlow</tag>
       
       <tag>Spack</tag>
       
-      <tag>ecFlow</tag>
+      <tag>Micromamba</tag>
       
       <tag>Conda</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -189,9 +255,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -228,9 +294,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -267,9 +333,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>Meteorology</tag>
       
@@ -306,9 +372,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -339,9 +405,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -368,11 +434,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -401,11 +467,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>Linux</tag>
       
@@ -436,11 +502,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>Noah surface scheme</tag>
       
@@ -498,11 +564,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -535,11 +601,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>UCM</tag>
       
@@ -568,9 +634,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>WPS</tag>
       
@@ -613,9 +679,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -648,9 +714,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>CMA</tag>
       
@@ -683,9 +749,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -720,9 +786,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -757,9 +823,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -823,9 +889,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>Precipitation</tag>
       
@@ -858,9 +924,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -887,9 +953,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>IC</tag>
       
@@ -906,7 +972,7 @@
     <link href="/2025/03/13/MPAS-FDDA/"/>
     <url>/2025/03/13/MPAS-FDDA/</url>
     
-    <content type="html"><![CDATA[<h1 id="links">Links</h1><ol type="1"><li><a href="https://mpas-dev.github.io/">https://mpas-dev.github.io/</a></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases">/MPAS-Model/releases</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_4.0.pdf">MPAS-Atmosphere Users' Guide V4.0</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_5.3.pdf">MPAS-Atmosphere Users' Guide V5.3</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_6.3.pdf">MPAS-Atmosphere Users' Guide V6.3</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_7.0.pdf">MPAS-Atmosphere Users' Guide V7.0</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf">MPAS-Atmosphere Users' Guide V8.2.0</a></li><li><a href="https://www.mmm.ucar.edu/events/133129/agenda">Joint WRF/MPAS Users Workshop 2024</a></li></ol><h1 id="references">References</h1><ul><li><a href="https://gmd.copernicus.org/articles/11/2897/2018/gmd-11-2897-2018.pdf">Bullock Jr, O. R., Foroutan, H., Gilliam, R. C., &amp; Herwehe, J. A. (2018). Adding four-dimensional data assimilation by analysis nudging to the Model for Prediction Across Scales–Atmosphere (version 4.0). Geoscientific model development, 11(7), 2897-2922.</a><ul><li><strong>MPAS-A model source codes used in this study</strong> are available in the Supplement and at <a href="https://doi.org/10.5281/zenodo.1101204" class="uri">https://doi.org/10.5281/zenodo.1101204</a></li><li><strong>Run scripts used to prepare FDDA target fields</strong> are also included in the Supplement and at <a href="https://doi.org/10.5281/zenodo.1101204" class="uri">https://doi.org/10.5281/zenodo.1101204</a>. <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs console">.<br>├── gmd-11-2897-2018-supplement-title-page.pdf<br>├── Model_code_for_MPAS-A_with_FDDA<br>│   ├── MPAS Copyright.txt<br>│   ├── MPAS-Release-4.0_plusFDDA.tar.gz<br>│   └── README.txt<br>└── scripts_for_FDDA_file_preparation<br>    ├── prepare_FDDA_file_Jan2013.csh<br>    ├── prepare_FDDA_file_Jul2013.csh<br>    └── prepare_FDDA_file_README.txt<br></code></pre></td></tr></table></figure> <div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/oOsTWeD.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/paBdN3Z.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/bowuno3.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/8P35WuK.png" /></div></div></div></li></ul></li></ul><h1 id="mpas-release-4.0_plusfdda.tar.gz">MPAS-Release-4.0_plusFDDA.tar.gz</h1><ul><li><a href="https://doi.org/10.5281/zenodo.1101204" class="uri">https://doi.org/10.5281/zenodo.1101204</a></li><li>./core_atmosphere/Registry.xml <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rthfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rqvfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rufddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rvfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;th_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qv_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;u_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;v_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;th_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qv_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;u_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;v_fdda_new&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure></li></ul><h2 id="mpas_stream_manager.f">mpas_stream_manager.F</h2><ul><li>MPAS_stream_mgr_get_property</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">        <div class="fold-arrow">▶</div>MPAS_stream_mgr_get_property      </div>      <div class="fold-collapse collapse" id="collapse-6ae3e036">        <div class="fold-content">          <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">interface</span> MPAS_stream_mgr_get_property<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_int<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_char<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_logical<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">interface</span><br><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-comment">!  routine MPAS_stream_mgr_get_property_int</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!&gt; \brief Gets a property of a stream in an MPAS stream manager.</span><br><span class="hljs-comment">!&gt; \author Michael Duda, Doug Jacobsen</span><br><span class="hljs-comment">!&gt; \date   13 June 2014</span><br><span class="hljs-comment">!&gt; \details</span><br><span class="hljs-comment">!&gt;  Retrieves the value of a stream property within an MPAS stream manager.</span><br><span class="hljs-comment">!&gt;  <span class="hljs-doctag">NOTE:</span> This routine does not support streamID regular expressions</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> MPAS_stream_mgr_get_property_int(manager, streamID, propertyName, propertyValue, direction, ierr)<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="core_atmospherephysicsmpas_atmphys_fdda.f">./core_atmosphere/physics/mpas_atmphys_fdda.F</h2><ul><li>Author comments,<ul><li>!&gt; * Modified to <strong>only require reads of "fdda_new" data arrays</strong>. <strong>"fdda_old" is initially set to initial conditions</strong>. At end of FDDA data interval, <strong>"fdda_old" is set to "fdda_new" and updated "fdda_new" data comes from FDDA input stream</strong>. By O. Russell Bullock Jr. (bullock.russell@epa.gov) / 2016-08-30.</li></ul></li></ul><p>and then,</p><ul><li>Assign value</li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;qv_fdda_old&#x27;</span>,qv_fdda_old)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;th_fdda_old&#x27;</span>,th_fdda_old)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;u_fdda_old&#x27;</span>, u_fdda_old )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;v_fdda_old&#x27;</span>, v_fdda_old )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;qv_fdda_new&#x27;</span>,qv_fdda_new)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;th_fdda_new&#x27;</span>,th_fdda_new)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;u_fdda_new&#x27;</span>, u_fdda_new )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;v_fdda_new&#x27;</span>, v_fdda_new )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(tend_physics,<span class="hljs-string">&#x27;rthfddaten&#x27;</span>,rthfddaten)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(tend_physics,<span class="hljs-string">&#x27;rqvfddaten&#x27;</span>,rqvfddaten)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(tend_physics,<span class="hljs-string">&#x27;rufddaten&#x27;</span> ,rufddaten )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(tend_physics,<span class="hljs-string">&#x27;rvfddaten&#x27;</span> ,rvfddaten )<br></code></pre></td></tr></table></figure><ul><li>No need to generate first time step and obtained FDDA value from init.nc</li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!check to see if &#x27;old&#x27; FDDA target values need to be defined from initial conditions</span><br> <span class="hljs-keyword">if</span>(first_call <span class="hljs-keyword">.and.</span> <span class="hljs-keyword">.not.</span> config_do_restart) <span class="hljs-keyword">then</span><br>    qv_fdda_old = qv<br>    th_fdda_old = theta_m / (<span class="hljs-number">1._RKIND</span> + rvrd * qv)<br>    u_fdda_old = u<br>    v_fdda_old = v<br>    first_call = <span class="hljs-literal">.false.</span><br> <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure><ul><li>define the FDDA target data interval, <code>tfrac</code></li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!calculate time fraction within FDDA target data interval</span><br> tfrac = <span class="hljs-built_in">mod</span>(xtime_s,fdda_int)/fdda_int<br></code></pre></td></tr></table></figure><ul><li>take <code>t_target</code> as example,</li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">case</span>(<span class="hljs-string">&quot;analysis&quot;</span>)<br><br>   <span class="hljs-keyword">DO</span> i=its,ite<br>   <span class="hljs-keyword">DO</span> k=kts,kte<br><br>      theta_p = theta_m(k,i) / (<span class="hljs-number">1._RKIND</span> + rvrd * qv(k,i))<br><br>      <span class="hljs-keyword">if</span> (fdda_t <span class="hljs-keyword">.and.</span> k<span class="hljs-keyword">.gt.</span>fdda_t_min_layer <span class="hljs-keyword">.and.</span> (fdda_t_in_pbl <span class="hljs-keyword">.or.</span> k<span class="hljs-keyword">.gt.</span>kpbl(i))) <span class="hljs-keyword">then</span><br>         t_target = (<span class="hljs-number">1.0</span>-tfrac)*th_fdda_old(k,i)+tfrac*th_fdda_new(k,i)<br>         rthfddaten(k,i) = fdda_t_coef * ( t_target - theta_p )<br>      <span class="hljs-keyword">else</span><br>         rthfddaten(k,i) = <span class="hljs-number">0.</span><br>      <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure><ul><li>update <strong>old</strong> by <strong>new</strong> if it is <strong>on the last time step</strong>.</li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!check to see if this is the last time step within the current FDDA target data interval and </span><br><span class="hljs-comment">!if so, save the current &quot;new&quot; targets as the &quot;old&quot; targets for the next time step</span><br> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">mod</span>(xtime_s+config_dt,fdda_int)/fdda_int <span class="hljs-keyword">.lt.</span> tfrac) <span class="hljs-keyword">then</span><br>    th_fdda_old = th_fdda_new<br>    qv_fdda_old = qv_fdda_new<br>    u_fdda_old = u_fdda_new<br>    v_fdda_old = v_fdda_new<br> <span class="hljs-keyword">endif</span><br><br> <span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;--- exit apply_fdda&#x27;</span><br></code></pre></td></tr></table></figure><h3 id="important-issue">Important issue</h3><p>The value of <code>fdda_old</code> is set to <code>fdda_new</code>, and the updated <code>fdda_new</code> data is obtained from the FDDA input stream.</p><p>At t=0, the <code>fdda_old</code> values are sourced from <code>init.nc</code>, and an additional data entry is required for <code>fdda_new</code>. One straightforward approach is to read the FDDA input file <code>00.nc</code> at t=0, which contains data for t=3 (or the next FDDA time) to serve as <code>fdda_new</code>.</p><h3 id="for-example">For example,</h3><p>Take FDDA time interval as 3 hours,</p><p>There is no <code>real</code> fdda.000.nc that contains FDDA data at t=0.</p><ul><li>t=0, <code>fdda_old</code> from init.nc and <code>fdda_new</code> from fdda.000.nc that contains FDDA value at t=3.</li><li>t=3, <code>fdda_old</code> from fdda.000.nc and <code>fdda_new</code> from fdda.003.nc that contains FDDA value at t=6.</li><li>t=6, <code>fdda_old</code> from fdda.003.nc and <code>fdda_new</code> from fdda.006.nc that contains FDDA value at t=9.</li><li>t=9, <code>fdda_old</code> from fdda.006.nc and <code>fdda_new</code> from fdda.009.nc that contains FDDA value at t=12.</li><li>......</li><li>and no final time step FDDA file.</li></ul><p>Therefore, we have to prepare the <strong>fdda.ttt.nc</strong> with <strong>ttt + Next FDDA time</strong> !!!</p><div class="note note-primary">            <p><strong>The purpose of this approach is to reduce storage usage.</strong></p>          </div><ul><li>The simple way is reading FDDA(<span class="math inline">\(t_0\)</span>) ad <span class="math inline">\(t=t_0\)</span>, and no need to add time shift in code.</li><li>Anothher way is reading FDD(<span class="math inline">\(t_{next fdda time}\)</span>) at <span class="math inline">\(t=t_0\)</span>, and no need to mismatch FDDA files with time shift.</li></ul><p><strong>Which one is better? Up to you. I like the second one la.</strong></p><h1 id="fdda-schemes">FDDA schemes</h1><ul><li><strong>'off'</strong></li><li><strong>'analysis'</strong></li><li><strong>'scaled'</strong></li></ul><p><img src="https://i.imgur.com/95PEK3s.png" width="600" /></p><h1 id="obs-fdda">Obs FDDA?</h1><p><strong>Any Observation FDDA in MPAS is in progress? No</strong></p><h2 id="in-wrf">In WRF,</h2><p><img src="https://i.imgur.com/6WoxlGO.png" width="400" /></p><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/QEy2dUD.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/S4yz9ta.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/UOAWjvZ.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/Zb9u08r.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/p5JEibM.png" /></div></div></div><h1 id="us-epa">US-EPA</h1><ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/pull/995">Add 3-D grid analysis nudging FDDA to MPAS-A #995 | Oct 8, 2022</a><ul><li>from <code>jherwehe:atmosphere/develop-EPA_FDDA</code></li><li>This EPA_FDDA PR will add 3-D grid analysis nudging FDDA to MPAS-A as an option to assist in keeping retrospective simulations dynamically on track to improve evaluation against observations. This FDDA development for MPAS-A (Bullock et al., 2018) nudges temperature, humidity, and wind toward target values and is based on the comparable FDDA feature available in WRF, including MPAS-A versions of many of the WRF FDDA options. Enabling grid analysis nudging FDDA in MPAS-A maintains high fidelity to the reference fields while still conserving mass.</li></ul></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/pull/1027">Add the Pleim-Xiu (P-X) LSM and FDDA to MPAS-A #1027 | Jan 26, 2023</a><ul><li>from <code>jherwehe:atmosphere/develop-EPA_PXLSM_with_FDDA</code></li><li>This EPA_PXLSM_with_FDDA PR will add the Pleim-Xiu land surface model codes (<a href="https://github.com/MPAS-Dev/MPAS-Model/pull/1025">PR #1025</a>) and the 3-D grid analysis nudging FDDA codes (<a href="https://github.com/MPAS-Dev/MPAS-Model/pull/995">PR #995</a>) to MPAS-A.</li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="links">Links</h1><ol type="1"><li><a href="https://mpas-dev.github.io/">https://mpas-dev.github.io/</a></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases">/MPAS-Model/releases</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_4.0.pdf">MPAS-Atmosphere Users' Guide V4.0</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_5.3.pdf">MPAS-Atmosphere Users' Guide V5.3</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_6.3.pdf">MPAS-Atmosphere Users' Guide V6.3</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_7.0.pdf">MPAS-Atmosphere Users' Guide V7.0</a></li><li><a href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf">MPAS-Atmosphere Users' Guide V8.2.0</a></li><li><a href="https://www.mmm.ucar.edu/events/133129/agenda">Joint WRF/MPAS Users Workshop 2024</a></li></ol><h1 id="references">References</h1><ul><li><a href="https://gmd.copernicus.org/articles/11/2897/2018/gmd-11-2897-2018.pdf">Bullock Jr, O. R., Foroutan, H., Gilliam, R. C., &amp; Herwehe, J. A. (2018). Adding four-dimensional data assimilation by analysis nudging to the Model for Prediction Across Scales–Atmosphere (version 4.0). Geoscientific model development, 11(7), 2897-2922.</a><ul><li><strong>MPAS-A model source codes used in this study</strong> are available in the Supplement and at <a href="https://doi.org/10.5281/zenodo.1101204" class="uri">https://doi.org/10.5281/zenodo.1101204</a></li><li><strong>Run scripts used to prepare FDDA target fields</strong> are also included in the Supplement and at <a href="https://doi.org/10.5281/zenodo.1101204" class="uri">https://doi.org/10.5281/zenodo.1101204</a>. <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs console">.<br>├── gmd-11-2897-2018-supplement-title-page.pdf<br>├── Model_code_for_MPAS-A_with_FDDA<br>│   ├── MPAS Copyright.txt<br>│   ├── MPAS-Release-4.0_plusFDDA.tar.gz<br>│   └── README.txt<br>└── scripts_for_FDDA_file_preparation<br>    ├── prepare_FDDA_file_Jan2013.csh<br>    ├── prepare_FDDA_file_Jul2013.csh<br>    └── prepare_FDDA_file_README.txt<br></code></pre></td></tr></table></figure> <div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/oOsTWeD.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/paBdN3Z.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/bowuno3.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/8P35WuK.png" /></div></div></div></li></ul></li></ul><h1 id="mpas-release-4.0_plusfdda.tar.gz">MPAS-Release-4.0_plusFDDA.tar.gz</h1><ul><li><a href="https://doi.org/10.5281/zenodo.1101204" class="uri">https://doi.org/10.5281/zenodo.1101204</a></li><li>./core_atmosphere/Registry.xml <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rthfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rqvfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rufddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;rvfddaten&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;th_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qv_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;u_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;v_fdda_old&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;th_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;qv_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;u_fdda_new&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;v_fdda_new&quot;</span>/&gt;</span><br></code></pre></td></tr></table></figure></li></ul><h2 id="mpas_stream_manager.f">mpas_stream_manager.F</h2><ul><li>MPAS_stream_mgr_get_property</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">        <div class="fold-arrow">▶</div>MPAS_stream_mgr_get_property      </div>      <div class="fold-collapse collapse" id="collapse-6ae3e036">        <div class="fold-content">          <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">interface</span> MPAS_stream_mgr_get_property<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_int<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_char<br>    <span class="hljs-keyword">module</span> <span class="hljs-keyword">procedure</span> MPAS_stream_mgr_get_property_logical<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">interface</span><br><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-comment">!  routine MPAS_stream_mgr_get_property_int</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!&gt; \brief Gets a property of a stream in an MPAS stream manager.</span><br><span class="hljs-comment">!&gt; \author Michael Duda, Doug Jacobsen</span><br><span class="hljs-comment">!&gt; \date   13 June 2014</span><br><span class="hljs-comment">!&gt; \details</span><br><span class="hljs-comment">!&gt;  Retrieves the value of a stream property within an MPAS stream manager.</span><br><span class="hljs-comment">!&gt;  <span class="hljs-doctag">NOTE:</span> This routine does not support streamID regular expressions</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> MPAS_stream_mgr_get_property_int(manager, streamID, propertyName, propertyValue, direction, ierr)<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><h2 id="core_atmospherephysicsmpas_atmphys_fdda.f">./core_atmosphere/physics/mpas_atmphys_fdda.F</h2><ul><li>Author comments,<ul><li>!&gt; * Modified to <strong>only require reads of "fdda_new" data arrays</strong>. <strong>"fdda_old" is initially set to initial conditions</strong>. At end of FDDA data interval, <strong>"fdda_old" is set to "fdda_new" and updated "fdda_new" data comes from FDDA input stream</strong>. By O. Russell Bullock Jr. (bullock.russell@epa.gov) / 2016-08-30.</li></ul></li></ul><p>and then,</p><ul><li>Assign value</li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;qv_fdda_old&#x27;</span>,qv_fdda_old)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;th_fdda_old&#x27;</span>,th_fdda_old)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;u_fdda_old&#x27;</span>, u_fdda_old )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;v_fdda_old&#x27;</span>, v_fdda_old )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;qv_fdda_new&#x27;</span>,qv_fdda_new)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;th_fdda_new&#x27;</span>,th_fdda_new)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;u_fdda_new&#x27;</span>, u_fdda_new )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(fdda,<span class="hljs-string">&#x27;v_fdda_new&#x27;</span>, v_fdda_new )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(tend_physics,<span class="hljs-string">&#x27;rthfddaten&#x27;</span>,rthfddaten)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(tend_physics,<span class="hljs-string">&#x27;rqvfddaten&#x27;</span>,rqvfddaten)<br><span class="hljs-keyword">call</span> mpas_pool_get_array(tend_physics,<span class="hljs-string">&#x27;rufddaten&#x27;</span> ,rufddaten )<br><span class="hljs-keyword">call</span> mpas_pool_get_array(tend_physics,<span class="hljs-string">&#x27;rvfddaten&#x27;</span> ,rvfddaten )<br></code></pre></td></tr></table></figure><ul><li>No need to generate first time step and obtained FDDA value from init.nc</li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!check to see if &#x27;old&#x27; FDDA target values need to be defined from initial conditions</span><br> <span class="hljs-keyword">if</span>(first_call <span class="hljs-keyword">.and.</span> <span class="hljs-keyword">.not.</span> config_do_restart) <span class="hljs-keyword">then</span><br>    qv_fdda_old = qv<br>    th_fdda_old = theta_m / (<span class="hljs-number">1._RKIND</span> + rvrd * qv)<br>    u_fdda_old = u<br>    v_fdda_old = v<br>    first_call = <span class="hljs-literal">.false.</span><br> <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure><ul><li>define the FDDA target data interval, <code>tfrac</code></li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!calculate time fraction within FDDA target data interval</span><br> tfrac = <span class="hljs-built_in">mod</span>(xtime_s,fdda_int)/fdda_int<br></code></pre></td></tr></table></figure><ul><li>take <code>t_target</code> as example,</li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">case</span>(<span class="hljs-string">&quot;analysis&quot;</span>)<br><br>   <span class="hljs-keyword">DO</span> i=its,ite<br>   <span class="hljs-keyword">DO</span> k=kts,kte<br><br>      theta_p = theta_m(k,i) / (<span class="hljs-number">1._RKIND</span> + rvrd * qv(k,i))<br><br>      <span class="hljs-keyword">if</span> (fdda_t <span class="hljs-keyword">.and.</span> k<span class="hljs-keyword">.gt.</span>fdda_t_min_layer <span class="hljs-keyword">.and.</span> (fdda_t_in_pbl <span class="hljs-keyword">.or.</span> k<span class="hljs-keyword">.gt.</span>kpbl(i))) <span class="hljs-keyword">then</span><br>         t_target = (<span class="hljs-number">1.0</span>-tfrac)*th_fdda_old(k,i)+tfrac*th_fdda_new(k,i)<br>         rthfddaten(k,i) = fdda_t_coef * ( t_target - theta_p )<br>      <span class="hljs-keyword">else</span><br>         rthfddaten(k,i) = <span class="hljs-number">0.</span><br>      <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure><ul><li>update <strong>old</strong> by <strong>new</strong> if it is <strong>on the last time step</strong>.</li></ul><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!check to see if this is the last time step within the current FDDA target data interval and </span><br><span class="hljs-comment">!if so, save the current &quot;new&quot; targets as the &quot;old&quot; targets for the next time step</span><br> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">mod</span>(xtime_s+config_dt,fdda_int)/fdda_int <span class="hljs-keyword">.lt.</span> tfrac) <span class="hljs-keyword">then</span><br>    th_fdda_old = th_fdda_new<br>    qv_fdda_old = qv_fdda_new<br>    u_fdda_old = u_fdda_new<br>    v_fdda_old = v_fdda_new<br> <span class="hljs-keyword">endif</span><br><br> <span class="hljs-built_in">write</span>(<span class="hljs-number">0</span>,*) <span class="hljs-string">&#x27;--- exit apply_fdda&#x27;</span><br></code></pre></td></tr></table></figure><h3 id="important-issue">Important issue</h3><p>The value of <code>fdda_old</code> is set to <code>fdda_new</code>, and the updated <code>fdda_new</code> data is obtained from the FDDA input stream.</p><p>At t=0, the <code>fdda_old</code> values are sourced from <code>init.nc</code>, and an additional data entry is required for <code>fdda_new</code>. One straightforward approach is to read the FDDA input file <code>00.nc</code> at t=0, which contains data for t=3 (or the next FDDA time) to serve as <code>fdda_new</code>.</p><h3 id="for-example">For example,</h3><p>Take FDDA time interval as 3 hours,</p><p>There is no <code>real</code> fdda.000.nc that contains FDDA data at t=0.</p><ul><li>t=0, <code>fdda_old</code> from init.nc and <code>fdda_new</code> from fdda.000.nc that contains FDDA value at t=3.</li><li>t=3, <code>fdda_old</code> from fdda.000.nc and <code>fdda_new</code> from fdda.003.nc that contains FDDA value at t=6.</li><li>t=6, <code>fdda_old</code> from fdda.003.nc and <code>fdda_new</code> from fdda.006.nc that contains FDDA value at t=9.</li><li>t=9, <code>fdda_old</code> from fdda.006.nc and <code>fdda_new</code> from fdda.009.nc that contains FDDA value at t=12.</li><li>......</li><li>and no final time step FDDA file.</li></ul><p>Therefore, we have to prepare the <strong>fdda.ttt.nc</strong> with <strong>ttt + Next FDDA time</strong> !!!</p><div class="note note-primary">            <p><strong>The purpose of this approach is to reduce storage usage.</strong></p>          </div><ul><li>The simple way is reading FDDA(<span class="math inline">\(t_0\)</span>) ad <span class="math inline">\(t=t_0\)</span>, and no need to add time shift in code.</li><li>Anothher way is reading FDD(<span class="math inline">\(t_{next fdda time}\)</span>) at <span class="math inline">\(t=t_0\)</span>, and no need to mismatch FDDA files with time shift.</li></ul><p><strong>Which one is better? Up to you. I like the second one la.</strong></p><h1 id="fdda-schemes">FDDA schemes</h1><ul><li><strong>'off'</strong></li><li><strong>'analysis'</strong></li><li><strong>'scaled'</strong></li></ul><p><img src="https://i.imgur.com/95PEK3s.png" width="600" /></p><h1 id="wrf-namelist">WRF namelist</h1><ul><li><a href="https://www2.mmm.ucar.edu/wrf/users/docs/How_to_run_grid_fdda.html" class="uri">https://www2.mmm.ucar.edu/wrf/users/docs/How_to_run_grid_fdda.html</a></li></ul><h2 id="steps-to-run-analysis-nudging-in-wrf-arw">Steps to run analysis nudging in WRF-ARW:</h2><ol type="1"><li>Set up the analysis nudging fdda namelist. Carefully read test/em_real/README.namelist file to understand the meaning of each namelist variable in the FDDA section, which is also listed below:</li></ol><pre><code class="hljs">&amp;fddagrid_fdda (max_dom)                 = 1        ; grid-nudging fdda on (=0 off) for each domain                                    = 2        ; spectral nudginggfdda_inname                        = &quot;wrffdda_d&lt;domain&gt;&quot; ; defined name in realgfdda_interval_m (max_dom)          = 360      ; time interval (in min) between analysis times (must use minutes)gfdda_end_h (max_dom)               = 6        ; time (in hours) to stop nudging after start of forecastio_form_gfdda                       = 2        ; analysis data io format (2 = netCDF)fgdt (max_dom)                      = 0        ; calculation frequency (minutes) for grid-nudging (0=every step)if_no_pbl_nudging_uv (max_dom)      = 0        ; 1= no nudging of u and v in the pbl, 0=nudging in the pblif_no_pbl_nudging_t (max_dom)       = 0        ; 1= no nudging of temp in the pbl, 0=nudging in the pblif_no_pbl_nudging_q (max_dom)       = 0        ; 1= no nudging of qvapor in the pbl, 0=nudging in the pblif_zfac_uv (max_dom)                = 0        ; 0= nudge u and v in all layers, 1= limit nudging to levels above k_zfac_uvk_zfac_uv (max_dom)                = 10       ; 10=model level below which nudging is switched off for u and vif_zfac_t (max_dom)                 = 0        ; 0= nudge temp in all layers, 1= limit nudging to levels above k_zfac_tk_zfac_t (max_dom)                 = 10       ; 10=model level below which nudging is switched off for tempif_zfac_q (max_dom)                 = 0        ; 0= nudge qvapor in all layers, 1= limit nudging to levels above k_zfac_qk_zfac_q (max_dom)                 = 10       ; 10=model level below which nudging is switched off for qvaporguv (max_dom)                       = 0.0003   ; nudging coefficient for u and v (sec-1)gt (max_dom)                        = 0.0003   ; nudging coefficient for temp (sec-1)gq (max_dom)                        = 0.0003   ; nudging coefficient for qvapor (sec-1)if_ramping                          = 0        ; 0= nudging ends as a step function, 1= ramping nudging down at end of perioddtramp_min                          = 60.0     ; time (min) for ramping function, 60.0=ramping starts at last analysis time,                                                                                  -60.0=ramping ends at last analysis timeThe following are for spectral nudging:fgdtzero (max_dom)                  = 0,       ; 1= nudging tendencies are set to zero in between fdda callsif_no_pbl_nudging_ph                = 0,       ; 1= no nudging of ph in the pbl, 0= nuding in the pblif_zfac_ph (max_dom)                = 0,       ; 0= nudge ph in all layers, 1= limit nudging to levels above k_zfac_phk_zfac_ph (max_dom)                = 10,      ; 10= model level below which nudging is switched off for phdk_zfac_uv (max_dom)                = 1,       ; depth in k between k_zfac_X to dk_zfac_X where nudging increases                                                 linearly to full strengthdk_zfac_t  (max_dom)                = 1,dk_zfac_ph (max_dom)                = 1,gph (max_dom)                       = 0.0003,xwavenum (max_dom)                  = 3,       ; top wave number to nudge in x directionywavenum (max_dom)                  = 3,       ; top wave number to nudge in y direction</code></pre><ul><li><a href="https://forum.mmm.ucar.edu/threads/difference-between-gfdda_interval_m-and-fgdt.15662/">Difference between gfdda_interval_m and fgdt | 2024</a></li><li><a href="https://wrfgc.readthedocs.io/en/latest/nudging.html">Nudging meteorology</a></li><li><a href="https://forum.mmm.ucar.edu/threads/spectral-vs-grid-nudging-namelist-options.248/">Spectral- vs. Grid Nudging Namelist Options | 2018</a><ul><li>It looks like the code (phys/module_fdda_spnudging.F) first checks if if_no_pbl_nudging_* is set. If they are set to 1, then the weighting function (wpbl) will be set to 0 in the PBL. If those are set to 0, THEN the switches for if_zfac_* are checked, and the weighting function is computed based on the namelist specified k values, so setting if_no_pbl_nudging_* overrides any settings for if_zfac_*.</li><li>"k" in these parameters specifies the vertical level number. So for example, if you have 32 vertical levels, then the first level (closest to the ground) is level</li><li>Yes, setting gq = 0 should turn off all q nudging.</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/issue-with-multi-domain-spectral-nudging-associated-with-the-namelist-variable-gph.21863/">Issue with multi-domain spectral nudging associated with the namelist variable gph | Apr 30, 2025</a><ul><li>spectral nudging and noticed that geopotential nudging is turned off when the coefficient gph is not defined separately for each domain.</li><li>Sorry for the error in WRF User's Guide. You are right that gph should be defined for each domain.</li></ul></li><li><a href="https://forum.mmm.ucar.edu/threads/can-grid-nuding-and-spectral-nudging-be-used-together%EF%BC%9F.19020/#post-46155">Can grid nuding and spectral nudging be used together？ | Sep 9, 2024</a><ul><li>You can only run either grid nudging or spectral nudging. The two options cannot work simultaneously.</li></ul></li></ul><h2 id="defining-spectral-nudging-wave-number">Defining spectral nudging wave number</h2><ul><li><a href="https://forum.mmm.ucar.edu/threads/defining-spectral-nudging-wave-number.113/">Defining spectral nudging wave number | Aug 30, 2018</a><ul><li><strong>The wave number for spectral nudging is simply (domain width in x or y)/(wave length to be nudged), so if you would like to nudge any waves longer than 1000 km in your 6000 km domain, then your wave number would be 6.</strong></li></ul></li></ul><h1 id="obs-fdda">Obs FDDA?</h1><p><strong>Any Observation FDDA in MPAS is in progress? No</strong></p><h2 id="in-wrf">In WRF,</h2><p><img src="https://i.imgur.com/6WoxlGO.png" width="400" /></p><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/QEy2dUD.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/S4yz9ta.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/UOAWjvZ.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/Zb9u08r.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/p5JEibM.png" /></div></div></div><h1 id="us-epa">US-EPA</h1><ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/pull/995">Add 3-D grid analysis nudging FDDA to MPAS-A #995 | Oct 8, 2022</a><ul><li>from <code>jherwehe:atmosphere/develop-EPA_FDDA</code></li><li>This EPA_FDDA PR will add 3-D grid analysis nudging FDDA to MPAS-A as an option to assist in keeping retrospective simulations dynamically on track to improve evaluation against observations. This FDDA development for MPAS-A (Bullock et al., 2018) nudges temperature, humidity, and wind toward target values and is based on the comparable FDDA feature available in WRF, including MPAS-A versions of many of the WRF FDDA options. Enabling grid analysis nudging FDDA in MPAS-A maintains high fidelity to the reference fields while still conserving mass.</li></ul></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/pull/1027">Add the Pleim-Xiu (P-X) LSM and FDDA to MPAS-A #1027 | Jan 26, 2023</a><ul><li>from <code>jherwehe:atmosphere/develop-EPA_PXLSM_with_FDDA</code></li><li>This EPA_PXLSM_with_FDDA PR will add the Pleim-Xiu land surface model codes (<a href="https://github.com/MPAS-Dev/MPAS-Model/pull/1025">PR #1025</a>) and the 3-D grid analysis nudging FDDA codes (<a href="https://github.com/MPAS-Dev/MPAS-Model/pull/995">PR #995</a>) to MPAS-A.</li></ul></li></ul>]]></content>
     
     
     <categories>
@@ -920,9 +986,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>FDDA</tag>
       
@@ -986,9 +1052,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1023,9 +1089,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1060,9 +1126,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -1093,9 +1159,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -1122,9 +1188,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1157,9 +1223,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1194,9 +1260,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1227,17 +1293,17 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>PINN</tag>
       
+      <tag>AI</tag>
+      
       <tag>DeepONet</tag>
       
-      <tag>AI</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -1264,9 +1330,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1299,9 +1365,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1332,11 +1398,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -1371,9 +1437,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -1404,9 +1470,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1445,9 +1511,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1478,9 +1544,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1511,9 +1577,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1548,9 +1614,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1589,9 +1655,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1632,9 +1698,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1671,9 +1737,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Ollama</tag>
       
@@ -1704,9 +1770,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1745,9 +1811,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -1772,9 +1838,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Ollama</tag>
       
@@ -1803,9 +1869,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>deepseek</tag>
       
@@ -1834,9 +1900,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>ResNet</tag>
       
@@ -1873,9 +1939,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -1902,9 +1968,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>RNN</tag>
       
@@ -1933,11 +1999,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>UCM</tag>
       
@@ -1966,11 +2032,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>UCM</tag>
       
@@ -2001,9 +2067,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>ResNet</tag>
       
@@ -2032,9 +2098,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>VAE</tag>
       
@@ -2067,11 +2133,11 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
+      <tag>ECMWF</tag>
       
       <tag>AI</tag>
       
-      <tag>ECMWF</tag>
+      <tag>ML</tag>
       
       <tag>Anemoi</tag>
       
@@ -2100,11 +2166,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>MPI</tag>
       
@@ -2131,9 +2197,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2166,9 +2232,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -2282,9 +2348,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2311,9 +2377,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2346,9 +2412,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2381,9 +2447,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2414,9 +2480,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2445,9 +2511,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2503,13 +2569,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
-      <tag>AI</tag>
+      <tag>ML</tag>
       
       <tag>DeepXDE</tag>
       
@@ -2538,9 +2604,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -2565,9 +2631,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2627,9 +2693,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2710,9 +2776,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2743,9 +2809,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2776,11 +2842,11 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
+      <tag>ECMWF</tag>
       
       <tag>AI</tag>
       
-      <tag>ECMWF</tag>
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2809,13 +2875,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
-      <tag>AI</tag>
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -2844,9 +2910,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -2873,11 +2939,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -2904,11 +2970,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>MPI</tag>
       
@@ -2941,11 +3007,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -2999,9 +3065,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -3296,9 +3362,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -3486,9 +3552,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -3513,11 +3579,11 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>WPS</tag>
       
@@ -3546,11 +3612,11 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -3575,11 +3641,11 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -3604,9 +3670,9 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -3690,9 +3756,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>PDE</tag>
       
@@ -3721,9 +3787,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>PDE</tag>
       
@@ -3750,13 +3816,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
-      <tag>AI</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -3781,13 +3847,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
-      <tag>AI</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -3812,13 +3878,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
-      <tag>AI</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -3845,15 +3911,15 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
+      
+      <tag>ECMWF</tag>
       
       <tag>AI</tag>
       
-      <tag>ECMWF</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -3918,9 +3984,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -3980,9 +4046,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -4009,9 +4075,9 @@
       
       <tag>NWP</tag>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -4155,9 +4221,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>Google</tag>
       
@@ -4186,9 +4252,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -4215,9 +4281,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4246,9 +4312,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4277,9 +4343,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4308,9 +4374,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4362,9 +4428,9 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -4389,9 +4455,9 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     
@@ -4476,9 +4542,9 @@
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4579,15 +4645,15 @@
     
     <tags>
       
-      <tag>MPAS</tag>
+      <tag>Installation</tag>
       
-      <tag>NWP</tag>
+      <tag>MPAS</tag>
       
       <tag>WRF</tag>
       
-      <tag>gnu</tag>
+      <tag>NWP</tag>
       
-      <tag>Installation</tag>
+      <tag>gnu</tag>
       
       <tag>DA</tag>
       
@@ -4720,13 +4786,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
-      <tag>AI</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -4803,11 +4869,11 @@
     
     <tags>
       
+      <tag>Spack</tag>
+      
       <tag>MPAS</tag>
       
       <tag>DA</tag>
-      
-      <tag>Spack</tag>
       
       <tag>Spack-Stack</tag>
       
@@ -4834,19 +4900,19 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
-      
-      <tag>Micromamba</tag>
-      
-      <tag>Spack</tag>
       
       <tag>ecFlow</tag>
       
+      <tag>Spack</tag>
+      
+      <tag>Micromamba</tag>
+      
       <tag>Conda</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -4896,9 +4962,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Pnetcdf</tag>
       
@@ -5027,11 +5093,11 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
       
       <tag>Spack</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Intel</tag>
       
@@ -5216,9 +5282,9 @@
     
     <tags>
       
-      <tag>WPS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WPS</tag>
       
     </tags>
     
@@ -5243,9 +5309,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -5299,9 +5365,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -5355,9 +5421,9 @@
     
     <tags>
       
-      <tag>WPS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WPS</tag>
       
     </tags>
     
@@ -5382,9 +5448,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -5409,9 +5475,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -5436,9 +5502,9 @@
     
     <tags>
       
-      <tag>conda</tag>
-      
       <tag>Micromamba</tag>
+      
+      <tag>conda</tag>
       
     </tags>
     
@@ -6060,9 +6126,9 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>WPS</tag>
       
@@ -6445,9 +6511,9 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
       <tag>gnu</tag>
       
@@ -6476,17 +6542,17 @@
     
     <tags>
       
-      <tag>NWP</tag>
+      <tag>Installation</tag>
       
       <tag>WRF</tag>
+      
+      <tag>NWP</tag>
       
       <tag>gnu</tag>
       
       <tag>gcc</tag>
       
       <tag>WPS</tag>
-      
-      <tag>Installation</tag>
       
     </tags>
     
@@ -6511,11 +6577,11 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
       <tag>slurm</tag>
       
       <tag>HPC</tag>
+      
+      <tag>NWP</tag>
       
     </tags>
     

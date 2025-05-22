@@ -1,0 +1,1097 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="MYNN PBL scheme The Turbulent Kinetic Energy (TKE) budget equation in the Mellor-Yamada-Nakanishi-Niino (MYNN) PBL scheme of the WRF model and how they are outputted. The MYNN scheme is an improved ve">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS | WRF | MYNN">
+<meta property="og:url" content="https://waipangsze.github.io/2025/05/22/MPAS-WRF-MYNN/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="MYNN PBL scheme The Turbulent Kinetic Energy (TKE) budget equation in the Mellor-Yamada-Nakanishi-Niino (MYNN) PBL scheme of the WRF model and how they are outputted. The MYNN scheme is an improved ve">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/0uL1eqw.png">
+<meta property="article:published_time" content="2025-05-22T03:04:00.000Z">
+<meta property="article:modified_time" content="2025-05-22T07:14:21.212Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="PBL">
+<meta property="article:tag" content="MYNN">
+<meta property="article:tag" content="TKE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/0uL1eqw.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS | WRF | MYNN - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/0uL1eqw.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS | WRF | MYNN"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-22 11:04" pubdate>
+          May 22, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS | WRF | MYNN</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="mynn-pbl-scheme">MYNN PBL scheme</h1>
+<p>The <strong>Turbulent Kinetic Energy (TKE) budget equation</strong> in the <strong>Mellor-Yamada-Nakanishi-Niino (MYNN) PBL</strong> scheme of the WRF model and how they are outputted. The MYNN scheme is an improved version of the classic Mellor-Yamada scheme (Mellor and Yamada 1982), and it is able to output the TKE budget equation terms on the default WRF history file. These outputs were unbalanced with the equivalent terms used in MYNN to integrate the TKE budget equation. <strong>It was fixed on WRF 4.2.2 version code for tests released on WRF 4.5 (CCPP version).</strong></p>
+<p>The <strong>MYNN-EDMF scheme</strong> represents the local mixing using an eddy-diffusivity approach tied to turbulent kinetic energy (TKE). The nonlocal mixing, important for convective boundary layers, is represented using a mass-flux approach. The scheme can be run with either a <strong>2.5 or 3.0 closure and includes a partial-condensation scheme</strong>, commonly referred to as a cloud PDF or statistical-cloud scheme, to represent the effects of subgrid-scale (SGS) clouds on buoyancy. <strong>This module was originally translated from Nakanishi and Niino (2009) and put into the WRF model by Mariusz Pagowski NOAA/GSD and CIRA/CSU in 2008</strong>. It was extensively modified by Joseph Olson and Jaymes Kenyon of NOAA/GSD and CU/CIRES.</p>
+<hr />
+<h1 id="literature-review">Literature Review</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.gfdl.noaa.gov/bibliography/related_files/glm7301.pdf">Mellor, George L. "<strong>Analytic prediction of the properties of stratified planetary surface layers</strong>." J. Atmos. Sci 30.9 (1973): 1061-1069.</a></li>
+<li><a target="_blank" rel="noopener" href="https://rcfftp.soest.hawaii.edu/kelvin/OCN665/OCN665_full/papers/MellorYamada1982.pdf">Mellor, George L., and Tetsuji Yamada. "<strong>Development of a turbulence closure model for geophysical fluid problems.</strong>" Reviews of Geophysics 20.4 (1982): 851-875.</a>
+<ul>
+<li>Applications of <strong>second-moment turbulent closure hypotheses</strong> to geophysical fluid problems have developed rapidly since 1973, when genuine predictive skill in coping with the effects of stratification was demonstrated.</li>
+<li><ol start="2" type="1">
+<li><strong>The Basic Model</strong></li>
+</ol>
+<ul>
+<li>The Closure Assumptions</li>
+<li>The Level 4 Model (Melior and Yarnada, 1974)</li>
+<li>The Level 3 Model</li>
+<li>The Level 2.5 Model</li>
+<li>The Level 2 Model</li>
+<li>The Boundary Layer Apporximation: Level 2.5</li>
+<li>The Boundary Layer Apporximation: Level 2</li>
+</ul></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Mikio-Nakanishi-2/publication/226023953_An_Improved_Mellor-Yamada_Level-3_Model_Its_Numerical_Stability_and_Application_to_a_Regional_Prediction_of_Advection_Fog/links/0deec5330d21abae7b000000/An-Improved-Mellor-Yamada-Level-3-Model-Its-Numerical-Stability-and-Application-to-a-Regional-Prediction-of-Advection-Fog.pdf">Nakanishi, Mikio, and Hiroshi Niino. "<strong>An improved Mellor–Yamada level-3 model: Its numerical stability and application to a regional prediction of advection fog.</strong>" Boundary-layer meteorology 119 (2006): 397-407.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jstage.jst.go.jp/article/jmsj/87/5/87_5_895/_pdf">Nakanishi, Mikio, and Hiroshi Niino. "<strong>Development of an improved turbulence closure model for the atmospheric boundary layer.</strong>" Journal of the Meteorological Society of Japan. Ser. II 87.5 (2009): 895-912.</a></li>
+</ul>
+<h1 id="a-description-of-the-mynn-edmf-scheme-and-the-coupling-to-other-components-in-wrfarw-march-2019">A Description of the MYNN-EDMF Scheme and the Coupling to Other Components in WRF–ARW (March 2019)</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.atmos.albany.edu/facstaff/rfovell/NWP/noaa_19837_DS1.pdf" class="uri">https://www.atmos.albany.edu/facstaff/rfovell/NWP/noaa_19837_DS1.pdf</a></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/mXipGBJ.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/0uL1eqw.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h1 id="turbulent-kinetic-energy-budget-for-mynn-edmf-pbl-scheme-in-wrf-model-2023">Turbulent Kinetic Energy Budget for MYNN-EDMF PBL Scheme in WRF model (2023)</h1>
+<p>The aim of this technical note is to describe the Turbulent Kinetic Energy (TKE) budget equation in the Mellor-Yamada-Nakanishi-Niino (MYNN) PBL scheme of the WRF model and how they are outputted. The MYNN scheme is an improved version of the classic Mellor-Yamada scheme (Mellor and Yamada 1982), and it is able to output the TKE budget equation terms on the default WRF history file. These outputs were unbalanced with the equivalent terms used in MYNN to integrate the TKE budget equation. It was fixed on WRF 4.2.2 version code for tests released on WRF 4.5 (CCPP version).</p>
+<p>Besides the TKE output fix, a new set of similarity relationship equations was implemented in the MYNN scheme to provide the lower boundary conditions for TKE budget equation terms.</p>
+<ul>
+<li>[<strong>Turbulent Kinetic Energy Budget for MYNN-EDMF PBL Scheme in WRF model</strong> | <strong>Technical note</strong> UFSM/GruMA 001/2023]
+<ul>
+<li><img src="https://i.imgur.com/piiTKYD.png" srcset="/img/loading.gif" lazyload width="400" /></li>
+</ul></li>
+</ul>
+<p><img src="https://i.imgur.com/H8sm0RX.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="output-all-tke-budget-equation-terms">output all TKE budget equation terms</h2>
+<p><img src="https://i.imgur.com/KepL4Sl.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="second-moment-models">Second-moment models</h1>
+<h2 id="turbulence">Turbulence:</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1002/2014MS000376">Heinze, R., Mironov, D., &amp; Raasch, S. (2015). Second‐moment budgets in cloud topped boundary layers: A large‐eddy simulation study. Journal of Advances in Modeling Earth Systems, 7(2), 510-536.</a></li>
+</ul>
+<p>In NWP, turbulence is often parameterized using second-moment schemes. <strong>These schemes predict the budget equations for the second-order moments of fluctuating velocity and scalar fields</strong>, which helps to better represent the effects of turbulent mixing on the atmosphere.</p>
+<h1 id="level-2.5-vs-3">Level 2.5 vs 3 ?</h1>
+<h2 id="key-points">Key Points</h2>
+<ul>
+<li>Research suggests Level 2.5 in the MYNN PBL scheme focuses on TKE, while Level 3 includes more detailed turbulence variables, offering higher accuracy but at a higher computational cost.</li>
+<li>It seems likely that Level 2.5 is simpler and better for general forecasting, while Level 3 suits complex scenarios like cloudy conditions.</li>
+<li>The evidence leans toward distinguishing them in WRF by setting <code>bl_mynn_closure = 2.5</code> for Level 2.5 and <code>bl_mynn_closure = 3.0</code> for Level 3, with <code>bl_pbl_physics = 5</code>.</li>
+</ul>
+<h2 id="what-are-level-2.5-and-level-3-in-the-mynn-pbl-scheme">What Are Level 2.5 and Level 3 in the MYNN PBL Scheme?</h2>
+<p>The MYNN PBL scheme, used in models like WRF, helps simulate how the atmosphere mixes near the surface. Level 2.5 and Level 3 are different ways to handle this mixing, based on how detailed the calculations are.</p>
+<ul>
+<li><strong>Level 2.5</strong>: This level mainly tracks <strong>turbulent kinetic energy (TKE)</strong>, which measures the energy of air turbulence. It <strong>estimates other details</strong>, like temperature changes, using simpler formulas. It’s less demanding on computers and good for everyday weather predictions.</li>
+<li><strong>Level 3</strong>: This level goes further, <strong>tracking TKE and additional details like temperature and moisture variations directly</strong>. It’s more accurate, especially for complex situations like cloudy skies, but it needs more computing power.</li>
+</ul>
+<h2 id="how-to-distinguish-them">How to Distinguish Them</h2>
+<p>In WRF, you can choose between these levels by adjusting the settings:</p>
+<ul>
+<li>For Level 2.5, set <code>bl_pbl_physics = 5</code> and <code>bl_mynn_closure = 2.5</code>.</li>
+<li>For Level 3, set <code>bl_pbl_physics = 5</code> and <code>bl_mynn_closure = 3.0</code>.</li>
+</ul>
+<p>This tells the model which level of detail to use for mixing calculations.</p>
+<hr />
+<h2 id="survey-note-detailed-explanation-of-mynn-pbl-scheme-levels-in-wrf">Survey Note: Detailed Explanation of MYNN PBL Scheme Levels in WRF</h2>
+<p>The Mellor-Yamada-Nakanishi-Niino (MYNN) Planetary Boundary Layer (PBL) scheme is a critical component of numerical weather prediction models like the Weather Research and Forecasting (WRF) model, designed to parameterize turbulent mixing within the planetary boundary layer. This layer, closest to the Earth’s surface, significantly influences weather patterns, especially near-surface conditions. The MYNN scheme, rooted in the Mellor-Yamada turbulence closure framework, offers different levels of complexity, notably Level 2.5 and Level 3, which cater to varying needs in accuracy and computational efficiency. This section provides a comprehensive analysis based on available documentation and user discussions, ensuring a thorough understanding for researchers and practitioners.</p>
+<h3 id="background-on-mynn-pbl-scheme">Background on MYNN PBL Scheme</h3>
+<p>The MYNN scheme is a second-order turbulence closure model, an advancement over earlier Mellor-Yamada schemes, tuned using large-eddy simulation (LES) data to improve predictions, particularly over oceanic surfaces (<a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s10546-016-0187-0">Improvement of the Mellor–Yamada–Nakanishi–Niino Planetary Boundary-Layer Scheme Based on Observational Data in China | Boundary-Layer ...</a>). It was integrated into WRF-ARW version 3.1 by Mariusz Pagowski of NOAA’s Global Systems Division, aiming to enhance turbulence representation for operational systems like Rapid Refresh (RAP) and High-Resolution Rapid Refresh (HRRR) (<a target="_blank" rel="noopener" href="https://repository.library.noaa.gov/view/noaa/19837">Noaa</a>). The scheme’s flexibility allows it to operate at different closure levels, balancing computational cost with physical realism.</p>
+<h3 id="detailed-description-of-level-2.5">Detailed Description of Level 2.5</h3>
+<p><strong>Level 2.5</strong> is a partially prognostic closure model within the MYNN framework. It focuses on solving a prognostic equation for turbulent kinetic energy (TKE), denoted as (q^2/2), where (q^2) represents <strong>twice the TKE</strong>. This level simplifies the parameterization by <strong>diagnosing other second-order moments</strong>, <em>such as temperature variance ((θ^2)), momentum fluxes ((u'w'), (v'w')), and heat fluxes ((w'θ')), using algebraic relationships rather than prognostic equations</em>. This approach reduces computational demand, making it suitable for operational forecasting where efficiency is crucial.</p>
+<ul>
+<li><strong>Key Features</strong>:
+<ul>
+<li><strong>Prognostic variable: TKE only.</strong></li>
+<li><strong>Diagnostic variables: Other second-order moments, computed via simplified formulas.</strong></li>
+<li>Closure assumptions: Neglects time tendencies and advection of most second-order moments, with pressure correlations highly parameterized.</li>
+<li>Stability functions: Based on gradient Richardson number, accounting for stratification effects.</li>
+</ul></li>
+<li><strong>Applications</strong>: Level 2.5 is often the default choice for general weather forecasting, particularly in clear boundary layers under stable or neutral conditions, due to its robustness and lower computational cost. It is noted for stability in simulations, as seen in user discussions where MYNN 2.5 runs successfully for extended periods compared to Level 3 (<a target="_blank" rel="noopener" href="http://forum.wrfforum.com/viewtopic.php?f=9&amp;t=3938">WRF User's Forum • View topic - MYNN level 3 PBL scheme</a>).</li>
+</ul>
+<h3 id="detailed-description-of-level-3">Detailed Description of Level 3</h3>
+<p>Level 3 represents a more complex closure, extending beyond TKE to include prognostic equations for additional second-order moments, such as scalar variances (e.g., temperature variance (θ^2), moisture variance (q^2), and covariances like (θ'q')). This level retains more terms in the turbulence equations, including partial contributions from pressure covariances and third-order transport terms, aligning closer to a full second-order closure model.</p>
+<ul>
+<li><strong>Key Features</strong>:
+<ul>
+<li>Prognostic variables: TKE and scalar variances, reducing the reliance on diagnostic computations.</li>
+<li>Diagnostic variables: Fewer, as more moments are explicitly evolved over time.</li>
+<li>Closure assumptions: Includes more detailed parameterization of pressure terms and transport, enhancing representation of non-local mixing.</li>
+<li>Stability functions: May include additional dependencies on prognostic scalar variances, improving accuracy under complex stability conditions.</li>
+</ul></li>
+<li><strong>Applications</strong>: Level 3 is preferred for research simulations where scalar variances are critical, such as in foggy conditions, cloud formation, or urban boundary layers. It performs better in scenarios with strong stratification or cloud interactions, as suggested by studies comparing PBL schemes (<a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015JD023927">Investigation of PBL schemes combining the WRF model simulations with scanning water vapor differential absorption lidar measurements - Milovac ...</a>). However, it is computationally more expensive, and user reports indicate potential instability, with crashes noted in simulations (<a target="_blank" rel="noopener" href="http://forum.wrfforum.com/viewtopic.php?f=6&amp;t=4017">WRF User's Forum • View topic - Problem with MYNN2.5 and MYNN3 PBL schemes</a>).</li>
+</ul>
+<h3 id="comparative-analysis-level-2.5-vs.-level-3">Comparative Analysis: Level 2.5 vs. Level 3</h3>
+<p>The distinction between Level 2.5 and Level 3 lies in their approach to turbulence parameterization, affecting both accuracy and computational demand. The following table summarizes the key differences:</p>
+<table>
+
+<thead>
+<tr class="header">
+<th><strong>Aspect</strong></th>
+<th><strong>Level 2.5</strong></th>
+<th><strong>Level 3</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Prognostic Variables</strong></td>
+<td>Only TKE ((q^2/2))</td>
+<td>TKE + scalar variances (e.g., (θ^2), (q^2), (θ'q'))</td>
+</tr>
+<tr class="even">
+<td><strong>Diagnostic Variables</strong></td>
+<td>Most second-order moments (e.g., (θ^2), (u'w'))</td>
+<td>Fewer, as more moments are prognostic</td>
+</tr>
+<tr class="odd">
+<td><strong>Complexity</strong></td>
+<td>Simpler, fewer equations</td>
+<td>More complex, additional equations</td>
+</tr>
+<tr class="even">
+<td><strong>Computational Cost</strong></td>
+<td>Lower</td>
+<td>Higher</td>
+</tr>
+<tr class="odd">
+<td><strong>Accuracy</strong></td>
+<td>Good for general PBL cases</td>
+<td>Better for complex cases (e.g., clouds, fog)</td>
+</tr>
+<tr class="even">
+<td><strong>Pressure Terms</strong></td>
+<td>Highly parameterized</td>
+<td>Less parameterized, more explicit terms</td>
+</tr>
+<tr class="odd">
+<td><strong>Applications</strong></td>
+<td>Operational forecasting, general use</td>
+<td>Research, complex PBL (e.g., cloudy BL)</td>
+</tr>
+</tbody>
+</table>
+<p>This comparison highlights that Level 2.5 is efficient for broad applications, while Level 3 offers enhanced detail for specialized studies, at the cost of increased computational resources.</p>
+<h3 id="implementation-in-wrf">Implementation in WRF</h3>
+<p>In the WRF model, the MYNN PBL scheme is selected via the <code>bl_pbl_physics</code> namelist parameter, set to 5 for MYNN. The choice between Level 2.5 and Level 3 is controlled by the <code>bl_mynn_closure</code> option, as detailed in user forums and documentation (<a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/wrf-namelist-setting-mynn3.18733/post-45436">WRF namelist setting ---MYNN3 | WRF &amp; MPAS-A Support Forum</a>). Specifically:</p>
+<ul>
+<li><strong>Level 2.5</strong>: Set <code>bl_mynn_closure = 2.5</code>.</li>
+<li><strong>Level 3</strong>: Set <code>bl_mynn_closure = 3.0</code>.</li>
+</ul>
+<p>Note that <code>bl_mynn_closure</code> should be set as a single value (e.g., <code>bl_mynn_closure = 3.0,</code>) and not as multiple domain values (e.g., <code>3.0,3.0,3.0,</code>) to avoid namelist errors, as observed in user error reports. Additional options, such as <code>bl_mynn_mixscalars = 1</code>, can activate prognostic equations for scalar variances, aligning with Level 3 functionality (<a target="_blank" rel="noopener" href="https://dtcenter.ucar.edu/GMTB/v4.0/sci_doc/group__gsd__mynn__edmf.html">CCPP Scientific Documentation: GSD MYNN-EDMF PBL Scheme Module</a>).</p>
+<h3 id="practical-considerations">Practical Considerations</h3>
+<p>The choice between Level 2.5 and Level 3 depends on the simulation’s objectives. Level 2.5 is often sufficient for operational forecasting, given its stability and efficiency, as seen in simulations running for a year on a 5 km grid (<a target="_blank" rel="noopener" href="http://forum.wrfforum.com/viewtopic.php?f=9&amp;t=3938">WRF User's Forum • View topic - MYNN level 3 PBL scheme</a>). Conversely, Level 3 is recommended for research, especially in scenarios requiring detailed scalar variance representation, such as cloudy boundary layers, but users should be aware of potential instability, with reports of crashes after short simulation periods (<a target="_blank" rel="noopener" href="http://forum.wrfforum.com/viewtopic.php?f=6&amp;t=4017">WRF User's Forum • View topic - Problem with MYNN2.5 and MYNN3 PBL schemes</a>).</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>In summary, Level 2.5 and Level 3 in the MYNN PBL scheme offer different levels of turbulence closure, with Level 2.5 focusing on TKE and diagnosing other moments for efficiency, and Level 3 prognosing additional moments for higher accuracy. Distinguishing them in WRF involves setting <code>bl_mynn_closure</code> to 2.5 or 3.0, respectively, with <code>bl_pbl_physics = 5</code>. This understanding is derived from a synthesis of WRF documentation, user forums, and scientific literature, acknowledging the complexity and ongoing research in PBL parameterization.</p>
+<h2 id="key-citations">Key Citations</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://forum.wrfforum.com/viewtopic.php?f=9&amp;t=3938">WRF User's Forum MYNN level 3 PBL scheme</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/wrf-namelist-setting-mynn3.18733/post-45436">WRF namelist setting MYNN3 WRF &amp; MPAS-A Support Forum</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s10546-016-0187-0">Improvement of the Mellor–Yamada–Nakanishi–Niino Planetary Boundary-Layer Scheme Based on Observational Data in China</a></li>
+<li><a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015JD023927">Investigation of PBL schemes combining WRF model simulations with scanning water vapor differential absorption lidar measurements</a></li>
+<li><a target="_blank" rel="noopener" href="http://forum.wrfforum.com/viewtopic.php?f=6&amp;t=4017">WRF User's Forum Problem with MYNN2.5 and MYNN3 PBL schemes</a></li>
+<li><a target="_blank" rel="noopener" href="https://dtcenter.ucar.edu/GMTB/v4.0/sci_doc/group__gsd__mynn__edmf.html">CCPP Scientific Documentation GSD MYNN-EDMF PBL Scheme Module</a></li>
+</ul>
+<h1 id="wrf">WRF</h1>
+<h2 id="namelist">namelist</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/run/README.namelist" class="uri">https://github.com/wrf-model/WRF/blob/master/run/README.namelist</a></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><code class="hljs namelist">&amp;physics<br>sf_sfclay_physics (max_dom)         surface-layer option (old bl_sfclay_physics option)<br>                                    = 0, no surface-layer<br>                                    = 1, Revised MM5 Monin-Obukhov scheme (Jimenez, renamed in v3.6)<br>                                    = 2, Monin-Obukhov (Janjic) scheme<br>                                    = 3, NCEP Global Forecast System scheme <br>                                    = 4, QNSE surface layer<br>                                    = 5, MYNN surface layer<br>                                    = 7, Pleim-Xiu surface layer<br>                                    = 10, TEMF surface layer<br>                                    = 91, Old MM5 scheme (previously option 1)<br>bl_pbl_physics (max_dom)            boundary-layer option<br>                                    = 0, no boundary-layer <br>                                    = 1, YSU scheme<br>                                    = 2, Mellor-Yamada-Janjic TKE scheme<br>                                    = 3, Hybrid EDMF GFS scheme <br>                                    = 4, Eddy-diffusivity Mass Flux, Quasi-Normal Scale Elimination PBL<br>                                    = 5, MYNN 2.5 level TKE scheme, works with<br>                                         sf_sfclay_physics=1 or 2 as well as 5<br>                                         (option 6 removed in 4.5, replaced by bl_mynn_closure options)<br>bl_mynn_closure                          = 2.5: level 2.5<br>                                           2.6: level 2.6<br>                                           3.0: level 3.0                                         <br>                                    = 7, ACM2 (Pleim) PBL<br>                                    = 8, Bougeault and Lacarrere (BouLac) PBL<br>                                    = 9, UW boundary layer scheme from CAM5 (CESM 1_0_1)<br>                                    = 10, TEMF (Total Energy Mass Flux) scheme<br>                                         sf_sfclay_physics=10<br>                                    = 11, Shin-Hong &#x27;scale-aware&#x27; PBL scheme<br>                                    = 12, Grenier-Bretherton-McCaa scheme<br>                                    = 16, TKE+TKE dissipation rate (epsilon) scheme<br>                                          works with surface layer options 1,91,2,5.<br>                                    = 17, TKE+TKE dissipation rate+TPE (temparature variance) scheme<br>                                    = 99, MRF scheme<br><br>tke_budget (max_dom)                = 0,       ! default off; = 1 adds MYNN tke budget terms to output (new in 4.5)<br>                                                 (replacing bl_mynn_tkebudget in prior versions)<br>bl_mynn_tkeadvect (max_dom)         = .false., ! default off; = .true. do MYNN tke advection<br>icloud_bl                                        option to couple the subgrid-scale clouds from the PBL scheme (MYNN only) <br>                                                 to radiation schemes <br>                                    0:  no coupling; 1: activate coupling to radiation (default)<br>bl_mynn_cloudmix (max_dom)          = 0 ! default off; =1 activates mixing of qc and qi in MYNN<br>                                    0: no mixing of qc &amp; qi; 1: mixing activated (default). <br>                                       Note qnc and qni are mixed when scalar_pblmix =1.<br>bl_mynn_mixlength                   option to change mixing length formulation in MYNN<br>                                    0: original as in Nakanishi and Niino 2009, <br>                                    1: RAP/HRRR (including BouLac in free atmosphere), <br>                                    2: experimental (default; includes cloud-specific mixing length and a scale-aware mixing <br>                                       length, following Ito et al. 2015, BLM). Option 2 has been well tested with <br>                                       the edmf options.<br>bl_mynn_cloudpdf                    option to switch to different cloud PDFs to represent subgrid clouds<br>                                    0: original (Sommeria and Deardorf 1977); <br>                                    1: Kuwano et al 2010, similar to option 0, but uses resolved scale gradients <br>                                       as opposed to higher order moments ; <br>                                    2: from Chaboureau and Bechtold (2002, JAS, with mods, default) <br>bl_mynn_edmf (max_dom)              = 1   ! activate mass-flux option in MYNN, 0: mass-flux option off<br>                                            Related (hidden) options: <br>bl_mynn_edmf_mom (max_dom)          = 1   ! - activates momentum transport in MYNN mass-flux scheme <br>                                          (assuming bl_mynn_edmf &gt; 0); 0=off (default)<br>                                      0    no momentum transport; 1: momentum transport activated (default)<br>bl_mynn_edmf_tke (max_dom)          = 0,  ! default; = 1 activates TKE transport in MYNN mass-flux scheme <br>                                           (assuming bl_mynn_edmf &gt; 0)<br>                                      0    no TKE transport (default);1: activate TKE transport<br>bl_mynn_output (max_dom)            = 0,  ! do not output extra arrays<br>                                      1    allocate and output extra 3D arrays from MYNN PBL<br>bl_mynn_mixscalars (max_dom)        = 0   ! off, 1: activate mixing of scalars<br>bl_mynn_mixqt (max_dom)             = 0   ! mixing moisture species separately, 1: mixing total water<br><br> shcu_physics (max_dom)              independent shallow cumulus option (not tied to deep convection)<br>                                    = 0, no independent shallow cumulus<br>                                    = 1, Grell 3D ensemble scheme (use with cu_physics=93 or 5) (PLACEHOLDER: SWITCH NOT YET IMPLEMENTED--use ishallow)<br>                                    = 2, Park and Bretherton shallow cumulus from CAM5 (CESM 1_0_1)<br>                                    = 3, GRIMS shallow cumulus from YSU group<br>                                    = 4, NSAS shallow cululus scheme. Must be used with KIAPS SAS cumulus scheme (cu_physics = 14)<br>                                    = 5, Deng cumulus scheme (including both shallow and deep convections) from PSU and WRF-Solar.<br>                                         However the deep part isn&#x27;t very active. Not recommended to use alone for deep convection <br>                                         case. Could work well for grid sizes 3-9 km.<br>                                         This scheme only works with MYJ PBL scheme, and should not be combined with icloud=3<br>                                         This scheme can also work with MYNN PBL scheme, but one should turn off EDMF (bl_mynn_edmf=0)<br><br>iz0tlnd                             = 0        ! thermal roughness length for sfclay (0 = old, 1 = veg dependent Chen-Zhang Czil,<br>                                                     2 = Zilitinkevitch (czil=0.1))<br>                                                     for mynn sfc (0=Zilitinkevitch (def),1=Chen-Zhang,2=mod Yang,3=const zt)<br><br>spp_pbl (max_dom)                   = 0        ! Perturb parameters of MYNN PBL scheme only<br><br>pert_mynn             = .false.  ! Activates perturbations to the MYNN PBL parameterization<br>pert_mynn_qv          = 0.0<br>pert_mynn_qc          = 0.0<br>pert_mynn_t           = 0.0<br>pert_mynn_qke         = 0.0<br></code></pre></td></tr></table></figure>
+<h1 id="mpas">MPAS</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.2.0.pdf">MPAS-Atmosphere Model User’s Guide Version 8.2.0</a></li>
+</ul>
+<p><img src="https://i.imgur.com/cpVkHp4.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/Zz6asM2.png" srcset="/img/loading.gif" lazyload /></p>
+<ul>
+<li>Registry.xml</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_tkeadvect&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;logical&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;= true:do MYNN TKE advection&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_tkebudget&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:option to add the MYNN TKE budget terms to output&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_closure&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;2.5&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;2.5 level or 3.0 level for the MYNN TKE turbulence closure&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_cloudpdf&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;switch to different cloud PDFs to represent subgrid clouds in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_mixlength&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;mixing length in the MYNN PBL scheme:=0(Nakanishi and Niino 2009);=1(RAP/HRRR);=2(Ito et al. 2015)&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_stfunc&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_topdown&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_scaleaware&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_dheat_opt&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate the EDMF option in the MYNN PBL scheme (=0 otherwise)&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf_dd&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate the EDMF downdraft option in the MYNN PBL scheme (=0 otherwise)&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf_mom&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate momentum transport with the EDMF option of the MYNN PBL scheme(=0 otherwise)&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf_tke&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate TKE transport with the EDMF option of the MYNN PBL scheme (=0 otherwise)&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_edmf_output&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=0:suppress the allocation of variables needed in the EDMF option of the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_mixscalars&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=1:activate mixing of scalars in the MYNN PBL scheme (=0 otherwise)&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_mixclouds&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;1:activate mixing of cloud condensates in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">nml_option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;config_mynn_mixqt&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;integer&quot;</span> <span class="hljs-attr">default_value</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">in_defaults</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;=0:activatevmixing of moisture species separately;= 1:activate mixing of total water in the mynn PBL scheme&quot;</span></span><br><span class="hljs-tag"></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_a&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;unitless&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF relative updraft area of moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_w&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;m s^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF vertical velocity of  moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_qt&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;kg kg^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF total water mixing ratio in moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_qc&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;kg kg^&#123;-1&#125;&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF liquid water mixing ratio in moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_thl&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;K&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">description</span>=<span class="hljs-string">&quot;EDMF liquid-ice water potential temperature in moist updrafts in the MYNN PBL scheme&quot;</span></span><br><span class="hljs-tag">&lt;<span class="hljs-attr">var</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;edmf_ent&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;real&quot;</span> <span class="hljs-attr">dimensions</span>=<span class="hljs-string">&quot;nVertLevels nCells Time&quot;</span> <span class="hljs-attr">units</span>=<span class="hljs-string">&quot;m^&#123;-1&#125;&quot;</span></span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/PBL/" class="print-no-link">#PBL</a>
+      
+        <a href="/tags/MYNN/" class="print-no-link">#MYNN</a>
+      
+        <a href="/tags/TKE/" class="print-no-link">#TKE</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS | WRF | MYNN</div>
+      <div>https://waipangsze.github.io/2025/05/22/MPAS-WRF-MYNN/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 22, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>May 22, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/22/MPAS-WRF-CCPP-Scientific-Documentation/" title="MPAS | WRF | CCPP Scientific Documentation">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | WRF | CCPP Scientific Documentation</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/18/South-Asian-High/" title="South Asian High | 南亞高壓">
+                        <span class="hidden-mobile">South Asian High | 南亞高壓</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
