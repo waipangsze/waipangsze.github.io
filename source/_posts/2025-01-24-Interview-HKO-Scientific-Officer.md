@@ -49,6 +49,13 @@ Duties:
 
 天文台於 2023-24 財政年度的總支出為**四億四千四百八十萬元(實際)**，**總收入為一億五千三百四十萬元(實際)**。截至 2024 年 3 月 31 日，天文台的員工編制共有 372 人。
 
+# 香港天文台 (有關機構的職員或查詢電話號碼)
+
+- <https://tel.directory.gov.hk/index_HKO_CHI.html>
+
+# 資歷記錄詳情
+
+- [Doctor of Philosophy in Physics 哲學博士（物理學）香港科技大學](https://www.hkqr.gov.hk/HKQRPRD/web/hkqr-tc/qr-detail/?qr_reg_no=09/002725/7&tabIndex=B&df=)
 
 # 氣象課程講義︰
 
