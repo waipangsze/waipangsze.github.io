@@ -4,6 +4,103 @@
   
   
   <entry>
+    <title>NWP | MPAS | WRF| Land Use/Land Cover and Soil Type</title>
+    <link href="/2025/05/28/NWP-MPAS-WRF-Land-Use-Land-Cover-and-Soil-Type/"/>
+    <url>/2025/05/28/NWP-MPAS-WRF-Land-Use-Land-Cover-and-Soil-Type/</url>
+    
+    <content type="html"><![CDATA[<h1 id="the-interplay-between-land-useland-cover-and-soil-type-in-the-wrf-model-implications-for-surface-variable-prognostication">The Interplay Between Land Use/Land Cover and Soil Type in the WRF Model: Implications for Surface Variable Prognostication</h1><p>The Weather Research and Forecasting (WRF) model is a widely used numerical weather prediction system that integrates atmospheric dynamics with land-surface interactions. A critical aspect of its performance hinges on accurately representing land-surface processes, which depend on two primary input datasets: <strong>land use/land cover (LULC)</strong> and <strong>soil type</strong>. This report examines the necessity of synchronizing LULC and soil type modifications in WRF, elucidates their interdependencies, and delineates their combined role in calculating prognostic variables such as 2-meter temperature (t2m).</p><hr /><h2 id="land-useland-cover-and-soil-type-distinct-but-interconnected-inputs">Land Use/Land Cover and Soil Type: Distinct but Interconnected Inputs</h2><h3 id="role-of-lulc-in-surface-parameterization">Role of LULC in Surface Parameterization</h3><p>LULC data define the physical and biological characteristics of the land surface, including vegetation type, albedo, roughness length, and emissivity. These properties directly influence energy partitioning between <strong>sensible heat, latent heat, and ground heat fluxes</strong><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup><sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>. For example, forests exhibit higher <strong>roughness lengths and evapotranspiration rates</strong> compared to urban areas, altering boundary layer dynamics<sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>. The <strong>Noah Land Surface Model (LSM)</strong>, a common component of WRF, uses LULC data to parameterize vegetation-dependent processes such as <strong>stomatal resistance and leaf area index (LAI)</strong><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</p><figure><img src="https://i.imgur.com/vRt3sIP.png" alt="CERES land classification from IGBPa_1198.map.nc. Surface types 1 - 17 correspond to those defined by IGBP (International Geosphere Biosphere Programme). The last 3 surface types were defined for CERES. Surface type 18, Tundra; Fresh snow, number 19, and sea ice, number 20 are not permanent surface types. They are obtained daily from the National Snow and Ice Data Center. The IGBP surface type for snow and ice number 15, is for permanent snow and ice. (Climate Data Guide; D. Shea)" /><figcaption>CERES land classification from IGBPa_1198.map.nc. Surface types 1 - 17 correspond to those defined by IGBP (International Geosphere Biosphere Programme). The last 3 surface types were defined for CERES. Surface type 18, Tundra; Fresh snow, number 19, and sea ice, number 20 are not permanent surface types. They are obtained daily from the National Snow and Ice Data Center. The IGBP surface type for snow and ice number 15, is for permanent snow and ice. (Climate Data Guide; D. Shea)</figcaption></figure><ul><li><a href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD12Q1?hl=zh-tw">MCD12Q1.061 MODIS Land Cover Type Yearly Global 500m</a><ul><li>Terra 和 Aqua 結合的 Moderate Resolution Imaging Spectroradiometer (MODIS) 土地覆蓋類型 (MCD12Q1) 版本 6.1 資料產品，提供全球土地覆蓋類型，間隔為一年。MCD12Q1 6.1 版資料產品是使用 MODIS Terra 和 Aqua 反射率資料的監督分類產生。土地覆蓋類型是根據國際地球-生物圈計畫 (IGBP)、馬里蘭大學 (UMD)、葉面積指數 (LAI)、生物群系-生物地球化學循環 (BGC) 和植物功能類型 (PFT) 分類方案而來。之後，受控分類作業會進行額外的後續處理，整合先前知識和輔助資訊，進一步精進特定類別。糧農組織 (FAO) 土地覆蓋類別分類系統 (LCCS) 提供其他土地覆蓋物屬性評估圖層，用於評估土地覆蓋物、土地使用情形和地表水文。也提供地貌類型 1-5、地貌屬性 1-3、地貌屬性評估 1-3、地貌品質管控 (QC) 和陸地水域遮罩的圖層。</li></ul></li></ul><h3 id="role-of-soil-type-in-hydrological-and-thermal-processes">Role of Soil Type in Hydrological and Thermal Processes</h3><p><strong>Soil type determines hydraulic and thermal properties, including saturation moisture content, hydraulic conductivity, and heat capacity</strong>. The WRF model categorizes soils into types such as sand, loam, and clay, each associated with specific parameters in the <code>SOILPARM.TBL</code> file<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup>. For instance, sandy soils have higher hydraulic conductivity but lower water-holding capacity compared to clayey soils, affecting soil moisture evolution and root-zone water availability<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>. These properties are critical for modeling infiltration, runoff, and soil temperature profiles.</p><figure><img src="https://i.imgur.com/AGCB3H4.png" alt="USDA soil texture triangle adopted in the SoilGrids250m data set (Hengl et al., 2017) and the reduced set of hydrologic soil groups used in this study (Sa = sand; Lo = loam; Cl = clay; Si = silt)." /><figcaption>USDA soil texture triangle adopted in the SoilGrids250m data set (Hengl et al., 2017) and the reduced set of hydrologic soil groups used in this study (Sa = sand; Lo = loam; Cl = clay; Si = silt).</figcaption></figure><h3 id="relationship-between-lulc-and-soil-type">Relationship Between LULC and Soil Type</h3><p>LULC determines surface characteristics like vegetation and albedo, while soil type affects subsurface properties like water retention. <strong>Both influence the surface energy balance, which governs heat, moisture, and momentum exchange between land and atmosphere, impacting weather predictions</strong>.</p><p>The relationship between LULC and soil type in WRF is functional rather than direct, as <strong>both contribute to the surface energy balance but operate through different mechanisms</strong>.</p><p><strong>LULC</strong> influences surface properties such as:</p><ul><li>Albedo (reflectivity, affecting solar radiation absorption),</li><li>Roughness length (impacting momentum exchange),</li><li>Vegetation fraction and type (affecting evapotranspiration).</li></ul><p><strong>Soil type</strong>, on the other hand, determines subsurface properties such as:</p><ul><li>Soil texture (e.g., sand, clay, loam, influencing water retention),</li><li>Hydraulic conductivity (affecting moisture transfer),</li><li>Thermal conductivity (affecting heat storage and release).</li></ul><p>These properties collectively shape the surface energy balance, which includes <strong>sensible heat flux (heat transfer to the air), latent heat flux (evaporation or transpiration), and ground heat flux (heat storage in the soil)</strong>.</p><h3 id="q1.-necessity-of-coherent-lulc-and-soil-type-assignments">Q1. Necessity of Coherent LULC and Soil Type Assignments?</h3><p><strong>While LULC and soil type are independent inputs</strong> (specified via <code>IVGTYP</code> and <code>ISLTYP</code> variables, respectively), their coherence is physiographically essential. For example, converting a grassland (LULC class) to an urban area should ideally be accompanied by a soil type change from natural loam to impervious surfaces. Discrepancies between LULC and soil type can lead to unphysical land-atmosphere interactions, such as excessive evaporation from paved surfaces misclassified as permeable soils<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>. A case study highlighted in WRF support forums demonstrated that inconsistent <code>ISLTYP</code> (soil type) and <code>XLAND</code> (land/water mask) values caused numerical instabilities, including division-by-zero errors in soil thermal calculations<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>.</p><h3 id="q2.-do-you-need-to-change-soil-type-when-changing-lulc">Q2. Do You Need to Change Soil Type When Changing LULC?</h3><p><strong>It seems likely that you do not need to change the soil type when altering LULC in WRF, as they are treated as separate inputs</strong>. For example, changing a forest to an urban area might not require a soil type update, but for realistic simulations, significant LULC changes (like deforestation) could imply soil property changes. This depends on the context, and the evidence leans toward flexibility in model setup.</p><h3 id="q3.-do-you-need-to-change-soil-type-if-you-change-lulc">Q3. Do you need to change soil type if you change LULC?</h3><ul><li><strong>Not necessarily</strong>, but it's often realistic to consider. <strong>LULC and soil type are distinct inputs in WRF</strong>. You can change one without changing the other. However, in reality, there's often a correlation. For example, certain vegetation types (LULC) are more likely to be found with specific soil types due to ecological factors.</li><li><strong>Changing LULC doesn't automatically require changing soil type in WRF from a technical standpoint, as they are separate inputs</strong>. However, for realistic simulations, it's often good practice to ensure consistency or consider how a LULC change might realistically be associated with soil characteristics in the region you're modeling.</li></ul><h3 id="q4.-do-changes-in-lulc-require-updates-to-soil-type">Q4. Do Changes in LULC Require Updates to Soil Type?</h3><p>Research suggests that changing LULC in WRF does not inherently require changing the soil type, <strong>as they are treated as independent inputs during model initialization</strong>. For instance, the geogrid program in WRF interpolates LULC categories (e.g., from <strong>USGS or MODIS datasets</strong>) and soil categories (e.g., from <strong>soiltype_top_30s</strong>) separately to the model grid. This separation allows users to update LULC data, such as using high-resolution datasets without necessarily updating soil type data from sources.</p><ul><li><a href="https://github.com/wrf-model/WPS/blob/master/geogrid/GEOGRID.TBL.ARW">GEOGRID.TBL.ARW</a></li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">        <div class="fold-arrow">▶</div>GEOGRID.TBL.ARW      </div>      <div class="fold-collapse collapse" id="collapse-8f7bdefe">        <div class="fold-content">          <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><code class="hljs text">===============================<br>name=LANDUSEF<br>        priority=1<br>        dest_type=categorical<br>        z_dim_name=land_cat<br>        dominant = LU_INDEX<br>        landmask_water =    nlcd2006_9s:17         # Calculate a landmask from this field<br>        landmask_water =   nlcd2006_30s:17         # Calculate a landmask from this field<br>        landmask_water =    nlcd2011_9s:17         # Calculate a landmask from this field<br>        landmask_water =       nlcd2006:17         # Calculate a landmask from this field<br>        landmask_water =       ssib_10m:16         # Calculate a landmask from this field<br>        landmask_water =        ssib_5m:16         # Calculate a landmask from this field<br>        landmask_water =      modis_15s:17         # Calculate a landmask from this field<br>        landmask_water = modis_15s_lake:17,21      # Calculate a landmask from this field<br>        landmask_water =      modis_30s:17         # Calculate a landmask from this field<br>        landmask_water = modis_30s_lake:17,21      # Calculate a landmask from this field<br>        landmask_water =       usgs_30s:16         # Calculate a landmask from this field<br>        landmask_water =     usgs_lakes:16,28      # Calculate a landmask from this field<br>        landmask_water =    modis_lakes:17,21      # Calculate a landmask from this field<br>        landmask_water =     modis_2010:17         # Calculate a landmask from this field<br>        landmask_water = modis_2010_lake:17,21     # Calculate a landmask from this field<br>        landmask_water =     modis_2050:17         # Calculate a landmask from this field<br>        landmask_water = modis_2050_lake:17,21     # Calculate a landmask from this field<br>        landmask_water =        usgs_2m:16         # Calculate a landmask from this field<br>        landmask_water =        usgs_5m:16         # Calculate a landmask from this field<br>        landmask_water =       usgs_10m:16         # Calculate a landmask from this field<br>        landmask_water =         lowres:17,21      # Calculate a landmask from this field<br>        landmask_water =        default:17,21      # Calculate a landmask from this field<br>        interp_option =    nlcd2006_9s:average_gcell(0.0)<br>        interp_option =   nlcd2006_30s:average_gcell(0.0)<br>        interp_option =    nlcd2011_9s:average_gcell(0.0)  <br>        interp_option =       nlcd2006:nearest_neighbor<br>        interp_option =       ssib_10m:four_pt<br>        interp_option =        ssib_5m:four_pt<br>        interp_option =      modis_15s:nearest_neighbor<br>        interp_option = modis_15s_lake:nearest_neighbor<br>        interp_option =      modis_30s:nearest_neighbor<br>        interp_option = modis_30s_lake:nearest_neighbor<br>        interp_option =       usgs_30s:nearest_neighbor<br>        interp_option =     usgs_lakes:nearest_neighbor<br>        interp_option =    modis_lakes:nearest_neighbor<br>        interp_option =     modis_2010:nearest_neighbor<br>        interp_option = modis_2010_lake:nearest_neighbor<br>        interp_option =     modis_2050:nearest_neighbor<br>        interp_option = modis_2050_lake:nearest_neighbor<br>        interp_option =        usgs_2m:four_pt<br>        interp_option =        usgs_5m:four_pt<br>        interp_option =       usgs_10m:four_pt<br>        interp_option =         lowres:average_gcell(4.0)+four_pt<br>        interp_option =        default:nearest_neighbor<br>        rel_path =    nlcd2006_9s:nlcd2006_ll_9s/<br>        rel_path =   nlcd2006_30s:nlcd2006_ll_30s/<br>        rel_path =    nlcd2011_9s:nlcd2011_ll_9s/<br>        rel_path =       nlcd2006:nlcd2006_ll_30s/<br>        rel_path =       ssib_10m:ssib_landuse_10m/<br>        rel_path =        ssib_5m:ssib_landuse_5m/<br>        rel_path =      modis_15s:modis_landuse_20class_15s/<br>        rel_path = modis_15s_lake:modis_landuse_20class_15s_with_lakes/<br>        rel_path =      modis_30s:modis_landuse_20class_30s/<br>        rel_path = modis_30s_lake:modis_landuse_20class_30s_with_lakes/<br>        rel_path =       usgs_30s:landuse_30s/<br>        rel_path =     usgs_lakes:landuse_30s_with_lakes/<br>        rel_path =    modis_lakes:modis_landuse_21class_30s/<br>        rel_path =     modis_2010:slucm/modis_landuse_20class_15s_2010s/<br>        rel_path = modis_2010_lake:slucm/modis_landuse_20class_15s_2010s_with_lakes/<br>        rel_path =     modis_2050:slucm/modis_landuse_20class_15s_2050s/<br>        rel_path = modis_2050_lake:slucm/modis_landuse_20class_15s_2050s_with_lakes/<br>        rel_path =        usgs_2m:landuse_2m/<br>        rel_path =        usgs_5m:landuse_5m/<br>        rel_path =       usgs_10m:landuse_10m/<br>        rel_path =         lowres:modis_landuse_20class_5m_with_lakes/<br>        rel_path =        default:modis_landuse_20class_30s_with_lakes/<br>===============================<br>name=SOILTEMP<br>        priority=1<br>        dest_type=continuous<br>        interp_option= lowres:sixteen_pt+four_pt+wt_average_4pt+wt_average_16pt+search<br>        interp_option=default:sixteen_pt+four_pt+average_4pt+average_16pt+search<br>        masked=water<br>        fill_missing=0.<br>        rel_path= lowres:soiltemp_1deg/<br>        rel_path=default:soiltemp_1deg/<br>===============================<br>name=SOILCTOP<br>        priority=1<br>        dest_type=categorical<br>        z_dim_name=soil_cat<br>        dominant=SCT_DOM<br>        interp_option = bnu_soil_30s:nearest_neighbor<br>        interp_option =     30s:nearest_neighbor<br>        interp_option =      2m:four_pt<br>        interp_option =      5m:four_pt<br>        interp_option =     10m:four_pt<br>        interp_option =  lowres:four_pt<br>        interp_option = default:nearest_neighbor<br>        rel_path= bnu_soil_30s:bnu_soiltype_top/<br>        rel_path=     30s:soiltype_top_30s/<br>        rel_path=      2m:soiltype_top_2m/<br>        rel_path=      5m:soiltype_top_5m/<br>        rel_path=     10m:soiltype_top_10m/<br>        rel_path=  lowres:soiltype_top_5m/<br>        rel_path= default:soiltype_top_30s/<br>===============================<br>name=SOILCBOT<br>        priority=1<br>        dest_type=categorical<br>        z_dim_name=soil_cat<br>        dominant=SCB_DOM<br>        interp_option = bnu_soil_30s:nearest_neighbor<br>        interp_option =     30s:nearest_neighbor<br>        interp_option =      2m:four_pt<br>        interp_option =      5m:four_pt<br>        interp_option =     10m:four_pt<br>        interp_option =  lowres:four_pt<br>        interp_option = default:nearest_neighbor<br>        rel_path= bnu_soil_30s:bnu_soiltype_bot/<br>        rel_path=     30s:soiltype_bot_30s/<br>        rel_path=      2m:soiltype_bot_2m/<br>        rel_path=      5m:soiltype_bot_5m/<br>        rel_path=     10m:soiltype_bot_10m/<br>        rel_path=  lowres:soiltype_bot_5m/<br>        rel_path= default:soiltype_bot_30s/<br>===============================<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><hr /><h2 id="mechanistic-linkages-between-surface-properties-and-prognostic-variables">Mechanistic Linkages Between Surface Properties and Prognostic Variables</h2><h3 id="how-wrf-calculates-t2m-based-on-lulc-and-soil-type">How WRF Calculates t2m Based on LULC and Soil Type</h3><p>The 2-meter temperature (t2m) is a diagnostic variable in WRF, <strong>computed based on the surface layer module rather than directly simulated</strong>. <strong>WRF calculates t2m using the surface layer module, adjusting the lowest model level temperature to 2 meters using similarity theory</strong>. LULC and soil type affect this by influencing surface properties (e.g., roughness, albedo) and subsurface properties (e.g., heat storage), respectively, which shape the surface energy balance and thus t2m.</p><p>This adjustment relies on surface fluxes (sensible and latent heat fluxes) and stability conditions, which are determined by the land surface model (LSM). The LSM, such as Noah, Noah-MP, or CLM, integrates LULC and soil type to compute the surface energy balance. Specifically:</p><ul><li><strong>LULC</strong> affects parameters like albedo, roughness length, and vegetation fraction, influencing how much solar radiation is absorbed and how heat is transferred to the atmosphere.</li><li><strong>Soil type</strong> affects soil hydraulic and thermal properties, determining how heat and moisture are stored and transferred within the soil, which impacts surface temperature and fluxes.</li></ul><table><thead><tr class="header"><th><strong>Aspect</strong></th><th><strong>LULC Influence</strong></th><th><strong>Soil Type Influence</strong></th></tr></thead><tbody><tr class="odd"><td><strong>Surface Properties</strong></td><td>Determines albedo, roughness length, vegetation fraction, affecting energy absorption and transfer.</td><td>Affects hydraulic (water retention) and thermal (heat conductivity) properties of soil.</td></tr><tr class="even"><td><strong>Energy Balance Components</strong></td><td>Impacts sensible and latent heat fluxes through vegetation and surface cover.</td><td>Influences ground heat flux and moisture availability for evaporation.</td></tr><tr class="odd"><td><strong>Impact on t2m</strong></td><td>Indirectly affects t2m via surface temperature and heat fluxes, influenced by albedo and roughness.</td><td>Indirectly affects t2m via soil heat storage and moisture, impacting surface temperature.</td></tr><tr class="even"><td><strong>Typical Data Sources</strong></td><td>USGS, MODIS, MapBiomas (e.g., 30m resolution).</td><td>STATSGO, FAO-UNESCO, SoilGrids (e.g., global coverage, high resolution).</td></tr></tbody></table><h3 id="surface-energy-balance-and-t2m-computation">Surface Energy Balance and t2m Computation</h3><p>The 2-meter temperature (t2m) is derived from the surface energy balance, which integrates <strong>net radiation</strong>, <strong>sensible heat flux</strong> (<span class="math inline">\(H\)</span>), <strong>latent heat flux</strong> (<span class="math inline">\(LE\)</span>), and <strong>ground heat flux</strong> (<span class="math inline">\(G\)</span>):</p><p><span class="math display">\[R_{\text{net}} = H + LE + G = (1-\alpha)S_{\downarrow} + L_{\downarrow} - L_{\uparrow} - G\]</span><br />where <span class="math inline">\(R_{\text{net}}\)</span> is net radiation<sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>, <span class="math inline">\(S_{\downarrow}\)</span> and <span class="math inline">\(L_{\downarrow}\)</span> are incoming shortwave and longwave radiation, and <span class="math inline">\(\alpha\)</span> is albedo.</p><ol type="1"><li><strong>LULC Influence</strong>:<ul><li>Vegetation type affects albedo (e.g., forests: ~0.15; deserts: ~0.35), altering <span class="math inline">\(R_{\text{net}}\)</span><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.<br /></li><li>Roughness length modulates turbulent fluxes (<span class="math inline">\(H\)</span> and <span class="math inline">\(LE\)</span>) via <strong>Monin-Obukhov similarity theory</strong><sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>.<br /></li><li><strong>Urban areas exhibit higher heat storage</strong>, elevating <span class="math inline">\(H\)</span> and t2m<sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</li></ul></li><li><strong>Soil Type Influence</strong>:<ul><li><strong>Soil moisture</strong> availability governs <span class="math inline">\(LE\)</span> through <strong>evaporation</strong>. Clay soils retain moisture longer, sustaining <span class="math inline">\(LE\)</span> during dry periods<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup><sup id="fnref:8" class="footnote-ref"><a href="#fn:8" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[8]</span></a></sup>.<br /></li><li>Thermal conductivity impacts <span class="math inline">\(G\)</span>; sandy soils transfer heat more efficiently than organic-rich soils<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup>.</li></ul></li></ol><h3 id="joint-impact-on-boundary-layer-dynamics">Joint Impact on Boundary Layer Dynamics</h3><p><strong>Misalignment between LULC and soil type can skew surface flux partitioning</strong>. For instance, assigning a forest LULC with sandy soil (low water retention) may underestimate latent heat flux, leading to overestimated t2m. Conversely, urban LULC with clay soil (high water retention) could artificially enhance <span class="math inline">\(LE\)</span>, cooling t2m unrealistically<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup><sup id="fnref:8" class="footnote-ref"><a href="#fn:8" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[8]</span></a></sup>. The Noah-LSM resolves these interactions by coupling vegetation parameters (e.g., LAI) with soil hydraulic properties to compute root-zone moisture and transpiration<sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</p><p><strong>Mismatched landcover-soil pairs disrupt these relationships</strong>. For example, cropland (IVGTYP=2) paired with sandy soil (ISLTYP=1) may underestimate irrigation demands due to exaggerated drainage, while urban (IVGTYP=1) with clay (ISLTYP=3) artificially sustains <span class="math inline">\(LE\)</span> through retained moisture.</p><hr /><h2 id="best-practices-for-wrf-configuration">Best Practices for WRF Configuration</h2><ol type="1"><li><strong>Harmonize LULC and Soil Type Classifications</strong>:<ul><li>Use physiographic datasets (e.g., USGS, MODIS) ensuring LULC-soil consistency.<br /></li><li>Validate <code>IVGTYP</code> and <code>ISLTYP</code> coherence using tools like <code>ncks</code> to prevent runtime errors<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>.</li></ul></li><li><strong>Sensitivity Testing</strong>:<ul><li>Conduct ensemble runs with perturbed LULC/soil combinations to quantify t2m variability.<br /></li><li>Prioritize soil type updates when LULC changes alter surface permeability (e.g., urbanization).</li></ul></li><li><strong>Leverage High-Resolution Data</strong>:<ul><li>Incorporate 30m LULC and soil maps to resolve subgrid heterogeneity, critical for mesoscale applications<sup id="fnref:8" class="footnote-ref"><a href="#fn:8" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[8]</span></a></sup>.</li></ul></li></ol><hr /><h2 id="case-evidence-of-update-necessity">Case Evidence of Update Necessity</h2><ul><li><a href="https://forum.mmm.ucar.edu/threads/in-house-1s-33-cat-land-use-30-s-19-cat-soil-type-working-in-wps-4-2-but-not-4-5-or-4-6.18246/">in-house 1s 33 cat land use/30 s 19 cat soil type working in WPS 4.2 but not 4.5 or 4.6</a><ul><li>A 2024 WRF forum post documented catastrophic errors when using 1-arcsecond landcover data with 30-arcsecond soil types in WPS versions 4.5–4.6. The geogrid module assigned unrealistic soil moisture values (1e20) to water grids due to landmask inconsistencies between high-resolution landcover and legacy soil datasets. Resolution mismatches induced numerical instabilities in the <code>process_tile_module.F</code> code, necessitating harmonized 1-arcsecond soil data to maintain XLAND (land/water mask) coherence.</li></ul></li></ul><h2 id="conclusion">Conclusion</h2><p>In the WRF model, land use/land cover and soil type are mutually reinforcing inputs that jointly govern surface flux calculations and prognostic variables like t2m. While technically independent, their physiographic consistency is paramount to avoid numerical artifacts and ensure physically meaningful outputs. Future work should focus on dynamic coupling frameworks that automate LULC-soil harmonization, particularly for applications in climate change and land management.</p><h2 id="citations">Citations</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5572266/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC5572266/</a> <a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9661943/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC9661943/</a> <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a href="https://github.com/wrf-model/WRF/blob/master/run/SOILPARM.TBL" class="uri">https://github.com/wrf-model/WRF/blob/master/run/SOILPARM.TBL</a> <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a href="http://rccdp.unl.edu/portal/WRF_Variable_Table.pdf" class="uri">http://rccdp.unl.edu/portal/WRF_Variable_Table.pdf</a> <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:5" class="footnote-text"><span><a href="https://forum.mmm.ucar.edu/threads/inconsistent-xland-and-isltyp.646/" class="uri">https://forum.mmm.ucar.edu/threads/inconsistent-xland-and-isltyp.646/</a> <a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:6" class="footnote-text"><span><a href="https://vlab.noaa.gov/web/emc/noah-lsm" class="uri">https://vlab.noaa.gov/web/emc/noah-lsm</a> <a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:7" class="footnote-text"><span><a href="https://journals.ametsoc.org/view/journals/mwre/140/3/mwr-d-11-00056.1.xml" class="uri">https://journals.ametsoc.org/view/journals/mwre/140/3/mwr-d-11-00056.1.xml</a> <a href="#fnref:7" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:8" class="footnote-text"><span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11191672/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC11191672/</a> <a href="#fnref:8" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:9" class="footnote-text"><span><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6360509/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC6360509/</a> <a href="#fnref:9" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>]]></content>
+    
+    
+    <categories>
+      
+      <category>^NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>Meteorology</tag>
+      
+      <tag>LANDUSE</tag>
+      
+      <tag>^NWP</tag>
+      
+      <tag>SOILPARM</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Trade wind | 信風</title>
+    <link href="/2025/05/27/Trade-wind/"/>
+    <url>/2025/05/27/Trade-wind/</url>
+    
+    <content type="html"><![CDATA[<h1 id="甚麼是信風">甚麼是信風？</h1><p>信風，又稱貿易風，指的是在<strong>低空從副熱帶高壓帶吹向赤道低壓帶的風</strong>，北半球吹的是北信風，而南半球吹的是南信風；<strong>約自南北緯30°延展到赤道區為信風帶</strong>。信風經常會增加熱帶風暴的威力，影響大西洋、太平洋和印度洋沿海地區。</p><ul><li><strong>低空</strong></li></ul><p>由於赤道地區陽光強烈，終年炎熱，產生旺盛的上升氣流，形成赤道低壓帶，而氣流到了南北緯30度時便開始沉降，形成副熱帶高壓，此處空氣相當地乾燥。由於氣體是從高壓流向低壓，<strong>在高壓帶沉降的氣流便在低空流回赤道區</strong>，在北半球形成北風，在南半球形成南風，但受到科氏力的影響，氣流吹向西邊，才會造成北半球吹東北風、南半球吹東南風的情況。</p><p>信風是地球大氣環流的一部分，<strong>在赤道至南北緯30 度之間恆常吹拂</strong>。這陣風對人類發展影響深遠，早在15 世紀，哥倫布的船隊就是靠着由東向西的信風，吹動帆船，才成功發現美洲大陸。</p><p><img src="https://i.imgur.com/Xq7l8YU.png" /></p><h2 id="大西洋上的信風帶與西風帶">大西洋上的信風帶與西風帶</h2><p>從16 世紀至19 世紀，由歐洲出發去美洲的貿易商船都是帆船。帆船須乘風而航，往往先南下至北緯30 度的非洲副熱帶高壓地區，再藉信風帶的東北風，遠洋航行到接近赤道的南美洲，補給後再短途駛至北美洲。回程時，船則乘着更高緯度的西風帶返回歐洲。</p><p><img src="https://i.imgur.com/s0qkazl.png" /></p><h2 id="貿易風本來不是指貿易">「貿易風」本來不是指「貿易」？</h2><p>信風的英文是trade wind，因此又稱為貿易風。<strong>古代英文 trade 指「路徑」，意思與 path 相近</strong>，因此古人用 trade wind形容有恆常軌道的信風。<strong>後來，帆船技術進步，遠洋商人乘着信風到各地行商，於是人們便將「貿易」這行為稱作 trade，成為近代英文</strong>。</p><h1 id="references">References</h1><ol type="1"><li><a href="https://student.edcity.hk/pri/zh-hant/funpost/post/%E5%A4%A7%E8%A5%BF%E6%B4%8B%E4%B8%8A%E7%9A%84%E4%BF%A1%E9%A2%A8/">大西洋上的信風 | 香港教育城</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Meteorology</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Linux | xrags</title>
+    <link href="/2025/05/27/Linux-xrags/"/>
+    <url>/2025/05/27/Linux-xrags/</url>
+    
+    <content type="html"><![CDATA[<ul><li><strong>xargs（eXtended ARGuments）</strong>是給指令傳遞參數的一個篩選器，也是組合多個指令的一個工具。</li><li>xargs 可以將管道或標準輸入（stdin）資料轉換成命令列參數，也能夠從檔案的輸出中讀取資料。</li><li>xargs 也可以將單行或多行文字輸入轉換為其他格式，例如多行變單行，單行變多行。</li><li>xargs 預設的指令是 echo，這表示透過管道傳遞給 xargs 的輸入將會包含換行和空白，不過透過 xargs 的處理，換行和空白將會被空格取代。</li><li>xargs 是一個強而有力的指令，它能夠捕捉一個指令的輸出，然後傳遞給另一個指令。</li></ul><h1 id="xargs">xargs</h1><p>How to use <code>xargs</code> with the options <code>-t</code>, <code>-P</code>, and <code>-I</code>:</p><h2 id="options-explained">Options Explained</h2><ul><li><strong><code>-t</code></strong>: Print each command before executing it.</li><li><strong><code>-P &lt;num&gt;</code></strong>: Run up to <code>&lt;num&gt;</code> processes in parallel.</li><li><strong><code>-I&#123;&#125;</code></strong>: Replace occurrences of <code>&#123;&#125;</code> in the command with the input items.</li></ul><h2 id="example-usage">Example Usage</h2><ol type="1"><li><p><strong>Create a File</strong>: Make a file named <code>items.txt</code> with the following contents: <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">file1<span class="hljs-selector-class">.txt</span><br>file2<span class="hljs-selector-class">.txt</span><br>file3.txt<br></code></pre></td></tr></table></figure></p></li><li><p><strong>Run xargs</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> files.txt | xargs -t -P 2 -I&#123;&#125; <span class="hljs-built_in">echo</span> Processing &#123;&#125;<br><span class="hljs-built_in">cat</span> files.txt | xargs -t -P 3 -I&#123;&#125; sh -c <span class="hljs-string">&#x27;cd /path/to/dir &amp;&amp; echo Processing &#123;&#125;&#x27;</span><br></code></pre></td></tr></table></figure></p></li></ol><h2 id="breakdown-of-the-command">Breakdown of the Command</h2><ul><li><strong><code>cat items.txt</code></strong>: Reads the list of items from the file.</li><li><strong><code>xargs -t -P 2 -I&#123;&#125;</code></strong>:<ul><li><code>-t</code>: Prints the command before execution.</li><li><code>-P 2</code>: Executes up to 2 commands in parallel.</li><li><code>-I &#123;&#125;</code>: Replaces <code>&#123;&#125;</code> with each line from the input.</li></ul></li><li><strong><code>echo Processing &#123;&#125;</code></strong>: The command executed, which will print "Processing itemX" for each item.</li></ul><h2 id="notes">Notes</h2><ul><li>Adjust the number in <code>-P</code> based on your system's capabilities.</li><li>You can replace <code>echo Processing &#123;&#125;</code> with any command you want to execute for each item.</li></ul><h1 id="example-wrf.exe">Example: wrf.exe</h1><p>To use the command <code>xargs -t -P 2 -I&#123;&#125; mpirun -np 2 -wdir &#123;&#125; ./wrf.exe &gt;&amp; log.log</code>, follow these steps:</p><h2 id="explanation-of-the-command">Explanation of the Command</h2><ul><li><strong><code>xargs -t -P 2 -I&#123;&#125;</code></strong>:<ul><li><code>-t</code>: Print each command before executing it.</li><li><code>-P 2</code>: Run up to 2 processes in parallel.</li><li><code>-I&#123;&#125;</code>: Replace occurrences of <code>&#123;&#125;</code> with input items.</li></ul></li><li><strong><code>mpirun -np 2 -wdir &#123;&#125;</code></strong>:<ul><li><code>-np 2</code>: Run 2 MPI processes.</li><li><code>-wdir &#123;&#125;</code>: Set the working directory to the value provided by <code>&#123;&#125;</code>.</li></ul></li><li><p><strong><code>./wrf.exe</code></strong>: The executable you want to run.</p></li><li><p><strong><code>&gt;&amp; log.log</code></strong>: Redirect both standard output and standard error to <code>log.log</code>.</p></li></ul><h2 id="example-usage-1">Example Usage</h2><ol type="1"><li><p><strong>Create a File</strong>: Prepare a file named <code>dirs.txt</code> containing directory paths: <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css">/<span class="hljs-selector-tag">path</span>/<span class="hljs-selector-tag">to</span>/dir1<br>/<span class="hljs-selector-tag">path</span>/<span class="hljs-selector-tag">to</span>/dir2<br></code></pre></td></tr></table></figure></p></li><li><p><strong>Run the Command</strong>: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> dirs.txt | xargs -t -P 2 -I&#123;&#125; mpirun -np 2 -wdir &#123;&#125; ./wrf.exe &gt;&amp; log.log<br></code></pre></td></tr></table></figure></p></li></ol><h2 id="breakdown-of-the-command-execution">Breakdown of the Command Execution</h2><ul><li><strong><code>cat dirs.txt</code></strong>: Reads the list of directories.</li><li><strong><code>xargs -t -P 2 -I&#123;&#125;</code></strong>: For each directory in <code>dirs.txt</code>, it will:<ul><li>Print the command being executed.</li><li>Run up to 2 instances of the <code>mpirun</code> command in parallel.</li></ul></li><li><strong><code>mpirun -np 2 -wdir &#123;&#125;</code></strong>: Executes the WRF model in the specified directory with 2 MPI processes.</li><li><strong><code>./wrf.exe</code></strong>: The executable to run.</li><li><strong><code>&gt;&amp; log.log</code></strong>: Captures all output and errors into <code>log.log</code>.</li></ul><h2 id="notes-1">Notes</h2><ul><li>Ensure that each directory in <code>dirs.txt</code> contains the necessary files for <code>wrf.exe</code>.</li><li>Adjust the parameters as needed based on your system and requirements.</li></ul><h1 id="references">References</h1><ol type="1"><li><a href="https://www.runoob.com/linux/linux-comm-xargs.html">Linux xargs 命令</a></li><li><a href="https://www.ruanyifeng.com/blog/2019/08/xargs-tutorial.html">xargs 命令教程</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>HPC</tag>
+      
+      <tag>shell script</tag>
+      
+      <tag>Linux</tag>
+      
+      <tag>Terminal</tag>
+      
+      <tag>xrags</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MPAS | WRF | CCPP Scientific Documentation</title>
     <link href="/2025/05/22/MPAS-WRF-CCPP-Scientific-Documentation/"/>
     <url>/2025/05/22/MPAS-WRF-CCPP-Scientific-Documentation/</url>
@@ -20,11 +117,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>CCPP</tag>
       
@@ -51,11 +148,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PBL</tag>
       
@@ -86,11 +183,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -115,11 +212,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ecFlow</tag>
       
@@ -253,11 +350,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -292,11 +389,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -331,11 +428,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Meteorology</tag>
       
@@ -370,11 +467,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -403,11 +500,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -432,13 +529,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -465,13 +562,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Linux</tag>
       
@@ -500,13 +597,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Noah surface scheme</tag>
       
@@ -562,13 +659,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>mesh generation</tag>
       
@@ -599,15 +696,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
+      <tag>HPC</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>UCM</tag>
-      
-      <tag>HPC</tag>
       
     </tags>
     
@@ -632,15 +729,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>WPS</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>GFS</tag>
-      
-      <tag>WPS</tag>
       
       <tag>IFS</tag>
       
@@ -677,11 +774,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -712,11 +809,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>CMA</tag>
       
@@ -747,11 +844,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -784,11 +881,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -821,11 +918,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -887,11 +984,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Precipitation</tag>
       
@@ -951,11 +1048,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>IC</tag>
       
@@ -984,11 +1081,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>FDDA</tag>
       
@@ -1050,17 +1147,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>CMAQ</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
       
-      <tag>GFS</tag>
+      <tag>CMAQ</tag>
       
       <tag>SMOKE</tag>
       
@@ -1087,15 +1184,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>rainc</tag>
       
@@ -1124,11 +1221,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -1157,11 +1254,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -1186,15 +1283,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>Wave</tag>
       
@@ -1221,19 +1318,19 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>CMAQ</tag>
       
       <tag>US EPA</tag>
-      
-      <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
     </tags>
     
@@ -1258,15 +1355,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
     </tags>
     
@@ -1291,11 +1388,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PINN</tag>
       
@@ -1328,15 +1425,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>RRTM</tag>
       
@@ -1363,15 +1460,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
     </tags>
     
@@ -1396,21 +1493,21 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
+      <tag>HPC</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>HKO</tag>
       
       <tag>UCM</tag>
       
       <tag>LCZs</tag>
       
       <tag>UCPs</tag>
-      
-      <tag>HPC</tag>
-      
-      <tag>HKO</tag>
       
     </tags>
     
@@ -1435,11 +1532,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -1468,15 +1565,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>PGW</tag>
       
@@ -1509,15 +1606,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
     </tags>
     
@@ -1542,15 +1639,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
     </tags>
     
@@ -1575,15 +1672,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>PGW</tag>
       
@@ -1612,15 +1709,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>PGW</tag>
       
@@ -1653,15 +1750,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>PGW</tag>
       
@@ -1696,15 +1793,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>PGW</tag>
       
@@ -1768,15 +1865,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>GFS</tag>
       
       <tag>ERA5</tag>
-      
-      <tag>GFS</tag>
       
       <tag>PGW</tag>
       
@@ -1997,15 +2094,15 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
+      <tag>HPC</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>UCM</tag>
-      
-      <tag>HPC</tag>
       
     </tags>
     
@@ -2030,17 +2127,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
+      <tag>HPC</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
       <tag>UCM</tag>
       
       <tag>LCZs</tag>
-      
-      <tag>HPC</tag>
       
     </tags>
     
@@ -2164,13 +2261,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>MPI</tag>
       
@@ -2230,11 +2327,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -2937,13 +3034,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -2968,13 +3065,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>MPI</tag>
       
@@ -3005,13 +3102,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -3273,9 +3370,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -3360,11 +3457,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3486,9 +3583,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -3517,9 +3614,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -3550,11 +3647,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3579,11 +3676,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -3610,13 +3707,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -3641,11 +3738,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3670,9 +3767,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3909,11 +4006,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ECMWF</tag>
       
@@ -3982,11 +4079,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -4044,11 +4141,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -4219,11 +4316,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Google</tag>
       
@@ -4250,11 +4347,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -4267,7 +4364,7 @@
     <link href="/2024/09/30/PGW/"/>
     <url>/2024/09/30/PGW/</url>
     
-    <content type="html"><![CDATA[<h1 id="pseudo-global-warming-pgw">Pseudo-Global Warming (PGW)</h1><h2 id="definition-and-concept">Definition and Concept</h2><p>Pseudo-Global Warming (PGW) is a regional climate modeling approach that involves imposing large-scale climate changes derived from global climate models (GCMs) onto a control regional climate simulation. This method contrasts with traditional dynamic downscaling, where regional models are driven directly by GCM outputs. Instead, PGW modifies the boundary conditions of a historical simulation to reflect projected future changes, allowing for a more flexible and computationally efficient analysis of climate impacts.</p><figure><img src="https://i.imgur.com/1PLI5DB.png" alt="Shared Socioeconomic Pathways (SSPs) are climate change scenarios of projected socioeconomic global changes up to 2100 as defined in the IPCC." /><figcaption>Shared Socioeconomic Pathways (SSPs) are climate change scenarios of projected socioeconomic global changes up to 2100 as defined in the IPCC.</figcaption></figure><p>To perform future projections using the <strong>Pseudo-Global Warming (PGW)</strong> approach, follow these key steps:</p><h2 id="methodology-for-pgw-projections">Methodology for PGW Projections</h2><h3 id="understanding-pgw-concept"><strong>1. Understanding PGW Concept</strong></h3><p>The PGW method involves modifying historical climate simulations by imposing future climate changes directly onto them. This is achieved by adjusting the boundary conditions of a control simulation based on projected changes derived from global climate models (GCMs).</p><h3 id="mathematical-representation"><strong>2. Mathematical Representation</strong></h3><p>The PGW approach can be mathematically expressed as:</p><p><span class="math display">\[\text{PGW} = \text{HIST} + \Delta\]</span></p><p>where:</p><ul><li><strong>HIST</strong> represents the current or historical climate conditions.</li><li><strong>Δ</strong> (Delta) is the perturbation derived from future climate projections,</li></ul><p>calculated as:</p><p><span class="math display">\[\Delta = \text{SCEN} - \text{CTRL}\]</span></p><p>Here, <strong>SCEN</strong> is a future climate scenario, and <strong>CTRL</strong> is the corresponding historical baseline.</p><div class="note note-warning">            <p>Both SCEN and HIST periods must be chosen to be long enough to reduce the effects of internal variability (average of ∼ 30 years).</p>          </div><figure><img src="https://eurec4a.eu/fileadmin/user_upload/eurec4a/Simulations/PGW.jpg" alt="Schematics of the principles of the Pseudo Global Warming (PGW) framework (image from EUREC4A)" /><figcaption>Schematics of the principles of the Pseudo Global Warming (PGW) framework (image from EUREC4A)</figcaption></figure><ul><li>Chow, T. N., Tam, C. Y., Chen, J., &amp; Hu, C. (2024). Effects of Background Synoptic Environment in Controlling South China Sea Tropical Cyclone Intensity and Size Changes in Pseudo–Global Warming Experiments. <a href="https://journals.ametsoc.org/view/journals/clim/37/5/JCLI-D-23-0503.1.xml">Journal of Climate, 37(5), 1811-1832.</a></li><li>Zhao, R., Tam, C. Y., Lee, S. M., &amp; Chen, J. (2024). Attributing extreme precipitation characteristics in South China Pearl River Delta region to anthropogenic influences based on pseudo global warming. <a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2023EA003266">Earth and Space Science, 11(3), e2023EA003266.</a><ul><li>In the second PGW experiment, human‐induced perturbations are computed as the monthly averages of the <strong>30‐year (1986–2005)</strong> mean differences between historical and historicalNat runs of CMIP5 seven‐model ensemblemean.</li><li>The perturbed fields include <strong>SST, air temperature, specific humidity, and horizontal wind components</strong>.</li></ul></li><li>Brogli, R., Heim, C., Mensch, J., Sørland, S. L., &amp; Schär, C. (2023). The pseudo-global-warming (PGW) approach: methodology, software package PGW4ERA5 v1. 1, validation, and sensitivity analyses. <a href="https://gmd.copernicus.org/articles/16/907/2023/">Geoscientific Model Development, 16(3), 907-926.</a><ul><li>Both SCEN and HIST periods must be chosen to be long enough to reduce the effects of internal variability (average of ∼ 30 years).</li><li>After applying Δ to the thermodynamic variables, it is thus essential to restore this balance using an adequate pressure adjustment</li></ul></li><li><a href="https://eurec4a.eu/eurec4a-multi-day-model-intercomparison-project/methodology">Pseudo Global Warming: Methodology</a><ul><li>The perturbation fields Delta are meant to be based on 30-year monthly means of the driving GCM. The required GCM fields include three-dimensional fields of temperature, specific humidity and wind (T, qv, u, v), as well as the geopotential height field (phi) on at least one pressure level. Monthly mean changes of these fields are linearly interpolated to the target date, and then merged with ERA5 information.</li></ul></li></ul><h3 id="data-requirements"><strong>3. Data Requirements</strong></h3><p>To implement PGW, you need:</p><ul><li>Historical climate data (e.g., from reanalysis datasets like ERA5).</li><li>Future climate projections from GCMs, typically focusing on thermodynamic and dynamic variables such as temperature, humidity, wind, and geopotential height.</li></ul><h3 id="simulation-setup"><strong>4. Simulation Setup</strong></h3><ul><li><strong>Select a GCM</strong>: Choose a transient GCM that provides future climate scenarios relevant to your region of interest.</li><li><strong>Derive Δ</strong>: Compute the perturbations (Δ) based on 30-year monthly means from the GCM outputs.</li><li><strong>Modify Boundary Conditions</strong>: Apply Δ to the historical data to create new boundary conditions for your regional climate model (RCM) simulations.</li></ul><h3 id="running-simulations"><strong>5. Running Simulations</strong></h3><ul><li>Execute the RCM with the modified boundary conditions. The PGW approach allows for shorter simulation periods (less than 30 years), which can be beneficial for high-resolution climate projections.</li><li>Ensure that interannual variability is not included in these projections since PGW assumes a consistent seasonal cycle.</li></ul><h3 id="analyzing-results"><strong>6. Analyzing Results</strong></h3><p>After running the simulations:</p><ul><li>Assess changes in key climate variables such as temperature, precipitation, and extreme weather events.</li><li>Compare results with traditional dynamic downscaling methods to validate the PGW approach's effectiveness in capturing plausible future scenarios.</li></ul><h2 id="advantages-of-pgw">Advantages of PGW</h2><ul><li><strong>Computational Efficiency</strong>: PGW requires less computational power compared to traditional methods, making it suitable for high-resolution studies.</li><li><strong>Flexibility</strong>: It allows researchers to easily modify simulation parameters and assess various future scenarios.</li></ul><h2 id="challenges-and-considerations">Challenges and Considerations</h2><p>Despite its advantages, implementing PGW poses challenges:</p><ul><li><strong>Complexity of Implementation</strong>: Care must be taken to ensure that modifications do not compromise the physical realism of the regional model. Adjustments to pressure and geopotential fields are critical for maintaining consistency between thermodynamic and dynamic changes.</li><li><strong>Interannual Variability</strong>: The PGW method typically does not account for changes in interannual variability, which can limit its applicability in certain contexts.</li><li><strong>Sensitivity to Initial Conditions</strong>: The effectiveness of PGW simulations can be sensitive to the choice of initial conditions and boundary settings, necessitating careful calibration.</li></ul><p>By following this structured methodology, researchers can effectively utilize the PGW approach to project future climate conditions while addressing specific regional impacts of global warming.</p><h1 id="example">Example</h1><h2 id="zhao-francis-tam-prd">2024 | Zhao &amp; Francis Tam | PRD</h2><ul><li><a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2023EA003266">Zhao, R., Tam, C. Y., Lee, S. M., &amp; Chen, J. (2024). Attributing extreme precipitation characteristics in South China Pearl River Delta region to anthropogenic influences based on pseudo global warming. Earth and Space Science, 11(3), e2023EA003266.</a></li></ul><p>Experiment Setup,</p><ul><li><strong>WRF model v3.8.1</strong> (Skamarock et al., 2008) in a one-way nesting setup</li><li><strong>50 km × 50 km, covering most of southeast Asia, 10 km × 10 km (136 × 116 grid cells) and 2 km × 2 km</strong> (181 × 166 grid cells), respectively. There are 45 vertical layers from the surface up to 50 hPa, with 18 layers in the lowest 1.5 km, to resolve the planetary boundary layer (PBL) dynamics.</li><li><strong>Spectral nudging</strong> is applied to <strong>zonal and meridional wind components above 500 hPa over the outermost domain</strong> (Liu et al., 2012; Ma et al., 2016), at the <strong>scale of about 1,300 km (1,500 km)</strong> in the zonal (meridional) direction.</li><li>2 Experiments<ul><li>In the <strong>first set of experiments</strong>, or the control (CTL) run, the initial and boundary conditions (IBCs) are taken from ERA-Interim reanalysis</li><li>in the second set of experiments (denoted as the NAT run), the model is forced by the counterfactual IBCs with human-induced climatic perturbations being absent, following the pseudo global warming (PGW) method</li><li>In the <strong>second PGW experiment</strong>, human-induced perturbations are computed as the <strong>monthly averages of the 30-year (1986–2005) mean differences between historical and historicalNat runs of CMIP5 seven-model ensemble mean</strong>.</li><li>The perturbed fields include <strong>SST, air temperature, specific humidity, and horizontal wind components</strong> (Figure S4 in Supporting Information S1).</li><li>The use of a multi-model ensemble mean can minimize the model uncertainty and internal climate variability from the CMIP5 individual models (Liu et al., 2017).</li><li>We define a ratio of observations to seven-model ensemble-mean projections of ST trends as the scale factor that is multiplied by the ensemble-mean perturbations, to resolve more realistic anthropogenic perturbations. ?</li><li>Finally, these perturbations were <strong>interpolated linearly on each model grid over the outermost domain</strong> and <strong>then subtracted from ERA-Interim to generate counterfactual IBCs</strong> in WRF.</li><li>This method allows one to estimate anthropogenic influences on a specific extreme event, which makes it easier to perform event attribution analysis based on dynamical downscaling</li></ul></li></ul><h2 id="chow-cuhk-essc-m.phil.-thesis">2022 | Chow | CUHK ESSC M.Phil. thesis</h2><ul><li>Tsun Ngai CHOW</li><li>M.Phil. thesis: Effects of Background Synoptic Environment in Controlling the Tropical Cyclone Intensity and Size Changes in South China Sea in Pseudo-Global Warming Experiments</li><li><a href="https://atmosphericdynamicsgroup.github.io/publications.html" class="uri">https://atmosphericdynamicsgroup.github.io/publications.html</a></li><li><a href="https://atmosphericdynamicsgroup.github.io/theses/Tsun%20Ngai%20CHOW.pdf#page=48.40" class="uri">https://atmosphericdynamicsgroup.github.io/theses/Tsun%20Ngai%20CHOW.pdf#page=48.40</a></li></ul><p>Experiment Setup,</p><figure><img src="https://i.imgur.com/xK1AzZr.png" alt="Experiment Setup" /><figcaption>Experiment Setup</figcaption></figure><ul><li>total of <strong>31 and 5 models from the CMIP5</strong> were selected to obtain the projected future changes following the <strong>RCP8.5 and RCP4.5 emission scenario</strong> respectively.</li><li>The climate conditions in the <strong>1975 – 1999</strong> were selected as the reference of the historical climate while the climate conditions in the <strong>2036 – 2065</strong> and <strong>2075 – 2099</strong> were selected as the near future and the far future climate respectively.</li><li>The <strong>SST, land surface temperature, atmospheric temperature and the specific humidity profiles</strong> in the historical climate, as well as in the projected near future and the far future climate were averaged across that period for each month separately to obtain the <strong>mean monthly climatic condition in the historical, near future and far future period</strong>.</li><li>After that, <strong>the SST, land surface temperature, atmospheric temperature and specific humidity in the near future and the far future were subtracted by the historical climate conditions</strong>, obtaining the change of surface temperature, atmospheric temperature and the specific humidity profile in the near and the far future relative to the historical period.</li><li>Then, the change in the monthly mean SST, land surface temperature, atmospheric temperature profile and the specific humidity profile in the near future and the far future relative to the historical climate were superimposed on the historical environment of the 25 selected TCs according to the month of occurrence in the past for each TC to create a total of 4 warming experiments, each contain 25 TC cases. Therefore, there are 1 control simulation and 4 warming experiments for each of the 25 TC cases, and a total of 125 simulations.</li><li><strong>Moreover, the reason for not imposing the projected change in wind field in the future climate to the TCs were to examine the change in thermodynamical environment due to global warming to the intensity and the size of the TCs, while not changing the track of the TC</strong>. The author aimed to reduce the complexity brought by the possible changes of the TC track in the future environment due to a change of steering wind, which then allowed a comparison between the response of different TCs in a warmed climate by attributing the different in the percentage change of TC intensity and size to the difference in the historical environment and the imposed warming signal.</li><li><strong>WRF-ARW version 3.7, ERA-20C and EAR5</strong> as the initial and boundary conditions of the control run</li><li>2 nested domains were set up with one-way nesting, with 15 km and 3 km (the domain size is 339 × 249 and 400 × 580 grid), 45 eta levels across the vertical direction</li></ul><h2 id="gutmann-changes-in-hurricanes-...">2018 | Gutmann | Changes in hurricanes ...</h2><ul><li><a href="https://journals.ametsoc.org/view/journals/clim/31/9/jcli-d-17-0391.1.xml?tab_body=pdf">Gutmann, E. D., Rasmussen, R. M., Liu, C., Ikeda, K., Bruyere, C. L., Done, J. M., ... &amp; Veldore, V. (2018). Changes in hurricanes from a 13-yr convection-permitting pseudo–global warming simulation. Journal of Climate, 31(9), 3643-3657.</a></li></ul><p>Experiment Setup,</p><ul><li>The future simulations were forced with the same input data after adding a climate change signal to the data using the pseudo–global warming (PGW) method.</li><li>In these simulations we applied a PGW change for the following input variables: <strong>zonal and meridional wind speed, sea level pressure, geopotential height, air temperature, relative humidity, and sea surface temperature as well as initial soil temperatures and the bottom boundary condition in the soil</strong>.</li><li>We compute the change signal over a 95-yr time period using data from the representative concentration pathway 8.5 <strong>(RCP8.5)</strong> scenario for 19 models in the CMIP5 archive. This is calculated by averaging the period 2070–99 and subtracting from it the average over the period 1976–2005. <strong>This change signal is calculated independently for every variable at every grid point in space, and for every month of the year</strong>.</li><li>Changes are temporally interpolated between month midpoints. For example, the change signal for 15 May of all years is computing by averaging the change signal over the period 1–30 May. The resulting change signal has a mean warming signal of 3–6 deg C and an increase in water vapor mixing ratio of 20%–40%, consistent with the Clausius–Clapeyron relationship.</li></ul><h2 id="rasmussen">2011 | Rasmussen</h2><ul><li><a href="https://journals.ametsoc.org/view/journals/clim/24/12/2010jcli3985.1.xml">Rasmussen, R., Liu, C., Ikeda, K., Gochis, D., Yates, D., Chen, F., ... &amp; Gutmann, E. (2011). High-resolution coupled climate runoff simulations of seasonal snowfall over Colorado: A process study of current and warmer climate. Journal of Climate, 24(12), 3015-3048.</a></li></ul><p>Experiment Setup,</p><ul><li>The PGW methodology consists of adding a climate perturbation signal to a contemporary high-resolution analysis of the atmosphere during the future period of interest. (provides a <strong>first-order estimate</strong> of the potential climate warming impacts)</li><li>The climate perturbation’s primary impact is on the large-scale planetary waves and associated thermodynamics, while the weather patterns entering the domain boundary remain structurally identical in both simulations in terms of frequency and intensity. The weather events, however, can evolve within the regional model domain due to the altered planetary flow and thermodynamics.</li><li>The monthly climatology’s are the decadal monthly averages for the future and current decades resulting in regional values of mean <strong>temperature, vapor mixing ratio, geopotential height, and wind</strong> at each vertical level in the model in the domain of the high-resolution simulations.</li><li>The climate perturbation field is added to the current weather field for the selected years by <strong>linearly interpolating</strong> from the monthly climatologies to each time period in the NARR analysis assuming that the monthly mean is valid on the 16th of the month.</li><li>At the surface, <strong>deep-soil temperatures</strong> are also perturbed with the same methodology.</li><li>Both the initial conditions and time-evolving lateral and lower boundary conditions from NARR are therefore perturbed with the climate change signal.</li><li>The significant benefit of this is that the climate perturbation signal can be added to the NARR analysis while maintaining hydrostatic and geostrophic balances because the difference of two balanced mean fields retains the linear relationships between the virtual temperature, geopotential height, and horizontal wind perturbation fields. Therefore, adding this difference retains the consistency in the large-scale fields, while also preserving the small-scale weather patterns and imbalances of the period of interest.</li></ul><h2 id="臺灣空氣品質變化與氣候變遷">臺灣空氣品質變化與氣候變遷</h2><ul><li><a href="https://tccip.ncdr.nat.gov.tw/km_newsletter_one.aspx?nid=20191202172107">臺灣空氣品質變化與氣候變遷</a> 計畫流程示意圖。預計將進行對照組（CTRL）及實驗組（Pseudo-Global Warming, PGW），分別以WRF及CMAQ模擬現在及未來氣候狀態的空氣品質。橘色框為WRF初始及邊界條件，CTRL使用ECMWF ERA5資料，PGW則考慮未來氣候變化差異。</li></ul><figure><img src="https://tccip.ncdr.nat.gov.tw/upload/ckfinder/images/TCCIP%E7%AC%AC34%E6%9C%9F%E9%9B%BB%E5%AD%90%E5%A0%B1_%E5%9C%963.png" alt="流程示意圖" /><figcaption>流程示意圖</figcaption></figure><h1 id="codesoftware">Code/Software</h1><h2 id="software-package-pgw4era5-v1.1">** Software package PGW4ERA5 v1.1</h2><ul><li><a href="https://gmd.copernicus.org/articles/16/907/2023/">Brogli, R., Heim, C., Mensch, J., Sørland, S. L., &amp; Schär, C. (2023). The pseudo-global-warming (PGW) approach: methodology, software package PGW4ERA5 v1. 1, validation, and sensitivity analyses. Geoscientific Model Development, 16(3), 907-926.</a></li><li>The term “pseudo-global warming” (PGW) refers to a simulation strategy in regional climate modeling. The strategy consists of directly imposing large-scale changes in the climate system on a control regional climate simulation (usually representing current conditions) by modifying the boundary conditions.</li><li>Both SCEN and HIST periods must be chosen to be long enough to reduce the effects of internal variability (average of ∼ 30 years).</li><li><strong>At first glance it is surprising that one can change the driving fields of an RCM simulation in an ad hoc fashion as depicted above without introducing serious inconsistencies in the atmospheric dynamics</strong>. ... However, the PGW approach rests on a solid theoretical foundation....In essence, the balanceof forces is unchanged...</li></ul><div class="note note-warning">            <p>As to be demonstrated later (see Sect. 4.3), <strong>it is advantageous to use relative humidity (RH) rather than qv; if only the latter is available, qv is converted into RH.</strong> There are alternative approaches to treat the humidity change, such as the assumption of no change in RH with warming</p>          </div><figure><img src="https://gmd.copernicus.org/articles/16/907/2023/gmd-16-907-2023-t01-web.png" alt="Table 1Data requirements: pressure-level monthly-mean data from the driving GCM." width="400" /><figcaption>Table 1Data requirements: pressure-level monthly-mean data from the driving GCM.</figcaption></figure><h2 id="cmip5_to_wrf">CMIP5_to_WRF</h2><ul><li><a href="https://github.com/mgrover1/CMIP5_to_WRF" class="uri">https://github.com/mgrover1/CMIP5_to_WRF</a></li></ul><h1 id="bias-corrected-gcmscmip6-global-dataset">Bias-corrected GCMs/CMIP6 Global dataset</h1><h2 id="calibration-and-bias-correction">Calibration and bias correction</h2><ul><li><a href="https://eprints.whiterose.ac.uk/77973/10/challinor14.pdf">Hawkins, E., Osborne, T. M., Ho, C. K., &amp; Challinor, A. J. (2013). Calibration and bias correction of climate projections for crop modelling: An idealised case study over Europe. Agricultural and forest meteorology, 170, 19-31.</a></li></ul><p><img src="https://i.imgur.com/3JIZp97.png" width="400" /> <img src="https://i.imgur.com/5TipePD.png" width="600" /> <img src="https://i.imgur.com/ixHudQn.png" width="600" /></p><div class="note note-warning">            <ul><li><strong>Eqn. A.2 is a mapping</strong> <span class="math inline">\(f: X_1 \mapsto X_2\)</span> with providing estimates of <span class="math inline">\(M_{1,2}\)</span> and <span class="math inline">\(\sigma_{1,2}\)</span>.</li><li>then, we can map any input and get corresponding f(input) with providing estimates of <span class="math inline">\(M_{1,2}\)</span> and <span class="math inline">\(\sigma_{1,2}\)</span>.</li><li>like $ T_{BC} (t) = f(T_{RAW}(t))$ with providing estimates of <span class="math inline">\(M_{1,2}\)</span> and <span class="math inline">\(\sigma_{1,2}\)</span>.</li></ul>          </div><h2 id="an-evaluation-of-statistical-and-dynamical-techniques-for-downscaling-local-climate">An Evaluation of Statistical and Dynamical Techniques for Downscaling Local Climate</h2><ul><li><a href="https://journals.ametsoc.org/view/journals/clim/12/8/1520-0442_1999_012_2256_aeosad_2.0.co_2.xml?tab_body=pdf">Murphy, J. (1999). An Evaluation of Statistical and Dynamical Techniques for Downscaling Local Climate. Journal of Climate, 12(8), 2256-2284. https://doi.org/10.1175/1520-0442(1999)012&lt;2256:AEOSAD&gt;2.0.CO;2</a></li></ul><p><img src="https://i.imgur.com/IS1r7mb.png" width="400" /></p><h2 id="建立環流模式推估能力評比之方法">建立環流模式推估能力評比之方法</h2><ul><li>連宛渝, 童慶斌, 何宜昕, 戴嘉慧, &amp; 莊立昕. (2013). 建立環流模式推估能力評比之方法. <a href="https://www.twaes.org.tw/ae/htmdata/20120904.pdf">農業工程學報, 59(1), 1-14.</a><ul><li>GCM 模擬結果與地面測站資料存在著誤差，在進行簡易降尺度之前，必須藉由誤差修正(Bias Correction)才能去除模式與地面測站之間的系統誤差。</li><li>假設GCM 之輸出資料. 與地面測站資料有相同之統計特性，亦即具有相. 同之機率值的情況下，GCM 之逐月資料與歷史. 逐月資料之關係可由式(1)表示</li><li>By <span class="math inline">\(pdf = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}\)</span></li><li><span class="math inline">\(\frac{X_{obs} - \mu_{obs}}{\sigma_{obs}} = \frac{X_{GCM} - \mu_{GCM}}{\sigma_{GCM}}\)</span></li></ul></li></ul><h2 id="bias-corrected-cmip6-global-dataset-for-dynamical-downscaling-of-the-historical-and-future-climate-19792100">Bias-corrected CMIP6 global dataset for dynamical downscaling of the historical and future climate (1979–2100)</h2><ul><li>Xu, Z., Han, Y., Tam, C. Y., Yang, Z. L., &amp; Fu, C. (2021). Bias-corrected CMIP6 global dataset for dynamical downscaling of the historical and future climate (1979–2100). Scientific Data, 8(1), 293.<ul><li><strong>General Circulation Model (GCM) is/are known to have significant biases</strong>, which propagate into RCMs through the lateral boundary and thus degrade the downscaled simulations.<ul><li><a href="https://waipangsze.github.io/2024/09/30/climate-model/#climate-model-bias">Climate model bias</a></li></ul></li><li>We constructed a bias-corrected global dataset based on 18 models from the <strong>Coupled Model Intercomparison Project Phase 6 (CMIP6)</strong> and the European Centre for Medium-Range Weather Forecasts Reanalysis 5 (<strong>ERA5</strong>) dataset.</li><li>The bias-corrected data have an ERA5-based <strong>mean climate and interannual variance</strong>, but with a <strong>non-linear trend</strong> from the ensemble mean of the 18 CMIP6 models.</li><li>The dataset spans the historical time period 1979–2014 and future scenarios (SSP245 and SSP585) for 2015–2100 with a horizontal grid spacing of (<strong>1.25° × 1.25°</strong>) at six-hourly intervals.</li><li>However, GCMs are known to have significant biases, which propagate into RCMs through the lateral boundary and thus degrade the downscaled simulations</li><li>Our method takes advantage of the <strong>non-linear trend</strong> of <strong>the ensemble mean of 18 Coupled Model Intercomparison Project Phase 6 (CMIP6)</strong> models to give a more reliable projection of the long-term climate trend.</li><li>In addition, we also correct the <strong>GCM climatological mean and interannual variance biases</strong> based on the European Centre for Medium-Range Weather Forecasts Reanalysis 5 (<strong>ERA5</strong>) dataset.</li></ul></li></ul><p><img src="https://i.imgur.com/YPVCv5g.png" width="600" /> <img src="https://i.imgur.com/siOQMBO.png" width="600" /></p><h2 id="基于-cmip6-耦合-wrf-的黄河上游复合干旱热浪事件演变规律.-水利学报-558-908-919.">基于 CMIP6 耦合 WRF 的黄河上游复合干旱热浪事件演变规律. 水利学报, 55(8), 908-919.</h2><ul><li>门宝辉, 吕行, 陈仕豪, &amp; 王红瑞. (2024). 基于 CMIP6 耦合 WRF 的黄河上游复合干旱热浪事件演变规律. 水利学报, 55(8), 908-919.<ul><li><a href="http://jhe.ches.org.cn/jhe/ch/reader/create_pdf.aspx?file_no=20240803&amp;flag=1&amp;journal_id=jhe&amp;year_id=2024#page=1.00&amp;gsr=0" class="uri">http://jhe.ches.org.cn/jhe/ch/reader/create_pdf.aspx?file_no=20240803&amp;flag=1&amp;journal_id=jhe&amp;year_id=2024#page=1.00&amp;gsr=0</a></li><li>本文提出了一种基于第六次国际耦合模式比较计划CMIP6耦合天气预报研究模式WRF的未来气象数据动力降尺度方法</li><li>精度验证<ul><li>采用研究区域内10个气象站（如图1所示）1979-2014年的实测数据及5种原始CMIP6数据集对bc-CMIP6的模拟精度进行检验和对比</li></ul></li></ul></li></ul><p><img src="https://i.imgur.com/asBspN2.png" width="600" /> <img src="https://i.imgur.com/YqeSZn4.png" width="600" /></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="pseudo-global-warming-pgw">Pseudo-Global Warming (PGW)</h1><h2 id="definition-and-concept">Definition and Concept</h2><p>Pseudo-Global Warming (PGW) is a regional climate modeling approach that involves imposing large-scale climate changes derived from global climate models (GCMs) onto a control regional climate simulation. This method contrasts with traditional dynamic downscaling, where regional models are driven directly by GCM outputs. Instead, PGW modifies the boundary conditions of a historical simulation to reflect projected future changes, allowing for a more flexible and computationally efficient analysis of climate impacts.</p><figure><img src="https://i.imgur.com/1PLI5DB.png" alt="Shared Socioeconomic Pathways (SSPs) are climate change scenarios of projected socioeconomic global changes up to 2100 as defined in the IPCC." /><figcaption>Shared Socioeconomic Pathways (SSPs) are climate change scenarios of projected socioeconomic global changes up to 2100 as defined in the IPCC.</figcaption></figure><p>To perform future projections using the <strong>Pseudo-Global Warming (PGW)</strong> approach, follow these key steps:</p><h2 id="methodology-for-pgw-projections">Methodology for PGW Projections</h2><h3 id="understanding-pgw-concept"><strong>1. Understanding PGW Concept</strong></h3><p>The PGW method involves modifying historical climate simulations by imposing future climate changes directly onto them. This is achieved by adjusting the boundary conditions of a control simulation based on projected changes derived from global climate models (GCMs).</p><h3 id="mathematical-representation"><strong>2. Mathematical Representation</strong></h3><p>The PGW approach can be mathematically expressed as:</p><p><span class="math display">\[\text{PGW} = \text{HIST} + \Delta\]</span></p><p>where:</p><ul><li><strong>HIST</strong> represents the current or historical climate conditions.</li><li><strong>Δ</strong> (Delta) is the perturbation derived from future climate projections,</li></ul><p>calculated as:</p><p><span class="math display">\[\Delta = \text{SCEN} - \text{CTRL}\]</span></p><p>Here, <strong>SCEN</strong> is a future climate scenario, and <strong>CTRL</strong> is the corresponding historical baseline.</p><div class="note note-warning">            <p>Both SCEN and HIST periods must be chosen to be long enough to reduce the effects of internal variability (average of ∼ 30 years).</p>          </div><figure><img src="https://eurec4a.eu/fileadmin/user_upload/eurec4a/Simulations/PGW.jpg" alt="Schematics of the principles of the Pseudo Global Warming (PGW) framework (image from EUREC4A)" /><figcaption>Schematics of the principles of the Pseudo Global Warming (PGW) framework (image from EUREC4A)</figcaption></figure><ul><li>Chow, T. N., Tam, C. Y., Chen, J., &amp; Hu, C. (2024). Effects of Background Synoptic Environment in Controlling South China Sea Tropical Cyclone Intensity and Size Changes in Pseudo–Global Warming Experiments. <a href="https://journals.ametsoc.org/view/journals/clim/37/5/JCLI-D-23-0503.1.xml">Journal of Climate, 37(5), 1811-1832.</a></li><li>Zhao, R., Tam, C. Y., Lee, S. M., &amp; Chen, J. (2024). Attributing extreme precipitation characteristics in South China Pearl River Delta region to anthropogenic influences based on pseudo global warming. <a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2023EA003266">Earth and Space Science, 11(3), e2023EA003266.</a><ul><li>In the second PGW experiment, human‐induced perturbations are computed as the monthly averages of the <strong>30‐year (1986–2005)</strong> mean differences between historical and historicalNat runs of CMIP5 seven‐model ensemblemean.</li><li>The perturbed fields include <strong>SST, air temperature, specific humidity, and horizontal wind components</strong>.</li></ul></li><li>Brogli, R., Heim, C., Mensch, J., Sørland, S. L., &amp; Schär, C. (2023). The pseudo-global-warming (PGW) approach: methodology, software package PGW4ERA5 v1. 1, validation, and sensitivity analyses. <a href="https://gmd.copernicus.org/articles/16/907/2023/">Geoscientific Model Development, 16(3), 907-926.</a><ul><li>Both SCEN and HIST periods must be chosen to be long enough to reduce the effects of internal variability (average of ∼ 30 years).</li><li>After applying Δ to the thermodynamic variables, it is thus essential to restore this balance using an adequate pressure adjustment</li></ul></li><li><a href="https://eurec4a.eu/eurec4a-multi-day-model-intercomparison-project/methodology">Pseudo Global Warming: Methodology</a><ul><li>The perturbation fields Delta are meant to be based on 30-year monthly means of the driving GCM. The required GCM fields include three-dimensional fields of temperature, specific humidity and wind (T, qv, u, v), as well as the geopotential height field (phi) on at least one pressure level. Monthly mean changes of these fields are linearly interpolated to the target date, and then merged with ERA5 information.</li></ul></li></ul><h3 id="data-requirements"><strong>3. Data Requirements</strong></h3><p>To implement PGW, you need:</p><ul><li>Historical climate data (e.g., from reanalysis datasets like ERA5).</li><li>Future climate projections from GCMs, typically focusing on thermodynamic and dynamic variables such as temperature, humidity, wind, and geopotential height.</li></ul><h3 id="simulation-setup"><strong>4. Simulation Setup</strong></h3><ul><li><strong>Select a GCM</strong>: Choose a transient GCM that provides future climate scenarios relevant to your region of interest.</li><li><strong>Derive Δ</strong>: Compute the perturbations (Δ) based on 30-year monthly means from the GCM outputs.</li><li><strong>Modify Boundary Conditions</strong>: Apply Δ to the historical data to create new boundary conditions for your regional climate model (RCM) simulations.</li></ul><h3 id="running-simulations"><strong>5. Running Simulations</strong></h3><ul><li>Execute the RCM with the modified boundary conditions. The PGW approach allows for shorter simulation periods (less than 30 years), which can be beneficial for high-resolution climate projections.</li><li>Ensure that interannual variability is not included in these projections since PGW assumes a consistent seasonal cycle.</li></ul><h3 id="analyzing-results"><strong>6. Analyzing Results</strong></h3><p>After running the simulations:</p><ul><li>Assess changes in key climate variables such as temperature, precipitation, and extreme weather events.</li><li>Compare results with traditional dynamic downscaling methods to validate the PGW approach's effectiveness in capturing plausible future scenarios.</li></ul><h2 id="advantages-of-pgw">Advantages of PGW</h2><ul><li><strong>Computational Efficiency</strong>: PGW requires less computational power compared to traditional methods, making it suitable for high-resolution studies.</li><li><strong>Flexibility</strong>: It allows researchers to easily modify simulation parameters and assess various future scenarios.</li></ul><h2 id="challenges-and-considerations">Challenges and Considerations</h2><p>Despite its advantages, implementing PGW poses challenges:</p><ul><li><strong>Complexity of Implementation</strong>: Care must be taken to ensure that modifications do not compromise the physical realism of the regional model. Adjustments to pressure and geopotential fields are critical for maintaining consistency between thermodynamic and dynamic changes.</li><li><strong>Interannual Variability</strong>: The PGW method typically does not account for changes in interannual variability, which can limit its applicability in certain contexts.</li><li><strong>Sensitivity to Initial Conditions</strong>: The effectiveness of PGW simulations can be sensitive to the choice of initial conditions and boundary settings, necessitating careful calibration.</li></ul><p>By following this structured methodology, researchers can effectively utilize the PGW approach to project future climate conditions while addressing specific regional impacts of global warming.</p><h1 id="example">Example</h1><h2 id="zhao-francis-tam-prd">2024 | Zhao &amp; Francis Tam | PRD</h2><ul><li><a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2023EA003266">Zhao, R., Tam, C. Y., Lee, S. M., &amp; Chen, J. (2024). Attributing extreme precipitation characteristics in South China Pearl River Delta region to anthropogenic influences based on pseudo global warming. Earth and Space Science, 11(3), e2023EA003266.</a></li></ul><p>Experiment Setup,</p><ul><li><strong>WRF model v3.8.1</strong> (Skamarock et al., 2008) in a one-way nesting setup</li><li><strong>50 km × 50 km, covering most of southeast Asia, 10 km × 10 km (136 × 116 grid cells) and 2 km × 2 km</strong> (181 × 166 grid cells), respectively. There are 45 vertical layers from the surface up to 50 hPa, with 18 layers in the lowest 1.5 km, to resolve the planetary boundary layer (PBL) dynamics.</li><li><strong>Spectral nudging</strong> is applied to <strong>zonal and meridional wind components above 500 hPa over the outermost domain</strong> (Liu et al., 2012; Ma et al., 2016), at the <strong>scale of about 1,300 km (1,500 km)</strong> in the zonal (meridional) direction.</li><li>2 Experiments<ul><li>In the <strong>first set of experiments</strong>, or the control (CTL) run, the initial and boundary conditions (IBCs) are taken from ERA-Interim reanalysis</li><li>in the second set of experiments (denoted as the NAT run), the model is forced by the counterfactual IBCs with human-induced climatic perturbations being absent, following the pseudo global warming (PGW) method</li><li>In the <strong>second PGW experiment</strong>, human-induced perturbations are computed as the <strong>monthly averages of the 30-year (1986–2005) mean differences between historical and historicalNat runs of CMIP5 seven-model ensemble mean</strong>.</li><li>The perturbed fields include <strong>SST, air temperature, specific humidity, and horizontal wind components</strong> (Figure S4 in Supporting Information S1).</li><li>The use of a multi-model ensemble mean can minimize the model uncertainty and internal climate variability from the CMIP5 individual models (Liu et al., 2017).</li><li>We define a ratio of observations to seven-model ensemble-mean projections of ST trends as the scale factor that is multiplied by the ensemble-mean perturbations, to resolve more realistic anthropogenic perturbations. ?</li><li>Finally, these perturbations were <strong>interpolated linearly on each model grid over the outermost domain</strong> and <strong>then subtracted from ERA-Interim to generate counterfactual IBCs</strong> in WRF.</li><li>This method allows one to estimate anthropogenic influences on a specific extreme event, which makes it easier to perform event attribution analysis based on dynamical downscaling</li></ul></li></ul><h2 id="chow-cuhk-essc-m.phil.-thesis">2022 | Chow | CUHK ESSC M.Phil. thesis</h2><ul><li>Tsun Ngai CHOW</li><li>M.Phil. thesis: Effects of Background Synoptic Environment in Controlling the Tropical Cyclone Intensity and Size Changes in South China Sea in Pseudo-Global Warming Experiments</li><li><a href="https://atmosphericdynamicsgroup.github.io/publications.html" class="uri">https://atmosphericdynamicsgroup.github.io/publications.html</a></li><li><a href="https://atmosphericdynamicsgroup.github.io/theses/Tsun%20Ngai%20CHOW.pdf#page=48.40" class="uri">https://atmosphericdynamicsgroup.github.io/theses/Tsun%20Ngai%20CHOW.pdf#page=48.40</a></li><li><a href="https://journals.ametsoc.org/view/journals/clim/37/5/JCLI-D-23-0503.1.pdf">Chow, T. N., Tam, C. Y., Chen, J., &amp; Hu, C. <strong>(2024). Effects of background synoptic environment in controlling South China Sea tropical cyclone intensity and size changes in pseudo–global warming experiments</strong>. Journal of Climate, 37(5), 1811-1832.</a></li></ul><p>Experiment Setup,</p><figure><img src="https://i.imgur.com/xK1AzZr.png" alt="Experiment Setup" /><figcaption>Experiment Setup</figcaption></figure><ul><li>total of <strong>31 and 5 models from the CMIP5</strong> were selected to obtain the projected future changes following the <strong>RCP8.5 and RCP4.5 emission scenario</strong> respectively.</li><li>The climate conditions in the <strong>1975 – 1999</strong> were selected as the reference of the historical climate while the climate conditions in the <strong>2036 – 2065</strong> and <strong>2075 – 2099</strong> were selected as the near future and the far future climate respectively.</li><li>The <strong>SST, land surface temperature, atmospheric temperature and the specific humidity profiles</strong> in the historical climate, as well as in the projected near future and the far future climate were averaged across that period for each month separately to obtain the <strong>mean monthly climatic condition in the historical, near future and far future period</strong>.</li><li>After that, <strong>the SST, land surface temperature, atmospheric temperature and specific humidity in the near future and the far future were subtracted by the historical climate conditions</strong>, obtaining the change of surface temperature, atmospheric temperature and the specific humidity profile in the near and the far future relative to the historical period.</li><li>Then, the change in the monthly mean SST, land surface temperature, atmospheric temperature profile and the specific humidity profile in the near future and the far future relative to the historical climate were superimposed on the historical environment of the 25 selected TCs according to the month of occurrence in the past for each TC to create a total of 4 warming experiments, each contain 25 TC cases. Therefore, there are 1 control simulation and 4 warming experiments for each of the 25 TC cases, and a total of 125 simulations.</li><li><strong>Moreover, the reason for not imposing the projected change in wind field in the future climate to the TCs were to examine the change in thermodynamical environment due to global warming to the intensity and the size of the TCs, while not changing the track of the TC</strong>. The author aimed to reduce the complexity brought by the possible changes of the TC track in the future environment due to a change of steering wind, which then allowed a comparison between the response of different TCs in a warmed climate by attributing the different in the percentage change of TC intensity and size to the difference in the historical environment and the imposed warming signal.</li><li><strong>WRF-ARW version 3.7, ERA-20C and EAR5</strong> as the initial and boundary conditions of the control run</li><li>2 nested domains were set up with one-way nesting, with 15 km and 3 km (the domain size is 339 × 249 and 400 × 580 grid), 45 eta levels across the vertical direction</li></ul><h2 id="gutmann-changes-in-hurricanes-...">2018 | Gutmann | Changes in hurricanes ...</h2><ul><li><a href="https://journals.ametsoc.org/view/journals/clim/31/9/jcli-d-17-0391.1.xml?tab_body=pdf">Gutmann, E. D., Rasmussen, R. M., Liu, C., Ikeda, K., Bruyere, C. L., Done, J. M., ... &amp; Veldore, V. (2018). Changes in hurricanes from a 13-yr convection-permitting pseudo–global warming simulation. Journal of Climate, 31(9), 3643-3657.</a></li></ul><p>Experiment Setup,</p><ul><li>The future simulations were forced with the same input data after adding a climate change signal to the data using the pseudo–global warming (PGW) method.</li><li>In these simulations we applied a PGW change for the following input variables: <strong>zonal and meridional wind speed, sea level pressure, geopotential height, air temperature, relative humidity, and sea surface temperature as well as initial soil temperatures and the bottom boundary condition in the soil</strong>.</li><li>We compute the change signal over a 95-yr time period using data from the representative concentration pathway 8.5 <strong>(RCP8.5)</strong> scenario for 19 models in the CMIP5 archive. This is calculated by averaging the period 2070–99 and subtracting from it the average over the period 1976–2005. <strong>This change signal is calculated independently for every variable at every grid point in space, and for every month of the year</strong>.</li><li>Changes are temporally interpolated between month midpoints. For example, the change signal for 15 May of all years is computing by averaging the change signal over the period 1–30 May. The resulting change signal has a mean warming signal of 3–6 deg C and an increase in water vapor mixing ratio of 20%–40%, consistent with the Clausius–Clapeyron relationship.</li></ul><h2 id="rasmussen">2011 | Rasmussen</h2><ul><li><a href="https://journals.ametsoc.org/view/journals/clim/24/12/2010jcli3985.1.xml">Rasmussen, R., Liu, C., Ikeda, K., Gochis, D., Yates, D., Chen, F., ... &amp; Gutmann, E. (2011). High-resolution coupled climate runoff simulations of seasonal snowfall over Colorado: A process study of current and warmer climate. Journal of Climate, 24(12), 3015-3048.</a></li></ul><p>Experiment Setup,</p><ul><li>The PGW methodology consists of adding a climate perturbation signal to a contemporary high-resolution analysis of the atmosphere during the future period of interest. (provides a <strong>first-order estimate</strong> of the potential climate warming impacts)</li><li>The climate perturbation’s primary impact is on the large-scale planetary waves and associated thermodynamics, while the weather patterns entering the domain boundary remain structurally identical in both simulations in terms of frequency and intensity. The weather events, however, can evolve within the regional model domain due to the altered planetary flow and thermodynamics.</li><li>The monthly climatology’s are the decadal monthly averages for the future and current decades resulting in regional values of mean <strong>temperature, vapor mixing ratio, geopotential height, and wind</strong> at each vertical level in the model in the domain of the high-resolution simulations.</li><li>The climate perturbation field is added to the current weather field for the selected years by <strong>linearly interpolating</strong> from the monthly climatologies to each time period in the NARR analysis assuming that the monthly mean is valid on the 16th of the month.</li><li>At the surface, <strong>deep-soil temperatures</strong> are also perturbed with the same methodology.</li><li>Both the initial conditions and time-evolving lateral and lower boundary conditions from NARR are therefore perturbed with the climate change signal.</li><li>The significant benefit of this is that the climate perturbation signal can be added to the NARR analysis while maintaining hydrostatic and geostrophic balances because the difference of two balanced mean fields retains the linear relationships between the virtual temperature, geopotential height, and horizontal wind perturbation fields. Therefore, adding this difference retains the consistency in the large-scale fields, while also preserving the small-scale weather patterns and imbalances of the period of interest.</li></ul><h2 id="臺灣空氣品質變化與氣候變遷">臺灣空氣品質變化與氣候變遷</h2><ul><li><a href="https://tccip.ncdr.nat.gov.tw/km_newsletter_one.aspx?nid=20191202172107">臺灣空氣品質變化與氣候變遷</a> 計畫流程示意圖。預計將進行對照組（CTRL）及實驗組（Pseudo-Global Warming, PGW），分別以WRF及CMAQ模擬現在及未來氣候狀態的空氣品質。橘色框為WRF初始及邊界條件，CTRL使用ECMWF ERA5資料，PGW則考慮未來氣候變化差異。</li></ul><figure><img src="https://tccip.ncdr.nat.gov.tw/upload/ckfinder/images/TCCIP%E7%AC%AC34%E6%9C%9F%E9%9B%BB%E5%AD%90%E5%A0%B1_%E5%9C%963.png" alt="流程示意圖" /><figcaption>流程示意圖</figcaption></figure><h1 id="codesoftware">Code/Software</h1><h2 id="software-package-pgw4era5-v1.1">** Software package PGW4ERA5 v1.1</h2><ul><li><a href="https://gmd.copernicus.org/articles/16/907/2023/">Brogli, R., Heim, C., Mensch, J., Sørland, S. L., &amp; Schär, C. (2023). The pseudo-global-warming (PGW) approach: methodology, software package PGW4ERA5 v1. 1, validation, and sensitivity analyses. Geoscientific Model Development, 16(3), 907-926.</a></li><li>The term “pseudo-global warming” (PGW) refers to a simulation strategy in regional climate modeling. The strategy consists of directly imposing large-scale changes in the climate system on a control regional climate simulation (usually representing current conditions) by modifying the boundary conditions.</li><li>Both SCEN and HIST periods must be chosen to be long enough to reduce the effects of internal variability (average of ∼ 30 years).</li><li><strong>At first glance it is surprising that one can change the driving fields of an RCM simulation in an ad hoc fashion as depicted above without introducing serious inconsistencies in the atmospheric dynamics</strong>. ... However, the PGW approach rests on a solid theoretical foundation....In essence, the balanceof forces is unchanged...</li></ul><div class="note note-warning">            <p>As to be demonstrated later (see Sect. 4.3), <strong>it is advantageous to use relative humidity (RH) rather than qv; if only the latter is available, qv is converted into RH.</strong> There are alternative approaches to treat the humidity change, such as the assumption of no change in RH with warming</p>          </div><figure><img src="https://gmd.copernicus.org/articles/16/907/2023/gmd-16-907-2023-t01-web.png" alt="Table 1Data requirements: pressure-level monthly-mean data from the driving GCM." width="400" /><figcaption>Table 1Data requirements: pressure-level monthly-mean data from the driving GCM.</figcaption></figure><h2 id="cmip5_to_wrf">CMIP5_to_WRF</h2><ul><li><a href="https://github.com/mgrover1/CMIP5_to_WRF" class="uri">https://github.com/mgrover1/CMIP5_to_WRF</a></li></ul><h1 id="bias-corrected-gcmscmip6-global-dataset">Bias-corrected GCMs/CMIP6 Global dataset</h1><h2 id="calibration-and-bias-correction">Calibration and bias correction</h2><ul><li><a href="https://eprints.whiterose.ac.uk/77973/10/challinor14.pdf">Hawkins, E., Osborne, T. M., Ho, C. K., &amp; Challinor, A. J. (2013). Calibration and bias correction of climate projections for crop modelling: An idealised case study over Europe. Agricultural and forest meteorology, 170, 19-31.</a></li></ul><p><img src="https://i.imgur.com/3JIZp97.png" width="400" /> <img src="https://i.imgur.com/5TipePD.png" width="600" /> <img src="https://i.imgur.com/ixHudQn.png" width="600" /></p><div class="note note-warning">            <ul><li><strong>Eqn. A.2 is a mapping</strong> <span class="math inline">\(f: X_1 \mapsto X_2\)</span> with providing estimates of <span class="math inline">\(M_{1,2}\)</span> and <span class="math inline">\(\sigma_{1,2}\)</span>.</li><li>then, we can map any input and get corresponding f(input) with providing estimates of <span class="math inline">\(M_{1,2}\)</span> and <span class="math inline">\(\sigma_{1,2}\)</span>.</li><li>like $ T_{BC} (t) = f(T_{RAW}(t))$ with providing estimates of <span class="math inline">\(M_{1,2}\)</span> and <span class="math inline">\(\sigma_{1,2}\)</span>.</li></ul>          </div><h2 id="an-evaluation-of-statistical-and-dynamical-techniques-for-downscaling-local-climate">An Evaluation of Statistical and Dynamical Techniques for Downscaling Local Climate</h2><ul><li><a href="https://journals.ametsoc.org/view/journals/clim/12/8/1520-0442_1999_012_2256_aeosad_2.0.co_2.xml?tab_body=pdf">Murphy, J. (1999). An Evaluation of Statistical and Dynamical Techniques for Downscaling Local Climate. Journal of Climate, 12(8), 2256-2284. https://doi.org/10.1175/1520-0442(1999)012&lt;2256:AEOSAD&gt;2.0.CO;2</a></li></ul><p><img src="https://i.imgur.com/IS1r7mb.png" width="400" /></p><h2 id="建立環流模式推估能力評比之方法">建立環流模式推估能力評比之方法</h2><ul><li>連宛渝, 童慶斌, 何宜昕, 戴嘉慧, &amp; 莊立昕. (2013). 建立環流模式推估能力評比之方法. <a href="https://www.twaes.org.tw/ae/htmdata/20120904.pdf">農業工程學報, 59(1), 1-14.</a><ul><li>GCM 模擬結果與地面測站資料存在著誤差，在進行簡易降尺度之前，必須藉由誤差修正(Bias Correction)才能去除模式與地面測站之間的系統誤差。</li><li>假設GCM 之輸出資料. 與地面測站資料有相同之統計特性，亦即具有相. 同之機率值的情況下，GCM 之逐月資料與歷史. 逐月資料之關係可由式(1)表示</li><li>By <span class="math inline">\(pdf = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}\)</span></li><li><span class="math inline">\(\frac{X_{obs} - \mu_{obs}}{\sigma_{obs}} = \frac{X_{GCM} - \mu_{GCM}}{\sigma_{GCM}}\)</span></li></ul></li></ul><h2 id="bias-corrected-cmip6-global-dataset-for-dynamical-downscaling-of-the-historical-and-future-climate-19792100">Bias-corrected CMIP6 global dataset for dynamical downscaling of the historical and future climate (1979–2100)</h2><ul><li>Xu, Z., Han, Y., Tam, C. Y., Yang, Z. L., &amp; Fu, C. (2021). Bias-corrected CMIP6 global dataset for dynamical downscaling of the historical and future climate (1979–2100). Scientific Data, 8(1), 293.<ul><li><strong>General Circulation Model (GCM) is/are known to have significant biases</strong>, which propagate into RCMs through the lateral boundary and thus degrade the downscaled simulations.<ul><li><a href="https://waipangsze.github.io/2024/09/30/climate-model/#climate-model-bias">Climate model bias</a></li></ul></li><li>We constructed a bias-corrected global dataset based on 18 models from the <strong>Coupled Model Intercomparison Project Phase 6 (CMIP6)</strong> and the European Centre for Medium-Range Weather Forecasts Reanalysis 5 (<strong>ERA5</strong>) dataset.</li><li>The bias-corrected data have an ERA5-based <strong>mean climate and interannual variance</strong>, but with a <strong>non-linear trend</strong> from the ensemble mean of the 18 CMIP6 models.</li><li>The dataset spans the historical time period 1979–2014 and future scenarios (SSP245 and SSP585) for 2015–2100 with a horizontal grid spacing of (<strong>1.25° × 1.25°</strong>) at six-hourly intervals.</li><li>However, GCMs are known to have significant biases, which propagate into RCMs through the lateral boundary and thus degrade the downscaled simulations</li><li>Our method takes advantage of the <strong>non-linear trend</strong> of <strong>the ensemble mean of 18 Coupled Model Intercomparison Project Phase 6 (CMIP6)</strong> models to give a more reliable projection of the long-term climate trend.</li><li>In addition, we also correct the <strong>GCM climatological mean and interannual variance biases</strong> based on the European Centre for Medium-Range Weather Forecasts Reanalysis 5 (<strong>ERA5</strong>) dataset.</li></ul></li></ul><p><img src="https://i.imgur.com/YPVCv5g.png" width="600" /> <img src="https://i.imgur.com/siOQMBO.png" width="600" /></p><h2 id="基于-cmip6-耦合-wrf-的黄河上游复合干旱热浪事件演变规律.-水利学报-558-908-919.">基于 CMIP6 耦合 WRF 的黄河上游复合干旱热浪事件演变规律. 水利学报, 55(8), 908-919.</h2><ul><li>门宝辉, 吕行, 陈仕豪, &amp; 王红瑞. (2024). 基于 CMIP6 耦合 WRF 的黄河上游复合干旱热浪事件演变规律. 水利学报, 55(8), 908-919.<ul><li><a href="http://jhe.ches.org.cn/jhe/ch/reader/create_pdf.aspx?file_no=20240803&amp;flag=1&amp;journal_id=jhe&amp;year_id=2024#page=1.00&amp;gsr=0" class="uri">http://jhe.ches.org.cn/jhe/ch/reader/create_pdf.aspx?file_no=20240803&amp;flag=1&amp;journal_id=jhe&amp;year_id=2024#page=1.00&amp;gsr=0</a></li><li>本文提出了一种基于第六次国际耦合模式比较计划CMIP6耦合天气预报研究模式WRF的未来气象数据动力降尺度方法</li><li>精度验证<ul><li>采用研究区域内10个气象站（如图1所示）1979-2014年的实测数据及5种原始CMIP6数据集对bc-CMIP6的模拟精度进行检验和对比</li></ul></li></ul></li></ul><p><img src="https://i.imgur.com/asBspN2.png" width="600" /> <img src="https://i.imgur.com/YqeSZn4.png" width="600" /></p>]]></content>
     
     
     <categories>
@@ -4279,11 +4376,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4310,11 +4407,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4341,11 +4438,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4372,11 +4469,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4540,11 +4637,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4573,13 +4670,13 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
-      <tag>GFS</tag>
-      
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>GFS</tag>
       
       <tag>FNL</tag>
       
@@ -4612,13 +4709,13 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
-      <tag>ERA5</tag>
-      
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -4645,19 +4742,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
+      <tag>gnu</tag>
       
-      <tag>Installation</tag>
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
+      <tag>Installation</tag>
       
       <tag>DA</tag>
       
       <tag>WRFDA</tag>
-      
-      <tag>gnu</tag>
       
     </tags>
     
@@ -4902,9 +4999,9 @@
       
       <tag>WRF</tag>
       
-      <tag>Installation</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>Installation</tag>
       
       <tag>Micromamba</tag>
       
@@ -5093,9 +5190,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>Installation</tag>
       
       <tag>Spack</tag>
       
@@ -5282,9 +5379,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5349,33 +5446,6 @@
   
   
   <entry>
-    <title>WRF | make -- time No such file or directory</title>
-    <link href="/2024/05/29/WRF_install_time_error/"/>
-    <url>/2024/05/29/WRF_install_time_error/</url>
-    
-    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>After moving to new cluster, a error appear when I reinstalled WRF. It is</p><blockquote><p>make[3]: time: No such file or directory</p></blockquote><p>Or,</p><blockquote><p>make[3]: time: No such file or directory make[3]: [makefile:42: module_io_int_idx.o] Error 127 (ignored)</p></blockquote><p>On WRFv450, v440, v433, v430</p><h1 id="workaround">Workaround</h1><p>Reference: <a href="https://forum.mmm.ucar.edu/threads/compiling-wrf-4-2-on-centos7-failed-problems-building-executables-look-for-errors-in-the-build-log.12864/">compiling wrf 4.2 on centos7 failed---&gt;Problems building executables, look for errors in the build log</a></p><p>'time' is a simple linux command that is typically included with your operating system. I believe, ultimately, the issue is that you're using a very old version of GNU to compile a newer version of WRF. GNU is free software, so can you try to install the latest version of GNU to see if that makes any difference in your compile? If you aren't sure how to do this, seek the help of a systems administrator (IT) at your institution. Once you install the new GNU version, you'll need to rebuild NetCDF and your MPI installation with the updated GNU, as well.</p><p>If you do that, and still run into the above error regarding the 'time' command, you can try a couple things: 1) Ask a systems admin for assistance in getting this command installed on your system. 'time' is a very simple linux command and typically comes readily available with the OS. 2) You can try modifying the configure.wrf file. After issuing <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">./clean -a<br>./configure<br></code></pre></td></tr></table></figure> 3) , and reconfiguring, open your configure.wrf file and look for this line: <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">FC        = <span class="hljs-built_in">time</span> $(DM_FC)<br></code></pre></td></tr></table></figure> 4) Remove 'time' from the line so that it now reads as <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">FC</span>        =  $(DM_FC)<br></code></pre></td></tr></table></figure> Save the configure.wrf with the change and try recompiling. <figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima">./<span class="hljs-built_in">compile</span> -j <span class="hljs-number">8</span> em_real <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> | tee <span class="hljs-built_in">compile</span>.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure></p><p>or</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#cp -r WRF-4.5.1-raw WRFV4.5.1</span><br><br><span class="hljs-built_in">cd</span> WRFV4.5.1/<br><br>./clean -a<br>./configure <br><span class="hljs-comment">##  34 (dmpar) GNU [gfortran/gcc]</span><br><br><span class="hljs-comment">## rewrite: The character class \s will match the whitespace characters &lt;tab&gt; and &lt;space&gt;.</span><br><span class="hljs-comment">## and don&#x27;t include $(DM_FC) </span><br>sed -i <span class="hljs-string">&quot;s/\s\stime\s//g&quot;</span> configure.wrf<br><span class="hljs-comment">#sed -i &quot;s/-DNMM_CORE=$(WRF_NMM_CORE)/-DNMM_CORE=$(WRF_NMM_CORE)\s-DLANDREAD_STUB/g&quot; configure.wrf</span><br><br>./compile -j 4 em_real 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> compile.log<br></code></pre></td></tr></table></figure>]]></content>
-    
-    
-    <categories>
-      
-      <category>WRF</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>WRF</tag>
-      
-      <tag>Installation</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>MPAS | MPAS installation - configure - RUNNING CONFIGURE FOR ch4:ucx</title>
     <link href="/2024/05/29/MPAS_install_error_CH4_UCX/"/>
     <url>/2024/05/29/MPAS_install_error_CH4_UCX/</url>
@@ -5392,9 +5462,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5448,9 +5518,9 @@
     
     <tags>
       
-      <tag>Installation</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -5464,6 +5534,33 @@
     <url>/2024/05/29/WRF_install_landread_error/</url>
     
     <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>When compiling WRFv4.0.0,</p><blockquote><p>mpicc -cc=gcc -DFSEEKO64_OK -o landread.o -c -w -O3 -c -DDM_PARALLEL -DMAX_HISTORY=25 -DNMM_CORE=0 landread.c landread.c:68:10: fatal error: rpc/types.h: No such file or directory #include &lt;rpc/types.h&gt; ^~~~~~~~~~~~~ compilation terminated. make[2]: [../configure.wrf:372: landread.o] Error 1 (ignored)</p></blockquote><h1 id="reference">Reference</h1><p><a href="https://forum.mmm.ucar.edu/threads/resolved-problem-compiling-wrfv4-0-on-fedora-28-landread-error.61/">(RESOLVED) Problem Compiling WRFV4.0 on Fedora 28: landread error</a></p><h1 id="workaround-1">Workaround 1</h1><p>We've seen a few reports of this, and it seems to be specific to particular Linux systems. We have not been able to repeat this at NCAR on our Macs, our department Linux server, or on our Linux HPC, and therefore we haven't come up with a long-term solution yet. However, a work-around would be to do the following:</p><p>Issue a ‘clean -a’ and then reconfigure. Then go into your configure.wrf file and look for the line: <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">CFLAGS</span> = $(CFLAGS_LOCAL) -DDM_PARALLEL -DSTUBMPI \<br><span class="hljs-attr">-DMAX_HISTORY</span>=$(MAX_HISTORY) -DNMM_CORE=$(WRF_NMM_CORE)<br></code></pre></td></tr></table></figure></p><p>Onto the end of that, add -DLANDREAD_STUFF, so that it now looks like: <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">CFLAGS</span> = $(CFLAGS_LOCAL) -DDM_PARALLEL -DSTUBMPI \<br><span class="hljs-attr">-DMAX_HISTORY</span>=$(MAX_HISTORY) -DNMM_CORE=$(WRF_NMM_CORE) -DLANDREAD_STUB<br></code></pre></td></tr></table></figure> Then save that configure file and recompile. This should get your past the problem. Please let us know if that works for you. Thanks!</p><h3 id="wrfv4.0.0-works">WRFv4.0.0 Works !</h3><h2 id="what-is-landread_stub">What is LANDREAD_STUB?</h2><ol type="1"><li><p>The LANDREAD_STUB option removes the ability for a moving nest to horizontally interpolate high-resolution topography and landuse fields. Very few use this option, so this is typically a safe recourse.</p></li><li><p>For those who do need the capability of a moving nest with the high-resolution static fields, if the location of types.h is not found in /usr/include, the alternative would be to look in /usr/include/tirpc.</p></li></ol><p>We can put together a github pull request, but we will need a couple of users to verify that the proposed fix still provide code that works for us and additionally works for the those that have reported the build troubles with WRF.</p><ol start="3" type="1"><li>Would you please test this pull request: <a href="https://github.com/wrf-model/WRF/pull/1072" class="uri">https://github.com/wrf-model/WRF/pull/1072</a></li></ol><h1 id="workaround-2">Workaround 2</h1><ol type="1"><li><p>I am encountering a similar issue when compiling V3.9.1.1 and the above solution does not seem to work for me.</p></li><li><p>I had to Copy landread.c.dist to landread.c in share directory for WRFV3 and that solved the issue.</p></li><li><p>Just cd share/ and do cp landread.c.dist landread.c</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>WRF</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WRF</tag>
+      
+      <tag>Installation</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>WRF | make -- time No such file or directory</title>
+    <link href="/2024/05/29/WRF_install_time_error/"/>
+    <url>/2024/05/29/WRF_install_time_error/</url>
+    
+    <content type="html"><![CDATA[<h1 id="issue">Issue</h1><p>After moving to new cluster, a error appear when I reinstalled WRF. It is</p><blockquote><p>make[3]: time: No such file or directory</p></blockquote><p>Or,</p><blockquote><p>make[3]: time: No such file or directory make[3]: [makefile:42: module_io_int_idx.o] Error 127 (ignored)</p></blockquote><p>On WRFv450, v440, v433, v430</p><h1 id="workaround">Workaround</h1><p>Reference: <a href="https://forum.mmm.ucar.edu/threads/compiling-wrf-4-2-on-centos7-failed-problems-building-executables-look-for-errors-in-the-build-log.12864/">compiling wrf 4.2 on centos7 failed---&gt;Problems building executables, look for errors in the build log</a></p><p>'time' is a simple linux command that is typically included with your operating system. I believe, ultimately, the issue is that you're using a very old version of GNU to compile a newer version of WRF. GNU is free software, so can you try to install the latest version of GNU to see if that makes any difference in your compile? If you aren't sure how to do this, seek the help of a systems administrator (IT) at your institution. Once you install the new GNU version, you'll need to rebuild NetCDF and your MPI installation with the updated GNU, as well.</p><p>If you do that, and still run into the above error regarding the 'time' command, you can try a couple things: 1) Ask a systems admin for assistance in getting this command installed on your system. 'time' is a very simple linux command and typically comes readily available with the OS. 2) You can try modifying the configure.wrf file. After issuing <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">./clean -a<br>./configure<br></code></pre></td></tr></table></figure> 3) , and reconfiguring, open your configure.wrf file and look for this line: <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">FC        = <span class="hljs-built_in">time</span> $(DM_FC)<br></code></pre></td></tr></table></figure> 4) Remove 'time' from the line so that it now reads as <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">FC</span>        =  $(DM_FC)<br></code></pre></td></tr></table></figure> Save the configure.wrf with the change and try recompiling. <figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima">./<span class="hljs-built_in">compile</span> -j <span class="hljs-number">8</span> em_real <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> | tee <span class="hljs-built_in">compile</span>.<span class="hljs-built_in">log</span><br></code></pre></td></tr></table></figure></p><p>or</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#cp -r WRF-4.5.1-raw WRFV4.5.1</span><br><br><span class="hljs-built_in">cd</span> WRFV4.5.1/<br><br>./clean -a<br>./configure <br><span class="hljs-comment">##  34 (dmpar) GNU [gfortran/gcc]</span><br><br><span class="hljs-comment">## rewrite: The character class \s will match the whitespace characters &lt;tab&gt; and &lt;space&gt;.</span><br><span class="hljs-comment">## and don&#x27;t include $(DM_FC) </span><br>sed -i <span class="hljs-string">&quot;s/\s\stime\s//g&quot;</span> configure.wrf<br><span class="hljs-comment">#sed -i &quot;s/-DNMM_CORE=$(WRF_NMM_CORE)/-DNMM_CORE=$(WRF_NMM_CORE)\s-DLANDREAD_STUB/g&quot; configure.wrf</span><br><br>./compile -j 4 em_real 2&gt;&amp;1 | <span class="hljs-built_in">tee</span> compile.log<br></code></pre></td></tr></table></figure>]]></content>
     
     
     <categories>
@@ -5559,6 +5656,60 @@
       <tag>vim</tag>
       
       <tag>editor</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>NetCDF and its Conversion</title>
+    <link href="/2023/06/24/netcdf/"/>
+    <url>/2023/06/24/netcdf/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://www.unidata.ucar.edu/software/netcdf/">NetCDF</a> (Network Common Data Form) is a set of software libraries and machine-independent data formats that support the creation, access, and sharing of array-oriented scientific data. It is also a community standard for sharing scientific data. The Unidata Program Center supports and maintains netCDF programming interfaces for C, C++, Java, and Fortran. Programming interfaces are also available for Python, IDL, MATLAB, R, Ruby, and Perl.</p><p>網絡通用數據格式（英語：Network Common Data Form，NetCDF）是一種自描述、與機器無關、基於陣列的科學數據格式，同時也是支援建立、存取和共用這一數據格式的函數庫。該專案首頁位於美國大氣科學研究大學聯盟（UCAR）的Unidata規劃網站。它也是netCDF軟件、標準開發、更新等的主要來源。NetCDF格式是一種開放標準。NetCDF的經典格式和64位元偏移量格式是開放地理空間協會採用的國際標準。該專案開始於1989年，UCAR目前對其積極支援，在新發行版中改進效能、增加功能並修正缺陷，目前版本系列是netCDF-4，在編譯時也可以選擇只建造netCDF-3庫。</p><h2 id="file-formats-and-conversion">File Formats and Conversion</h2><p><a href="https://nco.sourceforge.net/nco.html#fl_fmt">link</a> &gt; Availability: ncap2, nces, ncecat, ncflint, ncks, ncpdq, ncra, ncrcat, ncwa &gt; Short options: ‘-3’, ‘-4’, ‘-5’, ‘-6’, ‘-7’ &gt; Long options: ‘--3’, ‘--4’, ‘--5’, ‘--6’, ‘--64bit_offset’, ‘--7’, ‘--fl_fmt’, ‘--netcdf4’</p><p>All NCO operators support (read and write) all three (or four, depending on how one counts) file formats supported by netCDF4. The default output file format for all operators is the input file format. The operators listed under “Availability” above allow the user to specify the output file format independent of the input file format. These operators allow the user to convert between the various file formats. (The operators ncatted and ncrename do not support these switches so they always write the output netCDF file in the same format as the input netCDF file.)</p><h3 id="file-formats">File Formats</h3><p>netCDF supports five types of files: <strong>CLASSIC, 64BIT_OFFSET, 64BIT_DATA, NETCDF4, and NETCDF4_CLASSIC</strong>. The CLASSIC (aka CDF1) format is the traditional 32-bit offset written by netCDF2 and netCDF3. As of 2005, nearly all netCDF datasets were in CLASSIC format. The 64BIT_OFFSET (originally called plain old 64BIT) (aka CDF2) format was added in Fall, 2004. As of 2010, many netCDF datasets were in 64BIT_OFFSET format. As of 2013, an increasing number of netCDF datasets were in NETCDF4_CLASSIC format. The 64BIT_DATA (aka CDF5 or PNETCDF) format was added to netCDF in January, 2016 and immediately supported by NCO. Support for Zarr and NCZarr backend storage formats was added to netCDF in 2021 and supported by NCO in 2022.</p><p>The NETCDF4 format uses HDF5 as the file storage layer. The files are (usually) created, accessed, and manipulated using the traditional netCDF3 API (with numerous extensions). The NETCDF4_CLASSIC format refers to netCDF4 files created with the NC_CLASSIC_MODEL mask. Such files use HDF5 as the back-end storage format (unlike netCDF3), though they incorporate only netCDF3 features. Hence NETCDF4_CLASSIC files are entirely readable by applications that use only the netCDF3 API (though the applications must be linked with the netCDF4 library). NCO must be built with netCDF4 to write files in the new NETCDF4 and NETCDF4_CLASSIC formats, and to read files in these formats. Datasets in the default CLASSIC or the newer 64BIT_OFFSET formats have maximum backwards-compatibility with older applications. NCO has deep support for NETCDF4 formats. If backwards compatibility is important, and your datasets are too large for netCDF3, use NETCDF4_CLASSIC instead of CLASSIC format files. NCO support for the NETCDF4 format is complete and many high-performance disk/RAM efficient workflows utilize this format.</p><p>As mentioned above, all operators write use the input file format for output files unless told otherwise. Toggling the short option ‘-6’ or the long option ‘--6’ or ‘--64bit_offset’ (or their key-value equivalent ‘--fl_fmt=64bit_offset’) produces the netCDF3 64-bit offset format named 64BIT_OFFSET. NCO must be built with netCDF 3.6 or higher to produce a 64BIT_OFFSET file. As of NCO version 4.6.9 (September, 2017), toggling the short option ‘-5’ or the long options ‘--5’, ‘--64bit_data’, ‘--cdf5’, or ‘--pnetcdf’ (or their key-value equivalent ‘--fl_fmt=64bit_data’) produces the netCDF3 64-bit data format named 64BIT_DATA. This format is widely used by MPI-enabled modeling codes because of its long association with PnetCDF. NCO must be built with netCDF 4.4 or higher to produce a 64BIT_DATA file.</p><p>Using the ‘-4’ switch (or its long option equivalents ‘--4’ or ‘--netcdf4’), or setting its key-value equivalent ‘--fl_fmt=netcdf4’ produces a NETCDF4 file (i.e., with all supported HDF5 features). Using the ‘-7’ switch (or its long option equivalent ‘--7’ 30, or setting its key-value equivalent ‘--fl_fmt=netcdf4_classic’ produces a NETCDF4_CLASSIC file (i.e., with all supported HDF5 features like compression and chunking but without groups or new atomic types). Operators given the ‘-3’ (or ‘--3’) switch without arguments will (attempt to) produce netCDF3 CLASSIC output, even from netCDF4 input files.</p><p>Note that NETCDF4 and NETCDF4_CLASSIC are the same binary format. The latter simply causes a writing application to fail if it attempts to write a NETCDF4 file that cannot be completely read by the netCDF3 library. Conversely, NETCDF4_CLASSIC indicates to a reading application that all of the file contents are readable with the netCDF3 library. NCO has supported reading/writing basic NETCDF4 and NETCDF4_CLASSIC files since October, 2005.</p><h3 id="determining-file-format">Determining File Format</h3><p>First, examine the first line of global metadata output by <strong>ncks -M</strong>: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncks -M foo_3.nc<br>Summary of foo_3.nc: filetype = NC_FORMAT_CLASSIC, 0 <span class="hljs-built_in">groups</span> ...<br></code></pre></td></tr></table></figure> ncks will also print the extended or underlying format of the input file <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncks -D 2 -M foo_4.nc<br></code></pre></td></tr></table></figure> Second, query the file with ‘ncdump -k’: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncdump -k foo_3.nc<br>classic/netCDF-4/cdf5/...<br></code></pre></td></tr></table></figure></p><h3 id="file-conversion">File Conversion</h3><p>Let us demonstrate converting a file from any netCDF-supported input format into any netCDF output format (subject to limits of the output format). Here the <strong>input file in.nc</strong> may be in any of these formats: netCDF3 (classic, 64bit_offset, 64bit_data), netCDF4 (classic and extended), HDF4, HDF5, HDF-EOS (version 2 or 5), and DAP. The switch determines the output format written in the comment:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sh">ncks --fl_fmt=classic in.nc foo_3.nc <span class="hljs-comment"># netCDF3 classic</span><br>ncks --fl_fmt=64bit_offset in.nc foo_6.nc <span class="hljs-comment"># netCDF3 64bit-offset</span><br>ncks --fl_fmt=64bit_data in.nc foo_5.nc <span class="hljs-comment"># netCDF3 64bit-data</span><br>ncks --fl_fmt=cdf5 in.nc foo_5.nc <span class="hljs-comment"># netCDF3 64bit-data</span><br>ncks --fl_fmt=netcdf4_classic in.nc foo_7.nc <span class="hljs-comment"># netCDF4 classic</span><br>ncks --fl_fmt=netcdf4 in.nc foo_4.nc <span class="hljs-comment"># netCDF4 </span><br>ncks -3 in.nc foo_3.nc <span class="hljs-comment"># netCDF3 classic</span><br>ncks --3 in.nc foo_3.nc <span class="hljs-comment"># netCDF3 classic</span><br>ncks -6 in.nc foo_6.nc <span class="hljs-comment"># netCDF3 64bit-offset</span><br>ncks --64 in.nc foo_6.nc <span class="hljs-comment"># netCDF3 64bit-offset</span><br>ncks -5 in.nc foo_5.nc <span class="hljs-comment"># netCDF3 64bit-data</span><br>ncks --5 in.nc foo_5.nc <span class="hljs-comment"># netCDF3 64bit-data</span><br>ncks -4 in.nc foo_4.nc <span class="hljs-comment"># netCDF4 </span><br>ncks --4 in.nc foo_4.nc <span class="hljs-comment"># netCDF4 </span><br>ncks -7 in.nc foo_7.nc <span class="hljs-comment"># netCDF4 classic</span><br>ncks --7 in.nc foo_7.nc <span class="hljs-comment"># netCDF4 classic</span><br></code></pre></td></tr></table></figure><p>Of course since most operators support these switches, the “conversions” can be done at the output stage of arithmetic or metadata processing rather than requiring a separate step. Producing (netCDF3) CLASSIC or 64BIT_OFFSET or 64BIT_DATA files from NETCDF4_CLASSIC files always works.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>netcdf</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>rsync - Transferring and synchronizing files</title>
+    <link href="/2023/06/24/rsync-Transferring-and-synchronizing-files/"/>
+    <url>/2023/06/24/rsync-Transferring-and-synchronizing-files/</url>
+    
+    <content type="html"><![CDATA[<h1 id="rsync">rsync</h1><p>rsync (remote sync) 是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。</p><p>在常駐模式（daemon mode）下，rsync預設監聽 <code>TCP埠 873</code>，以原生rsync傳輸協定或者透過遠端shell如RSH或者SSH提供檔案。SSH模式下，rsync用戶端執行程式必須同時在本機和遠端機器上安裝。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">rsync 的基本語法結構如下：<br><br>rsync 參數 來源檔案 目的檔案<br>以下是最常見的幾個參數：<br><br>-v：verbose 模式，輸出比較詳細的訊息。<br>-r：遞迴（recursive）備份所有子目錄下的目錄與檔案。<br>-a：封裝備份模式，相當於 -rlptgoD，遞迴備份所有子目錄下的目錄與檔案，保留連結檔、檔案的擁有者、群組、權限以及時間戳記。<br>-z：啟用壓縮。<br>-h：將數字以比較容易閱讀的格式輸出。<br></code></pre></td></tr></table></figure><ol type="1"><li>如果要讓 rsync 在傳輸檔案時可以即時顯示進度，可以加上 --progress 參數。</li><li>-P參數是--progress和--partial這兩個參數的結合，使用此選項時，rsync 在傳輸過程中<strong>顯示進度條</strong>並<strong>保留部分傳輸的檔案</strong>。透過緩慢或不穩定的網路連線傳輸大檔案時非常有用。</li></ol><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs console">rsync -aP folder username@target-ip:/home/user/xxx/<br><br>rsync -aP --exclude=&#x27;*.txt&#x27; --exclude &#x27;dir1/*&#x27; source/ destination<br>rsync -aP --exclude=&#123;&#x27;*.txt&#x27;, &#x27;file1.txt&#x27;,&#x27;dir1/*&#x27;&#125; source/ destination<br>rsync -aP --exclude-from=&#x27;exclude-file.txt&#x27; source/ destination/<br>rsync -av --include=&quot;*.txt&quot; --exclude=&#x27;*&#x27; source/ destination<br></code></pre></td></tr></table></figure><p>and,</p>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">        <div class="fold-arrow">▶</div>script      </div>      <div class="fold-collapse collapse" id="collapse-6ae3e036">        <div class="fold-content">          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment">#Here&#x27;s how this script works:</span><br><br><span class="hljs-comment"># Replace the REMOTE_HOST, REMOTE_PATH, and LOCAL_PATH variables with your actual remote host details, remote file path, and local directory path, respectively.</span><br><span class="hljs-comment"># The LOCK_FILE variable specifies the path to the lock file, which will be used to prevent multiple instances of the script from running simultaneously.</span><br><span class="hljs-comment"># The is_locked function checks if the lock file exists.</span><br><span class="hljs-comment"># The create_lock function creates the lock file.</span><br><span class="hljs-comment"># The remove_lock function removes the lock file.</span><br><span class="hljs-comment"># The perform_rsync function performs the actual rsync -z command to copy the files from the remote machine to the local machine.</span><br><span class="hljs-comment"># The script checks if the lock file exists. If it does, it means the previous rsync is still running, so it exits without starting a new rsync.</span><br><span class="hljs-comment"># If the lock file doesn&#x27;t exist, the script creates the lock file, performs the rsync, and then removes the lock file.</span><br><br>INIT_DIR=<span class="hljs-variable">$1</span><br><br>REMOTE_HOST=<span class="hljs-string">&quot;user@ip&quot;</span><br>PORT=<span class="hljs-string">&quot;1234567&quot;</span><br>REMOTE_PATH=<span class="hljs-string">&quot;/home/user/<span class="hljs-variable">$&#123;INIT_DIR&#125;</span>/file.*&quot;</span> <br>LOCAL_PATH=<span class="hljs-string">&quot;/home/user/<span class="hljs-variable">$&#123;INIT_DIR&#125;</span>/&quot;</span> <br>LOCK_FILE=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;LOCAL_PATH&#125;</span>/rsync.lock&quot;</span> <br>LOG_FILE=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;LOCAL_PATH&#125;</span>/rsync.log&quot;</span><br><span class="hljs-comment"># Function to check if the lock file exists</span><br><span class="hljs-function"><span class="hljs-title">is_locked</span></span>() &#123;<br>    [ -f <span class="hljs-string">&quot;<span class="hljs-variable">$LOCK_FILE</span>&quot;</span> ]<br>&#125;<br><br><span class="hljs-comment"># Create the lock file</span><br><span class="hljs-function"><span class="hljs-title">create_lock</span></span>() &#123;<br>    <span class="hljs-built_in">touch</span> <span class="hljs-string">&quot;<span class="hljs-variable">$LOCK_FILE</span>&quot;</span><br>&#125;<br><br><span class="hljs-comment"># Remove the lock file</span><br><span class="hljs-function"><span class="hljs-title">remove_lock</span></span>() &#123;<br>    <span class="hljs-built_in">rm</span> <span class="hljs-string">&quot;<span class="hljs-variable">$LOCK_FILE</span>&quot;</span><br>&#125;<br><br><span class="hljs-comment"># Function to perform rsync</span><br><span class="hljs-function"><span class="hljs-title">perform_rsync</span></span>() &#123;<br>    rsync -azvhP -e <span class="hljs-string">&#x27;ssh -p &#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PORT</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$REMOTE_HOST</span>:<span class="hljs-variable">$REMOTE_PATH</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$LOCAL_PATH</span>&quot;</span> --log-file=<span class="hljs-variable">$&#123;LOG_FILE&#125;</span><br>&#125;<br><br><span class="hljs-comment"># Check if the lock file exists</span><br><span class="hljs-keyword">if</span> is_locked; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Previous rsync is still running. Exiting.&quot;</span><br>    <span class="hljs-built_in">exit</span> 1<br><span class="hljs-keyword">fi</span><br><br><span class="hljs-comment"># Create the lock file</span><br>create_lock<br><br><span class="hljs-comment"># Perform rsync</span><br>perform_rsync<br><br><span class="hljs-comment"># Remove the lock file</span><br>remove_lock<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><p>This can be submitted as cron job and automatically downloads new files generated (e.g. every hour). It checks whether the previous rsync job is done before rsync-ing again, otherwise waits for another time interval defined in the crontab (it generates a 'lock' file when starting a rsync and deleting it afterwards. If the 'lock' file is present it will not run rsync)</p><h1 id="includeexclude">include/exclude</h1><p><code>rsync</code> supports the <code>--include-from</code> option, which allows you to specify include patterns in a file instead of listing multiple <code>--include</code> options on the command line. This is useful for managing complex include patterns or when you have many file types to include.</p><h2 id="syntax">Syntax</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">rsync [options] --include-from=<span class="hljs-string">&#x27;file&#x27;</span> <span class="hljs-built_in">source</span> destination<br></code></pre></td></tr></table></figure><h2 id="key-points">Key Points</h2><ul><li>The <code>--include-from='file'</code> option reads include patterns from a specified file.</li><li>Each line in the file is treated as an include pattern (e.g., <code>*.txt</code>, <code>*.pdf</code>).</li><li>Combine with <code>--exclude='*'</code> to include only the patterns listed in the file and exclude everything else.</li><li>The file can also contain <code>--exclude</code> patterns if needed (prefix with <code>-</code> for exclude).</li><li>Patterns in the file follow the same syntax as <code>--include</code> and <code>--exclude</code>.</li></ul><h2 id="how-to-use---include-from">How to Use <code>--include-from</code></h2><ol type="1"><li><strong>Create a file</strong> (e.g., <code>include.txt</code>) with include patterns, one per line.</li><li><strong>Use <code>--include-from</code></strong> to reference the file in your <code>rsync</code> command.</li><li><strong>Test with <code>--dry-run</code></strong> to verify the patterns.</li><li><strong>Run the command</strong> to synchronize files.</li></ol><h2 id="example">Example</h2><h3 id="step-1-create-the-include-file">Step 1: Create the include file</h3><p>Create a file named <code>include.txt</code> with the following content:</p><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-comment">*.txt</span><br><span class="hljs-comment">*.pdf</span><br><span class="hljs-comment">*.jpg</span><br></code></pre></td></tr></table></figure><h3 id="step-2-run-rsync">Step 2: Run rsync</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">rsync -av --include-from=<span class="hljs-string">&#x27;include.txt&#x27;</span> --exclude=<span class="hljs-string">&#x27;*&#x27;</span> /source/ /destination/<br></code></pre></td></tr></table></figure><ul><li>This syncs only <code>.txt</code>, <code>.pdf</code>, and <code>.jpg</code> files from <code>/source/</code> to <code>/destination/</code>, excluding all other files.</li></ul><h2 id="advanced-example">Advanced Example</h2><h3 id="include-file-with-directories-and-exclusions">Include file with directories and exclusions</h3><p><code>include.txt</code>:</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">+ */                 <span class="hljs-comment"># Include all directories for traversal</span><br>+ *<span class="hljs-string">.txt</span>             <span class="hljs-comment"># Include .txt files</span><br>+ *<span class="hljs-string">.pdf</span>             <span class="hljs-comment"># Include .pdf files</span><br>- *<span class="hljs-string">.bak</span>             <span class="hljs-comment"># Exclude .bak files</span><br></code></pre></td></tr></table></figure><h3 id="command">Command</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">rsync -av --include-from=<span class="hljs-string">&#x27;include.txt&#x27;</span> --exclude=<span class="hljs-string">&#x27;*&#x27;</span> /source/ /destination/<br></code></pre></td></tr></table></figure><ul><li>Includes <code>.txt</code> and <code>.pdf</code> files recursively, excludes <code>.bak</code> files, and ignores all other files.</li></ul><h2 id="notes">Notes</h2><ul><li><strong>Pattern syntax in file</strong>:<ul><li>Use <code>+</code> (plus and space) for include patterns (optional, but clearer).</li><li>Use <code>-</code> (minus and space) for exclude patterns.</li><li>Blank lines and lines starting with <code>#</code> are ignored (useful for comments).</li></ul></li><li><strong>Order matters</strong>: Patterns are processed in the order they appear in the file.</li><li><strong>Relative paths</strong>: The <code>--include-from</code> file path is relative to the current working directory.</li><li><strong>Combine with other options</strong>: You can still use <code>--include</code> or <code>--exclude</code> on the command line, but <code>--include-from</code> patterns are processed afterward.</li><li><strong>Debugging</strong>: Use <code>--dry-run</code> and <code>-v</code> to verify which files are included/excluded.</li></ul><h2 id="tips">Tips</h2><ul><li>Use <code>--include-from</code> for large or reusable pattern lists to keep commands clean.</li><li>Store the include file in a version-controlled location if used frequently.</li><li>Test complex patterns with <code>rsync -av --dry-run --include-from='file'</code>.</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>Linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>download</tag>
       
     </tags>
     
@@ -5668,9 +5819,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>tile files</tag>
       
@@ -5768,60 +5919,6 @@
   
   
   <entry>
-    <title>NetCDF and its Conversion</title>
-    <link href="/2023/06/24/netcdf/"/>
-    <url>/2023/06/24/netcdf/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://www.unidata.ucar.edu/software/netcdf/">NetCDF</a> (Network Common Data Form) is a set of software libraries and machine-independent data formats that support the creation, access, and sharing of array-oriented scientific data. It is also a community standard for sharing scientific data. The Unidata Program Center supports and maintains netCDF programming interfaces for C, C++, Java, and Fortran. Programming interfaces are also available for Python, IDL, MATLAB, R, Ruby, and Perl.</p><p>網絡通用數據格式（英語：Network Common Data Form，NetCDF）是一種自描述、與機器無關、基於陣列的科學數據格式，同時也是支援建立、存取和共用這一數據格式的函數庫。該專案首頁位於美國大氣科學研究大學聯盟（UCAR）的Unidata規劃網站。它也是netCDF軟件、標準開發、更新等的主要來源。NetCDF格式是一種開放標準。NetCDF的經典格式和64位元偏移量格式是開放地理空間協會採用的國際標準。該專案開始於1989年，UCAR目前對其積極支援，在新發行版中改進效能、增加功能並修正缺陷，目前版本系列是netCDF-4，在編譯時也可以選擇只建造netCDF-3庫。</p><h2 id="file-formats-and-conversion">File Formats and Conversion</h2><p><a href="https://nco.sourceforge.net/nco.html#fl_fmt">link</a> &gt; Availability: ncap2, nces, ncecat, ncflint, ncks, ncpdq, ncra, ncrcat, ncwa &gt; Short options: ‘-3’, ‘-4’, ‘-5’, ‘-6’, ‘-7’ &gt; Long options: ‘--3’, ‘--4’, ‘--5’, ‘--6’, ‘--64bit_offset’, ‘--7’, ‘--fl_fmt’, ‘--netcdf4’</p><p>All NCO operators support (read and write) all three (or four, depending on how one counts) file formats supported by netCDF4. The default output file format for all operators is the input file format. The operators listed under “Availability” above allow the user to specify the output file format independent of the input file format. These operators allow the user to convert between the various file formats. (The operators ncatted and ncrename do not support these switches so they always write the output netCDF file in the same format as the input netCDF file.)</p><h3 id="file-formats">File Formats</h3><p>netCDF supports five types of files: <strong>CLASSIC, 64BIT_OFFSET, 64BIT_DATA, NETCDF4, and NETCDF4_CLASSIC</strong>. The CLASSIC (aka CDF1) format is the traditional 32-bit offset written by netCDF2 and netCDF3. As of 2005, nearly all netCDF datasets were in CLASSIC format. The 64BIT_OFFSET (originally called plain old 64BIT) (aka CDF2) format was added in Fall, 2004. As of 2010, many netCDF datasets were in 64BIT_OFFSET format. As of 2013, an increasing number of netCDF datasets were in NETCDF4_CLASSIC format. The 64BIT_DATA (aka CDF5 or PNETCDF) format was added to netCDF in January, 2016 and immediately supported by NCO. Support for Zarr and NCZarr backend storage formats was added to netCDF in 2021 and supported by NCO in 2022.</p><p>The NETCDF4 format uses HDF5 as the file storage layer. The files are (usually) created, accessed, and manipulated using the traditional netCDF3 API (with numerous extensions). The NETCDF4_CLASSIC format refers to netCDF4 files created with the NC_CLASSIC_MODEL mask. Such files use HDF5 as the back-end storage format (unlike netCDF3), though they incorporate only netCDF3 features. Hence NETCDF4_CLASSIC files are entirely readable by applications that use only the netCDF3 API (though the applications must be linked with the netCDF4 library). NCO must be built with netCDF4 to write files in the new NETCDF4 and NETCDF4_CLASSIC formats, and to read files in these formats. Datasets in the default CLASSIC or the newer 64BIT_OFFSET formats have maximum backwards-compatibility with older applications. NCO has deep support for NETCDF4 formats. If backwards compatibility is important, and your datasets are too large for netCDF3, use NETCDF4_CLASSIC instead of CLASSIC format files. NCO support for the NETCDF4 format is complete and many high-performance disk/RAM efficient workflows utilize this format.</p><p>As mentioned above, all operators write use the input file format for output files unless told otherwise. Toggling the short option ‘-6’ or the long option ‘--6’ or ‘--64bit_offset’ (or their key-value equivalent ‘--fl_fmt=64bit_offset’) produces the netCDF3 64-bit offset format named 64BIT_OFFSET. NCO must be built with netCDF 3.6 or higher to produce a 64BIT_OFFSET file. As of NCO version 4.6.9 (September, 2017), toggling the short option ‘-5’ or the long options ‘--5’, ‘--64bit_data’, ‘--cdf5’, or ‘--pnetcdf’ (or their key-value equivalent ‘--fl_fmt=64bit_data’) produces the netCDF3 64-bit data format named 64BIT_DATA. This format is widely used by MPI-enabled modeling codes because of its long association with PnetCDF. NCO must be built with netCDF 4.4 or higher to produce a 64BIT_DATA file.</p><p>Using the ‘-4’ switch (or its long option equivalents ‘--4’ or ‘--netcdf4’), or setting its key-value equivalent ‘--fl_fmt=netcdf4’ produces a NETCDF4 file (i.e., with all supported HDF5 features). Using the ‘-7’ switch (or its long option equivalent ‘--7’ 30, or setting its key-value equivalent ‘--fl_fmt=netcdf4_classic’ produces a NETCDF4_CLASSIC file (i.e., with all supported HDF5 features like compression and chunking but without groups or new atomic types). Operators given the ‘-3’ (or ‘--3’) switch without arguments will (attempt to) produce netCDF3 CLASSIC output, even from netCDF4 input files.</p><p>Note that NETCDF4 and NETCDF4_CLASSIC are the same binary format. The latter simply causes a writing application to fail if it attempts to write a NETCDF4 file that cannot be completely read by the netCDF3 library. Conversely, NETCDF4_CLASSIC indicates to a reading application that all of the file contents are readable with the netCDF3 library. NCO has supported reading/writing basic NETCDF4 and NETCDF4_CLASSIC files since October, 2005.</p><h3 id="determining-file-format">Determining File Format</h3><p>First, examine the first line of global metadata output by <strong>ncks -M</strong>: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncks -M foo_3.nc<br>Summary of foo_3.nc: filetype = NC_FORMAT_CLASSIC, 0 <span class="hljs-built_in">groups</span> ...<br></code></pre></td></tr></table></figure> ncks will also print the extended or underlying format of the input file <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncks -D 2 -M foo_4.nc<br></code></pre></td></tr></table></figure> Second, query the file with ‘ncdump -k’: <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ncdump -k foo_3.nc<br>classic/netCDF-4/cdf5/...<br></code></pre></td></tr></table></figure></p><h3 id="file-conversion">File Conversion</h3><p>Let us demonstrate converting a file from any netCDF-supported input format into any netCDF output format (subject to limits of the output format). Here the <strong>input file in.nc</strong> may be in any of these formats: netCDF3 (classic, 64bit_offset, 64bit_data), netCDF4 (classic and extended), HDF4, HDF5, HDF-EOS (version 2 or 5), and DAP. The switch determines the output format written in the comment:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sh">ncks --fl_fmt=classic in.nc foo_3.nc <span class="hljs-comment"># netCDF3 classic</span><br>ncks --fl_fmt=64bit_offset in.nc foo_6.nc <span class="hljs-comment"># netCDF3 64bit-offset</span><br>ncks --fl_fmt=64bit_data in.nc foo_5.nc <span class="hljs-comment"># netCDF3 64bit-data</span><br>ncks --fl_fmt=cdf5 in.nc foo_5.nc <span class="hljs-comment"># netCDF3 64bit-data</span><br>ncks --fl_fmt=netcdf4_classic in.nc foo_7.nc <span class="hljs-comment"># netCDF4 classic</span><br>ncks --fl_fmt=netcdf4 in.nc foo_4.nc <span class="hljs-comment"># netCDF4 </span><br>ncks -3 in.nc foo_3.nc <span class="hljs-comment"># netCDF3 classic</span><br>ncks --3 in.nc foo_3.nc <span class="hljs-comment"># netCDF3 classic</span><br>ncks -6 in.nc foo_6.nc <span class="hljs-comment"># netCDF3 64bit-offset</span><br>ncks --64 in.nc foo_6.nc <span class="hljs-comment"># netCDF3 64bit-offset</span><br>ncks -5 in.nc foo_5.nc <span class="hljs-comment"># netCDF3 64bit-data</span><br>ncks --5 in.nc foo_5.nc <span class="hljs-comment"># netCDF3 64bit-data</span><br>ncks -4 in.nc foo_4.nc <span class="hljs-comment"># netCDF4 </span><br>ncks --4 in.nc foo_4.nc <span class="hljs-comment"># netCDF4 </span><br>ncks -7 in.nc foo_7.nc <span class="hljs-comment"># netCDF4 classic</span><br>ncks --7 in.nc foo_7.nc <span class="hljs-comment"># netCDF4 classic</span><br></code></pre></td></tr></table></figure><p>Of course since most operators support these switches, the “conversions” can be done at the output stage of arithmetic or metadata processing rather than requiring a separate step. Producing (netCDF3) CLASSIC or 64BIT_OFFSET or 64BIT_DATA files from NETCDF4_CLASSIC files always works.</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>NWP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
-      <tag>netcdf</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>rsync - Transferring and synchronizing files</title>
-    <link href="/2023/06/24/rsync-Transferring-and-synchronizing-files/"/>
-    <url>/2023/06/24/rsync-Transferring-and-synchronizing-files/</url>
-    
-    <content type="html"><![CDATA[<h1 id="rsync">rsync</h1><p>rsync (remote sync) 是Unix下的一款套用軟件，它能同步更新兩處電腦的檔案與目錄，並適當利用差分編碼以減少數據傳輸量。rsync中的一項同類軟件不常見的重要特性是每個目標的鏡像只需傳送一次。rsync可以拷貝／顯示目錄內容，以及拷貝檔案，並可選壓縮以及遞歸拷貝。</p><p>在常駐模式（daemon mode）下，rsync預設監聽 <code>TCP埠 873</code>，以原生rsync傳輸協定或者透過遠端shell如RSH或者SSH提供檔案。SSH模式下，rsync用戶端執行程式必須同時在本機和遠端機器上安裝。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">rsync 的基本語法結構如下：<br><br>rsync 參數 來源檔案 目的檔案<br>以下是最常見的幾個參數：<br><br>-v：verbose 模式，輸出比較詳細的訊息。<br>-r：遞迴（recursive）備份所有子目錄下的目錄與檔案。<br>-a：封裝備份模式，相當於 -rlptgoD，遞迴備份所有子目錄下的目錄與檔案，保留連結檔、檔案的擁有者、群組、權限以及時間戳記。<br>-z：啟用壓縮。<br>-h：將數字以比較容易閱讀的格式輸出。<br></code></pre></td></tr></table></figure><ol type="1"><li>如果要讓 rsync 在傳輸檔案時可以即時顯示進度，可以加上 --progress 參數。</li><li>-P參數是--progress和--partial這兩個參數的結合，使用此選項時，rsync 在傳輸過程中<strong>顯示進度條</strong>並<strong>保留部分傳輸的檔案</strong>。透過緩慢或不穩定的網路連線傳輸大檔案時非常有用。</li></ol><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs console">rsync -aP folder username@target-ip:/home/user/xxx/<br><br>rsync -aP --exclude=&#x27;*.txt&#x27; --exclude &#x27;dir1/*&#x27; source/ destination<br>rsync -aP --exclude=&#123;&#x27;*.txt&#x27;, &#x27;file1.txt&#x27;,&#x27;dir1/*&#x27;&#125; source/ destination<br>rsync -aP --exclude-from=&#x27;exclude-file.txt&#x27; source/ destination/<br>rsync -av --include=&quot;*.txt&quot; --exclude=&#x27;*&#x27; source/ destination<br></code></pre></td></tr></table></figure><p>and,</p>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">        <div class="fold-arrow">▶</div>script      </div>      <div class="fold-collapse collapse" id="collapse-6ae3e036">        <div class="fold-content">          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment">#Here&#x27;s how this script works:</span><br><br><span class="hljs-comment"># Replace the REMOTE_HOST, REMOTE_PATH, and LOCAL_PATH variables with your actual remote host details, remote file path, and local directory path, respectively.</span><br><span class="hljs-comment"># The LOCK_FILE variable specifies the path to the lock file, which will be used to prevent multiple instances of the script from running simultaneously.</span><br><span class="hljs-comment"># The is_locked function checks if the lock file exists.</span><br><span class="hljs-comment"># The create_lock function creates the lock file.</span><br><span class="hljs-comment"># The remove_lock function removes the lock file.</span><br><span class="hljs-comment"># The perform_rsync function performs the actual rsync -z command to copy the files from the remote machine to the local machine.</span><br><span class="hljs-comment"># The script checks if the lock file exists. If it does, it means the previous rsync is still running, so it exits without starting a new rsync.</span><br><span class="hljs-comment"># If the lock file doesn&#x27;t exist, the script creates the lock file, performs the rsync, and then removes the lock file.</span><br><br>INIT_DIR=<span class="hljs-variable">$1</span><br><br>REMOTE_HOST=<span class="hljs-string">&quot;user@ip&quot;</span><br>PORT=<span class="hljs-string">&quot;1234567&quot;</span><br>REMOTE_PATH=<span class="hljs-string">&quot;/home/user/<span class="hljs-variable">$&#123;INIT_DIR&#125;</span>/file.*&quot;</span> <br>LOCAL_PATH=<span class="hljs-string">&quot;/home/user/<span class="hljs-variable">$&#123;INIT_DIR&#125;</span>/&quot;</span> <br>LOCK_FILE=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;LOCAL_PATH&#125;</span>/rsync.lock&quot;</span> <br>LOG_FILE=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;LOCAL_PATH&#125;</span>/rsync.log&quot;</span><br><span class="hljs-comment"># Function to check if the lock file exists</span><br><span class="hljs-function"><span class="hljs-title">is_locked</span></span>() &#123;<br>    [ -f <span class="hljs-string">&quot;<span class="hljs-variable">$LOCK_FILE</span>&quot;</span> ]<br>&#125;<br><br><span class="hljs-comment"># Create the lock file</span><br><span class="hljs-function"><span class="hljs-title">create_lock</span></span>() &#123;<br>    <span class="hljs-built_in">touch</span> <span class="hljs-string">&quot;<span class="hljs-variable">$LOCK_FILE</span>&quot;</span><br>&#125;<br><br><span class="hljs-comment"># Remove the lock file</span><br><span class="hljs-function"><span class="hljs-title">remove_lock</span></span>() &#123;<br>    <span class="hljs-built_in">rm</span> <span class="hljs-string">&quot;<span class="hljs-variable">$LOCK_FILE</span>&quot;</span><br>&#125;<br><br><span class="hljs-comment"># Function to perform rsync</span><br><span class="hljs-function"><span class="hljs-title">perform_rsync</span></span>() &#123;<br>    rsync -azvhP -e <span class="hljs-string">&#x27;ssh -p &#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$PORT</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$REMOTE_HOST</span>:<span class="hljs-variable">$REMOTE_PATH</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$LOCAL_PATH</span>&quot;</span> --log-file=<span class="hljs-variable">$&#123;LOG_FILE&#125;</span><br>&#125;<br><br><span class="hljs-comment"># Check if the lock file exists</span><br><span class="hljs-keyword">if</span> is_locked; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Previous rsync is still running. Exiting.&quot;</span><br>    <span class="hljs-built_in">exit</span> 1<br><span class="hljs-keyword">fi</span><br><br><span class="hljs-comment"># Create the lock file</span><br>create_lock<br><br><span class="hljs-comment"># Perform rsync</span><br>perform_rsync<br><br><span class="hljs-comment"># Remove the lock file</span><br>remove_lock<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><p>This can be submitted as cron job and automatically downloads new files generated (e.g. every hour). It checks whether the previous rsync job is done before rsync-ing again, otherwise waits for another time interval defined in the crontab (it generates a 'lock' file when starting a rsync and deleting it afterwards. If the 'lock' file is present it will not run rsync)</p><h1 id="includeexclude">include/exclude</h1><p><code>rsync</code> supports the <code>--include-from</code> option, which allows you to specify include patterns in a file instead of listing multiple <code>--include</code> options on the command line. This is useful for managing complex include patterns or when you have many file types to include.</p><h2 id="syntax">Syntax</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">rsync [options] --include-from=<span class="hljs-string">&#x27;file&#x27;</span> <span class="hljs-built_in">source</span> destination<br></code></pre></td></tr></table></figure><h2 id="key-points">Key Points</h2><ul><li>The <code>--include-from='file'</code> option reads include patterns from a specified file.</li><li>Each line in the file is treated as an include pattern (e.g., <code>*.txt</code>, <code>*.pdf</code>).</li><li>Combine with <code>--exclude='*'</code> to include only the patterns listed in the file and exclude everything else.</li><li>The file can also contain <code>--exclude</code> patterns if needed (prefix with <code>-</code> for exclude).</li><li>Patterns in the file follow the same syntax as <code>--include</code> and <code>--exclude</code>.</li></ul><h2 id="how-to-use---include-from">How to Use <code>--include-from</code></h2><ol type="1"><li><strong>Create a file</strong> (e.g., <code>include.txt</code>) with include patterns, one per line.</li><li><strong>Use <code>--include-from</code></strong> to reference the file in your <code>rsync</code> command.</li><li><strong>Test with <code>--dry-run</code></strong> to verify the patterns.</li><li><strong>Run the command</strong> to synchronize files.</li></ol><h2 id="example">Example</h2><h3 id="step-1-create-the-include-file">Step 1: Create the include file</h3><p>Create a file named <code>include.txt</code> with the following content:</p><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-comment">*.txt</span><br><span class="hljs-comment">*.pdf</span><br><span class="hljs-comment">*.jpg</span><br></code></pre></td></tr></table></figure><h3 id="step-2-run-rsync">Step 2: Run rsync</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">rsync -av --include-from=<span class="hljs-string">&#x27;include.txt&#x27;</span> --exclude=<span class="hljs-string">&#x27;*&#x27;</span> /source/ /destination/<br></code></pre></td></tr></table></figure><ul><li>This syncs only <code>.txt</code>, <code>.pdf</code>, and <code>.jpg</code> files from <code>/source/</code> to <code>/destination/</code>, excluding all other files.</li></ul><h2 id="advanced-example">Advanced Example</h2><h3 id="include-file-with-directories-and-exclusions">Include file with directories and exclusions</h3><p><code>include.txt</code>:</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">+ */                 <span class="hljs-comment"># Include all directories for traversal</span><br>+ *<span class="hljs-string">.txt</span>             <span class="hljs-comment"># Include .txt files</span><br>+ *<span class="hljs-string">.pdf</span>             <span class="hljs-comment"># Include .pdf files</span><br>- *<span class="hljs-string">.bak</span>             <span class="hljs-comment"># Exclude .bak files</span><br></code></pre></td></tr></table></figure><h3 id="command">Command</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">rsync -av --include-from=<span class="hljs-string">&#x27;include.txt&#x27;</span> --exclude=<span class="hljs-string">&#x27;*&#x27;</span> /source/ /destination/<br></code></pre></td></tr></table></figure><ul><li>Includes <code>.txt</code> and <code>.pdf</code> files recursively, excludes <code>.bak</code> files, and ignores all other files.</li></ul><h2 id="notes">Notes</h2><ul><li><strong>Pattern syntax in file</strong>:<ul><li>Use <code>+</code> (plus and space) for include patterns (optional, but clearer).</li><li>Use <code>-</code> (minus and space) for exclude patterns.</li><li>Blank lines and lines starting with <code>#</code> are ignored (useful for comments).</li></ul></li><li><strong>Order matters</strong>: Patterns are processed in the order they appear in the file.</li><li><strong>Relative paths</strong>: The <code>--include-from</code> file path is relative to the current working directory.</li><li><strong>Combine with other options</strong>: You can still use <code>--include</code> or <code>--exclude</code> on the command line, but <code>--include-from</code> patterns are processed afterward.</li><li><strong>Debugging</strong>: Use <code>--dry-run</code> and <code>-v</code> to verify which files are included/excluded.</li></ul><h2 id="tips">Tips</h2><ul><li>Use <code>--include-from</code> for large or reusable pattern lists to keep commands clean.</li><li>Store the include file in a version-controlled location if used frequently.</li><li>Test complex patterns with <code>rsync -av --dry-run --include-from='file'</code>.</li></ul>]]></content>
-    
-    
-    <categories>
-      
-      <category>Linux</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>download</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Bash | datetime (manipulate)</title>
     <link href="/2023/05/23/bash-datetime/"/>
     <url>/2023/05/23/bash-datetime/</url>
@@ -5892,13 +5989,13 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
-      <tag>ERA5</tag>
-      
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -5952,13 +6049,13 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
-      <tag>ERA5</tag>
-      
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -6039,9 +6136,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -6066,13 +6163,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
+      <tag>WRF</tag>
+      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -6126,9 +6223,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -6219,13 +6316,13 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
-      <tag>ERA5</tag>
-      
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -6393,13 +6490,13 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
-      <tag>GFS</tag>
-      
       <tag>WPS</tag>
       
+      <tag>MPAS</tag>
+      
       <tag>IC/BC</tag>
+      
+      <tag>GFS</tag>
       
       <tag>FNL</tag>
       
@@ -6511,13 +6608,13 @@
     
     <tags>
       
-      <tag>NWP</tag>
-      
-      <tag>HPC</tag>
-      
       <tag>gnu</tag>
       
       <tag>gcc</tag>
+      
+      <tag>NWP</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -6542,17 +6639,17 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>Installation</tag>
-      
-      <tag>NWP</tag>
-      
       <tag>gnu</tag>
       
       <tag>gcc</tag>
       
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
       <tag>WPS</tag>
+      
+      <tag>Installation</tag>
       
     </tags>
     
@@ -6579,9 +6676,9 @@
       
       <tag>NWP</tag>
       
-      <tag>slurm</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>slurm</tag>
       
     </tags>
     

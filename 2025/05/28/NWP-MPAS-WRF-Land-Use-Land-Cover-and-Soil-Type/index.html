@@ -1,0 +1,1099 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="The Interplay Between Land Use&#x2F;Land Cover and Soil Type in the WRF Model: Implications for Surface Variable Prognostication The Weather Research and Forecasting (WRF) model is a widely used numerical">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | MPAS | WRF| Land Use&#x2F;Land Cover and Soil Type">
+<meta property="og:url" content="https://waipangsze.github.io/2025/05/28/NWP-MPAS-WRF-Land-Use-Land-Cover-and-Soil-Type/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="The Interplay Between Land Use&#x2F;Land Cover and Soil Type in the WRF Model: Implications for Surface Variable Prognostication The Weather Research and Forecasting (WRF) model is a widely used numerical">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/0btS3Co.png">
+<meta property="article:published_time" content="2025-05-28T02:51:00.000Z">
+<meta property="article:modified_time" content="2025-05-28T04:04:02.618Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="Meteorology">
+<meta property="article:tag" content="LANDUSE">
+<meta property="article:tag" content="^NWP">
+<meta property="article:tag" content="SOILPARM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/0btS3Co.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | MPAS | WRF| Land Use/Land Cover and Soil Type - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/0btS3Co.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | MPAS | WRF| Land Use/Land Cover and Soil Type"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-28 10:51" pubdate>
+          May 28, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | MPAS | WRF| Land Use/Land Cover and Soil Type</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="the-interplay-between-land-useland-cover-and-soil-type-in-the-wrf-model-implications-for-surface-variable-prognostication">The Interplay Between Land Use/Land Cover and Soil Type in the WRF Model: Implications for Surface Variable Prognostication</h1>
+<p>The Weather Research and Forecasting (WRF) model is a widely used numerical weather prediction system that integrates atmospheric dynamics with land-surface interactions. A critical aspect of its performance hinges on accurately representing land-surface processes, which depend on two primary input datasets: <strong>land use/land cover (LULC)</strong> and <strong>soil type</strong>. This report examines the necessity of synchronizing LULC and soil type modifications in WRF, elucidates their interdependencies, and delineates their combined role in calculating prognostic variables such as 2-meter temperature (t2m).</p>
+<hr />
+<h2 id="land-useland-cover-and-soil-type-distinct-but-interconnected-inputs">Land Use/Land Cover and Soil Type: Distinct but Interconnected Inputs</h2>
+<h3 id="role-of-lulc-in-surface-parameterization">Role of LULC in Surface Parameterization</h3>
+<p>LULC data define the physical and biological characteristics of the land surface, including vegetation type, albedo, roughness length, and emissivity. These properties directly influence energy partitioning between <strong>sensible heat, latent heat, and ground heat fluxes</strong><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup><sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>. For example, forests exhibit higher <strong>roughness lengths and evapotranspiration rates</strong> compared to urban areas, altering boundary layer dynamics<sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>. The <strong>Noah Land Surface Model (LSM)</strong>, a common component of WRF, uses LULC data to parameterize vegetation-dependent processes such as <strong>stomatal resistance and leaf area index (LAI)</strong><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</p>
+<figure>
+<img src="https://i.imgur.com/vRt3sIP.png" srcset="/img/loading.gif" lazyload alt="CERES land classification from IGBPa_1198.map.nc. Surface types 1 - 17 correspond to those defined by IGBP (International Geosphere Biosphere Programme). The last 3 surface types were defined for CERES. Surface type 18, Tundra; Fresh snow, number 19, and sea ice, number 20 are not permanent surface types. They are obtained daily from the National Snow and Ice Data Center. The IGBP surface type for snow and ice number 15, is for permanent snow and ice. (Climate Data Guide; D. Shea)" /><figcaption>CERES land classification from IGBPa_1198.map.nc. Surface types 1 - 17 correspond to those defined by IGBP (International Geosphere Biosphere Programme). The last 3 surface types were defined for CERES. Surface type 18, Tundra; Fresh snow, number 19, and sea ice, number 20 are not permanent surface types. They are obtained daily from the National Snow and Ice Data Center. The IGBP surface type for snow and ice number 15, is for permanent snow and ice. (Climate Data Guide; D. Shea)</figcaption>
+</figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD12Q1?hl=zh-tw">MCD12Q1.061 MODIS Land Cover Type Yearly Global 500m</a>
+<ul>
+<li>Terra 和 Aqua 結合的 Moderate Resolution Imaging Spectroradiometer (MODIS) 土地覆蓋類型 (MCD12Q1) 版本 6.1 資料產品，提供全球土地覆蓋類型，間隔為一年。MCD12Q1 6.1 版資料產品是使用 MODIS Terra 和 Aqua 反射率資料的監督分類產生。土地覆蓋類型是根據國際地球-生物圈計畫 (IGBP)、馬里蘭大學 (UMD)、葉面積指數 (LAI)、生物群系-生物地球化學循環 (BGC) 和植物功能類型 (PFT) 分類方案而來。之後，受控分類作業會進行額外的後續處理，整合先前知識和輔助資訊，進一步精進特定類別。糧農組織 (FAO) 土地覆蓋類別分類系統 (LCCS) 提供其他土地覆蓋物屬性評估圖層，用於評估土地覆蓋物、土地使用情形和地表水文。也提供地貌類型 1-5、地貌屬性 1-3、地貌屬性評估 1-3、地貌品質管控 (QC) 和陸地水域遮罩的圖層。</li>
+</ul></li>
+</ul>
+<h3 id="role-of-soil-type-in-hydrological-and-thermal-processes">Role of Soil Type in Hydrological and Thermal Processes</h3>
+<p><strong>Soil type determines hydraulic and thermal properties, including saturation moisture content, hydraulic conductivity, and heat capacity</strong>. The WRF model categorizes soils into types such as sand, loam, and clay, each associated with specific parameters in the <code>SOILPARM.TBL</code> file<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup>. For instance, sandy soils have higher hydraulic conductivity but lower water-holding capacity compared to clayey soils, affecting soil moisture evolution and root-zone water availability<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>. These properties are critical for modeling infiltration, runoff, and soil temperature profiles.</p>
+<figure>
+<img src="https://i.imgur.com/AGCB3H4.png" srcset="/img/loading.gif" lazyload alt="USDA soil texture triangle adopted in the SoilGrids250m data set (Hengl et al., 2017) and the reduced set of hydrologic soil groups used in this study (Sa = sand; Lo = loam; Cl = clay; Si = silt)." /><figcaption>USDA soil texture triangle adopted in the SoilGrids250m data set (Hengl et al., 2017) and the reduced set of hydrologic soil groups used in this study (Sa = sand; Lo = loam; Cl = clay; Si = silt).</figcaption>
+</figure>
+<h3 id="relationship-between-lulc-and-soil-type">Relationship Between LULC and Soil Type</h3>
+<p>LULC determines surface characteristics like vegetation and albedo, while soil type affects subsurface properties like water retention. <strong>Both influence the surface energy balance, which governs heat, moisture, and momentum exchange between land and atmosphere, impacting weather predictions</strong>.</p>
+<p>The relationship between LULC and soil type in WRF is functional rather than direct, as <strong>both contribute to the surface energy balance but operate through different mechanisms</strong>.</p>
+<p><strong>LULC</strong> influences surface properties such as:</p>
+<ul>
+<li>Albedo (reflectivity, affecting solar radiation absorption),</li>
+<li>Roughness length (impacting momentum exchange),</li>
+<li>Vegetation fraction and type (affecting evapotranspiration).</li>
+</ul>
+<p><strong>Soil type</strong>, on the other hand, determines subsurface properties such as:</p>
+<ul>
+<li>Soil texture (e.g., sand, clay, loam, influencing water retention),</li>
+<li>Hydraulic conductivity (affecting moisture transfer),</li>
+<li>Thermal conductivity (affecting heat storage and release).</li>
+</ul>
+<p>These properties collectively shape the surface energy balance, which includes <strong>sensible heat flux (heat transfer to the air), latent heat flux (evaporation or transpiration), and ground heat flux (heat storage in the soil)</strong>.</p>
+<h3 id="q1.-necessity-of-coherent-lulc-and-soil-type-assignments">Q1. Necessity of Coherent LULC and Soil Type Assignments?</h3>
+<p><strong>While LULC and soil type are independent inputs</strong> (specified via <code>IVGTYP</code> and <code>ISLTYP</code> variables, respectively), their coherence is physiographically essential. For example, converting a grassland (LULC class) to an urban area should ideally be accompanied by a soil type change from natural loam to impervious surfaces. Discrepancies between LULC and soil type can lead to unphysical land-atmosphere interactions, such as excessive evaporation from paved surfaces misclassified as permeable soils<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>. A case study highlighted in WRF support forums demonstrated that inconsistent <code>ISLTYP</code> (soil type) and <code>XLAND</code> (land/water mask) values caused numerical instabilities, including division-by-zero errors in soil thermal calculations<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>.</p>
+<h3 id="q2.-do-you-need-to-change-soil-type-when-changing-lulc">Q2. Do You Need to Change Soil Type When Changing LULC?</h3>
+<p><strong>It seems likely that you do not need to change the soil type when altering LULC in WRF, as they are treated as separate inputs</strong>. For example, changing a forest to an urban area might not require a soil type update, but for realistic simulations, significant LULC changes (like deforestation) could imply soil property changes. This depends on the context, and the evidence leans toward flexibility in model setup.</p>
+<h3 id="q3.-do-you-need-to-change-soil-type-if-you-change-lulc">Q3. Do you need to change soil type if you change LULC?</h3>
+<ul>
+<li><strong>Not necessarily</strong>, but it's often realistic to consider. <strong>LULC and soil type are distinct inputs in WRF</strong>. You can change one without changing the other. However, in reality, there's often a correlation. For example, certain vegetation types (LULC) are more likely to be found with specific soil types due to ecological factors.</li>
+<li><strong>Changing LULC doesn't automatically require changing soil type in WRF from a technical standpoint, as they are separate inputs</strong>. However, for realistic simulations, it's often good practice to ensure consistency or consider how a LULC change might realistically be associated with soil characteristics in the region you're modeling.</li>
+</ul>
+<h3 id="q4.-do-changes-in-lulc-require-updates-to-soil-type">Q4. Do Changes in LULC Require Updates to Soil Type?</h3>
+<p>Research suggests that changing LULC in WRF does not inherently require changing the soil type, <strong>as they are treated as independent inputs during model initialization</strong>. For instance, the geogrid program in WRF interpolates LULC categories (e.g., from <strong>USGS or MODIS datasets</strong>) and soil categories (e.g., from <strong>soiltype_top_30s</strong>) separately to the model grid. This separation allows users to update LULC data, such as using high-resolution datasets without necessarily updating soil type data from sources.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WPS/blob/master/geogrid/GEOGRID.TBL.ARW">GEOGRID.TBL.ARW</a></li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>GEOGRID.TBL.ARW
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><code class="hljs text">===============================<br>name=LANDUSEF<br>        priority=1<br>        dest_type=categorical<br>        z_dim_name=land_cat<br>        dominant = LU_INDEX<br>        landmask_water =    nlcd2006_9s:17         # Calculate a landmask from this field<br>        landmask_water =   nlcd2006_30s:17         # Calculate a landmask from this field<br>        landmask_water =    nlcd2011_9s:17         # Calculate a landmask from this field<br>        landmask_water =       nlcd2006:17         # Calculate a landmask from this field<br>        landmask_water =       ssib_10m:16         # Calculate a landmask from this field<br>        landmask_water =        ssib_5m:16         # Calculate a landmask from this field<br>        landmask_water =      modis_15s:17         # Calculate a landmask from this field<br>        landmask_water = modis_15s_lake:17,21      # Calculate a landmask from this field<br>        landmask_water =      modis_30s:17         # Calculate a landmask from this field<br>        landmask_water = modis_30s_lake:17,21      # Calculate a landmask from this field<br>        landmask_water =       usgs_30s:16         # Calculate a landmask from this field<br>        landmask_water =     usgs_lakes:16,28      # Calculate a landmask from this field<br>        landmask_water =    modis_lakes:17,21      # Calculate a landmask from this field<br>        landmask_water =     modis_2010:17         # Calculate a landmask from this field<br>        landmask_water = modis_2010_lake:17,21     # Calculate a landmask from this field<br>        landmask_water =     modis_2050:17         # Calculate a landmask from this field<br>        landmask_water = modis_2050_lake:17,21     # Calculate a landmask from this field<br>        landmask_water =        usgs_2m:16         # Calculate a landmask from this field<br>        landmask_water =        usgs_5m:16         # Calculate a landmask from this field<br>        landmask_water =       usgs_10m:16         # Calculate a landmask from this field<br>        landmask_water =         lowres:17,21      # Calculate a landmask from this field<br>        landmask_water =        default:17,21      # Calculate a landmask from this field<br>        interp_option =    nlcd2006_9s:average_gcell(0.0)<br>        interp_option =   nlcd2006_30s:average_gcell(0.0)<br>        interp_option =    nlcd2011_9s:average_gcell(0.0)  <br>        interp_option =       nlcd2006:nearest_neighbor<br>        interp_option =       ssib_10m:four_pt<br>        interp_option =        ssib_5m:four_pt<br>        interp_option =      modis_15s:nearest_neighbor<br>        interp_option = modis_15s_lake:nearest_neighbor<br>        interp_option =      modis_30s:nearest_neighbor<br>        interp_option = modis_30s_lake:nearest_neighbor<br>        interp_option =       usgs_30s:nearest_neighbor<br>        interp_option =     usgs_lakes:nearest_neighbor<br>        interp_option =    modis_lakes:nearest_neighbor<br>        interp_option =     modis_2010:nearest_neighbor<br>        interp_option = modis_2010_lake:nearest_neighbor<br>        interp_option =     modis_2050:nearest_neighbor<br>        interp_option = modis_2050_lake:nearest_neighbor<br>        interp_option =        usgs_2m:four_pt<br>        interp_option =        usgs_5m:four_pt<br>        interp_option =       usgs_10m:four_pt<br>        interp_option =         lowres:average_gcell(4.0)+four_pt<br>        interp_option =        default:nearest_neighbor<br>        rel_path =    nlcd2006_9s:nlcd2006_ll_9s/<br>        rel_path =   nlcd2006_30s:nlcd2006_ll_30s/<br>        rel_path =    nlcd2011_9s:nlcd2011_ll_9s/<br>        rel_path =       nlcd2006:nlcd2006_ll_30s/<br>        rel_path =       ssib_10m:ssib_landuse_10m/<br>        rel_path =        ssib_5m:ssib_landuse_5m/<br>        rel_path =      modis_15s:modis_landuse_20class_15s/<br>        rel_path = modis_15s_lake:modis_landuse_20class_15s_with_lakes/<br>        rel_path =      modis_30s:modis_landuse_20class_30s/<br>        rel_path = modis_30s_lake:modis_landuse_20class_30s_with_lakes/<br>        rel_path =       usgs_30s:landuse_30s/<br>        rel_path =     usgs_lakes:landuse_30s_with_lakes/<br>        rel_path =    modis_lakes:modis_landuse_21class_30s/<br>        rel_path =     modis_2010:slucm/modis_landuse_20class_15s_2010s/<br>        rel_path = modis_2010_lake:slucm/modis_landuse_20class_15s_2010s_with_lakes/<br>        rel_path =     modis_2050:slucm/modis_landuse_20class_15s_2050s/<br>        rel_path = modis_2050_lake:slucm/modis_landuse_20class_15s_2050s_with_lakes/<br>        rel_path =        usgs_2m:landuse_2m/<br>        rel_path =        usgs_5m:landuse_5m/<br>        rel_path =       usgs_10m:landuse_10m/<br>        rel_path =         lowres:modis_landuse_20class_5m_with_lakes/<br>        rel_path =        default:modis_landuse_20class_30s_with_lakes/<br>===============================<br>name=SOILTEMP<br>        priority=1<br>        dest_type=continuous<br>        interp_option= lowres:sixteen_pt+four_pt+wt_average_4pt+wt_average_16pt+search<br>        interp_option=default:sixteen_pt+four_pt+average_4pt+average_16pt+search<br>        masked=water<br>        fill_missing=0.<br>        rel_path= lowres:soiltemp_1deg/<br>        rel_path=default:soiltemp_1deg/<br>===============================<br>name=SOILCTOP<br>        priority=1<br>        dest_type=categorical<br>        z_dim_name=soil_cat<br>        dominant=SCT_DOM<br>        interp_option = bnu_soil_30s:nearest_neighbor<br>        interp_option =     30s:nearest_neighbor<br>        interp_option =      2m:four_pt<br>        interp_option =      5m:four_pt<br>        interp_option =     10m:four_pt<br>        interp_option =  lowres:four_pt<br>        interp_option = default:nearest_neighbor<br>        rel_path= bnu_soil_30s:bnu_soiltype_top/<br>        rel_path=     30s:soiltype_top_30s/<br>        rel_path=      2m:soiltype_top_2m/<br>        rel_path=      5m:soiltype_top_5m/<br>        rel_path=     10m:soiltype_top_10m/<br>        rel_path=  lowres:soiltype_top_5m/<br>        rel_path= default:soiltype_top_30s/<br>===============================<br>name=SOILCBOT<br>        priority=1<br>        dest_type=categorical<br>        z_dim_name=soil_cat<br>        dominant=SCB_DOM<br>        interp_option = bnu_soil_30s:nearest_neighbor<br>        interp_option =     30s:nearest_neighbor<br>        interp_option =      2m:four_pt<br>        interp_option =      5m:four_pt<br>        interp_option =     10m:four_pt<br>        interp_option =  lowres:four_pt<br>        interp_option = default:nearest_neighbor<br>        rel_path= bnu_soil_30s:bnu_soiltype_bot/<br>        rel_path=     30s:soiltype_bot_30s/<br>        rel_path=      2m:soiltype_bot_2m/<br>        rel_path=      5m:soiltype_bot_5m/<br>        rel_path=     10m:soiltype_bot_10m/<br>        rel_path=  lowres:soiltype_bot_5m/<br>        rel_path= default:soiltype_bot_30s/<br>===============================<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<hr />
+<h2 id="mechanistic-linkages-between-surface-properties-and-prognostic-variables">Mechanistic Linkages Between Surface Properties and Prognostic Variables</h2>
+<h3 id="how-wrf-calculates-t2m-based-on-lulc-and-soil-type">How WRF Calculates t2m Based on LULC and Soil Type</h3>
+<p>The 2-meter temperature (t2m) is a diagnostic variable in WRF, <strong>computed based on the surface layer module rather than directly simulated</strong>. <strong>WRF calculates t2m using the surface layer module, adjusting the lowest model level temperature to 2 meters using similarity theory</strong>. LULC and soil type affect this by influencing surface properties (e.g., roughness, albedo) and subsurface properties (e.g., heat storage), respectively, which shape the surface energy balance and thus t2m.</p>
+<p>This adjustment relies on surface fluxes (sensible and latent heat fluxes) and stability conditions, which are determined by the land surface model (LSM). The LSM, such as Noah, Noah-MP, or CLM, integrates LULC and soil type to compute the surface energy balance. Specifically:</p>
+<ul>
+<li><strong>LULC</strong> affects parameters like albedo, roughness length, and vegetation fraction, influencing how much solar radiation is absorbed and how heat is transferred to the atmosphere.</li>
+<li><strong>Soil type</strong> affects soil hydraulic and thermal properties, determining how heat and moisture are stored and transferred within the soil, which impacts surface temperature and fluxes.</li>
+</ul>
+<table>
+
+<thead>
+<tr class="header">
+<th><strong>Aspect</strong></th>
+<th><strong>LULC Influence</strong></th>
+<th><strong>Soil Type Influence</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Surface Properties</strong></td>
+<td>Determines albedo, roughness length, vegetation fraction, affecting energy absorption and transfer.</td>
+<td>Affects hydraulic (water retention) and thermal (heat conductivity) properties of soil.</td>
+</tr>
+<tr class="even">
+<td><strong>Energy Balance Components</strong></td>
+<td>Impacts sensible and latent heat fluxes through vegetation and surface cover.</td>
+<td>Influences ground heat flux and moisture availability for evaporation.</td>
+</tr>
+<tr class="odd">
+<td><strong>Impact on t2m</strong></td>
+<td>Indirectly affects t2m via surface temperature and heat fluxes, influenced by albedo and roughness.</td>
+<td>Indirectly affects t2m via soil heat storage and moisture, impacting surface temperature.</td>
+</tr>
+<tr class="even">
+<td><strong>Typical Data Sources</strong></td>
+<td>USGS, MODIS, MapBiomas (e.g., 30m resolution).</td>
+<td>STATSGO, FAO-UNESCO, SoilGrids (e.g., global coverage, high resolution).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="surface-energy-balance-and-t2m-computation">Surface Energy Balance and t2m Computation</h3>
+<p>The 2-meter temperature (t2m) is derived from the surface energy balance, which integrates <strong>net radiation</strong>, <strong>sensible heat flux</strong> (<span class="math inline">\(H\)</span>), <strong>latent heat flux</strong> (<span class="math inline">\(LE\)</span>), and <strong>ground heat flux</strong> (<span class="math inline">\(G\)</span>):</p>
+<p><span class="math display">\[
+R_{\text{net}} = H + LE + G = (1-\alpha)S_{\downarrow} + L_{\downarrow} - L_{\uparrow} - G
+\]</span><br />
+where <span class="math inline">\(R_{\text{net}}\)</span> is net radiation<sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>, <span class="math inline">\(S_{\downarrow}\)</span> and <span class="math inline">\(L_{\downarrow}\)</span> are incoming shortwave and longwave radiation, and <span class="math inline">\(\alpha\)</span> is albedo.</p>
+<ol type="1">
+<li><strong>LULC Influence</strong>:
+<ul>
+<li>Vegetation type affects albedo (e.g., forests: ~0.15; deserts: ~0.35), altering <span class="math inline">\(R_{\text{net}}\)</span><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.<br />
+</li>
+<li>Roughness length modulates turbulent fluxes (<span class="math inline">\(H\)</span> and <span class="math inline">\(LE\)</span>) via <strong>Monin-Obukhov similarity theory</strong><sup id="fnref:7" class="footnote-ref"><a href="#fn:7" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[7]</span></a></sup>.<br />
+</li>
+<li><strong>Urban areas exhibit higher heat storage</strong>, elevating <span class="math inline">\(H\)</span> and t2m<sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</li>
+</ul></li>
+<li><strong>Soil Type Influence</strong>:
+<ul>
+<li><strong>Soil moisture</strong> availability governs <span class="math inline">\(LE\)</span> through <strong>evaporation</strong>. Clay soils retain moisture longer, sustaining <span class="math inline">\(LE\)</span> during dry periods<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup><sup id="fnref:8" class="footnote-ref"><a href="#fn:8" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[8]</span></a></sup>.<br />
+</li>
+<li>Thermal conductivity impacts <span class="math inline">\(G\)</span>; sandy soils transfer heat more efficiently than organic-rich soils<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[3]</span></a></sup>.</li>
+</ul></li>
+</ol>
+<h3 id="joint-impact-on-boundary-layer-dynamics">Joint Impact on Boundary Layer Dynamics</h3>
+<p><strong>Misalignment between LULC and soil type can skew surface flux partitioning</strong>. For instance, assigning a forest LULC with sandy soil (low water retention) may underestimate latent heat flux, leading to overestimated t2m. Conversely, urban LULC with clay soil (high water retention) could artificially enhance <span class="math inline">\(LE\)</span>, cooling t2m unrealistically<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup><sup id="fnref:8" class="footnote-ref"><a href="#fn:8" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[8]</span></a></sup>. The Noah-LSM resolves these interactions by coupling vegetation parameters (e.g., LAI) with soil hydraulic properties to compute root-zone moisture and transpiration<sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</p>
+<p><strong>Mismatched landcover-soil pairs disrupt these relationships</strong>. For example, cropland (IVGTYP=2) paired with sandy soil (ISLTYP=1) may underestimate irrigation demands due to exaggerated drainage, while urban (IVGTYP=1) with clay (ISLTYP=3) artificially sustains <span class="math inline">\(LE\)</span> through retained moisture.</p>
+<hr />
+<h2 id="best-practices-for-wrf-configuration">Best Practices for WRF Configuration</h2>
+<ol type="1">
+<li><strong>Harmonize LULC and Soil Type Classifications</strong>:
+<ul>
+<li>Use physiographic datasets (e.g., USGS, MODIS) ensuring LULC-soil consistency.<br />
+</li>
+<li>Validate <code>IVGTYP</code> and <code>ISLTYP</code> coherence using tools like <code>ncks</code> to prevent runtime errors<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>.</li>
+</ul></li>
+<li><strong>Sensitivity Testing</strong>:
+<ul>
+<li>Conduct ensemble runs with perturbed LULC/soil combinations to quantify t2m variability.<br />
+</li>
+<li>Prioritize soil type updates when LULC changes alter surface permeability (e.g., urbanization).</li>
+</ul></li>
+<li><strong>Leverage High-Resolution Data</strong>:
+<ul>
+<li>Incorporate 30m LULC and soil maps to resolve subgrid heterogeneity, critical for mesoscale applications<sup id="fnref:8" class="footnote-ref"><a href="#fn:8" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[8]</span></a></sup>.</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="case-evidence-of-update-necessity">Case Evidence of Update Necessity</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/in-house-1s-33-cat-land-use-30-s-19-cat-soil-type-working-in-wps-4-2-but-not-4-5-or-4-6.18246/">in-house 1s 33 cat land use/30 s 19 cat soil type working in WPS 4.2 but not 4.5 or 4.6</a>
+<ul>
+<li>A 2024 WRF forum post documented catastrophic errors when using 1-arcsecond landcover data with 30-arcsecond soil types in WPS versions 4.5–4.6. The geogrid module assigned unrealistic soil moisture values (1e20) to water grids due to landmask inconsistencies between high-resolution landcover and legacy soil datasets. Resolution mismatches induced numerical instabilities in the <code>process_tile_module.F</code> code, necessitating harmonized 1-arcsecond soil data to maintain XLAND (land/water mask) coherence.</li>
+</ul></li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>In the WRF model, land use/land cover and soil type are mutually reinforcing inputs that jointly govern surface flux calculations and prognostic variables like t2m. While technically independent, their physiographic consistency is paramount to avoid numerical artifacts and ensure physically meaningful outputs. Future work should focus on dynamic coupling frameworks that automate LULC-soil harmonization, particularly for applications in climate change and land management.</p>
+<h2 id="citations">Citations</h2>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5572266/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC5572266/</a> <a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9661943/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC9661943/</a> <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/run/SOILPARM.TBL" class="uri">https://github.com/wrf-model/WRF/blob/master/run/SOILPARM.TBL</a> <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="http://rccdp.unl.edu/portal/WRF_Variable_Table.pdf" class="uri">http://rccdp.unl.edu/portal/WRF_Variable_Table.pdf</a> <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:5" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/inconsistent-xland-and-isltyp.646/" class="uri">https://forum.mmm.ucar.edu/threads/inconsistent-xland-and-isltyp.646/</a> <a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:6" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://vlab.noaa.gov/web/emc/noah-lsm" class="uri">https://vlab.noaa.gov/web/emc/noah-lsm</a> <a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:7" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/mwre/140/3/mwr-d-11-00056.1.xml" class="uri">https://journals.ametsoc.org/view/journals/mwre/140/3/mwr-d-11-00056.1.xml</a> <a href="#fnref:7" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:8" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11191672/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC11191672/</a> <a href="#fnref:8" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:9" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6360509/" class="uri">https://pmc.ncbi.nlm.nih.gov/articles/PMC6360509/</a> <a href="#fnref:9" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">^NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/Meteorology/" class="print-no-link">#Meteorology</a>
+      
+        <a href="/tags/LANDUSE/" class="print-no-link">#LANDUSE</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#^NWP</a>
+      
+        <a href="/tags/SOILPARM/" class="print-no-link">#SOILPARM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | MPAS | WRF| Land Use/Land Cover and Soil Type</div>
+      <div>https://waipangsze.github.io/2025/05/28/NWP-MPAS-WRF-Land-Use-Land-Cover-and-Soil-Type/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 28, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>May 28, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/27/Trade-wind/" title="Trade wind | 信風">
+                        <span class="hidden-mobile">Trade wind | 信風</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
