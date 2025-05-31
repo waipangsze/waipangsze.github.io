@@ -9,8 +9,8 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2025-05-31 11:15:00
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/iYbmaA2.png
+banner_img: https://i.imgur.com/iYbmaA2.png
 ---
 
 A **tephigram** is one of a number of thermodynamic diagrams commonly used in weather analysis and forecasting. The name evolved from the original name "T-ϕ-gram" to describe the axes of temperature (T) and entropy (ϕ) used to create the plot. Usually, temperature and dew point data from radiosondes are plotted on these diagrams to allow calculations of convective stability or convective available potential energy (CAPE). Wind barbs are often plotted at the side of a tephigram to indicate the winds at different heights.
