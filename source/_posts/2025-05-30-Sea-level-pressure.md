@@ -9,8 +9,8 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2025-05-30 11:19:00
-index_img: https://i.imgur.com/4OoEsWx.png
-banner_img: https://i.imgur.com/4OoEsWx.png
+index_img: https://i.imgur.com/qJAq2VG.png
+banner_img: https://i.imgur.com/qJAq2VG.png
 ---
 
 # Detailed Mathematical Formulations of Mean Sea Level Pressure (MSLP)  
