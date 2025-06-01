@@ -56,6 +56,17 @@ banner_img: https://i.imgur.com/dx8eRko.jpeg
 
 **典型的大陸暖高壓**例如：**青藏高壓**（或南亞高壓）和墨西哥高壓。青藏高壓的水平尺度可達萬公里以上。這兩個高壓雖然都位於副熱帶地區，但從結構、性質和形成過程來看，和大洋上對流層中低層的副熱帶高壓很不相同，它們主要是高原或大陸的加熱作用形成的。**這種系統，在500百帕等壓面之下為熱低壓，在500百帕以上才為高壓**，而且越往上高壓強度越大，在2​​00～100百帕高度，強度最大。其高壓中心區為上升氣流，多對流活動，這些高壓中心常作東西向擺動，**當其東擺時，與大洋西部的副熱帶高壓脊疊加，使後者加強。北半球大洋上副熱帶高壓的強度，之所以夏季強於冬季，和這些高壓的存在及其作用有密切的關係**。
 
+# 參考
+
+{% gi 4 2-2 %}
+![](https://i.imgur.com/07nxUBC.png)
+![](https://i.imgur.com/szWilkJ.jpeg)
+![](https://i.imgur.com/WFl7QaR.jpeg)
+![](https://i.imgur.com/dx8eRko.jpeg)
+{% endgi %}
+
+![](https://i.imgur.com/3qu9wAZ.png)
+
 # References
 
 1. [玩转地理 | 冷也会产生低压，热也可能产生高压](https://mp.weixin.qq.com/s/9SQULHuK-leifxw3ty1vOQ)
