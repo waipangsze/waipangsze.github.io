@@ -2,7 +2,7 @@
 layout: post
 title: "Westerly Trough | 西風槽"
 categories: [Meteorology]
-tags: []
+tags: [NWP, MAPS, WRF]
 author: wpsze
 math: true
 mathjax: true
