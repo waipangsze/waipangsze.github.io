@@ -4,6 +4,82 @@
   
   
   <entry>
+    <title>DA | VarBC</title>
+    <link href="/2025/06/04/NWP-DA-VarBC/"/>
+    <url>/2025/06/04/NWP-DA-VarBC/</url>
+    
+    <content type="html"><![CDATA[<div class="note note-primary">            <p>Most data assimilation schemes assumes an <strong>unbiased observation model error.</strong></p>          </div><ul><li><a href="https://journals.ametsoc.org/view/journals/mwre/145/7/mwr-d-16-0428.1.xml">Berry, Tyrus, and John Harlim. "Correcting biased observation model error in data assimilation." Monthly Weather Review 145.7 (2017): 2833-2853.</a><ul><li>While the formulation of <strong><code>most data assimilation schemes assumes an unbiased observation model error</code></strong>,</li><li><strong>in real applications model error with nontrivial biases is unavoidable</strong>.</li><li><strong>A practical example is errors in the radiative transfer model</strong> (which is used to assimilate satellite measurements) in the presence of clouds. Together with the dynamical model error, the result is that many (in fact 99%) of the cloudy observed measurements are not being used although they may contain useful information.</li><li><img src="https://i.imgur.com/kaV1hwm.png" /></li><li><img src="https://i.imgur.com/W4m17j6.png" /></li></ul></li><li><a href="https://www2.atmos.umd.edu/~dkleist/docs/da/ECMWF_DA_TUTORIAL/Hersbach_BiasCorrection.pdf">Bias correction in data assimilation | Hans Hersbach and Dick Dee | 2014</a><ul><li><strong>Most assimilation systems assume unbiased models and unbiased data</strong></li><li><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/bo9h7ek.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/pDrburZ.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/mjTDphh.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/SHkJlVq.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/p6f4C6M.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/h0PecxM.png" /></div></div></div></li></ul></li><li><a href="https://events.ecmwf.int/event/375/contributions/4263/attachments/2312/4041/Bormann_TC_2024_Bcor_SAT.pdf">Observational bias correction in data assimilation and an overview of satellite data monitoring | Niels Bormann | 2024</a><ul><li><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/EgMLRiG.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/FdXSSuB.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/u30uZDp.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/FUdxC7X.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/aqdNCjg.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/VGbcixN.png" /></div></div></div></li></ul></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>DA</tag>
+      
+      <tag>WRFDA</tag>
+      
+      <tag>KF</tag>
+      
+      <tag>EKF</tag>
+      
+      <tag>EnKF</tag>
+      
+      <tag>VarBC</tag>
+      
+      <tag>3dVar</tag>
+      
+      <tag>4dVar</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>WRF-LES</title>
+    <link href="/2025/06/04/WRF-LES/"/>
+    <url>/2025/06/04/WRF-LES/</url>
+    
+    <content type="html"><![CDATA[<h1 id="major-problem">Major problem</h1><div class="note note-primary">            <p>Major problem is that <strong>turbulence parameterizations in the commonly used one-dimensional (1D) planetary boundary layer (PBL) schemes only consider vertical exchange</strong>.</p>          </div><ul><li>The <a href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/dudhia_physics_pbl_turbulence.pdf"><strong>document</strong></a> gives a brief description of LES in WRF, which may also be helpful.</li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs namelist">km_opt(max_dom)  = 1,! eddy coefficient option<br>                    1 = constant (use khdif kvdif)<br>                    2 = 1.5 order TKE closure (3D)<br>                    3 = Smagorinsky first order closure (3D)<br>                        Note: option 2 and 3 are not recommended for DX &gt; 2 km<br>                    4 = horizontal Smagorinsky first order closure<br>                        (recommended for real-data cases)<br>                    5 = SMS-3DTKE scale-adaptive LES/PBL scheme. It must be<br>                        used with diff_opt = 2. PBL schemes must be turned off<br>                        (bl_pbl_physics=0). It can work with sf_sfclay_physics = 1, 5, 91.<br></code></pre></td></tr></table></figure><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/H2p09C8.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/JbdAkgs.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/VDgnukW.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/WQxDZcS.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/VBwLFqC.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/TX0CvUp.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/vOFSyYs.png" /></div></div></div><ul><li><a href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2012MS000164">Yamaguchi, Takanobu, and Graham Feingold. "<strong>Large‐eddy simulation of cloudy boundary layer with the Advanced Research WRF model.</strong>" Journal of Advances in Modeling Earth Systems 4.3 (2012).</a></li><li><a href="https://journals.ametsoc.org/view/journals/apme/59/9/jamcD190304.xml#bib23">Liu, Y., Y. Liu, D. Muñoz-Esparza, F. Hu, C. Yan, and S. Miao, 2020: <strong>Simulation of Flow Fields in Complex Terrain with WRF-LES: Sensitivity Assessment of Different PBL Treatments.</strong> J. Appl. Meteor. Climatol., 59, 1481–1501, https://doi.org/10.1175/JAMC-D-19-0304.1.</a><ul><li>Employing the <strong><code>Shuttle Radar Topography Mission 1 arc s dataset (SRTM1; ~30 m)</code></strong> high-resolution topographic dataset instead of the <strong><code>traditional USGS_30s (~900 m) dataset</code></strong> effectively improves the model capability for reproducing fluctuations and turbulent features of surface winds.</li><li>Numerical artifacts might be produced in areas of complex terrain, where the <strong>assumption of horizontal homogeneity is violated</strong> <code>(Goger et al. 2018, 2019)</code> while horizontal exchanges and <strong>three-dimensional (3D) effects</strong> such as horizontal shear production are entirely neglected. 3D PBL schemes <code>(Jiménez and Kosović 2016)</code> should be able to alleviate the effect of complex terrain, yet there exist no robust approaches that have been validated in a wide range of atmospheric conditions.</li><li>In addition, <strong>mesoscale NWP models</strong> with relatively coarse resolution cannot capture microscale variabilities driven by atmospheric dynamics (<strong>turbulence effects are fully parameterized</strong>). <strong>Large-eddy simulation (LES) that can explicitly resolve the most energetic turbulent eddies could be an alternative to PBL schemes</strong> (Cuxart 2015).</li><li><img src="https://journals.ametsoc.org/view/journals/apme/59/9/full-jamcD190304-f3.jpg" /></li><li><img src="https://journals.ametsoc.org/view/journals/apme/59/9/full-jamcD190304-t1.jpg" /></li></ul></li></ul><h1 id="references">References</h1><ol type="1"><li><a href="https://doi.org/10.1007/s10546-018-0341-y">Goger, B., M. W. Rotach, A. Gohm, O. Fuhrer, I. Stiperski, and A. A. M. Holtslag, 2018: <strong>The impact of three-dimensional effects on the simulation of turbulence kinetic energy in a major alpine valley</strong>. Bound.-Layer Meteor., 168, 1–27.</a></li><li><a href="https://doi.org/10.1175/JAMC-D-18-0328.1">Goger, B., M. W. Rotach, A. Gohm, I. Stiperski, O. Fuhrer, and G. de Morsier, 2019: <strong>A new horizontal length scale for a three-dimensional turbulence parameterization in mesoscale atmospheric modeling over highly complex terrain</strong>. J. Appl. Meteor. Climatol., 58, 2087–2102.</a></li><li><a href="http://www2.mmm.ucar.edu/wrf/users/workshops/WS2016/short_abstracts/6.4.pdf">Jiménez, P. A., and B. Kosović, 2016: <strong>Implementation and evaluation of a three dimensional PBL parameterization for simulations of the flow over complex terrain</strong>. 17th Annual WRF Users’ Workshop, Boulder, CO, National Center for Atmospheric Research, 6.4.,.</a></li><li><a href="https://doi.org/10.3389/feart.2015.00087">Cuxart, J., 2015: When can a high-resolution simulation over complex terrain be called LES? Front. Earth Sci., 3, 87, https://doi.org/10.3389/feart.2015.00087.</a></li><li></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>MPAS</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>PBL</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Somali Jet | 索馬里急流</title>
     <link href="/2025/06/03/Somali-Jet/"/>
     <url>/2025/06/03/Somali-Jet/</url>
@@ -20,9 +96,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -49,11 +125,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>cloud fraction</tag>
       
@@ -82,9 +158,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -111,9 +187,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -140,11 +216,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -169,11 +245,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -198,11 +274,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -262,11 +338,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -324,11 +400,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>CCPP</tag>
       
@@ -355,11 +431,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PBL</tag>
       
@@ -390,11 +466,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -419,11 +495,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ecFlow</tag>
       
@@ -557,11 +633,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -596,11 +672,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -635,11 +711,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Meteorology</tag>
       
@@ -674,11 +750,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -707,11 +783,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -736,13 +812,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -769,13 +845,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Linux</tag>
       
@@ -804,13 +880,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Noah surface scheme</tag>
       
@@ -866,13 +942,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>mesh generation</tag>
       
@@ -903,13 +979,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -936,13 +1012,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
+      <tag>WRF</tag>
+      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>GFS</tag>
       
@@ -981,11 +1057,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -1016,11 +1092,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>CMA</tag>
       
@@ -1051,11 +1127,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -1088,11 +1164,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -1125,11 +1201,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -1191,11 +1267,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Precipitation</tag>
       
@@ -1255,11 +1331,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>IC</tag>
       
@@ -1288,11 +1364,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>FDDA</tag>
       
@@ -1354,11 +1430,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1391,11 +1467,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1428,11 +1504,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -1461,11 +1537,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -1490,11 +1566,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1525,11 +1601,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1562,11 +1638,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1595,11 +1671,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PINN</tag>
       
@@ -1632,11 +1708,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1667,11 +1743,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1700,13 +1776,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>HKO</tag>
       
@@ -1739,11 +1815,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -1772,11 +1848,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1813,11 +1889,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1846,11 +1922,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1879,11 +1955,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1916,11 +1992,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1957,11 +2033,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -2000,11 +2076,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -2072,11 +2148,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -2301,13 +2377,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -2334,13 +2410,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -2468,13 +2544,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>MPI</tag>
       
@@ -2534,11 +2610,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -3241,13 +3317,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -3272,13 +3348,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>MPI</tag>
       
@@ -3309,13 +3385,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -3577,9 +3653,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -3664,11 +3740,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3769,9 +3845,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -3800,9 +3876,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -3831,9 +3907,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -3864,11 +3940,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3893,11 +3969,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -3924,13 +4000,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -3955,11 +4031,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3984,9 +4060,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -4223,11 +4299,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ECMWF</tag>
       
@@ -4296,11 +4372,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -4358,11 +4434,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -4533,11 +4609,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Google</tag>
       
@@ -4564,11 +4640,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -4593,11 +4669,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4624,11 +4700,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4655,11 +4731,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -4686,11 +4762,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4854,11 +4930,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4887,9 +4963,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -4926,9 +5002,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -4959,15 +5035,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>gnu</tag>
       
+      <tag>WRF</tag>
+      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -5216,9 +5292,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Micromamba</tag>
       
@@ -5407,9 +5483,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Spack</tag>
       
@@ -5679,9 +5755,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -5881,6 +5957,37 @@
   
   
   <entry>
+    <title>HKO station and analysis</title>
+    <link href="/2023/06/24/HKO-station-and-analysis/"/>
+    <url>/2023/06/24/HKO-station-and-analysis/</url>
+    
+    <content type="html"><![CDATA[<h1 id="download-hko-weather-dataset">Download HKO weather dataset</h1><p>From <a href="https://i-lens.hk/hkweather/">i-lens.hk 香港自動氣象站氣候觀測資料庫</a> <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> yyyy=2023<br><span class="hljs-built_in">export</span> mm=04<br><br><span class="hljs-keyword">for</span> <span class="hljs-built_in">dd</span> <span class="hljs-keyword">in</span> &#123;14..16&#125;; <span class="hljs-keyword">do</span><br>    wget http://i-lens.hk/hkweather/history_minute_record/<span class="hljs-variable">$&#123;yyyy&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>.zip ;<br>    <span class="hljs-built_in">echo</span> $mm<span class="hljs-variable">$dd</span> sleeping now ;<br>    <span class="hljs-comment">#mkdir -p $yyyy</span><br>    <span class="hljs-comment">#mv $&#123;yyyy&#125;$&#123;mm&#125;$&#123;dd&#125;* ./$&#123;yyyy&#125; ;</span><br>    <span class="hljs-comment">#sleep $((80 + RANDOM % 21)) ;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure> Subsequently, extract those elements.</p><h1 id="list-of-hko-station">List of HKO station</h1><p>As part of the HKO stations, the majority of the names I use align with the definitions provided by HKO. However, there are a few instances where I have personally assigned names to certain elements.</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs sh">ID,lat,lon,station,station_en,station_ch<br>1,22.301944,114.174167,hko,HKO (Tsim Sha Tsui),香港天文台<br>2,22.201111,114.026667,cch,Cheung Chau,長洲<br>3,22.263389,114.299769,cwb,Clear water bay,清水灣<br>4,22.309444,113.921944,hka,HK Airport,香港國際機場<br>5,22.278333,114.162222,hkp,Hong Kong Park,香港公園<br>6,22.247778,114.173611,hks,Wong Chuk Hang,黃竹坑<br>7,22.270556,114.183611,hpv,Happy Valley,跑馬地<br>8,22.315833,114.255556,jkb,Tseung Kwan O,將軍澳<br>9,22.335000,114.184722,klt,Kowloon City,九龍城<br>10,22.311944,114.172778,kp,King’s Park,京士柏<br>11,22.370278,114.312500,ksc,Kau Sai Chau,滘西洲<br>12,22.318611,114.224722,ktg,Kwun Tong,觀塘<br>13,22.468889,113.983611,lfs,Lau Fau Shan,流浮山<br>14,22.258611,113.912778,ngp,Ngong Ping,昂坪<br>15,22.291111,114.043333,pen,Peng Chau,坪洲<br>16,22.475278,114.237500,plc,Tai Mei Tuk,大美督<br>17,22.304722,114.217222,se1,Kai Tak Runway Park,啟德跑道公園<br>18,22.436111,114.084722,sek,Shek Kong,石崗<br>19,22.402500,114.210000,sha,Sha Tin,沙田<br>20,22.375556,114.274444,skg,Sai Kung,西貢<br>21,22.281667,114.236111,skw,Shau Kei Wan,筲箕灣<br>22,22.501944,114.111111,ssh,Sheung Shui,上水<br>23,22.335833,114.136944,ssp,Sham Shui Po,深水埗<br>24,22.214167,114.218611,sty,Stanley,赤柱<br>25,22.357778,114.217778,tc,Tate<span class="hljs-string">&#x27;s Cairn,大老山</span><br><span class="hljs-string">26,22.528611,114.156667,tkl,Ta Kwu Ling,打鼓嶺</span><br><span class="hljs-string">27,22.483480,114.117400,tl,Tai Lung,大隴</span><br><span class="hljs-string">28,22.410556,114.124444,tms,Tai Mo Shan,大帽山</span><br><span class="hljs-string">29,22.446111,114.178889,tpo,Tai Po,大埔</span><br><span class="hljs-string">30,22.385833,113.964167,tu1,Tuen Mun Children and Juvenile Home,屯門兒童及青少年院</span><br><span class="hljs-string">31,22.375556,114.126667,tw,Shing Mun Valley,荃灣城門谷</span><br><span class="hljs-string">32,22.383611,114.107778,twn,Tsuen Wan,荃灣</span><br><span class="hljs-string">33,22.344167,114.110000,ty1,Tsing Yi Station,新青衣站</span><br><span class="hljs-string">34,22.402778,114.323056,tyw,Pak Tam Chung,北潭涌(鯽魚湖)</span><br><span class="hljs-string">35,22.264167,114.155000,vp1,The Peak,山頂</span><br><span class="hljs-string">36,22.182222,114.303333,wgl,Waglan Island,橫瀾島</span><br><span class="hljs-string">37,22.466667,114.008889,wlp,Wetland Park,濕地公園</span><br><span class="hljs-string">38,22.339444,114.205278,wts,Wong Tai Sin,黃大仙</span><br><span class="hljs-string">39,22.440833,114.018333,ylp,ylp,ylp</span><br></code></pre></td></tr></table></figure><h1 id="jupter-notebook-or-python">Jupter Notebook or python</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><span class="hljs-comment"># coding: utf-8</span><br><br><span class="hljs-comment"># In[1]:</span><br><br><br><span class="hljs-keyword">import</span> glob, os<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> timedelta<br><br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">from</span> matplotlib <span class="hljs-keyword">import</span> cm<br>SMALL_SIZE = <span class="hljs-number">8</span><br>MEDIUM_SIZE = <span class="hljs-number">10</span><br>BIGGER_SIZE = <span class="hljs-number">24</span><br><br>plt.rcParams[<span class="hljs-string">&quot;figure.figsize&quot;</span>] = (<span class="hljs-number">10</span>,<span class="hljs-number">8</span>)<br>plt.rc(<span class="hljs-string">&#x27;font&#x27;</span>, size=BIGGER_SIZE)          <span class="hljs-comment"># controls default text sizes</span><br>plt.rc(<span class="hljs-string">&#x27;axes&#x27;</span>, titlesize=BIGGER_SIZE)     <span class="hljs-comment"># fontsize of the axes title</span><br>plt.rc(<span class="hljs-string">&#x27;axes&#x27;</span>, labelsize=BIGGER_SIZE)    <span class="hljs-comment"># fontsize of the x and y labels</span><br>plt.rc(<span class="hljs-string">&#x27;xtick&#x27;</span>, labelsize=BIGGER_SIZE)    <span class="hljs-comment"># fontsize of the tick labels</span><br>plt.rc(<span class="hljs-string">&#x27;ytick&#x27;</span>, labelsize=BIGGER_SIZE)    <span class="hljs-comment"># fontsize of the tick labels</span><br>plt.rc(<span class="hljs-string">&#x27;legend&#x27;</span>, fontsize=BIGGER_SIZE)    <span class="hljs-comment"># legend fontsize</span><br>plt.rc(<span class="hljs-string">&#x27;figure&#x27;</span>, titlesize=BIGGER_SIZE)  <span class="hljs-comment"># fontsize of the figure title</span><br><br><span class="hljs-comment"># plt.rcParams[&#x27;font.sans-serif&#x27;] = [&#x27;SimHei&#x27;] </span><br><span class="hljs-comment"># plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False</span><br><br>plt.rcParams.update(&#123;<span class="hljs-string">&#x27;font.family&#x27;</span>:<span class="hljs-string">&#x27;sans-serif&#x27;</span>&#125;)<br>plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;DejaVu Sans&#x27;</span>]<br><br><span class="hljs-comment"># from IPython.core.interactiveshell import InteractiveShell</span><br><span class="hljs-comment"># InteractiveShell.ast_node_interactivity = &quot;all&quot;</span><br><br><br><span class="hljs-comment"># # Reading all dataset</span><br><br><span class="hljs-comment"># In[2]:</span><br><br><br>select_year = <span class="hljs-string">&quot;202304&quot;</span><br><br>station = pd.read_csv(<span class="hljs-string">r&#x27;./HKO-station.csv&#x27;</span>, header=<span class="hljs-number">0</span>) <span class="hljs-comment"># nearwater or inland</span><br>select_num = <span class="hljs-number">7</span><br><span class="hljs-comment">#======================================== station =============================================</span><br>select_station = station[<span class="hljs-string">&quot;station&quot;</span>][select_num]<br>select_station_en = station[<span class="hljs-string">&quot;station_en&quot;</span>][select_num]<br>select_station_ch = station[<span class="hljs-string">&quot;station_ch&quot;</span>][select_num]<br>file_name_t2m = select_station+<span class="hljs-string">&quot;_&quot;</span>+select_year<br>file_name_wind = select_station+<span class="hljs-string">&quot;_wd_&quot;</span>+select_year<br>file_name_pressure = select_station+<span class="hljs-string">&quot;_pre_&quot;</span>+select_year<br><span class="hljs-built_in">print</span>(select_num, select_station, select_station_en, select_station_ch)<br>station<br><br><br><span class="hljs-comment"># In[3]:</span><br><br><br><span class="hljs-comment">#========================================= mpas ================================================</span><br>mpas_station_extraction_dir=<span class="hljs-string">&quot;/xxx/xxx/station_xxxx.csv&quot;</span><br>df_mpas = pd.read_csv(mpas_station_extraction_dir)<br><span class="hljs-comment"># .dt.tz_localize(None): to remove timezone from a Timestamp column in a pandas dataframe</span><br>df_mpas[<span class="hljs-string">&quot;Date(UTC)&quot;</span>] = pd.to_datetime(df_mpas[<span class="hljs-string">&quot;xtime[UTC]&quot;</span>], utc=<span class="hljs-string">&quot;false&quot;</span>).dt.tz_localize(<span class="hljs-literal">None</span>)<br>df_mpas[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] = df_mpas[<span class="hljs-string">&quot;Date(UTC)&quot;</span>] + timedelta(hours=<span class="hljs-number">8</span>)<br><br>df_select_mpas = df_mpas[df_mpas[<span class="hljs-string">&quot;station&quot;</span>] == select_station]<br>df_select_mpas = df_select_mpas.reset_index(drop = <span class="hljs-literal">True</span>)<br><br><span class="hljs-comment">#=========================================== HKO t2m ==============================================</span><br>obs_file = []<br><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> glob.glob(<span class="hljs-string">f&quot;/home/wpsze/hk_data/<span class="hljs-subst">&#123;select_year&#125;</span>*/<span class="hljs-subst">&#123;file_name_t2m&#125;</span>*&quot;</span>):<br>    obs_file.append(file)<br><span class="hljs-built_in">print</span>(obs_file)<br>df = pd.concat((pd.read_csv(f, header = <span class="hljs-number">0</span>, na_values=[<span class="hljs-string">&#x27;nan&#x27;</span>], keep_default_na=<span class="hljs-literal">True</span>) <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> obs_file))<br>df_hko_obs = df.drop_duplicates()<br>df_hko_obs = df_hko_obs.reset_index(drop = <span class="hljs-literal">True</span>)<br><br>df_hko_obs[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] = pd.to_datetime(df_hko_obs[<span class="hljs-string">&quot;Date&quot;</span>]) <br>df_hko_obs[<span class="hljs-string">&quot;Date(UTC)&quot;</span>] = df_hko_obs[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] + timedelta(hours=-<span class="hljs-number">8</span>)<br>df_hko_obs = df_hko_obs.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_hko_obs<br><span class="hljs-comment">#=========================================================================================</span><br>df_combine = pd.merge(df_select_mpas, df_hko_obs)<br><span class="hljs-comment">#=========================================== HKO wind ==============================================</span><br>obs_file = []<br><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> glob.glob(<span class="hljs-string">f&quot;/home/home/wpsze/hk_data/<span class="hljs-subst">&#123;select_year&#125;</span>*/<span class="hljs-subst">&#123;file_name_wind&#125;</span>*&quot;</span>):<br>    obs_file.append(file)<br><span class="hljs-built_in">print</span>(obs_file)<br>df = pd.concat((pd.read_csv(f, header = <span class="hljs-number">0</span>, na_values=[<span class="hljs-string">&#x27;nan&#x27;</span>], keep_default_na=<span class="hljs-literal">True</span>) <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> obs_file))<br>df_hko_obs = df.drop_duplicates()<br>df_hko_obs = df_hko_obs.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_hko_obs<br><br>df_hko_obs[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] = pd.to_datetime(df_hko_obs[<span class="hljs-string">&quot;Date&quot;</span>]) <br>df_hko_obs[<span class="hljs-string">&quot;Date(UTC)&quot;</span>] = df_hko_obs[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] + timedelta(hours=-<span class="hljs-number">8</span>)<br>df_hko_obs[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>] = df_hko_obs[<span class="hljs-string">&quot;Wind Spd&quot;</span>]*<span class="hljs-number">0.514444444</span> <span class="hljs-comment"># knt to m/s</span><br>df_hko_obs[<span class="hljs-string">&quot;obs-wdir[deg]&quot;</span>] = df_hko_obs[<span class="hljs-string">&quot; Wind Dir&quot;</span>]<br>df_hko_obs = df_hko_obs.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_hko_obs<br><span class="hljs-comment">#=========================================================================================</span><br>df_combine = pd.merge(df_combine, df_hko_obs)<br><span class="hljs-comment">#=========================================================================================</span><br>spin_up_period = <span class="hljs-number">72</span><br>df_combine_skip_spinup = df_combine[spin_up_period:]<br>df_combine_skip_spinup = df_combine_skip_spinup.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_combine_skip_spinup<br><br><br><span class="hljs-comment"># In[4]:</span><br><br><br>df_combine_final = df_combine_skip_spinup[df_combine_skip_spinup[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>]&lt;<span class="hljs-number">100</span>] <br>df_combine_final = df_combine_final.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_combine_final<br><br><br><span class="hljs-comment"># # For t2m</span><br><br><span class="hljs-comment"># In[33]:</span><br><br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;Temp&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;t2m[degC]&quot;</span>],<span class="hljs-string">&#x27;bo-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;T2m [deg C]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.legend()<br>plt.tight_layout()<br>plt.show()<br>plt.close()<br><br><span class="hljs-comment"># df_combine_final[&quot;Temp&quot;]</span><br><br><br><span class="hljs-comment"># # For wind speed</span><br><br><span class="hljs-comment"># In[6]:</span><br><br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;Temp&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;t2m[degC]&quot;</span>],<span class="hljs-string">&#x27;bo-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;T2m [deg C]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.legend()<br>plt.show()<br>plt.close()<br><br><br><span class="hljs-comment"># In[7]:</span><br><br><br><span class="hljs-comment">#=========================================================</span><br><br>hko_wind = df_combine_final[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>]<br>hko_wdir = df_combine_final[<span class="hljs-string">&quot;obs-wdir[deg]&quot;</span>]<br><br>size = hko_wdir.shape[<span class="hljs-number">0</span>]<br><br>wspd = hko_wind*<span class="hljs-number">1.9438452</span>    <span class="hljs-comment"># m/s to kt</span><br>wdir = hko_wdir*<span class="hljs-number">0.0174532925</span> <span class="hljs-comment"># deg to rad</span><br>U_obs = -wspd*np.sin(wdir)<br>V_obs = -wspd*np.cos(wdir)<br><br>df = pd.DataFrame(np.vstack([U_obs,V_obs]).T, columns=[<span class="hljs-string">&#x27;U&#x27;</span>, <span class="hljs-string">&#x27;V&#x27;</span>])<br><br><span class="hljs-comment">#=========================================================</span><br>mpas_wind = df_combine_final[<span class="hljs-string">&quot;wspd[m/s]&quot;</span>]<br>mpas_wdir = df_combine_final[<span class="hljs-string">&quot;wdir[deg]&quot;</span>]<br><br>wspd = mpas_wind*<span class="hljs-number">1.9438452</span>    <span class="hljs-comment"># m/s to kt</span><br>wdir = mpas_wdir*<span class="hljs-number">0.0174532925</span> <span class="hljs-comment"># deg to rad</span><br>U_mpas = -wspd*np.sin(wdir)<br>V_mpas = -wspd*np.cos(wdir)<br><br>df_mpas = pd.DataFrame(np.vstack([U_mpas,V_mpas]).T, columns=[<span class="hljs-string">&#x27;U&#x27;</span>, <span class="hljs-string">&#x27;V&#x27;</span>])<br><br><span class="hljs-comment">#=========================================================</span><br><br>fig, ax = plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>, figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">4</span>))<br><br><span class="hljs-comment"># ax.plot(df.index.values.astype(&#x27;d&#x27;), df.V * 0.1 + 4, color=&#x27;k&#x27;)</span><br><span class="hljs-comment"># ax.quiver(df.index.values.astype(&#x27;d&#x27;), np.ones(size) * 2, df.U.values, df.V.values) #, pivot=&#x27;mid&#x27;)</span><br><br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * <span class="hljs-number">4</span>, df.U.values, df.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;k&#x27;</span>)<br><br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * <span class="hljs-number">2</span>, df_mpas.U.values, df_mpas.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;b&#x27;</span>)<br><br>ax.set_ylim([-<span class="hljs-number">1</span>,<span class="hljs-number">6</span>])<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.legend()</span><br>plt.show()<br>plt.close()<br><br><br><span class="hljs-comment"># In[8]:</span><br><br><br>fig, ax = plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>, figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">8</span>))<br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;wspd[m/s]&quot;</span>],<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br><br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * -<span class="hljs-number">2</span>, df.U.values, df.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;k&#x27;</span>)<br><br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * -<span class="hljs-number">5</span>, df_mpas.U.values, df_mpas.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;r&#x27;</span>)<br><br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.ylim([-<span class="hljs-number">7</span>,<span class="hljs-number">12</span>])<br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br>plt.show()<br>plt.close() <br><br><br><span class="hljs-comment"># ## Seperate u and v directions</span><br><span class="hljs-comment"># </span><br><span class="hljs-comment"># U_obs = -wspd x np.sin(wdir)\</span><br><span class="hljs-comment"># V_obs = -wspd x np.cos(wdir)</span><br><br><span class="hljs-comment"># In[9]:</span><br><br><br>fig, ax = plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>, figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">8</span>))<br><br>kt2ms = <span class="hljs-number">0.514444444</span><br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], U_obs*kt2ms, <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], U_mpas*kt2ms,<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br><br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;U Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.ylim([-7,10])</span><br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br>plt.show()<br>plt.close() <br><br>fig, ax = plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>, figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">8</span>))<br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], V_obs*kt2ms, <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], V_mpas*kt2ms,<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br><br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;V Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.ylim([-7,10])</span><br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br>plt.show()<br>plt.close() <br><br><br><span class="hljs-comment"># # Final Plot</span><br><br><span class="hljs-comment"># In[26]:</span><br><br><br>fig = plt.subplots(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, figsize=(<span class="hljs-number">20</span>,<span class="hljs-number">12</span>))<br><br>ax = plt.subplot(<span class="hljs-number">221</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;Temp&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;t2m[degC]&quot;</span>],<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;T2m [deg C]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.legend()<br>plt.tight_layout()<br><br>ax = plt.subplot(<span class="hljs-number">222</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;wspd[m/s]&quot;</span>],<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * -<span class="hljs-number">2</span>, df.U.values, df.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;k&#x27;</span>)<br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * -<span class="hljs-number">5</span>, df_mpas.U.values, df_mpas.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;r&#x27;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.ylim([-<span class="hljs-number">7</span>,<span class="hljs-number">12</span>])<br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br><br><br>kt2ms = <span class="hljs-number">0.514444444</span><br>ax = plt.subplot(<span class="hljs-number">223</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], U_obs*kt2ms, <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], U_mpas*kt2ms,<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;U Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.ylim([-7,10])</span><br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br><br><br>ax = plt.subplot(<span class="hljs-number">224</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], V_obs*kt2ms, <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], V_mpas*kt2ms,<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;V Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.ylim([-7,10])</span><br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br><br>plt.show()<br>plt.close() <br><br><br><span class="hljs-comment"># In[ ]:</span><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
+      
+      <tag>HKO</tag>
+      
+      <tag>obs</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Jupyter-Notebook</title>
     <link href="/2023/06/24/Jupyter-Notebook/"/>
     <url>/2023/06/24/Jupyter-Notebook/</url>
@@ -5933,37 +6040,6 @@
   
   
   <entry>
-    <title>HKO station and analysis</title>
-    <link href="/2023/06/24/HKO-station-and-analysis/"/>
-    <url>/2023/06/24/HKO-station-and-analysis/</url>
-    
-    <content type="html"><![CDATA[<h1 id="download-hko-weather-dataset">Download HKO weather dataset</h1><p>From <a href="https://i-lens.hk/hkweather/">i-lens.hk 香港自動氣象站氣候觀測資料庫</a> <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> yyyy=2023<br><span class="hljs-built_in">export</span> mm=04<br><br><span class="hljs-keyword">for</span> <span class="hljs-built_in">dd</span> <span class="hljs-keyword">in</span> &#123;14..16&#125;; <span class="hljs-keyword">do</span><br>    wget http://i-lens.hk/hkweather/history_minute_record/<span class="hljs-variable">$&#123;yyyy&#125;</span>/<span class="hljs-variable">$&#123;yyyy&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span><span class="hljs-variable">$&#123;dd&#125;</span>.zip ;<br>    <span class="hljs-built_in">echo</span> $mm<span class="hljs-variable">$dd</span> sleeping now ;<br>    <span class="hljs-comment">#mkdir -p $yyyy</span><br>    <span class="hljs-comment">#mv $&#123;yyyy&#125;$&#123;mm&#125;$&#123;dd&#125;* ./$&#123;yyyy&#125; ;</span><br>    <span class="hljs-comment">#sleep $((80 + RANDOM % 21)) ;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure> Subsequently, extract those elements.</p><h1 id="list-of-hko-station">List of HKO station</h1><p>As part of the HKO stations, the majority of the names I use align with the definitions provided by HKO. However, there are a few instances where I have personally assigned names to certain elements.</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs sh">ID,lat,lon,station,station_en,station_ch<br>1,22.301944,114.174167,hko,HKO (Tsim Sha Tsui),香港天文台<br>2,22.201111,114.026667,cch,Cheung Chau,長洲<br>3,22.263389,114.299769,cwb,Clear water bay,清水灣<br>4,22.309444,113.921944,hka,HK Airport,香港國際機場<br>5,22.278333,114.162222,hkp,Hong Kong Park,香港公園<br>6,22.247778,114.173611,hks,Wong Chuk Hang,黃竹坑<br>7,22.270556,114.183611,hpv,Happy Valley,跑馬地<br>8,22.315833,114.255556,jkb,Tseung Kwan O,將軍澳<br>9,22.335000,114.184722,klt,Kowloon City,九龍城<br>10,22.311944,114.172778,kp,King’s Park,京士柏<br>11,22.370278,114.312500,ksc,Kau Sai Chau,滘西洲<br>12,22.318611,114.224722,ktg,Kwun Tong,觀塘<br>13,22.468889,113.983611,lfs,Lau Fau Shan,流浮山<br>14,22.258611,113.912778,ngp,Ngong Ping,昂坪<br>15,22.291111,114.043333,pen,Peng Chau,坪洲<br>16,22.475278,114.237500,plc,Tai Mei Tuk,大美督<br>17,22.304722,114.217222,se1,Kai Tak Runway Park,啟德跑道公園<br>18,22.436111,114.084722,sek,Shek Kong,石崗<br>19,22.402500,114.210000,sha,Sha Tin,沙田<br>20,22.375556,114.274444,skg,Sai Kung,西貢<br>21,22.281667,114.236111,skw,Shau Kei Wan,筲箕灣<br>22,22.501944,114.111111,ssh,Sheung Shui,上水<br>23,22.335833,114.136944,ssp,Sham Shui Po,深水埗<br>24,22.214167,114.218611,sty,Stanley,赤柱<br>25,22.357778,114.217778,tc,Tate<span class="hljs-string">&#x27;s Cairn,大老山</span><br><span class="hljs-string">26,22.528611,114.156667,tkl,Ta Kwu Ling,打鼓嶺</span><br><span class="hljs-string">27,22.483480,114.117400,tl,Tai Lung,大隴</span><br><span class="hljs-string">28,22.410556,114.124444,tms,Tai Mo Shan,大帽山</span><br><span class="hljs-string">29,22.446111,114.178889,tpo,Tai Po,大埔</span><br><span class="hljs-string">30,22.385833,113.964167,tu1,Tuen Mun Children and Juvenile Home,屯門兒童及青少年院</span><br><span class="hljs-string">31,22.375556,114.126667,tw,Shing Mun Valley,荃灣城門谷</span><br><span class="hljs-string">32,22.383611,114.107778,twn,Tsuen Wan,荃灣</span><br><span class="hljs-string">33,22.344167,114.110000,ty1,Tsing Yi Station,新青衣站</span><br><span class="hljs-string">34,22.402778,114.323056,tyw,Pak Tam Chung,北潭涌(鯽魚湖)</span><br><span class="hljs-string">35,22.264167,114.155000,vp1,The Peak,山頂</span><br><span class="hljs-string">36,22.182222,114.303333,wgl,Waglan Island,橫瀾島</span><br><span class="hljs-string">37,22.466667,114.008889,wlp,Wetland Park,濕地公園</span><br><span class="hljs-string">38,22.339444,114.205278,wts,Wong Tai Sin,黃大仙</span><br><span class="hljs-string">39,22.440833,114.018333,ylp,ylp,ylp</span><br></code></pre></td></tr></table></figure><h1 id="jupter-notebook-or-python">Jupter Notebook or python</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python</span><br><span class="hljs-comment"># coding: utf-8</span><br><br><span class="hljs-comment"># In[1]:</span><br><br><br><span class="hljs-keyword">import</span> glob, os<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> timedelta<br><br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">from</span> matplotlib <span class="hljs-keyword">import</span> cm<br>SMALL_SIZE = <span class="hljs-number">8</span><br>MEDIUM_SIZE = <span class="hljs-number">10</span><br>BIGGER_SIZE = <span class="hljs-number">24</span><br><br>plt.rcParams[<span class="hljs-string">&quot;figure.figsize&quot;</span>] = (<span class="hljs-number">10</span>,<span class="hljs-number">8</span>)<br>plt.rc(<span class="hljs-string">&#x27;font&#x27;</span>, size=BIGGER_SIZE)          <span class="hljs-comment"># controls default text sizes</span><br>plt.rc(<span class="hljs-string">&#x27;axes&#x27;</span>, titlesize=BIGGER_SIZE)     <span class="hljs-comment"># fontsize of the axes title</span><br>plt.rc(<span class="hljs-string">&#x27;axes&#x27;</span>, labelsize=BIGGER_SIZE)    <span class="hljs-comment"># fontsize of the x and y labels</span><br>plt.rc(<span class="hljs-string">&#x27;xtick&#x27;</span>, labelsize=BIGGER_SIZE)    <span class="hljs-comment"># fontsize of the tick labels</span><br>plt.rc(<span class="hljs-string">&#x27;ytick&#x27;</span>, labelsize=BIGGER_SIZE)    <span class="hljs-comment"># fontsize of the tick labels</span><br>plt.rc(<span class="hljs-string">&#x27;legend&#x27;</span>, fontsize=BIGGER_SIZE)    <span class="hljs-comment"># legend fontsize</span><br>plt.rc(<span class="hljs-string">&#x27;figure&#x27;</span>, titlesize=BIGGER_SIZE)  <span class="hljs-comment"># fontsize of the figure title</span><br><br><span class="hljs-comment"># plt.rcParams[&#x27;font.sans-serif&#x27;] = [&#x27;SimHei&#x27;] </span><br><span class="hljs-comment"># plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False</span><br><br>plt.rcParams.update(&#123;<span class="hljs-string">&#x27;font.family&#x27;</span>:<span class="hljs-string">&#x27;sans-serif&#x27;</span>&#125;)<br>plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;DejaVu Sans&#x27;</span>]<br><br><span class="hljs-comment"># from IPython.core.interactiveshell import InteractiveShell</span><br><span class="hljs-comment"># InteractiveShell.ast_node_interactivity = &quot;all&quot;</span><br><br><br><span class="hljs-comment"># # Reading all dataset</span><br><br><span class="hljs-comment"># In[2]:</span><br><br><br>select_year = <span class="hljs-string">&quot;202304&quot;</span><br><br>station = pd.read_csv(<span class="hljs-string">r&#x27;./HKO-station.csv&#x27;</span>, header=<span class="hljs-number">0</span>) <span class="hljs-comment"># nearwater or inland</span><br>select_num = <span class="hljs-number">7</span><br><span class="hljs-comment">#======================================== station =============================================</span><br>select_station = station[<span class="hljs-string">&quot;station&quot;</span>][select_num]<br>select_station_en = station[<span class="hljs-string">&quot;station_en&quot;</span>][select_num]<br>select_station_ch = station[<span class="hljs-string">&quot;station_ch&quot;</span>][select_num]<br>file_name_t2m = select_station+<span class="hljs-string">&quot;_&quot;</span>+select_year<br>file_name_wind = select_station+<span class="hljs-string">&quot;_wd_&quot;</span>+select_year<br>file_name_pressure = select_station+<span class="hljs-string">&quot;_pre_&quot;</span>+select_year<br><span class="hljs-built_in">print</span>(select_num, select_station, select_station_en, select_station_ch)<br>station<br><br><br><span class="hljs-comment"># In[3]:</span><br><br><br><span class="hljs-comment">#========================================= mpas ================================================</span><br>mpas_station_extraction_dir=<span class="hljs-string">&quot;/xxx/xxx/station_xxxx.csv&quot;</span><br>df_mpas = pd.read_csv(mpas_station_extraction_dir)<br><span class="hljs-comment"># .dt.tz_localize(None): to remove timezone from a Timestamp column in a pandas dataframe</span><br>df_mpas[<span class="hljs-string">&quot;Date(UTC)&quot;</span>] = pd.to_datetime(df_mpas[<span class="hljs-string">&quot;xtime[UTC]&quot;</span>], utc=<span class="hljs-string">&quot;false&quot;</span>).dt.tz_localize(<span class="hljs-literal">None</span>)<br>df_mpas[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] = df_mpas[<span class="hljs-string">&quot;Date(UTC)&quot;</span>] + timedelta(hours=<span class="hljs-number">8</span>)<br><br>df_select_mpas = df_mpas[df_mpas[<span class="hljs-string">&quot;station&quot;</span>] == select_station]<br>df_select_mpas = df_select_mpas.reset_index(drop = <span class="hljs-literal">True</span>)<br><br><span class="hljs-comment">#=========================================== HKO t2m ==============================================</span><br>obs_file = []<br><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> glob.glob(<span class="hljs-string">f&quot;/home/wpsze/hk_data/<span class="hljs-subst">&#123;select_year&#125;</span>*/<span class="hljs-subst">&#123;file_name_t2m&#125;</span>*&quot;</span>):<br>    obs_file.append(file)<br><span class="hljs-built_in">print</span>(obs_file)<br>df = pd.concat((pd.read_csv(f, header = <span class="hljs-number">0</span>, na_values=[<span class="hljs-string">&#x27;nan&#x27;</span>], keep_default_na=<span class="hljs-literal">True</span>) <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> obs_file))<br>df_hko_obs = df.drop_duplicates()<br>df_hko_obs = df_hko_obs.reset_index(drop = <span class="hljs-literal">True</span>)<br><br>df_hko_obs[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] = pd.to_datetime(df_hko_obs[<span class="hljs-string">&quot;Date&quot;</span>]) <br>df_hko_obs[<span class="hljs-string">&quot;Date(UTC)&quot;</span>] = df_hko_obs[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] + timedelta(hours=-<span class="hljs-number">8</span>)<br>df_hko_obs = df_hko_obs.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_hko_obs<br><span class="hljs-comment">#=========================================================================================</span><br>df_combine = pd.merge(df_select_mpas, df_hko_obs)<br><span class="hljs-comment">#=========================================== HKO wind ==============================================</span><br>obs_file = []<br><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> glob.glob(<span class="hljs-string">f&quot;/home/home/wpsze/hk_data/<span class="hljs-subst">&#123;select_year&#125;</span>*/<span class="hljs-subst">&#123;file_name_wind&#125;</span>*&quot;</span>):<br>    obs_file.append(file)<br><span class="hljs-built_in">print</span>(obs_file)<br>df = pd.concat((pd.read_csv(f, header = <span class="hljs-number">0</span>, na_values=[<span class="hljs-string">&#x27;nan&#x27;</span>], keep_default_na=<span class="hljs-literal">True</span>) <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> obs_file))<br>df_hko_obs = df.drop_duplicates()<br>df_hko_obs = df_hko_obs.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_hko_obs<br><br>df_hko_obs[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] = pd.to_datetime(df_hko_obs[<span class="hljs-string">&quot;Date&quot;</span>]) <br>df_hko_obs[<span class="hljs-string">&quot;Date(UTC)&quot;</span>] = df_hko_obs[<span class="hljs-string">&quot;Date(HKT)&quot;</span>] + timedelta(hours=-<span class="hljs-number">8</span>)<br>df_hko_obs[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>] = df_hko_obs[<span class="hljs-string">&quot;Wind Spd&quot;</span>]*<span class="hljs-number">0.514444444</span> <span class="hljs-comment"># knt to m/s</span><br>df_hko_obs[<span class="hljs-string">&quot;obs-wdir[deg]&quot;</span>] = df_hko_obs[<span class="hljs-string">&quot; Wind Dir&quot;</span>]<br>df_hko_obs = df_hko_obs.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_hko_obs<br><span class="hljs-comment">#=========================================================================================</span><br>df_combine = pd.merge(df_combine, df_hko_obs)<br><span class="hljs-comment">#=========================================================================================</span><br>spin_up_period = <span class="hljs-number">72</span><br>df_combine_skip_spinup = df_combine[spin_up_period:]<br>df_combine_skip_spinup = df_combine_skip_spinup.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_combine_skip_spinup<br><br><br><span class="hljs-comment"># In[4]:</span><br><br><br>df_combine_final = df_combine_skip_spinup[df_combine_skip_spinup[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>]&lt;<span class="hljs-number">100</span>] <br>df_combine_final = df_combine_final.reset_index(drop = <span class="hljs-literal">True</span>)<br>df_combine_final<br><br><br><span class="hljs-comment"># # For t2m</span><br><br><span class="hljs-comment"># In[33]:</span><br><br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;Temp&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;t2m[degC]&quot;</span>],<span class="hljs-string">&#x27;bo-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;T2m [deg C]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.legend()<br>plt.tight_layout()<br>plt.show()<br>plt.close()<br><br><span class="hljs-comment"># df_combine_final[&quot;Temp&quot;]</span><br><br><br><span class="hljs-comment"># # For wind speed</span><br><br><span class="hljs-comment"># In[6]:</span><br><br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;Temp&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;t2m[degC]&quot;</span>],<span class="hljs-string">&#x27;bo-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;T2m [deg C]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.legend()<br>plt.show()<br>plt.close()<br><br><br><span class="hljs-comment"># In[7]:</span><br><br><br><span class="hljs-comment">#=========================================================</span><br><br>hko_wind = df_combine_final[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>]<br>hko_wdir = df_combine_final[<span class="hljs-string">&quot;obs-wdir[deg]&quot;</span>]<br><br>size = hko_wdir.shape[<span class="hljs-number">0</span>]<br><br>wspd = hko_wind*<span class="hljs-number">1.9438452</span>    <span class="hljs-comment"># m/s to kt</span><br>wdir = hko_wdir*<span class="hljs-number">0.0174532925</span> <span class="hljs-comment"># deg to rad</span><br>U_obs = -wspd*np.sin(wdir)<br>V_obs = -wspd*np.cos(wdir)<br><br>df = pd.DataFrame(np.vstack([U_obs,V_obs]).T, columns=[<span class="hljs-string">&#x27;U&#x27;</span>, <span class="hljs-string">&#x27;V&#x27;</span>])<br><br><span class="hljs-comment">#=========================================================</span><br>mpas_wind = df_combine_final[<span class="hljs-string">&quot;wspd[m/s]&quot;</span>]<br>mpas_wdir = df_combine_final[<span class="hljs-string">&quot;wdir[deg]&quot;</span>]<br><br>wspd = mpas_wind*<span class="hljs-number">1.9438452</span>    <span class="hljs-comment"># m/s to kt</span><br>wdir = mpas_wdir*<span class="hljs-number">0.0174532925</span> <span class="hljs-comment"># deg to rad</span><br>U_mpas = -wspd*np.sin(wdir)<br>V_mpas = -wspd*np.cos(wdir)<br><br>df_mpas = pd.DataFrame(np.vstack([U_mpas,V_mpas]).T, columns=[<span class="hljs-string">&#x27;U&#x27;</span>, <span class="hljs-string">&#x27;V&#x27;</span>])<br><br><span class="hljs-comment">#=========================================================</span><br><br>fig, ax = plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>, figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">4</span>))<br><br><span class="hljs-comment"># ax.plot(df.index.values.astype(&#x27;d&#x27;), df.V * 0.1 + 4, color=&#x27;k&#x27;)</span><br><span class="hljs-comment"># ax.quiver(df.index.values.astype(&#x27;d&#x27;), np.ones(size) * 2, df.U.values, df.V.values) #, pivot=&#x27;mid&#x27;)</span><br><br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * <span class="hljs-number">4</span>, df.U.values, df.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;k&#x27;</span>)<br><br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * <span class="hljs-number">2</span>, df_mpas.U.values, df_mpas.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;b&#x27;</span>)<br><br>ax.set_ylim([-<span class="hljs-number">1</span>,<span class="hljs-number">6</span>])<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.legend()</span><br>plt.show()<br>plt.close()<br><br><br><span class="hljs-comment"># In[8]:</span><br><br><br>fig, ax = plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>, figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">8</span>))<br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;wspd[m/s]&quot;</span>],<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br><br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * -<span class="hljs-number">2</span>, df.U.values, df.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;k&#x27;</span>)<br><br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * -<span class="hljs-number">5</span>, df_mpas.U.values, df_mpas.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;r&#x27;</span>)<br><br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.ylim([-<span class="hljs-number">7</span>,<span class="hljs-number">12</span>])<br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br>plt.show()<br>plt.close() <br><br><br><span class="hljs-comment"># ## Seperate u and v directions</span><br><span class="hljs-comment"># </span><br><span class="hljs-comment"># U_obs = -wspd x np.sin(wdir)\</span><br><span class="hljs-comment"># V_obs = -wspd x np.cos(wdir)</span><br><br><span class="hljs-comment"># In[9]:</span><br><br><br>fig, ax = plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>, figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">8</span>))<br><br>kt2ms = <span class="hljs-number">0.514444444</span><br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], U_obs*kt2ms, <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], U_mpas*kt2ms,<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br><br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;U Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.ylim([-7,10])</span><br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br>plt.show()<br>plt.close() <br><br>fig, ax = plt.subplots(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>, figsize=(<span class="hljs-number">15</span>,<span class="hljs-number">8</span>))<br><br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], V_obs*kt2ms, <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], V_mpas*kt2ms,<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br><br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;V Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.ylim([-7,10])</span><br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br>plt.show()<br>plt.close() <br><br><br><span class="hljs-comment"># # Final Plot</span><br><br><span class="hljs-comment"># In[26]:</span><br><br><br>fig = plt.subplots(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, figsize=(<span class="hljs-number">20</span>,<span class="hljs-number">12</span>))<br><br>ax = plt.subplot(<span class="hljs-number">221</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;Temp&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;t2m[degC]&quot;</span>],<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;T2m [deg C]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.legend()<br>plt.tight_layout()<br><br>ax = plt.subplot(<span class="hljs-number">222</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;obs-wspd[m/s]&quot;</span>], <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], df_combine_final[<span class="hljs-string">&quot;wspd[m/s]&quot;</span>],<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * -<span class="hljs-number">2</span>, df.U.values, df.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;k&#x27;</span>)<br>plt.barbs(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], np.ones(size) * -<span class="hljs-number">5</span>, df_mpas.U.values, df_mpas.V.values, length=<span class="hljs-number">8</span>, barbcolor=<span class="hljs-string">&#x27;r&#x27;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br>plt.ylim([-<span class="hljs-number">7</span>,<span class="hljs-number">12</span>])<br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br><br><br>kt2ms = <span class="hljs-number">0.514444444</span><br>ax = plt.subplot(<span class="hljs-number">223</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], U_obs*kt2ms, <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], U_mpas*kt2ms,<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;U Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.ylim([-7,10])</span><br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br><br><br>ax = plt.subplot(<span class="hljs-number">224</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], V_obs*kt2ms, <span class="hljs-string">&#x27;ko-&#x27;</span>, label=<span class="hljs-string">&quot;Obs&quot;</span>)<br>plt.plot(df_combine_final[<span class="hljs-string">&quot;Date(HKT)&quot;</span>], V_mpas*kt2ms,<span class="hljs-string">&#x27;ro-&#x27;</span>, label=<span class="hljs-string">&quot;mpas&quot;</span>)<br>plt.grid(zorder=<span class="hljs-number">0</span>)<br>plt.xlabel(<span class="hljs-string">&quot;Date Time (HKT)&quot;</span>)<br>plt.ylabel(<span class="hljs-string">&quot;V Wind Speed [m/s]&quot;</span>)<br>plt.title(select_station_en)<br>plt.xticks(rotation=<span class="hljs-number">45</span>)<br><span class="hljs-comment"># plt.ylim([-7,10])</span><br>plt.axhline(y=<span class="hljs-number">0.0</span>, color=<span class="hljs-string">&#x27;k&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-&#x27;</span>)<br>plt.legend()<br><br>plt.show()<br>plt.close() <br><br><br><span class="hljs-comment"># In[ ]:</span><br></code></pre></td></tr></table></figure>]]></content>
-    
-    
-    <categories>
-      
-      <category>NWP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
-      <tag>HKO</tag>
-      
-      <tag>obs</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>WRF | WPS geo data and binary tile files</title>
     <link href="/2023/06/24/WPS-geo-data-and-binary-tile-files/"/>
     <url>/2023/06/24/WPS-geo-data-and-binary-tile-files/</url>
@@ -5982,9 +6058,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>tile files</tag>
       
@@ -6206,9 +6282,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -6266,9 +6342,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -6353,9 +6429,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -6380,13 +6456,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
+      <tag>WRF</tag>
+      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -6440,9 +6516,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -6533,9 +6609,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -6707,9 +6783,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -6856,13 +6932,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
       <tag>gnu</tag>
       
       <tag>gcc</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -6891,11 +6967,11 @@
     
     <tags>
       
+      <tag>slurm</tag>
+      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
-      
-      <tag>slurm</tag>
       
     </tags>
     
