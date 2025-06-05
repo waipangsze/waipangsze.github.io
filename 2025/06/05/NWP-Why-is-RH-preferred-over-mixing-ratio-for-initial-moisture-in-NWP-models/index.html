@@ -1,0 +1,1007 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="MPAS-A  https:&#x2F;&#x2F;mpas-dev.github.io&#x2F;atmosphere&#x2F;mpas-a_release_notes.html https:&#x2F;&#x2F;github.com&#x2F;MPAS-Dev&#x2F;MPAS-Model&#x2F;commit&#x2F;635532ebd0677675eafcaa07c1bc701997b896fe  MPAS-Atmosphere Version 5.3 22 March 201">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | Why is RH preferred over mixing ratio for initial moisture in NWP models">
+<meta property="og:url" content="https://waipangsze.github.io/2025/06/05/NWP-Why-is-RH-preferred-over-mixing-ratio-for-initial-moisture-in-NWP-models/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="MPAS-A  https:&#x2F;&#x2F;mpas-dev.github.io&#x2F;atmosphere&#x2F;mpas-a_release_notes.html https:&#x2F;&#x2F;github.com&#x2F;MPAS-Dev&#x2F;MPAS-Model&#x2F;commit&#x2F;635532ebd0677675eafcaa07c1bc701997b896fe  MPAS-Atmosphere Version 5.3 22 March 201">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/H8Kr0RO.png">
+<meta property="article:published_time" content="2025-06-05T02:18:00.000Z">
+<meta property="article:modified_time" content="2025-06-05T02:48:44.623Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="RH">
+<meta property="article:tag" content="mixing ratio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/H8Kr0RO.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | Why is RH preferred over mixing ratio for initial moisture in NWP models - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/H8Kr0RO.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | Why is RH preferred over mixing ratio for initial moisture in NWP models"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-05 10:18" pubdate>
+          June 5, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          386 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | Why is RH preferred over mixing ratio for initial moisture in NWP models</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="mpas-a">MPAS-A</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mpas-dev.github.io/atmosphere/mpas-a_release_notes.html" class="uri">https://mpas-dev.github.io/atmosphere/mpas-a_release_notes.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/commit/635532ebd0677675eafcaa07c1bc701997b896fe" class="uri">https://github.com/MPAS-Dev/MPAS-Model/commit/635532ebd0677675eafcaa07c1bc701997b896fe</a></li>
+</ul>
+<p>MPAS-Atmosphere Version 5.3<br />
+22 March 2018<br />
+</p>
+<ul>
+<li>This minor release of MPAS corrects an issue with the <strong>initialization of the water vapor mixing ratio field in MPAS-Atmosphere</strong>, and it also adds two other fixes that should not affect model results.</li>
+<li>The MPAS-Atmosphere initialization program (init_atmosphere_model) had previously assumed that any relative humidity field provided in an intermediate file was specified with respect to liquid water at or above 273.15 K, and with respect to ice below this temperature. However, <strong>intermediate files produced by the WPS's ungrib.exe program have the RH field adjusted so that is with respect to liquid water everywhere. With this release, the init_atmosphere core correctly interprets the RH field in producing the initial water vapor mixing ratio field.</strong></li>
+<li>Note that, when initializing from specific humidity (SPECHUMD) rather than RH, there is no change to results.</li>
+</ul>
+<p><img src="https://i.imgur.com/H8Kr0RO.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/commit/635532ebd0677675eafcaa07c1bc701997b896fe" class="uri">https://github.com/MPAS-Dev/MPAS-Model/commit/635532ebd0677675eafcaa07c1bc701997b896fe</a></li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">Merge branch &#x27;atmosphere/fix_RH_wrt_liquid_water&#x27; into hotfix-v5.3 · MPAS-Dev/MPAS-Model@635532e<br>This merge corrects an error in deriving the water vapor mixing ratio field (QV)<br>from relative humidity (RH) for real-data cases.<br>Under the assumption that real-data intermediate files were produc...<br></code></pre></td></tr></table></figure>
+<h1 id="the-role-of-relative-humidity-in-moisture-initialization-for-numerical-weather-prediction-models">The Role of Relative Humidity in Moisture Initialization for Numerical Weather Prediction Models</h1>
+<p>Numerical weather prediction (NWP) models rely on accurate initialization of atmospheric variables to produce reliable forecasts. Among these variables, the representation of moisture specifically the water vapor mixing ratio is critical for simulating cloud formation, precipitation, and latent heat release. While mixing ratio directly quantifies the mass of water vapor per unit mass of dry air, <strong>NWP systems often initialize moisture fields using relative humidity (RH) rather than directly ingesting mixing ratio values</strong> from global models like the Global Forecast System (GFS) or the Integrated Forecasting System (IFS). This preference stems from <strong>RH’s thermodynamic consistency, its ability to standardize moisture representation across diverse data sources, and its role in mitigating phase-related ambiguities in saturation calculations</strong>.</p>
+<hr />
+<h2 id="thermodynamic-consistency-and-saturation-adjustments">Thermodynamic Consistency and Saturation Adjustments</h2>
+<h3 id="phase-agnostic-moisture-representation">Phase-Agnostic Moisture Representation</h3>
+<p>Relative humidity is defined as the ratio of the current water vapor pressure to the saturation vapor pressure at a given temperature. This normalization ensures that RH accounts for temperature-dependent saturation limits, which vary significantly between liquid water and ice at subfreezing temperatures<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[1]</span></a></sup><sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>. When initializing moisture fields, NWP models such as the Weather Research and Forecasting (WRF) system <strong>convert RH to mixing ratio using internally consistent saturation vapor pressure formulas</strong>.</p>
+<ul>
+<li><strong>This step is necessary because source datasets (e.g., GFS) may define saturation with respect to ice at higher atmospheric levels, while the model’s <code>microphysics schemes</code> often assume saturation over liquid water</strong><sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</li>
+</ul>
+<p>By recalculating mixing ratio from RH, the model enforces uniformity in phase assumptions, avoiding discontinuities in moisture fields that could arise from conflicting definitions of saturation states<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[1]</span></a></sup>.</p>
+<p>For example, the WRF Preprocessing System (WPS) adjusts RH values in intermediate files to align with liquid-water saturation across all vertical levels. This adjustment ensures that the model’s initialization routine such as the <code>init_atmosphere_model</code> core interprets moisture fields correctly, even when source data implicitly uses ice-phase saturation at colder temperatures<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>. Directly using mixing ratio from external sources would bypass this critical normalization, potentially introducing biases in cloud initialization and latent heat calculations<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>.</p>
+<hr />
+<h2 id="mitigating-source-data-heterogeneity">Mitigating Source Data Heterogeneity</h2>
+<h3 id="standardization-across-input-datasets">Standardization Across Input Datasets</h3>
+<p>Global models and reanalysis products <strong>employ diverse parameterizations for moisture variables</strong>. For instance, the GFS outputs specific humidity (SPECHUMD), while satellite retrievals and regional models might provide RH or mixing ratio with varying definitions (e.g., over moist vs. dry air)<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[2]</span></a></sup><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</p>
+<ul>
+<li>Converting these variables to RH first allows the NWP system to <strong>harmonize moisture inputs using a dimensionless, universally comparable metric</strong>. Subsequent conversion to mixing ratio using the model’s own saturation formulas ensures that all moisture fields adhere to <strong>the same thermodynamic assumptions, regardless of source</strong><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</li>
+</ul>
+<p>This approach is particularly vital when integrating satellite data, such as GOES sounder observations, which provide RH profiles for cloud initialization<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[1]</span></a></sup>. By leveraging RH’s bounded nature (0–100%), models can more easily assimilate these observations without introducing unphysical extremes (e.g., negative mixing ratios)<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup><sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>. For example, grid analysis nudging in WRF often adjusts RH rather than mixing ratio to avoid destabilizing the model with unrealistic moisture increments<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>.</p>
+<hr />
+<h2 id="handling-phase-transitions-and-cloud-microphysics">Handling Phase Transitions and Cloud Microphysics</h2>
+<h3 id="dynamic-adjustment-to-local-conditions">Dynamic Adjustment to Local Conditions</h3>
+<p>Mixing ratio alone does not encode information about the atmosphere’s proximity to saturation, which is essential for triggering condensation, evaporation, or phase changes in clouds.</p>
+<ul>
+<li><strong>By initializing with RH, the model dynamically computes mixing ratio based on local temperature and pressure profiles, ensuring that moisture fields remain thermodynamically consistent with the evolving atmospheric state</strong><sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[1]</span></a></sup><sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>. This is especially critical in upper atmospheric layers, where small temperature fluctuations can drastically alter saturation vapor pressure.</li>
+</ul>
+<p>A case study in WRF demonstrated that adjusting RH profiles by 12% reduced root-mean-square error (RMSE) in shortwave irradiance forecasts by 57.8%, highlighting RH’s sensitivity to microphysical processes<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>. Directly prescribing mixing ratio would decouple moisture content from temperature-dependent saturation limits, compromising the model’s ability to simulate cloud formation and dissipation accurately<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[1]</span></a></sup>.</p>
+<hr />
+<h2 id="practical-considerations-in-data-assimilation">Practical Considerations in Data Assimilation</h2>
+<h3 id="boundedness-and-numerical-stability">Boundedness and Numerical Stability</h3>
+<p>RH’s <span class="math inline">\(0–100\%\)</span> range provides inherent safeguards against unphysical moisture values during data assimilation. When external observations or model outputs contain noise (e.g., slightly negative RH due to interpolation artifacts), the NWP system can apply quality control thresholds without risking large errors in absolute moisture content<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>. In contrast, directly assimilating mixing ratio could propagate outliers—such as negative values—into the model, destabilizing precipitation and boundary layer schemes<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup><sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[5]</span></a></sup>.</p>
+<p>For example, a user comparing GFS analysis RH to WPS-processed <code>met_em</code> files observed minor RH excursions beyond 100% or below 0% in the latter, likely due to interpolation or unit conversion artifacts<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup>. These excursions were minimized by recalculating mixing ratio from RH using the model’s internal physics, underscoring the practicality of RH-based initialization<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[4]</span></a></sup><sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span class="hint--top hint--rounded" data-aria-label="">[6]</span></a></sup>.</p>
+<h2 id="when-initializing-from-specific-humidity-spechumd">When Initializing from Specific Humidity (SPECHUMD)?</h2>
+<p>When the initialization uses <strong>specific humidity (which is closely related to mixing ratio)</strong>, there is no need for conversion or adjustment, so results remain unchanged. This indicates that the use of RH is primarily to convert from a normalized moisture variable into an absolute moisture content consistent with the model's physics, rather than to replace direct moisture variables if they are already available (<a target="_blank" rel="noopener" href="https://github.com/NCAR/WPS/blob/master/ungrib/src/rrpr.F" class="uri">https://github.com/NCAR/WPS/blob/master/ungrib/src/rrpr.F</a>).</p>
+<hr />
+<h2 id="conclusion">Conclusion</h2>
+<p><strong>The preference for RH in moisture initialization arises from its thermodynamic consistent, adaptability to diverse data sources, and role in maintaining numerical stability</strong>. By converting RH to mixing ratio within the NWP framework, models enforce consistent phase assumptions, mitigate source data discrepancies, and dynamically align moisture fields with local atmospheric conditions. While specific humidity (SPECHUMD) can be/not be used directly when available, RH remains indispensable for integrating heterogeneous observations and ensuring physically coherent moisture initialization. Future advancements may focus on enhancing RH assimilation techniques, particularly in reconciling ice-phase saturation definitions at high altitudes, to further improve cloud and precipitation forecasts.</p>
+<hr />
+<h1 id="references">References</h1>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/mwre/128/11/1520-0493_2001_129_3911_nciugs_2.0.co_2.xml" class="uri">https://journals.ametsoc.org/view/journals/mwre/128/11/1520-0493_2001_129_3911_nciugs_2.0.co_2.xml</a> <a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://ntrs.nasa.gov/api/citations/20190002391/downloads/20190002391.pdf" class="uri">https://ntrs.nasa.gov/api/citations/20190002391/downloads/20190002391.pdf</a> <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="http://cola.gmu.edu/dirmeyer/COLA_KIAPS_Final_Report_28Feb2013.pdf" class="uri">http://cola.gmu.edu/dirmeyer/COLA_KIAPS_Final_Report_28Feb2013.pdf</a> <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/inconsistency-between-gfs-analysis-rh-and-met_em-rh.14255/" class="uri">https://forum.mmm.ucar.edu/threads/inconsistency-between-gfs-analysis-rh-and-met_em-rh.14255/</a> <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:5" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/wefo/36/2/WAF-D-20-0117.1.xml" class="uri">https://journals.ametsoc.org/view/journals/wefo/36/2/WAF-D-20-0117.1.xml</a> <a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:6" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://nwp-saf.eumetsat.int/site/download/documentation/rtm/docs_rttov12/rttov_gas_cloud_aerosol_units.pdf" class="uri">https://nwp-saf.eumetsat.int/site/download/documentation/rtm/docs_rttov12/rttov_gas_cloud_aerosol_units.pdf</a> <a href="#fnref:6" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:7" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.vaisala.com/en/blog/2018-10/relative-humidity-what-it-and-why-it-important" class="uri">https://www.vaisala.com/en/blog/2018-10/relative-humidity-what-it-and-why-it-important</a> <a href="#fnref:7" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:8" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.weather.gov/media/epz/wxcalc/mixingRatio.pdf" class="uri">https://www.weather.gov/media/epz/wxcalc/mixingRatio.pdf</a> <a href="#fnref:8" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:9" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/downloadpdf/journals/wefo/aop/WAF-D-20-0117.1/WAF-D-20-0117.1.xml" class="uri">https://journals.ametsoc.org/downloadpdf/journals/wefo/aop/WAF-D-20-0117.1/WAF-D-20-0117.1.xml</a> <a href="#fnref:9" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:10" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://nhess.copernicus.org/articles/25/429/2025/" class="uri">https://nhess.copernicus.org/articles/25/429/2025/</a> <a href="#fnref:10" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+<li>
+<span id="fn:11" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://bin.ssec.wisc.edu/pub/jordang/talkpost/MagicPWNWP_18Oct11.pdf" class="uri">https://bin.ssec.wisc.edu/pub/jordang/talkpost/MagicPWNWP_18Oct11.pdf</a> <a href="#fnref:11" rev="footnote" class="footnote-backref"> ↩</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/RH/" class="print-no-link">#RH</a>
+      
+        <a href="/tags/mixing-ratio/" class="print-no-link">#mixing ratio</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | Why is RH preferred over mixing ratio for initial moisture in NWP models</div>
+      <div>https://waipangsze.github.io/2025/06/05/NWP-Why-is-RH-preferred-over-mixing-ratio-for-initial-moisture-in-NWP-models/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 5, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>June 5, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/05/MPAS-Joint-MPAS-WRF-Users-Workshop-2025/" title="MPAS | Joint MPAS/WRF Users Workshop 2025 | MPASv8.3.0">
+                        <span class="hidden-mobile">MPAS | Joint MPAS/WRF Users Workshop 2025 | MPASv8.3.0</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
