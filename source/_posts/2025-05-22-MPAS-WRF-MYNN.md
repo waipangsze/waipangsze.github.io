@@ -322,3 +322,23 @@ In summary, Level 2.5 and Level 3 in the MYNN PBL scheme offer different levels 
         description="EDMF liquid-ice water potential temperature in moist updrafts in the MYNN PBL scheme"
 <var name="edmf_ent" type="real" dimensions="nVertLevels nCells Time" units="m^{-1}"
 ```
+
+# MPAS/WRF 2025 workshop
+
+## MYNN-EDMF PBL Scheme
+
+---
+
+- [**Updates to the MYNN-EDMF PBL Scheme to Improve MPAS- and WRF- based Forecasting Systems **| NOAA Global Systems Laboratory](https://www2.mmm.ucar.edu/wrf/users/workshops/WS2025/presentations/33_Olson.pdf)
+
+{% gi 6 2-2-2 %}
+![](https://i.imgur.com/58i18B3.png)
+![](https://i.imgur.com/2SbZnKF.png)
+![](https://i.imgur.com/wn1GyMD.png)
+![](https://i.imgur.com/yMkC6U8.png)
+![](https://i.imgur.com/xfkoCMw.png)
+![](https://i.imgur.com/P7P6IKZ.png)
+{% endgi %}
+
+---
+
