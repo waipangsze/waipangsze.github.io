@@ -67,6 +67,14 @@ banner_img: https://i.imgur.com/dx8eRko.jpeg
 
 ![](https://i.imgur.com/3qu9wAZ.png)
 
+# 冷渦/冷性低壓中心
+
+在20世紀中葉，氣象學家發現北半球中高緯高空西風氣流向赤道方向加深期間，有時會向低緯方向分離出一個**閉合的冷性低壓中心**，並能維持相當長時間，稱之為**切斷低壓（cut-off low, COL）**，又稱冷池（cold pool）、冷低壓/氣旋（cold low/cyclone）或冷心低壓/氣旋（cold-core low/cyclone）等。
+
+國外學者常使用「**切斷低壓**」的概念來描述類似的環流系統，而中國學者則更傾向於使用「**冷渦**」的概念，強調該系統結構方面的特徵，比如東北冷渦、華北冷渦、蒙古冷渦等。
+
+- [石晨, 翟盘茂, 廉毅, 2023. 高空切断冷涡研究进展. 气象, 49(5): 513-524. DOI: 10.7519/j.issn.1000-0526.2023.021501.](http://qxqk.nmc.cn/qx/ch/reader/view_abstract.aspx?file_no=20230501&flag=1)
+
 # References
 
 1. [玩转地理 | 冷也会产生低压，热也可能产生高压](https://mp.weixin.qq.com/s/9SQULHuK-leifxw3ty1vOQ)
