@@ -39,3 +39,5 @@ The ability to obtain **bit-identical results for any MPI task count** (though t
 - Core = 2, 4, 8, 16, 24, 32, 48, 68
 - Initial datetime = 2023-04-02_00UTC
 - IC source = ERA5
+
+![The t2m difference from 2-core. (Averging t2m)](https://i.imgur.com/BccijjL.png)
