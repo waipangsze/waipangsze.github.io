@@ -221,6 +221,26 @@ export WRF_DIR=path-to-WRF-top-level-directory/WRF
 ```
 {% endfold %}
 
+### WRFv4.4.0 with intel compilers
+
+- need **pnetcdf** 
+  - like **pnetcdf-1.11.2.tar.gz**
+
+```log
+==========================================================================
+build started:   Thu Jun 19 16:29:20 HKT 2025
+build completed: Thu Jun 19 17:13:09 HKT 2025
+ 
+--->                  Executables successfully built                  <---
+ 
+-rwxrwxr-x 1 wpsze wpsze 54508808 Jun 19 17:13 main/ndown.exe
+-rwxrwxr-x 1 wpsze wpsze 54573632 Jun 19 17:13 main/real.exe
+-rwxrwxr-x 1 wpsze wpsze 53839560 Jun 19 17:13 main/tc.exe
+-rwxrwxr-x 1 wpsze wpsze 58977288 Jun 19 17:10 main/wrf.exe
+ 
+==========================================================================
+```
+
 ## Compiling WRF using icx instead of icc (Intel compilers)
 
 - [ Compiling WRF using icx instead of icc (Intel compilers) | Mar 13, 2024](https://forum.mmm.ucar.edu/threads/compiling-wrf-using-icx-instead-of-icc-intel-compilers.16191/)
