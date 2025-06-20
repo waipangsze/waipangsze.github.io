@@ -1,0 +1,981 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="PALM  https:&#x2F;&#x2F;palm.muk.uni-hannover.de&#x2F;trac&#x2F;wiki&#x2F;aboutus  PALM（Parallelized Large-eddy simulation Model） 是由德國漢諾萊布尼茲大學開發的一種用於研究大氣邊界層區域內的湍流過程的大渦模擬模型，已應用於各種大氣邊界層內的流場模擬 The model PALM is based on the non-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PALM | Installation &amp; testing">
+<meta property="og:url" content="https://waipangsze.github.io/2025/06/20/PALM-Installation-testing/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="PALM  https:&#x2F;&#x2F;palm.muk.uni-hannover.de&#x2F;trac&#x2F;wiki&#x2F;aboutus  PALM（Parallelized Large-eddy simulation Model） 是由德國漢諾萊布尼茲大學開發的一種用於研究大氣邊界層區域內的湍流過程的大渦模擬模型，已應用於各種大氣邊界層內的流場模擬 The model PALM is based on the non-">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/Unyeq0D.png">
+<meta property="article:published_time" content="2025-06-20T07:25:00.000Z">
+<meta property="article:modified_time" content="2025-06-20T09:06:01.983Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="Installation">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="Urban">
+<meta property="article:tag" content="PALM">
+<meta property="article:tag" content="LES">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/Unyeq0D.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>PALM | Installation &amp; testing - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/Unyeq0D.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="PALM | Installation &amp; testing"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-20 15:25" pubdate>
+          June 20, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          853 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">PALM | Installation &amp; testing</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="palm">PALM</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://palm.muk.uni-hannover.de/trac/wiki/aboutus" class="uri">https://palm.muk.uni-hannover.de/trac/wiki/aboutus</a></li>
+</ul>
+<p><strong>PALM（Parallelized Large-eddy simulation Model）</strong> 是由德國漢諾萊布尼茲大學開發的一種用於研究大氣邊界層區域內的湍流過程的大渦模擬模型，已應用於各種大氣邊界層內的流場模擬</p>
+<p>The model <strong>PALM</strong> is based on the <strong>non-hydrostatic, filtered, incompressible Navier-Stokes equations in Boussinesq-approximated form</strong> (an anelastic approximation is available as an option for simulating deep convection). By default, PALM has at least six prognostic quantities: the velocity components u, v, w on a Cartesian grid, the potential temperature θ, water vapor mixing ratio qv and possibly a passive scalar s. Furthermore, an additional equation is solved for either the subgrid-scale turbulent kinetic energy (SGS-TKE) e (LES mode, default) or the total turbulent kinetic energy (RANS mode).</p>
+<p><strong>In the LES mode, the filtering process yields four subgrid-scale (SGS) covariance terms</strong>. These SGS terms are parametrized using a 1.5-order closure after Deardorff (1980). PALM uses the modified version of Moeng and Wyngaard (1988) and Saiki et al. (2000). The closure is based on the assumption that the energy transport by SGS eddies is proportional to the local gradients of the mean quantities.</p>
+<h2 id="installation">Installation</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gitlab.palm-model.org/releases/palm_model_system/-/blob/master/README.md#installation" class="uri">https://gitlab.palm-model.org/releases/palm_model_system/-/blob/master/README.md#installation</a></li>
+</ul>
+<ol type="1">
+<li><code>sudo apt-get install gfortran g++ make cmake coreutils libopenmpi-dev openmpi-bin libnetcdff-dev netcdf-bin libfftw3-dev python3-pip python3-pyqt5 flex bison ncl-ncarg</code></li>
+<li><code>python3 -m pip install -r requirements.txt</code></li>
+</ol>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>install.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate PALM<br><br><span class="hljs-built_in">export</span> script_path=<span class="hljs-string">&quot;/home/wpsze/PALM&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;script_path&#125;</span><br><br><span class="hljs-built_in">source</span> <span class="hljs-variable">$&#123;script_path&#125;</span>/PALM_env_GNU.sh<br><br><span class="hljs-built_in">export</span> palm_version=<span class="hljs-string">&quot;v25.04&quot;</span> <span class="hljs-comment"># v23.04, v25.04</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">palm_install</span></span>()&#123;<br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;palm_version&#125;</span><br><br>    <span class="hljs-built_in">cp</span> palm_model_system/packages/palm/model/share/config/.palm.config.default .palm.config.default<br><br>    <span class="hljs-built_in">cd</span> palm_model_system<br><br>    <span class="hljs-built_in">export</span> install_prefix=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;script_path&#125;</span>/<span class="hljs-variable">$&#123;palm_version&#125;</span>&quot;</span><br><br>    <span class="hljs-comment">#bash install -p $&#123;install_prefix&#125; -c GNU -x</span><br>    bash install -p <span class="hljs-variable">$&#123;install_prefix&#125;</span> -x<br><br>    <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$&#123;install_prefix&#125;</span>/bin:<span class="hljs-variable">$&#123;PATH&#125;</span><br>&#125;<br><br><span class="hljs-comment"># --------------------------------- Main Control --------------------------------- #</span><br>start_time=<span class="hljs-string">&quot;<span class="hljs-subst">$(date -u +%s)</span>&quot;</span><br><span class="hljs-built_in">rm</span> log.install.<span class="hljs-variable">$&#123;palm_version&#125;</span><br><span class="hljs-built_in">exec</span> &gt; &gt;(<span class="hljs-built_in">tee</span> -a log.install.<span class="hljs-variable">$&#123;palm_version&#125;</span>) 2&gt;&amp;1      <span class="hljs-comment"># </span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; ------------------------------  PALM ------------------------------- &quot;</span><br><span class="hljs-built_in">sleep</span> 1s &amp;&amp; <span class="hljs-built_in">echo</span><br><br>palm_install<br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=====================&quot;</span><br>end_time=<span class="hljs-string">&quot;<span class="hljs-subst">$(date -u +%s)</span>&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Finished datetime: <span class="hljs-subst">$(date)</span>&quot;</span><br>elapsed=<span class="hljs-string">&quot;<span class="hljs-subst">$(($end_time-$start_time)</span>)&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Total of <span class="hljs-variable">$elapsed</span> seconds elapsed for process&quot;</span><br>time_mins=<span class="hljs-string">&quot;<span class="hljs-subst">$(($elapsed /60)</span>)&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Total of <span class="hljs-variable">$time_mins</span> minutes elapsed for process&quot;</span><br>time_hours=<span class="hljs-string">&quot;<span class="hljs-subst">$(($elapsed /60/60)</span>)&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Total of <span class="hljs-variable">$time_hours</span> hours elapsed for process&quot;</span> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=====================&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; -------------------------- Completed ------------------------- &quot;</span><br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs log">#------------------------------------------------------------------------#<br># Installing PALM model system packages finished.<br># <br># Use the following command to make the executables available<br># inside your environment:<br># <br>#    export PATH=/home/wpsze/PALM/v25.04/bin:$&#123;PATH&#125;<br># <br>#------------------------------------------------------------------------#<br>#------------------------------------------------------------------------#<br>| PALM model system installer finished.                                  |<br>#------------------------------------------------------------------------#<br></code></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/IUIU6xI.png" srcset="/img/loading.gif" lazyload /></p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs console">drwxrwxr-x 6 wpsze wpsze  33K Jun 20 13:37 ./<br>drwxr-xr-x 4 wpsze wpsze  33K Jun 20 16:03 ../<br>drwxrwxr-x 2 wpsze wpsze  33K Jun 20 13:37 bin/<br>drwxrwxr-x 2 wpsze wpsze  89K Jun 20 13:37 MAKE_DEPOSITORY_default/<br>-rw-rw-r-- 1 wpsze wpsze 5.1K Jun 20 13:34 .palm.config.default<br>drwxrwxr-x 4 wpsze wpsze  33K Jun 20 13:37 palm_model_system/<br>drwxrwxr-x 6 wpsze wpsze  33K Jun 20 13:34 rrtmg/<br></code></pre></td></tr></table></figure>
+<h3 id="maybe-issues">Maybe issues</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs log">/usr/bin/ld: cannot find -lfl<br>collect2: error: ld returned 1 exit status<br>make[1]: *** [Makefile:60: kpp] Error 1<br><br>-- PALM is not using the rrtmg library.<br>CMake Error at /home/wpsze/PALM/v25.04/palm_model_system/packages/palm/model/share/cmake/FindTenStream.cmake:23 (list):<br>  list does not recognize sub-command PREPEND<br>Call Stack (most recent call first):<br>  CMakeLists.txt:69 (find_package)<br><br><br>-- Found PkgConfig: /usr/bin/pkg-config (found version &quot;1.4.2&quot;) <br>-- Checking for one of the modules &#x27;TenStream&#x27;<br>-- PALM is not using the TenStream library.<br>-- Configuring incomplete, errors occurred!<br></code></pre></td></tr></table></figure>
+<h1 id="run-script">Run script</h1>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+        <div class="fold-arrow">▶</div>run_test.py
+      </div>
+      <div class="fold-collapse collapse" id="collapse-05eef982">
+        <div class="fold-content">
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">function palm_test()&#123;<br>    echo <span class="hljs-string">&quot;======== PALM test case ============&quot;</span><br><br>    <span class="hljs-comment"># https://palm.muk.uni-hannover.de/trac/attachment/wiki/doc/tut/palm/E-0_Installation.pdf</span><br><br>    cd $&#123;install_prefix&#125;<br>    mkdir -p <span class="hljs-string">&quot;JOBS/example_cbl/INPUT&quot;</span><br><br>    cp palm_model_system/packages/palm/model/tests/cases/example_cbl/INPUT/example_cbl_p3d JOBS/example_cbl/INPUT/<br>    palmrun -r example_cbl -c default -a <span class="hljs-string">&quot;d3#&quot;</span> -X <span class="hljs-number">4</span> -v -z<br>&#125;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="test">Test</h2>
+<ul>
+<li><strong>palm_model_system/packages/palm/model/tests/cases/example_cbl/INPUT/example_cbl_p3d</strong></li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">
+        <div class="fold-arrow">▶</div>log.test
+      </div>
+      <div class="fold-collapse collapse" id="collapse-90469042">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs log"><br> *** execution starts in directory<br>     &quot;/home/wpsze/PALM/v25.04/tmp/example_cbl.30429&quot;<br> ----------------------------------------------------------------------------<br><br> *** execute command:<br>     &quot;mpirun -n 4 ./palm&quot; <br><br>  16:47:42   -start----   reading environment parameters from ENVPAR<br>  16:47:42   -finished-   reading environment parameters from ENVPAR<br>  16:47:42   -start----   reading NAMELIST parameters from PARIN<br>  16:47:43   -finished-   reading NAMELIST parameters from PARIN<br>  16:47:43   -start----   creating virtual PE grids + MPI derived data types<br>  16:47:43   -finished-   creating virtual PE grids + MPI derived data types<br>  16:47:43   -start----   Setup topography<br>  16:47:43   -finished-   Setup topography<br>  16:47:43   -start----   checking parameters<br>  16:47:43   -finished-   checking parameters<br>  16:47:43   -start----   model initialization<br>  16:47:43   -start----   initializing surface layer<br>  16:47:43   -finished-   initializing surface layer<br>  16:47:43   -finished-   model initialization<br>  16:47:43   -start----   time-stepping<br>  16:47:48   -finished-   time-stepping<br>  16:47:48   -start----   calculating cpu statistics<br>  16:47:48   -finished-   calculating cpu statistics<br><br> ----------------------------------------------------------------------------<br> *** execution finished <br><br><br><br>*** post-processing: now executing &quot;mpirun -n 1 ./combine_plot_fields.x&quot; ... <br><br>*** combine_plot_fields ***<br>    uncoupled run<br><br><br>    NetCDF output enabled<br>    no XY-section data available<br><br>    NetCDF output enabled<br>    no XZ-section data available<br><br>    no YZ-section data available<br> <br>    no 3D-data file available<br><br><br> *** execution of OUTPUT-commands:<br> ----------------------------------------------------------------------------<br> &gt;&gt;&gt; [[ -f LIST_PROFIL_1D ]] &amp;&amp; cat LIST_PROFIL_1D &gt;&gt; LIST_PROFILE<br> &gt;&gt;&gt; [[ -f LIST_PROFIL ]] &amp;&amp; cat LIST_PROFIL &gt;&gt; LIST_PROFILE<br> &gt;&gt;&gt; [[ -f PARTICLE_INFOS/_0000 ]] &amp;&amp; cat PARTICLE_INFOS/* &gt;&gt; PARTICLE_INFO<br> ----------------------------------------------------------------------------<br><br><br> *** saving OUTPUT-files:     local time: 16:47:49<br> ----------------------------------------------------------------------------<br> &gt;&gt;&gt; OUTPUT: PARIN  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_parin.000<br><br> &gt;&gt;&gt; OUTPUT: STDOUT  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_stdout.000<br><br> &gt;&gt;&gt; OUTPUT: RUN_CONTROL  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_rc.000<br><br> &gt;&gt;&gt; OUTPUT: HEADER  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_header.000<br><br> &gt;&gt;&gt; OUTPUT: CPU_MEASURES  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_cpu.000<br><br> &gt;&gt;&gt; OUTPUT: DATA_1D_PR_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_pr.000.nc<br><br> &gt;&gt;&gt; OUTPUT: DATA_1D_TS_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_ts.000.nc<br><br> &gt;&gt;&gt; OUTPUT: DATA_2D_XY_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_xy.000.nc<br><br> &gt;&gt;&gt; OUTPUT: DATA_2D_XZ_AV_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_av_xz.000.nc<br><br> &gt;&gt;&gt; OUTPUT: DATA_2D_XZ_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_xz.000.nc<br><br> ----------------------------------------------------------------------------<br> *** all OUTPUT-files saved       local time: 16:47:51 <br><br>--&gt; palmrun finished<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/qOx9DMG.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/SRmiXoS.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/TwoM1aQ.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/7c5b6Dd.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h1 id="exercise-presentations">Exercise presentations</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://palm.muk.uni-hannover.de/trac/wiki/doc/tut/palm#Exercisepresentations" class="uri">https://palm.muk.uni-hannover.de/trac/wiki/doc/tut/palm#Exercisepresentations</a></li>
+</ul>
+<p><img src="https://i.imgur.com/vli06Jo.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/bgdvOYEkxwFUP-PYfMvUXg">热环境分析软件丨PALM城市微气候和空气质量大涡模拟</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/wJ9k5VDCXURtQdPWI16jXw">大涡模拟（LES）在城市大气环境研究中的应用与挑战</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/GvsJOrYhOefiIKBXuJaINA">热点论文丨基于大涡模拟与中尺度数值天气模式的精细化风场模拟</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/PALM/" class="category-chain-item">PALM</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Installation/" class="print-no-link">#Installation</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/Urban/" class="print-no-link">#Urban</a>
+      
+        <a href="/tags/PALM/" class="print-no-link">#PALM</a>
+      
+        <a href="/tags/LES/" class="print-no-link">#LES</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>PALM | Installation &amp; testing</div>
+      <div>https://waipangsze.github.io/2025/06/20/PALM-Installation-testing/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 20, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>June 20, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/20/MPAS-Long-Term-Run-study-climate/" title="MPAS | Long Term Run study">
+                        <span class="hidden-mobile">MPAS | Long Term Run study</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
