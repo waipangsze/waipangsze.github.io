@@ -263,6 +263,17 @@ function palm_test(){
 ![](https://i.imgur.com/vli06Jo.png)
 
 
+## E3: Flow around a cubical building
+
+1. psolver [link](https://palm.muk.uni-hannover.de/trac/wiki/doc/app/initialization_parameters#psolver)
+   1. 'poisfft'
+2. end_time
+   1. 9000.0
+3. Message: psolver = "poisfft" requires that boundary conditions along x and y are both either cyclic or non-cyclic
+   1. 'https://docs.palm-model.com/25.04/Reference/LES_Model/Logging/#PAC0077'
+   2. Description: Switch to `psolver = 'multigrid'` or set `bc_lr = bc_ns`.
+
+
 # References
 
 1. [热环境分析软件丨PALM城市微气候和空气质量大涡模拟](https://mp.weixin.qq.com/s/bgdvOYEkxwFUP-PYfMvUXg)
