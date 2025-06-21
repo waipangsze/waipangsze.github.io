@@ -290,6 +290,14 @@ export WPS_VERSION=4.5
 ```
 {% endfold %}
 
+## Compile WPS in serial
+
+- [(RESOLVED) serial vs. dmpar | Jan 15, 2019](https://forum.mmm.ucar.edu/threads/resolved-serial-vs-dmpar.583/)
+
+According to <http://www2.mmm.ucar.edu/wrf/OnLineTutorial/compilation_tutorial.php>, **it is recommended to compile WPS in serial**.
+
+- That is a good question. **We have just found that the advantage to running WPS in parallel isn't that beneficial (or much faster) than a simple serial run**, as the **WPS programs run so quickly anyway**. We do find that it is necessary if you have very large domains (1000's x 1000's of grid cells). That being said, if you are finding that it speeds up the process for your runs, then it should be perfectly fine to use parallel processing. As I'm sure you already know, geogrid and metgrid are the only programs that can be run in parallel. **Ungrib must still be run serially**.
+
 # References
 
 1. [Installing WRF from scratch in an HPC using Intel (Classic) Compilers](https://pratiman-91.github.io/2020/09/01/Installing-WRF-from-scratch-in-an-HPC-using-Intel-Compilers.html)
