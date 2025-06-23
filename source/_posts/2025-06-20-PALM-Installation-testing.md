@@ -30,6 +30,16 @@ The model **PALM** is based on the **non-hydrostatic, filtered, incompressible N
 1. `sudo apt-get install gfortran g++ make cmake coreutils libopenmpi-dev openmpi-bin libnetcdff-dev netcdf-bin libfftw3-dev python3-pip python3-pyqt5 flex bison ncl-ncarg`
 2. `python3 -m pip install -r requirements.txt`
 
+### My conda env
+
+{% fold info @conda env %}
+```yaml
+
+```
+{% endfold %}
+
+### Install PALM
+
 {% fold info @install.sh %}
 ```sh
 #!/bin/bash

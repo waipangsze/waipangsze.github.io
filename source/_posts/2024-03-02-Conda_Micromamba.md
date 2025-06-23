@@ -92,6 +92,14 @@ micromamba env export -n oldenv > oldenv.yaml
 micromamba env create --name newenv --file oldenv.yaml
 ```
 
+### update: Update packages in active environment
+
+- **in active environment**
+  
+```sh
+micromamba update --file new.yaml
+```
+
 ### pip requirements file contain "@file"
 
 - [Why does the pip requirements file contain @file instead of version number?](https://stackoverflow.com/questions/62586878/why-does-the-pip-requirements-file-contain-file-instead-of-version-number)
