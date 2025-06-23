@@ -28,12 +28,12 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/Unyeq0D.png">
 <meta property="article:published_time" content="2025-06-20T07:25:00.000Z">
-<meta property="article:modified_time" content="2025-06-20T09:06:01.983Z">
+<meta property="article:modified_time" content="2025-06-23T02:08:26.077Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="Installation">
 <meta property="article:tag" content="MPAS">
-<meta property="article:tag" content="WRF">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="Urban">
 <meta property="article:tag" content="PALM">
 <meta property="article:tag" content="LES">
@@ -354,7 +354,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          853 words
+          879 words
         
       </span>
     
@@ -431,12 +431,25 @@
 <li><code>sudo apt-get install gfortran g++ make cmake coreutils libopenmpi-dev openmpi-bin libnetcdff-dev netcdf-bin libfftw3-dev python3-pip python3-pyqt5 flex bison ncl-ncarg</code></li>
 <li><code>python3 -m pip install -r requirements.txt</code></li>
 </ol>
+<h3 id="my-conda-env">My conda env</h3>
 
     <div class="fold">
       <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
-        <div class="fold-arrow">▶</div>install.sh
+        <div class="fold-arrow">▶</div>conda env
       </div>
       <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h3 id="install-palm">Install PALM</h3>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>install.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
         <div class="fold-content">
           <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate PALM<br><br><span class="hljs-built_in">export</span> script_path=<span class="hljs-string">&quot;/home/wpsze/PALM&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;script_path&#125;</span><br><br><span class="hljs-built_in">source</span> <span class="hljs-variable">$&#123;script_path&#125;</span>/PALM_env_GNU.sh<br><br><span class="hljs-built_in">export</span> palm_version=<span class="hljs-string">&quot;v25.04&quot;</span> <span class="hljs-comment"># v23.04, v25.04</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">palm_install</span></span>()&#123;<br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;palm_version&#125;</span><br><br>    <span class="hljs-built_in">cp</span> palm_model_system/packages/palm/model/share/config/.palm.config.default .palm.config.default<br><br>    <span class="hljs-built_in">cd</span> palm_model_system<br><br>    <span class="hljs-built_in">export</span> install_prefix=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;script_path&#125;</span>/<span class="hljs-variable">$&#123;palm_version&#125;</span>&quot;</span><br><br>    <span class="hljs-comment">#bash install -p $&#123;install_prefix&#125; -c GNU -x</span><br>    bash install -p <span class="hljs-variable">$&#123;install_prefix&#125;</span> -x<br><br>    <span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$&#123;install_prefix&#125;</span>/bin:<span class="hljs-variable">$&#123;PATH&#125;</span><br>&#125;<br><br><span class="hljs-comment"># --------------------------------- Main Control --------------------------------- #</span><br>start_time=<span class="hljs-string">&quot;<span class="hljs-subst">$(date -u +%s)</span>&quot;</span><br><span class="hljs-built_in">rm</span> log.install.<span class="hljs-variable">$&#123;palm_version&#125;</span><br><span class="hljs-built_in">exec</span> &gt; &gt;(<span class="hljs-built_in">tee</span> -a log.install.<span class="hljs-variable">$&#123;palm_version&#125;</span>) 2&gt;&amp;1      <span class="hljs-comment"># </span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; ------------------------------  PALM ------------------------------- &quot;</span><br><span class="hljs-built_in">sleep</span> 1s &amp;&amp; <span class="hljs-built_in">echo</span><br><br>palm_install<br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=====================&quot;</span><br>end_time=<span class="hljs-string">&quot;<span class="hljs-subst">$(date -u +%s)</span>&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Finished datetime: <span class="hljs-subst">$(date)</span>&quot;</span><br>elapsed=<span class="hljs-string">&quot;<span class="hljs-subst">$(($end_time-$start_time)</span>)&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Total of <span class="hljs-variable">$elapsed</span> seconds elapsed for process&quot;</span><br>time_mins=<span class="hljs-string">&quot;<span class="hljs-subst">$(($elapsed /60)</span>)&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Total of <span class="hljs-variable">$time_mins</span> minutes elapsed for process&quot;</span><br>time_hours=<span class="hljs-string">&quot;<span class="hljs-subst">$(($elapsed /60/60)</span>)&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Total of <span class="hljs-variable">$time_hours</span> hours elapsed for process&quot;</span> <br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=====================&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; -------------------------- Completed ------------------------- &quot;</span><br></code></pre></td></tr></table></figure>
         </div>
@@ -450,10 +463,10 @@
 <h1 id="run-script">Run script</h1>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">
         <div class="fold-arrow">▶</div>run_test.py
       </div>
-      <div class="fold-collapse collapse" id="collapse-05eef982">
+      <div class="fold-collapse collapse" id="collapse-90469042">
         <div class="fold-content">
           <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">function palm_test()&#123;<br>    echo <span class="hljs-string">&quot;======== PALM test case ============&quot;</span><br><br>    <span class="hljs-comment"># https://palm.muk.uni-hannover.de/trac/attachment/wiki/doc/tut/palm/E-0_Installation.pdf</span><br><br>    cd $&#123;install_prefix&#125;<br>    mkdir -p <span class="hljs-string">&quot;JOBS/example_cbl/INPUT&quot;</span><br><br>    cp palm_model_system/packages/palm/model/tests/cases/example_cbl/INPUT/example_cbl_p3d JOBS/example_cbl/INPUT/<br>    palmrun -r example_cbl -c default -a <span class="hljs-string">&quot;d3#&quot;</span> -X <span class="hljs-number">4</span> -v -z<br>&#125;<br></code></pre></td></tr></table></figure>
         </div>
@@ -465,10 +478,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">
         <div class="fold-arrow">▶</div>log.test
       </div>
-      <div class="fold-collapse collapse" id="collapse-90469042">
+      <div class="fold-collapse collapse" id="collapse-738764b7">
         <div class="fold-content">
           <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs log"><br> *** execution starts in directory<br>     &quot;/home/wpsze/PALM/v25.04/tmp/example_cbl.30429&quot;<br> ----------------------------------------------------------------------------<br><br> *** execute command:<br>     &quot;mpirun -n 4 ./palm&quot; <br><br>  16:47:42   -start----   reading environment parameters from ENVPAR<br>  16:47:42   -finished-   reading environment parameters from ENVPAR<br>  16:47:42   -start----   reading NAMELIST parameters from PARIN<br>  16:47:43   -finished-   reading NAMELIST parameters from PARIN<br>  16:47:43   -start----   creating virtual PE grids + MPI derived data types<br>  16:47:43   -finished-   creating virtual PE grids + MPI derived data types<br>  16:47:43   -start----   Setup topography<br>  16:47:43   -finished-   Setup topography<br>  16:47:43   -start----   checking parameters<br>  16:47:43   -finished-   checking parameters<br>  16:47:43   -start----   model initialization<br>  16:47:43   -start----   initializing surface layer<br>  16:47:43   -finished-   initializing surface layer<br>  16:47:43   -finished-   model initialization<br>  16:47:43   -start----   time-stepping<br>  16:47:48   -finished-   time-stepping<br>  16:47:48   -start----   calculating cpu statistics<br>  16:47:48   -finished-   calculating cpu statistics<br><br> ----------------------------------------------------------------------------<br> *** execution finished <br><br><br><br>*** post-processing: now executing &quot;mpirun -n 1 ./combine_plot_fields.x&quot; ... <br><br>*** combine_plot_fields ***<br>    uncoupled run<br><br><br>    NetCDF output enabled<br>    no XY-section data available<br><br>    NetCDF output enabled<br>    no XZ-section data available<br><br>    no YZ-section data available<br> <br>    no 3D-data file available<br><br><br> *** execution of OUTPUT-commands:<br> ----------------------------------------------------------------------------<br> &gt;&gt;&gt; [[ -f LIST_PROFIL_1D ]] &amp;&amp; cat LIST_PROFIL_1D &gt;&gt; LIST_PROFILE<br> &gt;&gt;&gt; [[ -f LIST_PROFIL ]] &amp;&amp; cat LIST_PROFIL &gt;&gt; LIST_PROFILE<br> &gt;&gt;&gt; [[ -f PARTICLE_INFOS/_0000 ]] &amp;&amp; cat PARTICLE_INFOS/* &gt;&gt; PARTICLE_INFO<br> ----------------------------------------------------------------------------<br><br><br> *** saving OUTPUT-files:     local time: 16:47:49<br> ----------------------------------------------------------------------------<br> &gt;&gt;&gt; OUTPUT: PARIN  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_parin.000<br><br> &gt;&gt;&gt; OUTPUT: STDOUT  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_stdout.000<br><br> &gt;&gt;&gt; OUTPUT: RUN_CONTROL  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_rc.000<br><br> &gt;&gt;&gt; OUTPUT: HEADER  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_header.000<br><br> &gt;&gt;&gt; OUTPUT: CPU_MEASURES  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/MONITORING/example_cbl_cpu.000<br><br> &gt;&gt;&gt; OUTPUT: DATA_1D_PR_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_pr.000.nc<br><br> &gt;&gt;&gt; OUTPUT: DATA_1D_TS_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_ts.000.nc<br><br> &gt;&gt;&gt; OUTPUT: DATA_2D_XY_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_xy.000.nc<br><br> &gt;&gt;&gt; OUTPUT: DATA_2D_XZ_AV_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_av_xz.000.nc<br><br> &gt;&gt;&gt; OUTPUT: DATA_2D_XZ_NETCDF  to<br>             /home/wpsze/PALM/v25.04/JOBS/example_cbl/OUTPUT/example_cbl_xz.000.nc<br><br> ----------------------------------------------------------------------------<br> *** all OUTPUT-files saved       local time: 16:47:51 <br><br>--&gt; palmrun finished<br></code></pre></td></tr></table></figure>
         </div>
@@ -480,6 +493,22 @@
 <li><a target="_blank" rel="noopener" href="https://palm.muk.uni-hannover.de/trac/wiki/doc/tut/palm#Exercisepresentations" class="uri">https://palm.muk.uni-hannover.de/trac/wiki/doc/tut/palm#Exercisepresentations</a></li>
 </ul>
 <p><img src="https://i.imgur.com/vli06Jo.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="e3-flow-around-a-cubical-building">E3: Flow around a cubical building</h2>
+<ol type="1">
+<li>psolver <a target="_blank" rel="noopener" href="https://palm.muk.uni-hannover.de/trac/wiki/doc/app/initialization_parameters#psolver">link</a>
+<ol type="1">
+<li>'poisfft'</li>
+</ol></li>
+<li>end_time
+<ol type="1">
+<li>9000.0</li>
+</ol></li>
+<li>Message: psolver = "poisfft" requires that boundary conditions along x and y are both either cyclic or non-cyclic
+<ol type="1">
+<li>'https://docs.palm-model.com/25.04/Reference/LES_Model/Logging/#PAC0077'</li>
+<li>Description: Switch to <code>psolver = 'multigrid'</code> or set <code>bc_lr = bc_ns</code>.</li>
+</ol></li>
+</ol>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/bgdvOYEkxwFUP-PYfMvUXg">热环境分析软件丨PALM城市微气候和空气质量大涡模拟</a></li>
@@ -519,13 +548,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Installation/" class="print-no-link">#Installation</a>
-      
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+        <a href="/tags/Installation/" class="print-no-link">#Installation</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/Urban/" class="print-no-link">#Urban</a>
       
@@ -562,7 +591,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>June 20, 2025</div>
+          <div>June 23, 2025</div>
         </div>
       
       
@@ -592,6 +621,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/06/23/MPAS-Scaling-Speedup/" title="MPAS | Scalability | Speedup">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | Scalability | Speedup</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
