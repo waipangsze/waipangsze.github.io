@@ -34,9 +34,25 @@ The model **PALM** is based on the **non-hydrostatic, filtered, incompressible N
 
 {% fold info @conda env %}
 ```yaml
-
+aa
 ```
 {% endfold %}
+
+#### Error
+
+##### Could NOT find MPI (missing: MPI_Fortran_FOUND) (found version "4.0")
+
+
+
+##### NOT find MPI_Fortran
+
+- `Could NOT find MPI_Fortran (missing: MPI_Fortran_WORKS) Configuring incomplete, errors occurred!`
+
+1. `fortran_compiler = /home/wpsze/micromamba/envs/PALM/bin/x86_64-conda-linux-gnu-gfortran `
+   1. It is **wrong**, fortran_compiler should be `gfortran`, `mpifort`, `mpif90`
+   2. This comes from `fortran_compiler="$(nf-config --fc)"`
+      1. `$ nf-config --fc` and search all config by `$ nf-config`
+   3. It is not a Fortran compiler, **but a wrapper** around one provided. CMake generally prefers to run compilers directly (because wrappers can do…funny things).
 
 ### Install PALM
 

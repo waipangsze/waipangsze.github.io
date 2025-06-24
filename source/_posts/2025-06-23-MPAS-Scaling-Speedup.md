@@ -52,6 +52,10 @@ banner_img: https://i.imgur.com/0qiFjTO.png
 
 ![](https://i.imgur.com/wYM24w2.png)
 
+- Averaging t2m globally
+
+![](https://i.imgur.com/BcO873A.png)
+
 # References
 
 1. [Towards convection-resolving, global atmospheric simulations with the Model for Prediction Across Scales (MPAS): an extreme scaling experiment](https://gmd.copernicus.org/preprints/8/6987/2015/gmdd-8-6987-2015.pdf)
