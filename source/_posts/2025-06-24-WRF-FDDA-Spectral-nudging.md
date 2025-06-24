@@ -234,6 +234,13 @@ reconstructed_data = coeffs.to_grid()
 
 ## XY Fourier transform 
 
+### real-space to k-space
+
+![](https://i.imgur.com/Wv9jNcT.png){width=400}
+
+
+### np.fft2 
+
 Performing 2D Fourier transforms (forward and backward) in Python is typically done using the **numpy.fft** module, particularly the **fft2** and **ifft2** functions
 
 {% fold info @FFT %}
