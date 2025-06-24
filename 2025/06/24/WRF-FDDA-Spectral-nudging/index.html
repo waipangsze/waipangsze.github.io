@@ -1,0 +1,976 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Nudging Nudging, also known as four-dimensional data assimilation (FDDA), is a method of keeping simulations close to analyses and&#x2F;or observations or forcing data over the course of an integration by">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS | WRF | FDDA | Spectral nudging">
+<meta property="og:url" content="https://waipangsze.github.io/2025/06/24/WRF-FDDA-Spectral-nudging/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Nudging Nudging, also known as four-dimensional data assimilation (FDDA), is a method of keeping simulations close to analyses and&#x2F;or observations or forcing data over the course of an integration by">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/oOsTWeD.png">
+<meta property="article:published_time" content="2025-06-24T02:45:00.000Z">
+<meta property="article:modified_time" content="2025-06-24T06:28:08.799Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="FDDA">
+<meta property="article:tag" content="Spectral nudging">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/oOsTWeD.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS | WRF | FDDA | Spectral nudging - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/oOsTWeD.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS | WRF | FDDA | Spectral nudging"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 10:45" pubdate>
+          June 24, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          890 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS | WRF | FDDA | Spectral nudging</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="nudging">Nudging</h1>
+<p><strong>Nudging, also known as <a target="_blank" rel="noopener" href="https://github.com/wrf-model/TechNote/blob/master/fdda.tex">four-dimensional data assimilation (FDDA)</a></strong>, is a method of keeping simulations close to analyses and/or observations or forcing data over the course of an integration by applying extra forcing terms to the model equations.</p>
+<p>There are three types of nudging and some can be used in combination.</p>
+<ul>
+<li><strong>Grid- or analysis-nudging</strong> simply forces the model simulation towards a series of analyses grid-point by grid-point.</li>
+<li><strong>Observational- or station-nudging</strong> locally forces the simulation towards observational data.</li>
+<li><strong>Spectral nudging</strong> only forces the model to the selected spectra of waves in the analysis.</li>
+</ul>
+<p>These methods provide a four-dimensional analysis that is somewhat balanced dynamically, and in terms of continuity,while allowing for complex local topographical or convective variations. Such datasets can cover long periods, and have particular value in driving off-line air quality or atmospheric chemistry models.</p>
+<h1 id="spectral-nudging">Spectral nudging</h1>
+<p>Spectral nudging is another way to nudge the model solution to either analysis or any forcing data. The key difference between this method and that of grid- or obs-nudging is that it is more selective in the scales one would like to nudge. In contrast to directly nudge model variables toward analysis or observation, <strong>this method decomposes the difference fields spectrally</strong>, and <strong>nudges toward the longer waves that correspond to the analysis</strong>. The spectral coefficients from the <strong>selected waves</strong> are then transformed back from the wave space to physical space and added to the model as tendencies. This technique was originally implemented to the Reginoal Atmospheric Modeling System, and later to ARW in 2010.</p>
+<p>Spectral nudging uses the same input data as for grid-nudging, and nudges model variables u, v, temperature, and geopotential height. Water mixing ratio nudging was added in Version 4.0. Applications described above for grid-nudging can be considered using spectral nudging too.</p>
+<p>Options to control the grid-nudging are also used for spectral nudging (such as nudging end time and ramping, nudging strength, controls of nudging in the boundary layer or lower levels and so on). In addition, there is an option to control the ramping in the vertical between the layer without nudging to the layer where the nudging is on. <strong>The number of waves to nudge in the x and y directions are user-defined</strong>.</p>
+<h1 id="module_fdda_spnudging.f">module_fdda_spnudging.F</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/master/phys/module_fdda_spnudging.F" class="uri">https://github.com/wrf-model/WRF/blob/master/phys/module_fdda_spnudging.F</a></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!</span><br><span class="hljs-comment">! Compute 3-D nudging tendencies for u, v</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!GMM Fist calculate differences between model variables and analysis values,</span><br><span class="hljs-comment">!then filter in the x and y direction all wave numbers higher than</span><br><span class="hljs-comment">! xwavenum and ywavenum, as specified in the namelist.</span><br><span class="hljs-comment">!If either xwavenum or ywavenum are not specified,</span><br><span class="hljs-comment">! default values are zero, and spectral nudging is turned off</span><br><span class="hljs-comment">!Then use the filtered differences to calculate the spectral nudging tendencies</span><br></code></pre></td></tr></table></figure>
+<h2 id="spectral_nudging_filter_3dx">spectral_nudging_filter_3dx</h2>
+<div class="note note-primary">
+            <p>! Variables will stay in domain form since this routine is meaningless<br />! unless tile extent is the same as domain extent in E/W direction, i.e.,<br />! the processor has access to all grid points in E/W direction.<br />! There may be other ways of doing FFTs, but we haven't learned them yet...<br /></p>
+          </div>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">SUBROUTINE</span></span> spectral_nudging_filter_3dx( f, nwave,            &amp;<br>                            ids, ide, jds, jde, kds, kde,    &amp;<br>                            ims, ime, jms, jme, kms, kme,    &amp;<br>                            its, ite, jts, jte, kts, kte )<br><br>  <span class="hljs-keyword">IMPLICIT</span> <span class="hljs-keyword">NONE</span><br><br>  <span class="hljs-keyword">INTEGER</span> ,       <span class="hljs-keyword">INTENT</span>(<span class="hljs-keyword">IN</span>   ) :: nwave<br>  <span class="hljs-keyword">INTEGER</span> ,       <span class="hljs-keyword">INTENT</span>(<span class="hljs-keyword">IN</span>   ) :: ids, ide, jds, jde, kds, kde, &amp;<br>                                   ims, ime, jms, jme, kms, kme, &amp;<br>                                   its, ite, jts, jte, kts, kte<br><br>  <span class="hljs-keyword">REAL</span> , <span class="hljs-keyword">DIMENSION</span>( ims:ime , kms:kme, jms:jme ) , <span class="hljs-keyword">INTENT</span>(INOUT) ::  f<br><br>  <span class="hljs-keyword">REAL</span> , <span class="hljs-keyword">DIMENSION</span>(<span class="hljs-number">1</span>:ide-ids+<span class="hljs-number">1</span>,<span class="hljs-number">1</span>:kte-kts+<span class="hljs-number">1</span>) :: sheet<br>  <span class="hljs-keyword">INTEGER</span> ::  i, j, j_end, k, nx, ny<br><br>  <span class="hljs-comment">! Variables will stay in domain form since this routine is meaningless</span><br>  <span class="hljs-comment">! unless tile extent is the same as domain extent in E/W direction, i.e.,</span><br>  <span class="hljs-comment">! the processor has access to all grid points in E/W direction.</span><br>  <span class="hljs-comment">! There may be other ways of doing FFTs, but we haven&#x27;t learned them yet...</span><br><br>  <span class="hljs-comment">! Check to make sure we have full access to all E/W points</span><br>  <span class="hljs-keyword">IF</span> ((its /= ids) <span class="hljs-keyword">.OR.</span> (ite /= ide)) <span class="hljs-keyword">THEN</span><br>     <span class="hljs-built_in">WRITE</span> ( wrf_err_message , * ) <span class="hljs-string">&#x27;module_spectral_nudging: 3d: (its /= ids) or (ite /= ide)&#x27;</span>,its,ids,ite,ide<br>     <span class="hljs-keyword">CALL</span> wrf_error_fatal ( <span class="hljs-built_in">TRIM</span>( wrf_err_message ) )<br>  <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br><br><br>  nx = ide-ids+<span class="hljs-number">1</span> <br>  ny = kte-kts+<span class="hljs-number">1</span> <span class="hljs-comment">! we can filter extra level for variables that are non-Z-staggered</span><br>  j_end = <span class="hljs-built_in">MIN</span>(jte, jde-<span class="hljs-number">1</span>)<br>  <span class="hljs-keyword">IF</span> (j_end == jde-<span class="hljs-number">1</span>) j_end = jde<br>  <span class="hljs-keyword">DO</span> j = jts, j_end<br><br>        <span class="hljs-keyword">DO</span> k=kts,kte<br>        <span class="hljs-keyword">DO</span> i=ids,ide-<span class="hljs-number">1</span><br>           sheet(i-ids+<span class="hljs-number">1</span>,k-kts+<span class="hljs-number">1</span>) = f(i,k,j)<br>        <span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br>           sheet(ide,k-kts+<span class="hljs-number">1</span>) = <span class="hljs-number">0.</span><br>        <span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br><br>        <span class="hljs-keyword">CALL</span> spectralnudgingfilterfft2dncar(nx,ny,nwave,sheet)<br><br>        <span class="hljs-keyword">DO</span> k=kts,kte<br>           <span class="hljs-keyword">DO</span> i=ids,ide<br>              f(i,k,j) = sheet(i-ids+<span class="hljs-number">1</span>,k-kts+<span class="hljs-number">1</span>)<br>           <span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br>        <span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br>  <span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span> <span class="hljs-comment">! outer j (latitude) loop</span><br><br><span class="hljs-keyword">END</span> <span class="hljs-function"><span class="hljs-keyword">SUBROUTINE</span></span> spectral_nudging_filter_3dx<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>fftpack5</strong> routines
+<ul>
+<li>call <strong>rfftmi</strong>(n,wsave,lensav,ier)
+<ul>
+<li>forward transform: initialize coefficients, place in wsave</li>
+</ul></li>
+<li>call <strong>rfftmf</strong>( lot, jump, n, inc, fin, lenr, wsave, lensav, work, lenwrk, ier )
+<ul>
+<li>do the forward transform</li>
+</ul></li>
+<li>filter all waves with wavenumber larger than nwave</li>
+<li>call <strong>rfftmb</strong>( lot, jump, n, inc, fin, lenr, wsave, lensav, work, lenwrk, ier )
+<ul>
+<li>do the backward transform</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><strong>FFTPACK5</strong> provides a suite of routines for computing Fast Fourier Transforms (FFTs) of both real and complex data, including 1D and 2D transforms, as well as multiple vectors. These routines are designed for efficiency and flexibility, supporting various data types (real/complex, single/double precision) and lengths.</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-function"><span class="hljs-keyword">SUBROUTINE</span></span> spectralnudgingfilterfft2dncar(nx,ny,nwave,fin)<br>  <span class="hljs-keyword">IMPLICIT</span> <span class="hljs-keyword">NONE</span><br>  <span class="hljs-keyword">INTEGER</span> , <span class="hljs-keyword">INTENT</span>(<span class="hljs-keyword">IN</span>) :: nx, ny, nwave<br>  <span class="hljs-keyword">REAL</span> , <span class="hljs-keyword">DIMENSION</span>(nx,ny), <span class="hljs-keyword">INTENT</span>(INOUT) :: fin<br><br>  <span class="hljs-keyword">INTEGER</span> :: i, j<br>  <span class="hljs-keyword">REAL</span>, <span class="hljs-keyword">dimension</span>(nx,ny) :: fp<br><br>  <span class="hljs-keyword">INTEGER</span> :: lensave, ier, nh, n1<br>  <span class="hljs-keyword">INTEGER</span> :: lot, jump, n, inc, lenr, lensav, lenwrk<br>  <span class="hljs-keyword">REAL</span>, <span class="hljs-keyword">DIMENSION</span>(nx+<span class="hljs-number">15</span>) :: wsave<br>  <span class="hljs-keyword">REAL</span>, <span class="hljs-keyword">DIMENSION</span>(nx,ny) :: work<br><br><span class="hljs-comment">!  we are following the naming convention of the fftpack5 routines</span><br><br>  n = nx<br>  lot = ny<br>  lensav = n+<span class="hljs-number">15</span><br>  inc = <span class="hljs-number">1</span><br>  lenr = nx*ny<br>  jump = nx<br>  lenwrk = lenr<br><br><span class="hljs-comment">!  forward transform</span><br><span class="hljs-comment">!  initialize coefficients, place in wsave</span><br><span class="hljs-comment">!   (should place this in init and save wsave at program start)</span><br><br>  <span class="hljs-keyword">call</span> rfftmi(n,wsave,lensav,ier)<br>  <span class="hljs-keyword">IF</span>(ier /= <span class="hljs-number">0</span>) <span class="hljs-keyword">THEN</span><br>    <span class="hljs-built_in">write</span>(wrf_err_message,*) <span class="hljs-string">&#x27; error in rfftmi &#x27;</span>,ier<br>    <span class="hljs-keyword">CALL</span> wrf_message(<span class="hljs-built_in">TRIM</span>(wrf_err_message))<br>  <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br><br><span class="hljs-comment">!  do the forward transform</span><br><br>  <span class="hljs-keyword">call</span> rfftmf( lot, jump, n, inc, fin, lenr, wsave, lensav, work, lenwrk, ier )<br>  <span class="hljs-keyword">IF</span>(ier /= <span class="hljs-number">0</span>) <span class="hljs-keyword">THEN</span><br>    <span class="hljs-built_in">write</span>(wrf_err_message,*) <span class="hljs-string">&#x27; error in rfftmf &#x27;</span>,ier<br>    <span class="hljs-keyword">CALL</span> wrf_message(<span class="hljs-built_in">TRIM</span>(wrf_err_message))<br>  <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br><br>      nh = <span class="hljs-built_in">min</span>(<span class="hljs-built_in">max</span>(<span class="hljs-number">1</span> + <span class="hljs-number">2</span>*nwave,<span class="hljs-number">0</span>),n)<br><br><br><span class="hljs-comment">! filter all waves with wavenumber larger than nwave</span><br><br>  fp = <span class="hljs-number">1.</span><br><br>  <span class="hljs-keyword">DO</span> j=<span class="hljs-number">1</span>,ny<br>     <span class="hljs-keyword">DO</span> i=nh+<span class="hljs-number">1</span>,n<br>         fp(i,j) = <span class="hljs-number">0.</span><br>     <span class="hljs-keyword">ENDDO</span><br>  <span class="hljs-keyword">ENDDO</span><br><br>  <span class="hljs-keyword">DO</span> j=<span class="hljs-number">1</span>,ny<br>    <span class="hljs-keyword">DO</span> i=<span class="hljs-number">1</span>,nx<br>      fin(i,j) = fp(i,j)*fin(i,j)<br>    <span class="hljs-keyword">ENDDO</span><br>  <span class="hljs-keyword">ENDDO</span><br><br><span class="hljs-comment">!  do the backward transform</span><br><br>  <span class="hljs-keyword">call</span> rfftmb( lot, jump, n, inc, fin, lenr, wsave, lensav, work, lenwrk, ier )<br>  <span class="hljs-keyword">IF</span>(ier /= <span class="hljs-number">0</span>) <span class="hljs-keyword">THEN</span><br>    <span class="hljs-built_in">write</span>(wrf_err_message,*) <span class="hljs-string">&#x27; error in rfftmb &#x27;</span>,ier<br>    <span class="hljs-keyword">CALL</span> wrf_message(<span class="hljs-built_in">TRIM</span>(wrf_err_message))<br>  <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br><br><span class="hljs-keyword">END</span> <span class="hljs-function"><span class="hljs-keyword">SUBROUTINE</span></span> spectralnudgingfilterfft2dncar<br></code></pre></td></tr></table></figure>
+<h1 id="era5">ERA5</h1>
+<h2 id="spherical-harmonic-transforms-not-used">Spherical harmonic transforms (Not used)</h2>
+<p><strong>Performing a global spherical Fourier transform on ERA5 data in Python typically involves using spherical harmonic transforms</strong>, which are the generalization of the Fourier transform to the sphere. This is particularly relevant in the context of global weather forecasting and climate modeling, where the Earth's spherical geometry needs to be accurately represented.</p>
+<h3 id="spherical-harmonic-transform-libraries">Spherical Harmonic Transform Libraries:</h3>
+<ul>
+<li>Utilize Python libraries designed for spherical harmonic transforms. pyshtools is a prominent library for this purpose, offering functions for forward and inverse spherical harmonic transforms.</li>
+<li>These libraries handle the complexities of representing functions on a sphere and performing the appropriate transforms.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pyshtools <span class="hljs-keyword">as</span> sh<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr <span class="hljs-comment"># For handling ERA5 data</span><br><br><span class="hljs-comment"># Load ERA5 data (example, assuming &#x27;era5_data.nc&#x27; exists)</span><br>ds = xr.open_dataset(<span class="hljs-string">&#x27;era5_data.nc&#x27;</span>)<br><span class="hljs-comment"># Select a variable and time slice for transformation</span><br>data_variable = ds[<span class="hljs-string">&#x27;temperature&#x27;</span>].isel(time=<span class="hljs-number">0</span>)<br><br><span class="hljs-comment"># Extract data as a numpy array, ensuring correct dimensions (latitude, longitude)</span><br><span class="hljs-comment"># Note: pyshtools often expects data ordered from north to south latitude</span><br>data_array = data_variable.values<br><br><span class="hljs-comment"># Perform the spherical harmonic transform</span><br><span class="hljs-comment"># This will return a SphericalHarmonicCoefficients object</span><br>coeffs = sh.SHGrid.from_array(data_array).expand()<br><br><span class="hljs-comment"># You can then analyze or manipulate &#x27;coeffs&#x27;</span><br><span class="hljs-comment"># For example, filter out high-frequency components</span><br><br><span class="hljs-comment"># Reconstruct the data from the spherical harmonic coefficients</span><br>reconstructed_data = coeffs.to_grid()<br></code></pre></td></tr></table></figure>
+<h2 id="xy-fourier-transform">XY Fourier transform</h2>
+<p>Performing 2D Fourier transforms (forward and backward) in Python is typically done using the <strong>numpy.fft</strong> module, particularly the <strong>fft2</strong> and <strong>ifft2</strong> functions</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+        <div class="fold-arrow">▶</div>FFT
+      </div>
+      <div class="fold-collapse collapse" id="collapse-05eef982">
+        <div class="fold-content">
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><br><span class="hljs-comment"># Create a sample 2D image (e.g., a 2D Gaussian)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_sample_image</span>(<span class="hljs-params">size=<span class="hljs-number">128</span></span>):<br>    x = np.linspace(-<span class="hljs-number">10.0</span>, <span class="hljs-number">10.0</span>, size)<br>    y = np.linspace(-<span class="hljs-number">10.0</span>, <span class="hljs-number">10.0</span>, size)<br>    X, Y = np.meshgrid(x, y)<br>    image = np.sin(<span class="hljs-number">0.2</span>*X*np.pi) + <span class="hljs-number">0.5</span>*np.sin(<span class="hljs-number">5</span>*X*np.pi) + <span class="hljs-number">0.2</span>*np.sin(<span class="hljs-number">20</span>*X*np.pi)<br>    <span class="hljs-keyword">return</span> image<br><br><span class="hljs-comment"># Perform 2D Fourier Transform, filter high wavenumbers, and inverse transform</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">fourier_filter</span>(<span class="hljs-params">image, Nx_kmax, Ny_kmax</span>):<br>    <span class="hljs-comment"># Step 1: Perform 2D FFT</span><br>    f_transform = np.fft.fft2(image)<br>    f_transform_shifted = np.fft.fftshift(f_transform)  <span class="hljs-comment"># Shift zero to center</span><br>    <br>    <span class="hljs-comment"># Step 2: Create a low-pass filter mask</span><br>    <span class="hljs-comment"># Create wavenumber grid</span><br>    N = image.shape[<span class="hljs-number">0</span>]  <span class="hljs-comment"># Grid size</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;N = &quot;</span>, N)<br>    <span class="hljs-comment"># L = 20.0  # Domain length</span><br>    <span class="hljs-comment"># dx = L / N</span><br>    <span class="hljs-comment"># dk = 2 * np.pi / L </span><br>    <span class="hljs-comment"># k = np.linspace(-N*dk/2, N*dk/2, N, endpoint=False)</span><br>    k = np.linspace(-N/<span class="hljs-number">2</span>, N/<span class="hljs-number">2</span>, N, endpoint=<span class="hljs-literal">False</span>)<br>    KX, KY = np.meshgrid(k, k)<br><br>    <span class="hljs-comment"># Define high-wavenumber filter (e.g., remove wavenumbers above N_kmax)</span><br>    <span class="hljs-comment"># np.abs() fix the box of k-space</span><br>    filter_mask_KX = np.<span class="hljs-built_in">abs</span>(KX) &lt;= Nx_kmax<br>    filter_mask_KY = np.<span class="hljs-built_in">abs</span>(KY) &lt;= Ny_kmax<br>    <br>    <span class="hljs-comment"># Step 3: Apply the filter in k domain</span><br>    f_transform_filtered = f_transform_shifted * filter_mask_KX<br>    f_transform_filtered = f_transform_filtered * filter_mask_KY<br>    <br>    <span class="hljs-comment"># Step 4: Inverse FFT</span><br>    f_transform_unshifted = np.fft.ifftshift(f_transform_filtered)  <span class="hljs-comment"># Shift back</span><br>    filtered_image = np.fft.ifft2(f_transform_unshifted)<br>    filtered_image = np.real(filtered_image)  <span class="hljs-comment"># Take magnitude to ensure real output</span><br>    <br>    <span class="hljs-keyword">return</span> filtered_image, f_transform_shifted, f_transform_filtered<br><br><span class="hljs-comment"># Main execution</span><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    <span class="hljs-comment"># Generate sample image</span><br>    size = <span class="hljs-number">1280</span><br>    image = create_sample_image(size)<br><br>    <span class="hljs-comment"># Apply Fourier transform and filtering</span><br>    Nx_kmax = <span class="hljs-number">3</span> <span class="hljs-comment"># size/2</span><br>    Ny_kmax = <span class="hljs-number">30</span><br>    filtered_image, f_transform, f_transform_filtered = fourier_filter(image, Nx_kmax, Ny_kmax)<br><br>    <span class="hljs-comment"># Visualize results</span><br>    plt.figure(figsize=(<span class="hljs-number">12</span>, <span class="hljs-number">4</span>))<br><br>    plt.subplot(<span class="hljs-number">131</span>)<br>    plt.imshow(image, cmap=<span class="hljs-string">&#x27;gray&#x27;</span>)<br>    plt.title(<span class="hljs-string">&#x27;Original Image&#x27;</span>)<br>    plt.colorbar()<br><br>    plt.subplot(<span class="hljs-number">132</span>)<br>    plt.imshow(np.log(np.<span class="hljs-built_in">abs</span>(f_transform) + <span class="hljs-number">1</span>), cmap=<span class="hljs-string">&#x27;gray&#x27;</span>)<br>    plt.title(<span class="hljs-string">&#x27;Fourier Transform (log scale)&#x27;</span>)<br>    plt.colorbar()<br><br>    plt.subplot(<span class="hljs-number">133</span>)<br>    plt.imshow(filtered_image, cmap=<span class="hljs-string">&#x27;gray&#x27;</span>)<br>    plt.title(<span class="hljs-string">&#x27;Filtered Image&#x27;</span>)<br>    plt.colorbar()<br><br>    plt.tight_layout()<br>    plt.show()<br>    plt.close()<br><br>    <span class="hljs-comment"># Visualize results</span><br>    plt.figure(figsize=(<span class="hljs-number">12</span>, <span class="hljs-number">8</span>))<br><br>    plt.subplot(<span class="hljs-number">221</span>)<br>    plt.plot(image[<span class="hljs-number">0</span>, :])<br>    plt.title(<span class="hljs-string">&#x27;Original Image&#x27;</span>)<br><br>    plt.subplot(<span class="hljs-number">222</span>)<br>    plt.plot(np.log(np.<span class="hljs-built_in">abs</span>(f_transform[:, <span class="hljs-number">0</span>]) + <span class="hljs-number">1</span>), <span class="hljs-string">&#x27;ro&#x27;</span>)<br>    plt.title(<span class="hljs-string">&#x27;Fourier Transform (log scale)&#x27;</span>)<br><br>    plt.subplot(<span class="hljs-number">223</span>)<br>    plt.plot(filtered_image[<span class="hljs-number">0</span>, :], label=<span class="hljs-string">&#x27;Filtered Image&#x27;</span>)<br>    plt.title(<span class="hljs-string">&#x27;Filtered Image&#x27;</span>)<br>    plt.legend()<br><br>    plt.subplot(<span class="hljs-number">224</span>)<br>    plt.plot(image[<span class="hljs-number">0</span>, :], label=<span class="hljs-string">&#x27;Original Image&#x27;</span>)<br>    plt.plot(filtered_image[<span class="hljs-number">0</span>, :], label=<span class="hljs-string">&#x27;Filtered Image&#x27;</span>)<br>    plt.title(<span class="hljs-string">&#x27;Filtered Image&#x27;</span>)<br>    plt.legend()<br><br>    plt.tight_layout()<br>    plt.show()<br>    plt.close()<br><br><br>    plt.plot(filtered_image[<span class="hljs-number">0</span>, :]- image[<span class="hljs-number">0</span>, :], <span class="hljs-string">&#x27;ro&#x27;</span>)<br>    plt.title(<span class="hljs-string">&#x27;Filtered Image - Original Image&#x27;</span>)<br>    plt.tight_layout()<br>    plt.show()<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h3 id="checking">Checking</h3>
+<h4 id="orignal-signal">Orignal signal</h4>
+<p><img src="https://i.imgur.com/2PNh9NN.png" srcset="/img/loading.gif" lazyload /></p>
+<h3 id="add-some-noises">Add some noises</h3>
+<p><img src="https://i.imgur.com/qnAUvMc.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="apply-on-mpas-aera5">Apply on MPAS-A/ERA5</h1>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/FDDA/" class="print-no-link">#FDDA</a>
+      
+        <a href="/tags/Spectral-nudging/" class="print-no-link">#Spectral nudging</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS | WRF | FDDA | Spectral nudging</div>
+      <div>https://waipangsze.github.io/2025/06/24/WRF-FDDA-Spectral-nudging/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 24, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>June 24, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/23/MPAS-Scaling-Speedup/" title="MPAS | Scalability | Speedup">
+                        <span class="hidden-mobile">MPAS | Scalability | Speedup</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
