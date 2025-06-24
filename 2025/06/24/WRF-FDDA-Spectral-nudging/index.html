@@ -28,10 +28,10 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/oOsTWeD.png">
 <meta property="article:published_time" content="2025-06-24T02:45:00.000Z">
-<meta property="article:modified_time" content="2025-06-24T06:28:08.799Z">
+<meta property="article:modified_time" content="2025-06-24T07:57:27.622Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="FDDA">
 <meta property="article:tag" content="Spectral nudging">
@@ -352,7 +352,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          890 words
+          893 words
         
       </span>
     
@@ -467,6 +467,9 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pyshtools <span class="hljs-keyword">as</span> sh<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr <span class="hljs-comment"># For handling ERA5 data</span><br><br><span class="hljs-comment"># Load ERA5 data (example, assuming &#x27;era5_data.nc&#x27; exists)</span><br>ds = xr.open_dataset(<span class="hljs-string">&#x27;era5_data.nc&#x27;</span>)<br><span class="hljs-comment"># Select a variable and time slice for transformation</span><br>data_variable = ds[<span class="hljs-string">&#x27;temperature&#x27;</span>].isel(time=<span class="hljs-number">0</span>)<br><br><span class="hljs-comment"># Extract data as a numpy array, ensuring correct dimensions (latitude, longitude)</span><br><span class="hljs-comment"># Note: pyshtools often expects data ordered from north to south latitude</span><br>data_array = data_variable.values<br><br><span class="hljs-comment"># Perform the spherical harmonic transform</span><br><span class="hljs-comment"># This will return a SphericalHarmonicCoefficients object</span><br>coeffs = sh.SHGrid.from_array(data_array).expand()<br><br><span class="hljs-comment"># You can then analyze or manipulate &#x27;coeffs&#x27;</span><br><span class="hljs-comment"># For example, filter out high-frequency components</span><br><br><span class="hljs-comment"># Reconstruct the data from the spherical harmonic coefficients</span><br>reconstructed_data = coeffs.to_grid()<br></code></pre></td></tr></table></figure>
 <h2 id="xy-fourier-transform">XY Fourier transform</h2>
+<h3 id="real-space-to-k-space">real-space to k-space</h3>
+<p><img src="https://i.imgur.com/Wv9jNcT.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h3 id="np.fft2">np.fft2</h3>
 <p>Performing 2D Fourier transforms (forward and backward) in Python is typically done using the <strong>numpy.fft</strong> module, particularly the <strong>fft2</strong> and <strong>ifft2</strong> functions</p>
 
     <div class="fold">
@@ -518,9 +521,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
-      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
