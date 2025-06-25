@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: https://i.imgur.com/oOsTWeD.png
-banner_img: https://i.imgur.com/oOsTWeD.png
+index_img: https://i.imgur.com/6xCRnQa.png
+banner_img: https://i.imgur.com/6xCRnQa.png
 ---
 
 # Nudging
