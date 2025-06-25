@@ -34,9 +34,35 @@ The model **PALM** is based on the **non-hydrostatic, filtered, incompressible N
 
 {% fold info @conda env %}
 ```yaml
-aa
+name: PALM
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - Jinja2=3.0.0
+  - make
+  - cmake=3.25.1
+  - mike
+  - mkdocs
+  - mkdocs-macros-plugin
+  - pymdown-extensions
+  - verspec
+  - netCDF4=1.6.4
+  - PyQt
+  - argcomplete
+  - PyYAML
+  - termcolor
+  - f90nml
+  - tqdm
+  - parse
+  - scipy
+  - xarray
+  - bison
+  - fftw
 ```
 {% endfold %}
+
+- with gcc, gxx, gfortran, mpich, ..., which are WRF's requried library.
 
 #### Error
 
