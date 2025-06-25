@@ -171,6 +171,18 @@ To listen **only in localhost** then you can omit the IP
 jupyter notebook --no-browser --port=8080
 ```
 
+# Why does creating my conda environment use so much memory?
+
+I am using conda (installed using Miniconda3) and I want to create a Python 3.7 from an environment file (using `conda env create -f environment.yaml`). While conda solves the environment, the memory usage goes up by about 4 GB for a few minutes until the environment is succesfully installed. Is it possible to reduce this memory usage?
+
+Some discussion here:
+
+- <https://github.com/conda/conda/issues/5003>
+
+I think someone mentioned this:
+
+- **For each channel, conda loads the full repodata information into memory**. When you uncompress it, it's a lot. In the future we'd like to get to a place where that's not necessary. But it's going to take quite a bit of work to get there.
+
 # References
 
 1. [北京大学高性能计算校级公共平台用户文档](https://hpc.pku.edu.cn/ug/guide/soft/conda/#_3)

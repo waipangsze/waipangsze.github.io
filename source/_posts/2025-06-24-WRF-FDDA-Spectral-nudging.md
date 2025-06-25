@@ -197,6 +197,20 @@ SUBROUTINE spectralnudgingfilterfft2dncar(nx,ny,nwave,fin)
 END SUBROUTINE spectralnudgingfilterfft2dncar
 ```
 
+# WRF setting
+
+1. [Spectral nudging with ERA5 | Jan 9, 2023](https://forum.mmm.ucar.edu/threads/spectral-nudging-with-era5.12376/)
+   1. In order to turn on **spectral nudging**, you will need to set `grid_fdda = 2`. The wavenumber nudged is selected in namelist (e.g., `xwavenum`, `ywavenum`, e.g. =3). Please choose the number so that 
+      1. **(domain size)/(wavenumber)=~1000 km in each direction.**
+2. [Gómez, B., and G. Miguez‐Macho. "The impact of wave number selection and spin‐up time in spectral nudging." Quarterly Journal of the Royal Meteorological Society 143.705 (2017): 1772-1786.](https://d1wqtxts1xzle7.cloudfront.net/80749838/Breo2017-libre.pdf?1644795289=&response-content-disposition=inline%3B+filename%3DThe_impact_of_wave_number_selection_and.pdf&Expires=1750824854&Signature=XTobtJZdY6gKmpCapI21Pyr~a6FLvqBkbigpFKtJQqTN~J40-lowROWCYPkDQpZeUlspxiqFdFhAZj9QpkZ3A-WA5XCcdAa8SdtKBzp3wJVji6lzI2n3tI49KGDQMoLVsUJqvvP9y-OdJKmwF1sTUytEAyVi0Nus-Xr9mpfqCh2PXMV3dVOkMr1gjzX1Nr7TlK9DmX0viZXB1hrhFTzDARNVhzs~JKZ~n6owVfy~-ozIt0PCJczXaU3Z~YPa4LF3vPXcdziTUAnO2CLFdnq992txN9YCps6JGdVuDnecQgUE9ig20DnutEinJ6m~M~gCb3ecMNhnRta-VxmX6HCAyQ__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA)
+   1. when selecting smaller scales, the fine-scale contribution of the model is damped, thus **making 1000km the appropriate scale threshold** to nudge in order to balance both effects. 
+   2. $119 \times 105$ horizontal points at **36km resolution** and 33 vertical, $119 \times 36 = 4284km$
+   3. ![](https://i.imgur.com/MG12PRA.png){width=400}
+   4. ![](https://i.imgur.com/6xCRnQa.png){width=400}
+3. [Silva, Natália Pillar da, and Ricardo de Camargo. "Impact of wave number choice in spectral nudging applications during a South Atlantic convergence zone event." Frontiers in Earth Science 6 (2018): 232.](https://www.frontiersin.org/journals/earth-science/articles/10.3389/feart.2018.00232/pdf)
+   1. **1000km - R = the Rossby radius length for most mesoscale studies**
+   2. ![](https://i.imgur.com/wMBuSSI.png){width=400}
+
 # ERA5
 
 ## Spherical harmonic transforms (Not used)
@@ -238,6 +252,29 @@ reconstructed_data = coeffs.to_grid()
 
 ![](https://i.imgur.com/Wv9jNcT.png){width=400}
 
+$$
+\begin{align}
+f(x) &= \sum_{n=1}^{N} F(k_n) e^{ik_n x} \qquad x \in [0,L] \\
+\text{Assume} \qquad f(x \pm  L) &= f(x)  \\
+\Rightarrow e^{\pm i k_n L} &= 1 \qquad \forall n \\
+& k_n (n = 0,1,...,N)\\
+k_n L &= 2n \pi \qquad m \in \mathbb{Z} \\
+k_n &= \frac{2 \pi}{L} n \\
+dk &= \frac{2 \pi}{L} \\
+\because \lambda &= \frac{2 \pi}{k} \\
+\lambda_n &= \frac{L}{n}\\
+\end{align}
+\tag{1}
+$$
+
+| $n$ | $k_n$             | $\lambda$   |
+|---|---------------------|-------------|
+| 0 | $k_0 = 0$             | $\infty$    |
+| 1 | $k_1= \frac{2\pi}{L}$ | $L$ |
+| 2 | $k_1= \frac{2\pi}{L} \times 2$ | $\frac{L}{2}$ |
+| 3 | $k_1= \frac{2\pi}{L} \times 3$ | $\frac{L}{3}$ |
+| $\cdots$ | $\cdots$  | $\cdots$  |
+| N | $k_1= \frac{2\pi}{L} \times N$| $\frac{L}{N}$ |
 
 ### np.fft2 
 
@@ -249,11 +286,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Create a sample 2D image (e.g., a 2D Gaussian)
-def create_sample_image(size=128):
-    x = np.linspace(-10.0, 10.0, size)
-    y = np.linspace(-10.0, 10.0, size)
+# L = [0, 1]
+def create_sample_image(size=1280):
+    x = np.linspace(0.0, 1.0, size)
+    y = np.linspace(0.0, 1.0, size)
     X, Y = np.meshgrid(x, y)
-    image = np.sin(0.2*X*np.pi) + 0.5*np.sin(5*X*np.pi) + 0.2*np.sin(20*X*np.pi)
+    image = np.sin(2*X*2*np.pi) + 0.5*np.sin(3*X*2*np.pi) + 0.2*np.sin(10*X*2*np.pi) + 0.1*np.sin(25*X*2*np.pi)
     return image
 
 # Perform 2D Fourier Transform, filter high wavenumbers, and inverse transform
@@ -274,7 +312,6 @@ def fourier_filter(image, Nx_kmax, Ny_kmax):
     KX, KY = np.meshgrid(k, k)
 
     # Define high-wavenumber filter (e.g., remove wavenumbers above N_kmax)
-    # np.abs() fix the box of k-space
     filter_mask_KX = np.abs(KX) <= Nx_kmax
     filter_mask_KY = np.abs(KY) <= Ny_kmax
     
@@ -287,72 +324,126 @@ def fourier_filter(image, Nx_kmax, Ny_kmax):
     filtered_image = np.fft.ifft2(f_transform_unshifted)
     filtered_image = np.real(filtered_image)  # Take magnitude to ensure real output
     
-    return filtered_image, f_transform_shifted, f_transform_filtered
+    return filtered_image, f_transform, f_transform_filtered
 
 # Main execution
 if __name__ == "__main__":
-    # Generate sample image
-    size = 1280
-    image = create_sample_image(size)
+  # Generate sample image
+  size = 1280
+  x = np.linspace(0.0, 1.0, size)
+  k = np.linspace(-size/2, size/2, size, endpoint=False) # unit = (2*np.pi/1.0)
+  # m_lambda = np.linspace(-size/2, size/2, size, endpoint=False) # unit = L/
 
-    # Apply Fourier transform and filtering
-    Nx_kmax = 3 # size/2
-    Ny_kmax = 30
-    filtered_image, f_transform, f_transform_filtered = fourier_filter(image, Nx_kmax, Ny_kmax)
+  image = create_sample_image(size)
 
-    # Visualize results
-    plt.figure(figsize=(12, 4))
+  # Apply Fourier transform and filtering
+  Nx_kmax = 6 # size/2
+  Ny_kmax = 30
+  filtered_image, f_transform, f_transform_filtered = fourier_filter(image, Nx_kmax, Ny_kmax)
 
-    plt.subplot(131)
-    plt.imshow(image, cmap='gray')
-    plt.title('Original Image')
-    plt.colorbar()
+  #===============================================================
+  # One Dim
+  plt.figure(figsize=(12, 4))
 
-    plt.subplot(132)
-    plt.imshow(np.log(np.abs(f_transform) + 1), cmap='gray')
-    plt.title('Fourier Transform (log scale)')
-    plt.colorbar()
+  plt.subplot(131)
+  plt.imshow(image, cmap='gray')
+  plt.title('Original Image')
+  plt.colorbar()
 
-    plt.subplot(133)
-    plt.imshow(filtered_image, cmap='gray')
-    plt.title('Filtered Image')
-    plt.colorbar()
+  plt.subplot(132)
+  plt.imshow(np.log(np.abs(f_transform) + 1), cmap='gray')
+  plt.title('Fourier Transform (log scale)')
+  plt.colorbar()
 
-    plt.tight_layout()
-    plt.show()
-    plt.close()
+  plt.subplot(133)
+  plt.imshow(filtered_image, cmap='gray')
+  plt.title('Filtered Image')
+  plt.colorbar()
 
-    # Visualize results
-    plt.figure(figsize=(12, 8))
+  plt.tight_layout()
+  plt.show()
+  plt.close()
 
-    plt.subplot(221)
-    plt.plot(image[0, :])
-    plt.title('Original Image')
+  #===============================================================
+  # Visualize results
+  plt.figure(figsize=(12, 8))
 
-    plt.subplot(222)
-    plt.plot(np.log(np.abs(f_transform[:, 0]) + 1), 'ro')
-    plt.title('Fourier Transform (log scale)')
+  plt.subplot(221)
+  plt.plot(x, image[0, :])
+  plt.grid()
+  plt.title('Original Image')
 
-    plt.subplot(223)
-    plt.plot(filtered_image[0, :], label='Filtered Image')
-    plt.title('Filtered Image')
-    plt.legend()
+  plt.subplot(222)
+  plt.plot(k, np.log(np.abs(f_transform[0, :]) + 1), 'ro')
+  plt.xlabel('k [unit = (2*np.pi/L)]')
+  plt.grid()
+  plt.title('Fourier Transform (log scale)')
 
-    plt.subplot(224)
-    plt.plot(image[0, :], label='Original Image')
-    plt.plot(filtered_image[0, :], label='Filtered Image')
-    plt.title('Filtered Image')
-    plt.legend()
+  plt.subplot(223)
+  plt.plot(x, filtered_image[0, :], label='Filtered Image')
+  plt.title('Filtered Image')
+  plt.grid()
+  plt.legend()
 
-    plt.tight_layout()
-    plt.show()
-    plt.close()
+  plt.subplot(224)
+  plt.plot(x, image[0, :], label='Original Image')
+  plt.plot(x, filtered_image[0, :], label='Filtered Image')
+  plt.title('Filtered Image')
+  plt.grid()
+  plt.legend()
 
+  plt.tight_layout()
+  plt.show()
+  plt.close()
 
-    plt.plot(filtered_image[0, :]- image[0, :], 'ro')
-    plt.title('Filtered Image - Original Image')
-    plt.tight_layout()
-    plt.show()
+  #===============================================================
+  # k and \lambda : Fourier Transform (log scale)
+  plt.figure(figsize=(12, 4))
+
+  plt.subplot(121)
+  plt.plot(k, np.log(np.abs(f_transform[0, :]) + 1), 'ro')
+  plt.xlabel('k [unit = (2*np.pi/L)]')
+  plt.grid()
+  plt.title('Fourier Transform (log scale)')
+
+  plt.subplot(122)
+  plt.plot(k[:10], np.log(np.abs(f_transform[0, :10]) + 1), 'ro')
+  # plt.xlabel('m [unit = (L/\lambda)]')
+  plt.xlabel('k [unit = (2*np.pi/L)]')
+  plt.grid()
+  plt.title('Fourier Transform (log scale)')
+
+  plt.tight_layout()
+  plt.show()
+  plt.close()
+
+  #===============================================================
+  # k and \lambda : Fourier Transform 
+  plt.figure(figsize=(12, 4))
+
+  plt.subplot(121)
+  plt.plot(k+size/2, np.abs(f_transform[0, :]), 'ro')
+  plt.xlabel('k [unit = (2*np.pi/L)]')
+  plt.grid()
+  plt.title('Fourier Transform')
+
+  plt.subplot(122)
+  plt.plot(k[:30]+size/2, np.abs(f_transform[0, :30]), 'ro')
+  # plt.xlabel('m [unit = (L/\lambda)]')
+  plt.xlabel('k [unit = (2*np.pi/L)]')
+  plt.grid()
+  plt.title('Fourier Transform')
+
+  plt.tight_layout()
+  plt.show()
+  plt.close()
+
+  #===============================================================
+  plt.plot(filtered_image[0, :]- image[0, :], 'ro')
+  plt.title('Filtered Image - Original Image')
+  plt.grid()
+  plt.tight_layout()
+  plt.show()
 ```
 {% endfold %}
 
@@ -365,6 +456,17 @@ if __name__ == "__main__":
 ### Add some noises
 
 ![](https://i.imgur.com/qnAUvMc.png)
+
+### More wavenumbers
+
+![](https://i.imgur.com/eoLuDUn.png)
+
+{% gi 4 2-2 %}
+![](https://i.imgur.com/ZE0DaUv.png)
+![](https://i.imgur.com/ruF7m81.png)
+![](https://i.imgur.com/EvlQcxd.png)
+![](https://i.imgur.com/oAAwUSR.png)
+{% endgi %}
 
 # Apply on MPAS-A/ERA5
 
