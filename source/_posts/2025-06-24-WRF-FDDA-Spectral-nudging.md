@@ -345,6 +345,8 @@ if __name__ == "__main__":
   # One Dim
   plt.figure(figsize=(12, 4))
 
+  plt.suptitle(f"Cut-off wavenumber \n Nx_kmax = {Nx_kmax}", fontsize=24)
+
   plt.subplot(131)
   plt.imshow(image, cmap='gray')
   plt.title('Original Image')
@@ -466,6 +468,34 @@ if __name__ == "__main__":
 ![](https://i.imgur.com/ruF7m81.png)
 ![](https://i.imgur.com/EvlQcxd.png)
 ![](https://i.imgur.com/oAAwUSR.png)
+{% endgi %}
+
+### 2D waves
+
+```python
+image = np.sin(2*X*2*np.pi) + 0.5*np.sin(3*X*2*np.pi) + 0.2*np.sin(10*X*2*np.pi) + 0.1*np.sin(25*X*2*np.pi)
+image = image*(np.exp(-(Y-0.25)**2/(0.1**2)) + np.exp(-(Y-0.75)**2/(0.1**2)))
+```
+
+![](https://i.imgur.com/FDgr1gW.png)
+
+- plot at `y = 0.25`
+
+![](https://i.imgur.com/D0R77j6.png)
+
+#### Results
+
+{% gi 10 2-2-2-2-2 %}
+![](https://i.imgur.com/9curLqh.png)
+![](https://i.imgur.com/KuZibwt.png)
+![](https://i.imgur.com/nDnjREn.png)
+![](https://i.imgur.com/6cNemc8.png)
+![](https://i.imgur.com/pv44Nbk.png)
+![](https://i.imgur.com/0r67qGZ.png)
+![](https://i.imgur.com/8yJqXNp.png)
+![](https://i.imgur.com/LyKNyHM.png)
+![](https://i.imgur.com/aLZVofF.png)
+![](https://i.imgur.com/gYzJcpL.png)
 {% endgi %}
 
 # Apply on MPAS-A/ERA5
