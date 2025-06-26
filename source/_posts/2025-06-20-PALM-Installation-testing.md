@@ -23,6 +23,14 @@ The model **PALM** is based on the **non-hydrostatic, filtered, incompressible N
 
 **In the LES mode, the filtering process yields four subgrid-scale (SGS) covariance terms**. These SGS terms are parametrized using a 1.5-order closure after Deardorff (1980). PALM uses the modified version of Moeng and Wyngaard (1988) and Saiki et al. (2000). The closure is based on the assumption that the energy transport by SGS eddies is proportional to the local gradients of the mean quantities.
 
+## Some Software requirements 
+
+- <https://palm.muk.uni-hannover.de/trac/wiki/doc/install#Softwarerequirements>
+- `palmplot` 
+  - The graphic-package `NCL` from NCAR (needed by the **data visualization tool palmplot**)
+- `kpp4palm`
+  - The `FLEX` library `BISON` parser generator (needed by the **chemistry tool kpp4palm**)
+
 ## Installation
 
 - <https://gitlab.palm-model.org/releases/palm_model_system/-/blob/master/README.md#installation>
@@ -62,23 +70,11 @@ dependencies:
 ```
 {% endfold %}
 
-- with gcc, gxx, gfortran, mpich, ..., which are WRF's requried library.
+- with gcc, gxx, gfortran, mpich, ..., which are MPAS's requried library (like parallel-netCDF PnetCDF).
 
-#### Error
+#### For ./palmplot
 
-##### Could NOT find MPI (missing: MPI_Fortran_FOUND) (found version "4.0")
-
-
-
-##### NOT find MPI_Fortran
-
-- `Could NOT find MPI_Fortran (missing: MPI_Fortran_WORKS) Configuring incomplete, errors occurred!`
-
-1. `fortran_compiler = /home/wpsze/micromamba/envs/PALM/bin/x86_64-conda-linux-gnu-gfortran `
-   1. It is **wrong**, fortran_compiler should be `gfortran`, `mpifort`, `mpif90`
-   2. This comes from `fortran_compiler="$(nf-config --fc)"`
-      1. `$ nf-config --fc` and search all config by `$ nf-config`
-   3. It is not a Fortran compiler, **but a wrapper** around one provided. CMake generally prefers to run compilers directly (because wrappers can do…funny things).
+- use another conda env that contains `ncl`
 
 ### Install PALM
 
@@ -161,7 +157,9 @@ drwxrwxr-x 4 wpsze wpsze  33K Jun 20 13:37 palm_model_system/
 drwxrwxr-x 6 wpsze wpsze  33K Jun 20 13:34 rrtmg/
 ```
 
-### Maybe issues
+### Possible issues
+
+- `make[1]: *** [Makefile:60: kpp] Error 1`
 
 ```log
 /usr/bin/ld: cannot find -lfl
@@ -183,8 +181,65 @@ Call Stack (most recent call first):
 
 # Run script
 
-{% fold info @run_test.py %}
+{% fold info @run_palm.py %}
 ```python
+#!/bin/bash
+
+#------------------------------------------------#
+#Author:         wpsze
+#Email：         waipangsze@gmail.com
+#date:           2023-08-31 10:39:15
+#Version:        0.0 
+#Description:    The purpose of the script
+#Copyright (C)： 2023 All rights reserved
+#------------------------------------------------#
+
+# final environment variable setting
+ulimit -s unlimited
+export OMP_NUM_THREADS=1
+
+source /home/wpsze/PALM/PALM_env_GNU.sh
+
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate PALM
+
+# set fftw lib path
+export LD_LIBRARY_PATH=/home/wpsze/micromamba/envs/PALM/lib:$LD_LIBRARY_PATH
+
+# set PALM bin path
+export PATH=/home/wpsze/PALM/v25.04/bin:${PATH}
+
+export palm_version="v25.04"
+
+export install_prefix=/home/wpsze/PALM/${palm_version}
+export PATH=${install_prefix}/bin:${PATH}
+
+function palm_my_case(){
+    echo "======== palm_my_case  ============"
+    # my_test_case_cyclic or 
+    case_name=my_test_case_cyclic 
+    mkdir -p "${install_prefix}/JOBS/${case_name}/INPUT"
+    cd ${install_prefix}
+    palmrun -r ${case_name} -a "d3#" -X 4 -v
+
+    # For noncyclic (1. pcr restart 2. d3# )
+    # palmrun -r my_test_case_cyclic -a "pcr restart" -X 4 -v
+    # palmrun -r ${case_name} -a "d3#  cyclic" -X 4 -v
+}
+
+function palm_flow_around_buildings(){
+    echo "======== palm_flow_around_buildings case ============"
+    # flow_around_cube_cyclic or flow_around_cube_noncyclic
+    case_name=flow_around_cube_noncyclic 
+    mkdir -p "${install_prefix}/JOBS/${case_name}/INPUT"
+    cd ${install_prefix}
+    # palmrun -r ${case_name} -a "d3#" -X 4 -v
+
+    # For noncyclic (1. pcr restart 2. d3# )
+    palmrun -r ${case_name} -a "pcr restart" -X 4 -v
+    palmrun -r ${case_name} -a "d3#  cyclic" -X 4 -v
+}
+
 function palm_test(){
     echo "======== PALM test case ============"
 
@@ -196,14 +251,88 @@ function palm_test(){
     cp palm_model_system/packages/palm/model/tests/cases/example_cbl/INPUT/example_cbl_p3d JOBS/example_cbl/INPUT/
     palmrun -r example_cbl -c default -a "d3#" -X 4 -v -z
 }
+
+function palm_test_v0(){
+    echo "======== PALM test case ============"
+    cd ${install_prefix}
+
+    palmtest --cases urban_environment_restart --cores 4
+
+}
+
+# --------------------------------- Main Control --------------------------------- #
+start_time="$(date -u +%s)"
+rm log.run_palm
+exec > >(tee -a log.run_palm) 2>&1      # 
+echo " ------------------------------  PALM ------------------------------- "
+sleep 1s && echo
+
+#palm_check
+palm_test
+#palm_test_v0
+
+#palm_flow_around_buildings
+# palm_my_case
+
+echo "====================="
+end_time="$(date -u +%s)"
+echo "Finished datetime: $(date)"
+elapsed="$(($end_time-$start_time))"
+echo "Total of $elapsed seconds elapsed for process"
+time_mins="$(($elapsed /60))"
+echo "Total of $time_mins minutes elapsed for process"
+time_hours="$(($elapsed /60/60))"
+echo "Total of $time_hours hours elapsed for process" 
+echo "====================="
+echo " -------------------------- Completed PALM ------------------------- "
+
+# --------------------------------- palmrun ? --------------------------------- #
+#   *** Description of available palmrun options:
+
+#       Option  Description                              Default-Value
+#         -a    activation string list                   "" 
+#         -A    project account number                   ---
+#         -b    batch-job on local machine               ---
+#         -B    do not delete temporary directory at end ---
+#         -c    configuration identifier                 "default" 
+#         -F    create batch job file only               ---                     
+#         -k    keep data from previous run                                                   
+#         -m    memory demand in MB (batch-jobs)         0 MB
+#         -M    Makefile name                            Makefile
+#         -O    threads per openMP task                  ---
+#         -q    queue                                    "none" 
+#         -r    run identifier                           test
+#         -s    filenames of routines to be compiled     "" 
+#               must end with .f, .f90, .F, or .c !
+#               use ".." for more than one file and wildcards
+#               -s LM compiles all locally modified files
+#         -t    allowed cpu-time in seconds (batch)      0
+#         -T    tasks per node                           ---
+#         -u    username on remote machine               "" 
+#         -v    no prompt for confirmation               ---
+#         -V    check if SOURCES_FOR_RUN_... exists      ---
+#         -w    maximum parallel io streams              as given by -X
+#         -W    name of job to wait for                  ---
+#         -x    tracing of palmrun for debug purposes    ---
+#         -X    # of processors (on parallel machines)   1
+#         -y    add appendix "_O" to all local output
+#               files (ocean precursor runs followed by
+#               coupled atmosphere-ocean runs)           ---
+#         -Y    run coupled model, "#1 #2" with
+#               #1 atmosphere and #2 ocean processors    "#/2 #/2" depending on -X
+#         -Z    skip combine_plot_fields at the end of      
+#               the simulation                           ---
+  
+#       Possible values of positional parameter <modus>:
+#         "?"       -  this outline 
 ```
 {% endfold %}
 
-## Test
+## palm_test()
 
 - **palm_model_system/packages/palm/model/tests/cases/example_cbl/INPUT/example_cbl_p3d**
 
-{% fold info @log.test %}
+{% fold info @log.palm_test %}
 ```log
 
   *** execution starts in directory
@@ -325,6 +454,125 @@ function palm_test(){
    1. 'https://docs.palm-model.com/25.04/Reference/LES_Model/Logging/#PAC0077'
    2. Description: Switch to `psolver = 'multigrid'` or set `bc_lr = bc_ns`.
 
+### palmrun -r ${case_name} -a "pcr restart" -X 4 -v
+
+{% fold info @log.flow_around_cube_noncyclic %}
+```log
+......
+*** execution starts in directory
+   "/home/wpsze/PALM/v25.04/tmp/flow_around_cube_noncyclic.26633"
+----------------------------------------------------------------------------
+
+*** execute command:
+   "mpirun -n 4 ./palm" 
+......
+      [XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX]   0.0 left
+   17:50:10   -finished-   time-stepping
+   17:50:10   -start----   writing restart data
+   17:50:10   -finished-   writing restart data
+   17:50:10   -start----   calculating cpu statistics
+   17:50:10   -finished-   calculating cpu statistics
+
+  ----------------------------------------------------------------------------
+  *** execution finished 
+......
+  *** saving OUTPUT-files:     local time: 17:50:11
+  ----------------------------------------------------------------------------
+  >>> OUTPUT: BINOUT  to
+              /home/wpsze/PALM/v25.04/tmp/flow_around_cube_noncyclic/RESTART/flow_around_cube_noncyclic_d3d.002
+      file will be linked
+
+  >>> OUTPUT: PARIN  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_parin.003
+
+  >>> OUTPUT: STDOUT  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_stdout.003
+
+  >>> OUTPUT: RUN_CONTROL  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_rc.003
+
+  >>> OUTPUT: HEADER  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_header.003
+
+  >>> OUTPUT: CPU_MEASURES  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_cpu.003
+
+  >>> OUTPUT: DATA_1D_PR_NETCDF  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/OUTPUT/flow_around_cube_noncyclic_pr.003.nc
+
+  >>> OUTPUT: DATA_1D_TS_NETCDF  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/OUTPUT/flow_around_cube_noncyclic_ts.003.nc
+
+  >>> OUTPUT: DATA_3D_AV_NETCDF  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/OUTPUT/flow_around_cube_noncyclic_av_3d.003.nc
+
+  >>> OUTPUT: DATA_3D_NETCDF  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/OUTPUT/flow_around_cube_noncyclic_3d.003.nc
+
+  ----------------------------------------------------------------------------
+  *** all OUTPUT-files saved       local time: 17:50:12 
+
+ --> palmrun finished
+```
+{% endfold %}
+
+### palmrun -r ${case_name} -a "d3#  cyclic" -X 4 -v
+
+{% fold info @log.flow_around_cube_noncyclic %}
+```log
+  *** providing INPUT-files:
+  ----------------------------------------------------------------------------
+  >>> INPUT: /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/INPUT/flow_around_cube_noncyclic_p3d  to  PARIN
+  >>> INPUT: /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/INPUT/flow_around_cube_noncyclic_topo  to  TOPOGRAPHY_DATA
+  >>> INPUT: /home/wpsze/PALM/v25.04/tmp/flow_around_cube_noncyclic/RESTART/flow_around_cube_noncyclic_d3d.002  to  BININ
+      file will be linked
+  *** INFORMATIVE: some optional INPUT-files are not present
+  ----------------------------------------------------------------------------
+  *** all INPUT-files provided 
+
+   +++ warning message ---
+      ID: PAC0192  generated by routine "do_topo_and_surface_setup":
+      
+      Topography and surface-setup output requires parallel netCDF. No output file will be created.
+      
+      Further information can be found at
+      https://docs.palm-model.com/25.04/Reference/LES_Model/Logging/#PAC0192
+......
+ *** saving OUTPUT-files:     local time: 17:57:39
+  ----------------------------------------------------------------------------
+  >>> OUTPUT: PARIN  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_parin.004
+
+  >>> OUTPUT: STDOUT  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_stdout.004
+
+  >>> OUTPUT: RUN_CONTROL  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_rc.004
+
+  >>> OUTPUT: HEADER  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_header.004
+
+  >>> OUTPUT: CPU_MEASURES  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/MONITORING/flow_around_cube_noncyclic_cpu.004
+
+  >>> OUTPUT: DATA_1D_PR_NETCDF  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/OUTPUT/flow_around_cube_noncyclic_pr.004.nc
+
+  >>> OUTPUT: DATA_1D_TS_NETCDF  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/OUTPUT/flow_around_cube_noncyclic_ts.004.nc
+
+  >>> OUTPUT: DATA_3D_AV_NETCDF  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/OUTPUT/flow_around_cube_noncyclic_av_3d.004.nc
+
+  >>> OUTPUT: DATA_3D_NETCDF  to
+              /home/wpsze/PALM/v25.04/JOBS/flow_around_cube_noncyclic/OUTPUT/flow_around_cube_noncyclic_3d.004.nc
+
+  ----------------------------------------------------------------------------
+  *** all OUTPUT-files saved       local time: 17:57:40 
+```
+{% endfold %}
+
+![](https://i.imgur.com/Cbvmt4m.png)
 
 # References
 
