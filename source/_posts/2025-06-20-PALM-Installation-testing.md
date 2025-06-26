@@ -31,6 +31,38 @@ The model **PALM** is based on the **non-hydrostatic, filtered, incompressible N
 - `kpp4palm`
   - The `FLEX` library `BISON` parser generator (needed by the **chemistry tool kpp4palm**)
 
+## PALM preprocessor options / define strings
+
+- <https://palm.muk.uni-hannover.de/trac/wiki/doc/app/cpp_options>
+
+![](https://i.imgur.com/V29VF2S.png)
+
+### The PALM configuration file
+
+- <https://palm.muk.uni-hannover.de/trac/wiki/doc/app/palm_config>
+
+Running `PALM` with the `palmrun` script or compiling `PALM` with pal`m`build requires a **configuration file** in the working directory from where the scripts are called.
+
+### how to set `-D__netcdf4_parallel`?
+
+TODO.
+
+- not parallel-netCDF
+
+```log
+942:netcdf_c_prefix  =                                                                                                                                                  
+943:netcdf_fortran_prefix  =                                                                                                                                            
+
+964:-- Found netCDF 4.7.4 compiled with mpicc                                                                                                                           
+
+965:-- Found netCDF-Fortran 4.5.3 compiled with mpifort                                                                                                                 
+
+966:-- Found NetCDF: /home/wpsze/MPAS-A/modules_library/Library/lib
+libnetcdff.so                                                                                         
+
+967:-- Fortran compiler matches netCDF Fortran compiler.
+```
+
 ## Installation
 
 - <https://gitlab.palm-model.org/releases/palm_model_system/-/blob/master/README.md#installation>
@@ -573,6 +605,44 @@ echo " -------------------------- Completed PALM ------------------------- "
 {% endfold %}
 
 ![](https://i.imgur.com/Cbvmt4m.png)
+
+### palmplot
+
+```
+#!/bin/bash
+
+set -e # stop the shell on first error
+#set -u # fail when using an undefined variable
+set -x # echo script lines as they are executed
+set -o pipefail
+
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate venv
+export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+export PATH=/home/wpsze/PALM/v25.04/bin:${PATH}
+
+# need NCL only
+
+# Time series:
+palmplot ts file_1=flow_around_cube_noncyclic_ts.000.nc format_out=pdf \
+file_out=flow_around_cube_cyclic_plot_ts \
+var='E E* umax vmax wmax' no_rows=5
+
+# Profiles:
+palmplot pr file_1=flow_around_cube_noncyclic_pr.000.nc format_out=pdf \
+file_out=flow_around_cube_cyclic_plot_pr
+
+# xy-cross sections:
+palmplot xy file_1=flow_around_cube_noncyclic_av_3d.000.nc format_out=pdf \
+file_out=flow_around_cube_cyclic_plot_xy var='u v w' \
+no_rows=3 no_columns=2 sort=time mode='Both' zs=10 ze=10
+
+# xz-cross sections:
+palmplot xz file_1=flow_around_cube_noncyclic_av_3d.000.nc format_out=pdf \
+file_out=flow_around_cube_cyclic_plot_xz var='u v w' \
+no_rows=3 no_columns=2 sort=time mode='Both' ys=40 ye=40
+```
 
 # References
 
