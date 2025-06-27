@@ -469,12 +469,18 @@ echo " -------------------------- Completed PALM ------------------------- "
 ![](https://i.imgur.com/7c5b6Dd.png)
 {% endgi %}
 
+# test cases
+
+- packages/palm/model/tests/cases/
+
 # Exercise presentations
 
 - <https://palm.muk.uni-hannover.de/trac/wiki/doc/tut/palm#Exercisepresentations>
 
 ![](https://i.imgur.com/vli06Jo.png)
 
+
+- [**PALM | Topography and Flow_around_buildings**](https://waipangsze.github.io/2025/06/27/PALM-Topography-and-Flow_around_buildings/)
 
 ## E3: Flow around a cubical building
 

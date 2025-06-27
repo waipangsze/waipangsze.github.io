@@ -99,7 +99,7 @@ In the definition of the **"invariant" stream**, the filename_template attribute
     config_nfgsoillevels = 1
 /
 &data_sources
-	config_geog_data_path = '/EM/emsdm/data/geog'
+	config_geog_data_path = '/home/wpsze/geog'
     config_landuse_data = 'MODIFIED_IGBP_MODIS_NOAH'
 /
 

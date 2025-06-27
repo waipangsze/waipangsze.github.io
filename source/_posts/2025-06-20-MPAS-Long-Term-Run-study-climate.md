@@ -124,7 +124,7 @@ maxEdges = edgesOnCell.shape[1]
 ivgtyp = in_static["ivgtyp"][:].values
 
 print("="*40)
-print("CPAS")
+print("MPAS")
 print("nCells, nEdges, maxEdges = ", nCells, nEdges, maxEdges)
 print("latCell     = ", latCell.shape)
 print("lonCell     = ", lonCell.shape)
