@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/6xCRnQa.png">
 <meta property="article:published_time" content="2025-06-24T02:45:00.000Z">
-<meta property="article:modified_time" content="2025-06-25T08:52:12.272Z">
+<meta property="article:modified_time" content="2025-06-27T09:18:27.260Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="FDDA">
 <meta property="article:tag" content="Spectral nudging">
 <meta name="twitter:card" content="summary_large_image">
@@ -279,6 +279,14 @@
                   
                   
                   
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
                   <a class="dropdown-item" href="/monitor/" target="_self">
                     
                     <span>Real Time Monitoring</span>
@@ -482,12 +490,19 @@
 <h1 id="era5">ERA5</h1>
 <h2 id="spherical-harmonic-transforms-not-used">Spherical harmonic transforms (Not used)</h2>
 <p><strong>Performing a global spherical Fourier transform on ERA5 data in Python typically involves using spherical harmonic transforms</strong>, which are the generalization of the Fourier transform to the sphere. This is particularly relevant in the context of global weather forecasting and climate modeling, where the Earth's spherical geometry needs to be accurately represented.</p>
+<ul>
+<li>Q: how to define <strong>high wavenumber</strong> to filter Rossby waves?</li>
+</ul>
 <h3 id="spherical-harmonic-transform-libraries">Spherical Harmonic Transform Libraries:</h3>
 <ul>
 <li>Utilize Python libraries designed for spherical harmonic transforms. pyshtools is a prominent library for this purpose, offering functions for forward and inverse spherical harmonic transforms.</li>
 <li>These libraries handle the complexities of representing functions on a sphere and performing the appropriate transforms.</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pyshtools <span class="hljs-keyword">as</span> sh<br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr <span class="hljs-comment"># For handling ERA5 data</span><br><br><span class="hljs-comment"># Load ERA5 data (example, assuming &#x27;era5_data.nc&#x27; exists)</span><br>ds = xr.open_dataset(<span class="hljs-string">&#x27;era5_data.nc&#x27;</span>)<br><span class="hljs-comment"># Select a variable and time slice for transformation</span><br>data_variable = ds[<span class="hljs-string">&#x27;temperature&#x27;</span>].isel(time=<span class="hljs-number">0</span>)<br><br><span class="hljs-comment"># Extract data as a numpy array, ensuring correct dimensions (latitude, longitude)</span><br><span class="hljs-comment"># Note: pyshtools often expects data ordered from north to south latitude</span><br>data_array = data_variable.values<br><br><span class="hljs-comment"># Perform the spherical harmonic transform</span><br><span class="hljs-comment"># This will return a SphericalHarmonicCoefficients object</span><br>coeffs = sh.SHGrid.from_array(data_array).expand()<br><br><span class="hljs-comment"># You can then analyze or manipulate &#x27;coeffs&#x27;</span><br><span class="hljs-comment"># For example, filter out high-frequency components</span><br><br><span class="hljs-comment"># Reconstruct the data from the spherical harmonic coefficients</span><br>reconstructed_data = coeffs.to_grid()<br></code></pre></td></tr></table></figure>
+<h2 id="empirical-orthogonal-function-expansion-eof-not-used">Empirical orthogonal function expansion (EOF) (Not used)</h2>
+<ul>
+<li>have to find out needed components as Rossby waves (2D).</li>
+</ul>
 <h2 id="xy-fourier-transform">XY Fourier transform</h2>
 <h3 id="real-space-to-k-space">real-space to k-space</h3>
 <p><img src="https://i.imgur.com/Wv9jNcT.png" srcset="/img/loading.gif" lazyload width="400" /></p>
@@ -576,6 +591,14 @@ dk &amp;= \frac{2 \pi}{L} \\
 <p><img src="https://i.imgur.com/D0R77j6.png" srcset="/img/loading.gif" lazyload /></p>
 <h4 id="results">Results</h4>
 <div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/9curLqh.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/KuZibwt.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/nDnjREn.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/6cNemc8.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/pv44Nbk.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/0r67qGZ.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/8yJqXNp.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/LyKNyHM.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/aLZVofF.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/gYzJcpL.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h3 id="thinking">Thinking</h3>
+<ul>
+<li>Rationale for the Approach
+<ul>
+<li>We can express the relationship as <span class="math inline">\(\lambda_m = \frac{L}{m}\)</span>. If the length <span class="math inline">\(L\)</span> decreases while maintaining a constant mass <span class="math inline">\(m\)</span>, the resulting wavelength <span class="math inline">\(\lambda_m\)</span> becomes shorter, indicating that the corresponding wave number <span class="math inline">\(k\)</span> increases.</li>
+</ul></li>
+<li>This increase in <span class="math inline">\(k\)</span> shifts the distribution towards higher values, resulting in a greater number of higher <span class="math inline">\(k\)</span> values being included in the analysis.</li>
+</ul>
 <h1 id="apply-on-mpas-aera5">Apply on MPAS-A/ERA5</h1>
 
                 
@@ -610,11 +633,11 @@ dk &amp;= \frac{2 \pi}{L} \\
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/FDDA/" class="print-no-link">#FDDA</a>
       
@@ -649,7 +672,7 @@ dk &amp;= \frac{2 \pi}{L} \\
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>June 25, 2025</div>
+          <div>June 27, 2025</div>
         </div>
       
       
@@ -679,6 +702,12 @@ dk &amp;= \frac{2 \pi}{L} \\
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/06/27/PALM-Topography-and-Flow_around_buildings/" title="PALM | Topography and Flow_around_buildings">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">PALM | Topography and Flow_around_buildings</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
