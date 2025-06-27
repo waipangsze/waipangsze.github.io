@@ -98,3 +98,35 @@ build_inds_end_y   = [39, 69] #build_inds_end_x
 3. Message: psolver = "poisfft" requires that boundary conditions along x and y are both either cyclic or non-cyclic
    1. 'https://docs.palm-model.com/25.04/Reference/LES_Model/Logging/#PAC0077'
    2. Description: Switch to `psolver = 'multigrid'` or set `bc_lr = bc_ns`.
+
+# generate `*.nc` from `*.tif`
+
+```sh
+#!/bin/bash
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate gdal
+export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+gdal_translate -of NetCDF ${1} ${1}.nc
+```
+
+or 
+
+```python
+import numpy as np
+import rasterio
+
+def process_terrain_data(terrain_file, output_file):
+    with rasterio.open(terrain_file) as src:
+        terrain_data = src.read(1)
+        profile = src.profile
+
+    terrain_data = terrain_data.astype(np.float32)
+
+    with rasterio.open(output_file, 'w', **profile) as dst:
+        dst.write(terrain_data, 1)
+
+terrain_file = 'srtm_90m.tif'
+output_file = 'terrain_palm.asc'
+process_terrain_data(terrain_file, output_file)
+```

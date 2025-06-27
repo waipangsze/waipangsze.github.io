@@ -217,6 +217,8 @@ END SUBROUTINE spectralnudgingfilterfft2dncar
 
 **Performing a global spherical Fourier transform on ERA5 data in Python typically involves using spherical harmonic transforms**, which are the generalization of the Fourier transform to the sphere. This is particularly relevant in the context of global weather forecasting and climate modeling, where the Earth's spherical geometry needs to be accurately represented.
 
+- Q: how to define **high wavenumber** to filter Rossby waves?
+
 ### Spherical Harmonic Transform Libraries:
 
 - Utilize Python libraries designed for spherical harmonic transforms. pyshtools is a prominent library for this purpose, offering functions for forward and inverse spherical harmonic transforms.
@@ -245,6 +247,10 @@ coeffs = sh.SHGrid.from_array(data_array).expand()
 # Reconstruct the data from the spherical harmonic coefficients
 reconstructed_data = coeffs.to_grid()
 ```
+
+## Empirical orthogonal function expansion (EOF) (Not used)
+
+- have to find out needed components as Rossby waves (2D). 
 
 ## XY Fourier transform 
 
@@ -497,6 +503,12 @@ image = image*(np.exp(-(Y-0.25)**2/(0.1**2)) + np.exp(-(Y-0.75)**2/(0.1**2)))
 ![](https://i.imgur.com/aLZVofF.png)
 ![](https://i.imgur.com/gYzJcpL.png)
 {% endgi %}
+
+### Thinking
+
+-  Rationale for the Approach
+   - We can express the relationship as $\lambda_m = \frac{L}{m}$. If the length $L$ decreases while maintaining a constant mass $m$, the resulting wavelength $\lambda_m$ becomes shorter, indicating that the corresponding wave number $k$ increases.
+- This increase in $k$ shifts the distribution towards higher values, resulting in a greater number of higher $k$ values being included in the analysis.
 
 # Apply on MPAS-A/ERA5
 
