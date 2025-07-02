@@ -105,6 +105,13 @@ build_inds_end_y   = [39, 69] #build_inds_end_x
 
 - <https://portal.opentopography.org/raster?opentopoID=OTSRTM.042013.4326.1>
 
+## 香港 地形圖 (GeoTiff 格式)
+
+- [開放數據（地理空間）](https://www.landsd.gov.hk/tc/spatial-data/open-data.html)
+- [香港1:50 000地形圖 (GeoTiff 格式)](https://portal.csdi.gov.hk/geoportal/#metadataInfoPanel)
+- [三維空間數據 3D-BIT00](https://portal.csdi.gov.hk/geoportal/#metadataInfoPanel)
+  - 三維空間數據集由三種主要類型的地面物件組成，即建築物、基礎設施和地形。建築物模型分為第一細節層(L1)、第二細節層(L2)和第三細節層(L3)，以代表建築物的不同細節層次。
+
 ## generate `*.nc` from `*.tif`
 
 ```sh
