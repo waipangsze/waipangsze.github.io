@@ -512,3 +512,6 @@ image = image*(np.exp(-(Y-0.25)**2/(0.1**2)) + np.exp(-(Y-0.75)**2/(0.1**2)))
 
 # Apply on MPAS-A/ERA5
 
+## lat/lon issues
+
+The masked $k_x, k_y$ can be skew matrix, not hard-cut on one $k_x, k_y$.
