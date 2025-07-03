@@ -516,6 +516,23 @@ image = image*(np.exp(-(Y-0.25)**2/(0.1**2)) + np.exp(-(Y-0.75)**2/(0.1**2)))
 
 The masked $k_x, k_y$ can be skew matrix, not hard-cut on one $k_x, k_y$.
 
+## cut-off
+
+```python
+# Lx = 40075   # km
+# Ly = 20037.5 # km
+# lambda_scale_x = Lx/kx
+# lambda_scale_y = Ly/ky
+
+# lambda_n = L/n
+# if Rossy Wave ~ 1000km, then
+print(f"n_x = ", 40075/1000) 
+print(f"n_y = ", 20037.5/1000) 
+
+n_x =  40.075
+n_y =  20.0375
+```
+
 ## Processing
 
 ![](https://i.imgur.com/AvdtIQV.jpg)
