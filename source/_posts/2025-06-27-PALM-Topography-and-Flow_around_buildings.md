@@ -125,38 +125,11 @@ gdal_translate -of NetCDF ${1} ${1}.nc
 
 ![](https://i.imgur.com/NHqvVt4.png)
 
-### Focus on HKIA
+### Case1 橫瀾/Waglan and 蒲台島/Po Toi
 
-{% fold info @HKIA log %}
-```log
-1. Coordinates
-Horizontal Coordinates: WGS84 [EPSG: 4326]
-Vertical Coordinates: WGS84 Ellipsoid/EGM1996 Geoid [EPSG: 5773]
-Units: degree
-Data Selection Coordinates (Select an area on map)
-  Xmin = 113.78842160152271	  Ymin = 22.145626613388345	  Xmax = 114.08065799670295	  Ymax = 22.355092712639248
-   Manually enter selection coordinates (in the horizontal coordinate system listed above)  
+![](https://i.imgur.com/RZi6Hws.png){width=400}
 
-- Band1's min and max = -49.0 888.0
-
-Current selection area is approximately 701 km2.
-
-
-	lon = 351 ;
-	lat = 251 ;
-
-crs:GeoTransform = "113.7879166665999 0.000833333333333144 0 22.35541666667522 0 -0.000833333333333144 " ;
-
-lat diff = 22.355092712639248-22.145626613388345 = 0.20946609925*111km = 23.2507370168km
-lon diff = 114.08065799670295-113.78842160152271 = 0.29223639518*111km = 32.438239865km
-
-lat = 251*0.000833333333333144 = 0.20916666666*111km = 23.2174999993km
-lon = 351*0.000833333333333144 = 0.2925*111km        = 32.4675 km
-```
-{% endfold %}
-
-![](https://i.imgur.com/yjCuvm0.png)
-
+### Case2 HKIA
 
 ## generate `.acs` from `.tif` by rasterio
 
@@ -188,9 +161,22 @@ with rasterio.open(
     dst.write(new_array, 1)
 ```
 
+## `static file`
+
+- <https://palm.muk.uni-hannover.de/trac/wiki/doc/app/iofiles/pids/static#Staticinputfile>
+- <https://docs.palm-model.org/25.04/Reference/LES_Model/IO-Files/Drivers/static/>
+
+The static input file encompasses topography information as well as all necessary information file to initialize all land- and urban-type surfaces in the model, such as heat capacities, roughness, albedo, emissivity, etc.. The initialization procedure for the surfaces follows a multi-step approach, depending on the given level of detail of each variable as provided in the static input file. In a first step, surfaces are initialized horizontally homogeneous with a bulk classification for each type (e.g. vegetation or soil), either set by a default value or set by a namelist-provided value, while the bulk classification provides standard values for a variety of parameters. In a second step, surfaces are initialized individually by providing the bulk classification at each grid point individually. In case more detailed information is available, all or even single parameters can be initialized individually at each grid point.
+
+The provided input data is used to classify each surface element according to its treatment, i.e. default-, natural- or urban-type, in order to treat each surface element accordingly.
+
+In case no land-surface or urban-surface scheme is applied, all surfaces are classified as default-type. If a surface element has vegetation, pavement or water, it will be classified as natural-type and is treated by the land-surface scheme, while building surfaces will be treated by the urban-surface scheme.
+
 ## create `static file` from `*.nc file`
 
-- above output nc file 
+- `nc_buildings_2d`
+- `nc_building_type`
+- `nc_building_id`
 
 {% fold info @create_static_file.py %}
 ```python
@@ -217,7 +203,6 @@ import netCDF4
 from   netCDF4 import Dataset
 import numpy as np
 import datetime
-
 
 class StaticDriver:
     """ This is an example script to generate static drivers for PALM.
@@ -267,9 +252,9 @@ class StaticDriver:
 
         # specify general grid parameters
         # these values must equal those set in the initialization_parameters
-        self.nx = self.nc_target_file.shape[1] # lon
-        self.ny = self.nc_target_file.shape[0] # lat
-        self.nz = 250
+        self.nx = self.nc_target_file.shape[1]+1 # lon
+        self.ny = self.nc_target_file.shape[0]+1 # lat
+        self.nz = 100
         self.dx = 90.0
         self.dy = 90.0
         self.dz = 4.0
@@ -355,10 +340,25 @@ class StaticDriver:
         nc_zt.long_name = 'orography'
         nc_zt.units = 'm'
 
+
         nc_zt[:,:] = 0.0
 
-        nc_buildings_2d[1:,1:] = self.nc_target_file[:,:]
-        nc_building_type[:,:] = 2
+        print(f"self.nx             = {self.nx}")
+        print(f"self.ny             = {self.ny}")
+        print(f"self.nc_target_file = {self.nc_target_file.shape}")
+        print(f"nc_buildings_2d     = {nc_buildings_2d.shape}")
+
+        for i in range(0,self.nc_target_file.shape[1]): # start from 0, or 2 or .. and end self.nx ==> match self.nc_target_file
+            for j in range(0,self.nc_target_file.shape[0]):
+                if (self.nc_target_file[j,i] > 0.1): # Mountains/Buiildings
+                    nc_buildings_2d[j+2,i+2] = self.nc_target_file[j,i] + (self.dz - self.nc_target_file[j,i]%self.dz)
+                    nc_building_type[j+2,i+2] = 2
+                    # For each (ii,jj)-pair create an unique ID
+                    nc_building_id[j+2,i+2] = 1 #+ 100*j
+                else:
+                    nc_buildings_2d[j+2, i+2] = fill_val_real
+
+        print("Checking (nc_buildings_2d%self.dz !=0)  = ", np.sum(nc_buildings_2d[:,:]%self.dz != 0))
 
         # Set index ranges for buildings
         #build_inds_start_x = [ 80, 120, 160 ]
@@ -392,7 +392,7 @@ class StaticDriver:
 def read_acs(input_file="new_raster.asc"):
     # Assuming a header of 6 lines, adjust 'skiprows' as needed
     data_array = np.loadtxt(input_file, skiprows=5) 
-    data_array[data_array < 0] = 0
+    data_array[data_array < 0.1] = -9999.9
     data_array = np.flipud(data_array)
 
     print(data_array.shape)
@@ -414,3 +414,106 @@ if __name__ == '__main__':
 ```
 {% endfold %}
 
+- try to execute by using `flow_around_cube_cyclic_p3d`
+
+{% fold info @flow_around_cube_cyclic_p3d %}
+```namelist
+!-------------------------------------------------------------------------------
+!-- INITIALIZATION PARAMETER NAMELIST
+!   Documentation: https://docs.palm-model.org/23.04/Reference/LES_Model/Namelists/#initialization-parameters
+!-------------------------------------------------------------------------------
+&initialization_parameters
+!
+!-- grid parameters
+!-------------------------------------------------------------------------------
+    nx                         = 113, ! Number of gridboxes in x-direction (nx+1)
+    ny                         = 63, ! Number of gridboxes in y-direction (ny+1)
+    nz                         = 102, ! Number of gridboxes in z-direction (nz)
+
+    dx                         = 90.0, ! Size of single gridbox in x-direction
+    dy                         = 90.0, ! Size of single gridbox in y-direction
+    dz                         = 4.0, ! Size of single gridbox in z-direction
+!
+!-- initialization
+!-------------------------------------------------------------------------------
+    initializing_actions       = 'set_constant_profiles', ! initial conditions
+
+    ug_surface                 = 5.0, ! initial u-comp
+    vg_surface                 = 0.0, ! initial v-comp
+
+    neutral                    = .T., ! strictly neutral flow
+!
+!-- physics
+!-------------------------------------------------------------------------------
+    omega                      = 0.0, ! no Coriolis force
+
+!
+!-- mode
+!-------------------------------------------------------------------------------
+    dp_external                = .T.,          ! use horizontal pressure gradient
+    dpdxy                      = -0.0002, 0.0, ! set pressure gradient along x
+!
+!-- boundary conditions
+!-------------------------------------------------------------------------------
+    bc_uv_t                    = 'neumann', ! free-slip boundary condition
+
+!
+!-- numerics
+!-------------------------------------------------------------------------------
+    fft_method                 = 'fftw', ! build-in fft method
+!
+!-- topography
+!-------------------------------------------------------------------------------
+    topography                 = 'read_from_file',  ! use input file to set topography
+!
+!-- misc
+!-------------------------------------------------------------------------------
+    restart_data_format =  'mpi_shared_memory',
+
+/ ! end of initialization parameter namelist
+
+!-------------------------------------------------------------------------------
+!-- RUNTIME PARAMETER NAMELIST
+!   Documentation: https://docs.palm-model.org/23.04/Reference/LES_Model/Namelists/#runtime-parameters
+!-------------------------------------------------------------------------------
+&runtime_parameters
+!
+!-- run steering
+!-------------------------------------------------------------------------------
+    end_time                   = 2000.0, ! simulation time of the 3D model
+    create_disturbances        = .T.,    ! randomly perturbate horiz. velocity
+!
+!-- data output
+!-------------------------------------------------------------------------------
+    dt_run_control             =    0.0, ! output interval for run control
+    dt_data_output             = 100.0,   !1800.0, ! output interval for general data
+    dt_dots                    =    0.0, ! output interval for time-series data
+    dt_dopr                    = 100.0,   !1800.0, ! output interval for profile data
+
+    data_output                = 'u', 'u_av',
+                                 'v', 'v_av',
+                                 'w', 'w_av',  ! 2d and/or 3d output
+
+    data_output_pr             = '#u', 'u*2', 'wu', 'w*u*', 'w"u"',
+                                 '#v', 'v*2', 'wv', 'w*v*', 'w"v"',
+                                 'w', 'w*2',
+                                 'e', 'e*',
+                                 '#km',
+                                 '#l',      ! Profile output
+
+
+    averaging_interval         = 100.0, !1800.0, ! averaging interval general data
+    dt_averaging_input         =    0.0, ! averaging general data sampling rate
+
+    averaging_interval_pr      = 100.0, !1800.0, ! averaging interval profile data
+    dt_averaging_input_pr      =    0.0, ! averaging profile data sampling rate
+
+/ ! end of runtime parameter namelist
+```
+{% endfold %}
+
+# Case1 橫瀾/Waglan and 蒲台島/Po Toi
+
+![](https://i.imgur.com/MMLZba8.png){width=500}
+
+# Case2 HKIA

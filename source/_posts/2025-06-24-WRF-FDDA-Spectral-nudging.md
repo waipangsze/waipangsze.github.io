@@ -25,6 +25,12 @@ There are three types of nudging and some can be used in combination.
 
 These methods provide a four-dimensional analysis that is somewhat balanced dynamically, and in terms of continuity,while allowing for complex local topographical or convective variations. Such datasets can cover long periods, and have particular value in driving off-line air quality or atmospheric chemistry models.
 
+# Literature Review
+
+- [Schubert-Frisius, Martina, et al. "**Optimal spectral nudging for global dynamic downscaling.**" Monthly Weather Review 145.3 (2017): 909-927.](https://journals.ametsoc.org/view/journals/mwre/145/3/mwr-d-16-0036.1.pdf)
+- [Wedi, Nils P., Mats Hamrud, and George Mozdzynski. "**A fast spherical harmonics transform for global NWP and climate models**." Monthly Weather Review 141.10 (2013): 3450-3461.](https://journals.ametsoc.org/downloadpdf/view/journals/mwre/141/10/mwr-d-13-00016.1.pdf)
+- [Park, Ja-Rin, Hyeong-Bin Cheong, and Hyun-Gyu Kang. "**High-order spectral filter for the spherical-surface limited area.**" Monthly Weather Review 139.4 (2011): 1256-1278.](https://journals.ametsoc.org/downloadpdf/view/journals/mwre/139/4/2010mwr3440.1.pdf)
+
 # Spectral nudging
 
 Spectral nudging is another way to nudge the model solution to either analysis or any forcing data. The key difference between this method and that of grid- or obs-nudging is that it is more selective in the scales one would like to nudge. In contrast to directly nudge model variables toward analysis or observation, **this method decomposes the difference fields spectrally**, and **nudges toward the longer waves that correspond to the analysis**. The spectral coefficients from the **selected waves** are then transformed back from the wave space to physical space and added to the model as tendencies. This technique was originally implemented to the Reginoal Atmospheric Modeling System, and later to ARW in 2010.
