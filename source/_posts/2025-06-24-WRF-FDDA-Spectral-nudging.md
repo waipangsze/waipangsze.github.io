@@ -219,11 +219,24 @@ END SUBROUTINE spectralnudgingfilterfft2dncar
 
 # ERA5
 
-## Spherical harmonic transforms (Not used)
+## Spherical harmonic transforms
 
 **Performing a global spherical Fourier transform on ERA5 data in Python typically involves using spherical harmonic transforms**, which are the generalization of the Fourier transform to the sphere. This is particularly relevant in the context of global weather forecasting and climate modeling, where the Earth's spherical geometry needs to be accurately represented.
 
 - Q: how to define **high wavenumber** to filter Rossby waves?
+
+### pyshtools
+
+`SHTOOLS/pyshtools` is a Fortran-95/Python library that can be used for spherical harmonic transforms, multitaper spectral analyses, expansions of gridded data into Slepian basis functions, standard operations on global gravitational and magnetic field data.
+
+- <https://github.com/SHTOOLS/SHTOOLS>
+
+```
+micromamba env create -n pyshtools
+micromamba activate pyshtools 
+micromamba install -c conda-forge pyshtools
+micromamba install -c conda-forge netcdf4
+```
 
 ### Spherical Harmonic Transform Libraries:
 
