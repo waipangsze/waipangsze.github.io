@@ -29,6 +29,7 @@ banner_img: https://i.imgur.com/6oGdLJk.png
    2. You will gain **hands-on experience using MPAS-A and MPAS-JEDI in a friendly and supportive atmosphere**.
    3. You will have the opportunity to network with internationally-renowned scientists.
    4. we are preparing the **hands-on practice and some documentation to generate the static background error statistics** in upcoming tutorial in June 2025.
+7. [**Welcome to the MPAS-JEDI tutorial practice guide !! | 2025-06**](https://www2.mmm.ucar.edu/projects/mpas-jedi/tutorial/202506NCAS/)
 
 {% gi 2 2 %}
 ![](https://i.imgur.com/6oGdLJk.png){width=600}

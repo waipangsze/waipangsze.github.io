@@ -44,6 +44,10 @@ The [World Urban Database and Access Portal Tools (WUDAPT)](https://www.wudapt.o
 ![](https://i.imgur.com/D37oEFf.png){width=600}
 ![](https://i.imgur.com/kZ208oW.png){width=600}
 
+## Figures
+
+![Example of identifiable Local Climate Zones for Almaty. (Dedova T, Balakay L, Zakarin E, Bostanbekov K, Abdimanap G. High-Resolution WRF Modeling of Wind and Thermal Regimes with LCZ in Almaty, Kazakhstan. Atmosphere. 2024; 15(8):966. https://doi.org/10.3390/atmos15080966)](https://i.imgur.com/zuE9n3p.jpg)
+
 # 100m Global map of Local Climate Zones (WRF/Official)
 
 - <https://zenodo.org/records/8419340>

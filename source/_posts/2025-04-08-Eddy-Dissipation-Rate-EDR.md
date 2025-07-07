@@ -109,6 +109,8 @@ This is why the EDR can be approximated as the one-third power of the energy dis
     ![](https://i.imgur.com/BWNsCvg.png)
     ![](https://i.imgur.com/cxNR0hN.png)
     {% endgi %}
+- [Chan, Pak Wai, et al. "Observation and numerical simulation of a windshear case at an airport in the Qinghai-Tibet Plateau." Applied Sciences 14.23 (2024): 10981.](https://shixm.people.ust.hk/pdf/Windshear24.pdf)
+  - ![](https://i.imgur.com/Fji6f5d.png)
 
 # Literature Review
 
