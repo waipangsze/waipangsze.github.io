@@ -238,6 +238,12 @@ micromamba install -c conda-forge pyshtools
 micromamba install -c conda-forge netcdf4
 ```
 
+- Tutorials & guides
+  - The easiest way to start learning about pyshtools is to see it in action in a Jupyter notebook.
+  - <https://shtools.github.io/SHTOOLS/python-examples.html>
+
+
+
 ### Spherical Harmonic Transform Libraries:
 
 - Utilize Python libraries designed for spherical harmonic transforms. pyshtools is a prominent library for this purpose, offering functions for forward and inverse spherical harmonic transforms.
