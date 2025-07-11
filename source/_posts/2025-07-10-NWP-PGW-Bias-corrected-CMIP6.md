@@ -23,12 +23,15 @@ banner_img: https://i.imgur.com/kcuHfQW.png
 
 - [Bias-corrected CMIP6 global dataset for dynamical downscaling of the Earth’s historical and future climate (1979–2100)](https://www.scidb.cn/en/detail?dataSetId=791587189614968832)
   - The bias-corrected data have an ERA5-based mean climate and interannual variance, but with a non-linear trend from the ensemble mean of the 18 CMIP6 models. The dataset spans the historical time period 1979–2014 and future scenarios (SSP1-2.6, SSP2-4.5 and SSP5-8.5) for 2015–2100 with a horizontal grid spacing of (1.25° × 1.25°) at six-hourly intervals.
-  - **The complete dataset is about 1.9 TB in size**.
+  - **The complete dataset is about 2.56 TB in size**.
+  - **Note**: The variable "hur" in the NetCDF data (atm_*.nc4) was described as specific humidity by mistake. It should be relative humidity. The incorrect description does not affect the value of relative humidity. The unit of 'tos' should be K rather than C, which was mislabeled in the dataset. This may cause incorrect inland water temperature when using constants_name='TAVGSFC' in the namelist.wps. User may consider correcte the unit of tos or remove onstants_name='TAVGSFC' in the namelist.wps
   - ![](https://i.imgur.com/qtwtIgy.png)
 
 ![](https://i.imgur.com/kxyrWyX.png)
 
 # Calculate delta
+
+## Scripts
 
 {% fold info @compute_delta.sh %}
 ```sh
@@ -333,6 +336,8 @@ done
 ```
 {% endfold %}
 
+## atmosphere
+
 {% fold info @delta_signal_2070_2100_01_atm.nc %}
 ```log
 netcdf delta_signal_2070_2100_01_atm {
@@ -443,6 +448,8 @@ variables:
 ```
 {% endfold %}
 
+- Atmosphere's dimension,
+  
 {% fold info @lat/lon/lev %}
 ```log
 data:
@@ -501,3 +508,107 @@ data:
 }
 ```
 {% endfold %}
+
+## land
+
+{% fold info @delta_signal_2070_2100_01_land.nc %}
+```log
+netcdf delta_signal_2070_2100_06_land {
+dimensions:
+	time = UNLIMITED ; // (1 currently)
+	bnds = 2 ;
+	lon = 288 ;
+	lat = 145 ;
+	depth = 4 ;
+variables:
+	double time(time) ;
+		time:standard_name = "time" ;
+		time:long_name = "time" ;
+		time:bounds = "time_bnds" ;
+		time:units = "days since 1850-01-01" ;
+		time:calendar = "proleptic_gregorian" ;
+		time:axis = "T" ;
+	double time_bnds(time, bnds) ;
+	double lon(lon) ;
+		lon:standard_name = "longitude" ;
+		lon:long_name = "longitude" ;
+		lon:units = "degrees_east" ;
+		lon:axis = "X" ;
+	double lat(lat) ;
+		lat:standard_name = "latitude" ;
+		lat:long_name = "latitude" ;
+		lat:units = "degrees_north" ;
+		lat:axis = "Y" ;
+	double depth(depth) ;
+		depth:standard_name = "depth" ;
+		depth:long_name = "depth" ;
+		depth:units = "m" ;
+		depth:positive = "down" ;
+		depth:axis = "Z" ;
+	double height ;
+		height:standard_name = "height" ;
+		height:long_name = "height" ;
+		height:units = "m" ;
+		height:positive = "up" ;
+		height:axis = "Z" ;
+		height:cell_methods = "time: point" ;
+		height:description = "~2 m standard surface air temperature and surface humidity  height" ;
+		height:name = "height" ;
+	float tsl(time, depth, lat, lon) ;
+		tsl:standard_name = "soil_temperature" ;
+		tsl:long_name = "Temperature of Soil" ;
+		tsl:units = "K" ;
+		tsl:_FillValue = 1.e+20f ;
+		tsl:missing_value = 1.e+20f ;
+		tsl:cell_methods = "area: mean where land time: mean" ;
+		tsl:comment = "Temperature of soil. Reported as missing for grid cells with no land." ;
+		tsl:cell_measures = "area: areacella" ;
+		tsl:history = "2019-11-08T07:44:08Z altered by CMOR: replaced missing value flag (-1.07374e+09) with standard missing value (1e+20)." ;
+	float mrsol(time, depth, lat, lon) ;
+		mrsol:_FillValue = 1.e+20f ;
+		mrsol:missing_value = 1.e+20f ;
+		mrsol:cell_methods = "time: mean" ;
+	float tas(time, lat, lon) ;
+		tas:standard_name = "air_temperature" ;
+		tas:long_name = "Near-Surface Air Temperature" ;
+		tas:units = "K" ;
+		tas:coordinates = "height" ;
+		tas:_FillValue = 1.e+20f ;
+		tas:missing_value = 1.e+20f ;
+		tas:cell_methods = "area: time: mean" ;
+		tas:comment = "near-surface (usually, 2 meter) air temperature" ;
+		tas:cell_measures = "area: areacella" ;
+		tas:history = "2019-11-08T03:15:27Z altered by CMOR: Treated scalar dimension: \'height\'. 2019-11-08T03:15:27Z altered by CMOR: replaced missing value flag (-1.07374e+09) with standard missing value (1e+20)." ;
+	float lsm(lat, lon) ;
+		lsm:standard_name = "Land-sea mask" ;
+		lsm:long_name = "Land-sea mask" ;
+		lsm:coordinates = "height" ;
+		lsm:_FillValue = -9.99e+08f ;
+		lsm:missing_value = -9.99e+08f ;
+		lsm:cell_methods = "time: mean" ;
+```
+{% endfold %}
+
+- Land's dimension,
+
+{% fold info @depth/ %}
+```log
+data:
+
+ height = 2 ;
+}
+
+data:
+
+ depth = 0.05, 0.25, 0.7, 1.5 ;
+}
+```
+{% endfold %}
+
+FYI, ERA5-Land provides soil moisture data at four distinct depth layers: 0-7 cm, 7-28 cm, 28-100 cm, and 100-289 cm. These layers represent the vertical distribution of soil moisture within the ERA5-Land model. 
+Here's a breakdown of the ERA5-Land soil depth levels: 
+
+- **Layer 1**: 0-7 cm (topsoil)
+- **Layer 2**: 7-28 cm
+- **Layer 3**: 28-100 cm
+- **Layer 4**: 100-289 cm

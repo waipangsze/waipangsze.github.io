@@ -112,6 +112,22 @@ build_inds_end_y   = [39, 69] #build_inds_end_x
 - [三維空間數據 3D-BIT00](https://portal.csdi.gov.hk/geoportal/#metadataInfoPanel)
   - 三維空間數據集由三種主要類型的地面物件組成，即建築物、基礎設施和地形。建築物模型分為第一細節層(L1)、第二細節層(L2)和第三細節層(L3)，以代表建築物的不同細節層次。
 
+### Digital Terrain Model (DTM)
+
+- Provided by: **Lands Department**
+
+DTM is a digital terrain model of the HKSAR. It shows the topography of terrain (including some non-ground information such as elevated roads and bridges) in 5-metre raster grid with an accuracy of ±5m.
+
+- [香港1:50 000地形圖 (GeoTiff 格式)](https://portal.csdi.gov.hk/geoportal/#metadataInfoPanel)
+
+### Spatial Data Portal Survey Division, CEDD
+
+- [Spatial Data Portal Survey Division, CEDD](https://sdportal.cedd.gov.hk/#/tc/)
+  - 空間數據網站是由土木工程拓展署提供的網上地理空間信息服務，用於預訂和獲取以下數據:
+    - 三維形象化空載激光遙感測量數據
+    - 數碼地圖（只供土木工程拓展署項目顧問/承建商使用）
+    - 無人駕駛飛行器產品（只供土木工程拓展署項目顧問/承建商使用）
+
 ## generate `*.nc` from `*.tif`
 
 ```sh
