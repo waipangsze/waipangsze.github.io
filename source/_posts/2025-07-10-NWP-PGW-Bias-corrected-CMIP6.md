@@ -664,3 +664,26 @@ Here's a breakdown of the ERA5-Land soil depth levels:
 | swvl3  |        1.17E-05 |  0.382597278 |      32767 |     7.65E-01 |
 | swvl4  |        1.15E-05 | 0.3763370306 |      32767 |     7.53E-01 |
 | z      |    0.8979394208 |  28035.38941 |      32767 |  57458.17041 |
+
+### `cdo pack/unpack`
+
+The `pack` operation in **CDO (Climate Data Operators)** is used to combine multiple GRIB messages into a single GRIB file. Here’s a breakdown of what it does and why it's beneficial:
+
+- What "Pack" Does
+  - **Combines Multiple Messages**: It merges separate GRIB messages (e.g., different time steps or variables) into one consolidated GRIB file.
+  - **Optimizes Data Structure**: The operation organizes the data in a more efficient format, minimizing redundancy in metadata and improving overall file structure.
+- Why Use Packing?
+  - **Storage Efficiency**: Packing reduces the total file size, saving disk space and making data management easier.
+  - **Faster Access and Processing**: A single packed file can be accessed and processed more quickly than multiple individual files, which improves performance in data analysis.
+  - **Simplified Data Management**: Fewer files mean easier organization and handling of datasets, especially in large-scale workflows.
+  - **Compatibility**: Some tools and workflows may require data to be in a packed format, making this operation necessary for integration with various applications.
+
+```sh
+cdo -h
+cdo info file.grb
+cdo pack output.grb packed.grb
+cdo unpack packed.grb unpacked.grb
+cdo pack file1.grb file2.grb packed.grb
+cdo -f nc copy input.grb output.nc
+```
+
