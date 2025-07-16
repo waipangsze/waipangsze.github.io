@@ -25,6 +25,20 @@ There are three types of nudging and some can be used in combination.
 
 These methods provide a four-dimensional analysis that is somewhat balanced dynamically, and in terms of continuity,while allowing for complex local topographical or convective variations. Such datasets can cover long periods, and have particular value in driving off-line air quality or atmospheric chemistry models.
 
+# WRF: Literature Review
+
+The Weather Research and Forecasting (WRF) model's spectral nudging Four-Dimensional Data Assimilation (FDDA) system represents a sophisticated approach to constraining large-scale atmospheric circulation patterns while preserving mesoscale features within regional numerical weather prediction models. This technique, originally developed by von Storch et al. (2000) and later implemented in WRF by Miguez-Macho et al. (2004), offers a scale-selective method for incorporating observational constraints into dynamical downscaling applications.
+
+Spectral nudging operates by **decomposing the difference between model state variables and reference analysis fields into their spectral components through Fourier transforms**, selectively nudging only the large-scale (long-wavelength) components while allowing smaller-scale features to develop freely within the model's physics. This approach represents a significant advancement over traditional analysis nudging techniques, which apply uniform corrections across all spatial scales without discrimination.
+
+{% note primary %}
+Spectral nudging operates by **decomposing the difference between model state variables and reference analysis fields into their spectral components through Fourier transforms**
+{% endnote %}
+
+- <https://www2.mmm.ucar.edu/wrf/users/docs/technote/v4_technote.pdf>
+- [Development and evaluation of spectral nudging strategy for the simulation of summer precipitation over the Tibetan Plateau using WRF (v4.0) | 2021](https://gmd.copernicus.org/articles/14/2827/2021/gmd-14-2827-2021.pdf)
+  - ![](https://i.imgur.com/0figtXg.png){width=400}
+
 # Literature Review
 
 - [Schubert-Frisius, Martina, et al. "**Optimal spectral nudging for global dynamic downscaling.**" Monthly Weather Review 145.3 (2017): 909-927.](https://journals.ametsoc.org/view/journals/mwre/145/3/mwr-d-16-0036.1.pdf)
@@ -217,8 +231,9 @@ END SUBROUTINE spectralnudgingfilterfft2dncar
    1. **1000km - R = the Rossby radius length for most mesoscale studies**
    2. ![](https://i.imgur.com/wMBuSSI.png){width=400}
 
-# ERA5
+# ERA5 (Not the point, Ignored)
 
+{% fold info @Not the point %}
 ## Spherical harmonic transforms
 
 **Performing a global spherical Fourier transform on ERA5 data in Python typically involves using spherical harmonic transforms**, which are the generalization of the Fourier transform to the sphere. This is particularly relevant in the context of global weather forecasting and climate modeling, where the Earth's spherical geometry needs to be accurately represented.
@@ -534,30 +549,12 @@ image = image*(np.exp(-(Y-0.25)**2/(0.1**2)) + np.exp(-(Y-0.75)**2/(0.1**2)))
 -  Rationale for the Approach
    - We can express the relationship as $\lambda_m = \frac{L}{m}$. If the length $L$ decreases while maintaining a constant mass $m$, the resulting wavelength $\lambda_m$ becomes shorter, indicating that the corresponding wave number $k$ increases.
 - This increase in $k$ shifts the distribution towards higher values, resulting in a greater number of higher $k$ values being included in the analysis.
+{% endfold %}
 
-# Apply on MPAS-A/ERA5
+# Apply on MPAS-A/ERA5 
 
-## (TODO) lat/lon issues
-
-The masked $k_x, k_y$ can be skew matrix, not hard-cut on one $k_x, k_y$.
-
-## cut-off
-
-```python
-# Lx = 40075   # km
-# Ly = 20037.5 # km
-# lambda_scale_x = Lx/kx
-# lambda_scale_y = Ly/ky
-
-# lambda_n = L/n
-# if Rossy Wave ~ 1000km, then
-print(f"n_x = ", 40075/1000) 
-print(f"n_y = ", 20037.5/1000) 
-
-n_x =  40.075
-n_y =  20.0375
-```
-
-## Processing
-
-![](https://i.imgur.com/AvdtIQV.jpg)
+- The calculation of spectral nudging is inside the source code.
+- The MPAS-A is unstructed mesh, how to do FFT?
+  - Global mesh --> cartesian or spherical harmonic function
+  - unstructed mesh --> regrid to regular mesh?
+  - if yes, delta = model - ERA5 --> regrid --> FFT --> cutoff --> inverse FFT --> regrid back --> add filtered_delta ?
