@@ -1,0 +1,1318 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Pseudo-Global Warming (PGW) - Future Projection NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS NWP | PGW | To prepare the ERA5 GRIB file   Bias-corrected CMIP6  Bias-corrected CMIP6 global d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | PGW + Bias-corrected-CMIP6">
+<meta property="og:url" content="https://waipangsze.github.io/2025/07/10/NWP-PGW-Bias-corrected-CMIP6/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Pseudo-Global Warming (PGW) - Future Projection NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS NWP | PGW | To prepare the ERA5 GRIB file   Bias-corrected CMIP6  Bias-corrected CMIP6 global d">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/kcuHfQW.png">
+<meta property="article:published_time" content="2025-07-10T07:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-16T01:12:31.305Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="PGW">
+<meta property="article:tag" content="GRIB">
+<meta property="article:tag" content="NetCDF">
+<meta property="article:tag" content="CMIP6">
+<meta property="article:tag" content="scale_factor">
+<meta property="article:tag" content="add_offset">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/kcuHfQW.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | PGW + Bias-corrected-CMIP6 - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/kcuHfQW.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | PGW + Bias-corrected-CMIP6"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-10 15:00" pubdate>
+          July 10, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | PGW + Bias-corrected-CMIP6</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li><a href="https://waipangsze.github.io/2024/09/30/PGW/"><strong>Pseudo-Global Warming (PGW) - Future Projection</strong></a></li>
+<li><a href="https://waipangsze.github.io/2025/02/03/NWP-PGW-hands-on-ERA5-GFS/"><strong>NWP | Pseudo-Global-Warming (PGW) hands-on | ERA5 | GFS</strong></a></li>
+<li><a href="https://waipangsze.github.io/2025/02/05/NWP-PGW-To-prepare-the-ERA5-GRIB-file/"><strong>NWP | PGW | To prepare the ERA5 GRIB file</strong></a></li>
+</ul>
+<hr />
+<h1 id="bias-corrected-cmip6">Bias-corrected CMIP6</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.scidb.cn/en/detail?dataSetId=791587189614968832">Bias-corrected CMIP6 global dataset for dynamical downscaling of the Earth’s historical and future climate (1979–2100)</a>
+<ul>
+<li>The bias-corrected data have an ERA5-based mean climate and interannual variance, but with a non-linear trend from the ensemble mean of the 18 CMIP6 models. The dataset spans the historical time period 1979–2014 and future scenarios (SSP1-2.6, SSP2-4.5 and SSP5-8.5) for 2015–2100 with a horizontal grid spacing of (1.25° × 1.25°) at six-hourly intervals.</li>
+<li><strong>The complete dataset is about 2.56 TB in size</strong>.</li>
+<li><strong>Note</strong>: The variable "hur" in the NetCDF data (atm_*.nc4) was described as specific humidity by mistake. It should be relative humidity. The incorrect description does not affect the value of relative humidity. The unit of 'tos' should be K rather than C, which was mislabeled in the dataset. This may cause incorrect inland water temperature when using constants_name='TAVGSFC' in the namelist.wps. User may consider correcte the unit of tos or remove onstants_name='TAVGSFC' in the namelist.wps</li>
+<li><img src="https://i.imgur.com/qtwtIgy.png" srcset="/img/loading.gif" lazyload /></li>
+</ul></li>
+</ul>
+<p><img src="https://i.imgur.com/kxyrWyX.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="calculate-delta">Calculate delta</h1>
+<h2 id="scripts">Scripts</h2>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>compute_delta.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#------------------------------------------------#</span><br><span class="hljs-comment"># Author:         wpsze</span><br><span class="hljs-comment"># Email:          wpsze@gmail.com</span><br><span class="hljs-comment"># File:           generate-delta.sh</span><br><span class="hljs-comment"># Date:           2025-07-10 11:58:43</span><br><span class="hljs-comment"># Version:        0.0 </span><br><span class="hljs-comment"># Description:    The purpose of the script</span><br><span class="hljs-comment"># Copyright (C):  2025 All rights reserved</span><br><span class="hljs-comment">#------------------------------------------------#</span><br><br><span class="hljs-built_in">set</span> -e <span class="hljs-comment"># stop the shell on first error</span><br><span class="hljs-comment">#set -u # fail when using an undefined variable</span><br><span class="hljs-comment">#set -x # echo script lines as they are executed</span><br><span class="hljs-built_in">set</span> -o pipefail<br><br><span class="hljs-comment"># ==============================================================================</span><br><span class="hljs-comment"># Script Name: compute_delta.sh</span><br><span class="hljs-comment"># Description: Computes the delta between future and historical NetCDF files.</span><br><span class="hljs-comment"># Author: wpsze </span><br><span class="hljs-comment"># Date: 2025-07-10</span><br><span class="hljs-comment"># Usage: ./compute_delta.sh </span><br><span class="hljs-comment"># ==============================================================================</span><br><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate venv<br><span class="hljs-built_in">export</span> SCRIPT_DIR=<span class="hljs-string">&quot;<span class="hljs-subst">$( cd <span class="hljs-string">&quot;<span class="hljs-subst">$( dirname <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span> )</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd )</span>&quot;</span><br><br><span class="hljs-comment"># ==============================================================================</span><br><span class="hljs-comment"># Define directories</span><br><span class="hljs-comment"># ==============================================================================</span><br>HIST_DIR=<span class="hljs-string">&quot;/home/wpsze/PGW/Bias-corrected-CMIP6/historical/&quot;</span><br>FUT_DIR=<span class="hljs-string">&quot;/home/wpsze/PGW/Bias-corrected-CMIP6/ssp585/&quot;</span><br>OUT_DIR=<span class="hljs-string">&quot;/home/wpsze/PGW/Bias-corrected-CMIP6/calculate-delta/output/&quot;</span><br><br><span class="hljs-comment"># Create output and temp directories if they don&#x27;t exist</span><br><span class="hljs-built_in">mkdir</span> -p <span class="hljs-string">&quot;<span class="hljs-variable">$OUT_DIR</span>&quot;</span><br><br><span class="hljs-comment"># ==============================================================================</span><br><span class="hljs-comment"># Function Definitions</span><br><span class="hljs-comment"># ==============================================================================</span><br><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Function to compute delta of atmosphric variables between future and historical NetCDF files</span><br><span class="hljs-comment"># File name: atm_hist_2013_12.nc4, atm_ssp585_2087_06.nc4</span><br><span class="hljs-comment"># </span><br><span class="hljs-function"><span class="hljs-title">compute_atm_delta</span></span>()&#123;<br>    <span class="hljs-comment"># Extract yyyymm from filename</span><br>    filename=$(<span class="hljs-built_in">basename</span> <span class="hljs-string">&quot;<span class="hljs-variable">$hist_file</span>&quot;</span>)<br>    yyyymm=<span class="hljs-variable">$&#123;filename%.nc4&#125;</span><br><br>    yyyy=<span class="hljs-variable">$&#123;yyyymm:9:4&#125;</span><br>    mm=<span class="hljs-variable">$&#123;yyyymm:14:2&#125;</span><br>    yyyy_add_50=$((<span class="hljs-variable">$&#123;yyyy&#125;</span>+<span class="hljs-number">86</span>))<br><br>    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;yyyy&#125;</span>, <span class="hljs-variable">$&#123;mm&#125;</span>, <span class="hljs-variable">$&#123;yyyy_add_50&#125;</span><br>    <span class="hljs-comment">#return 0 # Optional: returns an exit status</span><br><br>    <span class="hljs-comment"># Check if corresponding future file exists</span><br>    fut_file=<span class="hljs-string">&quot;<span class="hljs-variable">$FUT_DIR</span>/atm_ssp585_<span class="hljs-variable">$&#123;yyyy_add_50&#125;</span>_<span class="hljs-variable">$&#123;mm&#125;</span>.nc4&quot;</span><br>    <span class="hljs-keyword">if</span> [ -f <span class="hljs-string">&quot;<span class="hljs-variable">$fut_file</span>&quot;</span> ]; <span class="hljs-keyword">then</span><br>        <span class="hljs-comment"># Define temporary and output files</span><br>        out_file=<span class="hljs-string">&quot;<span class="hljs-variable">$OUT_DIR</span>/delta_atm_<span class="hljs-variable">$&#123;yyyy_add_50&#125;</span>_<span class="hljs-variable">$&#123;yyyy&#125;</span>_<span class="hljs-variable">$&#123;mm&#125;</span>.nc&quot;</span><br><br>        <span class="hljs-keyword">if</span> [ -f <span class="hljs-string">&quot;<span class="hljs-variable">$out_file</span>&quot;</span> ]; <span class="hljs-keyword">then</span><br>            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;out_file&#125;</span> exists. &quot;</span><br>        <span class="hljs-keyword">else</span><br>            <span class="hljs-comment"># Compute delta (future - historical)</span><br>            <span class="hljs-comment"># Use the CDO option -b F32 or -b F64 to increase the output precision.</span><br>            cdo -b F32 sub <span class="hljs-string">&quot;<span class="hljs-variable">$fut_file</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$hist_file</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$out_file</span>&quot;</span><br>            <br>            <span class="hljs-comment"># Add metadata</span><br>            <span class="hljs-comment"># cdo -L setattribute,description=&quot;Delta (future - historical) for $yyyy&quot; &quot;$out_file&quot; &quot;$out_file.tmp&quot;</span><br>            <br>            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Generated delta for <span class="hljs-variable">$&#123;yyyy_add_50&#125;</span>_<span class="hljs-variable">$&#123;yyyy&#125;</span>_<span class="hljs-variable">$&#123;mm&#125;</span>: <span class="hljs-variable">$out_file</span>&quot;</span><br>        <span class="hljs-keyword">fi</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;No matching future file for <span class="hljs-variable">$&#123;yyyymm&#125;</span> and future <span class="hljs-variable">$&#123;yyyy_add_50&#125;</span>. &quot;</span><br>    <span class="hljs-keyword">fi</span><br>&#125;<br><br><span class="hljs-comment"># </span><br><span class="hljs-comment"># Function to compute delta of land variables between future and historical NetCDF files</span><br><span class="hljs-comment"># File name: lnd.historical.199006.nc, lnd.ssp585.202604.nc</span><br><span class="hljs-comment"># </span><br><span class="hljs-function"><span class="hljs-title">compute_land_delta</span></span>()&#123;<br>    <span class="hljs-comment"># Extract yyyymm from filename</span><br>    filename=$(<span class="hljs-built_in">basename</span> <span class="hljs-string">&quot;<span class="hljs-variable">$hist_file</span>&quot;</span>)<br>    yyyymm=<span class="hljs-variable">$&#123;filename%.nc&#125;</span><br><br>    yyyy=<span class="hljs-variable">$&#123;yyyymm:15:4&#125;</span><br>    mm=<span class="hljs-variable">$&#123;yyyymm:19:2&#125;</span><br>    yyyy_add_50=$((<span class="hljs-variable">$&#123;yyyy&#125;</span>+<span class="hljs-number">86</span>))<br><br>    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;yyyy&#125;</span>, <span class="hljs-variable">$&#123;mm&#125;</span>, <span class="hljs-variable">$&#123;yyyy_add_50&#125;</span><br>    <span class="hljs-comment"># return 0 # Optional: returns an exit status</span><br><br>    <span class="hljs-comment"># Check if corresponding future file exists</span><br>    fut_file=<span class="hljs-string">&quot;<span class="hljs-variable">$FUT_DIR</span>/lnd.ssp585.<span class="hljs-variable">$&#123;yyyy_add_50&#125;</span><span class="hljs-variable">$&#123;mm&#125;</span>.nc&quot;</span><br>    <span class="hljs-keyword">if</span> [ -f <span class="hljs-string">&quot;<span class="hljs-variable">$fut_file</span>&quot;</span> ]; <span class="hljs-keyword">then</span><br>        <span class="hljs-comment"># Define temporary and output files</span><br>        out_file=<span class="hljs-string">&quot;<span class="hljs-variable">$OUT_DIR</span>/delta_land_<span class="hljs-variable">$&#123;yyyy_add_50&#125;</span>_<span class="hljs-variable">$&#123;yyyy&#125;</span>_<span class="hljs-variable">$&#123;mm&#125;</span>.nc&quot;</span><br><br>        <span class="hljs-keyword">if</span> [ -f <span class="hljs-string">&quot;<span class="hljs-variable">$out_file</span>&quot;</span> ]; <span class="hljs-keyword">then</span><br>            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;out_file&#125;</span> exists. &quot;</span><br>        <span class="hljs-keyword">else</span><br>            <span class="hljs-comment"># Compute delta (future - historical)</span><br>            <span class="hljs-comment"># Use the CDO option -b F32 or -b F64 to increase the output precision.</span><br>            cdo -b F32 sub <span class="hljs-string">&quot;<span class="hljs-variable">$fut_file</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$hist_file</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$out_file</span>&quot;</span><br>            <br>            <span class="hljs-comment"># Add metadata</span><br>            <span class="hljs-comment"># cdo -L setattribute,description=&quot;Delta (future - historical) for $yyyy&quot; &quot;$out_file&quot; &quot;$out_file.tmp&quot;</span><br>            <br>            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Generated delta for <span class="hljs-variable">$&#123;yyyy_add_50&#125;</span>_<span class="hljs-variable">$&#123;yyyy&#125;</span>_<span class="hljs-variable">$&#123;mm&#125;</span>: <span class="hljs-variable">$out_file</span>&quot;</span><br>        <span class="hljs-keyword">fi</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;No matching future file for <span class="hljs-variable">$&#123;yyyymm&#125;</span> and future <span class="hljs-variable">$&#123;yyyy_add_50&#125;</span>. &quot;</span><br>    <span class="hljs-keyword">fi</span><br>&#125;<br><br><span class="hljs-comment"># ==============================================================================</span><br><span class="hljs-comment"># Main Execution</span><br><span class="hljs-comment"># ==============================================================================</span><br><br>num_process=0<br><br><span class="hljs-comment"># # Loop through historical files (Atmosphere, *.nc4)</span><br><span class="hljs-keyword">for</span> hist_file <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;<span class="hljs-variable">$HIST_DIR</span>&quot;</span>/*.nc4; <span class="hljs-keyword">do</span><br>    <span class="hljs-comment"># # Call the delta computation function in background</span><br>    compute_atm_delta &amp;<br>    num_process=$((num_process+<span class="hljs-number">1</span>))<br><br>    <span class="hljs-comment"># Wait for all background processes to finish</span><br>    <span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;num_process&#125;</span> == 68 ]]; <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">wait</span><br>        num_process=0<br>    <span class="hljs-keyword">fi</span><br><span class="hljs-keyword">done</span><br><br><span class="hljs-comment"># # Loop through historical files (Land, *.nc)</span><br><span class="hljs-comment"># for hist_file in &quot;$HIST_DIR&quot;/*.nc; do</span><br><span class="hljs-comment">#     # # Call the delta computation function in background</span><br><span class="hljs-comment">#     compute_land_delta &amp;</span><br><span class="hljs-comment">#     num_process=$((num_process+1))</span><br><br><span class="hljs-comment">#     # Wait for all background processes to finish</span><br><span class="hljs-comment">#     if [[ $&#123;num_process&#125; == 10 ]]; then</span><br><span class="hljs-comment">#         wait</span><br><span class="hljs-comment">#         num_process=0</span><br><span class="hljs-comment">#     fi</span><br><span class="hljs-comment"># done</span><br><br><span class="hljs-built_in">wait</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; &quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Delta computation completed.&quot;</span><br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>compute_mean_delta.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
+        <div class="fold-content">
+          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#------------------------------------------------#</span><br><span class="hljs-comment"># Author:         wpsze</span><br><span class="hljs-comment"># Email:          wpsze@gmail.com</span><br><span class="hljs-comment"># File:           compute_mean_delta.sh</span><br><span class="hljs-comment"># Date:           2025-07-10 13:49:58</span><br><span class="hljs-comment"># Version:        0.0 </span><br><span class="hljs-comment"># Description:    The purpose of the script</span><br><span class="hljs-comment"># Copyright (C):  2025 All rights reserved</span><br><span class="hljs-comment">#------------------------------------------------#</span><br><br><span class="hljs-comment">#set -e # stop the shell on first error</span><br><span class="hljs-comment">#set -u # fail when using an undefined variable</span><br><span class="hljs-comment">#set -x # echo script lines as they are executed</span><br><span class="hljs-built_in">set</span> -o pipefail<br><br><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate venv<br><span class="hljs-built_in">export</span> SCRIPT_DIR=<span class="hljs-string">&quot;<span class="hljs-subst">$( cd <span class="hljs-string">&quot;<span class="hljs-subst">$( dirname <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span> )</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd )</span>&quot;</span><br><br><span class="hljs-comment"># ==============================================================================</span><br><span class="hljs-comment"># Script Name: compute_mean_delta.sh</span><br><span class="hljs-comment"># Description: Computes the mean of delta NetCDF files.</span><br><span class="hljs-comment"># Author: wpsze</span><br><span class="hljs-comment"># Date: 2025-07-10</span><br><span class="hljs-comment"># Usage: ./compute_mean_delta.sh # path/to/delta/files /path/to/output/file.nc</span><br><span class="hljs-comment"># ==============================================================================</span><br><br><span class="hljs-comment"># ==============================================================================</span><br><span class="hljs-comment"># Function Definitions</span><br><span class="hljs-comment"># ==============================================================================</span><br><br><span class="hljs-comment"># Function to compute mean of delta files</span><br><span class="hljs-function"><span class="hljs-title">compute_mean</span></span>() &#123;<br>    <span class="hljs-built_in">local</span> delta_dir=<span class="hljs-string">&quot;<span class="hljs-variable">$1</span>&quot;</span><br>    <span class="hljs-built_in">local</span> output_file=<span class="hljs-string">&quot;<span class="hljs-variable">$2</span>&quot;</span><br>    <span class="hljs-built_in">local</span> nc_name=<span class="hljs-string">&quot;<span class="hljs-variable">$3</span>&quot;</span><br>    <span class="hljs-built_in">local</span> target_MM=<span class="hljs-string">&quot;<span class="hljs-variable">$4</span>&quot;</span><br>    <span class="hljs-built_in">local</span> outfile_name=<span class="hljs-string">&quot;<span class="hljs-variable">$5</span>&quot;</span><br><br>    <span class="hljs-comment"># Check if the delta directory exists</span><br>    <span class="hljs-keyword">if</span> [[ ! -d <span class="hljs-string">&quot;<span class="hljs-variable">$delta_dir</span>&quot;</span> ]]; <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Error: Delta directory &#x27;<span class="hljs-variable">$delta_dir</span>&#x27; does not exist.&quot;</span><br>        <span class="hljs-built_in">exit</span> 1<br>    <span class="hljs-keyword">fi</span><br><br>    <span class="hljs-comment"># Create a temporary file list for CDO</span><br>    temp_file_list=<span class="hljs-string">&quot;temp_file_list.txt&quot;</span><br>    <span class="hljs-built_in">rm</span> -f <span class="hljs-string">&quot;<span class="hljs-variable">$temp_file_list</span>&quot;</span><br><br>    <span class="hljs-comment"># Loop through delta files and add to the list</span><br>    <span class="hljs-keyword">for</span> delta_file <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;<span class="hljs-variable">$delta_dir</span>&quot;</span>/delta_<span class="hljs-variable">$&#123;nc_name&#125;</span>*<span class="hljs-variable">$&#123;target_MM&#125;</span>.nc; <span class="hljs-keyword">do</span><br>        <span class="hljs-keyword">if</span> [[ -f <span class="hljs-string">&quot;<span class="hljs-variable">$delta_file</span>&quot;</span> ]]; <span class="hljs-keyword">then</span><br>            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$delta_file</span>&quot;</span> &gt;&gt; <span class="hljs-string">&quot;<span class="hljs-variable">$temp_file_list</span>&quot;</span><br>        <span class="hljs-keyword">fi</span><br>    <span class="hljs-keyword">done</span><br><br>    <span class="hljs-comment"># Check if any delta files were found</span><br>    <span class="hljs-keyword">if</span> [[ ! -s <span class="hljs-string">&quot;<span class="hljs-variable">$temp_file_list</span>&quot;</span> ]]; <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Error: No delta files found in &#x27;<span class="hljs-variable">$delta_dir</span>&#x27;.&quot;</span><br>        <span class="hljs-built_in">exit</span> 1<br>    <span class="hljs-keyword">fi</span><br><br>    <span class="hljs-keyword">if</span> [[ -f <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;output_file&#125;</span>/<span class="hljs-variable">$&#123;outfile_name&#125;</span>_<span class="hljs-variable">$&#123;nc_name&#125;</span>.nc&quot;</span> ]]; <span class="hljs-keyword">then</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;output_file&#125;</span>/<span class="hljs-variable">$&#123;outfile_name&#125;</span>_<span class="hljs-variable">$&#123;nc_name&#125;</span>.nc exists. &quot;</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-comment"># Compute the mean of delta files</span><br>        <span class="hljs-built_in">local</span> tmp_merged=<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;output_file&#125;</span>/tmp_<span class="hljs-variable">$&#123;outfile_name&#125;</span>_<span class="hljs-variable">$&#123;nc_name&#125;</span>.nc&quot;</span><br>        cdo -L -M mergetime $(<span class="hljs-built_in">cat</span> <span class="hljs-string">&quot;<span class="hljs-variable">$temp_file_list</span>&quot;</span>) <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_merged&#125;</span>&quot;</span> || &#123;<br>            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Error merging files with -M mergetime&quot;</span><br>            <span class="hljs-built_in">return</span> 1<br>        &#125;<br>        <span class="hljs-comment"># Compute time mean on merged file</span><br>        cdo -L timmean <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_merged&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;output_file&#125;</span>/<span class="hljs-variable">$&#123;outfile_name&#125;</span>_<span class="hljs-variable">$&#123;nc_name&#125;</span>.nc&quot;</span> || &#123;<br>            <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Error computing time mean for merged files&quot;</span><br>            <span class="hljs-built_in">rm</span> <span class="hljs-string">&quot;<span class="hljs-variable">$tmp_merged</span>&quot;</span><br>            <span class="hljs-built_in">return</span> 1<br>        &#125;<br>        <span class="hljs-comment"># Clean up temporary merged file</span><br>        <span class="hljs-built_in">rm</span> <span class="hljs-string">&quot;<span class="hljs-variable">$tmp_merged</span>&quot;</span><br>    <span class="hljs-keyword">fi</span><br><br>    <span class="hljs-comment"># Clean up</span><br>    <span class="hljs-built_in">rm</span> -f <span class="hljs-string">&quot;<span class="hljs-variable">$temp_file_list</span>&quot;</span><br><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Mean delta computed and saved to &#x27;<span class="hljs-variable">$output_file</span>&#x27;.&quot;</span><br>&#125;<br><br><span class="hljs-comment"># ==============================================================================</span><br><span class="hljs-comment"># Main Execution</span><br><span class="hljs-comment"># ==============================================================================</span><br><br><br><span class="hljs-comment"># Assign arguments to variables</span><br><span class="hljs-comment"># DELTA_DIR=&quot;$1&quot;</span><br><span class="hljs-comment"># OUTPUT_FILE=&quot;$2&quot;</span><br><span class="hljs-comment"># target_MM=&quot;$3&quot;</span><br>DELTA_DIR=<span class="hljs-string">&quot;/home/wpsze/mpas/MPAS-project/PGW/Bias-corrected-CMIP6/calculate-delta/output/&quot;</span><br>OUTPUT_FILE=<span class="hljs-string">&quot;/home/wpsze/mpas/MPAS-project/PGW/Bias-corrected-CMIP6/calculate-delta/output-mean/&quot;</span><br><br>tmp_dir=<span class="hljs-string">&quot;/home/wpsze/mpas/MPAS-project/PGW/Bias-corrected-CMIP6/calculate-delta/delta-2100-2070/&quot;</span><br><span class="hljs-built_in">rm</span> -r <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br><span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br><br><span class="hljs-keyword">for</span> target_MM <span class="hljs-keyword">in</span> &#123;01..12&#125;; <span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot; ... Month = <span class="hljs-variable">$&#123;target_MM&#125;</span> ... &quot;</span><br><br>    <span class="hljs-comment"># Loop through delta files of the specified year and add to the list</span><br>    outfile_name=<span class="hljs-string">&quot;delta_signal_2070_2100_<span class="hljs-variable">$&#123;target_MM&#125;</span>&quot;</span><br>    <span class="hljs-keyword">for</span> yyyy <span class="hljs-keyword">in</span> &#123;2070..2100&#125;; <span class="hljs-keyword">do</span><br>        <span class="hljs-built_in">ln</span> -sf <span class="hljs-variable">$&#123;DELTA_DIR&#125;</span>/delta_atm_<span class="hljs-variable">$&#123;yyyy&#125;</span>*<span class="hljs-variable">$&#123;target_MM&#125;</span>.nc <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br>        <span class="hljs-built_in">ln</span> -sf <span class="hljs-variable">$&#123;DELTA_DIR&#125;</span>/delta_land_<span class="hljs-variable">$&#123;yyyy&#125;</span>*<span class="hljs-variable">$&#123;target_MM&#125;</span>.nc <span class="hljs-variable">$&#123;tmp_dir&#125;</span><br>    <span class="hljs-keyword">done</span><br><br>    <span class="hljs-comment"># Assign year for file name</span><br>    <span class="hljs-comment"># yyyy and mm</span><br>    <span class="hljs-comment"># delta_atm_2069_1983_04.nc</span><br>    <span class="hljs-comment"># delta_land_2100_2014_12.nc</span><br><br>    <span class="hljs-comment"># Create directory</span><br>    <span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$&#123;OUTPUT_FILE&#125;</span><br><br>    <span class="hljs-comment"># Call the compute_mean function</span><br>    <span class="hljs-comment"># ---- Land -------</span><br>    nc_name=<span class="hljs-string">&quot;land&quot;</span><br>    compute_mean <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_dir&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;OUTPUT_FILE&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;nc_name&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;target_MM&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;outfile_name&#125;</span>&quot;</span><br><br>    <span class="hljs-comment"># ---- atm -------</span><br>    nc_name=<span class="hljs-string">&quot;atm&quot;</span><br>    compute_mean <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;tmp_dir&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;OUTPUT_FILE&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;nc_name&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;target_MM&#125;</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;outfile_name&#125;</span>&quot;</span><br><br><br><span class="hljs-keyword">done</span><br><br><span class="hljs-comment"># End of script</span><br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="atmosphere">atmosphere</h2>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">
+        <div class="fold-arrow">▶</div>delta_signal_2070_2100_01_atm.nc
+      </div>
+      <div class="fold-collapse collapse" id="collapse-6ae3e036">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><code class="hljs log">netcdf delta_signal_2070_2100_01_atm &#123;<br>dimensions:<br>	time = UNLIMITED ; // (1 currently)<br>	bnds = 2 ;<br>	lon = 288 ;<br>	lat = 145 ;<br>	lev = 14 ;<br>variables:<br>	double time(time) ;<br>		time:standard_name = &quot;time&quot; ;<br>		time:long_name = &quot;time&quot; ;<br>		time:bounds = &quot;time_bnds&quot; ;<br>		time:units = &quot;days since 1850-1-1 00:00:00&quot; ;<br>		time:calendar = &quot;proleptic_gregorian&quot; ;<br>		time:axis = &quot;T&quot; ;<br>	double time_bnds(time, bnds) ;<br>	double lon(lon) ;<br>		lon:standard_name = &quot;longitude&quot; ;<br>		lon:long_name = &quot;longitude&quot; ;<br>		lon:units = &quot;degrees_east&quot; ;<br>		lon:axis = &quot;X&quot; ;<br>	double lat(lat) ;<br>		lat:standard_name = &quot;latitude&quot; ;<br>		lat:long_name = &quot;latitude&quot; ;<br>		lat:units = &quot;degrees_north&quot; ;<br>		lat:axis = &quot;Y&quot; ;<br>	double lev(lev) ;<br>		lev:standard_name = &quot;air_pressure&quot; ;<br>		lev:long_name = &quot;pressure&quot; ;<br>		lev:units = &quot;Pa&quot; ;<br>		lev:positive = &quot;down&quot; ;<br>		lev:axis = &quot;Z&quot; ;<br>	float hur(time, lev, lat, lon) ;<br>		hur:standard_name = &quot;specific_humidity&quot; ;<br>		hur:long_name = &quot;Specific Humidity&quot; ;<br>		hur:units = &quot;1&quot; ;<br>		hur:_FillValue = -32767.f ;<br>		hur:missing_value = -32767.f ;<br>		hur:cell_methods = &quot;area: mean time: point&quot; ;<br>		hur:comment = &quot;Specific humidity is the mass fraction of water vapor in (moist) air.&quot; ;<br>		hur:history = &quot;2019-07-21T06:26:14Z altered by CMOR: Reordered dimensions, original order: time lat lon plev. 2019-07-21T06:26:14Z altered by CMOR: replaced missing value flag (-9e+33) with standard missing value (1e+20). 2019-07-21T06:26:14Z altered by CMOR: Converted type from \&#x27;d\&#x27; to \&#x27;f\&#x27;. 2019-07-21T06:26:14Z altered by CMOR: Inverted axis: lat.&quot; ;<br>	float ps(time, lat, lon) ;<br>		ps:standard_name = &quot;surface_air_pressure&quot; ;<br>		ps:long_name = &quot;Surface Air Pressure&quot; ;<br>		ps:units = &quot;Pa&quot; ;<br>		ps:_FillValue = -32767.f ;<br>		ps:missing_value = -32767.f ;<br>		ps:cell_methods = &quot;area: mean time: point&quot; ;<br>		ps:comment = &quot;surface pressure (not mean sea-level pressure), 2-D field to calculate the 3-D pressure field from hybrid coordinates&quot; ;<br>		ps:history = &quot;2019-07-21T06:26:14Z altered by CMOR: replaced missing value flag (-9e+33) with standard missing value (1e+20). 2019-07-21T06:26:14Z altered by CMOR: Converted type from \&#x27;d\&#x27; to \&#x27;f\&#x27;. 2019-07-21T06:26:14Z altered by CMOR: Inverted axis: lat.&quot; ;<br>	float psl(time, lat, lon) ;<br>		psl:standard_name = &quot;air_pressure_at_mean_sea_level&quot; ;<br>		psl:long_name = &quot;Sea Level Pressure&quot; ;<br>		psl:units = &quot;Pa&quot; ;<br>		psl:_FillValue = -32767.f ;<br>		psl:missing_value = -32767.f ;<br>		psl:cell_methods = &quot;area: mean time: point&quot; ;<br>		psl:comment = &quot;Sea Level Pressure&quot; ;<br>		psl:history = &quot;2019-07-21T06:26:14Z altered by CMOR: replaced missing value flag (-9e+33) with standard missing value (1e+20). 2019-07-21T06:26:14Z altered by CMOR: Converted type from \&#x27;d\&#x27; to \&#x27;f\&#x27;. 2019-07-21T06:26:14Z altered by CMOR: Inverted axis: lat.&quot; ;<br>	float ta(time, lev, lat, lon) ;<br>		ta:standard_name = &quot;air_temperature&quot; ;<br>		ta:long_name = &quot;Air Temperature&quot; ;<br>		ta:units = &quot;K&quot; ;<br>		ta:_FillValue = -32767.f ;<br>		ta:missing_value = -32767.f ;<br>		ta:cell_methods = &quot;area: mean time: point&quot; ;<br>		ta:comment = &quot;Air Temperature&quot; ;<br>		ta:history = &quot;2019-07-21T06:26:14Z altered by CMOR: Reordered dimensions, original order: time lat lon plev. 2019-07-21T06:26:14Z altered by CMOR: replaced missing value flag (-9e+33) with standard missing value (1e+20). 2019-07-21T06:26:14Z altered by CMOR: Converted type from \&#x27;d\&#x27; to \&#x27;f\&#x27;. 2019-07-21T06:26:14Z altered by CMOR: Inverted axis: lat.&quot; ;<br>	float tos(time, lat, lon) ;<br>		tos:standard_name = &quot;sea_surface_temperature&quot; ;<br>		tos:long_name = &quot;Sea Surface Temperature&quot; ;<br>		tos:units = &quot;degC&quot; ;<br>		tos:_FillValue = -32767.f ;<br>		tos:missing_value = -32767.f ;<br>		tos:cell_methods = &quot;area: mean where sea time: point&quot; ;<br>		tos:comment = &quot;Temperature of upper boundary of the liquid ocean, including temperatures below sea-ice and floating ice shelves.&quot; ;<br>		tos:original_name = &quot;tos&quot; ;<br>		tos:history = &quot;2019-07-21T06:23:24Z altered by CMOR: replaced missing value flag (-9e+33) with standard missing value (1e+20).&quot; ;<br>	float ua(time, lev, lat, lon) ;<br>		ua:standard_name = &quot;eastward_wind&quot; ;<br>		ua:long_name = &quot;Eastward Wind&quot; ;<br>		ua:units = &quot;m s-1&quot; ;<br>		ua:_FillValue = -32767.f ;<br>		ua:missing_value = -32767.f ;<br>		ua:cell_methods = &quot;time: point&quot; ;<br>		ua:comment = &quot;Zonal wind (positive in a eastward direction).&quot; ;<br>		ua:history = &quot;2019-08-21T17:13:47Z altered by CMOR: Reordered dimensions, original order: time lat lon lev. 2019-08-21T17:13:47Z altered by CMOR: replaced missing value flag (-9e+33) and corresponding data with standard missing value (1e+20). 2019-08-21T17:13:47Z altered by CMOR: Inverted axis: lev. 2019-08-21T17:13:47Z altered by CMOR: Inverted axis: lat.&quot; ;<br>	float va(time, lev, lat, lon) ;<br>		va:standard_name = &quot;northward_wind&quot; ;<br>		va:long_name = &quot;Northward Wind&quot; ;<br>		va:units = &quot;m s-1&quot; ;<br>		va:_FillValue = -32767.f ;<br>		va:missing_value = -32767.f ;<br>		va:cell_methods = &quot;time: point&quot; ;<br>		va:comment = &quot;Meridional wind (positive in a northward direction).&quot; ;<br>		va:history = &quot;2019-08-21T17:13:47Z altered by CMOR: Reordered dimensions, original order: time lat lon lev. 2019-08-21T17:13:47Z altered by CMOR: replaced missing value flag (-9e+33) and corresponding data with standard missing value (1e+20). 2019-08-21T17:13:47Z altered by CMOR: Inverted axis: lev. 2019-08-21T17:13:47Z altered by CMOR: Inverted axis: lat.&quot; ;<br>	float zg(time, lev, lat, lon) ;<br>		zg:standard_name = &quot;geopotential_height&quot; ;<br>		zg:long_name = &quot;Geopotential Height&quot; ;<br>		zg:units = &quot;m&quot; ;<br>		zg:_FillValue = -32767.f ;<br>		zg:missing_value = -32767.f ;<br>		zg:cell_methods = &quot;area: mean time: point&quot; ;<br>		zg:comment = &quot;Geopotential is the sum of the specific gravitational potential energy relative to the geoid and the specific centripetal potential energy. Geopotential height is the geopotential divided by the standard acceleration due to gravity. It is numerically similar to the altitude (or geometric height) and not to the quantity with standard name height, which is relative to the surface.&quot; ;<br>		zg:history = &quot;2019-07-21T06:26:14Z altered by CMOR: Reordered dimensions, original order: time lat lon plev. 2019-07-21T06:26:14Z altered by CMOR: replaced missing value flag (-9e+33) with standard missing value (1e+20). 2019-07-21T06:26:14Z altered by CMOR: Converted type from \&#x27;d\&#x27; to \&#x27;f\&#x27;. 2019-07-21T06:26:14Z altered by CMOR: Inverted axis: lat.&quot; ;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<ul>
+<li>Atmosphere's dimension,</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9c51fa20" role="button" aria-expanded="false" aria-controls="collapse-9c51fa20">
+        <div class="fold-arrow">▶</div>lat/lon/lev
+      </div>
+      <div class="fold-collapse collapse" id="collapse-9c51fa20">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs log">data:<br><br> lat = -90, -88.75, -87.5, -86.25, -85, -83.75, -82.5, -81.25, -80, -78.75, <br>    -77.5, -76.25, -75, -73.75, -72.5, -71.25, -70, -68.75, -67.5, -66.25, <br>    -65, -63.75, -62.5, -61.25, -60, -58.75, -57.5, -56.25, -55, -53.75, <br>    -52.5, -51.25, -50, -48.75, -47.5, -46.25, -45, -43.75, -42.5, -41.25, <br>    -40, -38.75, -37.5, -36.25, -35, -33.75, -32.5, -31.25, -30, -28.75, <br>    -27.5, -26.25, -25, -23.75, -22.5, -21.25, -20, -18.75, -17.5, -16.25, <br>    -15, -13.75, -12.5, -11.25, -10, -8.75, -7.5, -6.25, -5, -3.75, -2.5, <br>    -1.25, 0, 1.25, 2.5, 3.75, 5, 6.25, 7.5, 8.75, 10, 11.25, 12.5, 13.75, <br>    15, 16.25, 17.5, 18.75, 20, 21.25, 22.5, 23.75, 25, 26.25, 27.5, 28.75, <br>    30, 31.25, 32.5, 33.75, 35, 36.25, 37.5, 38.75, 40, 41.25, 42.5, 43.75, <br>    45, 46.25, 47.5, 48.75, 50, 51.25, 52.5, 53.75, 55, 56.25, 57.5, 58.75, <br>    60, 61.25, 62.5, 63.75, 65, 66.25, 67.5, 68.75, 70, 71.25, 72.5, 73.75, <br>    75, 76.25, 77.5, 78.75, 80, 81.25, 82.5, 83.75, 85, 86.25, 87.5, 88.75, 90 ;<br>&#125;<br><br>data:<br><br> lon = 0, 1.25, 2.5, 3.75, 5, 6.25, 7.5, 8.75, 10, 11.25, 12.5, 13.75, 15, <br>    16.25, 17.5, 18.75, 20, 21.25, 22.5, 23.75, 25, 26.25, 27.5, 28.75, 30, <br>    31.25, 32.5, 33.75, 35, 36.25, 37.5, 38.75, 40, 41.25, 42.5, 43.75, 45, <br>    46.25, 47.5, 48.75, 50, 51.25, 52.5, 53.75, 55, 56.25, 57.5, 58.75, 60, <br>    61.25, 62.5, 63.75, 65, 66.25, 67.5, 68.75, 70, 71.25, 72.5, 73.75, 75, <br>    76.25, 77.5, 78.75, 80, 81.25, 82.5, 83.75, 85, 86.25, 87.5, 88.75, 90, <br>    91.25, 92.5, 93.75, 95, 96.25, 97.5, 98.75, 100, 101.25, 102.5, 103.75, <br>    105, 106.25, 107.5, 108.75, 110, 111.25, 112.5, 113.75, 115, 116.25, <br>    117.5, 118.75, 120, 121.25, 122.5, 123.75, 125, 126.25, 127.5, 128.75, <br>    130, 131.25, 132.5, 133.75, 135, 136.25, 137.5, 138.75, 140, 141.25, <br>    142.5, 143.75, 145, 146.25, 147.5, 148.75, 150, 151.25, 152.5, 153.75, <br>    155, 156.25, 157.5, 158.75, 160, 161.25, 162.5, 163.75, 165, 166.25, <br>    167.5, 168.75, 170, 171.25, 172.5, 173.75, 175, 176.25, 177.5, 178.75, <br>    180, 181.25, 182.5, 183.75, 185, 186.25, 187.5, 188.75, 190, 191.25, <br>    192.5, 193.75, 195, 196.25, 197.5, 198.75, 200, 201.25, 202.5, 203.75, <br>    205, 206.25, 207.5, 208.75, 210, 211.25, 212.5, 213.75, 215, 216.25, <br>    217.5, 218.75, 220, 221.25, 222.5, 223.75, 225, 226.25, 227.5, 228.75, <br>    230, 231.25, 232.5, 233.75, 235, 236.25, 237.5, 238.75, 240, 241.25, <br>    242.5, 243.75, 245, 246.25, 247.5, 248.75, 250, 251.25, 252.5, 253.75, <br>    255, 256.25, 257.5, 258.75, 260, 261.25, 262.5, 263.75, 265, 266.25, <br>    267.5, 268.75, 270, 271.25, 272.5, 273.75, 275, 276.25, 277.5, 278.75, <br>    280, 281.25, 282.5, 283.75, 285, 286.25, 287.5, 288.75, 290, 291.25, <br>    292.5, 293.75, 295, 296.25, 297.5, 298.75, 300, 301.25, 302.5, 303.75, <br>    305, 306.25, 307.5, 308.75, 310, 311.25, 312.5, 313.75, 315, 316.25, <br>    317.5, 318.75, 320, 321.25, 322.5, 323.75, 325, 326.25, 327.5, 328.75, <br>    330, 331.25, 332.5, 333.75, 335, 336.25, 337.5, 338.75, 340, 341.25, <br>    342.5, 343.75, 345, 346.25, 347.5, 348.75, 350, 351.25, 352.5, 353.75, <br>    355, 356.25, 357.5, 358.75 ;<br>&#125;<br><br>data:<br><br> lev = 100000, 92500, 85000, 70000, 60000, 50000, 40000, 30000, 25000, 20000, <br>    15000, 10000, 7000, 5000 ;<br>&#125;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="land">land</h2>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">
+        <div class="fold-arrow">▶</div>delta_signal_2070_2100_01_land.nc
+      </div>
+      <div class="fold-collapse collapse" id="collapse-05eef982">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs log">netcdf delta_signal_2070_2100_06_land &#123;<br>dimensions:<br>	time = UNLIMITED ; // (1 currently)<br>	bnds = 2 ;<br>	lon = 288 ;<br>	lat = 145 ;<br>	depth = 4 ;<br>variables:<br>	double time(time) ;<br>		time:standard_name = &quot;time&quot; ;<br>		time:long_name = &quot;time&quot; ;<br>		time:bounds = &quot;time_bnds&quot; ;<br>		time:units = &quot;days since 1850-01-01&quot; ;<br>		time:calendar = &quot;proleptic_gregorian&quot; ;<br>		time:axis = &quot;T&quot; ;<br>	double time_bnds(time, bnds) ;<br>	double lon(lon) ;<br>		lon:standard_name = &quot;longitude&quot; ;<br>		lon:long_name = &quot;longitude&quot; ;<br>		lon:units = &quot;degrees_east&quot; ;<br>		lon:axis = &quot;X&quot; ;<br>	double lat(lat) ;<br>		lat:standard_name = &quot;latitude&quot; ;<br>		lat:long_name = &quot;latitude&quot; ;<br>		lat:units = &quot;degrees_north&quot; ;<br>		lat:axis = &quot;Y&quot; ;<br>	double depth(depth) ;<br>		depth:standard_name = &quot;depth&quot; ;<br>		depth:long_name = &quot;depth&quot; ;<br>		depth:units = &quot;m&quot; ;<br>		depth:positive = &quot;down&quot; ;<br>		depth:axis = &quot;Z&quot; ;<br>	double height ;<br>		height:standard_name = &quot;height&quot; ;<br>		height:long_name = &quot;height&quot; ;<br>		height:units = &quot;m&quot; ;<br>		height:positive = &quot;up&quot; ;<br>		height:axis = &quot;Z&quot; ;<br>		height:cell_methods = &quot;time: point&quot; ;<br>		height:description = &quot;~2 m standard surface air temperature and surface humidity  height&quot; ;<br>		height:name = &quot;height&quot; ;<br>	float tsl(time, depth, lat, lon) ;<br>		tsl:standard_name = &quot;soil_temperature&quot; ;<br>		tsl:long_name = &quot;Temperature of Soil&quot; ;<br>		tsl:units = &quot;K&quot; ;<br>		tsl:_FillValue = 1.e+20f ;<br>		tsl:missing_value = 1.e+20f ;<br>		tsl:cell_methods = &quot;area: mean where land time: mean&quot; ;<br>		tsl:comment = &quot;Temperature of soil. Reported as missing for grid cells with no land.&quot; ;<br>		tsl:cell_measures = &quot;area: areacella&quot; ;<br>		tsl:history = &quot;2019-11-08T07:44:08Z altered by CMOR: replaced missing value flag (-1.07374e+09) with standard missing value (1e+20).&quot; ;<br>	float mrsol(time, depth, lat, lon) ;<br>		mrsol:_FillValue = 1.e+20f ;<br>		mrsol:missing_value = 1.e+20f ;<br>		mrsol:cell_methods = &quot;time: mean&quot; ;<br>	float tas(time, lat, lon) ;<br>		tas:standard_name = &quot;air_temperature&quot; ;<br>		tas:long_name = &quot;Near-Surface Air Temperature&quot; ;<br>		tas:units = &quot;K&quot; ;<br>		tas:coordinates = &quot;height&quot; ;<br>		tas:_FillValue = 1.e+20f ;<br>		tas:missing_value = 1.e+20f ;<br>		tas:cell_methods = &quot;area: time: mean&quot; ;<br>		tas:comment = &quot;near-surface (usually, 2 meter) air temperature&quot; ;<br>		tas:cell_measures = &quot;area: areacella&quot; ;<br>		tas:history = &quot;2019-11-08T03:15:27Z altered by CMOR: Treated scalar dimension: \&#x27;height\&#x27;. 2019-11-08T03:15:27Z altered by CMOR: replaced missing value flag (-1.07374e+09) with standard missing value (1e+20).&quot; ;<br>	float lsm(lat, lon) ;<br>		lsm:standard_name = &quot;Land-sea mask&quot; ;<br>		lsm:long_name = &quot;Land-sea mask&quot; ;<br>		lsm:coordinates = &quot;height&quot; ;<br>		lsm:_FillValue = -9.99e+08f ;<br>		lsm:missing_value = -9.99e+08f ;<br>		lsm:cell_methods = &quot;time: mean&quot; ;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<ul>
+<li>Land's dimension,</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">
+        <div class="fold-arrow">▶</div>depth/
+      </div>
+      <div class="fold-collapse collapse" id="collapse-90469042">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs log">data:<br><br> height = 2 ;<br>&#125;<br><br>data:<br><br> depth = 0.05, 0.25, 0.7, 1.5 ;<br>&#125;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<p>FYI, ERA5-Land provides soil moisture data at four distinct depth layers: 0-7 cm, 7-28 cm, 28-100 cm, and 100-289 cm. These layers represent the vertical distribution of soil moisture within the ERA5-Land model. Here's a breakdown of the ERA5-Land soil depth levels:</p>
+<ul>
+<li><strong>Layer 1</strong>: 0-7 cm (topsoil)</li>
+<li><strong>Layer 2</strong>: 7-28 cm</li>
+<li><strong>Layer 3</strong>: 28-100 cm</li>
+<li><strong>Layer 4</strong>: 100-289 cm</li>
+</ul>
+<h1 id="era5-gribnetcdf">ERA5 grib/netCDF</h1>
+<h2 id="error-scale_factor-add_offset">Error: scale_factor, add_offset</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/CKB/What+are+NetCDF+files+and+how+can+I+read+them">What are NetCDF files and how can I read them | ECMWF</a>
+<ul>
+<li><code>ncdump -h file.nc</code></li>
+<li><code>unpacked_data_value = (packed_data_value * scale_factor) + add_offset</code></li>
+<li><code>packed_data_value = nint((unpacked_data_value - add_offset) / scale_factor)</code></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/sites/default/files/elibrary/2014/13706-grib-netcdf-setting-scene.pdf">GRIB to/from NetCDF Setting the scene</a></li>
+</ul>
+<h3 id="pl">PL</h3>
+<table>
+
+<thead>
+<tr class="header">
+<th></th>
+<th>z</th>
+<th>r</th>
+<th>q</th>
+<th>t</th>
+<th>u</th>
+<th>v</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>scale_factor</td>
+<td>7.574991321</td>
+<td>0.002548692071</td>
+<td>3.99E-07</td>
+<td>0.002116294364</td>
+<td>0.00359897399</td>
+<td>0.002080654975</td>
+</tr>
+<tr class="even">
+<td>add_offset</td>
+<td>244058.9469</td>
+<td>73.9639585</td>
+<td>0.0130722922</td>
+<td>249.1223168</td>
+<td>60.8328105</td>
+<td>-4.699587691</td>
+</tr>
+<tr class="odd">
+<td>_FillValue</td>
+<td>-32767</td>
+<td>-32767</td>
+<td>-32767</td>
+<td>-32767</td>
+<td>-32767</td>
+<td>-32767</td>
+</tr>
+<tr class="even">
+<td>missing_value</td>
+<td>-32767</td>
+<td>-32767</td>
+<td>-32767</td>
+<td>-32767</td>
+<td>-32767</td>
+<td>-32767</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>min</td>
+<td>-4143.203</td>
+<td>-9.546486</td>
+<td>-2.91E-06</td>
+<td>179.77982</td>
+<td>-57.09118</td>
+<td>-72.87433</td>
+</tr>
+<tr class="odd">
+<td>max</td>
+<td>492268.7</td>
+<td>157.47696</td>
+<td>0.02614789</td>
+<td>318.46692</td>
+<td>178.76039</td>
+<td>63.47723</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>if max=32767</td>
+<td>492268.6875</td>
+<td>157.4769516</td>
+<td>2.61E-02</td>
+<td>318.4669342</td>
+<td>178.7603912</td>
+<td>63.47723389</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sl">SL</h3>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>scale_factor</th>
+<th>add_offset</th>
+<th>_FillValue</th>
+<th>if max=32767</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>u10</td>
+<td>0.0006538332787</td>
+<td>0.1796962767</td>
+<td>32767</td>
+<td>21.60385132</td>
+</tr>
+<tr class="even">
+<td>v10</td>
+<td>0.0006651437778</td>
+<td>3.623965524</td>
+<td>32767</td>
+<td>25.41873169</td>
+</tr>
+<tr class="odd">
+<td>d2m</td>
+<td>0.001547556431</td>
+<td>252.2126967</td>
+<td>32767</td>
+<td>302.9214783</td>
+</tr>
+<tr class="even">
+<td>t2m</td>
+<td>0.001664476294</td>
+<td>259.4586404</td>
+<td>32767</td>
+<td>313.9985352</td>
+</tr>
+<tr class="odd">
+<td>lsm</td>
+<td>1.53E-05</td>
+<td>0.4999923703</td>
+<td>32767</td>
+<td>1.00E+00</td>
+</tr>
+<tr class="even">
+<td>msl</td>
+<td>0.1378542109</td>
+<td>99316.11857</td>
+<td>32767</td>
+<td>103833.1875</td>
+</tr>
+<tr class="odd">
+<td>siconc</td>
+<td>1.53E-05</td>
+<td>0.4999923703</td>
+<td>32767</td>
+<td>1.00E+00</td>
+</tr>
+<tr class="even">
+<td>sst</td>
+<td>0.000598726262</td>
+<td>288.8668881</td>
+<td>32767</td>
+<td>308.4853516</td>
+</tr>
+<tr class="odd">
+<td>skt</td>
+<td>0.001864697462</td>
+<td>263.6076492</td>
+<td>32767</td>
+<td>324.7081909</td>
+</tr>
+<tr class="even">
+<td>rsn</td>
+<td>0.005326991745</td>
+<td>274.5441962</td>
+<td>32767</td>
+<td>449.0937347</td>
+</tr>
+<tr class="odd">
+<td>sd</td>
+<td>0.0001525948759</td>
+<td>4.999923703</td>
+<td>32767</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>stl1</td>
+<td>0.001609577903</td>
+<td>269.1936532</td>
+<td>32767</td>
+<td>321.9346924</td>
+</tr>
+<tr class="odd">
+<td>stl2</td>
+<td>0.001518408426</td>
+<td>266.6102637</td>
+<td>32767</td>
+<td>316.3639526</td>
+</tr>
+<tr class="even">
+<td>stl3</td>
+<td>0.001473583681</td>
+<td>266.0486559</td>
+<td>32767</td>
+<td>314.3335724</td>
+</tr>
+<tr class="odd">
+<td>stl4</td>
+<td>0.001443869405</td>
+<td>265.761241</td>
+<td>32767</td>
+<td>313.0725098</td>
+</tr>
+<tr class="even">
+<td>sp</td>
+<td>0.8206399829</td>
+<td>76944.26156</td>
+<td>32767</td>
+<td>103834.1719</td>
+</tr>
+<tr class="odd">
+<td>swvl1</td>
+<td>1.19E-05</td>
+<td>0.3769844999</td>
+<td>32767</td>
+<td>7.66E-01</td>
+</tr>
+<tr class="even">
+<td>swvl2</td>
+<td>1.17E-05</td>
+<td>0.3822195595</td>
+<td>32767</td>
+<td>7.65E-01</td>
+</tr>
+<tr class="odd">
+<td>swvl3</td>
+<td>1.17E-05</td>
+<td>0.382597278</td>
+<td>32767</td>
+<td>7.65E-01</td>
+</tr>
+<tr class="even">
+<td>swvl4</td>
+<td>1.15E-05</td>
+<td>0.3763370306</td>
+<td>32767</td>
+<td>7.53E-01</td>
+</tr>
+<tr class="odd">
+<td>z</td>
+<td>0.8979394208</td>
+<td>28035.38941</td>
+<td>32767</td>
+<td>57458.17041</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cdo-packunpack"><code>cdo pack/unpack</code></h3>
+<p>The <code>pack</code> operation in <strong>CDO (Climate Data Operators)</strong> is used to combine multiple GRIB messages into a single GRIB file. Here’s a breakdown of what it does and why it's beneficial:</p>
+<ul>
+<li>What "Pack" Does
+<ul>
+<li><strong>Combines Multiple Messages</strong>: It merges separate GRIB messages (e.g., different time steps or variables) into one consolidated GRIB file.</li>
+<li><strong>Optimizes Data Structure</strong>: The operation organizes the data in a more efficient format, minimizing redundancy in metadata and improving overall file structure.</li>
+</ul></li>
+<li>Why Use Packing?
+<ul>
+<li><strong>Storage Efficiency</strong>: Packing reduces the total file size, saving disk space and making data management easier.</li>
+<li><strong>Faster Access and Processing</strong>: A single packed file can be accessed and processed more quickly than multiple individual files, which improves performance in data analysis.</li>
+<li><strong>Simplified Data Management</strong>: Fewer files mean easier organization and handling of datasets, especially in large-scale workflows.</li>
+<li><strong>Compatibility</strong>: Some tools and workflows may require data to be in a packed format, making this operation necessary for integration with various applications.</li>
+</ul></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">cdo -h<br>cdo info file.grb<br>cdo pack output.grb packed.grb<br>cdo unpack packed.grb unpacked.grb<br>cdo pack file1.grb file2.grb packed.grb<br>cdo -f nc copy input.grb output.nc<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/PGW/" class="print-no-link">#PGW</a>
+      
+        <a href="/tags/GRIB/" class="print-no-link">#GRIB</a>
+      
+        <a href="/tags/NetCDF/" class="print-no-link">#NetCDF</a>
+      
+        <a href="/tags/CMIP6/" class="print-no-link">#CMIP6</a>
+      
+        <a href="/tags/scale-factor/" class="print-no-link">#scale_factor</a>
+      
+        <a href="/tags/add-offset/" class="print-no-link">#add_offset</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | PGW + Bias-corrected-CMIP6</div>
+      <div>https://waipangsze.github.io/2025/07/10/NWP-PGW-Bias-corrected-CMIP6/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 10, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>July 16, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/27/PALM-Topography-and-Flow_around_buildings/" title="PALM | Topography and Flow_around_buildings">
+                        <span class="hidden-mobile">PALM | Topography and Flow_around_buildings</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
