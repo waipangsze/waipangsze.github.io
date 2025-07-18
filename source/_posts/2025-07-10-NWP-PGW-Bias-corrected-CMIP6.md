@@ -710,4 +710,107 @@ Negative volumetric soil water values in ERA5 are often a result of data process
 dataset['swvl1'] = dataset['swvl1'].where(dataset['swvl1'] >= 0, 0)
 ```
 
+## Error: soil layer levels?
 
+- [**GRIB2-for-DUMMIES.pdf** (important!!!)](https://www.cosmo-model.org/content/consortium/generalMeetings/general2019/wg6/GRIB2-for-DUMMIES.pdf)
+- In Vtable file, there are
+  - For soil terms,
+    - `Level 1` and `Level 2` (or `From Level1` and `To Level2`)
+- It is important for `typeOfLevel=depthBelowLandLayer`
+  - have to define `topLevel` and `bottomLevel`
+- Check grib file by `grib_ls` (show level=topLevel) and `cdo info`  (show middle point of levels)
+
+```Vtable
+ 139 | 112  |   0  |   7  | ST000007 | K        | T of 0-7 cm ground layer                 |
+ 170 | 112  |   7  |  28  | ST007028 | K        | T of 7-28 cm ground layer                |
+ 183 | 112  |  28  | 100  | ST028100 | K        | T of 28-100 cm ground layer              |
+ 236 | 112  | 100  | 255  | ST100289 | K        | T of 100-289 cm ground layer             |
+  39 | 112  |   0  |   7  | SM000007 | m3 m-3   | Soil moisture of 0-7 cm ground layer     |
+  40 | 112  |   7  |  28  | SM007028 | m3 m-3   | Soil moisture of 7-28 cm ground layer    |
+  41 | 112  |  28  | 100  | SM028100 | m3 m-3   | Soil moisture of 28-100 cm ground layer  |
+  42 | 112  | 100  | 255  | SM100289 | m3 m-3   | Soil moisture of 100-289 cm ground layer |
+-----+------+------+------+----------+----------+------------------------------------------+
+```
+
+```python
+# Define a group of list of variables
+var_names=("stl1" "stl2" "stl3" "stl4" \
+			"swvl1" "swvl2" "swvl3" "swvl4")
+var_typeOfLevel=("depthBelowLandLayer" "depthBelowLandLayer" "depthBelowLandLayer" "depthBelowLandLayer" \
+			"depthBelowLandLayer" "depthBelowLandLayer" "depthBelowLandLayer" "depthBelowLandLayer")
+var_topLevel=("0" "7" "28" "100" \
+			"0" "7" "28" "100")
+var_bottomLevel=("7" "28" "100" "255" \
+			"7" "28" "100" "255")
+
+# Loop through each name in the list
+for i in "${!var_names[@]}"; do
+    echo " ==== For ${var_names[$i]}! ===== "
+    cdo selname,${var_names[$i]} new_${ERA5_prefix_SL}${yyyymmddhh}.nc ${var_names[$i]}_nan.nc
+    cdo setmissval,-999 ${var_names[$i]}_nan.nc ${var_names[$i]}.nc
+    cdo -f grb copy ${var_names[$i]}.nc ${var_names[$i]}.grib
+    cdo showname ${var_names[$i]}.grib
+    # set "centre" is important !!!
+	grib_set -s centre=ecmf,dataDate=${yyyymmdd},dataTime=${hh}00,shortName=${var_names[$i]},typeOfLevel=${var_typeOfLevel[$i]},topLevel=${var_topLevel[$i]},bottomLevel=${var_bottomLevel[$i]} ${var_names[$i]}.grib ${var_names[$i]}_final.grib
+	cdo showname ${var_names[$i]}_final.grib
+done
+```
+
+{% fold info @cdo info %}
+```log
+ $ grib_ls new_ERA5-0p25-SL-2023052100.grib 
+new_ERA5-0p25-SL-2023052100.grib
+edition      centre       typeOfLevel  level        dataDate     stepRange    shortName    packingType  gridType     
+1            ecmf         surface      0            20230521     0            sst          grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            skt          grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            msl          grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            sp           grid_simple  regular_ll  
+1            ecmf         depthBelowLandLayer  0            20230521     0            stl1         grid_simple  regular_ll  
+1            ecmf         depthBelowLandLayer  7            20230521     0            stl2         grid_simple  regular_ll  
+1            ecmf         depthBelowLandLayer  28           20230521     0            stl3         grid_simple  regular_ll  
+1            ecmf         depthBelowLandLayer  100          20230521     0            stl4         grid_simple  regular_ll  
+1            ecmf         depthBelowLandLayer  0            20230521     0            swvl1        grid_simple  regular_ll  
+1            ecmf         depthBelowLandLayer  7            20230521     0            swvl2        grid_simple  regular_ll  
+1            ecmf         depthBelowLandLayer  28           20230521     0            swvl3        grid_simple  regular_ll  
+1            ecmf         depthBelowLandLayer  100          20230521     0            swvl4        grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            10u          grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            10v          grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            2d           grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            2t           grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            lsm          grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            ci           grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            rsn          grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            sd           grid_simple  regular_ll  
+1            ecmf         surface      0            20230521     0            z            grid_simple  regular_ll  
+21 of 21 messages in new_ERA5-0p25-SL-2023052100.grib
+```
+{% endfold %}
+
+{% fold info @cdo info %}
+```log
+ $ cdo info ERA5-0p25-SL-2023052100.grib 
+    -1 :       Date     Time   Level Gridsize    Miss :     Minimum        Mean     Maximum : Parameter ID
+     1 : 2023-05-21 00:00:00       0  1038240       0 :     -21.115     0.39898      22.422 : 165.128      
+     2 : 2023-05-21 00:00:00       0  1038240       0 :     -21.346     0.35972      21.077 : 166.128      
+     3 : 2023-05-21 00:00:00       0  1038240       0 :      197.14      274.89      302.18 : 168.128      
+     4 : 2023-05-21 00:00:00       0  1038240       0 :      201.04      279.49      311.52 : 167.128      
+     5 : 2023-05-21 00:00:00       0  1038240       0 :      94799.  1.0077e+05  1.0389e+05 : 151.128      
+     6 : 2023-05-21 00:00:00       0  1038240  351876 :      269.65      287.09      307.00 : 34.128       
+     7 : 2023-05-21 00:00:00       0  1038240       0 :      49688.      96483.  1.0365e+05 : 134.128      
+     8 : 2023-05-21 00:00:00       0  1038240       0 :      0.0000     0.33590      1.0000 : 172.128      
+     9 : 2023-05-21 00:00:00       0  1038240  351876 :      0.0000     0.17234      1.0000 : 31.128       
+    10 : 2023-05-21 00:00:00       0  1038240       0 :      200.20      279.62      322.07 : 235.128      
+    11 : 2023-05-21 00:00:00       0  1038240       0 :      100.00      130.06      450.00 : 33.128       
+    12 : 2023-05-21 00:00:00       0  1038240       0 :      0.0000      1.1549      10.000 : 141.128  
+    13 : 2023-05-21 00:00:00     3.5  1038240       0 :      215.26      280.31      323.69 : 139.128      
+    14 : 2023-05-21 00:00:00    17.5  1038240       0 :      215.73      280.54      318.04 : 170.128      
+    15 : 2023-05-21 00:00:00      64  1038240       0 :      216.82      280.37      314.96 : 183.128      
+    16 : 2023-05-21 00:00:00   177.5  1038240       0 :      219.36      279.96      312.29 : 236.128      
+    17 : 2023-05-21 00:00:00     3.5  1038240       0 :   -0.014522    0.087194     0.76871 : 39.128       
+    18 : 2023-05-21 00:00:00    17.5  1038240       0 : -0.00035179    0.089905     0.76121 : 40.128       
+    19 : 2023-05-21 00:00:00      64  1038240       0 : -0.00012223    0.090184     0.76250 : 41.128       
+    20 : 2023-05-21 00:00:00   177.5  1038240       0 :      0.0000    0.085637     0.75583 : 42.128     
+    21 : 2023-05-21 00:00:00       0  1038240       0 :     -1386.5      3724.3      57458. : 129.128      
+cdo    info: Processed 21 variables over 1 timestep [0.40s 42MB].
+```
+{% endfold %}
