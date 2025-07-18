@@ -28,13 +28,13 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/kcuHfQW.png">
 <meta property="article:published_time" content="2025-07-10T07:00:00.000Z">
-<meta property="article:modified_time" content="2025-07-16T01:12:31.305Z">
+<meta property="article:modified_time" content="2025-07-18T09:18:52.390Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="WRF">
-<meta property="article:tag" content="MPAS">
-<meta property="article:tag" content="ERA5">
 <meta property="article:tag" content="NWP">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="GFS">
+<meta property="article:tag" content="ERA5">
 <meta property="article:tag" content="PGW">
 <meta property="article:tag" content="GRIB">
 <meta property="article:tag" content="NetCDF">
@@ -366,7 +366,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.2k words
+          3.8k words
         
       </span>
     
@@ -377,7 +377,7 @@
         
         
         
-          27 mins
+          32 mins
         
       </span>
     
@@ -815,6 +815,72 @@
 </ul></li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">cdo -h<br>cdo info file.grb<br>cdo pack output.grb packed.grb<br>cdo unpack packed.grb unpacked.grb<br>cdo pack file1.grb file2.grb packed.grb<br>cdo -f nc copy input.grb output.nc<br></code></pre></td></tr></table></figure>
+<h2 id="error-negative-volumetric-soil-water-values-in-era5-dataset">Error: Negative volumetric soil water values in ERA5 dataset</h2>
+<div class="note note-primary">
+            <p>swvlt1 contains negative values <strong>but it should be treated as zero</strong></p>
+          </div>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.ecmwf.int/t/negative-volumetric-soil-water-values-in-era5-dataset/1222" class="uri">https://forum.ecmwf.int/t/negative-volumetric-soil-water-values-in-era5-dataset/1222</a>
+<ul>
+<li><strong>the problem is with the grib encoding. If a value is very close to zero it could be encoded as a negative value in the grib file, but it should be treated as zero.</strong></li>
+</ul></li>
+</ul>
+<p>Negative volumetric soil water values in ERA5 are often a result of data processing and not necessarily a physical reality. These values can occur due to how the data is packed in the GRIB format, especially when dealing with data that fluctuates a lot, like precipitation. <strong>It's also possible for soil moisture to drop below the wilting point due to evaporation, leading to negative values, but these are often limited to zero in practical applications</strong>.</p>
+<ul>
+<li>Data Representation Issues:
+<ul>
+<li>The GRIB format, used to store ERA5 data, simplifies data to save space, which can introduce small errors, especially when dealing with rapidly changing values like precipitation or soil moisture.</li>
+</ul></li>
+<li>Physical Limits and Modeling:
+<ul>
+<li>While soil moisture can physically drop below the permanent wilting point due to evaporation, models often limit negative values to zero to avoid unrealistic scenarios for plant growth.</li>
+</ul></li>
+<li>ERA5 Data Quality:
+<ul>
+<li>The ECMWF has addressed some issues related to soil moisture data in ERA5 through quality control and re-processing, but errors can still occur.</li>
+</ul></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Check the &#x27;swvl1&#x27; variable and assign zero to negative values</span><br>dataset[<span class="hljs-string">&#x27;swvl1&#x27;</span>] = dataset[<span class="hljs-string">&#x27;swvl1&#x27;</span>].where(dataset[<span class="hljs-string">&#x27;swvl1&#x27;</span>] &gt;= <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="error-soil-layer-levels">Error: soil layer levels?</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cosmo-model.org/content/consortium/generalMeetings/general2019/wg6/GRIB2-for-DUMMIES.pdf"><strong>GRIB2-for-DUMMIES.pdf</strong> (important!!!)</a></li>
+<li>In Vtable file, there are
+<ul>
+<li>For soil terms,
+<ul>
+<li><code>Level 1</code> and <code>Level 2</code> (or <code>From Level1</code> and <code>To Level2</code>)</li>
+</ul></li>
+</ul></li>
+<li>It is important for <code>typeOfLevel=depthBelowLandLayer</code>
+<ul>
+<li>have to define <code>topLevel</code> and <code>bottomLevel</code></li>
+</ul></li>
+<li>Check grib file by <code>grib_ls</code> (show level=topLevel) and <code>cdo info</code> (show middle point of levels)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Vtable"> 139 | 112  |   0  |   7  | ST000007 | K        | T of 0-7 cm ground layer                 |<br> 170 | 112  |   7  |  28  | ST007028 | K        | T of 7-28 cm ground layer                |<br> 183 | 112  |  28  | 100  | ST028100 | K        | T of 28-100 cm ground layer              |<br> 236 | 112  | 100  | 255  | ST100289 | K        | T of 100-289 cm ground layer             |<br>  39 | 112  |   0  |   7  | SM000007 | m3 m-3   | Soil moisture of 0-7 cm ground layer     |<br>  40 | 112  |   7  |  28  | SM007028 | m3 m-3   | Soil moisture of 7-28 cm ground layer    |<br>  41 | 112  |  28  | 100  | SM028100 | m3 m-3   | Soil moisture of 28-100 cm ground layer  |<br>  42 | 112  | 100  | 255  | SM100289 | m3 m-3   | Soil moisture of 100-289 cm ground layer |<br>-----+------+------+------+----------+----------+------------------------------------------+<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Define a group of list of variables</span><br>var_names=(<span class="hljs-string">&quot;stl1&quot;</span> <span class="hljs-string">&quot;stl2&quot;</span> <span class="hljs-string">&quot;stl3&quot;</span> <span class="hljs-string">&quot;stl4&quot;</span> \<br>			<span class="hljs-string">&quot;swvl1&quot;</span> <span class="hljs-string">&quot;swvl2&quot;</span> <span class="hljs-string">&quot;swvl3&quot;</span> <span class="hljs-string">&quot;swvl4&quot;</span>)<br>var_typeOfLevel=(<span class="hljs-string">&quot;depthBelowLandLayer&quot;</span> <span class="hljs-string">&quot;depthBelowLandLayer&quot;</span> <span class="hljs-string">&quot;depthBelowLandLayer&quot;</span> <span class="hljs-string">&quot;depthBelowLandLayer&quot;</span> \<br>			<span class="hljs-string">&quot;depthBelowLandLayer&quot;</span> <span class="hljs-string">&quot;depthBelowLandLayer&quot;</span> <span class="hljs-string">&quot;depthBelowLandLayer&quot;</span> <span class="hljs-string">&quot;depthBelowLandLayer&quot;</span>)<br>var_topLevel=(<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-string">&quot;7&quot;</span> <span class="hljs-string">&quot;28&quot;</span> <span class="hljs-string">&quot;100&quot;</span> \<br>			<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-string">&quot;7&quot;</span> <span class="hljs-string">&quot;28&quot;</span> <span class="hljs-string">&quot;100&quot;</span>)<br>var_bottomLevel=(<span class="hljs-string">&quot;7&quot;</span> <span class="hljs-string">&quot;28&quot;</span> <span class="hljs-string">&quot;100&quot;</span> <span class="hljs-string">&quot;255&quot;</span> \<br>			<span class="hljs-string">&quot;7&quot;</span> <span class="hljs-string">&quot;28&quot;</span> <span class="hljs-string">&quot;100&quot;</span> <span class="hljs-string">&quot;255&quot;</span>)<br><br><span class="hljs-comment"># Loop through each name in the list</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;$&#123;!var_names[@]&#125;&quot;</span>; do<br>    echo <span class="hljs-string">&quot; ==== For $&#123;var_names[$i]&#125;! ===== &quot;</span><br>    cdo selname,$&#123;var_names[$i]&#125; new_$&#123;ERA5_prefix_SL&#125;$&#123;yyyymmddhh&#125;.nc $&#123;var_names[$i]&#125;_nan.nc<br>    cdo setmissval,-<span class="hljs-number">999</span> $&#123;var_names[$i]&#125;_nan.nc $&#123;var_names[$i]&#125;.nc<br>    cdo -f grb copy $&#123;var_names[$i]&#125;.nc $&#123;var_names[$i]&#125;.grib<br>    cdo showname $&#123;var_names[$i]&#125;.grib<br>    <span class="hljs-comment"># set &quot;centre&quot; is important !!!</span><br>	grib_set -s centre=ecmf,dataDate=$&#123;yyyymmdd&#125;,dataTime=$&#123;hh&#125;<span class="hljs-number">00</span>,shortName=$&#123;var_names[$i]&#125;,typeOfLevel=$&#123;var_typeOfLevel[$i]&#125;,topLevel=$&#123;var_topLevel[$i]&#125;,bottomLevel=$&#123;var_bottomLevel[$i]&#125; $&#123;var_names[$i]&#125;.grib $&#123;var_names[$i]&#125;_final.grib<br>	cdo showname $&#123;var_names[$i]&#125;_final.grib<br>done<br></code></pre></td></tr></table></figure>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8e159bd8" role="button" aria-expanded="false" aria-controls="collapse-8e159bd8">
+        <div class="fold-arrow">▶</div>cdo info
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8e159bd8">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs log"> $ grib_ls new_ERA5-0p25-SL-2023052100.grib <br>new_ERA5-0p25-SL-2023052100.grib<br>edition      centre       typeOfLevel  level        dataDate     stepRange    shortName    packingType  gridType     <br>1            ecmf         surface      0            20230521     0            sst          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            skt          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            msl          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            sp           grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  0            20230521     0            stl1         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  7            20230521     0            stl2         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  28           20230521     0            stl3         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  100          20230521     0            stl4         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  0            20230521     0            swvl1        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  7            20230521     0            swvl2        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  28           20230521     0            swvl3        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  100          20230521     0            swvl4        grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            10u          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            10v          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            2d           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            2t           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            lsm          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            ci           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            rsn          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            sd           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            z            grid_simple  regular_ll  <br>21 of 21 messages in new_ERA5-0p25-SL-2023052100.grib<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-42d133e0" role="button" aria-expanded="false" aria-controls="collapse-42d133e0">
+        <div class="fold-arrow">▶</div>cdo info
+      </div>
+      <div class="fold-collapse collapse" id="collapse-42d133e0">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs log"> $ cdo info ERA5-0p25-SL-2023052100.grib <br>    -1 :       Date     Time   Level Gridsize    Miss :     Minimum        Mean     Maximum : Parameter ID<br>     1 : 2023-05-21 00:00:00       0  1038240       0 :     -21.115     0.39898      22.422 : 165.128      <br>     2 : 2023-05-21 00:00:00       0  1038240       0 :     -21.346     0.35972      21.077 : 166.128      <br>     3 : 2023-05-21 00:00:00       0  1038240       0 :      197.14      274.89      302.18 : 168.128      <br>     4 : 2023-05-21 00:00:00       0  1038240       0 :      201.04      279.49      311.52 : 167.128      <br>     5 : 2023-05-21 00:00:00       0  1038240       0 :      94799.  1.0077e+05  1.0389e+05 : 151.128      <br>     6 : 2023-05-21 00:00:00       0  1038240  351876 :      269.65      287.09      307.00 : 34.128       <br>     7 : 2023-05-21 00:00:00       0  1038240       0 :      49688.      96483.  1.0365e+05 : 134.128      <br>     8 : 2023-05-21 00:00:00       0  1038240       0 :      0.0000     0.33590      1.0000 : 172.128      <br>     9 : 2023-05-21 00:00:00       0  1038240  351876 :      0.0000     0.17234      1.0000 : 31.128       <br>    10 : 2023-05-21 00:00:00       0  1038240       0 :      200.20      279.62      322.07 : 235.128      <br>    11 : 2023-05-21 00:00:00       0  1038240       0 :      100.00      130.06      450.00 : 33.128       <br>    12 : 2023-05-21 00:00:00       0  1038240       0 :      0.0000      1.1549      10.000 : 141.128  <br>    13 : 2023-05-21 00:00:00     3.5  1038240       0 :      215.26      280.31      323.69 : 139.128      <br>    14 : 2023-05-21 00:00:00    17.5  1038240       0 :      215.73      280.54      318.04 : 170.128      <br>    15 : 2023-05-21 00:00:00      64  1038240       0 :      216.82      280.37      314.96 : 183.128      <br>    16 : 2023-05-21 00:00:00   177.5  1038240       0 :      219.36      279.96      312.29 : 236.128      <br>    17 : 2023-05-21 00:00:00     3.5  1038240       0 :   -0.014522    0.087194     0.76871 : 39.128       <br>    18 : 2023-05-21 00:00:00    17.5  1038240       0 : -0.00035179    0.089905     0.76121 : 40.128       <br>    19 : 2023-05-21 00:00:00      64  1038240       0 : -0.00012223    0.090184     0.76250 : 41.128       <br>    20 : 2023-05-21 00:00:00   177.5  1038240       0 :      0.0000    0.085637     0.75583 : 42.128     <br>    21 : 2023-05-21 00:00:00       0  1038240       0 :     -1386.5      3724.3      57458. : 129.128      <br>cdo    info: Processed 21 variables over 1 timestep [0.40s 42MB].<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
 
                 
               </div>
@@ -850,13 +916,13 @@
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
-        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
-      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
         <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
       
         <a href="/tags/PGW/" class="print-no-link">#PGW</a>
       
@@ -899,7 +965,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>July 16, 2025</div>
+          <div>July 18, 2025</div>
         </div>
       
       
