@@ -687,3 +687,27 @@ cdo pack file1.grb file2.grb packed.grb
 cdo -f nc copy input.grb output.nc
 ```
 
+## Error: Negative volumetric soil water values in ERA5 dataset
+
+{% note primary %}
+swvlt1 contains negative values **but it should be treated as zero**
+{% endnote %}
+
+- <https://forum.ecmwf.int/t/negative-volumetric-soil-water-values-in-era5-dataset/1222>
+  - **the problem is with the grib encoding. If a value is very close to zero it could be encoded as a negative value in the grib file, but it should be treated as zero.**
+
+Negative volumetric soil water values in ERA5 are often a result of data processing and not necessarily a physical reality. These values can occur due to how the data is packed in the GRIB format, especially when dealing with data that fluctuates a lot, like precipitation. **It's also possible for soil moisture to drop below the wilting point due to evaporation, leading to negative values, but these are often limited to zero in practical applications**. 
+
+- Data Representation Issues:
+  - The GRIB format, used to store ERA5 data, simplifies data to save space, which can introduce small errors, especially when dealing with rapidly changing values like precipitation or soil moisture. 
+- Physical Limits and Modeling:
+  - While soil moisture can physically drop below the permanent wilting point due to evaporation, models often limit negative values to zero to avoid unrealistic scenarios for plant growth. 
+- ERA5 Data Quality:
+  - The ECMWF has addressed some issues related to soil moisture data in ERA5 through quality control and re-processing, but errors can still occur. 
+
+```python
+# Check the 'swvl1' variable and assign zero to negative values
+dataset['swvl1'] = dataset['swvl1'].where(dataset['swvl1'] >= 0, 0)
+```
+
+
