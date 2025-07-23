@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://upload.wikimedia.org/wikipedia/commons/b/bd/Python_Powered.png
+banner_img: https://upload.wikimedia.org/wikipedia/commons/b/bd/Python_Powered.png
 ---
 
 Template for a Python script that includes logging and argparse. You can use this as a starting point for your projects:
