@@ -28,12 +28,12 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/GOFUeXW.png">
 <meta property="article:published_time" content="2025-04-14T03:12:00.000Z">
-<meta property="article:modified_time" content="2025-05-12T02:37:35.175Z">
+<meta property="article:modified_time" content="2025-07-29T09:34:13.677Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
-<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="HPC">
 <meta property="article:tag" content="mesh generation">
 <meta property="article:tag" content="graph.info">
 <meta property="article:tag" content="grid.nc">
@@ -362,7 +362,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          153 words
+          307 words
         
       </span>
     
@@ -373,7 +373,7 @@
         
         
         
-          2 mins
+          3 mins
         
       </span>
     
@@ -446,6 +446,32 @@
 <li>partitionings of the mesh (e.g., graph.info.part.32) for various MPI task counts</li>
 </ul>
 <p>Additionally, for quasi-uniform meshes, “static” files using the default datasets are available. The static file downloads provide single-precision static files in CDF-5/64-bit data format and mesh connectivity files.</p>
+<hr />
+<h1 id="script-for-graph.info">Script for graph.info</h1>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>grid2graph.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#------------------------------------------------#</span><br><span class="hljs-comment"># Author:         wpsze</span><br><span class="hljs-comment"># Email:          wpsze@gmail.com</span><br><span class="hljs-comment"># File:           grid2graph.sh</span><br><span class="hljs-comment"># Date:           2025-07-29 17:05:24</span><br><span class="hljs-comment"># Version:        0.0 </span><br><span class="hljs-comment"># Description:    The purpose of the script</span><br><span class="hljs-comment"># Copyright (C):  2025 All rights reserved</span><br><span class="hljs-comment">#------------------------------------------------#</span><br><br><span class="hljs-comment">#set -e # stop the shell on first error</span><br><span class="hljs-comment">#set -u # fail when using an undefined variable</span><br><span class="hljs-comment">#set -x # echo script lines as they are executed</span><br><span class="hljs-built_in">set</span> -o pipefail<br><br><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/etc/profile.d/micromamba.sh<br>micromamba activate venv<br><span class="hljs-built_in">export</span> SCRIPT_DIR=<span class="hljs-string">&quot;<span class="hljs-subst">$( cd <span class="hljs-string">&quot;<span class="hljs-subst">$( dirname <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span> )</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd )</span>&quot;</span><br><br>file=<span class="hljs-variable">$1</span><br>ncells=`ncdump -h <span class="hljs-variable">$file</span> | grep <span class="hljs-string">&quot;nCells = &quot;</span> | <span class="hljs-built_in">cut</span> -d <span class="hljs-string">&#x27; &#x27;</span> -f3`<br>nedges=`ncdump -h <span class="hljs-variable">$file</span> | grep <span class="hljs-string">&quot;nEdges = &quot;</span> | <span class="hljs-built_in">cut</span> -d <span class="hljs-string">&#x27; &#x27;</span> -f3`<br>maxedges=`ncdump -h <span class="hljs-variable">$file</span> | grep <span class="hljs-string">&quot;maxEdges = &quot;</span> | <span class="hljs-built_in">cut</span> -d <span class="hljs-string">&#x27; &#x27;</span> -f3`<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$ncells</span> <span class="hljs-variable">$nedges</span><br>ncdump -v cellsOnCell <span class="hljs-variable">$file</span> | sed -e <span class="hljs-string">&quot;s/[\,,;]//g&quot;</span> | grep -E <span class="hljs-string">&quot;^  [0-9][0-9]*&quot;</span> | awk <span class="hljs-string">&#x27;&#123; while(++i&lt;=NF) printf (!a[$i]++) ? $i FS : &quot;&quot;; i=split(&quot;&quot;,a); print &quot;&quot;&#125;&#x27;</span><br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<p>Take <code>MPAS-120km</code> as example,</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>graph.info
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
+        <div class="fold-content">
+          <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs console">40962 122880<br>10247 10243 10244 10245 10246 0 <br>10248 10249 10250 10251 10252 0 <br>10254 10255 10256 10257 10253 0 <br>10262 10258 10259 10260 10261 0 <br>10266 10267 10263 10264 10265 0 <br>10272 10268 10269 10270 10271 0 <br>10273 10274 10275 10276 10277 0 <br>10280 10281 10282 10278 10279 0 <br>10284 10285 10286 10287 10283 0<br>......<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<hr />
 <h1 id="metis">Metis</h1>
 <p>METIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices. The algorithms implemented in METIS are based on the multilevel recursive-bisection, multilevel k-way, and multi-constraint partitioning schemes developed in our lab.</p>
 <p>Download: - <a target="_blank" rel="noopener" href="http://glaros.dtc.umn.edu/gkhome/metis/metis/download" class="uri">http://glaros.dtc.umn.edu/gkhome/metis/metis/download</a></p>
@@ -498,13 +524,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
       
         <a href="/tags/mesh-generation/" class="print-no-link">#mesh generation</a>
       
@@ -541,7 +567,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>May 12, 2025</div>
+          <div>July 29, 2025</div>
         </div>
       
       

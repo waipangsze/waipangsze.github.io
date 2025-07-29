@@ -1,0 +1,1003 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="WRF | MPAS | MPI | halo&#x2F;ghost cell  Nesting in WRF, Kelly Werner, NCAR&#x2F;MMMJanuary 2021  https:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;wrf&#x2F;users&#x2F;tutorial&#x2F;presentation_pdfs&#x2F;202101&#x2F;werner_nesting.pdf   Difference between id">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WRF | Computation, Decomposition, Order of operations">
+<meta property="og:url" content="https://waipangsze.github.io/2025/07/28/WRF-Computation-Decomposition-Order-of-operations/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="WRF | MPAS | MPI | halo&#x2F;ghost cell  Nesting in WRF, Kelly Werner, NCAR&#x2F;MMMJanuary 2021  https:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;wrf&#x2F;users&#x2F;tutorial&#x2F;presentation_pdfs&#x2F;202101&#x2F;werner_nesting.pdf   Difference between id">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/XPg6bGj.png">
+<meta property="article:published_time" content="2025-07-27T23:56:00.000Z">
+<meta property="article:modified_time" content="2025-07-29T09:36:55.754Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="domain">
+<meta property="article:tag" content="MPI">
+<meta property="article:tag" content="patch">
+<meta property="article:tag" content="tile">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/XPg6bGj.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WRF | Computation, Decomposition, Order of operations - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/XPg6bGj.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WRF | Computation, Decomposition, Order of operations"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-28 07:56" pubdate>
+          July 28, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          285 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WRF | Computation, Decomposition, Order of operations</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><a href="https://waipangsze.github.io/2024/12/07/wrf-mpas-MPI-halocell-ghostcell/"><strong>WRF | MPAS | MPI | halo/ghost cell</strong></a></p>
+<hr />
+<h1 id="nesting-in-wrf-kelly-werner-ncarmmmjanuary-2021">Nesting in WRF, Kelly Werner, NCAR/MMMJanuary 2021</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_nesting.pdf" class="uri">https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_nesting.pdf</a></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/X2j8OxF.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/QdUwbiD.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/ThrmGx9.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/gkATfLh.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/jpZIqrR.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/XpLTjqz.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/XPg6bGj.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/qt0IAg7.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/IVCWn3A.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h1 id="difference-between-ids-ims-ipsits">Difference between ids, ims, ips,its</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/difference-between-ids-ims-ips-its.8435/">Difference between ids, ims, ips,its | Sep 15, 2019</a>
+<ul>
+<li>"ids,, ide, jds, jde" etc. are "domain" sized indexes along the i, j, k directions.</li>
+<li>"ims, ime, jms, jme" are "memory" dimensions for arrays.</li>
+<li>"ips, ipe, jps, jpe" are computational extent for loops inside most of the WRF physics.</li>
+</ul></li>
+</ul>
+<p>A more detailed description can be found in the website:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/" class="uri">https://www2.mmm.ucar.edu/wrf/users/tutorial/</a></li>
+</ul>
+<h1 id="tile-strategy-is-not-specified.">Tile Strategy is not specified.</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/tile-strategy-is-not-specified.5523/">Tile Strategy is not specified. Jun 20, 2019</a></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs log">So for your domain set-up, you have<br><br>e_we = 637<br>e_sn = 534<br><br>WRF domains are 1-based, which means that your domain is actually 533 x 636. <br>Since you have 12 processors, this divides your domain into a 4x3 grid with <br>tiles of size 158x177 (some rounding is done, and adjustments are made when <br>the number is not perfectly divisible). So this particular print-out looks <br>like it&#x27;s for the 2nd tile over from the start of i (SW corner), and the <br>first tile in the j-direction. Therefore this line:<br><br>Code:<br>WRF TILE 1 IS 160 IE 318 JS 1 JE 178<br><br>actually means:<br>for this particular tile,<br>i-start = 160<br>i-end = 318<br>j-start = 1<br>j-end = 178<br><br>Your decomposition should be:<br>i-direction<br>1-159<br>160-318<br>319-477<br>478-636<br><br>j-direction<br>1-178<br>179-356<br>357-534<br></code></pre></td></tr></table></figure>
+<ul>
+<li>You are correct. If this were an <code>OpenMP</code> build, the <code>"WRF Tile"</code> information would refer to a sub-tiling of the <code>MPI</code> rank's patch.</li>
+<li>It would be better if the following line in the model output did not appear unless we were running <code>OpenMP</code>:
+<ul>
+<li>Code:
+<ul>
+<li><code>Tile Strategy is not specified. Assuming 1D-Y</code></li>
+</ul></li>
+</ul></li>
+<li>Again, this printout should be removed from the output, but the line is currently there. <strong>Without OpenMP, it signifies nothing more than a reminder that the computational area on each MPI rank is the work that is handled by a single MPI task.</strong></li>
+<li>The next line(s) are useful for MPI and for OpenMP. If this is an OpenMP build, there will be as many lines with "WRF Tile" as there are OpenMP threads. When this is an MPI-only build, then the single line with the tile size (the information on the "WRF Tile" line) is identical to the patch size (the information a few lines up that, that is on the "ips,ipe,jps,jpe" line).</li>
+</ul>
+<h1 id="how-are-nested-domains-divided-in-distributed-memory-execution">How are nested domains divided in distributed memory execution?</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/how-are-nested-domains-divided-in-distributed-memory-execution.9433/">How are nested domains divided in distributed memory execution? Aug 7, 2020</a></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/dh4gKBo.png" srcset="/img/loading.gif" lazyload width="300" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/6ivOG3w.png" srcset="/img/loading.gif" lazyload width="300" /></div></div></div>
+<p>The first is a depiction of a WRF simulation with five total domains. The yellow area is domain 1, the blue box is domain 2, and the cyan boxes are domains 3, 4, 5. These are set up just to show us the order of operations.</p>
+<p>The second attachment shows the sequential procedure within the WRF model.</p>
+<ol type="1">
+<li>Domain 1 runs a single time step for 3 minutes (red arrow).</li>
+<li>Domain 2 runs a single time step for 1 minute (yellow arrow). Before domain 2 can do the second time step, all of domain 2's children need to catch up.</li>
+<li>Domain 3 runs multiple time steps to catch up to domain 2 (20 second time step).</li>
+<li>Domain 4 runs multiple time steps to catch up to domain 2.</li>
+<li>Domains 5 run multiple time steps to catch up to domain 2.</li>
+<li>Domains 3, 4, and 5 feed back to domain 2.</li>
+<li>The steps 2 - 6 are repeated until domain 2 has caught up with domain 1.</li>
+<li>Domain 2 feeds back to domain 1.</li>
+<li>Steps 1 - 8 are repeated until all domains are completed with the entire simulation.</li>
+</ol>
+<p>For computational performance, generally the amount of time that the WRF model spends on a single grid column is nearly constant. If we assume that all domains are running the same physics, then the amount of computation is about the same for a single grid column, whether it be from domain 1 or domain 2. However, a nest causes the model to be expensive for two reasons.</p>
+<ol type="1">
+<li>The fine grid time step is smaller (typically, the time ratio is the same as the grid distance ratio). While the amount of time is similar to do a single grid column, the fine grid has to do that computation more times to keep pace with the larger time step from the parent domain.</li>
+<li>A nested simulation has additional overhead: computing lateral boundaries at each parent time step, feedback at the end of the child time steps. And for a distributed memory machine, these also entail a good amount of communication.</li>
+</ol>
+<p>Let's use the 5-domain example that I depicted. We have a 3:1 ratio for the grid distance ratios and the time step ratios. Let us assume that the number of grid cells is identical in each of the domains (for example, all are 100x100 or all of 500x500, it does not really matter).</p>
+<p>Let us define the cost of running domain 1 as ONE unit of computation.</p>
+<p>Without overhead (boundary update, feedback, extra nesting communications), the cost of domain 2 would then THREE units of computation (the same number grid points, just doing the computations three times more due to the smaller time step).</p>
+<p>With the same arm waving, each of domains 3, 4, and 5 would cost NINE units of computation (due entirely to their smaller time step).</p>
+<p>Without any nesting overhead, one would expect this five domain run to be 31x more expensive than the single domain case (1 + 3 + 9 + 9 + 9).</p>
+<p>With nesting overhead, the costs are a bit unpredictable. We tend to see an additional factor of anywhere between 10-25%, depending on how expensive the communications interconnect is (hardware on the computer). The process of nesting is communication intensive. The more domains and levels of nests, the more the overhead.</p>
+<p>For your particular case, there are about 8% more grid cells on the fine domains than d01.</p>
+<ul>
+<li>d01 costs 1 unit of time</li>
+<li>d02 costs 1.08 * 5 units of time</li>
+<li>d03 costs 1.08 * 25 units of time</li>
+<li>d04 costs 1.08 * 125 units of time</li>
+<li>d05 costs 1.08 * 625 units of time</li>
+</ul>
+<p>Compared to the d01 only (which is our unit measure of time), the entire simulation without overhead relative to the coarse domain is ( 1 + 1.08*(5 + 25 + 125 + 625 ) ) = 843.4x the cost of d01.</p>
+<p>From this, you can see why the advice we give is to make the outer domains LARGE. Domains 1 and 2 together are not even 1% of the simulation's cost.</p>
+<p>For your timing estimates, on your current machine, just run the first two domains for a few time steps. Throw away the initial time and make sure that a radiation step is included in your timing. You should be able to get a good scaling from domains 1 and 2 compared to your entire simulation.</p>
+<p>Next, run the small d01 and d02 case on the new machine. Use the same scale factor to estimate what the five domain cost would be on the new machine.</p>
+<p>The absolute amount of computations per grid cell and the speed of the chip are not a direct way to handle the timing performance, due to the relatively low percent of peak that WRF is able to obtain, the wild variations in compiler performance, the huge impact that I/O can have on a full simulation, etc.</p>
+<p>Lastly, the default decomposition for each domain is based only on the number of MPI process and the number of grid cells in a domain. If the MPI processes are set up to decompose the domain into 8 chunks in the south-north direction, and 4 chunks in the west-east direction - that same decomposition is used for every domain.</p>
+<h1 id="choosing-an-appropriate-number-of-processors">Choosing an Appropriate Number of Processors</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/choosing-an-appropriate-number-of-processors.5082/" class="uri">https://forum.mmm.ucar.edu/threads/choosing-an-appropriate-number-of-processors.5082/</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/domain/" class="print-no-link">#domain</a>
+      
+        <a href="/tags/MPI/" class="print-no-link">#MPI</a>
+      
+        <a href="/tags/patch/" class="print-no-link">#patch</a>
+      
+        <a href="/tags/tile/" class="print-no-link">#tile</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WRF | Computation, Decomposition, Order of operations</div>
+      <div>https://waipangsze.github.io/2025/07/28/WRF-Computation-Decomposition-Order-of-operations/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 28, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>July 29, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/23/NWP-Specific-Humidity/" title="NWP | Specific Humidity">
+                        <span class="hidden-mobile">NWP | Specific Humidity</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
