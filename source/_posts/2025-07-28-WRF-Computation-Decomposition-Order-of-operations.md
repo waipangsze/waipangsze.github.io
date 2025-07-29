@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/XPg6bGj.png
+banner_img: https://i.imgur.com/XPg6bGj.png
 ---
 
 [**WRF | MPAS | MPI | halo/ghost cell**](https://waipangsze.github.io/2024/12/07/wrf-mpas-MPI-halocell-ghostcell/)

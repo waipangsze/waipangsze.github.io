@@ -483,6 +483,63 @@ The provided scripts offer starting points, but production-grade implementation 
 - [MPAS-Tools GitHub Repository](https://github.com/MPAS-Dev/MPAS-Tools)
 - [MPAS-PXT Spherical Grid Script](https://github.com/pedrospeixoto/MPAS-PXT/blob/master/grids/utilities/jigsaw/spherical_grid.py)
 
+---
+
+# Script for graph.info
+
+{% fold info @grid2graph.sh %}
+```sh
+#!/bin/bash
+
+#------------------------------------------------#
+# Author:         wpsze
+# Email:          wpsze@gmail.com
+# File:           grid2graph.sh
+# Date:           2025-07-29 17:05:24
+# Version:        0.0 
+# Description:    The purpose of the script
+# Copyright (C):  2025 All rights reserved
+#------------------------------------------------#
+
+#set -e # stop the shell on first error
+#set -u # fail when using an undefined variable
+#set -x # echo script lines as they are executed
+set -o pipefail
+
+
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate venv
+export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+file=$1
+ncells=`ncdump -h $file | grep "nCells = " | cut -d ' ' -f3`
+nedges=`ncdump -h $file | grep "nEdges = " | cut -d ' ' -f3`
+maxedges=`ncdump -h $file | grep "maxEdges = " | cut -d ' ' -f3`
+echo $ncells $nedges
+ncdump -v cellsOnCell $file | sed -e "s/[\,,;]//g" | grep -E "^  [0-9][0-9]*" | awk '{ while(++i<=NF) printf (!a[$i]++) ? $i FS : ""; i=split("",a); print ""}'
+```
+{% endfold %}
+
+Take `MPAS-120km` as example,
+
+{% fold info @graph.info %}
+```console
+40962 122880
+10247 10243 10244 10245 10246 0 
+10248 10249 10250 10251 10252 0 
+10254 10255 10256 10257 10253 0 
+10262 10258 10259 10260 10261 0 
+10266 10267 10263 10264 10265 0 
+10272 10268 10269 10270 10271 0 
+10273 10274 10275 10276 10277 0 
+10280 10281 10282 10278 10279 0 
+10284 10285 10286 10287 10283 0
+......
+```
+{% endfold %}
+
+---
+
 # Citations:
 
 [^1]: <https://mpas-dev.github.io/atmosphere/atmosphere_meshes.html>
