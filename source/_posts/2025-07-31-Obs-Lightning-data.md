@@ -24,7 +24,6 @@ banner_img: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Port_and_l
 
 ```sh
 #!/bin/bash
-
 tmp_dir=$(date +'%Y-%m')
 mkdir -p ${tmp_dir}
 wget -O "${tmp_dir}/$(date +'%Y-%m-%d').csv" https://www.hko.gov.hk/wxinfo/llis/gm/hourly_count
@@ -62,6 +61,8 @@ setup **crontab -e**,
 
 ## 閃電位置資訊
 
+### HKO webpage
+
 - <https://www.hko.gov.hk/tc/wxinfo/llis/gm_index.htm>
 
 ![](https://i.imgur.com/wiT0HXr.png){width=500}
@@ -73,4 +74,30 @@ setup **crontab -e**,
 - <https://www.hko.gov.hk/wxinfo/llis/gm/latestReadings_AWS1>
 
 where `c2g` is cloud-to-ground, `c2c` is clould-to-cloud.
+
+```sh
+#!/bin/bash
+tmp_dir=$(date +'%Y-%m-%d')
+mkdir -p ${tmp_dir}/c2g/
+mkdir -p ${tmp_dir}/c2c/
+wget -O "${tmp_dir}/c2g/c2g_$(date +'%Y-%m-%d_%H-%M-%S').csv" https://www.hko.gov.hk/wxinfo/llis/gm/gislatest_c2g
+wget -O "${tmp_dir}/c2c/c2c_$(date +'%Y-%m-%d_%H-%M-%S').csv" https://www.hko.gov.hk/wxinfo/llis/gm/gislatest_c2c
+```
+
+setup **crontab -e**,
+
+```sh
+# For GBA region's lightning,
+0,30 * * * * cd /home/wpsze/hk_data/hko-lightning/GBA; sh run_wget.sh
+```
+
+### 粵.港.澳大灣區天氣網站
+
+- <https://www.gbaweather.net/tc/>
+  
+![](https://i.imgur.com/N3M56AY.png){width=500}
+
+{% note primary %}
+seems same as HKO webpage above.
+{% endnote %}
 
