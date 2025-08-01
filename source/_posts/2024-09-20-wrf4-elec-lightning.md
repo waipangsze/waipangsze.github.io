@@ -1028,6 +1028,11 @@ From these papers,
 - Xu, L., Cao, X., Lan, X., Zhang, W., Sun, C., & Zhang, Y. (2024). Future increase in lightning around the South China Sea under climate change. Earth and Space Science, 11(6), e2023EA003356.
 - Xu, Mingyi, et al. "Distribution of lightning spatial modes and climatic causes in China." Atmospheric and Oceanic Science Letters 16.2 (2023): 100338.
 
+# HKO: Lightning Initiation and Intensity Nowcasting
+
+- [Reprint 723 Lightning Initiation and Intensity Nowcasting Based on Isothermal Radar Reflectivity - A Conceptual Model | HKO](https://www.hko.gov.hk/hko/publica/reprint/r723.pdf)
+  - [Reprint 751An “Isothermal Radar Reflectivity” based Lightning Nowcast Algorithm and its Real-time Application (Abstract Only)](https://www.weather.gov.hk/en/publica/reprint/files/r751e.pdf)
+    - echo top above 7 km,vertically integrated liquid water in excess of 5 mm, 0°C reflectivity over 47 dBZ, –10°C reflectivity higher than 17 dBZ, and –20°C reflectivity above 0 dBZ are good indicators of the onset of cloud-to-ground lightning in the next, say, 10-20 minutes.
 
 # References
 1. **香港天文台**
