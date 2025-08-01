@@ -1,9 +1,10 @@
 ---
 layout: post
 title: Obs | Lightning data (閃電位置資訊)
-categories: [WRF]
-tags: [NWP, WRF-ELEC, MPAS, Lightning, HKO, GBA]
+categories: [NWP]
+tags: [NWP, WRF-ELEC, MPAS, Lightning, HKO, GBA, obs]
 author: wpsze
+date: 2025-07-31 22:56:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
@@ -33,7 +34,7 @@ setup **crontab -e**,
 
 ```sh
 # For HK region's lightning, 10am everyday,
-00 10 * * * cd /home/wpsze/hk_data/hko-lightning; sh run_wget.sh 
+00 10 * * * cd /home/wpsze/hk_data/hko-lightning/HK; sh run_wget.sh 
 ```
 
 ### data
