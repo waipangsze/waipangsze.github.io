@@ -29,6 +29,8 @@ banner_img: https://i.imgur.com/HnCsMuw.png
 
 ![](https://i.imgur.com/5RAaevK.png){width=500}
 
+- 3240 in total
+
 ```json
 {
   "101010100": {
@@ -88,7 +90,7 @@ curl 'https://wgeo.weather.com.cn/ip/?_=1754014328834' \
 var ip="xxx.xxx.xxx.xxx";var id="101320xxxx";var addr="香港,香港,香港";
 ```
 
-## get data
+## get data (5 mins interval/实时天气)
 
 {% fold info @curl-data.sh %}
 ```sh
@@ -242,11 +244,52 @@ haidian,海淀,101010200,32.6,90.7,西南风,SW,2级,7km/h,54%,54%,996,24km,16:4
 chaoyang,朝阳,101010300,32,89.6,南风,S,2级,9km/h,56%,56%,997,18km,16:45,0,0,85,85,多云,Cloudy,d01,4和9,08月01日(星期五)
 ```
 
+## get data (逐小时天气)
+
 ## 天气预报-变量名
 
 - [天气预报-变量名](https://market-isv-1258344699.cos.ap-shanghai.myqcloud.com/20220104/document/202304/212f935a-a2d0-4f9a-8169-5afa5b39497e/%E5%A4%A9%E6%B0%94%E9%A2%84%E6%8A%A5.pdf)
 
 ![](https://i.imgur.com/vJoSnb5.png){width=600}
+
+
+### WeatherCode
+
+| WeatherCode | Weather         |   |
+|-------------|-----------------|---|
+| 00          | 晴              |   |
+| 01          | 多云            |   |
+| 02          | 阴              |   |
+| 03          | 阵雨            |   |
+| 04          | 雷阵雨          |   |
+| 05          | 雷阵雨伴有冰雹  |   |
+| 06          | 雨夹雪          |   |
+| 07          | 小雨            |   |
+| 08          | 中雨            |   |
+| 09          | 大雨            |   |
+| 10          | 暴雨            |   |
+| 11          | 大暴雨          |   |
+| 12          | 特大暴雨        |   |
+| 13          | 阵雪            |   |
+| 14          | 小雪            |   |
+| 15          | 中雪            |   |
+| 16          | 大雪            |   |
+| 17          | 暴雪            |   |
+| 18          | 雾              |   |
+| 19          | 冻雨            |   |
+| 20          | 沙尘暴          |   |
+| 21          | 小雨-中雨       |   |
+| 22          | 中雨-大雨       |   |
+| 23          | 大雨-暴雨       |   |
+| 24          | 暴雨-大暴雨     |   |
+| 25          | 大暴雨-特大暴雨 |   |
+| 26          | 小雪-中雪       |   |
+| 27          | 中雪-大雪       |   |
+| 28          | 大雪-暴雪       |   |
+| 29          | 浮尘            |   |
+| 30          | 扬沙            |   |
+| 31          | 强沙尘暴        |   |
+| 32          | 霾              |   |
 
 # Error: "ASCII text, with CRLF line terminators,"
 
