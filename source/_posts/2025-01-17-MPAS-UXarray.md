@@ -85,6 +85,20 @@ tmp["u10"].isel(Time=0).plot(coastline="10m", cmap="jet", clim=(tmin, tmax), dyn
 ![](https://i.imgur.com/WjlzFsd.png)
 {% endgi %}
 
+# Plot vorticity_500hPa
+
+- **vorticity_500hPa**
+  - **dimensions="nVertices Time"**
+
+```xml
+<var name="vorticity_500hPa" type="real" dimensions="nVertices Time" units="s^{-1}"
+      description="Relative vorticity vertically interpolated to 500 hPa"/>
+```
+
+```python
+uxds["vorticity_500hPa"].plot(backend='matplotlib', rasterize=True)
+```
+
 # Grid Topology Visualization
 
 - take a bit longer time to process
