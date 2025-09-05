@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/byEXM2w.png
+banner_img: https://i.imgur.com/byEXM2w.png
 ---
 
 # WRF diffusion
@@ -42,6 +42,14 @@ WRF (Weather Research and Forecasting model) diffusion refers to the various met
   - (diff_opt)
   - K Options (km_opt)
     - ![](https://i.imgur.com/NsOdFDs.png)
+- [Dynamics Overview | Jimy Dudhia](https://www2.mmm.ucar.edu/wrf/users/workshops/WS2015/ppts/DynamicsOverview15_Dudhia.pdf)
+- [A Three-Dimensional Scale-Adaptive Turbulent Kinetic Energy Scheme in the WRF-ARW Model](https://repository.library.noaa.gov/view/noaa/21975/noaa_21975_DS1.pdf)
+  - a. LES limit 
+  - b. Mesoscale limit
+  - {% gi 2 2 %}
+    ![](https://i.imgur.com/0n6XOTB.png)
+    ![](https://i.imgur.com/D9FogiC.png)
+    {% endgi %}
 
 ## When Diffusion is Important
 
@@ -58,16 +66,6 @@ WRF (Weather Research and Forecasting model) diffusion refers to the various met
 
 1. Note that aside from the **1D PBL plus 2D Smagorinsky turbulence** package, several recent studies have also advocated the **extension of LES turbulence closures** to kilometer-scale resolution simulations
    1. ![](https://i.imgur.com/lo8hEOx.png)
-
-# A Three-Dimensional Scale-Adaptive Turbulent Kinetic Energy Scheme in the WRF-ARW Model
-
-- [A Three-Dimensional Scale-Adaptive Turbulent Kinetic Energy Scheme in the WRF-ARW Model](https://repository.library.noaa.gov/view/noaa/21975/noaa_21975_DS1.pdf)
-  - a. LES limit 
-  - b. Mesoscale limit
-  - {% gi 2 2 %}
-    ![](https://i.imgur.com/0n6XOTB.png)
-    ![](https://i.imgur.com/D9FogiC.png)
-    {% endgi %}
 
 # Examples
 
