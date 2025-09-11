@@ -19,6 +19,7 @@ banner_img: https://i.imgur.com/GO7mmRR.png
 
 - <https://nomads.ncep.noaa.gov/>
 - <https://nomads.ncep.noaa.gov/gribfilter.php?ds=gfs_0p25_1hr>
+- <https://nomads.ncep.noaa.gov/gribfilter.php?ds=gfs_0p25>
 - Example:
   ```URL
   https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25_1hr.pl?dir=%2Fgfs.20250228%2F00%2Fatmos&file=gfs.t00z.pgrb2.0p25.anl&var_TMP=on&var_U-GWD=on&var_V-GWD=on&all_lev=on
@@ -41,34 +42,32 @@ banner_img: https://i.imgur.com/GO7mmRR.png
       
       idate=$(date -d "$date_st + $iday days" +%Y%m%d)
       echo $date_st $idate
-  for fhr in {000..120..1}; do
-  #for fhr in {076..76..1}; do
 
+      for fhr in {000..384..1}; do # or {076..76..1}
 
-  URL="https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25_1hr.pl?\
-  dir=%2Fgfs.${idate}%2F${hr}%2Fatmos&\
-  file=gfs.t${hr}z.pgrb2.0p25.f${fhr}&\
-  var_HGT=on&var_PRATE=on&var_PRES=on&var_PRMSL=on&var_RH=on&var_TMP=on&var_UGRD=on&var_VGRD=on&\
-  lev_2_m_above_ground=on&lev_10_m_above_ground=on&lev_80_m_above_ground=on&lev_100_m_above_ground=on&\
-  lev_1000_m_above_ground=on&lev_4000_m_above_ground=on&lev_1000_mb=on&lev_975_mb=on&lev_950_mb=on&\
-  lev_925_mb=on&lev_900_mb=on&lev_850_mb=on&lev_700_mb=on&lev_600_mb=on&lev_500_mb=on&lev_surface=on&lev_mean_sea_level=on&\
-  subregion=&toplat=65&leftlon=70&rightlon=140&bottomlat=10"
+    # https://nomads.ncep.noaa.gov/gribfilter.php?ds=gfs_0p25
 
-  yyyymm=${idate:0:6}
-  datapath=$workdir/0p25/$yyyymm/$idate/
-  mkdir -p $datapath
+      URL="https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?dir=%2Fgfs.${idate}%2F${hr}%2Fatmos&file=gfs.t${hr}z.pgrb2.0p25.f${fhr}&var_DSWRF=on&var_RH=on&var_TMP=on&var_UGRD=on&var_VGRD=on&lev_2_m_above_ground=on&lev_10_m_above_ground=on&lev_20_m_above_ground=on&lev_30_m_above_ground=on&lev_40_m_above_ground=on&lev_50_m_above_ground=on&lev_80_m_above_ground=on&lev_100_m_above_ground=on&lev_surface=on"
 
-  # download file
-  #curl "$URL" -o download_test$fhr.grb
-  wget "$URL" -O $datapath/gfs.t${hr}z.pgrb2.0p25.f${fhr}.grb
-  # add a sleep to prevent a denial of service in case of missing file
-  sleep 3
-  done
+      echo ${URL}
+
+      yyyymm=${idate:0:6}
+      datapath=${workdir}/0p25/${yyyymm}/${idate}/
+      mkdir -p ${datapath}
+
+      # download file
+      wget -c "$URL" -O ${datapath}/gfs.t${hr}z.pgrb2.0p25.f${fhr}.grb
+      done
   done
   ```
   {% endfold %}
 
 ![NCEP GFS Forecasts (0.25 degree grid)](https://i.imgur.com/uC0QDnd.png){width=500}
+
+## Size of grib file
+
+- If full set is downlaoded, 
+  - `519M` per grib file.
 
 ## rda.ucar.edu
 

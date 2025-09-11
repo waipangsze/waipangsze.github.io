@@ -115,6 +115,27 @@ $ micromamba activate venv
 $ micromamba activate /home/wpsze/micromamba/envs/mpich
 ```
 
+#### crontab -e won't work
+
+- `cd /home/wpsze/micromamba/bin`  
+- create `activate` 
+
+```sh
+#!/bin/bash
+
+export MAMBA_EXE="/home/wpsze/.local/bin/micromamba"
+export MAMBA_ROOT_PREFIX="/home/wpsze/micromamba"
+
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+
+#eval "$("/home/wpsze/micromamba/bin/micromamba" shell hook -s bash)"
+#eval "$(micromamba shell hook --shell=bash)"
+
+micromamba activate "$@"
+```
+
+- `source /home/wpsze/micromamba/bin/activate venv` 
+
 ### activate or execute
 Transaction finished
 
