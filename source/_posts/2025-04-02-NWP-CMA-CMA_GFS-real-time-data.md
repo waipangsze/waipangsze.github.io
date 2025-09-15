@@ -708,13 +708,9 @@ for ifsday in $(seq 0 1 1); do # day-shift = 0, 1
 
     echo "Now, ${tmp_cma_gfs_fname} ... "
 
-    if [[ ! -f "${tmp_cma_gfs_fname}" ]]; then	
-	    echo "Downloading ... ${tmp_cma_gfs_fname}"
-	    #wget --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/Z_NAFP_C_BABJ_20250401000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2
-	    wget --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/${tmp_cma_gfs_fname}
-    else
-        echo "${tmp_cma_gfs_fname} exists ... "
-    fi
+    echo "Downloading ... ${tmp_cma_gfs_fname}"
+    #wget -c --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/Z_NAFP_C_BABJ_20250401000000_P_NWPC-GRAPES-GFS-GLB-00000.grib2
+    wget -c --no-check-certificate http://data.wis.cma.cn/DCPC_WMC_BJ/open/nwp/gmf_gra/t0000/f0_f240_6h/${tmp_cma_gfs_fname}
 
     res=$(( ${count_cpu_core} % ${limit_cpu_core} ))
     if [[ ${res} == 0 ]]; then

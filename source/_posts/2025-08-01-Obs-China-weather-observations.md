@@ -64,6 +64,8 @@ areaid,cityname,lon,lat
 ......
 ```
 
+![](https://i.imgur.com/S4qdFOI.png){width=500}
+
 ## get your IP
 
 - check or get your IP address
