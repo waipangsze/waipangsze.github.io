@@ -1,0 +1,1010 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="shapefile A shapefile is a widely used geospatial vector data format for storing geographic features&#39; location, shape, and associated attributes, developed by Esri for geographic information system (G">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | shapefile">
+<meta property="og:url" content="https://waipangsze.github.io/2025/09/11/NWP-shapefile/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="shapefile A shapefile is a widely used geospatial vector data format for storing geographic features&#39; location, shape, and associated attributes, developed by Esri for geographic information system (G">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/htVo0nI.png">
+<meta property="article:published_time" content="2025-09-10T22:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-11T04:04:55.553Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="FNL">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="IFS">
+<meta property="article:tag" content="CMA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/htVo0nI.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | shapefile - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/htVo0nI.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | shapefile"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-11 06:00" pubdate>
+          September 11, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | shapefile</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="shapefile">shapefile</h1>
+<p>A <code>shapefile</code> is a widely used geospatial vector data format for storing geographic features' location, shape, and associated attributes, developed by Esri for geographic information system (GIS) software. It consists of a collection of related files <code>(e.g., .shp, .shx, .dbf)</code> that collectively define a single feature class containing points, lines, or polygons. While historically used in desktop GIS applications, shapefiles are now compatible with many other GIS and business intelligence programs.</p>
+<p>ESRI Shapefile（shp），或簡稱shapefile，是美國環境系統研究所公司（ESRI）開發的空間數據開放格式。目前，該檔案格式已經成為了地理資訊軟件界的開放標準，這表明ESRI公司在全球的地理資訊系統市場的重要性。Shapefile也是重要的交換格式，能夠在ESRI與其他公司的產品之間進行數據互操作。Shapefile檔案用於描述幾何體物件：點、折線與多邊形。例如，Shapefile檔案可以儲存井、河流、湖泊等空間物件的幾何位置。除了幾何位置，shp檔案也可以儲存這些空間物件的屬性，例如河流的名字、城市的溫度等等。</p>
+<p>Shapefile屬於一種向量圖形格式，它能夠儲存幾何圖形的位置及相關屬性。但這種格式沒法儲存地理數據的拓撲資訊。Shapefile在九十年代初的ArcView GIS的第二個版本被首次應用。目前，許多自由的程式或商業的程式都可以讀取Shapefile。</p>
+<p>Shapefile是一種比較原始的向量數據儲存方式，它僅僅能夠儲存幾何體的位置數據，而無法在一個檔案之中同時儲存這些幾何體的屬性數據。因此，Shapefile還必須附帶一個二維表用於儲存Shapefile中每個幾何體的屬性資訊。Shapefile中許多幾何體能夠代表複雜的地理事物，並為他們提供強大而精確的計算能力。</p>
+<h2 id="key-characteristics">Key Characteristics</h2>
+<ul>
+<li>Vector Data:
+<ul>
+<li>Shapefiles store data as points, lines, and polygons, representing geographic features.</li>
+</ul></li>
+<li>Attribute Data:
+<ul>
+<li>They also store associated descriptive data for each feature, like names, addresses, or statistics.</li>
+</ul></li>
+<li>Multiple Files:
+<ul>
+<li>A shapefile is not a single file but a collection of related files that must be kept together.</li>
+</ul></li>
+<li>Single Geometry Type:
+<ul>
+<li>Each shapefile can only contain one type of geometry (points, lines, or polygons).</li>
+</ul></li>
+</ul>
+<h2 id="common-files-in-a-shapefile">Common Files in a Shapefile</h2>
+<ul>
+<li>A shapefile typically includes several mandatory and optional files, all with the same base name:
+<ul>
+<li><code>.shp</code>: The main file that stores the feature geometry.</li>
+<li><code>.shx</code>: The index file, which stores an index of the feature geometry.</li>
+<li><code>.dbf</code>: A dBASE table file containing the attributes for each feature.</li>
+<li><code>.prj</code>: (Optional, but essential for many functions) A projection file that defines the coordinate system.</li>
+</ul></li>
+<li>Uses
+<ul>
+<li>Geographic Mapping: Visualizing real-world features on a map.</li>
+<li>Spatial Analysis: Performing calculations and analyses based on the location and relationships of geographic data.</li>
+<li>Data Exchange: Sharing geographic data between different GIS software and business intelligence programs.</li>
+</ul></li>
+<li>Limitations
+<ul>
+<li>File Size: Shapefiles have a <strong>2GB size limit</strong>.</li>
+<li>Field Name Length: <strong>Field names are limited to 10 characters</strong>.</li>
+<li>Topological Information: They cannot store topological information, which describes the relationships between features.</li>
+</ul></li>
+</ul>
+<h1 id="ncl-plotting-and-working-with-shapefiles">NCL: Plotting and working with shapefiles</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.ncl.ucar.edu/Applications/shapefiles.shtml" class="uri">https://www.ncl.ucar.edu/Applications/shapefiles.shtml</a></li>
+</ul>
+<ol type="1">
+<li>Download <strong>shapefile_utils.ncl</strong></li>
+<li>Create a new <code>plot_shp.sh</code> and <code>plot_shp.ncl</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plot_shp.sh">#!/bin/bash<br>source /home/wpsze/micromamba/bin/activate venv<br>export shp_name=$&#123;1&#125;<br>ncl /EM/wpsze/NCL/shapefiles/plot_shp.ncl<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plot_shp.ncl">load &quot;/home/wpsze/NCL/shapefiles/shapefile_utils.ncl&quot;<br>sname = getenv(&quot;shp_name&quot;) ;&quot;Hong_Kong_18_Districts.shp&quot;<br>print_shapefile_info(sname)<br>plot_shapefile(sname)<br></code></pre></td></tr></table></figure>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6ae3e036" role="button" aria-expanded="false" aria-controls="collapse-6ae3e036">
+        <div class="fold-arrow">▶</div>shapefile_utils.ncl
+      </div>
+      <div class="fold-collapse collapse" id="collapse-6ae3e036">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br></pre></td><td class="code"><pre><code class="hljs ncl">;======================================================================<br>; This script contains a number of functions and procedures for<br>; working with shapefiles in NCL.<br>;<br>; print_shapefile_info - prints basic information about a shapefile.<br>;<br>; plot_shapefile - plots data in a shapefile over a map.<br>;<br>; shapefile_mask_data - masks a data array based on outlines in <br>;   a shapefile<br>;======================================================================<br><br>;======================================================================<br>; Given a shapefile name, i.e. &quot;xxxx_yyyy.shp&quot;, this function returns<br>; the prefix &quot;xxxx_yyyy&quot;.<br>;======================================================================<br>undef(&quot;get_shapefile_prefix&quot;)<br>function get_shapefile_prefix(shapefile_name[1]:string)<br>begin<br>  s = str_split(shapefile_name,&quot;.&quot;)<br>  ns = dimsizes(s)<br>  if(ns.eq.1)<br>    return(s)<br>  else<br>    return(str_join(s(0:ns-2),&quot;_&quot;))<br>  end if<br>end<br><br>;======================================================================<br>; print_shapefile_info(shapefile_name)<br>;     shapefile_name - Name of shapefile, i.e.&quot;AUS_adm0.shp&quot;<br>;<br>; This procedure prints basic information about a shapefile.<br>;======================================================================<br>undef(&quot;print_shapefile_info&quot;)<br>procedure print_shapefile_info(shapefile_name[1]:string)<br>local n, f, var_names, geo_dims, num_features, lat, lon, nvars, dq<br>begin<br>  dq = str_get_dq()<br><br>;---Open shapefile<br>  f = addfile(shapefile_name,&quot;r&quot;)<br><br>;---Read data off shapefile<br>  var_names    = getfilevarnames(f)                  ; variable names<br>  geo_dims     = getfilevardimsizes(f,&quot;geometry&quot;)    ; features on file<br>  num_features = geo_dims(0)<br>  lon          = f-&gt;x<br>  lat          = f-&gt;y<br>  nvars        = dimsizes(var_names)<br><br>  print(&quot;======================================================================&quot;)<br>  print(&quot;Filename: &quot; + dq + shapefile_name + dq)<br>  print(&quot;   Geometry type: &quot; + f@geometry_type)<br>  print(&quot;   # of features: &quot; + num_features) <br>  print(&quot;   Min/max lat:   &quot; + sprintf(&quot;%7.2f&quot;,min(lat)) + &quot;/&quot; + sprintf(&quot;%7.2f&quot;,max(lat)))<br>  print(&quot;   Min/max lon:   &quot; + sprintf(&quot;%7.2f&quot;,min(lon)) + &quot;/&quot; + sprintf(&quot;%7.2f&quot;,max(lon)))<br>  print(&quot;   Variable names and their types:&quot;)<br>  do n=0,nvars-1<br>     print(&quot;       &quot; + var_names(n) + &quot; : &quot; + getfilevartypes(f,var_names(n)))<br>  end do<br>  print(&quot;======================================================================&quot;)<br>end<br><br>;======================================================================<br>; shapefile_mask_data<br>;<br>; This function masks a rectilinear, curvilinear, or unstructured<br>; data array based on either all the outlines in a shapefile, or <br>; based on a string variable name in a shapefile and a list of strings<br>; to check for, like &quot;Water body&quot; or (/&quot;Ohio&quot;,&quot;Michigan&quot;/). <br>;<br>; You have the option to return the mask array, rather than the masked<br>; data array.<br>;<br>; Input paramaters<br>;  data         : numeric - 1D or 2D data to mask or base mask array on<br>;  shp_file_name[1] : string  - Name of shapefile<br>;  opt[1]       : logical - Use to set options for this function. If<br>;                           set to False, then all options will be ignored.<br>;<br>;  &quot;opt&quot; can have the following attributes:<br>;<br>;   &quot;keep&quot;        - Whether to keep the values in the given shapefile<br>;                   areas or toss them.<br>;                   [default True]<br>;<br>;   &quot;shape_var&quot;   - Name of variable on shapefile that contains the<br>;                   string names of specific areas you want to mask.<br>;                   [default is to use the whole shapefile]<br>;<br>;   &quot;shape_names&quot; - List of string names in &quot;shape_name&quot; to mask against<br>;                   [no default]<br>;<br>;   &quot;return_mask&quot; - Whether to return a mask array (0s and 1s) <br>;                   instead of the masked data.<br>;                   [default False]<br>;<br>;   &quot;minlat&quot;, &quot;maxlat&quot;, &quot;minlon&quot;, &quot;maxlon&quot; - You can tell the masking <br>;                   routine what rough lat/lon box you are interested <br>;                   in, so that it doesn&#x27;t check every lat/lon segment<br>;                   in the shapefile.<br>;                   [default is the min/max of the lat/lon on shapefile]<br>;<br>;   &quot;loop_check&quot;  - Whether to do a min/max lat/lon check for every loop iteration.<br>;                   I tested this on four examples, and it sped every one of them up.<br>;                   I decided to make this True by default.;<br>;                   [default True]<br>;<br>;   &quot;debug&quot;       - Whether to print debug information.<br>;                   [default False]<br>;<br>;  - If a rectilinear grid, then &quot;data&quot; must have coordinate arrays<br>;    attached. <br>;  - If a curvilinear grid, then &quot;data&quot; must have the special lat2d <br>;    and lon2d attributes attached.<br>;  - If a unstructured grid, then &quot;data&quot;must have the special lat1d <br>;    and lon1d attributes attached.<br>;======================================================================<br>undef(&quot;shapefile_mask_data&quot;)<br>function shapefile_mask_data(data:numeric,shapefile_name[1]:string,\<br>                             opt[1]:logical)<br>local mask_start_time, mask_end_time,keep_true_value, keep_false_value, \<br>dims, rank, grid_type, lat1d, lon1d, nlatlon1d, f, segments, geometry, \<br>segsDims, geomDims, geom_segIndex, geom_numSegs, segs_xyzIndex, <br>segs_numPnts,numFeatures, lat, lon, shp_mask_names, found, nf, numFeatures, \<br>startSegment, numSegments, seg, startPT, endPT, lon_sub, lat_sub, \<br>min_lat_shp, max_lat_shp, min_lon_shp, max_lon_shp<br>begin<br>  mask_start_time = get_cpu_time()<br><br>;---Make sure we can open shapefile<br>  if(.not.isfilepresent(shapefile_name)) then<br>    print(&quot;shapefile_mask_data : Error: &quot; + shapefile_name + \<br>          &quot; either doesn&#x27;t exist or is not a valid shapefile.&quot;)<br>    exit<br>  end if<br>  f = addfile(shapefile_name,&quot;r&quot;)<br><br>;---Parse options and check for errors<br>  DEBUG       = get_res_value_keep(opt,&quot;debug&quot;,False)<br>  KEEP        = get_res_value_keep(opt,&quot;keep&quot;,True)<br>  RETURN_MASK = get_res_value_keep(opt,&quot;return_mask&quot;,False)<br>  LOOP_CHECK  = get_res_value_keep(opt,&quot;loop_check&quot;,True)<br>  SHP_VAR     = opt.and.isatt(opt,&quot;shape_var&quot;)<br>  if(opt.and.isatt(opt,&quot;shape_var&quot;)) then<br>    if(.not.isatt(opt,&quot;shape_names&quot;)) then<br>      print(&quot;shapefile_mask_data : Error: if you set &#x27;shape_var&#x27; you must also set &#x27;shape_names&#x27;&quot;)<br>      exit<br>    end if<br>    shp_var_name   = opt@shape_var<br>    usr_mask_names = opt@shape_names<br><br>;---Make sure shp_var_name is on shapefile.<br>    if(isfilevar(f,shp_var_name)) then<br>      shp_mask_names = f-&gt;$shp_var_name$<br>    else<br>      print(&quot;shapefile_mask_data : Error: The given variable name to use does not exist on the given shapefile.&quot;)<br>      exit<br>    end if<br><br>;---Make sure usr_mask_names has at least one match in shp_mask_names<br>    num_found = 0<br>    nusr_mask_names = dimsizes(usr_mask_names)<br>    do i=0,nusr_mask_names-1<br>      if(any(usr_mask_names(i).eq.shp_mask_names)) then<br>        num_found = num_found+1<br>      end if<br>    end do<br>    if(num_found.eq.0) then<br>      print(&quot;shapefile_mask_data : Error: none of the given mask_names match the names on the shapefile.&quot;)<br>      exit<br>    end if<br>    if(num_found.lt.nusr_mask_names) then<br>      print(&quot;shapefile_mask_data : warning: Only found &quot; + num_found + \<br>            &quot; of the &quot; + nusr_mask_names)<br>      print(&quot;                      given mask_names on the shapefile.&quot;)<br>    end if<br>  end if<br><br>  if(KEEP) then<br>    keep_true_value  = 1  ; 1 ==&gt; values inside given mask areas will be kept<br>    keep_false_value = 0<br>  else<br>    keep_true_value  = 0  ; 0 ==&gt; values inside given mask areas will be tossed<br>    keep_false_value = 1<br>  end if<br><br>;---Determine the grid type<br>  dims = dimsizes(data)<br>  rank = dimsizes(dims)<br><br>  grid_type = &quot;&quot;<br>  if(rank.eq.2.and.\<br>     isdimnamed(data,0).and.iscoord(data,data!0).and.\<br>     isdimnamed(data,1).and.iscoord(data,data!1)) then<br>    lat1d = ndtooned(conform_dims(dims,data&amp;$data!0$,0))<br>    lon1d = ndtooned(conform_dims(dims,data&amp;$data!1$,1))<br>    grid_type = &quot;rectilinear&quot;<br>  else if(rank.eq.2.and.all(isatt(data,(/&quot;lat2d&quot;,&quot;lon2d&quot;/)))) then<br>;---Curvilinear<br>    lat1d = ndtooned(data@lat2d)<br>    lon1d = ndtooned(data@lon2d)<br>    if(product(dims).eq.dimsizes(lat1d).and.\<br>       product(dims).eq.dimsizes(lon1d)) then<br>      grid_type = &quot;curvilinear&quot;<br>    end if<br>  else if(rank.eq.1.and.all(isatt(data,(/&quot;lat1d&quot;,&quot;lon1d&quot;/)))) then<br>;---Unstructured<br>    lat1d = data@lat1d<br>    lon1d = data@lon1d<br>    if(dims.eq.dimsizes(lat1d).and.\<br>       product(dims).eq.dimsizes(lon1d)) then<br>      grid_type = &quot;unstructured&quot;<br>    end if<br>  end if<br>  end if<br>  end if<br><br>  if(grid_type.eq.&quot;&quot;) then<br>    print(&quot;shapefile_mask_data: Error: not a valid rectilinear, curvilinear, or unstructured grid&quot;)<br>    exit<br>  end if<br>  nlatlon1d = dimsizes(lat1d)<br><br>;---Read data off the shapefile<br>  segments = f-&gt;segments<br>  geometry = f-&gt;geometry<br>  segsDims = dimsizes(segments)<br>  geomDims = dimsizes(geometry)<br><br>;---Read global attributes  <br>  geom_segIndex = f@geom_segIndex<br>  geom_numSegs  = f@geom_numSegs<br>  segs_xyzIndex = f@segs_xyzIndex<br>  segs_numPnts  = f@segs_numPnts<br>  numFeatures   = geomDims(0)<br><br>;---Read shapefile lat/lon<br>  lon = f-&gt;x<br>  lat = f-&gt;y<br>;<br>; If shp_var_name is specified, then get the approximate lat/lon box that <br>; encloses the shapefile areas of interest. This can make the <br>; gc_inout checking go faster later. If the user has input<br>; all four &quot;usr_min/max_lat/lon&quot; attributes, then don&#x27;t do the check.<br>;<br>  if(SHP_VAR.and..not.(opt.and.isatt(opt,&quot;minlat&quot;).and.isatt(opt,&quot;maxlat&quot;).and.\<br>                               isatt(opt,&quot;minlon&quot;).and.isatt(opt,&quot;maxlon&quot;))) then<br>    found = False<br>    do nf=0,numFeatures-1<br>      if(any(shp_mask_names(nf).eq.usr_mask_names)) then<br>        startSegment = geometry(nf, geom_segIndex)<br>        numSegments  = geometry(nf, geom_numSegs)<br>        do seg=startSegment, startSegment+numSegments-1<br>          startPT = segments(seg, segs_xyzIndex)<br>          endPT   = startPT + segments(seg, segs_numPnts) - 1<br>          lat_sub := lat(startPT:endPT)<br>          lon_sub := lon(startPT:endPT) <br>          if(found) then<br>            min_lat_shp = min((/min_lat_shp,min(lat_sub)/))<br>            max_lat_shp = max((/max_lat_shp,max(lat_sub)/))<br>            min_lon_shp = min((/min_lon_shp,min(lon_sub)/))<br>            max_lon_shp = max((/max_lon_shp,max(lon_sub)/))<br>          else<br>            min_lat_shp = min(lat_sub)<br>            max_lat_shp = max(lat_sub)<br>            min_lon_shp = min(lon_sub)<br>            max_lon_shp = max(lon_sub)<br>            found       = True<br>          end if<br>        end do<br>      end if<br>    end do<br>  else<br>;---Use the whole shapefile<br>    min_lat_shp = min(lat)<br>    max_lat_shp = max(lat)<br>    min_lon_shp = min(lon)<br>    max_lon_shp = max(lon)<br>  end if<br>  <br>;--lat/lon coordinates of data array<br>  min_lat_data = min(lat1d)<br>  max_lat_data = max(lat1d)<br>  min_lon_data = min(lon1d)<br>  max_lon_data = max(lon1d)<br><br>;---min/max lat/lon to use for checking the data lat/lon<br>  min_lat_chk = get_res_value(opt,&quot;minlat&quot;,min_lat_shp)<br>  max_lat_chk = get_res_value(opt,&quot;maxlat&quot;,max_lat_shp)<br>  min_lon_chk = get_res_value(opt,&quot;minlon&quot;,min_lon_shp)<br>  max_lon_chk = get_res_value(opt,&quot;maxlon&quot;,max_lon_shp)<br><br>;---Get index values where data lat/lon values fall inside this &quot;box&quot;.<br>  if(.not.LOOP_CHECK) then<br>    ii_latlon = ind(min_lat_chk.le.lat1d.and.lat1d.le.max_lat_chk.and.\<br>                    min_lon_chk.le.lon1d.and.lon1d.le.max_lon_chk)<br>    nii = dimsizes(ii_latlon)<br>  end if<br><br>  if(DEBUG) then<br>    print(&quot;==================================================&quot;)<br>    print(&quot;Shapefile:         &quot; + shapefile_name)<br>    if(SHP_VAR) then<br>      print(&quot;Areas of interest: &quot; + str_join(&quot;&quot;+usr_mask_names,&quot;,&quot;))<br>    else<br>      print(&quot;Areas of interest: the whole shapefile&quot;)<br>    end if<br>    print(&quot;min_lat_chk:       &quot; + min_lat_chk)<br>    print(&quot;max_lat_chk:       &quot; + max_lat_chk)<br>    print(&quot;min_lon_chk:       &quot; + min_lon_chk)<br>    print(&quot;max_lon_chk:       &quot; + max_lon_chk)<br>    print(&quot;min_lat_data:      &quot; + min_lat_data)<br>    print(&quot;max_lat_data:      &quot; + max_lat_data)<br>    print(&quot;min_lon_data:      &quot; + min_lon_data)<br>    print(&quot;max_lon_data:      &quot; + max_lon_data)<br>    print(dimsizes(lat1d) + &quot; data values originally&quot;)<br>    if(.not.LOOP_CHECK) then<br>      print(nii + &quot; data values within given shapefile areas.&quot;)<br>    end if<br>    if(keep_true_value.eq.1) then<br>      print(&quot;Will keep data values inside given shapefile areas&quot;)<br>    else<br>      print(&quot;Will toss data values inside given shapefile areas&quot;)<br>    end if<br>  end if<br><br>;---Create array to hold new data mask<br>  data_mask_1d = new(nlatlon1d,integer)<br>  data_mask_1d = keep_false_value<br><br>;<br>; Setting opt@loop_check = True seems to produce the best results, timing-wise.<br>; Maybe get rid of the &quot;else&quot; part of this &quot;if&quot; statement at some point?<br>;<br>  if(LOOP_CHECK) then<br>    do nf=0,numFeatures-1<br>      if(.not.SHP_VAR.or.(SHP_VAR.and.\<br>         any(shp_mask_names(nf).eq.usr_mask_names))) then<br>        startSegment = geometry(nf, geom_segIndex)<br>        numSegments  = geometry(nf, geom_numSegs)<br>        do seg=startSegment, startSegment+numSegments-1<br>          startPT = segments(seg, segs_xyzIndex)<br>          endPT   = startPT + segments(seg, segs_numPnts) - 1<br>          lat_sub := lat(startPT:endPT)<br>          lon_sub := lon(startPT:endPT) <br>          ii_latlon := ind(min(lat_sub).le.lat1d.and.lat1d.le.max(lat_sub).and.\<br>                           min(lon_sub).le.lon1d.and.lon1d.le.max(lon_sub))<br>          if(any(ismissing(ii_latlon))) then<br>            continue<br>          end if          <br>          nii = dimsizes(ii_latlon)<br>          do n=0,nii-1<br>            iltln = ii_latlon(n)<br>            if(data_mask_1d(iltln).ne.keep_true_value.and.\<br>               gc_inout(lat1d(iltln),lon1d(iltln),lat_sub,lon_sub)) then<br>              data_mask_1d(iltln) = keep_true_value<br>            end if<br>          end do<br>        end do<br>      end if<br>    end do<br>  else<br>    do n=0,nii-1<br>      iltln = ii_latlon(n)<br>      do nf=0,numFeatures-1<br>        if(data_mask_1d(iltln).ne.keep_true_value.and.\<br>           (.not.SHP_VAR.or.(SHP_VAR.and.\<br>           any(shp_mask_names(nf).eq.usr_mask_names)))) then<br>          startSegment = geometry(nf, geom_segIndex)<br>          numSegments  = geometry(nf, geom_numSegs)<br>          do seg=startSegment, startSegment+numSegments-1<br>            startPT = segments(seg, segs_xyzIndex)<br>            endPT   = startPT + segments(seg, segs_numPnts) - 1<br>            lat_sub := lat(startPT:endPT)<br>            lon_sub := lon(startPT:endPT) <br>            if(.not.(all(lon_sub.lt.min_lon_data).or. \<br>                     all(lon_sub.gt.max_lon_data).or. \<br>                     all(lat_sub.lt.min_lat_data).or. \<br>                     all(lat_sub.gt.max_lat_data)).and.\<br>               gc_inout(lat1d(iltln),lon1d(iltln),lat_sub,lon_sub)) then<br>              data_mask_1d(iltln) = keep_true_value<br>              break<br>            end if<br>          end do<br>        end if<br>      end do<br>    end do<br>  end if<br>  if(DEBUG) then<br>    print(&quot;==================================================&quot;)<br>    if(KEEP) then<br>      print(num(data_mask_1d.eq.keep_true_value) + &quot; data values kept&quot;)<br>   else<br>      print(num(data_mask_1d.ne.keep_true_value) + &quot; data values kept&quot;)<br>    end if<br>  end if<br>;<br>; Create a 2D data array of same size as original data,<br>; but with appropriate values masked. Create a missing<br>; value if our data doesn&#x27;t have one.<br>;<br>  if(.not.isatt(data,&quot;_FillValue&quot;)) then<br>    data_msg = default_fillvalue(typeof(data))<br>  else<br>    data_msg = data@_FillValue<br>  end if<br><br>;---Keep all the locations where the mask array is 1.<br>  if(RETURN_MASK) then<br>    data_mask = onedtond(data_mask_1d,dims)<br>  else<br>    data_mask = where(onedtond(data_mask_1d,dims).eq.1,data,data_msg)<br>    copy_VarMeta(data,data_mask)      ; Copy all metadata<br><br>    if(.not.isatt(data,&quot;_FillValue&quot;)) then<br>      data_mask@_FillValue = data_msg<br>    end if<br>  end if<br><br>  if(DEBUG) then<br>;---Print timings<br>    mask_end_time = get_cpu_time()<br>    print(&quot;shapefile_mask_data: elapsed time: &quot; + \<br>          (mask_end_time-mask_start_time) + &quot; CPU seconds.&quot;)<br>    print(&quot;==================================================&quot;)<br>  end if<br>  return(data_mask)<br>end<br><br>;======================================================================<br>; create_shapefile_map(wks,shapefile_name,geometry_type,lat,lon)<br>;          wks            - workstation<br>;<br>;          shapefile_name - Name of shapefile, i.e.&quot;AUS_adm0.shp&quot;<br>;<br>;          geometry_type  - Geometry type, read off shapefile via <br>;                           &quot;geometry_type&quot; attribute. Must be <br>;                           &quot;point&quot;, &quot;polylines&quot;, or &quot;polygon&quot;.<br>;                           As of NCL V6.5.0, this routine will <br>;                           use &quot;point&quot; if the geometry is not<br>;                           set or not recognized.<br>;<br>;          lat,lon        - Arrays containing lat/lon values - can be<br>;                           read off file via &quot;y&quot; and &quot;x&quot; arrays on<br>;                           shapefile.<br>;<br>; This function creates a map for which to add shapefile outlines <br>; or points. It uses the shapefile_name for a title, and the geometry<br>; type to determine whether to draw map outlines.<br>;<br>; Note: this function could have been written to open the shapefile<br>; and read the geometry type and lat/lon, but since it is likely<br>; to be called from a routine that has to read lat/lon anyway, it <br>; seemed best just to pass this information in, to save time and<br>; memory.<br>;======================================================================<br>undef(&quot;create_shapefile_map&quot;)<br>function create_shapefile_map(wks,shapefile_name,geometry_type,lat,lon)<br>local res<br>begin<br>  res                       = True<br><br>  res@tiMainString          = shapefile_name<br><br>  res@gsnMaximize           = True     ; maximize plot in frame<br>  res@gsnDraw               = False<br>  res@gsnFrame              = False<br><br>  if(geometry_type.eq.&quot;point&quot;) then<br>    res@mpOutlineOn           = True<br>    res@mpOutlineBoundarySets = &quot;AllBoundaries&quot;<br>  else<br>    res@mpFillOn              = False<br>    res@mpOutlineOn           = False<br>  end if<br>  res@mpMinLatF             = min(lat)<br>  res@mpMaxLatF             = max(lat)<br>  res@mpMinLonF             = min(lon)<br>  res@mpMaxLonF             = max(lon)<br><br>  res@pmTickMarkDisplayMode = &quot;Always&quot;<br><br>  map = gsn_csm_map(wks,res)<br>  <br>  return(map)<br>end<br><br>;======================================================================<br>; plot_shapefile - Given a shapefile name (&quot;AUS_adm0.shp&quot;), this <br>; procedure draws a map with the data from the given shapefile drawn<br>; on top.<br>;<br>; The data is drawn depending on the &quot;geometry_type&quot; attribute of <br>; the shapefile:<br>;<br>;    - &quot;points&quot;   - data is drawn as filled black circles<br>;    - &quot;polyline&quot; - data is drawn as black polylines<br>;    - &quot;polygon&quot;  - data is drawn as colored, filled polygons, with <br>;                   black polylines.<br>;======================================================================<br>undef(&quot;plot_shapefile&quot;)<br>procedure plot_shapefile(shapefile_name)<br>local f, wks, shp_type, sres, geometry_type<br>begin<br>;---Open file<br>  f = addfile(shapefile_name,&quot;r&quot;)<br>;---Check validity of shapefile<br>  if(.not.isatt(f,&quot;geometry_type&quot;)) then<br>    print(&quot;plot_shapefile: Error: This doesn&#x27;t appear to be a valid shapefile&quot;)<br>    print(&quot;No &#x27;geometry_type&#x27; attribute is present.&quot;)<br>    exit<br>  else if(.not.any(f@geometry_type.eq.(/&quot;point&quot;,&quot;polyline&quot;,&quot;polygon&quot;/))) then<br>    print(&quot;plot_shapefile: Warning: the &#x27;geometry_type&#x27; attribute on &#x27;&quot; + shapefile_name + &quot;&#x27;&quot;) <br>    print(&quot;             is not set to &#x27;point&#x27;, &#x27;polyline&#x27;, or &#x27;polygon&#x27;.&quot;)<br>    print(&quot;             Will try to plot this data using &#x27;point&#x27;, but you&quot;)<br>    print(&quot;             may want to examine the file further to make sure&quot;)<br>    print(&quot;             it is correct.&quot;)<br>    geometry_type = &quot;point&quot;<br>  else<br>    geometry_type = f@geometry_type<br>  end if<br>  end if<br><br>;---Open device to draw graphics.<br>  wks = gsn_open_wks(&quot;png&quot;,get_shapefile_prefix(shapefile_name))<br><br>;---Read lat/lon and create map<br>  lat = f-&gt;y<br>  lon = f-&gt;x<br>  map = create_shapefile_map(wks,shapefile_name,geometry_type,lat,lon)<br>  <br>  sres = True<br>  if(geometry_type.eq.&quot;point&quot;) then<br>    sres@gsMarkerIndex = 16<br>    id = gsn_add_shapefile_polymarkers(wks,map,shapefile_name,sres)<br>  else if(geometry_type.eq.&quot;polyline&quot;) then<br>    id = gsn_add_shapefile_polylines(wks,map,shapefile_name,sres)<br>  else if(geometry_type.eq.&quot;polygon&quot;) then<br>    sres@gsFillColor = &quot;SkyBlue&quot;<br>    id1 = gsn_add_shapefile_polygons(wks,map,shapefile_name,sres)<br>    id2 = gsn_add_shapefile_polylines(wks,map,shapefile_name,sres)<br>  end if<br>  end if<br>  end if<br><br>  draw(map) ; This will draw map and attached outlines or markers<br>  frame(wks)<br>end<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h2 id="example">Example</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs log">(0)	======================================================================<br>(0)	Filename: &quot;Hong_Kong_18_Districts.shp&quot;<br>(0)	   Geometry type: polygon<br>(0)	   # of features: 18<br>(0)	   Min/max lat:     22.15/  22.56<br>(0)	   Min/max lon:    113.84/ 114.44<br>(0)	   Variable names and their types:<br>(0)	       geometry : integer<br>(0)	       segments : integer<br>(0)	       x : double<br>(0)	       y : double<br>(0)	       OBJECTID : int64<br>(0)	       TCNAME : string<br>(0)	       ENAME : string<br>(0)	       Shape__Are : double<br>(0)	       Shape__Len : double<br>(0)	======================================================================<br></code></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/htVo0nI.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h1 id="files">Files</h1>
+<h2 id="ne_10m_admin_0_countries-admin-0-countries">ne_10m_admin_0_countries (Admin 0 – Countries)</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-0-countries/" class="uri">https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-0-countries/</a></li>
+</ul>
+<p><img src="https://i.imgur.com/xtBhEYc.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h2 id="gadm36_chn">gadm36_CHN</h2>
+<p><img src="https://i.imgur.com/TrINpU0.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h2 id="chinaadmindivisonshp-23_01_04">ChinaAdminDivisonSHP-23_01_04</h2>
+<p><img src="https://i.imgur.com/ix8iMG3.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h2 id="us_states_and_territories_18mr25">US_States_and_Territories_18mr25</h2>
+<p><img src="https://i.imgur.com/Dlp4pod.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/FNL/" class="print-no-link">#FNL</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/IFS/" class="print-no-link">#IFS</a>
+      
+        <a href="/tags/CMA/" class="print-no-link">#CMA</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | shapefile</div>
+      <div>https://waipangsze.github.io/2025/09/11/NWP-shapefile/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>September 11, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>September 11, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/11/NWP-plot-GFS-grib-files/" title="NWP | plot GFS grib files">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">NWP | plot GFS grib files</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/09/MPAS-Real-Time-Forecasts/" title="MPAS | Real-Time Forecasts">
+                        <span class="hidden-mobile">MPAS | Real-Time Forecasts</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
