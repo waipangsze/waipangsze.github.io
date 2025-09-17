@@ -153,6 +153,8 @@ for single_date in daterange(start_date, end_date):
         H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
 ```
 
+![](https://i.imgur.com/WNeDwFF.png){width=400}
+
 # ungrib
 
 ## GEFS sep2020 landmask fix (May 5, 2021)
