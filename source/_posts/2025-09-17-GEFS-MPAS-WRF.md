@@ -77,6 +77,65 @@ The "`pgrb2ap5`," "`pgrb2bp5`," and "`pgrb2sp25`" directories in the Global Ense
 
 ![](https://i.imgur.com/T5qEutO.png){width=500}
 
+# download: Herbie
+
+- <https://herbie.readthedocs.io/en/latest/gallery/noaa_models/gefs.html>
+- You also must specify a `member`. For the atmos output, this should be something like `0` or "`c00`" for control member, `1-30` or "`p01`"-"`p30`" for members `1-30`, or '`avg`' or '`mean`' for the ensemble mean, '`spr`' for ensemble spread
+- ValueError: For GEFS product atmos.5, member must be one of ['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'c00', 'spr', 'avg']
+
+```log
+{'atmos.5': 'Half degree atmos PRIMARY fields (pgrb2ap5); ~83 most common variables.',
+ 'atmos.5b': 'Half degree atmos SECONDARY fields (pgrb2bp5); ~500 least common variables',
+ 'atmos.25': 'Quarter degree atmos PRIMARY fields (pgrb2sp25); ~35 most common variables',
+ 'wave': 'Global wave products.',
+ 'chem.5': 'Chemistry fields on 0.5 degree grid',
+ 'chem.25': 'Chemistry fields on 0.25 degree grid'}
+```
+
+```sh
+#!/bin/bash
+
+source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
+micromamba activate herbie-data
+
+time python main_herbie.py
+```
+
+```python
+#!/bin/python
+from herbie import Herbie
+
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
+
+from herbie import paint
+from herbie.toolbox import EasyMap, pc
+
+from datetime import date, timedelta
+
+def daterange(start_date: date, end_date: date):
+    days = int((end_date - start_date).days)
+    for n in range(days):
+        yield start_date + timedelta(n)
+
+start_date = date(2025, 8, 4)
+end_date = date(2025, 8, 5)
+
+# 00z, 06z, 12z, 18z,
+for single_date in daterange(start_date, end_date):
+    tmp = str(single_date.strftime("%Y-%m-%d")) +" 12:00:00"      # 00/06/12/18z
+    tmp_save_fd = tmp[:4]+tmp[5:7]
+    print(tmp, tmp_save_fd)
+    H = Herbie(tmp, model="gefs", product="atmos.5", member="p01") #, fxx=12)
+    H.inventory()
+    H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
+    print(tmp, tmp_save_fd)
+    H = Herbie(tmp, model="gefs", product="atmos.5b", member="p01")
+    H.inventory()
+    H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
+```
+
 # ungrib
 
 ## GEFS sep2020 landmask fix (May 5, 2021)
