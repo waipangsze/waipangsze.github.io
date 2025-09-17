@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/jzIMNr2.png
+banner_img: https://i.imgur.com/jzIMNr2.png
 ---
 
 # Download subset of GFS
@@ -18,7 +18,13 @@ banner_img:
 - NCEP GFS Forecasts (0.25 degree grid)
   - <https://nomads.ncep.noaa.gov/gribfilter.php?ds=gfs_0p25>
 
-# Plot GFS grib file
+# Herbie
+
+- <https://herbie.readthedocs.io/en/latest/gallery/noaa_models/gfs.html>
+- <https://herbie.readthedocs.io/en/latest/gallery/noaa_models/gefs.html>
+- <https://herbie.readthedocs.io/en/latest/gallery/ecmwf_models/ecmwf.html>
+
+# Plot GFS grib file **TODO**
 
 - <https://www.nco.ncep.noaa.gov/pmb/codes/nwprod/rap.v5.1.20/sorc/rap_wps.fd/WPSV3.9.1/util/gfs.ncl>
 
