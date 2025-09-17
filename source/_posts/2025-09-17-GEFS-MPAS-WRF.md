@@ -79,9 +79,10 @@ The "`pgrb2ap5`," "`pgrb2bp5`," and "`pgrb2sp25`" directories in the Global Ense
 
 # download: Herbie
 
+- [NWP | Herbie | Download NWP model output (grib2) | MPAS | WRF](https://waipangsze.github.io/2025/04/10/NWP-Herbie-Download-NWP-model-output-MPAS-WRF/)
 - <https://herbie.readthedocs.io/en/latest/gallery/noaa_models/gefs.html>
 - You also must specify a `member`. For the atmos output, this should be something like `0` or "`c00`" for control member, `1-30` or "`p01`"-"`p30`" for members `1-30`, or '`avg`' or '`mean`' for the ensemble mean, '`spr`' for ensemble spread
-- ValueError: For GEFS product atmos.5, member must be one of ['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'c00', 'spr', 'avg']
+- ValueError: For GEFS product atmos.5, member must be one of `['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'c00', 'spr', 'avg']`
 
 ```log
 {'atmos.5': 'Half degree atmos PRIMARY fields (pgrb2ap5); ~83 most common variables.',
@@ -122,18 +123,34 @@ def daterange(start_date: date, end_date: date):
 start_date = date(2025, 8, 4)
 end_date = date(2025, 8, 5)
 
+# c00
+for single_date in daterange(start_date, end_date):
+    tmp = str(single_date.strftime("%Y-%m-%d")) +" 12:00:00"      # 00/06/12/18z
+    tmp_save_fd = tmp[:4]+tmp[5:7]
+    print(tmp, tmp_save_fd)
+    H = Herbie(tmp, model="gefs", product="atmos.5", member=f"c00") #, fxx=12)
+    H.inventory()
+    H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
+
+    H = Herbie(tmp, model="gefs", product="atmos.5b", member=f"c00") #, fxx=12)
+    H.inventory()
+    H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
+
+# ensmebles
 # 00z, 06z, 12z, 18z,
 for single_date in daterange(start_date, end_date):
     tmp = str(single_date.strftime("%Y-%m-%d")) +" 12:00:00"      # 00/06/12/18z
     tmp_save_fd = tmp[:4]+tmp[5:7]
     print(tmp, tmp_save_fd)
-    H = Herbie(tmp, model="gefs", product="atmos.5", member="p01") #, fxx=12)
-    H.inventory()
-    H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
-    print(tmp, tmp_save_fd)
-    H = Herbie(tmp, model="gefs", product="atmos.5b", member="p01")
-    H.inventory()
-    H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
+    for i in range(1, 31):
+        print(f"{i:02}")
+        H = Herbie(tmp, model="gefs", product="atmos.5", member=f"p{i:02}") #, fxx=12)
+        H.inventory()
+        H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
+
+        H = Herbie(tmp, model="gefs", product="atmos.5b", member=f"p{i:02}")
+        H.inventory()
+        H.download(save_dir=f"/home/wpsze/mpas/GEFS/herbie/")
 ```
 
 # ungrib
