@@ -77,3 +77,9 @@ The guide to set up push notifications with a Telegram bot:
   - Implement error handling to gracefully handle issues like invalid chat IDs or network problems. 
 - **Telegram Bot API Documentation**:
   - Refer to the official Telegram Bot API documentation for detailed information on available methods and parameters. 
+  
+# For sending Files
+
+```sh
+curl -v -F "chat_id=xxxxxxx" -F document=@/home/wpsze/mpas/Telegram-bot/test.pdf https://api.telegram.org/bot<TOKEN>/sendDocument
+```
