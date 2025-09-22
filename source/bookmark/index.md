@@ -88,6 +88,11 @@ date: 2024-09-30 21:26:27
 
 - [H8/H9 JAXA Himawari Monitor (P-Tree System)](https://www.eorc.jaxa.jp/ptree/index.html)
 
+## 氣象圖及分析
+
+- [easterlywave](https://www.easterlywave.com/model/ecmwf/china/gpt/)
+- [https://charts.ecmwf.int/](https://charts.ecmwf.int/)
+
 ## 繪圖工具
 
 - [Diagrams.net-簡潔實用的線上繪圖工具](https://app.diagrams.net/)
