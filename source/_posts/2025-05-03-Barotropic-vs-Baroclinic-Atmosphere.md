@@ -30,6 +30,12 @@ banner_img: https://i.imgur.com/mEK5MFd.png
 **斜壓不穩定（垂直風切）**：  
 由水平溫度梯度（如南北溫差大）驅動。根據熱力風平衡，大溫差導致強垂直風切，從而引發不穩定。
 
+- **Barotropic** waves, or a barotropic atmosphere, is one in which pressure (or height) contours run parallel to temperature contours. That is, there is no "crossing" of the two different types of contours. 
+  - Pressure (or height contours) are represented as solid curves. The temperature contours (isotherms) are shown in dashed curves. 
+  - ![](https://i.imgur.com/IniX5OX.png){width=400}
+- **Baroclinic** wave, or baroclinic atmosphere, occurs when the preesure (or height) contours cross the temperature contours. 
+  - ![](https://i.imgur.com/1lI7wpT.png){width=400}
+
 # 正壓與斜壓
 
 以下是對**正壓**（barotropic）與**斜壓**（baroclinic）條件、其數學差異以及在大氣不穩定性（正壓不穩定與斜壓不穩定）中角色的更詳細闡述，特別針對熱帶氣旋的相關性進行深入探討。
