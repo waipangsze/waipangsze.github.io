@@ -9,8 +9,8 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2025-09-24 19:00:00
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/vC76DXy.png
+banner_img: https://i.imgur.com/vC76DXy.png
 ---
 
 # 颱風樺加沙
