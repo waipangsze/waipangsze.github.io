@@ -54,6 +54,26 @@ banner_img: https://i.imgur.com/vC76DXy.png
 ![](https://i.imgur.com/STZ74sf.png)
 {% endgi %}
 
+## 天氣雷達圖像
+
+![](https://i.imgur.com/7chIACN.gifv){width=500}
+
+## 高空氣象觀測
+
+{% gi 4 2-2 %}
+![](https://i.imgur.com/hbhEEyV.png)
+![](https://i.imgur.com/NKOqyZM.png)
+![](https://i.imgur.com/oa9EgaE.png)
+![](https://i.imgur.com/OvuZEtM.png)
+{% endgi %}
+
+## 二十四小時等雨量線圖
+
+{% gi 2 2 %}
+![](https://i.imgur.com/KjVs0L3.png)
+![](https://i.imgur.com/TFS5zOQ.png)
+{% endgi %}
+
 # MPAS (Global 3.7km mesh)
 
 - [MPAS | Real-Time Forecasts](https://waipangsze.github.io/2025/09/09/MPAS-Real-Time-Forecasts/)
