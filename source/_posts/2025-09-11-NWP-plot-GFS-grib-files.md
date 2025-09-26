@@ -375,3 +375,9 @@ begin
 end
 ```
 {% endfold %}
+
+# References
+
+1. [代码分享 | 用Python处理GFS的grib2格式预报数据并可视化（附完整脚本）](https://mp.weixin.qq.com/s/xfCvgQ7tS7E7hNFnUnqUZQ)
+   1. 我们使用到的Python库有：xarray，matplotlib，pandas，proplot，cmaps ...
+   2. 以下个例处理GFS的grib2格式预报数据，使用eccodes或wgrib2作预处理。以eccodes为例，使用grib_ls或grib_dump查看grib文件信息。

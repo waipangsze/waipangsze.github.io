@@ -53,3 +53,25 @@ Goto <https://waipangsze.github.io/2023/04/27/GFS_FNL/>
         - 层次错误： 如果num_metgrid_levels设置小于资料实际包含的层次，或者与WPS对该版本资料的期望不符，会导致错误。将num_metgrid_levels设置为34与2020年GFS资料的特性相符。
         - 边界条件相关错误： 可能出现 "Maybe this is a global domain, but the polar flag was not set in the bdy_control namelist." 这样的错误。虽然这个错误通常与全球模拟域或极区处理有关，但在本例中，可能是由于错误的数据处理参数（如保留了不必要的sfcp_to_sfcp等）干扰了WPS正确识别数据类型或进行内插，间接导致了与边界条件处理相关的逻辑错误。
 
+
+# 以gfs.t00z.pgrb2.0p25.f012為例，部分變數名稱如下
+
+| cl                     | wgrib2                            | eccodes           | 变量解释                |
+|------------------------|-----------------------------------|-------------------|-------------------------|
+| TMP_P0_L100_GLL0       | TMP                               | t                 | 温度                    |
+| SPFH_P0_L100_GLL0      | SPFH                              | q                 | 比湿                    |
+| RH_P0_L100_GLL0        | RH                                | r                 | 相对湿度                |
+| UGRD_P0_L100_GLL0      | UGRD                              | u                 | u风                     |
+| VGRD_P0_L100_GLL0      | VGRD                              | v                 | v风                     |
+| HGT_P0_L100_GLL0       | HGT                               | gh                | 位势高度                |
+| TCDC_P0_L10_GLL0       | TCDC                              | tcc               | 总云量                  |
+| APCP_P8_L1_GLL0_acc12h | APCP                              | tp                | 12小时累积降水          |
+| APCP_P8_L1_GLL0_acc6h  | APCP                              | tp(stepRange不同) | 6小时累积降水           |
+|  TMP_P0_L103_GLL0      | TMP:2 m above ground:12 hour fcst | t                 | 近地层的温度(如2米温度) |
+| PRES_P0_L1_GLL0        | PRES                              | pres              | 地表气压                |
+| PRMSL_P0_L101_GLL0     | PRMSL                             | prmsl             | 海平面气压              |
+
+由于GFS预报数据里，变量非常丰富，就不一一列举。更多的通过ncl_filedump或grib_dump的结果查看到较详细的介绍。
+
+- [GFS模式数据介绍](https://mp.weixin.qq.com/s/tW3YgtYWczdp48LTM_I9Yw)
+  - 附上tropicaltidbits的实时美图，网站链接：<https://www.tropicaltidbits.com/>

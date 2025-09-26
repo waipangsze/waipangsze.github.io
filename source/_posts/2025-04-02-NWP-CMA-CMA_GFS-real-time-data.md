@@ -732,3 +732,27 @@ $ crontab -l
 00 16 * * * cd /home/wpsze/mpas/CMA_GFS; sh wpsze_download_CMA_GFS-cronjob-00z.sh
 00 16 * * * cd /home/wpsze/mpas/CMA_GFS; sh wpsze_download_CMA_GFS-cronjob-12z.sh
 ```
+
+# References
+
+1. [WRF基础 | CMA-GFS运行WRF](https://mp.weixin.qq.com/s/qj_yluNZE0iwD-IGeMMhnA)
+   1. CMA-GFS 是我国自主研发的新一代全球数值预报模式，该模式由同化分系统和全球模式分系统两部分组成，于2016年6月业务化运行，向全国实时分发产品。2018年7月四维变分同化实现业务运行。2020年CMA-GFS升级为3.0，模式水平分辨率为25km，模式层顶0.1hPa，垂直分层87层。2022年CMA-GFS升级为3.3版本。2023年CMA-GFS升级为4.0版本。
+      1. 数据获取
+      2. Vtable的更改
+      3. rd_grib2.F的修改
+      4. 重新编译WPS
+2. [数值模式 | 以CMA-GFS作为初始场运行WRF](https://mp.weixin.qq.com/s/D933NNyMxu3cJOY1dEkl6g)
+   1. CMA-GFS的初始场获取
+   2. 方法一
+      1. 创建正确的 Vtable.CMA_GFS 文件
+      2. 修改 ungrib 源代码 rd_grib2.F 文件
+         1. WPS/ungrib无法正确解码CMA-GFS模式土壤湿度和土壤温度的问题
+      3. 重新编译WPS
+      4. 更新 Vtable.CMA_GFS 文件
+         1. 删除不存在的参数
+            1. 删除 `SEAICE` 参数（海冰标识）
+            2. 删除 `LANDN` 参数（陆地掩码）
+   3. 方法二
+      1. 访问：https://github.com/wrf-model/WPS/pull/236/commits
+      2. 将修改好的WPS文件保存下来，重新编译。
+      3. 在这里，如果没有修改过来，使用原来的GFS的Vtable，就会报错

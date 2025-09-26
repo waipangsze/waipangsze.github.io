@@ -178,6 +178,35 @@ $ micromamba config append channels conda-forge
 micromamba env create --name my_clone --clone new_venv
 ```
 
+# conda的環境遷移 (打包conda環境)
+
+當我們使用另外的Linux系統時，重新搭建環境未免過於耗時，因此可以將conda環境整體打包並在新機器上部署
+
+- 安裝打包conda環境的軟體：
+
+```console
+conda install -c conda-forge conda-pack
+```
+
+- 使用conda-pack打包環境：
+
+```console
+conda pack -n 虛擬環境名稱 -o output.tar.gz
+```
+
+- 將output.tar.gz轉移到需要建造的新機器的對應Miniconda/envs的路徑下
+  - 解壓縮
+
+```console
+tar -xzvf output.tar.gz
+```
+
+- 查看目前環境,出現之前環境的名稱
+
+```console
+conda env list
+```
+
 # To access the remote machine with a browser
 
 To access the remote machine with a browser the notebook must listen on an external facing port **(not localhost)**. You will need the same invocation if want to run the Jupyter notebook on a container. In that case it is something like this:
@@ -207,3 +236,4 @@ I think someone mentioned this:
 # References
 
 1. [北京大学高性能计算校级公共平台用户文档](https://hpc.pku.edu.cn/ug/guide/soft/conda/#_3)
+2. [Python | 基于Linux系统下conda环境的部署及其迁移](https://mp.weixin.qq.com/s/SfYOaafgyUmQvCvytMrIWQ)
