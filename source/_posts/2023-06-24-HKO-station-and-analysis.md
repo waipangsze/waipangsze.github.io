@@ -410,3 +410,23 @@ plt.close()
 
 # In[ ]:
 ```
+
+# 没有SimHei 字体
+
+1. 下载字体
+   1. <https://link.juejin.cn/?target=https%3A%2F%2Flink.zhihu.com%2F%3Ftarget%3Dhttps%253A%2F%2Fgithub.com%2Fyuehuhu%2Fsome-useful%2Fraw%2Fmaster%2Fttf%2FSimHei.ttf>
+2. 将下载的字体放到
+   1.  `home/wpsze/micromamba/envs/<envs>/lib/python3.10/site-packages/matplotlib/mpl-data/fonts/ttf`
+3. 修改 `matplotlibrc` 文件
+   1. `lib/python3.10/site-packages/matplotlib/mpl-data/matplotlibrc`
+      1. ```text
+        font.family:  sans-serif
+        # 去掉前面的# 
+        font.sans-serif: SimHei, DejaVu Sans, Bitstream Vera Sans,
+        # 去掉前面的#，并在冒号后面添加SimHei
+        axes.unicode_minus: False  # use Unicode for the minus symbol rather than hy    phen.  See
+        # 去掉前面的#，并将True改为False
+        ```
+4. 删除 `matplotlib` 的系统缓存
+   1. `rm -rf /root/.cache/matplotlib/*`
+   2. 等会运行python缓存文件就会自动生成
