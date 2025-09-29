@@ -21,7 +21,7 @@ banner_img: https://i.imgur.com/v9h42bG.png
 
 `getfacl` 指令來自英文詞組 **get file access control list** 的縮寫，其功能是顯示檔案或目錄的ACL策略。對指定的檔案或目錄進行精確的權限控制，`FACL`（**File Access Control List，檔案存取控制清單**）一定是不二之選
 
-![](https://i.imgur.com/sRq87WX.png){width=400}
+![](https://i.imgur.com/sRq87WX.png){width=500}
 
 ```console
  $ getfacl maxmin.py
@@ -37,7 +37,7 @@ other::r--
 
 `setfacl` 命令 – 设置文件 `ACL` 策略规则
 
-![](https://i.imgur.com/IQnDFUA.png){width=400}
+![](https://i.imgur.com/IQnDFUA.png){width=500}
 
 - 参考示例 
   - 对目录进行FACL策略规则设置，允许指定用户进行读、写、执行操作:

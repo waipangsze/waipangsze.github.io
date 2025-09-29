@@ -81,7 +81,7 @@ banner_img: https://i.imgur.com/vC76DXy.png
 # 相片
 
 - `2025年9月23日 星期二 下午8:40`
-  - ![](https://i.imgur.com/N23IyXk.png){width}
+  - ![](https://i.imgur.com/N23IyXk.png){width=500}
 
 # MPAS (Global 3.7km mesh)
 
