@@ -4,7 +4,7 @@ title: Linux | setfacl | getfacl | ACL 文件访问控制列表
 categories: [Linux]
 tags: [Linux, HPC, Terminal, shell script, chmod]
 author: wpsze
-date: 2025-05-14 11:50:00
+date: 2025-09-29 06:50:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
