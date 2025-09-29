@@ -74,6 +74,15 @@ banner_img: https://i.imgur.com/vC76DXy.png
 ![](https://i.imgur.com/TFS5zOQ.png)
 {% endgi %}
 
+## 平均海平面氣壓概率預報
+
+![](https://i.imgur.com/fPv316a.png){width=400}
+
+# 相片
+
+- `2025年9月23日 星期二 下午8:40`
+  - ![](https://i.imgur.com/N23IyXk.png){width}
+
 # MPAS (Global 3.7km mesh)
 
 - [MPAS | Real-Time Forecasts](https://waipangsze.github.io/2025/09/09/MPAS-Real-Time-Forecasts/)
