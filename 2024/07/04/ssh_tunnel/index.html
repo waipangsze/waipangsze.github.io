@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://img1.xenby.com/269/89b59f7b.png">
 <meta property="article:published_time" content="2024-07-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-10-10T02:12:16.169Z">
+<meta property="article:modified_time" content="2025-10-10T02:46:33.432Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="ssh">
 <meta name="twitter:card" content="summary_large_image">
@@ -356,7 +356,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          423 words
+          448 words
         
       </span>
     
@@ -576,6 +576,10 @@
 <p>You can set up a <code>SOCKS proxy</code> to <strong>route all your web traffic through an SSH server</strong>:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -D 1080 user@B.example.com<br></code></pre></td></tr></table></figure>
 <p>Then, configure your web browser or applications to use <code>localhost:1080</code> as a SOCKS proxy.</p>
+<h1 id="implement-lock-files">Implement Lock Files</h1>
+<p>Setting up <code>crontab</code> on different nodes without conflicts involves a systematic approach to ensure that tasks are well-coordinated. You can set up <code>crontab</code> on different nodes effectively while avoiding conflicts.</p>
+<p><strong>Lock Mechanism</strong>: Use lock files to prevent multiple nodes from executing the same job simultaneously. For example, modify your cron job script to check for a lock file before execution:</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br>LOCKFILE=<span class="hljs-string">&quot;/tmp/myjob.lock&quot;</span><br><br><span class="hljs-keyword">if</span> [ -e <span class="hljs-variable">$LOCKFILE</span> ]; <span class="hljs-keyword">then</span><br>  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Job is already running.&quot;</span><br>  <span class="hljs-built_in">exit</span> 1<br><span class="hljs-keyword">fi</span><br><br><span class="hljs-built_in">touch</span> <span class="hljs-variable">$LOCKFILE</span><br><br><span class="hljs-comment"># Your job code here</span><br><br><span class="hljs-built_in">rm</span> <span class="hljs-variable">$LOCKFILE</span><br></code></pre></td></tr></table></figure></p>
 <h1 id="references">References</h1>
 <p><a target="_blank" rel="noopener" href="https://www.ssh.com/academy/iam/jump-server">What is a Jump Server?</a><br />
 <a target="_blank" rel="noopener" href="https://johnliu55.tw/ssh-tunnel.html">SSH Tunneling (Port Forwarding) 詳解</a></p>
