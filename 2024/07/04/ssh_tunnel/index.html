@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://img1.xenby.com/269/89b59f7b.png">
 <meta property="article:published_time" content="2024-07-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-01-10T01:15:44.748Z">
+<meta property="article:modified_time" content="2025-10-10T02:12:16.169Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="ssh">
 <meta name="twitter:card" content="summary_large_image">
@@ -356,7 +356,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          261 words
+          423 words
         
       </span>
     
@@ -367,7 +367,7 @@
         
         
         
-          3 mins
+          4 mins
         
       </span>
     
@@ -489,6 +489,93 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh -L 0.0.0.0:9090:localhost:8080 user@server-ip<br></code></pre></td></tr></table></figure>
 <h2 id="remote-port-forwarding">Remote Port Forwarding</h2>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">ssh -R 9090:localhost:8080 user@server-ip<br></code></pre></td></tr></table></figure>
+<h1 id="file-explorer-to-read-files">File explorer to read files</h1>
+<ul>
+<li>A to B to C</li>
+</ul>
+<p>To read files on host C from host A through an SSH tunnel via host B using a file explorer, follow these steps:</p>
+<h2 id="set-up-the-ssh-tunnel">1. Set Up the SSH Tunnel</h2>
+<p>You need to create a tunnel from A to C through B. Use the following command on your terminal in host A:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -L 2222:C.example.com:22 user_B@B.example.com<br></code></pre></td></tr></table></figure>
+<h3 id="explanation">Explanation:</h3>
+<ul>
+<li><strong>2222</strong>: Local port on host A.</li>
+<li><strong>C.example.com</strong>: Hostname or IP address of host C.</li>
+<li><strong>user_B</strong>: Your SSH username for host B.</li>
+<li><strong>B.example.com</strong>: Hostname or IP address of host B.</li>
+</ul>
+<h2 id="use-a-file-explorer-to-access-c">2. Use a File Explorer to Access C</h2>
+<p>After setting up the SSH tunnel, you can use a file explorer to connect to C through the tunnel.</p>
+<h3 id="for-linux-using-file-manager">For Linux (Using File Manager)</h3>
+<ol type="1">
+<li><strong>Open your file manager</strong> (e.g., <code>Nautilus</code>).</li>
+<li><p>In the address bar, type:</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">sftp:</span><span class="hljs-comment">//username_C@localhost:2222</span><br></code></pre></td></tr></table></figure></li>
+<li><p>Enter the password for <code>username_C</code> when prompted.</p></li>
+</ol>
+<h3 id="for-macos-using-finder">For macOS (Using Finder)</h3>
+<ol type="1">
+<li><strong>Open Finder</strong>.</li>
+<li>Click on <strong>Go &gt; Connect to Server</strong> (or press <code>Command + K</code>).</li>
+<li><p>Enter:</p>
+<p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">sftp:</span><span class="hljs-comment">//username_C@localhost:2222</span><br></code></pre></td></tr></table></figure></p>
+<p>Again, replace <code>username_C</code> with the correct username for host C.</p></li>
+<li><p>Click <strong>Connect</strong> and enter the password for <code>username_C</code> when prompted.</p></li>
+</ol>
+<h3 id="for-windows-using-file-explorer">For Windows (Using File Explorer)</h3>
+<ol type="1">
+<li><strong>Open File Explorer</strong>.</li>
+<li><p>In the address bar, type:</p>
+<p><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">sftp:</span><span class="hljs-comment">//username_C@localhost:2222</span><br></code></pre></td></tr></table></figure></p>
+<p>Replace <code>username_C</code> with the actual username for host C.</p></li>
+<li><p>When prompted, enter the password for <code>username_C</code>.</p></li>
+</ol>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>Make sure the SSH server on C is configured to allow SFTP connections.</li>
+<li><p>If you need to specify the username for host C, you can modify the connection string to:</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">sftp:</span><span class="hljs-comment">//username_C@localhost:2222</span><br></code></pre></td></tr></table></figure></li>
+<li><p>Ensure that your SSH tunnel is active while accessing files through the file explorer.</p></li>
+</ul>
+<h1 id="from-host-a-to-host-e-via-b-c-and-d">From host A to host E via B, C, and D</h1>
+<ul>
+<li>A to B to C to D to E</li>
+</ul>
+<p>To set up SSH tunneling from host A to host E via B, C, and D, you will need to configure your <code>.ssh/config</code> file and then access files on E. Here's how to do it:</p>
+<h3 id="setup-.sshconfig">1. Setup <code>.ssh/config</code></h3>
+<p>Open your SSH config file on host A:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim ~/.ssh/config<br></code></pre></td></tr></table></figure>
+<p>Add the following configuration:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Host B<br>    HostName B.example.com<br>    User user_B<br><br>Host C<br>    HostName C.example.com<br>    User user_C<br>    ProxyJump B<br><br>Host D<br>    HostName D.example.com<br>    User user_D<br>    ProxyJump C<br><br>Host E<br>    HostName E.example.com<br>    User user_E<br>    ProxyJump D<br></code></pre></td></tr></table></figure>
+<h3 id="explanation-1">Explanation:</h3>
+<ul>
+<li><strong>Host B</strong>: Configuration for the first hop to B.</li>
+<li><strong>Host C</strong>: Configuration for the second hop to C, using B as a proxy.</li>
+<li><strong>Host D</strong>: Configuration for the third hop to D, using C as a proxy.</li>
+<li><strong>Host E</strong>: Configuration for the final destination E, using D as a proxy.</li>
+</ul>
+<h3 id="accessing-files-on-host-e-from-host-a">2. Accessing Files on Host E from Host A</h3>
+<h4 id="step-1-set-up-the-ssh-tunnel">Step 1: Set Up the SSH Tunnel</h4>
+<p>From host A, create an SSH tunnel that forwards a local port to host E. You can use the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -L 2222:E.example.com:22 user_D@D.example.com -J user_C@C.example.com -J user_B@B.example.com<br></code></pre></td></tr></table></figure>
+<h3 id="step-2-use-a-file-explorer-to-access-host-e">Step 2: Use a File Explorer to Access Host E</h3>
+<h4 id="for-linux-using-file-manager-1">For Linux (Using File Manager)</h4>
+<ol type="1">
+<li><strong>Open your file manager</strong> (e.g., Nautilus).</li>
+<li><p>In the address bar, type:</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">sftp:</span><span class="hljs-comment">//user_E@localhost:2222</span><br></code></pre></td></tr></table></figure></li>
+<li><p>Enter the password for <code>user_E</code> when prompted.</p></li>
+</ol>
+<h3 id="summary">Summary</h3>
+<ol type="1">
+<li>The <code>.ssh/config</code> file is set up to facilitate SSH connections through multiple hops.</li>
+<li>An SSH tunnel is created to allow access to host E.</li>
+<li>You can access files on host E using the file explorer on host A by connecting to <code>sftp://localhost:2222</code> and providing the appropriate credentials.</li>
+</ol>
+<h1 id="dynamic-port-forwarding-socks-proxy">Dynamic Port Forwarding (SOCKS Proxy)</h1>
+<p>You can set up a <code>SOCKS proxy</code> to <strong>route all your web traffic through an SSH server</strong>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -D 1080 user@B.example.com<br></code></pre></td></tr></table></figure>
+<p>Then, configure your web browser or applications to use <code>localhost:1080</code> as a SOCKS proxy.</p>
 <h1 id="references">References</h1>
 <p><a target="_blank" rel="noopener" href="https://www.ssh.com/academy/iam/jump-server">What is a Jump Server?</a><br />
 <a target="_blank" rel="noopener" href="https://johnliu55.tw/ssh-tunnel.html">SSH Tunneling (Port Forwarding) 詳解</a></p>
@@ -556,7 +643,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 10, 2025</div>
+          <div>October 10, 2025</div>
         </div>
       
       
