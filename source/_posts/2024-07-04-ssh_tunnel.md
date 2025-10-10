@@ -255,6 +255,28 @@ ssh -D 1080 user@B.example.com
 
 Then, configure your web browser or applications to use `localhost:1080` as a SOCKS proxy.
 
+# Implement Lock Files
+
+Setting up `crontab` on different nodes without conflicts involves a systematic approach to ensure that tasks are well-coordinated. You can set up `crontab` on different nodes effectively while avoiding conflicts.
+
+**Lock Mechanism**: Use lock files to prevent multiple nodes from executing the same job simultaneously. For example, modify your cron job script to check for a lock file before execution:
+
+   ```bash
+   #!/bin/bash
+   LOCKFILE="/tmp/myjob.lock"
+
+   if [ -e $LOCKFILE ]; then
+     echo "Job is already running."
+     exit 1
+   fi
+
+   touch $LOCKFILE
+
+   # Your job code here
+
+   rm $LOCKFILE
+   ```
+
 # References
 [What is a Jump Server?](https://www.ssh.com/academy/iam/jump-server)\
 [SSH Tunneling (Port Forwarding) 詳解](https://johnliu55.tw/ssh-tunnel.html)
