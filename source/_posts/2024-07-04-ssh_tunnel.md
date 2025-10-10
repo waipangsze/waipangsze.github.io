@@ -100,6 +100,161 @@ $ ssh -L 0.0.0.0:9090:localhost:8080 user@server-ip
 ssh -R 9090:localhost:8080 user@server-ip
 ```
 
+# File explorer to read files
+
+- A to B to C
+
+To read files on host C from host A through an SSH tunnel via host B using a file explorer, follow these steps:
+
+## 1. Set Up the SSH Tunnel
+
+You need to create a tunnel from A to C through B. Use the following command on your terminal in host A:
+
+```bash
+ssh -L 2222:C.example.com:22 user_B@B.example.com
+```
+
+### Explanation:
+- **2222**: Local port on host A.
+- **C.example.com**: Hostname or IP address of host C.
+- **user_B**: Your SSH username for host B.
+- **B.example.com**: Hostname or IP address of host B.
+
+## 2. Use a File Explorer to Access C
+
+After setting up the SSH tunnel, you can use a file explorer to connect to C through the tunnel.
+
+### For Linux (Using File Manager)
+
+1. **Open your file manager** (e.g., `Nautilus`).
+2. In the address bar, type:
+
+   ```
+   sftp://username_C@localhost:2222
+   ```
+
+3. Enter the password for `username_C` when prompted.
+
+### For macOS (Using Finder)
+
+1. **Open Finder**.
+2. Click on **Go > Connect to Server** (or press `Command + K`).
+3. Enter:
+
+    ```
+    sftp://username_C@localhost:2222
+    ```
+
+    Again, replace `username_C` with the correct username for host C.
+
+1. Click **Connect** and enter the password for `username_C` when prompted.
+
+### For Windows (Using File Explorer)
+
+1. **Open File Explorer**.
+2. In the address bar, type:
+
+    ```
+    sftp://username_C@localhost:2222
+    ```
+
+    Replace `username_C` with the actual username for host C.
+
+3. When prompted, enter the password for `username_C`.
+
+
+### Notes
+- Make sure the SSH server on C is configured to allow SFTP connections.
+- If you need to specify the username for host C, you can modify the connection string to:
+
+  ```
+  sftp://username_C@localhost:2222
+  ```
+
+- Ensure that your SSH tunnel is active while accessing files through the file explorer.
+
+# From host A to host E via B, C, and D
+
+- A to B to C to D to E
+
+To set up SSH tunneling from host A to host E via B, C, and D, you will need to configure your `.ssh/config` file and then access files on E. Here's how to do it:
+
+### 1. Setup `.ssh/config`
+
+Open your SSH config file on host A:
+
+```bash
+vim ~/.ssh/config
+```
+
+Add the following configuration:
+
+```plaintext
+Host B
+    HostName B.example.com
+    User user_B
+
+Host C
+    HostName C.example.com
+    User user_C
+    ProxyJump B
+
+Host D
+    HostName D.example.com
+    User user_D
+    ProxyJump C
+
+Host E
+    HostName E.example.com
+    User user_E
+    ProxyJump D
+```
+
+### Explanation:
+- **Host B**: Configuration for the first hop to B.
+- **Host C**: Configuration for the second hop to C, using B as a proxy.
+- **Host D**: Configuration for the third hop to D, using C as a proxy.
+- **Host E**: Configuration for the final destination E, using D as a proxy.
+
+### 2. Accessing Files on Host E from Host A
+
+#### Step 1: Set Up the SSH Tunnel
+
+From host A, create an SSH tunnel that forwards a local port to host E. You can use the following command:
+
+```bash
+ssh -L 2222:E.example.com:22 user_D@D.example.com -J user_C@C.example.com -J user_B@B.example.com
+```
+
+### Step 2: Use a File Explorer to Access Host E
+
+#### For Linux (Using File Manager)
+
+1. **Open your file manager** (e.g., Nautilus).
+2. In the address bar, type:
+
+   ```
+   sftp://user_E@localhost:2222
+   ```
+
+3. Enter the password for `user_E` when prompted.
+
+### Summary
+
+1. The `.ssh/config` file is set up to facilitate SSH connections through multiple hops.
+2. An SSH tunnel is created to allow access to host E.
+3. You can access files on host E using the file explorer on host A by connecting to `sftp://localhost:2222` and providing the appropriate credentials.
+
+# Dynamic Port Forwarding (SOCKS Proxy)
+
+You can set up a `SOCKS proxy` to **route all your web traffic through an SSH server**:
+
+```bash
+ssh -D 1080 user@B.example.com
+```
+
+Then, configure your web browser or applications to use `localhost:1080` as a SOCKS proxy.
+
 # References
 [What is a Jump Server?](https://www.ssh.com/academy/iam/jump-server)\
 [SSH Tunneling (Port Forwarding) 詳解](https://johnliu55.tw/ssh-tunnel.html)
