@@ -223,6 +223,109 @@ take GFS-wave model as example,
 - `grib_to_netcdf gfs.t00z.global.0p16.f000.grib2 -o test.nc`
 - `ncvis/ncview test.nc`
 
+## From Fullset of GFS
+
+### To check `paramId`
+
+```
+$ grib_ls -n parameter grib.file
+```
+centre      paramId     shortName   units       name        
+kwbc        260074      prmsl       Pa          Pressure reduced to MSL 
+kwbc        260018      clwmr       kg kg**-1   Cloud mixing ratio 
+kwbc        260019      icmr        kg kg**-1   Ice water mixing ratio 
+kwbc        260020      rwmr        kg kg**-1   Rain mixing ratio 
+kwbc        260021      snmr        kg kg**-1   Snow mixing ratio 
+```
+
+```
+
+### wind speed (heightAboveGround)
+
+{% fold info @wind speed (heightAboveGround) %}
+```
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  20           u            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  20           v            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  30           u            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  30           v            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  40           u            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  40           v            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  50           u            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  50           v            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  80           t            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  80           q            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  80           pres         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  80           u            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  80           v            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  100          t            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  100          100u         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            heightAboveGround  100          100v         grid_complex_spatial_differencing 
+```
+{% endfold %}
+
+### surface
+
+{% fold info @surface %}
+```
+2            kwbc         20241130     fc           regular_ll   3            surface      0            vis          grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            gust         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            hindex       grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            sp           grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            orog         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            t            grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            cnwat        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            sdwe         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            sde          grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            pevpr        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            icetk        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            cpofp        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            cprat        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            prate        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            cprat        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            prate        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            tp           grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            tp           grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            acpcp        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            acpcp        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            watr         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            csnow        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            cicep        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            cfrzr        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            crain        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            csnow        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            cicep        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            cfrzr        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            crain        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            lhtfl        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            shtfl        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            gflux        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            uflx         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            vflx         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            sr           grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            fricv        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            u-gwd        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            v-gwd        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            veg          grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            slt          grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            wilt         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            fldcp        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            SUNSD        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            lftx         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            cape         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            cin          grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            dswrf        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            dlwrf        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            uswrf        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            ulwrf        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            4lftx        grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            hpbl         grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            lsm          grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            ci           grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   0-3          surface      0            al           grid_complex_spatial_differencing 
+2            kwbc         20241130     fc           regular_ll   3            surface      0            ist          grid_complex_spatial_differencing 
+```
+{% endfold %}
+
 # Read GFS grib2 files
 
 To process a CSV file containing station information (latitude and longitude) and extract weather data from GFS GRIB files, you can follow the steps below. This example assumes you have a CSV file named `stations.csv` with columns for station names, latitude, and longitude.
@@ -234,7 +337,6 @@ edition      centre       date         dataType     gridType     typeOfLevel  le
 2            kwbc         20250212     fc           regular_ll   surface      0            0-6          dswrf        grid_complex_spatial_differencing 
 1 of 1 messages in ./subset-GFS/gfs.0p25.2025021200.f006.grib2
 ```
-
 ## Step 1: Prepare Your CSV File
 
 Ensure your `stations.csv` has the following structure:
