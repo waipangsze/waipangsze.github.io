@@ -230,14 +230,14 @@ take GFS-wave model as example,
 ```
 $ grib_ls -n parameter grib.file
 ```
+
+```
 centre      paramId     shortName   units       name        
 kwbc        260074      prmsl       Pa          Pressure reduced to MSL 
 kwbc        260018      clwmr       kg kg**-1   Cloud mixing ratio 
 kwbc        260019      icmr        kg kg**-1   Ice water mixing ratio 
 kwbc        260020      rwmr        kg kg**-1   Rain mixing ratio 
 kwbc        260021      snmr        kg kg**-1   Snow mixing ratio 
-```
-
 ```
 
 ### wind speed (heightAboveGround)
@@ -354,53 +354,158 @@ Here's a complete Python script that reads the station information, extracts the
 {% fold info @extract_GFS.py %}
 ```python
 #!/bin/python
+
+import numpy as np
 import xarray as xr
 import pandas as pd
+import glob
 
+#===============================================================================================
+def check_assign(ds, var, lat, lon):
+    # Check if 'var' exists in the dataset
+    if var in ds:
+        return ds[var].interp(latitude=lat, longitude=lon, method='linear').values
+    else:
+        return np.nan  # Assign NaN if 'var' does not exist
+
+def calculate_wind_direction(u, v):
+    """
+    Calculates the meteorological wind direction from u and v components.
+
+    Args:
+        u (float or array-like): Eastward wind component.
+        v (float or array-like): Northward wind component.
+
+    Returns:
+        float or array-like: Wind direction in degrees (0-360), representing
+                             the direction the wind is coming *from*.
+    """
+    # Calculate the angle using arctan2.
+    # arctan2(y, x) returns the angle in radians between the positive x-axis and the point (x, y).
+    # For wind, we use -u and -v to get the direction the wind is coming from.
+    # The result will be in the range of -pi to pi radians.
+    wind_angle_radians = np.arctan2(-u, -v)
+
+    # Convert radians to degrees.
+    wind_angle_degrees = np.degrees(wind_angle_radians)
+
+    # Adjust the angle to be in the range 0-360 degrees.
+    # The modulo operator (%) handles negative angles correctly in Python.
+    wind_direction = (wind_angle_degrees + 360) % 360
+
+    return wind_direction
+#===============================================================================================
 # Step 1: Load the station data
 stations = pd.read_csv('station.csv')
 
-# Step 2: Initialize an empty list to store results
+# Step 2: Get and sort the list of GFS GRIB files
+#grib_files = sorted(glob.glob('./0p25/202509/20250914/gfs.t00z*grb') )  # Adjust the path and pattern
+grib_files = sorted(glob.glob("./0p25/202411/20241130/gfs_*0p25*")) 
+
+# Remove files that end with '.idx'
+grib_files = [file for file in grib_files if not file.endswith('.idx')]
+
+# Remove the first row (first file)
+if grib_files:
+    grib_files = grib_files[1:4]
+
+# Step 3: Interpolate data for each station across all GRIB files
 results = []
 
-# Step 3: Load GFS GRIB files
-# Replace 'path_to_grib_files/*.grib' with your actual path to the GRIB files
-grib_files = './subset-GFS/gfs.0p25.2025021200.f006.grib2'
+# GFS grib file
+# Coordinates:
+# * time        (time) datetime64[ns] 824B 2025-02-12 2025-02-12 ... 2025-02-12
+# step        (time) timedelta64[ns] 824B 0 days 06:00:00 ... 16 days 00:00:00
+# surface     float64 8B 0.0
+# * latitude    (latitude) float64 6kB 90.0 89.75 89.5 ... -89.5 -89.75 -90.0
+# * longitude   (longitude) float64 12kB 0.0 0.25 0.5 0.75 ... 359.2 359.5 359.8
+# valid_time  (time) datetime64[ns] 824B 2025-02-12T06:00:00 ... 2025-02-28
 
-# Step 4: Open the GRIB files using xarray
-# ds = xr.open_mfdataset(grib_files, engine='cfgrib', combine='by_coords')
-ds = xr.open_dataset(grib_files, engine='cfgrib') #,backend_kwargs={'filter_by_keys': {'typeOfLevel': 'isobaricInhPa'}})
 
-# Print the names of the variables
-print(ds)
+for grib_file in grib_files:
+    print(f"Processing: {grib_file}")
 
-# Step 5: Extract data for each station
-for index, row in stations.iterrows():
-    lat = row['latitude']
-    lon = row['longitude']
-    
-    # Step 6: Interpolate the data using bilinear interpolation
-    # t2m = ds['t2m'].interp(latitude=lat, longitude=lon, method='linear').values
-    # u10 = ds['u10'].interp(latitude=lat, longitude=lon, method='linear').values
-    # v10 = ds['v10'].interp(latitude=lat, longitude=lon, method='linear').values
-    # rh2m = ds['rh2m'].interp(latitude=lat, longitude=lon, method='linear').values
-    sdswrf = ds['sdswrf'].interp(latitude=lat, longitude=lon, method='linear').values
-    
-    # Step 7: Append the results
-    results.append({
-        'station': row['station'],
-        'sdswrf': sdswrf
-        # 't2m': t2m,
-        # 'u10': u10,
-        # 'v10': v10,
-        # 'rh2m': rh2m
-    })
+    # Step 4: Open the GRIB files using xarray
+    # ds = xr.open_mfdataset(grib_files, engine='cfgrib', combine='by_coords') #combine='nested', concat_dim="time") # combine='by_coords')
+    #ds = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'typeOfLevel': 'surface', 'shortName': 'dswrf'})
+
+    ds_2t = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': '2t'})
+    ds_2r = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': '2r'}) 
+
+    ds_10u = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': '10u'})
+    ds_10v = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': '10v'})
+    ds_100u = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': '100u'})
+    ds_100v = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': '100v'})
+
+    ds_20u = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'u', 'typeOfLevel': 'heightAboveGround', 'level': 20})
+    ds_20v = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'v', 'typeOfLevel': 'heightAboveGround', 'level': 20})
+    ds_30u = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'u', 'typeOfLevel': 'heightAboveGround', 'level': 30})
+    ds_30v = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'v', 'typeOfLevel': 'heightAboveGround', 'level': 30})
+    ds_40u = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'u', 'typeOfLevel': 'heightAboveGround', 'level': 40})
+    ds_40v = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'v', 'typeOfLevel': 'heightAboveGround', 'level': 40})
+    ds_50u = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'u', 'typeOfLevel': 'heightAboveGround', 'level': 50})
+    ds_50v = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'v', 'typeOfLevel': 'heightAboveGround', 'level': 50})
+    ds_80u = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'u', 'typeOfLevel': 'heightAboveGround', 'level': 80})
+    ds_80v = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'v', 'typeOfLevel': 'heightAboveGround', 'level': 80})
+
+    ds_dswrf = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'typeOfLevel': 'surface', 'shortName': 'dswrf'})
+    ds_sp = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'sp'})
+    ds_hpbl = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'hpbl'})
+
+
+    print(ds_2r)
+    #exit()
+    ## Print the names of the variables
+    # print(ds_2t)
+    # selected_time = ds_2t.time.values # It is initial time!!
+    selected_time = ds_2t.valid_time.values # It is valid time
+    ## Assuming selected_time_utc is in numpy datetime64 format
+    selected_time_utc = pd.to_datetime(selected_time)  # Convert to pandas datetime
+    selected_time_utc_plus_8 = selected_time_utc + pd.Timedelta(hours=8)  # Add 8 hours
+
+    print(selected_time)
+
+    # Step 5: Extract data for each station
+    for index, row in stations.iterrows():
+        lat = row['latitude']
+        lon = row['longitude']
+        
+        # Step 6: Interpolate the data using bilinear interpolation
+        t2m = check_assign(ds_2t, 't2m', lat, lon) - 273.15        # var name = t2m
+        r2m = check_assign(ds_2r, 'r2', lat, lon)                  # var name = r2
+        u10 = check_assign(ds_10u, 'u10', lat, lon)
+        v10 = check_assign(ds_10v, 'v10', lat, lon)
+        u100 = check_assign(ds_100u, 'u100', lat, lon)
+        v100 = check_assign(ds_100v, 'v100', lat, lon)
+        dswrf = check_assign(ds_dswrf, 'dswrf', lat, lon)
+        #t2m = ds_t['t'].interp(latitude=lat, longitude=lon, method='linear').values
+        #u10 = ds['u10'].interp(latitude=lat, longitude=lon, method='linear').values
+        #v10 = ds['v10'].interp(latitude=lat, longitude=lon, method='linear').values
+        # rh2m = ds['rh2m'].interp(latitude=lat, longitude=lon, method='linear').values
+        #sdswrf = ds['sdswrf'].interp(latitude=lat, longitude=lon, method='linear').values
+        
+        # Step 7: Append the results
+        results.append({
+            'station': row['station'],
+            'datetime[UTC]': selected_time_utc,
+            'datetime[BJT]': selected_time_utc_plus_8,
+            't2m[degC]': t2m,
+            'r2m[%]': r2m,
+            'u10': u10,
+            'v10': v10,
+            'ws10[m/s]': np.sqrt(u10**2 + u10**2),
+            'wd10[deg]': calculate_wind_direction(u10, v10),
+            # 'u100': u100,
+            # 'v100': v100,
+            'dswrf': dswrf,
+            # 'rh2m': rh2m
+        })
 
 # Step 8: Create a DataFrame from the results
 output_df = pd.DataFrame(results)
 
 # Step 9: Save the results to a CSV file
-output_df.to_csv('output.csv', index=False)
+output_df.to_csv('output_multiple.csv', index=False)
 ```
 {% endfold %}
 
