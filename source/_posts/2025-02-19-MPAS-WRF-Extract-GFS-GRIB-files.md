@@ -351,6 +351,62 @@ Station2,22.6,114.6
 
 Here's a complete Python script that reads the station information, extracts the required data from the GRIB files, and writes the results to a new CSV file.
 
+- `$ grib_ls -p paramId,shortName,level gfs_20241204_0000_0p25_003`
+
+{% fold info @grib_ls -p paramId,shortName,level %}
+```bash
+paramId     shortName   level 
+134         sp          0          
+228002      orog        0          
+130         t           0          
+228139      st          0          
+260185      soilw       0          
+260205      soill       0          
+228139      st          0          
+260185      soilw       0          
+260205      soill       0          
+228139      st          0          
+260185      soilw       0          
+260205      soill       0          
+228139      st          1          
+260185      soilw       1          
+260205      soill       1          
+260189      cnwat       0          
+260056      sdwe        0          
+3066        sde         0          
+260037      pevpr       0          
+3092        icetk       0          
+167         2t          2          
+174096      2sh         2          
+168         2d          2          
+260242      2r          2          
+260255      aptmp       2          
+3015        tmax        2          
+3016        tmin        2          
+165         10u         10         
+166         10v         10         
+3097        iceg        10 
+......
+```
+{% endfold %}
+
+-  $ `wgrib2 gfs_20241204_0000_0p25_003 -v` 
+{% fold info @wgrib2 -v %}
+```bash
+1:0:d=2024120400:PRMSL Pressure Reduced to MSL [Pa]:mean sea level:3 hour fcst:
+2:998096:d=2024120400:CLMR Cloud Mixing Ratio [kg/kg]:1 hybrid level:3 hour fcst:
+3:1076966:d=2024120400:ICMR Ice Water Mixing Ratio [kg/kg]:1 hybrid level:3 hour fcst:
+4:1405742:d=2024120400:RWMR Rain Mixing Ratio [kg/kg]:1 hybrid level:3 hour fcst:
+5:1656285:d=2024120400:SNMR Snow Mixing Ratio [kg/kg]:1 hybrid level:3 hour fcst:
+6:1757478:d=2024120400:GRLE Graupel [kg/kg]:1 hybrid level:3 hour fcst:
+7:1805850:d=2024120400:REFD Reflectivity [dB]:1 hybrid level:3 hour fcst:
+8:2596761:d=2024120400:REFD Reflectivity [dB]:2 hybrid level:3 hour fcst:
+9:3388182:d=2024120400:REFC Composite reflectivity [dB]:entire atmosphere:3 hour fcst:
+10:4239776:d=2024120400:VIS Visibility [m]:surface:3 hour fcst:
+......
+```
+{% endfold %}
+
 {% fold info @extract_GFS.py %}
 ```python
 #!/bin/python
@@ -380,27 +436,17 @@ def calculate_wind_direction(u, v):
         float or array-like: Wind direction in degrees (0-360), representing
                              the direction the wind is coming *from*.
     """
-    # Calculate the angle using arctan2.
-    # arctan2(y, x) returns the angle in radians between the positive x-axis and the point (x, y).
-    # For wind, we use -u and -v to get the direction the wind is coming from.
-    # The result will be in the range of -pi to pi radians.
-    wind_angle_radians = np.arctan2(-u, -v)
-
-    # Convert radians to degrees.
-    wind_angle_degrees = np.degrees(wind_angle_radians)
-
-    # Adjust the angle to be in the range 0-360 degrees.
-    # The modulo operator (%) handles negative angles correctly in Python.
-    wind_direction = (wind_angle_degrees + 360) % 360
-
-    return wind_direction
+    return (np.rad2deg(np.arctan2(u, v)) + 180.0) % 360.0
+    
 #===============================================================================================
 # Step 1: Load the station data
 stations = pd.read_csv('station.csv')
 
 # Step 2: Get and sort the list of GFS GRIB files
 #grib_files = sorted(glob.glob('./0p25/202509/20250914/gfs.t00z*grb') )  # Adjust the path and pattern
-grib_files = sorted(glob.glob("./0p25/202411/20241130/gfs_*0p25*")) 
+yyyymm="202411"
+dd="30"
+grib_files = sorted(glob.glob(f"./0p25/{yyyymm}/{yyyymm}{dd}/gfs_*0p25*")) 
 
 # Remove files that end with '.idx'
 grib_files = [file for file in grib_files if not file.endswith('.idx')]
@@ -452,8 +498,12 @@ for grib_file in grib_files:
     ds_sp = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'sp'})
     ds_hpbl = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'hpbl'})
 
+    ds_vis = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'vis', 'typeOfLevel': 'surface'}) # Visibility [m]
+    ds_cape = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'cape', 'typeOfLevel': 'surface'}) # CAPE Convective Available Potential Energy [J/kg]
+    ds_cin = xr.open_dataset(grib_file, engine='cfgrib', decode_timedelta=True, filter_by_keys={'shortName': 'cin', 'typeOfLevel': 'surface'}) # CIN Convective Inhibition [J/kg]
 
-    print(ds_2r)
+
+    #print(ds_2r)
     #exit()
     ## Print the names of the variables
     # print(ds_2t)
@@ -475,14 +525,13 @@ for grib_file in grib_files:
         r2m = check_assign(ds_2r, 'r2', lat, lon)                  # var name = r2
         u10 = check_assign(ds_10u, 'u10', lat, lon)
         v10 = check_assign(ds_10v, 'v10', lat, lon)
+        u80 = check_assign(ds_80u, 'u', lat, lon)
+        v80 = check_assign(ds_80v, 'v', lat, lon)
         u100 = check_assign(ds_100u, 'u100', lat, lon)
         v100 = check_assign(ds_100v, 'v100', lat, lon)
         dswrf = check_assign(ds_dswrf, 'dswrf', lat, lon)
-        #t2m = ds_t['t'].interp(latitude=lat, longitude=lon, method='linear').values
-        #u10 = ds['u10'].interp(latitude=lat, longitude=lon, method='linear').values
-        #v10 = ds['v10'].interp(latitude=lat, longitude=lon, method='linear').values
-        # rh2m = ds['rh2m'].interp(latitude=lat, longitude=lon, method='linear').values
-        #sdswrf = ds['sdswrf'].interp(latitude=lat, longitude=lon, method='linear').values
+        hpbl = check_assign(ds_hpbl, 'hpbl', lat, lon)
+        vis = check_assign(ds_vis, 'vis', lat, lon)
         
         # Step 7: Append the results
         results.append({
@@ -491,21 +540,24 @@ for grib_file in grib_files:
             'datetime[BJT]': selected_time_utc_plus_8,
             't2m[degC]': t2m,
             'r2m[%]': r2m,
-            'u10': u10,
-            'v10': v10,
+            'u10[m/s]': u10,
+            'v10[m/s]': v10,
             'ws10[m/s]': np.sqrt(u10**2 + u10**2),
             'wd10[deg]': calculate_wind_direction(u10, v10),
-            # 'u100': u100,
-            # 'v100': v100,
-            'dswrf': dswrf,
-            # 'rh2m': rh2m
+            'ws80[m/s]': np.sqrt(u80**2 + u80**2),
+            'wd80[deg]': calculate_wind_direction(u80, v80),
+            'ws100[m/s]': np.sqrt(u100**2 + u100**2),
+            'wd100[deg]': calculate_wind_direction(u100, v100),
+            'dswrf[W/m2]': dswrf,
+            'hpbl[m]': hpbl,
+            'vis[m]': vis,
         })
 
 # Step 8: Create a DataFrame from the results
 output_df = pd.DataFrame(results)
 
 # Step 9: Save the results to a CSV file
-output_df.to_csv('output_multiple.csv', index=False)
+output_df.to_csv(f'GFS_{yyyymm}{dd}.csv', index=False)
 ```
 {% endfold %}
 
