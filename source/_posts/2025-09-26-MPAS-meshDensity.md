@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/pxRygfS.png
+banner_img: https://i.imgur.com/pxRygfS.png
 ---
 
 `dx_p`, `len_disp`, and `meshDensity` in NWP and specifically in MPAS-A, and their relationships:
