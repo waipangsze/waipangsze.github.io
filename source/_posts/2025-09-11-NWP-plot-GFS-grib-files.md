@@ -13,6 +13,10 @@ index_img: https://i.imgur.com/jzIMNr2.png
 banner_img: https://i.imgur.com/jzIMNr2.png
 ---
 
+- [**NWP | wgrib2 | grib_ls**](https://waipangsze.github.io/2025/10/16/NWP-wgrib2-grib_ls/)
+
+---
+
 # Download subset of GFS
 
 - NCEP GFS Forecasts (0.25 degree grid)
