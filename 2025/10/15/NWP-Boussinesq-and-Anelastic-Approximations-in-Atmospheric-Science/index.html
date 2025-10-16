@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/LzfLUBJ.png">
 <meta property="article:published_time" content="2025-10-15T15:18:00.000Z">
-<meta property="article:modified_time" content="2025-10-15T07:29:19.497Z">
+<meta property="article:modified_time" content="2025-10-16T09:53:56.512Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="MPAS">
@@ -361,7 +361,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          205 words
+          694 words
         
       </span>
     
@@ -372,7 +372,7 @@
         
         
         
-          2 mins
+          6 mins
         
       </span>
     
@@ -423,7 +423,7 @@
             
               <div class="markdown-body">
                 
-                <h2 id="simplifying-the-skies-an-introduction-to-boussinesq-and-anelastic-approximations-in-atmospheric-science">Simplifying the Skies: An Introduction to Boussinesq and Anelastic Approximations in Atmospheric Science</h2>
+                <h1 id="simplifying-the-skies-an-introduction-to-boussinesq-and-anelastic-approximations-in-atmospheric-science">Simplifying the Skies: An Introduction to Boussinesq and Anelastic Approximations in Atmospheric Science</h1>
 <p>In the quest to understand and predict the complex motions of the atmosphere, scientists rely on mathematical models. However, the full equations governing fluid dynamics are notoriously difficult to solve. To make these calculations more manageable, physicists and meteorologists employ a range of simplifying assumptions known as approximations. Among the most fundamental of these are the <strong>Boussinesq and anelastic approximations</strong>, which are crucial for modeling a variety of atmospheric phenomena, from small-scale convection to large-scale circulation.</p>
 <div class="note note-primary">
             <p>Both approximations aim to simplify the <strong>treatment of density variations in the governing equations of motion</strong></p>
@@ -431,31 +431,31 @@
 <p>At their core, both approximations aim to simplify the <strong>treatment of density variations in the governing equations of motion</strong>. In the atmosphere, density changes are driven by variations in temperature, pressure, and moisture content. These density differences, in turn, create buoyancy forces that drive vertical air motion. However, accounting for the full effect of these density changes on all aspects of the airflow can be computationally expensive. The Boussinesq and anelastic approximations offer a way to capture the essential impact of buoyancy while simplifying other terms in the equations.</p>
 <p><img src="https://i.imgur.com/LzfLUBJ.png" srcset="/img/loading.gif" lazyload width="400" /></p>
 <hr />
-<h3 id="the-boussinesq-approximation-a-focus-on-buoyancy">The Boussinesq Approximation: A Focus on Buoyancy</h3>
+<h2 id="the-boussinesq-approximation-a-focus-on-buoyancy">The Boussinesq Approximation: A Focus on Buoyancy</h2>
 <p>The <strong>Boussinesq approximation</strong>, named after the French physicist Joseph Boussinesq, is the more restrictive of the two. It is founded on the principle that density variations are only significant in the term that accounts for the force of gravity—the buoyancy term. In all other terms of the momentum and continuity equations, density is treated as a constant.</p>
-<h4 id="key-assumptions">Key Assumptions:</h4>
+<h3 id="key-assumptions">Key Assumptions:</h3>
 <ul>
 <li><strong>Small Density Perturbations:</strong> The density variations (<span class="math inline">\(\rho&#39;\)</span>) from a constant reference density (<span class="math inline">\(\rho_0\)</span>) are assumed to be much smaller than the reference density itself (<span class="math inline">\(\rho&#39; \ll \rho_0\)</span>).</li>
 <li><strong>Incompressibility:</strong> The flow is assumed to be incompressible, meaning that the divergence of the velocity field is zero (<span class="math inline">\(\nabla \cdot \mathbf{u} = 0\)</span>). This <strong>effectively filters out sound waves</strong>, which are associated with the compressibility of air.</li>
 <li><strong>Shallow Vertical Motions:</strong> This approximation is most valid for atmospheric phenomena where the vertical scale of motion is much smaller than the scale height of the atmosphere (approximately 8-10 km). The scale height is the vertical distance over which the atmospheric density changes by a factor of <em>e</em> (approximately 2.718).</li>
 </ul>
-<h4 id="applications-and-limitations">Applications and Limitations:</h4>
+<h3 id="applications-and-limitations">Applications and Limitations:</h3>
 <p>The Boussinesq approximation is well-suited for modeling <strong>shallow convection</strong>, such as the formation of fair-weather cumulus clouds, boundary layer thermals, and some types of thunderstorms where the vertical extent is limited.</p>
 <p>However, its primary limitation is its inapplicability to <strong>deep atmospheric phenomena</strong>. For motions that span a significant portion of the troposphere, such as deep convective storms or large-scale atmospheric waves, <strong>the assumption of a constant reference density breaks down</strong>. As an air parcel rises through a deep layer of the atmosphere, the ambient pressure and density decrease significantly, a factor the Boussinesq approximation cannot adequately capture.</p>
 <hr />
-<h3 id="the-anelastic-approximation-accounting-for-a-stratified-atmosphere">The Anelastic Approximation: Accounting for a Stratified Atmosphere</h3>
+<h2 id="the-anelastic-approximation-accounting-for-a-stratified-atmosphere">The Anelastic Approximation: Accounting for a Stratified Atmosphere</h2>
 <p>The <strong>anelastic approximation</strong> offers a more refined approach by acknowledging that atmospheric density varies significantly with height. Instead of assuming a constant reference density, it considers a background density that decreases exponentially with altitude, which is a more realistic representation of the atmosphere's basic state.</p>
-<h4 id="key-assumptions-1">Key Assumptions:</h4>
+<h3 id="key-assumptions-1">Key Assumptions:</h3>
 <ul>
 <li><strong>Small Perturbations from a Stratified Reference State:</strong> Density and pressure are considered as small perturbations from a hydrostatically balanced reference state that varies with height (<span class="math inline">\(\rho_0(z)\)</span> and <span class="math inline">\(p_0(z)\)</span>).</li>
 <li><strong>Filtering of Sound Waves:</strong> Like the Boussinesq approximation, the anelastic approximation filters out sound waves. It achieves this by modifying the continuity equation to <span class="math inline">\(\nabla \cdot (\rho_0 \mathbf{u}) = 0\)</span>. This allows for the expansion and compression of air parcels as they move vertically through the stratified atmosphere, but it does so in a way that does not support the propagation of acoustic waves.</li>
 <li><strong>Low Mach Number:</strong> The fluid velocities are assumed to be much smaller than the speed of sound.</li>
 </ul>
-<h4 id="applications-and-limitations-1">Applications and Limitations:</h4>
+<h3 id="applications-and-limitations-1">Applications and Limitations:</h3>
 <p>The anelastic approximation has a broader range of applications than the Boussinesq approximation. It is the foundation for many numerical models used to simulate <strong>deep convection</strong>, including severe thunderstorms and mesoscale convective systems. It is also employed in modeling larger-scale phenomena like mountain waves and atmospheric tides.</p>
 <p>While more versatile, the anelastic approximation is more complex to implement than the Boussinesq approximation. <strong>Its primary limitation is that it still filters out sound waves</strong>, which, while often negligible, can be important in specific atmospheric contexts, such as the initial stages of explosive volcanic eruptions or certain types of atmospheric gravity waves.</p>
 <hr />
-<h3 id="a-tale-of-two-approximations-boussinesq-vs.-anelastic">A Tale of Two Approximations: Boussinesq vs. Anelastic</h3>
+<h2 id="a-tale-of-two-approximations-boussinesq-vs.-anelastic">A Tale of Two Approximations: Boussinesq vs. Anelastic</h2>
 <table>
 
 <thead>
@@ -477,9 +477,19 @@
 <td style="text-align: left;"><span class="math inline">\(\nabla \cdot (\rho_0 \mathbf{u}) = 0\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Vertical Scale</strong></td>
-<td style="text-align: left;">Valid for shallow motions (much less than the scale height).</td>
-<td style="text-align: left;">Valid for deep motions (comparable to the scale height).</td>
+<td style="text-align: left;"><strong>Conservation</strong></td>
+<td style="text-align: left;">Conserves <strong>volume</strong> (incompressible).</td>
+<td style="text-align: left;">Conserves <strong>mass</strong>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Applicable Depth</strong></td>
+<td style="text-align: left;"><strong>Shallow</strong> flows (small vertical scale).</td>
+<td style="text-align: left;"><strong>Deep</strong> flows (large vertical scale), correctly captures density stratification.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Typical Applications</strong></td>
+<td style="text-align: left;">Shallow cumulus clouds, boundary layer thermals.</td>
+<td style="text-align: left;">Deep convective storms, mountain waves.</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Complexity</strong></td>
@@ -487,15 +497,73 @@
 <td style="text-align: left;">More complex to implement.</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Typical Applications</strong></td>
-<td style="text-align: left;">Shallow cumulus clouds, boundary layer thermals.</td>
-<td style="text-align: left;">Deep convective storms, mountain waves.</td>
+<td style="text-align: left;"><strong>Relationship</strong></td>
+<td style="text-align: left;">The Boussinesq equations are a <strong>simplified subset</strong> of the anelastic equations, applicable under the additional constraint of a shallow layer.</td>
+<td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
 <p>In essence, the Boussinesq approximation can be seen as a special case of the anelastic approximation where the atmospheric density is assumed to be uniform. The choice between the two depends on the specific atmospheric phenomenon being studied. For shallow systems where density variations with height are negligible, the simplicity of the Boussinesq approximation is advantageous. However, for deep atmospheric motions where the background density stratification plays a crucial role, the more physically realistic anelastic approximation is the necessary choice. These powerful tools, by simplifying the complexities of atmospheric motion, have become indispensable in our ongoing efforts to unravel the workings of the sky.</p>
+<h1 id="boussinesq-approximation"><strong>Boussinesq Approximation</strong></h1>
+<p>The <strong>Boussinesq Approximation</strong> simplifies the full governing equations of a compressible fluid by assuming density variations are small, except where they are coupled with gravity (the buoyancy term). This set of equations is suitable for <strong>shallow, buoyant flows</strong> where the vertical scale of the motion is much less than the atmospheric scale height.</p>
+<p>The equations are expressed in terms of perturbations around a constant reference state.</p>
+<h2 id="variables">1. Variables</h2>
+<ul>
+<li><span class="math inline">\(\mathbf{u}\)</span>: velocity vector (<span class="math inline">\(u, v, w\)</span>)</li>
+<li><span class="math inline">\(\rho_0\)</span>: <strong>constant</strong> reference density</li>
+<li><span class="math inline">\(\theta_0\)</span>: <strong>constant</strong> reference potential temperature</li>
+<li><span class="math inline">\(\Phi\)</span>: "reduced" or "modified" pressure (kinematic pressure, <span class="math inline">\(\Phi = p&#39;/\rho_0\)</span>)</li>
+<li><span class="math inline">\(b\)</span>: buoyancy (<span class="math inline">\(b = g \theta&#39; / \theta_0\)</span>)</li>
+<li><span class="math inline">\(\theta&#39;\)</span>: perturbation potential temperature (<span class="math inline">\(\theta&#39; = \theta - \theta_0\)</span>)</li>
+<li><span class="math inline">\(D/Dt\)</span>: the material derivative, <span class="math inline">\(D/Dt = \partial/\partial t + \mathbf{u} \cdot \nabla\)</span></li>
+<li><span class="math inline">\(\nu\)</span>: kinematic viscosity</li>
+<li><span class="math inline">\(\kappa\)</span>: thermal diffusivity</li>
+<li><span class="math inline">\(Q_{\text{heat}}\)</span>: diabatic heating rate per unit mass</li>
+</ul>
+<hr />
+<h2 id="boussinesq-equations">2. Boussinesq Equations</h2>
+<h3 id="mass-continuity-equation-incompressibility">1. Mass Continuity Equation (Incompressibility)</h3>
+<p>The flow is treated as <strong>incompressible</strong> (volume-conserving), which filters out sound waves.</p>
+<p><span class="math display">\[\nabla \cdot \mathbf{u} = \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} + \frac{\partial w}{\partial z} = 0\]</span></p>
+<h3 id="momentum-equation-navier-stokes">2. Momentum Equation (Navier-Stokes)</h3>
+<p>The horizontal (X and Y) and vertical (Z) momentum equations are expressed in terms of the constant reference density <span class="math inline">\(\rho_0\)</span>.</p>
+<p><strong>Horizontal Momentum (Vector Form, simplified):</strong> <span class="math display">\[\frac{D \mathbf{u}_h}{D t} = - \nabla_h \Phi + \nu \nabla^2 \mathbf{u}_h\]</span> where <span class="math inline">\(\mathbf{u}_h = (u, v)\)</span> and <span class="math inline">\(\nabla_h = (\partial/\partial x, \partial/\partial y)\)</span>.</p>
+<p><strong>Vertical Momentum:</strong> <span class="math display">\[\frac{D w}{D t} = - \frac{\partial \Phi}{\partial z} + b + \nu \nabla^2 w\]</span></p>
+<ul>
+<li>The term <span class="math inline">\(\frac{\partial \Phi}{\partial z}\)</span> is the <strong>vertical pressure gradient force</strong>.</li>
+<li>The term <strong><span class="math inline">\(b = g \frac{\theta&#39;}{\theta_0}\)</span> is the buoyancy force</strong>, which is the only term where density/temperature variations are explicitly retained.</li>
+</ul>
+<h3 id="thermodynamic-energy-equation-potential-temperature">3. Thermodynamic Energy Equation (Potential Temperature)</h3>
+<p>This equation describes the evolution of the <strong>buoyancy field</strong> (or potential temperature perturbation, <span class="math inline">\(\theta&#39;\)</span>), including non-adiabatic effects like heating and diffusion.</p>
+<p><span class="math display">\[\frac{D \theta&#39;}{D t} = w \frac{\partial \theta_0}{\partial z} + \frac{Q_{\text{heat}}}{\Pi} + \kappa \nabla^2 \theta&#39;\]</span> * The term <span class="math inline">\(w \frac{\partial \theta_0}{\partial z}\)</span> (or <span class="math inline">\(-w \frac{\partial \bar{\theta}}{\partial z}\)</span> in some forms) represents the <strong>advection of the background potential temperature gradient</strong> (stratification) by vertical motion. For a Boussinesq atmosphere, <span class="math inline">\(\frac{\partial \theta_0}{\partial z}\)</span> is often assumed to be a small, non-zero constant. * <span class="math inline">\(\Pi\)</span> is the Exner function. In the buoyancy form (<span class="math inline">\(D b / D t\)</span>), the equation often simplifies to: <span class="math display">\[\frac{D b}{D t} = - w N^2 + \frac{g}{\theta_0} \left( \frac{Q_{\text{heat}}}{\Pi} + \kappa \nabla^2 \theta&#39; \right)\]</span> where <span class="math inline">\(N^2 = \frac{g}{\theta_0} \frac{\partial \theta_0}{\partial z}\)</span> is the square of the <strong>Brunt–Väisälä frequency</strong>.</p>
+<h1 id="anelastic-approximation"><strong>Anelastic Approximation</strong></h1>
+<p>The <strong>Anelastic Approximation</strong> is a simplification of the full set of fluid dynamic equations for a compressible, stratified fluid (like the atmosphere or stellar interiors) that filters out fast-moving sound waves by neglecting the local time derivative of density in the continuity equation. This makes the continuity equation diagnostic (elliptic) rather than prognostic (hyperbolic).</p>
+<p>The equations are typically written in terms of total variables (like density <span class="math inline">\(\rho_{tot}\)</span> and potential temperature <span class="math inline">\(\theta_{tot}\)</span>) split into a hydrostatic, time-independent <strong>reference state</strong> (denoted by a subscript 0) and small <strong>perturbations</strong> (denoted by a prime), for example, <span class="math inline">\(\rho_{tot} = \rho_0(z) + \rho&#39;(x, y, z, t)\)</span> and <span class="math inline">\(\theta_{tot} = \theta_0(z) + \theta&#39;(x, y, z, t)\)</span>.</p>
+<p>The most common form of the anelastic equations for a dry atmosphere, neglecting rotation, viscosity, and diabatic heating for simplicity, is given below.</p>
+<hr />
+<h2 id="anelastic-governing-equations">Anelastic Governing Equations</h2>
+<h3 id="mass-continuity-equation-anelastic-constraint">1. Mass Continuity Equation (Anelastic Constraint)</h3>
+<p>This is the defining equation of the anelastic approximation. It states that the mass flux of the reference state is non-divergent:</p>
+<p><span class="math display">\[\nabla \cdot (\rho_0 \mathbf{u}) = 0\]</span></p>
+<p>where: * <span class="math inline">\(\rho_0(z)\)</span> is the <strong>reference state density</strong>, which varies only with height <span class="math inline">\(z\)</span>. * <span class="math inline">\(\mathbf{u} = (u, v, w)\)</span> is the <strong>velocity vector</strong> (perturbation velocity).</p>
+<p>This constraint filters out sound waves and implies that the local time derivative of the total density, <span class="math inline">\(\partial \rho_{tot} / \partial t\)</span>, is negligible compared to the advection terms. In component form, this is:</p>
+<p><span class="math display">\[\frac{\partial (\rho_0 u)}{\partial x} + \frac{\partial (\rho_0 v)}{\partial y} + \frac{\partial (\rho_0 w)}{\partial z} = 0\]</span></p>
+<h3 id="momentum-equations-navier-stokes">2. Momentum Equations (Navier-Stokes)</h3>
+<p>The momentum equations describe the acceleration of the fluid. The horizontal components are often simplified:</p>
+<h4 id="horizontal-momentum-in-x-and-y-directions">Horizontal Momentum (in <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> directions):</h4>
+<p><span class="math display">\[\rho_0 \frac{D \mathbf{u}_h}{D t} = - \nabla_h p&#39;\]</span></p>
+<p>where: * <span class="math inline">\(\frac{D}{D t} = \frac{\partial}{\partial t} + \mathbf{u} \cdot \nabla\)</span> is the <strong>Lagrangian material derivative</strong>. * <span class="math inline">\(\mathbf{u}_h = (u, v)\)</span> is the <strong>horizontal velocity vector</strong>. * <span class="math inline">\(\nabla_h\)</span> is the horizontal gradient operator. * <span class="math inline">\(p&#39;\)</span> is the <strong>perturbation pressure</strong>.</p>
+<h4 id="vertical-momentum-in-z-direction">Vertical Momentum (in <span class="math inline">\(z\)</span> direction):</h4>
+<p><span class="math display">\[\rho_0 \frac{D w}{D t} = - \frac{\partial p&#39;}{\partial z} + \rho_0 g B\]</span></p>
+<p>where: * <span class="math inline">\(w\)</span> is the <strong>vertical velocity</strong>. * <span class="math inline">\(g\)</span> is the <strong>acceleration due to gravity</strong>. * <span class="math inline">\(B\)</span> is the <strong>buoyancy term</strong> (buoyancy force per unit mass), often expressed in terms of the potential temperature perturbation <span class="math inline">\(\theta&#39;\)</span>: <span class="math display">\[B = g \frac{\theta&#39;}{\theta_0}\]</span></p>
+<p>This equation incorporates the <strong>hydrostatic balance</strong> of the reference state and accounts for the non-hydrostatic pressure forces and the buoyancy force acting on the fluid perturbation.</p>
+<h3 id="thermodynamic-energy-equation">3. Thermodynamic Energy Equation</h3>
+<p>The anelastic approximation is usually closed using an equation for the conservation of <strong>potential temperature</strong> (<span class="math inline">\(\theta\)</span>):</p>
+<p><span class="math display">\[\rho_0 \frac{D \theta&#39;}{D t} = -\rho_0 w \frac{d \theta_0}{d z} + \frac{Q}{c_p \Pi}\]</span></p>
+<p>where: * <span class="math inline">\(\theta&#39;\)</span> is the <strong>perturbation potential temperature</strong> (<span class="math inline">\(\theta_{tot} = \theta_0 + \theta&#39;\)</span>). * <span class="math inline">\(\theta_0(z)\)</span> is the <strong>reference state potential temperature</strong>. * <span class="math inline">\(\frac{d \theta_0}{d z}\)</span> is the <strong>vertical gradient of the reference potential temperature</strong> (related to the static stability). * <span class="math inline">\(Q\)</span> is the <strong>diabatic heating rate</strong> per unit volume (e.g., radiative, latent heat). * <span class="math inline">\(c_p\)</span> is the <strong>specific heat at constant pressure</strong>. * <span class="math inline">\(\Pi = c_p (p_{tot}/p_{ref})^\kappa\)</span> is the <strong>Exner function</strong> (<span class="math inline">\(\kappa = R/c_p\)</span>).</p>
+<p>This equation is a prognostic equation for <span class="math inline">\(\theta&#39;\)</span>. The term <span class="math inline">\(-\rho_0 w \frac{d \theta_0}{d z}\)</span> represents the conversion of kinetic energy to potential energy due to vertical motion in a stratified environment.</p>
 <h1 id="ai-source">AI source</h1>
-<p>From Google Gemini 2.5 Pro</p>
+<p>From Google Gemini 2.5</p>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://sraman.wordpress.ncsu.edu/files/2020/09/J98.pdf">Xu, L., S. Raman, and R. V. Madala. "A review of non-hydrostatic numerical models for the atmosphere." 1st World Congress of Nonlinear Analysis Fire and Forest Meteorology. Nonlinear World, Walter de Gruyter, New York, Tampa, FL. 1992.</a></li>
@@ -576,7 +644,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 15, 2025</div>
+          <div>October 16, 2025</div>
         </div>
       
       
