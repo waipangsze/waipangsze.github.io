@@ -85,7 +85,9 @@ banner_img: https://i.imgur.com/vC76DXy.png
 
 # MPAS (Global 3.7km mesh)
 
-- [MPAS | Real-Time Forecasts](https://waipangsze.github.io/2025/09/09/MPAS-Real-Time-Forecasts/)
+- [**MPAS | Real-Time Forecasts**](https://waipangsze.github.io/2025/09/09/MPAS-Real-Time-Forecasts/)
+
+---
 
 {% gi 8 4-4 %}
 ![](https://i.imgur.com/MfflR6W.png)
@@ -97,6 +99,20 @@ banner_img: https://i.imgur.com/vC76DXy.png
 ![](https://i.imgur.com/U8Jg7g7.png)
 ![](https://i.imgur.com/BqgMMz1.png)
 {% endgi %}
+
+## News from UCAR : Scientists eye hurricanes, rainfall in global high-def
+
+- Scientists eye hurricanes, rainfall in global high-def
+  - High-resolution simulations aim to improve forecasts of tropical cyclones and rainfall worldwide
+  - Sep 25, 2025 - by David Hosansky
+  - <https://news.ucar.edu/133040/scientists-eye-hurricanes-rainfall-global-high-def>
+
+![Three days before the outer rainbands of Typhoon Ragasa caused devastating flooding in Taiwan, MPAS simulations captured the event. This case highlights how higher resolution adds value to a forecast: the 3.75-kilometer modeling (right)  better captures the stark contrast between extreme upslope rainfall and the near-dry leeward side. In contrast, the 15-kilometer modeling (left) smooths over those details.](https://i.imgur.com/OzDTHZU.png){width=500}
+
+- Even before thunderstorms over the Pacific Ocean began to significantly build last week, experimental forecasts at the U.S. National Science Foundation National Center for Atmospheric Research (NSF NCAR) showed the emerging weather system intensifying into a super typhoon. And, indeed, the thunderstorms ultimately spawned Super Typhoon Ragasa, whose 165-mile-per-hour winds made it the most powerful storm on Earth so far this year. 
+- The new system produces 3.75-kilometer (2.3-mile) real-time global forecasts, simulating Earth’s atmosphere in unusual detail. Such fine-scale resolution captures thunderstorms worldwide and shows how weather systems hundreds or even thousands of miles away could influence the evolution of storms in the tropics. 
+- “**What stands out to me is that MPAS forecasted this system to be a super typhoon even before the storm had formed,**” `Judt` said. “**Earlier, in fact, than many operational models would have anticipated, and with better prediction of its intensity.**”
+  - He added that **this type of effort may also be valuable for training a new generation of `artificial intelligence` weather models**. The high-resolution, high-quality data provided by MPAS would greatly enhance the current AI models that are trained on much coarser data.That is because it provides high-resolution, high-quality data that most current AI models lack, having been trained on much coarser data.
 
 # References
 
