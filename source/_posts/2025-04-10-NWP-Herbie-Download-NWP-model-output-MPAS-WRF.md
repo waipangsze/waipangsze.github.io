@@ -263,6 +263,33 @@ if __name__ == "__main__":
 ```
 {% endfold %}
 
+{% fold info @symlink_herbie.sh %}
+```sh
+#!/bin/bash
+for filename in "herbie/ifs"/*/*"oper-fc.grib2"; do
+	yyyymm="${filename:11:6}"
+	yyyymmdd="${filename:11:8}"
+	hh="${filename:28:2}"
+    echo ${filename}, ${yyyymm}, ${yyyymmdd}, ${hh}
+	mkdir -p /home/wpsze/IFS/${yyyymm}/${yyyymmdd}/
+    ln -s /home/wpsze/IFS/${filename} /home/wpsze/IFS/${yyyymm}/${yyyymmdd}/
+done
+
+for filename in "herbie/ifs"/*/*"scda-fc.grib2"; do
+	yyyymm="${filename:11:6}"
+	yyyymmdd="${filename:11:8}"
+	hh="${filename:28:2}"
+    echo ${filename}, ${yyyymm}, ${yyyymmdd}, ${hh}
+	mkdir -p /home/wpsze/IFS/${yyyymm}/${yyyymmdd}/
+    ln -s /home/wpsze/IFS/${filename} /home/wpsze/IFS/${yyyymm}/${yyyymmdd}/${yyyymmdd}${hh}0000-0h-oper-fc.grib2
+done
+
+#-- search all symlink and delete if need
+# find ./20* -type l -ls
+# find ./20* -type l -ls -delete 
+```
+{% endfold %}
+
 ![](https://i.imgur.com/o1xSqZN.png)
 ![](https://i.imgur.com/dPlkBuU.png)
 ![](https://i.imgur.com/vCWDYAP.png)
