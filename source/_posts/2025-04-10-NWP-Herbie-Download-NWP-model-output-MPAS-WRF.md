@@ -110,71 +110,158 @@ ECMWF provides data for two different models
 | "waef"   	| ensemble forecast, ocean wave fields,                                                               	| 00z, 06z, 12z, 18z   	|
 | "mmsf"   	| multi-model seasonal forecasts fields from the ECMWF model only.                                    	| ?                    	|
 
+- `./download_grib.sh 2024120400 3 384 1>log.04 2>&1 &`
+
+{% fold info @download_grib.sh %}
 ```sh
 #!/bin/bash
+
+set -o pipefail
+export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 source /home/wpsze/micromamba/etc/profile.d/micromamba.sh
 micromamba activate herbie-data
 
-export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-export HERBIE_SAVE_DIR="${SCRIPT_DIR}"
+export HERBIE_SAVE_DIR="/home/wpsze/cpas/IFS/herbie/"
 
-time python main_herbie.py
+# Check if all required arguments are provided
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "Usage: $0 <yyyymmddhh> <time_interval> <hour_periods>"
+    echo "Example: $0 2025101000 6 48"
+    echo ""
+    echo "  <yyyymmddhh> : IFS run date and hour (e.g., 2025101000)"
+    echo "  <time_interval>: Interval between fxx hours (e.g., 6 for 0,6,12...)"
+    echo "  <hour_periods> : Maximum forecast hour (e.g., 48)"
+    exit 1
+fi
+
+DATETIME_INPUT=$1
+TIME_INTERVAL=$2  # e.g., 6
+HOUR_PERIODS=$3   # e.g., 48
+yyyymm=${DATETIME_INPUT:0:6}
+yyyymmdd=${DATETIME_INPUT:0:8}
+
+# --- Configuration ---
+PYTHON_SCRIPT="download_ifs_herbie.py"
+
+# Generate the comma-separated list of forecast hours (FXX_RANGE)
+# 'seq' generates the sequence: start at 0, step by TIME_INTERVAL, up to HOUR_PERIODS.
+# '-s ,' specifies the comma separator.
+FXX_RANGE=$(seq -s ',' 0 "${TIME_INTERVAL}" "${HOUR_PERIODS}")
+
+echo "Running IFS GRIB Download..."
+echo "Requested Run Time (yyyymmddhh): ${DATETIME_INPUT}"
+echo "Time Interval: ${TIME_INTERVAL} hours"
+echo "Max Period: ${HOUR_PERIODS} hours"
+echo "Generated Forecast Periods (fxx): ${FXX_RANGE}"
+echo "--------------------------------------------------------"
+
+# Execute the Python script, passing the datetime and generated fxx range
+# Ensure you have 'herbie' and 'python3' installed in your environment.
+python3 "${PYTHON_SCRIPT}" --datetime "${DATETIME_INPUT}" --fxx "${FXX_RANGE}"
+
+# Check the exit status of the python script
+if [ $? -eq 0 ]; then
+    echo "--------------------------------------------------------"
+    echo "Download process completed successfully."
+else
+    echo "--------------------------------------------------------"
+    echo "Download process finished, but some errors occurred (check logs above)."
+fi
 ```
+{% endfold %}
 
-- `$ time python main_herbie.py`
-
+{% fold info @download_ifs_herbie.py %}
 ```python
+#!/bin/python
+# -*- coding: utf-8 -*-
+
+import argparse
+import sys
 from herbie import Herbie
+from datetime import datetime
 
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
-import numpy as np
+def download_ifs_data(datetime_str: str, fxx_periods: str):
+    """
+    Downloads IFS GRIB files using Herbie for a specified run time and list of forecast hours.
 
-from herbie import paint
-from herbie.toolbox import EasyMap, pc
+    Args:
+        datetime_str (str): Run datetime in YYYYMMDDHH format (e.g., '2025101000').
+        fxx_periods (str): Comma-separated string of forecast hours (fxx) (e.g., '0,6,12,24').
+    """
+    if len(datetime_str) != 10:
+        print(f"Error: Datetime must be in YYYYMMDDHH format (10 characters). Received: {datetime_str}", file=sys.stderr)
+        sys.exit(1)
 
-from datetime import date, timedelta
+    try:
+        # Convert YYYYMMDDHH to the required Herbie format (YYYY-MM-DD HH:00:00)
+        run_date_str = f"{datetime_str[:4]}-{datetime_str[4:6]}-{datetime_str[6:8]} {datetime_str[8:10]}:00:00"
+        
+        # Parse the comma-separated fxx periods into a list of integers
+        fxx_list = [int(fxx.strip()) for fxx in fxx_periods.split(',')]
+        
+    except ValueError as e:
+        print(f"Error parsing input: {e}", file=sys.stderr)
+        sys.exit(1)
+    
+    print(f"--- Starting Download Process ---")
+    print(f"IFS Run Time (Init): {run_date_str}")
+    print(f"Forecast Hours (fxx): {fxx_list}")
+    print("---------------------------------")
+    
+    # Herbie Setup: model="ifs", product="oper"
+    # We create a Herbie object for each fxx period to ensure the correct valid time is queried.
+    
+    for fxx in fxx_list:
+        print(f"\n[INFO] Attempting download for fxx={fxx}...")
+        
+        try:
+            # Initialize Herbie for the specific run and forecast hour
+            H = Herbie(
+                run_date_str,
+                model="ifs",
+                product="oper",
+                fxx=fxx,
+                # Example of specifying a search string for faster downloads
+                # If left unspecified, it will download all GRIB messages found
+                # searchString=':(U|V|T|Z|G)GRD:10 m above ground|500 hPa:', 
+            )
+            
+            # --- Optional: Inventory Check ---
+            # print(f"[DEBUG] Inventory for fxx={fxx}:")
+            # print(H.inventory())
+            
+            # --- Download ---
+            H.download()
+            print(f"[SUCCESS] Download complete for fxx={fxx}.")
 
-def daterange(start_date: date, end_date: date):
-    days = int((end_date - start_date).days)
-    for n in range(days):
-        yield start_date + timedelta(n)
+        except Exception as e:
+            print(f"[ERROR] Failed to download fxx={fxx}. Reason: {e}", file=sys.stderr)
+            # Continue to the next forecast hour if one fails
+            continue 
 
-start_date = date(2013, 1, 1)
-end_date = date(2013, 1, 6)
-for single_date in daterange(start_date, end_date):
-    tmp = str(single_date.strftime("%Y-%m-%d")) +" 00:00:00"
-    tmp_save_fd = tmp[:4]+tmp[5:7]+tmp[8:10]
-    print(tmp, tmp_save_fd)
-    H = Herbie(tmp, model="ifs", product="oper") #, fxx=12)
-    H.inventory()
-    H.inventory().param.unique()
-    H.download(save_dir="/home/wpsze/mpas/IFS/herbie/")
 
-#H = Herbie("2024-03-01 00:00:00", model="ifs", product="oper", fxx=12)
-#H = Herbie("2024-04-01 12:00:00", model="ifs", product="oper") #, fxx=12) # 00/12 UTC
-#H.grib, H.idx
-
-#-- Show the inventory
-#H.inventory()
-#H.inventory().param.unique()
-
-#-- Show the search_help
-#print(H.search_help)
-
-#-- Show just 10-m U and V wind
-#H.inventory(":10[u|v]:")
-
-#-- Download the full GRIB2 file
-#-- overwrite (bool) – If True, overwrite existing files. Default will skip downloading if the full file exists. Not applicable when when search is not None because file subsets might be unique.
-#H.download(save_dir="/home/wpsze/mpas/IFS/herbie/")
-#-- result: PosixPath('/home/wpsze/mpas/IFS/herbie/ifs/20240301/20240301000000-12h-oper-fc.grib2')
-
-#-- Get 2-m temperature as an xarray Dataset
-#ds = H.xarray(":2t:", verbose=True)
-#ds.t2m.plot(cmap="Spectral_r", figsize=[8, 4])
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Download IFS GRIB files using Herbie, iterating over forecast periods."
+    )
+    parser.add_argument(
+        "--datetime",
+        type=str,
+        required=True,
+        help="Run datetime in YYYYMMDDHH format (e.g., 2025101000)."
+    )
+    parser.add_argument(
+        "--fxx",
+        type=str,
+        default="0,6,12,18,24,36",
+        help="Comma-separated list of forecast hours (fxx) to download (e.g., 0,6,12,24). Default is 0,6,12,18,24,36."
+    )
+    
+    args = parser.parse_args()
+    download_ifs_data(args.datetime, args.fxx)
 ```
+{% endfold %}
 
 ![](https://i.imgur.com/o1xSqZN.png)
 ![](https://i.imgur.com/dPlkBuU.png)
