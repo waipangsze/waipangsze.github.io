@@ -65,6 +65,16 @@ banner_img: https://i.imgur.com/gXPusJ6.png
 - **Units**: J/m² (accumulated over a time step, typically hourly or 3-hourly depending on the dataset)
 - **Description**: This is the amount of solar radiation (shortwave) reaching the surface of the Earth, integrated over a specified time period. To convert it to an average irradiance in W/m², you divide the accumulated value (J/m²) by the time step in seconds (e.g., 3600 seconds for hourly data).
 
+![](https://i.imgur.com/Ptfvl6M.png){width=400}
+
+- `**stepRange = 0-xxx**`
+
+```
+edition      centre       date         dataType     gridType     typeOfLevel  level        stepRange    shortName    packingType
+2            ecmf         20241202     fc           regular_ll   surface      0            0-138        ssrd         grid_ccsds  
+2            ecmf         20241202     fc           regular_ll   surface      0            0-138        ssr          grid_ccsds  
+```
+
 ### Notes:
 1. **Availability**: SSRD is available in many ECMWF IFS outputs, including the high-resolution deterministic forecast (HRES), ensemble forecasts (ENS), and reanalysis products like ERA5.
 2. **Direct vs. Diffuse**: SSRD includes both direct and diffuse radiation. If you specifically need **Direct Normal Irradiance (DNI)** or diffuse components, these are not directly provided as separate variables in standard IFS outputs. However, they can sometimes be derived using additional post-processing or from specialized datasets (e.g., CAMS radiation services, which use IFS data).
