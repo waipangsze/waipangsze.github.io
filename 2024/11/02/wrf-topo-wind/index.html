@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/cOWLDX0.png">
 <meta property="article:published_time" content="2024-11-02T05:34:00.000Z">
-<meta property="article:modified_time" content="2024-11-07T13:01:44.606Z">
+<meta property="article:modified_time" content="2025-10-23T04:18:05.589Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
@@ -358,7 +358,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k words
+          1.7k words
         
       </span>
     
@@ -369,7 +369,7 @@
         
         
         
-          13 mins
+          15 mins
         
       </span>
     
@@ -531,9 +531,26 @@ class="uri">https://www2.mmm.ucar.edu/wrf/users/workshops/WS2010/presentations/s
 </ul>
 <h1 id="wrf-code">WRF code</h1>
 <ul>
-<li>WRF/dyn_em/start_em.F</li>
+<li><code>WRF/dyn_em/start_em.F</code>
+<ul>
+<li><code>ctopo=1, ctopo2=1</code> are for
+<code>topo_wind = 0</code></li>
+<li><code>topo_wind.eq.1</code>
+<ul>
+<li><strong><code>ctopo</code> not equal to 1</strong></li>
+<li></li>
+</ul></li>
+</ul></li>
 </ul>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!</span><br><span class="hljs-comment">! paj: computes ct and ct2 for topo_wind</span><br><span class="hljs-comment">!</span><br>       grid%ctopo=<span class="hljs-number">1.</span><br>       grid%ctopo2=<span class="hljs-number">1.</span><br><span class="hljs-comment">!</span><br>       <span class="hljs-keyword">if</span> (config_flags%topo_wind.eq<span class="hljs-number">.1</span>) <span class="hljs-keyword">then</span><br>         <span class="hljs-keyword">DO</span> j = jts,<span class="hljs-built_in">min</span>(jte,jde-<span class="hljs-number">1</span>)<br>         <span class="hljs-keyword">DO</span> i = its, <span class="hljs-built_in">min</span>(ite,ide-<span class="hljs-number">1</span>)<br>            <span class="hljs-keyword">if</span>(grid%xland(i,j).lt<span class="hljs-number">.1</span><span class="hljs-number">.5</span>)grid%ctopo(i,j)=<span class="hljs-built_in">sqrt</span>(grid%var_sso(i,j))<br>            <span class="hljs-keyword">if</span> (grid%ctopo(i,j).le<span class="hljs-number">.2</span><span class="hljs-number">.718</span>) <span class="hljs-keyword">then</span><br>            grid%ctopo(i,j)=<span class="hljs-number">1.</span><br>            <span class="hljs-keyword">else</span><br>            grid%ctopo(i,j)=<span class="hljs-built_in">alog</span>(grid%ctopo(i,j))<br>            <span class="hljs-keyword">endif</span><br><span class="hljs-comment">!</span><br>            <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.gt.</span>-<span class="hljs-number">10.</span>) <span class="hljs-keyword">then</span><br>              grid%ctopo(i,j)=grid%ctopo(i,j)<br>            <span class="hljs-keyword">else</span><br>               <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.ge.</span>-<span class="hljs-number">20</span>) <span class="hljs-keyword">then</span><br>                 alpha=(grid%lap_hgt(i,j)+<span class="hljs-number">20.</span>)/<span class="hljs-number">10.</span><br>                 grid%ctopo(i,j)=alpha*grid%ctopo(i,j)+(<span class="hljs-number">1</span>-alpha)<br>               <span class="hljs-keyword">else</span><br>                  <span class="hljs-keyword">if</span> (grid%lap_hgt(i,j)<span class="hljs-keyword">.ge.</span>-<span class="hljs-number">30.</span>) <span class="hljs-keyword">then</span><br>                  grid%ctopo(i,j)=(grid%lap_hgt(i,j)+<span class="hljs-number">30.</span>)/<span class="hljs-number">10.</span><br>                  grid%ctopo2(i,j)=(grid%lap_hgt(i,j)+<span class="hljs-number">30.</span>)/<span class="hljs-number">10.</span><br>                  <span class="hljs-keyword">else</span><br>                  grid%ctopo(i,j)=<span class="hljs-number">0.</span><br>                  grid%ctopo2(i,j)=<span class="hljs-number">0.</span><br>                  <span class="hljs-keyword">endif</span><br>               <span class="hljs-keyword">endif</span><br>            <span class="hljs-keyword">endif</span><br>         <span class="hljs-keyword">ENDDO</span><br>         <span class="hljs-keyword">ENDDO</span><br><span class="hljs-comment">!       if topo_wind==2 (D.Ovens, C.Mass)</span><br>       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (config_flags%topo_wind.eq<span class="hljs-number">.2</span>) <span class="hljs-keyword">then</span><br>         <span class="hljs-keyword">DO</span> j = jts,<span class="hljs-built_in">min</span>(jte,jde-<span class="hljs-number">1</span>)<br>         <span class="hljs-keyword">DO</span> i = its, <span class="hljs-built_in">min</span>(ite,ide-<span class="hljs-number">1</span>)<br>           <span class="hljs-keyword">if</span> (grid%xland(i,j).lt<span class="hljs-number">.1</span><span class="hljs-number">.5</span>) <span class="hljs-keyword">then</span><br>              vfac = <span class="hljs-built_in">amin1</span>(<span class="hljs-number">1.575</span>,(grid%var2d(i,j)*<span class="hljs-number">0.4</span>/<span class="hljs-number">200.</span>+<span class="hljs-number">1.175</span>))<br>              vfac = vfac * vfac<br>           <span class="hljs-keyword">else</span>                      <span class="hljs-comment">! over water, leave it alone</span><br>              vfac = <span class="hljs-number">1.</span><br>           <span class="hljs-keyword">endif</span><br><span class="hljs-comment">!          print *, j,i,grid%ctopo(i,j),vfac</span><br>           grid%ctopo(i,j)=grid%ctopo(i,j)*vfac<br>         <span class="hljs-keyword">ENDDO</span><br>         <span class="hljs-keyword">ENDDO</span><br>       <span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>release-v4.3/phys/module_bl_ysu.F</code>
+<ul>
+<li><code>k=1</code>, first level</li>
+<li>paj: ctopo=1 if topo_wind=0 (default)</li>
+</ul></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">! paj: ctopo=1 if topo_wind=0 (default)</span><br>......<br><span class="hljs-comment">!ctopo stability correction</span><br>      fric(i,<span class="hljs-number">1</span>)=ust(i)**<span class="hljs-number">2</span>/wspd1(i)*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2         &amp;<br>        *(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>      <span class="hljs-keyword">if</span>(<span class="hljs-built_in">present</span>(ctopo)) <span class="hljs-keyword">then</span><br>        vconvnew=<span class="hljs-number">0.9</span>*vconvfx(i)+<span class="hljs-number">1.5</span>*(<span class="hljs-built_in">max</span>((pblh_ysu(i)-<span class="hljs-number">500</span>)/<span class="hljs-number">1000.0</span>,<span class="hljs-number">0.0</span>))<br>        vconvlim = <span class="hljs-built_in">min</span>(vconvnew,<span class="hljs-number">1.0</span>)<br>       ad(i,<span class="hljs-number">1</span>) = <span class="hljs-number">1.</span>+(<span class="hljs-number">1.0</span>-bepswitch*frc_urb1d(i))* &amp;<br>                     (fric(i,<span class="hljs-number">1</span>)*vconvlim+ctopo(i)*fric(i,<span class="hljs-number">1</span>)*(<span class="hljs-number">1</span>-vconvlim)) - &amp;<br>                     fric(i,<span class="hljs-number">1</span>)*bepswitch*(<span class="hljs-number">1</span>-frc_urb1d(i))<br>      <span class="hljs-keyword">else</span><br>       ad(i,<span class="hljs-number">1</span>) = <span class="hljs-number">1.</span>+(<span class="hljs-number">1.0</span>-bepswitch)*fric(i,<span class="hljs-number">1</span>)<br>      <span class="hljs-keyword">endif</span><br>     f1(i,<span class="hljs-number">1</span>) = ux(i,<span class="hljs-number">1</span>)+uox(i)*ust(i)**<span class="hljs-number">2</span>*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2/wspd1(i)*(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>     f2(i,<span class="hljs-number">1</span>) = vx(i,<span class="hljs-number">1</span>)+vox(i)*ust(i)**<span class="hljs-number">2</span>*rhox(i)*g/del(i,<span class="hljs-number">1</span>)*dt2/wspd1(i)*(wspd1(i)/wspd(i))**<span class="hljs-number">2</span><br>   <span class="hljs-keyword">enddo</span><br>......<br><span class="hljs-comment">!</span><br><span class="hljs-comment">! paj: ctopo2=1 if topo_wind=0 (default)</span><br><span class="hljs-comment">!</span><br>   <span class="hljs-keyword">do</span> i = its,ite<br>     <span class="hljs-keyword">if</span>(<span class="hljs-built_in">present</span>(ctopo)<span class="hljs-keyword">.and.</span><span class="hljs-built_in">present</span>(ctopo2)) <span class="hljs-keyword">then</span> <span class="hljs-comment">! mchen for NMM</span><br>       u10(i) = ctopo2(i)*u10(i)+(<span class="hljs-number">1</span>-ctopo2(i))*ux(i,<span class="hljs-number">1</span>)<br>       v10(i) = ctopo2(i)*v10(i)+(<span class="hljs-number">1</span>-ctopo2(i))*vx(i,<span class="hljs-number">1</span>)<br>     <span class="hljs-keyword">endif</span> <span class="hljs-comment">!mchen</span><br>   <span class="hljs-keyword">enddo</span><br><span class="hljs-comment">!</span><br></code></pre></td></tr></table></figure>
 <ul>
 <li>Versions of WPS prior to V3.4 did not include VAR_SSO static data.
 This is necessary for running the topo_wind option in WRF (also
@@ -719,7 +736,7 @@ m风速对比分析了修正前后WRF对低层风速的模拟效果，结果显�
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 7, 2024</div>
+          <div>October 23, 2025</div>
         </div>
       
       
