@@ -73,7 +73,13 @@ topo_wind=2 (TWIND2; Mass and Ovens 2012)
 
 # WRF code
 
-- WRF/dyn_em/start_em.F
+- `WRF/dyn_em/start_em.F`
+  - `ctopo=1, ctopo2=1` are for `topo_wind = 0`
+  - `topo_wind = 1`
+    - **`ctopo/ctopo2` not equal to 1**
+  - `topo_wind = 2`
+    - **`ctopo` not equal to 1**
+    - **`ctopo2=1`**
 
 ```fortran
 !
@@ -126,13 +132,61 @@ topo_wind=2 (TWIND2; Mass and Ovens 2012)
          ENDDO
        endif
 ```
+
+- `release-v4.3/phys/module_bl_ysu.F`
+  - `k=1`, first level
+  - paj: `ctopo`=1 if `topo_wind`=0 (default)
+  - If `ctopo`!=1, then it is `topo_wind`=1/2
+    - If `ctopo2`!=1, then it is `topo_wind`=1
+    - else, it is `topo_wind`=2
+
+```fortran
+subroutine ysu2d(j,ux,vx,tx,qx,p2d,p2di,pi2d,...)
+   real,     dimension( ims:ime, kms:kme )                                   , &
+             intent(in   )   ::                                            ux, &
+                                                                           vx, &
+......
+call ysu2d(J=j,ux=u3d(ims,kms,j),vx=v3d(ims,kms,j),...)
+......
+! paj: ctopo=1 if topo_wind=0 (default)
+......
+!ctopo stability correction
+      fric(i,1)=ust(i)**2/wspd1(i)*rhox(i)*g/del(i,1)*dt2         &
+        *(wspd1(i)/wspd(i))**2
+      if(present(ctopo)) then
+        vconvnew=0.9*vconvfx(i)+1.5*(max((pblh_ysu(i)-500)/1000.0,0.0))
+        vconvlim = min(vconvnew,1.0)
+       ad(i,1) = 1.+(1.0-bepswitch*frc_urb1d(i))* &
+                     (fric(i,1)*vconvlim+ctopo(i)*fric(i,1)*(1-vconvlim)) - &
+                     fric(i,1)*bepswitch*(1-frc_urb1d(i))
+      else
+       ad(i,1) = 1.+(1.0-bepswitch)*fric(i,1)
+      endif
+     f1(i,1) = ux(i,1)+uox(i)*ust(i)**2*rhox(i)*g/del(i,1)*dt2/wspd1(i)*(wspd1(i)/wspd(i))**2
+     f2(i,1) = vx(i,1)+vox(i)*ust(i)**2*rhox(i)*g/del(i,1)*dt2/wspd1(i)*(wspd1(i)/wspd(i))**2
+   enddo
+......
+!
+! paj: ctopo2=1 if topo_wind=0 (default)
+!
+   do i = its,ite
+     if(present(ctopo).and.present(ctopo2)) then ! mchen for NMM
+       u10(i) = ctopo2(i)*u10(i)+(1-ctopo2(i))*ux(i,1)
+       v10(i) = ctopo2(i)*v10(i)+(1-ctopo2(i))*vx(i,1)
+     endif !mchen
+   enddo
+!
+```
+
 - Versions of WPS prior to V3.4 did not include VAR_SSO static data. This is necessary for running the topo_wind option in WRF (also introduced in version 3.4). [link](https://github.com/wrf-model/WRF/pull/10)
-- Remark, **ctopo2 = 1** in topo_wind2.
+- **Remark**: **ctopo2 = 1** in topo_wind2.
+  - `ux` and `vx` are from `u3d` and `v3d`
+  - u10(i) = ~~ctopo2(i)~~*u10(i) + 0
+  - v10(i) = ~~ctopo2(i)~~*v10(i) + 0
 
 {% note primary %}
-u10, v10 (no modify in topo_wind=2)\
-Modify u10, v10 ⇒ Effective in topo_wind=1 only\
-In topo_wind=2, No Modify u10, v10
+Not modify u10, v10 in topo_wind = 2\
+Modify u10, v10 ⇒ Effective in topo_wind = 1 only\
 {% endnote %}
 
 ## convective velocity and PBL height
