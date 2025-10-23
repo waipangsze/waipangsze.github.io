@@ -178,6 +178,8 @@ call ysu2d(J=j,ux=u3d(ims,kms,j),vx=v3d(ims,kms,j),...)
 !
 ```
 
+![A \theta = F, AD, AL, AU terms in YSU scheme.](https://i.imgur.com/lsB8R1n.png){width=400}
+
 - Versions of WPS prior to V3.4 did not include VAR_SSO static data. This is necessary for running the topo_wind option in WRF (also introduced in version 3.4). [link](https://github.com/wrf-model/WRF/pull/10)
 - **Remark**: **ctopo2 = 1** in topo_wind2.
   - `ux` and `vx` are from `u3d` and `v3d`
@@ -189,16 +191,17 @@ Not modify u10, v10 in topo_wind = 2\
 Modify u10, v10 ⇒ Effective in topo_wind = 1 only\
 {% endnote %}
 
-## convective velocity and PBL height
+## Convective velocity and PBL height (diurnal cycle improvement) (dudhia on Jan 14, 2017))
 
-- <https://github.com/wrf-model/WRF/pull/116>
+- **Update `topo_wind=1` option to improve diurnal cycle**
+  - <https://github.com/wrf-model/WRF/pull/116>
 - **WRFv3.8.1 and before, don't consider convective velocity and PBL height**
 - It is found that this scheme can improve the simulated surface winds, especially at night, **but it can underestimate the winds during daytime.** 
   - Lorente-Plazas, R., Jiménez, P. A., Dudhia, J., & Montávez, J. P. (2016). Evaluating and Improving the Impact of the Atmospheric Stability and Orography on Surface Winds in the WRF Model. Monthly Weather Review, 144(7), 2685-2693. <https://doi.org/10.1175/MWR-D-15-0449.1>
   - <https://journals.ametsoc.org/view/journals/mwre/144/7/mwr-d-15-0449.1.xml>
 - In the daytime,
-  - if higher PBLH, then consider less ctopo effect 
-  - new_topo ~ off_ctopo in daytime
+  - **if higher PBLH, then consider less ctopo effect** 
+  - **new_topo ~ off_ctopo in daytime**
 - Uses convective velocity and PBL height to determine instability
 - Extra code is added to compute tke, hybrid PBL height and convective velocity within the YSU PBL
 
@@ -286,6 +289,12 @@ M phys/module_bl_ysu.F
      endif !mchen
    enddo
 ```
+
+{% gi 3 1-2 %}
+![](https://i.imgur.com/NMjDOT8.png)
+![](https://i.imgur.com/jk3RdYj.png)
+![](https://i.imgur.com/LntFRe9.png)
+{% endgi %}
 
 # References
 
