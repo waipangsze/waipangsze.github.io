@@ -1,8 +1,8 @@
 ---
 layout: post
 title: NWP | MPAS | WRF| Land Use/Land Cover and Soil Type
-categories: [^NWP]
-tags: [^NWP, MPAS, WRF, Meteorology, LANDUSE, SOILPARM]
+categories: [NWP]
+tags: [NWP, MPAS, WRF, Meteorology, LANDUSE, SOILPARM]
 author: wpsze
 math: true
 mathjax: true
