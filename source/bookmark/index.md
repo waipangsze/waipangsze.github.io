@@ -68,6 +68,7 @@ date: 2024-09-30 21:26:27
   - [**WRF Users Guide documentation !!**](https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/index.html)
   - [Development Team Announcements > **Frequently Asked Questions**](https://forum.mmm.ucar.edu/forums/frequently-asked-questions.115/)
   - [WRF Data, Utilities, & Post-processing Kelly Werner January 2021 **(Useful)**](https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_data_util_pp.pdf#page=16.00)
+  - [**WRF | WPS | WRFDomainWizard**](https://waipangsze.github.io/2024/10/30/WPS-draw-domain-WRFDomainWizard/)
 - [The Model for Prediction Across Scales (MPAS)](https://mpas-dev.github.io/)
   - [MPAS-A Tutorial Agenda | Boulder2023](https://www2.mmm.ucar.edu/projects/mpas/tutorial/Boulder2023/agenda.html)
 - [mesh_tools](https://mpas-dev.github.io/MPAS-Tools/stable/mesh_creation.html)
