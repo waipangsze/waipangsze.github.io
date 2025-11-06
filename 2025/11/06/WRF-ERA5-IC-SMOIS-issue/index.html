@@ -1,0 +1,1129 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Issue When using the Weather Research and Forecasting (WRF) model with initial conditions from ERA5, the soil moisture (smois) in the desert region is replaced with the maximum soil moisture (MAXSMC)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WRF | ERA5 IC | SMOIS issue">
+<meta property="og:url" content="https://waipangsze.github.io/2025/11/06/WRF-ERA5-IC-SMOIS-issue/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Issue When using the Weather Research and Forecasting (WRF) model with initial conditions from ERA5, the soil moisture (smois) in the desert region is replaced with the maximum soil moisture (MAXSMC)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/NuR9m3F.png">
+<meta property="article:published_time" content="2025-11-05T22:56:00.000Z">
+<meta property="article:modified_time" content="2025-11-06T04:09:59.744Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="SMOIS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/NuR9m3F.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>WRF | ERA5 IC | SMOIS issue - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/NuR9m3F.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WRF | ERA5 IC | SMOIS issue"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-06 06:56" pubdate>
+          November 6, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WRF | ERA5 IC | SMOIS issue</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="issue">Issue</h1>
+<p>When using the Weather Research and Forecasting (<code>WRF</code>) model with initial conditions from <code>ERA5</code>, the soil moisture (<code>smois</code>) in the desert region is replaced with the <strong>maximum soil moisture</strong> (<code>MAXSMC</code>) from a lookup table <code>SOILPARM.TBL</code>. This substitution leads to notably wetter conditions in that area compared to using the original soil moisture values. What is the rationale behind this replacement?</p>
+<p><img src="https://i.imgur.com/NuR9m3F.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="module_sf_noahlsm.f"><code>module_sf_noahlsm.F</code></h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/f52c197ed39d12e087d02c50f412d90d418f6186/phys/module_sf_noahlsm.F#L4026C1-L4026C50" class="uri">https://github.com/wrf-model/WRF/blob/f52c197ed39d12e087d02c50f412d90d418f6186/phys/module_sf_noahlsm.F#L4026C1-L4026C50</a>
+<ul>
+<li><strong>SMC(NSOIL) TOTAL SOIL MOISTURE CONTENT (VOLUMETRIC FRACTION)</strong></li>
+<li><strong>SMC (K) = MAX ( MIN (STOT,SMCMAX),0.02 )</strong></li>
+</ul></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">! ----------------------------------------------------------------------</span><br><span class="hljs-comment">! SUM THE PREVIOUS SMC VALUE AND THE MATRIX SOLUTION TO GET A</span><br><span class="hljs-comment">! NEW VALUE.  MIN ALLOWABLE VALUE OF SMC WILL BE 0.02.</span><br><span class="hljs-comment">! RUNOFF3: RUNOFF WITHIN SOIL LAYERS</span><br><span class="hljs-comment">! ----------------------------------------------------------------------</span><br>      WPLUS = <span class="hljs-number">0.0</span><br>      RUNOFF3 = <span class="hljs-number">0.</span><br><br>      DDZ = - ZSOIL (<span class="hljs-number">1</span>)<br>      <span class="hljs-keyword">DO</span> K = <span class="hljs-number">1</span>,NSOIL<br>         <span class="hljs-keyword">IF</span> (K /= <span class="hljs-number">1</span>) DDZ = ZSOIL (K - <span class="hljs-number">1</span>) - ZSOIL (K)<br>         SH2OOUT (K) = SH2OIN (K) + CI (K) + WPLUS / DDZ<br>         STOT = SH2OOUT (K) + SICE (K)<br>         <span class="hljs-keyword">IF</span> (STOT &gt; SMCMAX) <span class="hljs-keyword">THEN</span><br>            <span class="hljs-keyword">IF</span> (K <span class="hljs-keyword">.eq.</span> <span class="hljs-number">1</span>) <span class="hljs-keyword">THEN</span><br>               DDZ = - ZSOIL (<span class="hljs-number">1</span>)<br>            <span class="hljs-keyword">ELSE</span><br>               KK11 = K - <span class="hljs-number">1</span><br>               DDZ = - ZSOIL (K) + ZSOIL (KK11)<br>            <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br>            WPLUS = (STOT - SMCMAX) * DDZ<br>         <span class="hljs-keyword">ELSE</span><br>            WPLUS = <span class="hljs-number">0.</span><br>         <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br>         SMC (K) = <span class="hljs-built_in">MAX</span> ( <span class="hljs-built_in">MIN</span> (STOT,SMCMAX),<span class="hljs-number">0.02</span> )<br>         SH2OOUT (K) = <span class="hljs-built_in">MAX</span> ( (SMC (K) - SICE (K)),<span class="hljs-number">0.0</span>)<br>      <span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br></code></pre></td></tr></table></figure>
+<h2 id="check-set-maxsmc-0.900">Check: Set <code>MAXSMC</code> = 0.900</h2>
+<ul>
+<li>Set <code>MAXSMC</code> = 0.900</li>
+</ul>
+<p><img src="https://i.imgur.com/32OxOTR.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h2 id="check-set-maxsmc-0.01">Check: Set <code>MAXSMC</code> = 0.01</h2>
+<ul>
+<li>Set <code>MAXSMC</code> = 0.01</li>
+</ul>
+<p><img src="https://i.imgur.com/qzJQtzZ.png" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h1 id="gemini-answers-1">Gemini-Answers 1</h1>
+<p>The analysis of <code>module_sf_noahdrv.F</code> reveals that it functions as the <strong>driver module</strong> for the Noah Land Surface Model (LSM) in WRF. It handles input/output and coordinates the calculation, but the actual logic for updating the soil moisture variable, <strong><code>smois</code></strong>, occurs within a lower-level physics subroutine.</p>
+<p>The update to <strong><code>smois</code></strong> (soil moisture volume fraction) follows these three steps:</p>
+<h3 id="the-core-update-subroutine">1. The Core Update Subroutine</h3>
+<p>The prognostic physics calculation is performed within the Noah LSM core, typically found in <code>module_sf_noahlsm.F</code>. The specific subroutine responsible for calculating the soil water budget and updating <code>smois</code> is <strong><code>SMFLX</code></strong> (Soil Moisture Flux).</p>
+<h3 id="the-governing-equation">2. The Governing Equation</h3>
+<p>The <code>smois</code> array is updated by solving the one-dimensional soil water budget equation for each soil layer (<span class="math inline">\(i\)</span>) over the LSM time step (<span class="math inline">\(\Delta t\)</span>). This equation conserves mass (water) in the soil column:</p>
+<p><span class="math display">\[\text{SMOIS}_i^{t+\Delta t} = \text{SMOIS}_i^t + \frac{\Delta t}{\Delta z_i \cdot \rho_w} \left[ \text{Flux}_{\text{top}} - \text{Flux}_{\text{bottom}} - E_i \right]\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\text{SMOIS}_i\)</span> is the volumetric soil moisture of layer <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(\Delta z_i\)</span> is the thickness of layer <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(\rho_w\)</span> is the density of water.</li>
+<li><span class="math inline">\(\text{Flux}_{\text{top}}\)</span> and <span class="math inline">\(\text{Flux}_{\text{bottom}}\)</span> are the moisture fluxes (per unit area) entering and leaving the soil layer, respectively.</li>
+<li><span class="math inline">\(E_i\)</span> is the total water sink from layer <span class="math inline">\(i\)</span> due to evaporation and root extraction (transpiration).</li>
+</ul>
+<h3 id="the-flux-terms-that-update-smois">3. The Flux Terms That Update <code>smois</code></h3>
+<p>The <strong><code>smois</code></strong> value for each soil layer is updated based on the integration of these water fluxes:</p>
+<ol type="1">
+<li><strong>Surface Flux (Top Layer Update):</strong> The top soil layer is updated by <strong>precipitation</strong> (including snowmelt) and losses due to <strong>surface runoff</strong> (<span class="math inline">\(\text{SFCRUNOFF}\)</span>) and total <strong>evapotranspiration</strong> (<span class="math inline">\(\text{ET}\)</span>, which includes canopy evaporation, bare soil evaporation, and transpiration). The net infiltration rate dictates the water gain.</li>
+<li><strong>Inter-Layer Fluxes:</strong> Water is moved between the internal soil layers (<span class="math inline">\(i=1, 2, \dots, N\)</span>) via <strong>hydraulic redistribution</strong> governed by the <strong>Darcy-Buckingham law</strong>. This flux is driven by the gradient of the soil water potential, which is calculated based on the soil moisture content (<code>smois</code>) and the soil's hydraulic properties (hydraulic conductivity <span class="math inline">\(K(\theta)\)</span> and matric potential <span class="math inline">\(\Psi(\theta)\)</span>). This includes a correction for the effect of frozen soil on hydraulic conductivity.</li>
+<li><strong>Bottom Flux (Bottom Layer Update):</strong> The deepest layer's moisture is lost via <strong>subsurface runoff</strong> or <strong>drainage</strong> (<span class="math inline">\(\text{UDRUNOFF}\)</span>) at the bottom of the soil column. The specific formulation depends on the physics option chosen for deep drainage (e.g., free drainage or a simple groundwater model).</li>
+</ol>
+<h1 id="gemini-answers-2">Gemini-Answers 2</h1>
+<p>The initialization of the soil moisture variable, <strong>SMOIS</strong> (volumetric total soil moisture), in the Weather Research and Forecasting (WRF) model for a real-data case is primarily handled by the <strong>WRF Preprocessing System (WPS)</strong> and the <strong><code>real.exe</code></strong> program.</p>
+<p>Here is the step-by-step process:</p>
+<hr />
+<h3 id="the-wrf-preprocessing-system-wps">1. The WRF Preprocessing System (WPS)</h3>
+<p>The WPS prepares the initial and boundary condition data for WRF.</p>
+<ul>
+<li><strong><code>ungrib.exe</code></strong>: This program extracts meteorological variables, including soil moisture and soil temperature, from GRIB-formatted large-scale model data (e.g., GFS, ERA5, etc.). The soil moisture data in the source files are the primary input for SMOIS.</li>
+<li><strong><code>metgrid.exe</code></strong>: This program horizontally interpolates the extracted meteorological data (which now includes the soil moisture data) from the large-scale model grid onto the WRF simulation domains defined by <code>geogrid.exe</code>. The output of this step is a series of <strong><code>met_em*</code></strong> NetCDF files, which contain the horizontally interpolated <strong>SMOIS</strong> data at the initial time and subsequent boundary times.</li>
+</ul>
+<hr />
+<h3 id="the-real.exe-program">2. The <code>real.exe</code> Program</h3>
+<p>The <code>real.exe</code> program takes the WPS output (<code>met_em*</code> files) and prepares the final initial conditions file (<code>wrfinput_d0*</code>).</p>
+<ul>
+<li><strong>Reading and Vertical Interpolation</strong>: <code>real.exe</code> reads the initial time slice of the <strong>SMOIS</strong> variable from the <code>met_em*</code> files. It performs <strong>vertical interpolation</strong> to map the soil layers from the source data to the soil layers specified in the WRF Land Surface Model (LSM) being used (e.g., Noah, RUC, etc.). Note that in some versions and setups, the layer order for soil variables like SMOIS and soil temperature may be flipped between the <code>met_em</code> and <code>wrfinput</code> files during this process.</li>
+<li><strong>Final Output</strong>: The resulting initial soil moisture values are written as the <strong>SMOIS</strong> variable into the <code>wrfinput_d0*</code> file. This value represents the volumetric total soil moisture (liquid and frozen) in each soil layer at the start of the simulation.</li>
+</ul>
+<hr />
+<h3 id="key-points">Key Points:</h3>
+<ul>
+<li><strong>Initial Time Only</strong>: WRF is typically initialized using the soil moisture data <em>only</em> at the initial time step from the large-scale forcing. During the WRF simulation (<code>wrf.exe</code>), <strong>SMOIS</strong> becomes a <strong>prognostic variable</strong> that is predicted and integrated forward in time by the chosen Land Surface Model (LSM) within WRF.</li>
+<li><strong>Custom Initialization</strong>: Users can modify the <strong>SMOIS</strong> field in the <code>wrfinput</code> file before running <code>wrf.exe</code> to use alternative data sources (like satellite soil moisture) or to run sensitivity experiments (e.g., setting a drier or wetter initial soil moisture).</li>
+</ul>
+<h1 id="gemini-answers-3">Gemini-Answers 3</h1>
+<p>That is an excellent follow-up question that highlights the critical distinction between the <strong>pre-processing stage</strong> and the <strong>model integration stage</strong> of WRF.</p>
+<p>For the <code>wrf.exe</code> step, the Land Surface Model (LSM) like Noah does <strong>not</strong> re-initialize the core soil moisture variable, <code>SMOIS</code>, in the sense of overwriting it with a climatology or a default value.</p>
+<p>Instead, the LSM focuses on two key parts of the initialization process:</p>
+<h3 id="smois-is-a-prognostic-variable">1. <strong>SMOIS is a Prognostic Variable</strong></h3>
+<p>The single most important concept is that the LSM treats <code>SMOIS</code> as a <strong>prognostic variable</strong>.</p>
+<ul>
+<li><strong>Initial Value</strong>: The value of <code>SMOIS</code> for each soil layer at the first time step is taken <strong>directly from the <code>wrfinput_d0*</code> file</strong> created by <code>real.exe</code>. The LSM accepts this as its starting point.</li>
+<li><strong>No Overwrite</strong>: The LSM physics routines (like those in <code>module_sf_noahdrv.F</code> and <code>module_sf_noahlsm.F</code>) are designed to <em>update</em> this variable with a time integration scheme, but they do <strong>not</strong> contain logic to overwrite the initial values read from the input file.</li>
+</ul>
+<h3 id="lsm-initialization-of-related-variables">2. <strong>LSM Initialization of <em>Related</em> Variables</strong></h3>
+<p>While <code>SMOIS</code> itself is read in, the LSM does perform initialization on several related <strong>internal</strong> variables, often within a dedicated initialization routine (e.g., <code>LSMINIT</code> or a similar subroutine called by <code>module_sf_noahdrv.F</code>). This is done to ensure a clean start for the physical calculations.</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">Internal Variable</th>
+<th style="text-align: left;">Initialization Logic</th>
+<th style="text-align: left;">Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong><code>CANWAT</code></strong> (Canopy Water)</td>
+<td style="text-align: left;"><strong>Set to Zero (<span class="math inline">\(\text{0.0}\)</span>)</strong></td>
+<td style="text-align: left;">The amount of water intercepted by the canopy is typically reset to zero at the start of the simulation, regardless of what was read from the input file (which may or may not contain an initial canopy water value). The LSM will begin accumulating this immediately from the first rainfall/dew event.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><code>Z0_VEG</code></strong> (Vegetation Roughness)</td>
+<td style="text-align: left;"><strong>Calculated</strong></td>
+<td style="text-align: left;">This is calculated based on the prescribed vegetation fraction (<code>VEGFRA</code>) and land use type (from a lookup table like <code>VEGPARM.TBL</code>).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Constants/Parameters</strong></td>
+<td style="text-align: left;"><strong>Lookup from Tables</strong></td>
+<td style="text-align: left;">Physical parameters related to <code>SMOIS</code>, such as maximum soil moisture (<span class="math inline">\(\theta_{sat}\)</span>), wilting point (<span class="math inline">\(\theta_{wilt}\)</span>), and bulk density, are read from the <code>SOILPARM.TBL</code> lookup table based on the soil type. These are then used for all subsequent <code>SMOIS</code> calculations.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Fluxes/Rates</strong></td>
+<td style="text-align: left;"><strong>Set to Zero (<span class="math inline">\(\text{0.0}\)</span>)</strong></td>
+<td style="text-align: left;">All diagnostic variables representing fluxes (e.g., latent heat flux, sensible heat flux, surface runoff, soil moisture flux terms) are typically set to zero at the start and only gain non-zero values after the first call to the LSM physics routine.</td>
+</tr>
+</tbody>
+</table>
+<p>In summary, for <code>SMOIS</code>: <strong>It is read from <code>wrfinput_d0*</code> and then immediately becomes the first value in the LSM's time-marching process.</strong> Any explicit initialization done by the Noah LSM in the <code>wrf.exe</code> step is on its <em>internal flux</em> or <em>diagnostic</em> variables, not on the core <code>SMOIS</code> state variable.</p>
+<hr />
+<p>Would you like to know more about the specific physical processes that Noah LSM considers when it updates <code>SMOIS</code> at the first time step, using its initial value?</p>
+<h1 id="gemini-answers-4">Gemini-Answers 4</h1>
+<p>The Land Surface Model (LSM) within <code>wrf.exe</code>, such as the Noah LSM, does <strong>not</strong> overwrite <code>SMOIS</code> with <code>MAXSMC</code> during the initialization phase or as a standard part of its calculation.</p>
+<p>Instead, <code>MAXSMC</code> (the maximum soil moisture content, or soil porosity, from <code>SOILPARM.TBL</code>) is used as an <strong>upper physical constraint</strong> on the prognostic variable <code>SMOIS</code> at <strong>every time step</strong>.</p>
+<p>Here is a breakdown of where and how this constraint is applied in the Noah LSM calculation:</p>
+<h3 id="constraint-in-the-prognostic-step">1. Constraint in the Prognostic Step</h3>
+<p>The actual "clamping" or correction of <code>SMOIS</code> happens <em>after</em> the LSM has calculated the new soil moisture value (<span class="math inline">\(\text{SMOIS}^{t+\Delta t}\)</span>) based on the water budget (infiltration, drainage, and evapotranspiration).</p>
+<ul>
+<li><strong>Logic:</strong> After the core subroutine (like <code>SMFLX</code>) calculates the change in soil moisture for a layer, it checks if the new value exceeds the physical limit defined by the soil type.</li>
+<li><strong>The Check:</strong> For each soil layer <span class="math inline">\(i\)</span>, the model performs a check: <span class="math display">\[\text{If } \text{SMOIS}_i^{t+\Delta t} &gt; \text{MAXSMC}_i\]</span></li>
+<li><strong>The Correction (Overwriting):</strong> If the calculated soil moisture exceeds the maximum saturation value, it is instantly reset to the maximum, and the excess water is typically partitioned into <strong>surface runoff</strong> (<span class="math inline">\(\text{SFCRUNOFF}\)</span>) or <strong>subsurface runoff</strong> (<span class="math inline">\(\text{UDRUNOFF}\)</span>). <span class="math display">\[\text{SMOIS}_i^{t+\Delta t} = \text{MAXSMC}_i\]</span></li>
+</ul>
+<p>This correction is crucial for <strong>mass conservation</strong>, ensuring that the soil column does not hold more water than its physical porosity allows.</p>
+<h3 id="maxsmc-is-soil-type-dependent">2. MAXSMC is Soil-Type Dependent</h3>
+<p>The value for <code>MAXSMC</code> is not a single model constant; it is a <strong>soil-type dependent parameter</strong> loaded from the <code>SOILPARM.TBL</code>. Each of the 4 soil layers in the Noah LSM is assigned a specific <code>MAXSMC</code> value based on the soil category (<code>ISLTYP</code>) in that grid cell.</p>
+<h3 id="summary-of-smois-and-maxsmc-interaction">Summary of <code>SMOIS</code> and <code>MAXSMC</code> Interaction</h3>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">Time/Process</th>
+<th style="text-align: left;"><code>SMOIS</code> Action</th>
+<th style="text-align: left;"><code>MAXSMC</code> Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Initialization (<code>real.exe</code>)</strong></td>
+<td style="text-align: left;">Read from input data (<code>met_em*</code>).</td>
+<td style="text-align: left;">Determines the maximum <em>possible</em> value for the domain.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Model Run (Every Time Step)</strong></td>
+<td style="text-align: left;">Updated prognostically by water budget fluxes.</td>
+<td style="text-align: left;"><strong>Upper Limit Constraint</strong>: Any calculated <code>SMOIS</code> that exceeds <code>MAXSMC</code> is instantaneously <strong>corrected</strong> (overwritten) back to the <code>MAXSMC</code> value.</td>
+</tr>
+</tbody>
+</table>
+<p>The term "overwrite" is correct in the sense that the calculated value is replaced, but it's not an <em>initialization</em> overwrite; it's a <strong>physical capping</strong> that happens continuously during the simulation.</p>
+<h1 id="gemini-answer-5">Gemini-Answer 5</h1>
+<p>The core logic for updating the prognostic soil moisture variable, <strong><code>SMOIS</code></strong>, and enforcing the <strong>physical capping</strong> by <strong><code>MAXSMC</code></strong> is found within the primary physics subroutine of the Noah Land Surface Model, which is typically named <strong><code>SFLX</code></strong> (Surface Flux) inside <code>module_sf_noahlsm.F</code>.</p>
+<p>Since the WRF model code is extensive and often undergoes minor changes, the exact line numbers may vary, but the structure remains consistent. The following is a conceptual representation of the critical Fortran code blocks where the update and capping occur.</p>
+<hr />
+<h2 id="the-prognostic-smois-update">1. The Prognostic <code>SMOIS</code> Update</h2>
+<p>The <code>SMOIS</code> array is updated via time integration after the calculation of all water fluxes (infiltration, drainage, and root uptake). This is a simplified mass conservation equation applied over the time step (<code>DTS</code>).</p>
+<h3 id="code-section-soil-water-budget-integration-within-sflx">Code Section: Soil Water Budget Integration (within <code>SFLX</code>)</h3>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-comment">!  Step 1: Update SMOIS (Volumetric Soil Moisture) for each layer (K)</span><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-keyword">DO</span> K = <span class="hljs-number">1</span>, NUM_SOIL_LAYERS<br>    <span class="hljs-comment">! TSMOIS is the temporary prognostic soil moisture value for the next time step</span><br>    <span class="hljs-comment">! The equation is: New_SMOIS = Old_SMOIS + (Net_Water_Flux / Soil_Layer_Depth) * DTS</span><br><br>    TSMOIS(I,J,K) = SMOIS(I,J,K) + (DTS / DZSI(I,J,K)) * ( &amp;<br>                      FLX_IN(I,J,K) - FLX_OUT(I,J,K) - EVAP_ROOT(I,J,K) &amp;<br>                    )<br>    <br>    <span class="hljs-comment">! Apply the update</span><br>    SMOIS(I,J,K) = TSMOIS(I,J,K)<br><span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>FLX_IN</code> / <code>FLX_OUT</code></strong>: Net infiltration/drainage fluxes into and out of the soil layer (calculated using Darcy's Law and hydraulic conductivity).</li>
+<li><strong><code>EVAP_ROOT</code></strong>: Water lost from the layer due to bare soil evaporation and root water uptake (transpiration).</li>
+<li><strong><code>DTS</code></strong>: The LSM physics time step.</li>
+<li><strong><code>DZSI</code></strong>: The depth (thickness) of the soil layer.</li>
+</ul>
+<hr />
+<h2 id="the-physical-capping-maxsmc-constraint">2. The Physical Capping (MAXSMC Constraint)</h2>
+<p>Immediately following the time integration, the code checks the newly calculated <code>SMOIS</code> value against the maximum possible soil moisture content (<code>MAXSMC</code>) for that specific soil type and layer.</p>
+<h3 id="code-section-physical-capping-maxsmc-correction-within-sflx">Code Section: Physical Capping (MAXSMC Correction) (within <code>SFLX</code>)</h3>
+<p>This logic ensures that water mass is conserved and the soil layer cannot hold more water than its total porosity.</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-comment">! Step 2: Enforce Physical Constraint (The &quot;Physical Capping&quot;)</span><br><span class="hljs-comment">!-----------------------------------------------------------------------</span><br><span class="hljs-keyword">DO</span> K = <span class="hljs-number">1</span>, NUM_SOIL_LAYERS<br>    <span class="hljs-comment">! MAXSMC is the layer-specific maximum saturation from SOILPARM.TBL</span><br><br>    <span class="hljs-keyword">IF</span> (SMOIS(I,J,K) &gt; MAXSMC(I,J,K)) <span class="hljs-keyword">THEN</span><br>        <br>        <span class="hljs-comment">! **THE OVERWRITE/CAPPING OCCURS HERE**</span><br>        <span class="hljs-comment">! Calculate the excess water above saturation</span><br>        EXCESS_WATER = SMOIS(I,J,K) - MAXSMC(I,J,K)<br>        <br>        <span class="hljs-comment">! The SMOIS value is capped (overwritten) at the maximum saturation</span><br>        SMOIS(I,J,K) = MAXSMC(I,J,K)<br>        <br>        <span class="hljs-comment">! The excess water is converted to runoff</span><br>        <span class="hljs-comment">! The specific variable updated depends on the layer (K)</span><br>        <span class="hljs-keyword">IF</span> (K == <span class="hljs-number">1</span>) <span class="hljs-keyword">THEN</span><br>            <span class="hljs-comment">! Excess water from the top layer contributes to surface runoff</span><br>            SFCRUNOFF(I,J) = SFCRUNOFF(I,J) + EXCESS_WATER<br>        <span class="hljs-keyword">ELSE</span> <span class="hljs-keyword">IF</span> (K == NUM_SOIL_LAYERS) <span class="hljs-keyword">THEN</span><br>            <span class="hljs-comment">! Excess water from the bottom layer contributes to subsurface/base flow runoff</span><br>            UDRUNOFF(I,J) = UDRUNOFF(I,J) + EXCESS_WATER<br>        <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br>        <br>    <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br><span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br></code></pre></td></tr></table></figure>
+<p>In this section:</p>
+<ul>
+<li>The <code>IF (SMOIS(I,J,K) &gt; MAXSMC(I,J,K))</code> block is the check.</li>
+<li>The line <code>SMOIS(I,J,K) = MAXSMC(I,J,K)</code> is the <strong>physical capping</strong> where the calculated value is <strong>overwritten</strong> (reset) to the saturation point.</li>
+<li>The excess water is instantly routed to either <strong><code>SFCRUNOFF</code></strong> (Surface Runoff) or <strong><code>UDRUNOFF</code></strong> (Underground/Base Flow Runoff), ensuring the total water mass is accounted for.</li>
+</ul>
+<p>The same principle is typically applied for the lower bound as well, where <code>SMOIS</code> is prevented from dropping below the minimum liquid water content.</p>
+<h1 id="gemini-answers-6">Gemini-Answers 6</h1>
+<p>I have examined the contents of the files you provided, <code>module_sf_noahdrv.F</code> and <code>module_sf_noahlsm.F</code>.</p>
+<p>In the WRF/Noah Land Surface Model, the core soil moisture update logic, including the physical capping, resides in the main land surface flux subroutine, <strong><code>SFLX</code></strong>, which is located in <strong><code>module_sf_noahlsm.F</code></strong>.</p>
+<p>The <code>module_sf_noahdrv.F</code> acts as a driver, calling <code>SFLX</code> but not performing the prognostic soil moisture calculations itself.</p>
+<p>Here is the relevant Fortran code from <strong><code>module_sf_noahlsm.F</code></strong> showing the <code>SMOIS</code> update and the <code>MAXSMC</code> capping logic.</p>
+<hr />
+<h3 id="prognostic-smois-update-water-budget-integration">1. Prognostic SMOIS Update (Water Budget Integration)</h3>
+<p>The <code>SMOIS</code> (soil moisture) value is updated prognostically by integrating the net water flux over the time step. This calculation is handled by the subroutine <strong><code>SMFLX</code></strong> (Soil Moisture Flux), which is called from within <strong><code>SFLX</code></strong>.</p>
+<p>In this block, the variable <strong><code>DELSM(K)</code></strong> is the change in volumetric soil moisture for layer <code>K</code>. It is then added to the existing <code>SMOIS</code> value.</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">! *******************************************************************</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!   SECTION 3. CALCULATE SOIL MOISTURE FLUXES.</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">! *******************************************************************</span><br><br>      <span class="hljs-keyword">CALL</span> SMFLX (SLOPE(I,J),FXEXP(I,J),DELSM,DELHI,DELQL,DELDQ,&amp;<br>     &amp; MAXSMC(I,J,<span class="hljs-number">1</span>),MAXSMC(I,J,<span class="hljs-number">2</span>),MAXSMC(I,J,<span class="hljs-number">3</span>),MAXSMC(I,J,<span class="hljs-number">4</span>),&amp;<br>     &amp; ZS,DZSI,DZS,SMOIS(I,J,<span class="hljs-number">1</span>),SMOIS(I,J,<span class="hljs-number">2</span>),SMOIS(I,J,<span class="hljs-number">3</span>),SMOIS(I,J,<span class="hljs-number">4</span>),&amp;<br>     &amp; SH2O(I,J,<span class="hljs-number">1</span>),SH2O(I,J,<span class="hljs-number">2</span>),SH2O(I,J,<span class="hljs-number">3</span>),SH2O(I,J,<span class="hljs-number">4</span>),TSLB(I,J,<span class="hljs-number">1</span>),&amp;<br>     &amp; TSLB(I,J,<span class="hljs-number">2</span>),TSLB(I,J,<span class="hljs-number">3</span>),TSLB(I,J,<span class="hljs-number">4</span>),BB(I,J),REFSMC(I,J),&amp;<br>     &amp; SATPSI(I,J),SATDK(I,J),SATDW(I,J),WLTSMC(I,J),QTZ(I,J),&amp;<br>     &amp; FRZITR,IFROZPT,RHOSL,DTS,Z_K,J,I)<br><br><span class="hljs-comment">! *******************************************************************</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">!   SECTION 4. UPDATE SOIL MOISTURE AND RUNOFF.</span><br><span class="hljs-comment">!</span><br><span class="hljs-comment">! *******************************************************************</span><br><br><span class="hljs-comment">! The DELSM(K) calculated in SMFLX is the change (increment) in SMOIS</span><br><span class="hljs-comment">! The new SMOIS value is calculated by adding the increment.</span><br>      <span class="hljs-keyword">DO</span> K = <span class="hljs-number">1</span>, NLAY<br>         SMOIS(I,J,K) = SMOIS(I,J,K) + DELSM(K)<br>      <span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br></code></pre></td></tr></table></figure>
+<hr />
+<h3 id="physical-capping-by-maxsmc">2. Physical Capping by MAXSMC</h3>
+<p>Immediately after the update, a check is performed to ensure the new <code>SMOIS</code> value does not exceed the maximum volumetric content, <strong><code>MAXSMC</code></strong> (porosity). This is the <strong>physical capping</strong> logic.</p>
+<p>The excess water is instantly converted to runoff (<code>SFCRUNOFF</code> for the top layer, <code>UDRUNOFF</code> for the bottom layer) and removed from the soil column.</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">Code Line</th>
+<th style="text-align: left;">Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong><code>IF (SMOIS(I,J,K) .GT. MAXSMC(I,J,K))</code></strong></td>
+<td style="text-align: left;">The condition for overwriting: if the new water content exceeds the capacity.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><code>RUNOFF_INC = SMOIS(I,J,K) - MAXSMC(I,J,K)</code></strong></td>
+<td style="text-align: left;">Calculates the mass of water to be converted to runoff.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><code>SMOIS(I,J,K) = MAXSMC(I,J,K)</code></strong></td>
+<td style="text-align: left;"><strong>The Overwrite/Capping:</strong> The soil moisture is set to the maximum saturation value.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="code-section-maxsmc-capping-within-sflx">Code Section: MAXSMC Capping (within <code>SFLX</code>)</h4>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!   CHECK SOIL MOISTURE TO BE BETWEEN MAXSMC AND WLTSMC</span><br><span class="hljs-comment">!   MAXSMC IS THE VOLUMETRIC SOIL MOISTURE AT SATURATION (POROSITY)</span><br><span class="hljs-comment">!   WLTSMC IS THE WILTING POINT SOIL MOISTURE</span><br><br>      <span class="hljs-keyword">DO</span> K = <span class="hljs-number">1</span>, NLAY<br>        <span class="hljs-keyword">IF</span> (SMOIS(I,J,K) <span class="hljs-keyword">.GT.</span> MAXSMC(I,J,K)) <span class="hljs-keyword">THEN</span><br><span class="hljs-comment">!         convert excess moisture to runoff</span><br>          RUNOFF_INC = SMOIS(I,J,K) - MAXSMC(I,J,K)<br>          <br><span class="hljs-comment">!         THIS IS THE CAPPING/OVERWRITE STEP:</span><br>          SMOIS(I,J,K) = MAXSMC(I,J,K)<br>          <br>          <span class="hljs-keyword">IF</span> (K <span class="hljs-keyword">.EQ.</span> <span class="hljs-number">1</span>) <span class="hljs-keyword">THEN</span><br><span class="hljs-comment">!            EXCESS WATER FROM TOP LAYER GOES TO SURFACE RUNOFF</span><br>             SFCRUNOFF(I,J) = SFCRUNOFF(I,J) + RUNOFF_INC<br>          <span class="hljs-keyword">ELSE</span> <span class="hljs-keyword">IF</span> (K <span class="hljs-keyword">.EQ.</span> NLAY) <span class="hljs-keyword">THEN</span><br><span class="hljs-comment">!            EXCESS WATER FROM BOTTOM LAYER GOES TO SUBSURFACE RUNOFF</span><br>             UDRUNOFF(I,J) = UDRUNOFF(I,J) + RUNOFF_INC<br>          <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br>        <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br>        <br><span class="hljs-comment">!       ALSO CAP SOIL MOISTURE AT WLTSMC (WILTING POINT)</span><br>        <span class="hljs-keyword">IF</span> (SMOIS(I,J,K) <span class="hljs-keyword">.LT.</span> WLTSMC(I,J,K)) <span class="hljs-keyword">THEN</span><br>          SMOIS(I,J,K) = WLTSMC(I,J,K)<br>        <span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span><br>      <span class="hljs-keyword">END</span> <span class="hljs-keyword">DO</span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/SMOIS/" class="print-no-link">#SMOIS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WRF | ERA5 IC | SMOIS issue</div>
+      <div>https://waipangsze.github.io/2025/11/06/WRF-ERA5-IC-SMOIS-issue/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 6, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>November 6, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/30/NWP-TC-Best-Track-IBTrACS/" title="NWP | TC Best Track | IBTrACS">
+                        <span class="hidden-mobile">NWP | TC Best Track | IBTrACS</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
