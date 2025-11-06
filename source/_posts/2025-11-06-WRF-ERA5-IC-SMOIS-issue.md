@@ -4,13 +4,13 @@ title: WRF | ERA5 IC | SMOIS issue
 categories: [WRF]
 tags: [WRF, NWP, ERA5, SMOIS]
 author: wpsze
-date: 2025-07-28 07:56:00
+date: 2025-11-06 06:56:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/NuR9m3F.png
+banner_img: https://i.imgur.com/NuR9m3F.png
 ---
 
 # Issue
@@ -61,7 +61,7 @@ When using the Weather Research and Forecasting (`WRF`) model with initial condi
 
 ![](https://i.imgur.com/32OxOTR.png){width=400}
 
-## Check: Set `MAXSMC` = 0.900
+## Check: Set `MAXSMC` = 0.01
 
 - Set `MAXSMC` = 0.01
 
