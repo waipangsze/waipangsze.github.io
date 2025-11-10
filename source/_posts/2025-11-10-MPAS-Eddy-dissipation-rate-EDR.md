@@ -42,3 +42,7 @@ banner_img: https://i.imgur.com/VsfV0li.png
       ![](https://i.imgur.com/ZNu828r.png)
       {% endgi %}
 
+# References
+
+- [Shi, X., Hagen, H. L., Chow, F. K., Bryan, G. H., & Street, R. L. (2018). Large-eddy simulation of the stratocumulus-capped boundary layer with explicit filtering and reconstruction turbulence modeling. Journal of the Atmospheric Sciences, 75(2), 611-637.](https://journals.ametsoc.org/view/journals/atsc/75/2/jas-d-17-0162.1.pdf)
+  - ![](https://i.imgur.com/ZIGUYrp.png)
