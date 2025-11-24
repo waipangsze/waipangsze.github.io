@@ -1,0 +1,1230 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Anomaly Correlation Coefficient (ACC)  https:&#x2F;&#x2F;confluence.ecmwf.int&#x2F;display&#x2F;FUG&#x2F;Section+6.2.2+Anomaly+Correlation+Coefficient ECMWF_ACC_definition  The Anomaly Correlation Coefficient (ACC) is one of">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | Anomaly Correlation Coefficient (ACC)">
+<meta property="og:url" content="https://waipangsze.github.io/2025/11/24/NWP-Anomaly-Correlation-Coefficient-ACC/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Anomaly Correlation Coefficient (ACC)  https:&#x2F;&#x2F;confluence.ecmwf.int&#x2F;display&#x2F;FUG&#x2F;Section+6.2.2+Anomaly+Correlation+Coefficient ECMWF_ACC_definition  The Anomaly Correlation Coefficient (ACC) is one of">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/TfdXucM.png">
+<meta property="article:published_time" content="2025-11-23T22:30:00.000Z">
+<meta property="article:modified_time" content="2025-11-24T03:56:27.754Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="FNL">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="IFS">
+<meta property="article:tag" content="CMA">
+<meta property="article:tag" content="ACC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/TfdXucM.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | Anomaly Correlation Coefficient (ACC) - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/TfdXucM.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | Anomaly Correlation Coefficient (ACC)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-24 06:30" pubdate>
+          November 24, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          934 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | Anomaly Correlation Coefficient (ACC)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="anomaly-correlation-coefficient-acc">Anomaly Correlation Coefficient (ACC)</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/display/FUG/Section+6.2.2+Anomaly+Correlation+Coefficient" class="uri">https://confluence.ecmwf.int/display/FUG/Section+6.2.2+Anomaly+Correlation+Coefficient</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.atmos.albany.edu/daes/atmclasses/atm401/spring_2016/ppts_pdfs/ECMWF_ACC_definition.pdf">ECMWF_ACC_definition</a></li>
+</ul>
+<p>The Anomaly Correlation Coefficient (ACC) is one of the most widely used measures in the verification of spatial fields. <strong>It is the spatial correlation between a forecast anomaly relative to climatology, and a verifying analysis anomaly relative to climatology</strong>. ACC is a measure of how well the forecast anomalies have represented the observed anomalies. It shows how well the predicted values from a forecast model "fit" with the real-life data. ACC for a series of forecast lead-times is a measure of how well trends in the predicted anomalies follow trends in actual anomalies.</p>
+<div class="note note-primary">
+            <p>The correlating forecasts directly with observations or analyses <strong>may give misleadingly high values because of the seasonal variations</strong>. It is therefore established practice to subtract the climate average from both the forecast and the verification and to verify the forecast and observed anomalies according to the anomaly correlation coefficient (ACC).</p>
+          </div>
+<p>ACC values lie between +1 and -1. Where ACC values:</p>
+<ul>
+<li>approach +1 there is good agreement and the forecast anomaly has had value.</li>
+<li>lie around 0 there is poor agreement and the forecast has had no value.</li>
+<li>approach –1 the agreement is in anti-phase and the forecast has been very misleading.</li>
+</ul>
+<p>Where the <strong>ACC value falls below 0.6</strong> it is considered that the positioning of synoptic scale features ceases to have value for forecasting purposes.</p>
+<p><img src="https://confluence.ecmwf.int/download/attachments/462552904/Screenshot%202024-10-01%20at%2011.59.10.png?version=1&amp;modificationDate=1731409141794&amp;api=v2" srcset="/img/loading.gif" lazyload width="400" /></p>
+<h1 id="what-the-acc-measures">What the ACC Measures</h1>
+<p>The fundamental purpose of the ACC is to determine how well the forecast model captures the large-scale <strong>pattern and location</strong> of weather features that deviate from the long-term normal (the climatology).</p>
+<ol type="1">
+<li><strong>Anomaly Calculation:</strong> An anomaly is the deviation of a variable (e.g., <span class="math inline">\(500 \text{ hPa}\)</span> geopotential height) from its long-term average for that <strong>specific time and location</strong> (the <strong>climatology</strong>).
+<ul>
+<li><strong>Forecast Anomaly (<span class="math inline">\(F&#39;\)</span>):</strong> <span class="math inline">\(\text{Forecast} - \text{Climatology}\)</span></li>
+<li><strong>Observed Anomaly (<span class="math inline">\(A&#39;\)</span>):</strong> <span class="math inline">\(\text{Observation} - \text{Climatology}\)</span></li>
+</ul></li>
+<li><strong>Correlation:</strong> The ACC is the <strong>Pearson correlation coefficient</strong> applied to the forecast anomalies (<span class="math inline">\(F&#39;\)</span>) and the observed anomalies (<span class="math inline">\(A&#39;\)</span>) across all grid points in the verification domain (e.g., the Northern Hemisphere).</li>
+</ol>
+<p>The ACC is a measure of the <strong>pattern accuracy</strong>, not the magnitude of the errors.</p>
+<h2 id="the-formula">The Formula</h2>
+<p>The ACC is mathematically defined as the spatial correlation between the forecast anomaly and the analysis (observed) anomaly:</p>
+<p><span class="math display">\[
+\text{ACC}_\text{uncentered}
+= \frac{\sum_i w_i F&#39;_i A&#39;_i}
+        {\sqrt{\sum_i w_i (F&#39;_i)^2}\,\sqrt{\sum_i w_i (A&#39;_i)^2}}
+\]</span></p>
+<p>or</p>
+<p><span class="math display">\[\text{ACC}_\text{centered} = \frac{\sum_{i=1}^{N} w_i (F&#39;_i - \overline{F&#39;}) (A&#39;_i - \overline{A&#39;})}{\sqrt{\sum_{i=1}^{N} w_i (F&#39;_i - \overline{F&#39;})^2} \sqrt{\sum_{i=1}^{N} w_i (A&#39;_i - \overline{A&#39;})^2}}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(N\)</span> is the total number of grid points in the domain.</li>
+<li><span class="math inline">\(F&#39;_i\)</span> is the forecast anomaly at grid point <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(A&#39;_i\)</span> is the observed anomaly at grid point <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(\overline{F&#39;}\)</span> and <span class="math inline">\(\overline{A&#39;}\)</span> are the spatial mean of the forecast and observed anomalies, respectively (often calculated using weighting).</li>
+<li><span class="math inline">\(w_i\)</span> is the <strong>area weighting coefficient</strong> for grid point <span class="math inline">\(i\)</span> (used because grid cells closer to the poles cover a smaller area).
+<ul>
+<li>To counteract the shrinking area of grid cells towards the poles, the most common and standard way to calculate the area weighting coefficient is using the <strong>cosine of the latitude</strong> (<span class="math inline">\(\phi_i\)</span>) for each grid point <span class="math inline">\(i\)</span>:
+<ul>
+<li><span class="math display">\[\mathbf{w_i \propto \cos(\phi_i)}\]</span>
+<ul>
+<li><strong>At the Equator (<span class="math inline">\(\phi = 0^{\circ}\)</span>):</strong> <span class="math inline">\(\cos(0^{\circ}) = 1\)</span>. The weighting is maximum, as these grid cells cover the largest area.</li>
+<li><strong>Near the Poles (<span class="math inline">\(\phi \approx 90^{\circ}\)</span>):</strong> <span class="math inline">\(\cos(90^{\circ}) \approx 0\)</span>. The weighting is near zero, effectively down-weighting the small grid cells to ensure they don't overly influence the final result.</li>
+<li></li>
+</ul></li>
+<li>By multiplying the forecast and observed anomalies by <span class="math inline">\(\cos(\phi_i)\)</span> before summing them in the numerator and denominator of the ACC formula, the calculation is essentially performed over an <strong>equal-area basis</strong>.</li>
+<li>In practice, the ACC formula uses the weighted sum of anomalies and their squares, ensuring the final correlation value accurately reflects the skill of the forecast model across the entire geographical domain.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>The ACC ranges from <strong>-1 to +1</strong>, similar to the standard correlation coefficient:</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: center;">ACC Value</th>
+<th style="text-align: left;">Interpretation</th>
+<th style="text-align: left;">Skill Implication</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>+1.0</strong></td>
+<td style="text-align: left;"><strong>Perfect correlation.</strong> The forecast and observed anomaly patterns are identical.</td>
+<td style="text-align: left;"><strong>Perfect Skill</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>+0.6</strong></td>
+<td style="text-align: left;">Typically considered the threshold where the forecast retains useful <strong>synoptic skill</strong> (good enough for general weather prediction).</td>
+<td style="text-align: left;"><strong>Useful Skill</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>0.0</strong></td>
+<td style="text-align: left;"><strong>No correlation.</strong> The forecast pattern is no better than a random pattern.</td>
+<td style="text-align: left;"><strong>No Skill</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>-1.0</strong></td>
+<td style="text-align: left;"><strong>Perfect negative correlation.</strong> The forecast pattern is completely opposite of the observed pattern.</td>
+<td style="text-align: left;"><strong>Very Misleading Forecast</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-applications">Key Applications</h3>
+<ul>
+<li><strong>Medium-Range Forecasts:</strong> The ACC of the <span class="math inline">\(500 \text{ hPa}\)</span> geopotential height (a proxy for the jet stream and large weather systems) is often the <strong>headline score</strong> used by major weather centers like ECMWF to track skill improvement over time.</li>
+<li><strong>Forecast Horizon:</strong> ACC is commonly plotted against forecast lead-time (days) to determine the effective limit of predictability. For instance, if the ACC drops to <span class="math inline">\(0.6\)</span> at Day 10, the forecast is considered useful up to 10 days.</li>
+</ul>
+<h2 id="acc-vs.-other-metrics">ACC vs. Other Metrics</h2>
+<p>The ACC is excellent for pattern but has limitations:</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">Metric</th>
+<th style="text-align: left;">Focus</th>
+<th style="text-align: left;">Sensitivity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>ACC</strong></td>
+<td style="text-align: left;"><strong>Pattern</strong> and Phase (Are the highs and lows in the right place?)</td>
+<td style="text-align: left;"><strong>Not sensitive to bias</strong> (the difference in the mean magnitude). A forecast that is too cold everywhere but has the correct pattern will still score high.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Root Mean Square Error (RMSE)</strong></td>
+<td style="text-align: left;"><strong>Magnitude</strong> of error (How far off are the values in standard units?)</td>
+<td style="text-align: left;">Sensitive to both pattern error and overall forecast bias.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="uncentered-vs.-centered">Uncentered vs. centered</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://dtcenter.org/metplus-practical-session-guide-version-5-0/basic-verification-statistics-review/continuous-forecasts/verification-statistics-continuous-forecasts#:~:text=While%20similar%20to%20the%20traditional%20correlation%20coefficient%2C%20anomaly%20correlation&amp;text=If%20it%20is%20not%20desirable%20to%20include%20the%20errors%2C%20the%20uncentered%20anomaly%20correlation">Verification Statistics for Continuous Forecasts | dtcenter</a>
+<ol type="1">
+<li>Anomaly Correlation</li>
+<li>There are two widely used versions of anomaly correlation.
+<ol type="1">
+<li>The first is the <strong>centered</strong> anomaly correlation, which includes the mean error relative to the climatology. This version is calculated using</li>
+<li><img src="https://dtcenter.org/sites/default/files/community-code/metplus/tutorial-images/5.0_Tutorial_stats_ANOM_CORR_eq.png" srcset="/img/loading.gif" lazyload /></li>
+<li>If it is not desirable to include the errors, the <strong>uncentered</strong> anomaly correlation is the better choice:</li>
+<li><img src="https://dtcenter.org/sites/default/files/community-code/metplus/tutorial-images/5.0_Tutorial_stats_ANOM_CORR_UNCNTR_eq.png" srcset="/img/loading.gif" lazyload /></li>
+</ol></li>
+</ol></li>
+</ol>
+<p>Anomaly correlation coefficient (ACC) can be defined in two slightly different ways, often called <strong>centered</strong> and <strong>uncentered</strong>; the distinction is about whether you remove the <em>sample mean of the anomalies themselves</em> before computing the correlation.</p>
+<h2 id="uncentered-anomaly-correlation">Uncentered anomaly correlation</h2>
+<p>The <strong>Uncentered ACC</strong> is a less common variation that measures the correspondence between the two anomaly fields <strong>without removing their spatial means</strong>.</p>
+<p>This is what <strong>operational NWP centers almost always mean</strong> by <strong>“ACC”</strong>:</p>
+<ul>
+<li>Define anomalies relative to a <em>climatology</em> <span class="math inline">\(C\)</span>: <span class="math display">\[
+F&#39;_i = F_i - C_i,\quad A&#39;_i = A_i - C_i
+\]</span></li>
+<li>Compute the correlation <strong>directly</strong> from these anomalies, without removing any additional mean: <span class="math display">\[
+\text{ACC}_\text{uncentered}
+= \frac{\sum_i w_i F&#39;_i A&#39;_i}
+       {\sqrt{\sum_i w_i (F&#39;_i)^2}\,\sqrt{\sum_i w_i (A&#39;_i)^2}}
+\]</span></li>
+</ul>
+<p>Here the only centering is the subtraction of climatology; there is no subtraction of the domain/sample mean of <span class="math inline">\(F&#39;\)</span> or <span class="math inline">\(A&#39;\)</span>.</p>
+<div class="note note-primary">
+            <p>This version <strong>keeps information about systematic errors relative to climatology</strong> (mean forecast anomaly vs. mean observed anomaly over the domain).</p>
+          </div>
+<h3 id="key-features">Key Features:</h3>
+<ul>
+<li><strong>No Removal of Spatial Mean:</strong> The spatial averages (<span class="math inline">\(\overline{F&#39;}\)</span> and <span class="math inline">\(\overline{A&#39;}\)</span>) are <em>not</em> subtracted.</li>
+<li><strong>Sensitive to Bias:</strong> The <span class="math inline">\(\text{ACC}_{\text{uncentered}}\)</span> score is penalized if the overall spatial mean of the forecast anomaly differs significantly from the observed spatial mean anomaly. Therefore, it is sensitive to the <strong>overall bias</strong> of the forecast's anomaly field.</li>
+<li><strong>Focus:</strong> It evaluates the pattern match <em>and</em> the similarity in the <strong>average magnitude</strong> of the anomalies across the domain.</li>
+</ul>
+<h2 id="centered-anomaly-correlation">Centered anomaly correlation</h2>
+<p>The <strong>Centered ACC</strong> is the standard and most commonly used form in meteorological and climate forecast verification. It is calculated by first removing the <strong>spatial mean</strong> from both the forecast anomaly field (<span class="math inline">\(F&#39;\)</span>) and the observed anomaly field (<span class="math inline">\(A&#39;\)</span>).</p>
+<p>The centered ACC is the <strong>Pearson product-moment correlation coefficient</strong> of the two anomaly fields:</p>
+<p><span class="math display">\[\text{ACC}_{\text{centered}} = \frac{\sum w_i (F&#39;_i - \overline{F&#39;}) (A&#39;_i - \overline{A&#39;})}{\sqrt{\sum w_i (F&#39;_i - \overline{F&#39;})^2} \sqrt{\sum w_i (A&#39;_i - \overline{A&#39;})^2}}\]</span></p>
+<p><em>Where <span class="math inline">\(F&#39;_i\)</span> is the forecast anomaly, <span class="math inline">\(A&#39;_i\)</span> is the observed anomaly, <span class="math inline">\(\overline{F&#39;}\)</span> and <span class="math inline">\(\overline{A&#39;}\)</span> are the spatial mean anomalies, and <span class="math inline">\(w_i\)</span> is the area weighting coefficient.</em></p>
+<h3 id="key-features-1">Key Features:</h3>
+<ul>
+<li><strong>Removal of Spatial Mean:</strong> The spatial average of the anomalies (<span class="math inline">\(\overline{F&#39;}\)</span> and <span class="math inline">\(\overline{A&#39;}\)</span>) is subtracted from the respective fields before calculating the correlation.</li>
+<li><strong>Insensitive to Bias:</strong> The <span class="math inline">\(\text{ACC}_{\text{centered}}\)</span> measures the similarity of the two patterns' shapes, <strong>regardless of the magnitude difference</strong> (bias) between the overall spatial mean of the forecast anomaly and the observed anomaly.</li>
+<li><strong>Focus:</strong> It only evaluates the <strong>pattern match</strong> and <strong>phase agreement</strong> (i.e., whether the predicted high-pressure systems and low-pressure systems are in the correct geographical locations).</li>
+</ul>
+<h2 id="summary-of-the-difference">Summary of the Difference</h2>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">Feature</th>
+<th style="text-align: left;">Centered ACC (<span class="math inline">\(\text{ACC}_{\text{centered}}\)</span>)</th>
+<th style="text-align: left;">Uncentered ACC (<span class="math inline">\(\text{ACC}_{\text{uncentered}}\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Calculation</strong></td>
+<td style="text-align: left;"><strong>Removes</strong> the spatial mean (<span class="math inline">\(\overline{F&#39;}\)</span> and <span class="math inline">\(\overline{A&#39;}\)</span>) from the anomaly fields.</td>
+<td style="text-align: left;"><strong>Does NOT remove</strong> the spatial mean from the anomaly fields.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Sensitivity</strong></td>
+<td style="text-align: left;"><strong>Insensitive</strong> to the forecast's overall bias.</td>
+<td style="text-align: left;"><strong>Sensitive</strong> to the forecast's overall bias.</td>
+</tr>
+</tbody>
+</table>
+<p>For example, if a model correctly predicts a cold air outbreak over North America but predicts that the air is <span class="math inline">\(2^\circ \text{C}\)</span> colder <em>on average</em> than what was observed across the domain, the <strong>Centered ACC</strong> would still be very high (due to the correct pattern), while the <strong>Uncentered ACC</strong> would be noticeably lower (penalized for the <span class="math inline">\(2^\circ \text{C}\)</span> cold bias).</p>
+<h1 id="era5-for-climatological-term">ERA5 for Climatological term</h1>
+<h2 id="defining-climatology-climate-normal">1. Defining Climatology (Climate Normal)</h2>
+<ul>
+<li>A <strong>Climatology</strong> (or <strong>Climate Normal</strong>) is the long-term average of a meteorological variable, typically calculated over a 30-year period (e.g., 1981–2010 or 1991–2020) as defined by the World Meteorological Organization (WMO).</li>
+<li><strong>ERA5's Role:</strong> Since ERA5 provides consistent, continuous, gridded data for a long period (1940–present), researchers can use it to calculate climatologies for virtually any location on Earth for which ERA5 has data. For example, the mean temperature for every January 1st over the 1991–2020 period is derived directly from ERA5 data.</li>
+</ul>
+<h2 id="calculating-anomalies">2. Calculating Anomalies</h2>
+<ul>
+<li>An <strong>Anomaly</strong> is the deviation of a specific weather event or period from the climatological normal.</li>
+<li><strong>ERA5's Role:</strong> By subtracting the long-term climatology (calculated from ERA5) from the <code>hourly or daily ERA5 value for a specific day, you get the anomaly</code>. This is essential for studying extreme events (e.g., a heatwave's temperature anomaly) and for climate monitoring (e.g., global temperature anomalies).</li>
+</ul>
+<h2 id="consistency-and-homogeneity">3. Consistency and Homogeneity</h2>
+<ul>
+<li>Climatological studies rely on <strong>homogeneity</strong>—the data must be comparable across the entire time series.</li>
+<li><strong>ERA5's Role:</strong> It achieves this by using a <strong>single, modern, fixed numerical weather prediction model and data assimilation system</strong> to integrate all observations (satellite, ground station, etc.) from the past 80+ years. This process "fills the gaps" where observations were sparse and ensures that changes in the climate signal are due to the atmosphere, not due to changes in the measurement instruments or models over time.</li>
+</ul>
+<p>In summary, when a climate scientist mentions a <strong>climatological mean</strong>, <strong>anomaly</strong>, or <strong>reanalysis</strong> in the context of global data, they are most often referring to calculations derived from a product like <strong>ERA5</strong>.</p>
+<h1 id="era5-download">ERA5 download</h1>
+<ul>
+<li>ERA5 hourly data on single levels from 1940 to present
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview" class="uri">https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview</a></li>
+</ul></li>
+<li>ERA5 hourly data on pressure levels from 1940 to present
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels?tab=overview" class="uri">https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels?tab=overview</a></li>
+</ul></li>
+<li>ERA5 monthly averaged data on single levels from 1940 to present
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means?tab=overview" class="uri">https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means?tab=overview</a></li>
+</ul></li>
+<li>ERA5 monthly averaged data on pressure levels from 1940 to present
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels-monthly-means?tab=download" class="uri">https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels-monthly-means?tab=download</a></li>
+</ul></li>
+</ul>
+<h1 id="build-the-era5-climatology-field">Build the ERA5 climatology field</h1>
+<p>The goal is a mean state (climatology) <span class="math inline">\(C(t_{\text{cal}}, x)\)</span> for each calendar time and grid point, using only ERA5.</p>
+<ul>
+<li>Decide which ERA5 product to use (hourly, daily or monthly) and which variable, e.g. 500 hPa geopotential height, 850 hPa temperature, 2 m temperature, etc.</li>
+<li>Select a long reference period, typically 30 years such as 1981–2010 or 1991–2020, so the climatology is stable.</li>
+</ul>
+<ol type="1">
+<li>Extract ERA5 for the full reference period for your variable and pressure level.</li>
+<li>Decide temporal resolution for climatology:
+<ul>
+<li><strong><code>Daily: all 1 Jan values across years, all 2 Jan, … (possibly smooth with a running window)</code></strong>.</li>
+<li>Monthly: all Januaries, all Februaries, etc.</li>
+</ul></li>
+<li>For <strong>each calendar day (or month)</strong> and grid point, average across all years:<br />
+<span class="math display">\[
+C(d, x) = \frac{1}{N_{\text{years}}} \sum_{y=1}^{N_{\text{years}}} \text{ERA5}(y, d, x)
+\]</span><br />
+where <span class="math inline">\(d\)</span> is the day-of-year (or month) index and <span class="math inline">\(x\)</span> is the grid point.</li>
+</ol>
+<p>This yields a 3‑D array for daily climatology: <span class="math inline">\((\text{day}, \text{lat}, \text{lon})\)</span>, or <span class="math inline">\((\text{month}, \text{lat}, \text{lon})\)</span> for monthly.</p>
+<h3 id="implementation-notes">Implementation notes</h3>
+<ul>
+<li>For daily climatology, you may use a running window <span class="math inline">\((± 7 days)\)</span> for smoother anomalies. <a target="_blank" rel="noopener" href="https://www.callendar.tech/en/post/tutorial-accessing-era5-land-reanalyses-and-calculating-a-climate-normal-with-python">link</a></li>
+<li>For climate normals (monthly or annual), use monthly groupings.</li>
+<li>For soil moisture or other surface variables, ERA5-Land provides higher spatial resolution.</li>
+</ul>
+<h2 id="align-model-forecasts-and-era5-analyses-with-climatology">Align model forecasts and ERA5 analyses with climatology</h2>
+<ul>
+<li>For each forecast valid time <span class="math inline">\(t\)</span>, determine its calendar day (or month) <span class="math inline">\(d\)</span>.</li>
+<li>Interpolate the climatology <span class="math inline">\(C(d, x)\)</span> in time if needed, e.g. from monthly mean <span class="math inline">\(C(\text{month}, x)\)</span> to daily valid times.</li>
+<li>Make sure the climatology is defined on the same grid as the forecast and analysis fields; if not, interpolate ERA5 or the model fields to a common grid first.</li>
+</ul>
+<h2 id="compute-anomalies">Compute anomalies</h2>
+<p>For each forecast case and grid point <span class="math inline">\(x\)</span>:</p>
+<ul>
+<li>Forecast anomaly:<br />
+<span class="math display">\[
+F&#39;(t, x) = F(t, x) - C(d(t), x)
+\]</span><br />
+</li>
+<li>Analysis (verification) anomaly using ERA5:<br />
+<span class="math display">\[
+A&#39;(t, x) = A(t, x) - C(d(t), x)
+\]</span></li>
+</ul>
+<p>Using the same climatology for both is essential; <strong>do not use</strong> separate climatologies for forecast and verification when computing ACC.</p>
+<h2 id="average-anomalies-over-time-cases-domain-if-desired">Average anomalies over time / cases / domain if desired</h2>
+<p>Often ACC is computed for a sample of forecasts at the same lead time over many initial dates.</p>
+<ul>
+<li>Collect all <span class="math inline">\(F&#39;\)</span> and <span class="math inline">\(A&#39;\)</span> at a given lead time over the selected period.</li>
+<li>Compute spatial means needed for correlation using that full set, e.g. subtract the spatial mean anomaly before computing covariance if using the covariance form of ACC. [be or not be]</li>
+</ul>
+<p><strong>This yields one ACC value per lead time (and region and variable).</strong></p>
+<h1 id="era5-convert-gregorian-time-to-datetime">ERA5: convert Gregorian time to datetime</h1>
+<ul>
+<li>To convert the time value from an ECMWF/ERA5 NetCDF file using Python's datetime and timedelta modules.</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>convert gregorian time to datetime
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> argparse<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime, timedelta<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">convert_ecmwf_time</span>(<span class="hljs-params">ecmwf_time_value</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    Converts a time value (in hours since the epoch) from ECMWF data </span><br><span class="hljs-string">    to a Gregorian datetime object.</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-comment"># Define the epoch as specified in the NetCDF &#x27;time:units&#x27; attribute</span><br>    <span class="hljs-comment"># For ECMWF data, this is commonly &#x27;1900-01-01 00:00:00.0&#x27;</span><br>    epoch_date = datetime(<span class="hljs-number">1900</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)<br><br>    <span class="hljs-comment"># Calculate the timedelta from the epoch</span><br>    time_delta = timedelta(hours=ecmwf_time_value)<br><br>    <span class="hljs-comment"># Add the timedelta to the epoch to get the Gregorian datetime</span><br>    gregorian_datetime = epoch_date + time_delta<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;--- ECMWF Time Conversion ---&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Epoch Date: <span class="hljs-subst">&#123;epoch_date&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Input Time Value: <span class="hljs-subst">&#123;ecmwf_time_value&#125;</span> hours&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Time Delta: <span class="hljs-subst">&#123;time_delta&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Gregorian Datetime: <span class="hljs-subst">&#123;gregorian_datetime&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;-----------------------------&quot;</span>)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    <span class="hljs-comment"># 1. Create the ArgumentParser object</span><br>    parser = argparse.ArgumentParser(<br>        description=<span class="hljs-string">&quot;Convert ECMWF time (hours since 1900-01-01) to a Gregorian datetime.&quot;</span><br>    )<br><br>    <span class="hljs-comment"># 2. Add the argument for the ECMWF time value</span><br>    parser.add_argument(<br>        <span class="hljs-string">&quot;ecmwf_time&quot;</span>,<br>        <span class="hljs-built_in">type</span>=<span class="hljs-built_in">int</span>,  <span class="hljs-comment"># Specify that the input should be an integer</span><br>        <span class="hljs-built_in">help</span>=<span class="hljs-string">&quot;The ECMWF time value in hours (e.g., 1000000).&quot;</span><br>    )<br><br>    <span class="hljs-comment"># 3. Parse the arguments from the command line</span><br>    args = parser.parse_args()<br><br>    <span class="hljs-comment"># 4. Call the conversion function with the parsed argument</span><br>    convert_ecmwf_time(args.ecmwf_time)<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/clim/5/11/1520-0442_1992_005_1346_tsoere_2_0_co_2.pdf">Déqué, M. I. C. H. E. L., &amp; Royer, J. F. (1992). The skill of extended-range extratropical winter dynamical forecasts. Journal of climate, 5(11), 1346-1356.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/201601/met.pdf"><strong>Model Evaluation Tools | UCAR</strong></a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jma.go.jp/jma/jma-eng/jma-center/nwp/outline2013-nwp/pdf/outline2013_Appendix_A.pdf">outline2013_Appendix_A.pdf | JMA</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.callendar.tech/en/post/tutorial-accessing-era5-land-reanalyses-and-calculating-a-climate-normal-with-python">Tutorial: Accessing ERA5-Land reanalyses and calculating a climate normal with Python</a></li>
+<li><a target="_blank" rel="noopener" href="https://photino.cwa.gov.tw/rdcweb/lib/cd/cd07mb/MB/PDF/43/No.4/01.pdf">The Ensemble Forecast System of the Central Weather Bureau (1995, gov.tw)</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/FNL/" class="print-no-link">#FNL</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/IFS/" class="print-no-link">#IFS</a>
+      
+        <a href="/tags/CMA/" class="print-no-link">#CMA</a>
+      
+        <a href="/tags/ACC/" class="print-no-link">#ACC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | Anomaly Correlation Coefficient (ACC)</div>
+      <div>https://waipangsze.github.io/2025/11/24/NWP-Anomaly-Correlation-Coefficient-ACC/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 24, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>November 24, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/11/10/MPAS-Eddy-dissipation-rate-EDR/" title="MPAS | Eddy dissipation rate (EDR)">
+                        <span class="hidden-mobile">MPAS | Eddy dissipation rate (EDR)</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
