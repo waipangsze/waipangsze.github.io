@@ -84,3 +84,9 @@ HKUST: MPAS-UCM
 1) mesh: 30km-500m
 2) generate user defined arbitrary mesh based on geojson file
 3) Coupling single UCM in MPAS add LCZ in MPAS
+
+## GWDO (NOAA's Unified Forecast System (UFS) Unified Gravity Wave Physics (UGWP) suite of physics)
+
+- NOAA's Unified Forecast System (UFS) Unified Gravity Wave Physics (UGWP) suite of physics
+- <https://github.com/MPAS-Dev/MPAS-Model/pull/1276>
+- <https://www2.mmm.ucar.edu/wrf/users/workshops/WS2025/presentations/36_Hong.pdf>
