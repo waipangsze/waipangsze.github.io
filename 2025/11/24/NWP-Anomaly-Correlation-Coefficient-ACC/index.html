@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/TfdXucM.png">
 <meta property="article:published_time" content="2025-11-23T22:30:00.000Z">
-<meta property="article:modified_time" content="2025-11-24T03:56:27.754Z">
+<meta property="article:modified_time" content="2025-11-28T08:52:31.410Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="MPAS">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="GFS">
 <meta property="article:tag" content="FNL">
 <meta property="article:tag" content="ERA5">
@@ -364,7 +364,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          934 words
+          1.2k words
         
       </span>
     
@@ -375,7 +375,7 @@
         
         
         
-          8 mins
+          11 mins
         
       </span>
     
@@ -723,6 +723,104 @@ A&#39;(t, x) = A(t, x) - C(d(t), x)
         </div>
       </div>
     </div>
+<h1 id="grib-files-duplicate">grib files: Duplicate</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs log"> $ grib_to_netcdf 580de9ac434a7edcacca1626ec12410e.grib -o ERA5_v10_1990_2010.nc<br>grib_to_netcdf: Version 2.19.1<br>grib_to_netcdf: Processing input file &#x27;580de9ac434a7edcacca1626ec12410e.grib&#x27;.<br>ECCODES ERROR   :  Wrong number of fields<br>ECCODES ERROR   :  File contains 7698 GRIBs, 7698 left in internal description, 7670 in request<br>ECCODES ERROR   :  The fields are not considered distinct!<br>ECCODES ERROR   :  Hint: This may be due to several fields having the same validity time.<br>ECCODES ERROR   :  Try using the -T option (Do not use time of validity)<br><br>$ grib_to_netcdf -T 580de9ac434a7edcacca1626ec12410e.grib -o v10.nc<br>grib_to_netcdf: Version 2.19.1<br>grib_to_netcdf: Processing input file &#x27;580de9ac434a7edcacca1626ec12410e.grib&#x27;.<br>ECCODES ERROR : Wrong number of fields<br>ECCODES ERROR : File contains 7698 GRIBs, 7698 left in internal description, 7670 in request<br>ECCODES ERROR : The fields are not considered distinct!<br>ECCODES ERROR : Hint: This may be due to several fields having the same date, time and step.<br></code></pre></td></tr></table></figure>
+<ul>
+<li>check duplicated terms</li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs console">grib_ls 580de9ac434a7edcacca1626ec12410e.grib  &gt; log<br>sort log | uniq -d<br></code></pre></td></tr></table></figure>
+<ul>
+<li>python script</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/bin/python</span><br><span class="hljs-comment"># -*- coding: utf-8 -*-</span><br><br><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><br><span class="hljs-comment"># 1. Define the input and output filenames</span><br>input_file = <span class="hljs-string">&#x27;580de9ac434a7edcacca1626ec12410e.grib&#x27;</span><br>output_file = <span class="hljs-string">&#x27;unique_fields.nc&#x27;</span><br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Loading GRIB file: <span class="hljs-subst">&#123;input_file&#125;</span>...&quot;</span>)<br><br><span class="hljs-comment"># 2. Load the GRIB file into an xarray Dataset</span><br><span class="hljs-comment"># cfgrib automatically detects the unique dimensions (like time, step, level)</span><br><span class="hljs-comment"># and combines the fields. This is where the duplicates are handled.</span><br><span class="hljs-comment"># The &#x27;default&#x27; engine is cfgrib.</span><br><span class="hljs-keyword">try</span>:<br>    ds = xr.open_dataset(<br>        input_file,<br>        engine=<span class="hljs-string">&#x27;cfgrib&#x27;</span>,<br>        <span class="hljs-comment"># Set the backend_kwargs to control how cfgrib handles non-distinct fields.</span><br>        <span class="hljs-comment"># This tells cfgrib to aggressively combine fields based on keys.</span><br>        <span class="hljs-comment">#backend_kwargs=&#123;&#x27;read_keys&#x27;: [&#x27;dataDate&#x27;]&#125;</span><br>    )<br>    <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Successfully loaded the file. Duplicates have been handled.&quot;</span>)<br>    <br>    <span class="hljs-comment"># 3. Save the resulting xarray Dataset back to a new GRIB file</span><br>    <span class="hljs-comment"># This will write out only the unique, combined fields.</span><br>    ds.to_netcdf(output_file)<br>    <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Clean GRIB file saved as: <span class="hljs-subst">&#123;output_file&#125;</span>&quot;</span>)<br>   <br><span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;An unexpected error occurred: <span class="hljs-subst">&#123;e&#125;</span>&quot;</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>check dimensions of .nc filenames</li>
+</ul>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs console">netcdf unique_fields &#123;<br>dimensions:<br>	time = 7670 ;<br>	latitude = 721 ;<br>	longitude = 1440 ;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Remark: correct one is</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">netcdf ERA5_t2m_1990_2010 &#123;</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">dimensions:</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">	longitude = 1440 ;</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">	latitude = 721 ;</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">	time = 7670 ;</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">variables:</span><br></code></pre></td></tr></table></figure>
+<h1 id="proleptic_gregorian-vs-gregorian">proleptic_gregorian vs gregorian</h1>
+<p>Your original time data (<code>1292630400, 1292716800, ...</code>) are large integers, suggesting units of <strong>seconds</strong> since a distant epoch (likely 1970-01-01).</p>
+<p>Your target time data (<code>1060272, 1060296, ...</code>) are much smaller integers, suggesting units of <strong>hours</strong> (or days) since a more recent epoch.</p>
+<p>To make this transformation, you need to use the <strong><code>cdo settime</code></strong> or <strong><code>cdo setreftime</code></strong> functions to redefine the time axis based on a new reference date and time unit.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://code.mpimet.mpg.de/boards/2/topics/5974">cdo setreftime change the format of time units</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.mpimet.mpg.de/boards/2/topics/7762">Change the format of time:units</a></li>
+<li><a target="_blank" rel="noopener" href="https://forum.ecmwf.int/t/new-time-format-in-era5-netcdf-files/3796">New time format in ERA5 netcdf files</a></li>
+</ul>
+<h2 id="method-using-cdo-to-change-time-units-and-reference">Method: Using CDO to Change Time Units and Reference</h2>
+<p>The CDO command needed is <code>setreftime</code>. This operator allows you to set a new time unit and reference date for your time axis.</p>
+<h3 id="determine-the-current-and-target-time-axis">1. Determine the Current and Target Time Axis</h3>
+<p>You first need to inspect both files to know their current time settings.</p>
+<ul>
+<li><p><strong>Original File (<code>input.nc</code>):</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Check the attributes of the time variable</span><br>ncdump -v time input.nc<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>Original Units (Example):</strong> <code>seconds since 1970-01-01 00:00:00</code></li>
+<li><strong>Original Calendar:</strong> <code>proleptic_gregorian</code></li>
+</ul></li>
+<li><p><strong>Target File (<code>target.nc</code> or desired state):</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Check the attributes of the time variable on a file that has the desired format</span><br>ncdump -v time target.nc<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>Target Units (Example):</strong> <code>hours since 1900-01-01 00:00:00</code></li>
+<li><strong>Target Calendar:</strong> <code>gregorian</code></li>
+</ul></li>
+</ul>
+<h3 id="run-the-cdo-setreftime-command">2. Run the CDO <code>setreftime</code> Command</h3>
+<p>Once you know the <strong>target units</strong> and <strong>reference date</strong>, you can apply them to your input file.</p>
+<p>For the example above, where you want to change from <code>seconds since 1970-01-01</code> to <code>hours since 1900-01-01</code> and change the calendar:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cdo setreftime,1900-01-01,00:00:00,hours input.nc output.nc<br></code></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Operator/Argument</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>setreftime</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">The CDO operator to redefine the time reference.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><code>,1900-01-01</code></strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">The new <strong>reference date</strong> (the "since" date).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><code>,00:00:00</code></strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">The new <strong>reference time</strong>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><code>,hours</code></strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">The new <strong>time unit</strong> (e.g., <code>hours</code>, <code>days</code>, <code>seconds</code>).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><code>input.nc</code></strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Your original NetCDF file.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><code>output.nc</code></strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">The new NetCDF file with the recalculated time axis.</td>
+</tr>
+</tbody>
+</table>
+<p>CDO automatically handles the calendar conversion and numerical recalculation during this process. The <code>setreftime</code> operation will:</p>
+<ol type="1">
+<li>Read the old time values, old units, and old reference date.</li>
+<li>Calculate the absolute wall-clock time for each step.</li>
+<li>Calculate the difference between the absolute time and the <strong>new reference date</strong> (<code>1900-01-01</code>).</li>
+<li>Express that difference in the <strong>new units</strong> (<code>hours</code>).</li>
+<li>Set the <code>calendar</code> attribute to a standard calendar (like <code>gregorian</code> or <code>standard</code>).</li>
+</ol>
+<h3 id="verification">3. Verification</h3>
+<p>After running the command, check the new file's time variable to ensure the new values match your expected smaller integers:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ncdump -v time output.nc<br></code></pre></td></tr></table></figure>
+<p>This should show the smaller integers and the new time attributes (<code>units</code> and <code>calendar</code>).</p>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/clim/5/11/1520-0442_1992_005_1346_tsoere_2_0_co_2.pdf">Déqué, M. I. C. H. E. L., &amp; Royer, J. F. (1992). The skill of extended-range extratropical winter dynamical forecasts. Journal of climate, 5(11), 1346-1356.</a></li>
@@ -764,11 +862,11 @@ A&#39;(t, x) = A(t, x) - C(d(t), x)
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/GFS/" class="print-no-link">#GFS</a>
       
@@ -811,7 +909,7 @@ A&#39;(t, x) = A(t, x) - C(d(t), x)
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 24, 2025</div>
+          <div>November 28, 2025</div>
         </div>
       
       
@@ -841,6 +939,12 @@ A&#39;(t, x) = A(t, x) - C(d(t), x)
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/11/26/NWP-TempestExtremes-feature-detection-tracking-and-analysis/" title="NWP | TempestExtremes | feature detection, tracking, and analysis">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">NWP | TempestExtremes | feature detection, tracking, and analysis</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
