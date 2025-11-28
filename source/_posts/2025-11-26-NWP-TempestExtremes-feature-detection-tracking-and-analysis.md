@@ -50,7 +50,13 @@ conda install -c conda-forge tempest-extremes
 
 **TempestExtremes** can be built and installed on various systems using CMake. Our new script, `./quick_make_unix.sh` , automatically detects your platform(UNIX-based systems only) and loads any required modules before building.
 
+# **MPAS_tempest-extremes 
+
+- <https://github.com/falkojudt/MPAS_tempest-extremes>
+
 # References
 
 1. [Tropical Cyclones analysis with TempestExtremes](https://e3sm.atlassian.net/wiki/spaces/DOC/pages/924419368/Tropical+Cyclones+analysis+with+TempestExtremes)
 2. [Zarzycki, C. M., Ullrich, P. A., & Reed, K. A. (2021). Metrics for evaluating tropical cyclones in climate data. Journal of Applied Meteorology and Climatology, 60(5), 643-660.](https://journals.ametsoc.org/view/journals/apme/60/5/JAMC-D-20-0149.1.pdf)
+3. [DiGilio Jr, J. G. (2025). Capturing High-Impact Weather in a Fine-Scale Climate Simulation Using the Model for Prediction Across Scales-Atmosphere (MPAS-A) v 7.0 (Master's thesis, Northern Illinois University).](https://www.researchgate.net/publication/395336640_Capturing_High-Impact_Weather_in_a_Fine-Scale_Climate_Simulation_Using_the_Model_for_Prediction_Across_Scales_-_Atmosphere_MPAS-A_v_70)
+4. [Han, Yushan, and Paul A. Ullrich. "The system for classification of low‐pressure systems (SyCLoPS): An all‐in‐one objective framework for large‐scale data sets." Journal of Geophysical Research: Atmospheres 130.1 (2025): e2024JD041287.](https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2024JD041287)

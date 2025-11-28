@@ -302,6 +302,91 @@ if __name__ == "__main__":
 ```
 {% endfold %}
 
+# grib files: Duplicate
+
+```log
+ $ grib_to_netcdf 580de9ac434a7edcacca1626ec12410e.grib -o ERA5_v10_1990_2010.nc
+grib_to_netcdf: Version 2.19.1
+grib_to_netcdf: Processing input file '580de9ac434a7edcacca1626ec12410e.grib'.
+ECCODES ERROR   :  Wrong number of fields
+ECCODES ERROR   :  File contains 7698 GRIBs, 7698 left in internal description, 7670 in request
+ECCODES ERROR   :  The fields are not considered distinct!
+ECCODES ERROR   :  Hint: This may be due to several fields having the same validity time.
+ECCODES ERROR   :  Try using the -T option (Do not use time of validity)
+
+$ grib_to_netcdf -T 580de9ac434a7edcacca1626ec12410e.grib -o v10.nc
+grib_to_netcdf: Version 2.19.1
+grib_to_netcdf: Processing input file '580de9ac434a7edcacca1626ec12410e.grib'.
+ECCODES ERROR : Wrong number of fields
+ECCODES ERROR : File contains 7698 GRIBs, 7698 left in internal description, 7670 in request
+ECCODES ERROR : The fields are not considered distinct!
+ECCODES ERROR : Hint: This may be due to several fields having the same date, time and step.
+```
+
+- check duplicated terms
+
+```console
+grib_ls 580de9ac434a7edcacca1626ec12410e.grib  > log
+sort log | uniq -d
+```
+
+- python script
+
+```python
+#!/bin/python
+# -*- coding: utf-8 -*-
+
+import xarray as xr
+
+# 1. Define the input and output filenames
+input_file = '580de9ac434a7edcacca1626ec12410e.grib'
+output_file = 'unique_fields.nc'
+
+print(f"Loading GRIB file: {input_file}...")
+
+# 2. Load the GRIB file into an xarray Dataset
+# cfgrib automatically detects the unique dimensions (like time, step, level)
+# and combines the fields. This is where the duplicates are handled.
+# The 'default' engine is cfgrib.
+try:
+    ds = xr.open_dataset(
+        input_file,
+        engine='cfgrib',
+        # Set the backend_kwargs to control how cfgrib handles non-distinct fields.
+        # This tells cfgrib to aggressively combine fields based on keys.
+        #backend_kwargs={'read_keys': ['dataDate']}
+    )
+    
+    print("Successfully loaded the file. Duplicates have been handled.")
+    
+    # 3. Save the resulting xarray Dataset back to a new GRIB file
+    # This will write out only the unique, combined fields.
+    ds.to_netcdf(output_file)
+    
+    print(f"Clean GRIB file saved as: {output_file}")
+   
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+```
+
+- check dimensions of .nc filenames
+
+```console
+netcdf unique_fields {
+dimensions:
+	time = 7670 ;
+	latitude = 721 ;
+	longitude = 1440 ;
+
+# Remark: correct one is
+#netcdf ERA5_t2m_1990_2010 {
+#dimensions:
+#	longitude = 1440 ;
+#	latitude = 721 ;
+#	time = 7670 ;
+#variables:
+```
+
 # References
 
 1. [Déqué, M. I. C. H. E. L., & Royer, J. F. (1992). The skill of extended-range extratropical winter dynamical forecasts. Journal of climate, 5(11), 1346-1356.](https://journals.ametsoc.org/view/journals/clim/5/11/1520-0442_1992_005_1346_tsoere_2_0_co_2.pdf)
