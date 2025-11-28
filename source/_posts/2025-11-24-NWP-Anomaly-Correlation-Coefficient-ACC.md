@@ -387,6 +387,83 @@ dimensions:
 #variables:
 ```
 
+# proleptic_gregorian vs gregorian
+
+Your original time data (`1292630400, 1292716800, ...`) are large integers, suggesting units of **seconds** since a distant epoch (likely 1970-01-01).
+
+Your target time data (`1060272, 1060296, ...`) are much smaller integers, suggesting units of **hours** (or days) since a more recent epoch.
+
+To make this transformation, you need to use the **`cdo settime`** or **`cdo setreftime`** functions to redefine the time axis based on a new reference date and time unit.
+
+- [cdo setreftime change the format of time units](https://code.mpimet.mpg.de/boards/2/topics/5974)
+- [Change the format of time:units](https://code.mpimet.mpg.de/boards/2/topics/7762)
+- [New time format in ERA5 netcdf files](https://forum.ecmwf.int/t/new-time-format-in-era5-netcdf-files/3796)
+
+## Method: Using CDO to Change Time Units and Reference
+
+The CDO command needed is `setreftime`. This operator allows you to set a new time unit and reference date for your time axis.
+
+### 1\. Determine the Current and Target Time Axis
+
+You first need to inspect both files to know their current time settings.
+
+  * **Original File (`input.nc`):**
+
+    ```bash
+    # Check the attributes of the time variable
+    ncdump -v time input.nc
+    ```
+
+      * **Original Units (Example):** `seconds since 1970-01-01 00:00:00`
+      * **Original Calendar:** `proleptic_gregorian`
+
+  * **Target File (`target.nc` or desired state):**
+
+    ```bash
+    # Check the attributes of the time variable on a file that has the desired format
+    ncdump -v time target.nc
+    ```
+
+      * **Target Units (Example):** `hours since 1900-01-01 00:00:00`
+      * **Target Calendar:** `gregorian`
+
+### 2\. Run the CDO `setreftime` Command
+
+Once you know the **target units** and **reference date**, you can apply them to your input file.
+
+For the example above, where you want to change from `seconds since 1970-01-01` to `hours since 1900-01-01` and change the calendar:
+
+```bash
+cdo setreftime,1900-01-01,00:00:00,hours input.nc output.nc
+```
+
+| Operator/Argument | Value | Description |
+| :--- | :--- | :--- |
+| `setreftime` | | The CDO operator to redefine the time reference. |
+| **`,1900-01-01`** | | The new **reference date** (the "since" date). |
+| **`,00:00:00`** | | The new **reference time**. |
+| **`,hours`** | | The new **time unit** (e.g., `hours`, `days`, `seconds`). |
+| **`input.nc`** | | Your original NetCDF file. |
+| **`output.nc`** | | The new NetCDF file with the recalculated time axis. |
+
+CDO automatically handles the calendar conversion and numerical recalculation during this process. The `setreftime` operation will:
+
+1.  Read the old time values, old units, and old reference date.
+2.  Calculate the absolute wall-clock time for each step.
+3.  Calculate the difference between the absolute time and the **new reference date** (`1900-01-01`).
+4.  Express that difference in the **new units** (`hours`).
+5.  Set the `calendar` attribute to a standard calendar (like `gregorian` or `standard`).
+
+### 3\. Verification
+
+After running the command, check the new file's time variable to ensure the new values match your expected smaller integers:
+
+```bash
+ncdump -v time output.nc
+```
+
+This should show the smaller integers and the new time attributes (`units` and `calendar`).
+
 # References
 
 1. [Déqué, M. I. C. H. E. L., & Royer, J. F. (1992). The skill of extended-range extratropical winter dynamical forecasts. Journal of climate, 5(11), 1346-1356.](https://journals.ametsoc.org/view/journals/clim/5/11/1520-0442_1992_005_1346_tsoere_2_0_co_2.pdf)
