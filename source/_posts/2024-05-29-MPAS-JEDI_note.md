@@ -48,6 +48,8 @@ banner_img: https://i.imgur.com/6oGdLJk.png
   - [Guerrette, Jonathan J., et al. "Data assimilation for the Model for Prediction Across Scales–Atmosphere with the Joint Effort for Data assimilation Integration (JEDI-MPAS 2.0. 0-beta): ensemble of 3D ensemble-variational (En-3DEnVar) assimilations." Geoscientific Model Development Discussions 2023 (2023): 1-34.](https://gmd.copernicus.org/preprints/gmd-2023-54/gmd-2023-54.pdf)
 - Local Ensemble Transform Kalman filter
   - [Sun, T., Guerrette, J. J., Liu, Z., Ban, J., Jung, B. J., Baños, I. H., & Snyder, C. (2025). All-sky AMSU-A radiance data assimilation using the gain-form of Local Ensemble Transform Kalman filter within MPAS-JEDI-2.1. 0: implementation, tuning, and evaluation. EGUsphere, 2025, 1-29.](https://egusphere.copernicus.org/preprints/2025/egusphere-2025-2079/)
+- 4DEnVar
+  - [Nystrom, R. G., Snyder, C., Liu, Z., Jung, B. J., Ban, J., & Banos, I. H. (2025). A Hybrid Four‐Dimensional Variational Data Assimilation System for the Model for Prediction Across Scales (MPAS‐Atmosphere): Leveraging the Joint Effort for Data Assimilation Integration (JEDI). Journal of Advances in Modeling Earth Systems, 17(12), e2025MS005183.](https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2025MS005183)
 
 
 # Github
