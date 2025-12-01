@@ -54,6 +54,15 @@ conda install -c conda-forge tempest-extremes
 
 - <https://github.com/falkojudt/MPAS_tempest-extremes>
 
+```sh
+#./src/step1_convert_lonVertex.sh
+#./src/step2_SCRIP-file.sh
+#./src/step3_connectivity-file.sh
+./src/step4_submit_preproc_job.sh
+./src/step5_make_filelists.sh
+./src/step6_run_detectnodes_stitchnodes_batch.sh
+```
+
 # References
 
 1. [Tropical Cyclones analysis with TempestExtremes](https://e3sm.atlassian.net/wiki/spaces/DOC/pages/924419368/Tropical+Cyclones+analysis+with+TempestExtremes)
