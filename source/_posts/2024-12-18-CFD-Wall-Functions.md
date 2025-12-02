@@ -66,9 +66,24 @@ In wallFunctions directory there are six types of wall function sub-directories
 ![](https://i.imgur.com/rsr0mMj.png){width=600}
 ![](https://i.imgur.com/GiL1ZLN.png){width=600}
 
+# Characteristic length/velocity
+
+![](https://i.imgur.com/JamJ2se.png){width=600}
+![](https://i.imgur.com/togjy5t.png){width=600}
+![](https://i.imgur.com/KP6eS00.png){width=600}
+![](https://i.imgur.com/DWoF73K.png){width=600}
+![](https://i.imgur.com/ZCpVKTH.png){width=600}
+
 # References
 
 1. [turbulence_2021_OF8 (**recommend**)](https://www.wolfdynamics.com/training/turbulence/OF2021/turbulence_2021_OF8.pdf)
 2. [A brief introduction to wall functions in CFD](https://cfdmonkey.com/a-brief-introduction-to-wall-functions-in-cfd/)
 3. [7.5 Wall functions | The Architects of OpenFOAM](https://doc.cfd.direct/notes/cfd-general-principles/wall-functions)
 4. [A Thorough Description Of How Wall Functions Are Implemented In OpenFOAM | Developed for OpenFOAM-4.0.x (**recommend**)](https://www.tfd.chalmers.se/~hani/kurser/OS_CFD_2016/FangqingLiu/openfoamFinal.pdf)
+5. [What is y+ (yplus)? (**recommend**)](https://www.simscale.com/forum/t/what-is-y-yplus/82394)
+6. [Y+ Wall Distance Estimation](https://www.cfd-online.com/Tools/yplus.php)
+	- [Y plus wall distance estimation](https://www.cfd-online.com/Wiki/Y_plus_wall_distance_estimation)
+7. [Y+ calculator CFD](https://volupe.com/support/all-y-calculator-when-meshing-a-geometry-for-cfd-analysis/)
+8. [Y+ Calculator](https://cfdstreamline.com/resources/apps/yplus/)
+9. [Y Plus Calculator: User Guide (**recommend**)](https://cfdland.com/calculators/y-plus/)
+10. [别再拼命降yPlus了，CFD中的yPlus到底是什么？](https://zhuanlan.zhihu.com/p/687733009)
