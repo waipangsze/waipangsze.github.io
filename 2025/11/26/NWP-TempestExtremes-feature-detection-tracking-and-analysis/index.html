@@ -28,13 +28,13 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/mzty5m2.png">
 <meta property="article:published_time" content="2025-11-25T22:27:00.000Z">
-<meta property="article:modified_time" content="2025-11-28T05:54:02.303Z">
+<meta property="article:modified_time" content="2025-12-02T07:01:11.812Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="WRF">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="MPAS">
-<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="GFS">
 <meta property="article:tag" content="TC">
 <meta property="article:tag" content="cyclones">
 <meta name="twitter:card" content="summary_large_image">
@@ -362,7 +362,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          188 words
+          954 words
         
       </span>
     
@@ -373,7 +373,7 @@
         
         
         
-          2 mins
+          8 mins
         
       </span>
     
@@ -452,10 +452,137 @@
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs console">conda install -c conda-forge tempest-extremes<br></code></pre></td></tr></table></figure>
 <h2 id="installation-via-cmake-recommended">Installation via CMake (Recommended)</h2>
 <p><strong>TempestExtremes</strong> can be built and installed on various systems using CMake. Our new script, <code>./quick_make_unix.sh</code> , automatically detects your platform(UNIX-based systems only) and loads any required modules before building.</p>
+<h1 id="tropical-cyclone-tracking-tcs">Tropical cyclone tracking (TCs)</h1>
+<h2 id="step-1-identify-candidate-storms">Step 1: identify candidate storms</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh">DetectNodes<br>--in_data_list ERA5_TC_files.txt<br>--timefilter <span class="hljs-string">&quot;6hr&quot;</span><br>--out_file_list ERA5_DN_files.txt<br>--searchbymin MSL<br>--closedcontourcmd <span class="hljs-string">&quot;MSL,200.0,5.5,0;</span><br><span class="hljs-string">             _DIFF(Z(300hPa),Z(500hPa)),</span><br><span class="hljs-string">             -58.8,6.5,1.0&quot;</span><br>--mergedist 6.0<br>--outputcmd <span class="hljs-string">&quot;MSL,min,0;</span><br><span class="hljs-string">      _VECMAG(VAR_10U,VAR_10V),</span><br><span class="hljs-string">       max,2;ZS,min,0&quot;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>The first criterion we use for TCs is “MSL,200.0,5.5,0”, which indicates that mean sea level pressure must increase by 200 Pa over a 5.5∘ great circle distance (GCD) from the candidate point (the low-pressure region must be of sufficient magnitude and sufficiently compact to be considered coherent).</li>
+<li>The second criterion is “_DIFF(Z(300hPa),Z(500hPa)), -58.8,6.5,1.0”, which indicates that the difference between geopotential (Z) on the 300 and 500 hPa surfaces must decrease by 58.8 m2 s−2 (equal to 6 m geopotential height) over a 6.5∘ GCD, using the maximum value of this field within 1∘ GCD as reference.</li>
+<li>This second criterion indicates that there must be a coherent upper-level warm core attached to the local low so as to structurally differentiate these features from extratropical systems.</li>
+<li><code>mergedist</code>
+<ul>
+<li>DetectNodes merges candidate points with a distance (in degrees great-circle-distance) shorter than the specified value</li>
+</ul></li>
+<li><code>outputcmd</code> indicates three additional outputs that are calculated and written as additional columns in each nodefile.
+<ul>
+<li>here, <code>“MSL,min,0”</code> outputs the value of MSL at the candidate point, <code>“_VECMAG(VAR_10U,VAR_10V),max,2”</code> outputs the maximum magnitude of the vector wind at 10 m altitude within 2∘ GCD of the candidate, and <code>“ZS,min,0”</code> outputs the surface height at the candidate point. <strong>These variables are needed in the subsequent <code>StitchNodes</code> step to construct and filter TC trajectories.</strong></li>
+</ul></li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/ec5zy6O.png" srcset="/img/loading.gif" lazyload alt="The fairly stable warm core low is termed a “thermal low” and the potentially violent warm core low is termed a “tropical low”." /></div><div class="group-image-wrap"><img src="https://i.imgur.com/KBMmlul.png" srcset="/img/loading.gif" lazyload alt="The cold core high is more common and significant near and during winter. In the polar and high latitude regions, very little sunlight absorbs into the ground surface. Thus, the ground is able to cool off to extremely cold temperatures. Cold air gets denser the colder it gets. Cold air is also very stable and will sink thus an air mass of very cold air will develop at the surface." /></div></div></div>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://theweatherprediction.com/habyhints2/613/">HABYTIME MINI LECTURE 30: WARM CORE LOWS</a></li>
+<li><a target="_blank" rel="noopener" href="https://theweatherprediction.com/habyhints2/612/">HABYTIME MINI LECTURE 29: COLD VS. WARM CORE HIGH</a></li>
+</ul>
+<h2 id="step-2-connect-candidate-storms-in-time">Step 2: connect candidate storms in time</h2>
+<p>Once TC candidates have been identified on each time slice, the <code>“stitching”</code> step in the algorithm ties these candidates together in time to form TC trajectories (the “Reduce” operation in the MapReduce paradigm).</p>
+<ul>
+<li>Some features that are too weak, too short-lived, or too disorganized are eliminated from contention at this stage.</li>
+<li>Also, features that are more likely related to topographic anomalies rather than real storms are also removed.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">StitchNodes<br>--in_list ERA5_DN_files.txt<br>--out ERA5_TC_tracks.txt<br>--in_fmt <span class="hljs-string">&quot;lon,lat,slp,wind,zs&quot;</span><br>--range 8.0 --mintime <span class="hljs-string">&quot;54h&quot;</span><br>--maxgap <span class="hljs-string">&quot;24h&quot;</span><br>--threshold <span class="hljs-string">&quot;wind,&gt;=,10.0,10;</span><br><span class="hljs-string">              lat,&lt;=,50.0,10;</span><br><span class="hljs-string">              lat,&gt;=,-50.0,10;</span><br><span class="hljs-string">              zs,&lt;=,150.0,10&quot;</span><br></code></pre></td></tr></table></figure>
+<p>The relevant tuning parameters are specified by</p>
+<ul>
+<li><code>range</code>
+<ul>
+<li>the maximum distance (in ∘ GCD) that a feature can move between subsequent detections</li>
+</ul></li>
+<li><code>mintime</code>
+<ul>
+<li>the minimum persistence time of each trajectory (calculated as the time between initiation and termination),</li>
+</ul></li>
+<li><code>maxgap</code>
+<ul>
+<li>the maximum duration between two sequential detections</li>
+<li>In particular, <code>maxgap</code> is a novel option that allows a path to be missing candidates for some time slices (for instance due to <strong>temporary weakening of a TC</strong> as it passes over land).</li>
+</ul></li>
+<li><code>thresholds</code>
+<ul>
+<li>Four field-dependent thresholds are then specified for a trajectory to be accepted.
+<ul>
+<li>The first threshold “wind,&gt;=,10.0,10” indicates that the wind magnitude (derived from the “wind” column in the nodefile) must be greater than 10 m s−1 for at least 10 time slices; this ensures that these features are sufficiently intense to be classified as tropical storms.</li>
+<li>The next two thresholds “lat,&lt;=,50.0,10;lat,&gt;=,-50.0,10” indicate that the latitude of the feature must be between 50∘ S and 50∘ N for at least 10 time slices, so as to eliminate any extratropical features that could not have existed as tropical storms.</li>
+<li>The final threshold “zs,&lt;=,150.0,10” indicates that the feature must exist at an elevation below 150 m for at least 10 time slices; this removes false alarms that can often appear in regions of rough topography that are associated with the sea level pressure correction.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="example">Example</h2>
+<ul>
+<li>20250921_00 UTC</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/mB6RcWt.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/4J8HANE.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs log">There are 5 unique track IDs<br>There are 2 unique track IDs reaching at least CAT1 intensity<br>Number of TCs 5 <br>    Number of TD: 0<br>    Number of TS: 0<br>    Number of CAT1: 0<br>    Number of CAT2: 0<br>    Number of CAT3: 1<br>    Number of CAT4: 1<br>    Number of CAT5: 0<br></code></pre></td></tr></table></figure>
+<h1 id="extratropical-cyclones-etcs">Extratropical cyclones (ETCs)</h1>
+<h2 id="step-1-generate-extratropical-cyclone-trajectories">Step 1: generate extratropical cyclone trajectories</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">DetectNodes<br>--in_data_list B20TRC5CNBDRD.<br>               001.PS_list.txt<br>--out cyclone_candidates<br>--closedcontourcmd <span class="hljs-string">&quot;PSL,200.0,6.0,0&quot;</span><br>--mergedist 6.0<br>--searchbymin <span class="hljs-string">&quot;PSL&quot;</span><br>--outputcmd <span class="hljs-string">&quot;PSL,min,0&quot;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>The algorithm applied here identifies cyclonic storms as sea level pressure minima.
+<ul>
+<li>To avoid topographic lows and features that are not meteorological in character, additional criteria are imposed on the minimum lifetime and propagation distance.</li>
+</ul></li>
+<li>Our criterion for cyclonic storms is that the minimum pressure must be enclosed by a closed contour of 200 Pa within 6.0∘ of cyclone center. This minimum pressure location also defines the cyclone center.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">StitchNodes<br>--in_fmt <span class="hljs-string">&quot;lon,lat,slp&quot;</span><br>--in_list candidate_list.txt<br>--out etc-all-traj.txt<br>--range 6.0<br>--mintime 60h<br>--maxgap 18h<br>--min_endpoint_dist 12.0<br>--threshold <span class="hljs-string">&quot;lat,&gt;,24,1;lon,&gt;,234,1;</span><br><span class="hljs-string">       lat,&lt;,52,1;lon,&lt;,294,1&quot;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>Here the StitchNodes thresholds require that storms persist for at least 60 h, with a maximum gap (time between sequential detections satisfying the DetectNodes criteria) of at most 18 h.</li>
+<li>Furthermore, at least one point must pass through a geographic region (representing CONUS) bounded by 24 and 52∘ N latitude and 234 and 294∘ E longitude.</li>
+<li>We also require ETCs move at least 12∘ GCD from the start to the end of the trajectory, as specified by the min_endpoint_dist argument, in order to eliminate stationary features (e.g., the Icelandic Low) and spurious shallow lows generated over regions of high topography.</li>
+</ul>
+<h2 id="step-2-filter-out-etcs-with-sea-level-pressure-above-990-hpa">Step 2: filter out ETCs with sea level pressure above 990 hPa</h2>
+<p>In some cases, it may be desirable to filter out the more intense, potentially more impactful events. While the <strong>definition of a strong ETC is inherently subjective</strong>, we define a central pressure of 990 hPa as the demarcation between strong and moderate/weak ETCs as in Zhang and Colle (2017).</p>
+<ul>
+<li>To do so, all ETCs tracked in step 1 are passed into <code>NodeFileEditor</code>, in which a new trajectory file specified by argument out_nodefile is generated with storms only possessing intensities of 990 hPa or lower:</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">NodeFileEditor<br>--in_nodefile etc-all-traj.txt<br>--in_data_list B20TRC5CNBDRD.<br>              001.PRECT_list.txt<br>--in_fmt <span class="hljs-string">&quot;lon,lat,slp&quot;</span><br>--out_fmt <span class="hljs-string">&quot;lon,lat,slp&quot;</span><br>--out_nodefile etc-strong-traj.txt<br>--colfilter <span class="hljs-string">&quot;slp,&lt;=,99000.&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="step-3-filter-data-within-25-of-storm-center-and-composite">Step 3: filter data within 25∘ of storm center and composite</h2>
+<p>Corresponding precipitation rate outputs from the same ensemble member are masked within 25∘ GCD of a storm center tracked in step 1. Here, all precipitation associated with the cyclone is retained, while all precipitation not within 25∘ of a storm is set to zero.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh">NodeFileFilter<br>--in_nodefile etc-all-traj.txt<br>--in_fmt <span class="hljs-string">&quot;lon,lat,slp&quot;</span><br>--in_data_list B20TRC5CNBDRD.<br>                001.PRECT_list.txt<br>--out_data_list B20TRC5CNBDRD.<br>              001.PRECT_FILT_list.txt<br>--var <span class="hljs-string">&quot;PRECT&quot;</span><br>--bydist 25.0<br>--maskvar <span class="hljs-string">&quot;mask&quot;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>As a last step, storm-centered composites are generated using the following command:</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">NodeFileCompose<br>--in_nodefile etc-strong-traj.txt<br>--in_fmt <span class="hljs-string">&quot;lon,lat,slp&quot;</span><br>--in_data_list B20TRC5CNBDRD.001.<br>               PRECT_FILT_list.txt<br>--out_data <span class="hljs-string">&quot;composite_PRECT.nc&quot;</span><br>--var <span class="hljs-string">&quot;PRECT&quot;</span><br>--max_time_delta <span class="hljs-string">&quot;2h&quot;</span><br>--op <span class="hljs-string">&quot;mean&quot;</span><br>--dx 1.0<br>--resx 80<br></code></pre></td></tr></table></figure>
+<p>Here, only ETCs filtered above to have <strong>central SLP values below 990 hPa</strong> are composited. Although we can composite any 2D field, here we apply the compositing tool to precipitation filtered by <code>NodeFileFilter</code>. The argument <code>max_time_delta</code> indicates that the data slice nearest in time to the tracked feature (within 2 h) should be composited – this is useful when the discrete times from data and features are not exactly aligned. The arithmetic mean is calculated centered on the storm location (see Sect. 2.4). The resulting stereographic composite has a grid spacing of 1∘ and a resolution of 80 × 80 grid points.</p>
+<h1 id="atmospheric-rivers-ars">Atmospheric rivers (ARs)</h1>
+<ul>
+<li><strong>Atmospheric rivers (ARs) are thin and long filamentary structures characterized by high integrated vapor transport (IVT)</strong></li>
+</ul>
+<h2 id="step-1-detect-ridges-in-the-ivt-field">Step 1: detect ridges in the IVT field</h2>
+<ul>
+<li>Here we have adopted the nomenclature of <strong>ERA5</strong> for <strong>vertically integrated eastward vapor transport (VIWVE) and northward vapor transport (VIWVN)</strong>.</li>
+<li><strong>Ridge points</strong> are associated with high downward curvature and identified as those points where the Laplacian of the IVT field is below a fixed threshold (here chosen to be  <span class="math inline">\(-2 \times 10^4\)</span> kg m−2 s−1 rad−2).</li>
+</ul>
+<p><span class="math display">\[
+\mbox{IVT} = \sqrt{\mbox{VIWVE}^2 + \mbox{VIWVN}^2}
+\]</span></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">DetectBlobs<br>--in_data_list ERA5_IVT_files.txt<br>--out_list ERA5_AR_files.txt<br>--timefilter <span class="hljs-string">&quot;6hr&quot;</span><br>--thresholdcmd <span class="hljs-string">&quot;_LAPLACIAN&#123;8,10&#125;</span><br><span class="hljs-string">  (_VECMAG(VIWVE,VIWVN)),&lt;=,-20000,0&quot;</span><br>--minabslat 15<br>--geofiltercmd <span class="hljs-string">&quot;area,&gt;=,4e5km2&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="step-2-filter-out-tropical-cyclones">Step 2: filter out tropical cyclones</h2>
+<ul>
+<li>This can be done <strong>using the TC tracks produced above</strong> to filter out points within a prescribed distance of each detected TC:</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">NodeFileFilter<br>--in_nodefile ERA5_TC_tracks.txt<br>--in_fmt <span class="hljs-string">&quot;lon,lat,slp,wind,zs&quot;</span><br>--in_data_list ERA5_AR_files.txt<br>--out_data_list ERA5_AR_NFF_files.txt<br>--var <span class="hljs-string">&quot;binary_tag&quot;</span><br>--bydist 8.0<br>--invert<br></code></pre></td></tr></table></figure>
+<h2 id="step-3-apply-ar-mask-to-northward-vapor-transport-field">Step 3: apply AR mask to northward vapor transport field</h2>
+<ul>
+<li>To now investigate AR and non-AR poleward moisture transport, we apply the mask generated in step 2 to the VIWVN field (northward vapor transport). Here we leverage the <code>VariableProcessor</code> executable, which allows us to apply TE's built-in operations on a set of input files.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">VariableProcessor<br>--in_data_list ERA5_VPIN.txt<br>--out_data_list ERA5_VPOUT.txt<br>--timefilter <span class="hljs-string">&quot;6hr&quot;</span><br>--var <span class="hljs-string">&quot;_PROD(binary_tag,VIWVN);</span><br><span class="hljs-string">     _PROD(_DIFF(1,binary_tag),VIWVN)&quot;</span><br>--varout <span class="hljs-string">&quot;VIWVN_PW_AR,VIWVN_PW_NONAR&quot;</span><br></code></pre></td></tr></table></figure>
+<h1 id="atmospheric-blocking">Atmospheric blocking</h1>
+<ul>
+<li>Our final example addresses the development of a climatology of atmospheric blocking frequency. Atmospheric blocking events are synoptic-scale weather phenomena characterized by persistent obstruction of the normal westerly flow and are associated with heat waves, cold spells, flooding, and drought.</li>
+</ul>
+<h2 id="step-1-generate-the-blocking-threshold">Step 1: generate the blocking threshold</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sh">Climatology<br>--in_data_list MERRA2_H_files.txt<br>--out_data MERRA2_H_LTDM.nc<br>--var <span class="hljs-string">&quot;H(500hPa)&quot;</span><br>--period <span class="hljs-string">&quot;daily&quot;</span><br>--<span class="hljs-built_in">type</span> <span class="hljs-string">&quot;mean&quot;</span><br>--missingdata<br>Climatology<br>--in_data_list MERRA2_H_files.txt<br>--out_data MERRA2_H2_LTDM.nc<br>--var <span class="hljs-string">&quot;H(500hPa)&quot;</span><br>--period <span class="hljs-string">&quot;daily&quot;</span><br>--<span class="hljs-built_in">type</span> <span class="hljs-string">&quot;meansq&quot;</span><br>--missingdata<br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">VariableProcessor<br>--in_data <span class="hljs-string">&quot;MERRA2_H_LTDM.nc;</span><br><span class="hljs-string">           MERRA2_H2_LTDM.nc&quot;</span><br>--out_data <span class="hljs-string">&quot;MERRA2_H_mean_stddev.nc&quot;</span><br>--var <span class="hljs-string">&quot;dailymean_H,</span><br><span class="hljs-string">       _SQRT(_DIFF(dailymeansq_H,</span><br><span class="hljs-string">       _POW(dailymean_H,2)))&quot;</span><br>--varout <span class="hljs-string">&quot;dailymean_H,stddev_H&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sh">FourierFilter<br>--in_data MERRA2_H_mean_stddev.nc<br>--out_data MERRA2_H_mean_stddev<br>     _timesmoothed.nc<br>--var <span class="hljs-string">&quot;dailymean_H,stddev_H&quot;</span><br>--dim <span class="hljs-string">&quot;time&quot;</span><br>--modes 4<br>FourierFilter<br>--in_data MERRA2_H_mean_stddev<br>          _timesmoothed.nc<br>--out_data MERRA2_H_mean_stddev<br>           _smoothed.nc<br>--var <span class="hljs-string">&quot;stddev_H&quot;</span><br>--preserve <span class="hljs-string">&quot;dailymean_H&quot;</span><br>--dim <span class="hljs-string">&quot;lon&quot;</span> --modes 2<br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh">VariableProcessor<br>--in_data MERRA2_H_mean<br>          _stddev_smoothed.nc<br>--out_data MERRA2_threshold<br>           _H_filtered.nc<br>--var <span class="hljs-string">&quot;_SUM(dailymean_H,</span><br><span class="hljs-string">       _MAX(100.0,</span><br><span class="hljs-string">       _PROD(1.5,stddev_H)))&quot;</span><br>--varout <span class="hljs-string">&quot;threshold_H&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="step-2-identify-regions-of-geopotential-above-the-blocking-threshold">Step 2: identify regions of geopotential above the blocking threshold</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh">DetectBlobs<br>--in_data_list MERRA2_DB_files.txt<br>--out_list MERRA2_blocktag_files.txt<br>--thresholdcmd <span class="hljs-string">&quot;_DIFF(H(500hPa),</span><br><span class="hljs-string">                threshold_H),&gt;=,0,0&quot;</span><br>--minabslat 25<br>--maxabslat 75<br>--geofiltercmd <span class="hljs-string">&quot;area,&gt;,1e6km2&quot;</span><br>--tagvar <span class="hljs-string">&quot;block_tag&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="step-3-enforce-a-minimum-duration-for-blocks-and-build-climatology">Step 3: enforce a minimum duration for blocks and build climatology</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">StitchBlobs<br>--in_list MERRA2_blocktag_files.txt<br>--out_list MERRA2_blockid_files.txt<br>--var <span class="hljs-string">&quot;block_tag&quot;</span><br>--mintime <span class="hljs-string">&quot;5d&quot;</span><br>--min_overlap_prev 20<br>--flatten<br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">Climatology<br>--in_data_list MERRA2_blockid<br>              _files.txt<br>--out_data MERRA2_blocking_climo.nc<br>--var <span class="hljs-string">&quot;object_id&quot;</span><br>--period <span class="hljs-string">&quot;seasonal&quot;</span><br></code></pre></td></tr></table></figure>
 <h1 id="mpas_tempest-extremes">**MPAS_tempest-extremes</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/falkojudt/MPAS_tempest-extremes" class="uri">https://github.com/falkojudt/MPAS_tempest-extremes</a></li>
 </ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#./src/step1_convert_lonVertex.sh</span><br><span class="hljs-comment">#./src/step2_SCRIP-file.sh</span><br><span class="hljs-comment">#./src/step3_connectivity-file.sh</span><br>./src/step4_submit_preproc_job.sh<br>./src/step5_make_filelists.sh<br>./src/step6_run_detectnodes_stitchnodes_batch.sh<br></code></pre></td></tr></table></figure>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://e3sm.atlassian.net/wiki/spaces/DOC/pages/924419368/Tropical+Cyclones+analysis+with+TempestExtremes">Tropical Cyclones analysis with TempestExtremes</a></li>
@@ -496,15 +623,15 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
-        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
       
         <a href="/tags/TC/" class="print-no-link">#TC</a>
       
@@ -539,7 +666,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 28, 2025</div>
+          <div>December 2, 2025</div>
         </div>
       
       
