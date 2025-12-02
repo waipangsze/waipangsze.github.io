@@ -122,17 +122,14 @@ The relevant tuning parameters are specified by
 
 ## Example
 
-- 20250921_00 UTC
+### `20250921_00 UTC`
 
-{% gi 2 1-1 %}
-![](https://i.imgur.com/mB6RcWt.png)
-![](https://i.imgur.com/4J8HANE.png)
-{% endgi %}
+- [Typhoon | Ragasa | 2025 | 颱風樺加沙](https://waipangsze.github.io/2025/09/24/Typhoon-Ragasa-2025/)
 
 ```log
-There are 5 unique track IDs
+There are 10 unique track IDs
 There are 2 unique track IDs reaching at least CAT1 intensity
-Number of TCs 5 
+Number of TCs 10 
     Number of TD: 0
     Number of TS: 0
     Number of CAT1: 0
@@ -141,6 +138,34 @@ Number of TCs 5
     Number of CAT4: 1
     Number of CAT5: 0
 ```
+
+{% gi 4 1-1-2 %}
+![](https://i.imgur.com/BPfdkJk.png)
+![](https://i.imgur.com/mB6RcWt.png)
+![1-hourly](https://i.imgur.com/AAEzwUu.png)
+![6-hourly](https://i.imgur.com/4J8HANE.png)
+{% endgi %}
+
+### `20251005_00 UTC`
+
+```log
+There are 9 unique track IDs
+There are 3 unique track IDs reaching at least CAT1 intensity
+Number of TCs 9 
+    Number of TD: 0
+    Number of TS: 0
+    Number of CAT1: 0
+    Number of CAT2: 2
+    Number of CAT3: 1
+    Number of CAT4: 0
+    Number of CAT5: 0
+```
+
+{% gi 4 1-1-2 %}
+![](https://i.imgur.com/JEmJY5n.png)
+![](https://i.imgur.com/TEYo3Lq.png)
+![1-hourly](https://i.imgur.com/gOdbbOt.png)
+{% endgi %}
 
 # Extratropical cyclones (ETCs)
 
