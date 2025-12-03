@@ -250,8 +250,9 @@ Often ACC is computed for a sample of forecasts at the same lead time over many 
 
 **This yields one ACC value per lead time (and region and variable).**
 
-# ERA5: convert Gregorian time to datetime
+# ERA5: check: convert Gregorian time to datetime
 
+- To check the validation of time of ERA5
 - To convert the time value from an ECMWF/ERA5 NetCDF file using Python's datetime and timedelta modules.
 
 {% fold info @convert gregorian time to datetime %}
@@ -463,6 +464,140 @@ ncdump -v time output.nc
 ```
 
 This should show the smaller integers and the new time attributes (`units` and `calendar`).
+
+# Calculate ERA5 climatology
+
+```python
+# variables to be verified 
+var_list = ['z', 't', 'u', 'v', 'r', 'msl', 't2m', 'u10', 'v10']
+multilev_flag = [True, True, True, True, True, False, False, False, False] # flag for whether variable is multi-level
+
+def calc_era5_clim(var_list, multilev_flag):
+    '''
+    Function for calculating the climatology of a specific variable, from ERA5 reanalysis. 
+    Climatology is defined in terms of day of year (366 days)
+    '''
+    data_dir = os.environ['DATA_DIR']
+
+    for ivar, varname in enumerate(var_list):
+        print(f'Extracting ERA5 climatology for varname={varname}')
+
+        if multilev_flag[ivar]:
+            var_nc = f'{data_dir}/ERA5_{varname}plevs_1990_2010.nc'
+        else:
+            var_nc = f'{data_dir}/ERA5_{varname}_1990_2010.nc'
+
+        var_da = xr.open_dataset(var_nc)[f'{varname}']
+        
+        var_clim = var_da.groupby('time.dayofyear').mean('time')
+
+        if ivar == 0:
+            ds_doy = var_clim.dayofyear 
+            ds_lat = var_da.latitude
+            ds_lon = var_da.longitude
+
+            # create empty dataset
+            clim_ds = xr.Dataset({}, coords={"latitude":ds_lat, "longitude":ds_lon, "dayofyear":ds_doy})
+
+        if varname == 'z':
+            g = 9.80665
+            var_clim /= g # convert gp to gph
+
+        clim_ds[f'{varname}'] = var_clim
+        print(clim_ds)
+
+    # shift longitudes to +/-180
+    clim_ds.coords['longitude'] = (clim_ds.coords['longitude'] + 180) % 360 - 180
+    # reindex to re-arrange in ascending order
+    clim_ds = clim_ds.reindex(longitude=(np.arange(-180,180,0.25)))
+
+    clim_ds.to_netcdf(f'{data_dir}/ERA5_scorecard_clim_1990_2010.nc')
+
+    print(f'ERA5 climatology file generated.')
+```
+
+Result is,
+
+```log
+dimensions:
+	latitude = 721 ;
+	longitude = 1440 ;
+	dayofyear = 366 ;
+	level = 4 ;
+```
+
+# (Optional) how to average two nc files with weighting?
+
+## Method: Weighted Average using CDO (`mul` and `add`)
+
+If you want to perform a more complex operation or if you have weighting factors stored in a separate mask file, you can use the sequential operators `mul` and `add`.
+
+### Scenario: Weighting by a Constant Value
+
+If you want the exact same result as Method 1 but prefer using sequential operators:
+
+```bash
+# 1. Multiply each file by its constant weight
+cdo mulc,0.4 file1.nc file1_weighted.nc
+cdo mulc,0.6 file2.nc file2_weighted.nc
+
+# 2. Add the two weighted files together
+cdo add file1_weighted.nc file2_weighted.nc output_wavg_manual.nc
+```
+
+  * `mulc,W`: Multiplies the entire file's data by the constant $W$.
+
+### Error: Warning (cdfCheckVars): 4 dimensional variables without time dimension are not supported, skipped variable z
+
+- **Warning (cdfCheckVars): 4 dimensional variables without time dimension are not supported, skipped variable z**
+
+That warning message from **CDO (Climate Data Operators)**, specifically the `cdfCheckVars` function, indicates that your NetCDF file contains a four-dimensional (4D) variable named **`z`** that **CDO cannot interpret correctly** because it doesn't recognize the expected time dimension.
+
+CDO and many climate analysis tools are designed to work with structured data where the dimensions are typically:
+
+1.  **Time** (the first dimension)
+2.  **Level** (e.g., pressure, height)
+3.  **Latitude**
+4.  **Longitude**
+
+When CDO encounters a 4D variable that doesn't follow this convention (i.e., the first dimension is not marked as `time`), it skips the variable, leading to the warning.
+
+#### How to Resolve This Warning
+
+You have two main options:
+
+##### Rename the Dimension to `time` (Recommended Fix)
+
+If the first dimension of the variable `z` **is actually a time dimension**, you need to use **NCO (NetCDF Operators)** to rename it so CDO can recognize it.
+
+1.  **Inspect the File:** Use `ncdump -h your_file.nc` to see the dimensions. Find the 4D variable `z` and look at its dimensions. Let's assume the first dimension is named `t_dim`.
+
+      * **Original:** `z(t_dim, level, lat, lon)`
+
+2.  **Rename the Dimension:** Use NCO's `ncrename` command to change the name of the first dimension to `time`.
+
+    ```bash
+    ncrename -d t_dim,time input.nc output.nc
+    ```
+
+      * `-d`: Renames a **dimension**.
+      * `t_dim,time`: Changes the dimension named `t_dim` to `time`.
+
+3.  **Check Time Variables:** You might also need to rename the coordinate variable associated with that dimension (if it exists) and ensure its `units` attribute is set correctly (e.g., `hours since 2000-01-01`).
+
+#### Example
+
+```sh
+ncrename -d dayofyear,time ../ERA5_scorecard_clim_2011_2020.nc output_ERA5_scorecard_clim_2011_2020.nc
+ncrename -d dayofyear,time ../ERA5_scorecard_clim_1990_2010.nc output_ERA5_scorecard_clim_1990_2010.nc
+
+# 1. Multiply each file by its constant weight
+cdo mulc,0.323 output_ERA5_scorecard_clim_2011_2020.nc weighted_ERA5_scorecard_clim_2011_2020.nc
+cdo mulc,0.677 output_ERA5_scorecard_clim_1990_2010.nc weighted_ERA5_scorecard_clim_1990_2010.nc
+
+# 2. Add the two weighted files together
+cdo add weighted_ERA5_scorecard_clim_2011_2020.nc weighted_ERA5_scorecard_clim_1990_2010.nc ERA5_scorecard_clim_1990_2020.nc
+```
 
 # References
 
