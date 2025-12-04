@@ -19,16 +19,16 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="In mathematics and computer algebra, automatic differentiation (auto-differentiation, autodiff, or AD), also called algorithmic differentiation, computational differentiation, is a set of techniques t">
+    <meta name="description" content="Automatic Differentiation In mathematics and computer algebra, automatic differentiation (auto-differentiation, autodiff, or AD), also called algorithmic differentiation, computational differentiation">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ML | Automatic Differentiation">
 <meta property="og:url" content="https://waipangsze.github.io/2024/10/22/ML-Automatic-Differentiation/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="In mathematics and computer algebra, automatic differentiation (auto-differentiation, autodiff, or AD), also called algorithmic differentiation, computational differentiation, is a set of techniques t">
+<meta property="og:description" content="Automatic Differentiation In mathematics and computer algebra, automatic differentiation (auto-differentiation, autodiff, or AD), also called algorithmic differentiation, computational differentiation">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/AutomaticDifferentiationNutshell.png/450px-AutomaticDifferentiationNutshell.png">
 <meta property="article:published_time" content="2024-10-22T06:00:00.000Z">
-<meta property="article:modified_time" content="2025-10-27T06:03:55.715Z">
+<meta property="article:modified_time" content="2025-12-04T02:57:58.684Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="PINN">
 <meta property="article:tag" content="AI">
@@ -359,7 +359,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          72 words
+          459 words
         
       </span>
     
@@ -370,7 +370,7 @@
         
         
         
-          1 mins
+          4 mins
         
       </span>
     
@@ -421,18 +421,160 @@
             
               <div class="markdown-body">
                 
-                <p>In mathematics and computer algebra, automatic differentiation (auto-differentiation, autodiff, or AD), also called algorithmic differentiation, computational differentiation, is a set of techniques to <strong>evaluate the partial derivative of a function specified</strong> by a computer program.</p>
+                <h1 id="automatic-differentiation">Automatic Differentiation</h1>
+<p>In mathematics and computer algebra, automatic differentiation (auto-differentiation, autodiff, or AD), also called algorithmic differentiation, computational differentiation, is a set of techniques to <strong>evaluate the partial derivative of a function specified</strong> by a computer program.</p>
 <p>Automatic differentiation exploits the fact that every computer calculation, no matter how complicated, executes a sequence of elementary arithmetic operations (addition, subtraction, multiplication, division, etc.) and elementary functions (exp, log, sin, cos, etc.). By applying the chain rule repeatedly to these operations, partial derivatives of arbitrary order can be computed automatically, accurately to working precision, and using at most a small constant factor of more arithmetic operations than the original program.</p>
 <ul>
 <li>計算一個函數<strong>導數</strong>的方法</li>
 <li>自動微分是利用電腦自動化<strong>求導</strong>的技術</li>
 </ul>
+<h1 id="modes">Modes</h1>
+<h2 id="forward-mode">Forward Mode</h2>
+<p>Let's absolutely break down the <strong>Forward Mode</strong> of Automatic Differentiation with a concrete example. This is the simpler of the two main modes, as it follows the natural flow of the function.</p>
+<p>We'll use a simple function and trace both the numerical values and the derivatives simultaneously.</p>
+<h3 id="forward-mode-example">Forward Mode Example</h3>
+<p>Let's find the derivative of the function <span class="math inline">\(f(x) = \exp(x^2)\)</span> at the point <span class="math inline">\(x=2\)</span>.</p>
+<p>The function can be broken down into three <strong>elementary operations</strong> that form a computational graph:</p>
+<p><span class="math display">\[v_1 = x\]</span> <span class="math display">\[v_2 = v_1^2\]</span> <span class="math display">\[v_3 = \exp(v_2) = f(x)\]</span></p>
+<p>In Forward Mode, for every intermediate variable <span class="math inline">\(v_i\)</span>, we calculate two things in parallel:</p>
+<ol type="1">
+<li>The <strong>Primal Value</strong> (<span class="math inline">\(v_i\)</span>): The actual numerical result of the calculation.</li>
+<li>The <strong>Tangent</strong> (<span class="math inline">\(\dot{v}_i\)</span>): The derivative of that result with respect to the input variable (<span class="math inline">\(x\)</span>), which is <span class="math inline">\(\frac{\partial v_i}{\partial x}\)</span>.</li>
+</ol>
+<p>We start with our input <strong>seed</strong> value <span class="math inline">\(\dot{v}_1 = \frac{\partial x}{\partial x} = 1\)</span>.</p>
+<hr />
+<h3 id="the-computational-trace"><strong>The Computational Trace</strong></h3>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: center;">Step</th>
+<th style="text-align: center;">Operation (<span class="math inline">\(v_i\)</span>)</th>
+<th style="text-align: center;">Primal Value (<span class="math inline">\(v_i\)</span> at <span class="math inline">\(x=2\)</span>)</th>
+<th style="text-align: center;">Tangent (<span class="math inline">\(\dot{v}_i = \frac{\partial v_i}{\partial x}\)</span>)</th>
+<th style="text-align: center;">Tangent Value (<span class="math inline">\(\dot{v}_i\)</span> at <span class="math inline">\(x=2\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><span class="math inline">\(v_1 = x\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(v_1 = 2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dot{v}_1 = 1\)</span></td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(v_2 = v_1^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(v_2 = 2^2 = 4\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dot{v}_2 = \frac{\partial v_2}{\partial v_1} \cdot \dot{v}_1 = 2v_1 \cdot \dot{v}_1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(2(2) \cdot 1 = \mathbf{4}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span class="math inline">\(v_3 = \exp(v_2)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(v_3 = \exp(4) \approx 54.6\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dot{v}_3 = \frac{\partial v_3}{\partial v_2} \cdot \dot{v}_2 = \exp(v_2) \cdot \dot{v}_2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\exp(4) \cdot 4 \approx \mathbf{218.4}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The final result is the derivative we were looking for: <span class="math display">\[\frac{df}{dx} \bigg|_{x=2} = \dot{v}_3 = 4\exp(4)\]</span></p>
+<p>Notice how at every single step, we used the derivative of the local elementary operation (<span class="math inline">\(v_1^2\)</span>, <span class="math inline">\(\exp\)</span>) and multiplied it by the derivative of the <em>previous</em> step (<span class="math inline">\(\dot{v}_{i-1}\)</span>) to apply the <strong>chain rule</strong> exactly. This is what makes AD precise.</p>
+<ul>
+<li><strong>Forward Mode</strong> is great when you have few inputs (small <span class="math inline">\(n\)</span>) and many outputs, but it's inefficient for training neural networks (which have millions of inputs/parameters).</li>
+<li>The technique that makes deep learning possible is <strong>Reverse Mode AD</strong>, also known as <strong>Backpropagation</strong>.</li>
+</ul>
+<hr />
+<h2 id="reverse-mode">Reverse Mode</h2>
+<p>The main reason Reverse Mode is used to train huge neural networks is <strong>efficiency</strong>.</p>
+<h3 id="the-two-pass-system">The Two-Pass System</h3>
+<p>Reverse Mode works in two distinct passes:</p>
+<ol type="1">
+<li><strong>Forward Pass (Primal Trace):</strong> This is identical to what we did before. We calculate the numerical values (<span class="math inline">\(v_i\)</span>) for every intermediate step and store them in memory. We need these intermediate values to calculate the local derivatives in the second pass.</li>
+<li><strong>Reverse Pass (Adjoint Trace):</strong> This is where the magic happens. Starting from the final output (<span class="math inline">\(f\)</span>), we apply the chain rule <em>backwards</em> through the computational graph to calculate the derivatives.</li>
+</ol>
+<h3 id="the-adjoint-and-efficiency">The Adjoint and Efficiency</h3>
+<p>In Reverse Mode, we are calculating the <strong>adjoint</strong> <span class="math inline">\(\bar{v}_i\)</span>, which is the derivative of the final output (<span class="math inline">\(f\)</span>) with respect to the intermediate variable <span class="math inline">\(v_i\)</span>:</p>
+<p><span class="math display">\[\bar{v}_i = \frac{\partial f}{\partial v_i}\]</span></p>
+<p>The core benefit is this: regardless of how many input variables (<span class="math inline">\(N\)</span>) your function has (a neural network might have millions of <span class="math inline">\(N\)</span>), Reverse Mode calculates <strong>all <span class="math inline">\(N\)</span> gradients</strong> in a single backward pass whose complexity is proportional only to the original computation.</p>
+<p>Let's trace the reverse pass for our previous function: <span class="math inline">\(f(x) = \exp(x^2)\)</span> at <span class="math inline">\(x=2\)</span>.</p>
+<hr />
+<h3 id="the-reverse-computational-trace"><strong>The Reverse Computational Trace</strong></h3>
+<p>We start at the final output, <span class="math inline">\(v_3\)</span>, and set its adjoint (derivative with respect to itself) to 1.</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: center;">Step</th>
+<th style="text-align: center;">Intermediate Variable</th>
+<th style="text-align: center;">Local Derivative <span class="math inline">\(\frac{\partial \text{output}}{\partial \text{input}}\)</span></th>
+<th style="text-align: center;">Adjoint (<span class="math inline">\(\bar{v}_i = \frac{\partial f}{\partial v_i}\)</span>)</th>
+<th style="text-align: center;">Adjoint Value (at <span class="math inline">\(x=2\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Start</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\bar{v}_3\)</span> (Output <span class="math inline">\(f\)</span>)</td>
+<td style="text-align: center;">N/A</td>
+<td style="text-align: center;"><span class="math inline">\(\bar{v}_3 = 1\)</span></td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;"><span class="math inline">\(\bar{v}_2\)</span> (Input to <span class="math inline">\(\exp\)</span>)</td>
+<td style="text-align: center;"><span class="math inline">\(\frac{\partial v_3}{\partial v_2} = \exp(v_2)\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\bar{v}_2 = \bar{v}_3 \cdot \frac{\partial v_3}{\partial v_2}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1 \cdot \exp(4) = \mathbf{\exp(4)}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>End</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\bar{v}_1\)</span> (Input <span class="math inline">\(x\)</span>)</td>
+<td style="text-align: center;"><span class="math inline">\(\frac{\partial v_2}{\partial v_1} = 2v_1\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\bar{v}_1 = \bar{v}_2 \cdot \frac{\partial v_2}{\partial v_1}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\exp(4) \cdot (2 \cdot 2) = \mathbf{4\exp(4)}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The final calculated adjoint, <span class="math inline">\(\bar{v}_1\)</span>, gives us the exact derivative of <span class="math inline">\(f\)</span> with respect to the input <span class="math inline">\(x\)</span>!</p>
+<hr />
+<h2 id="the-efficiency-difference">The Efficiency Difference</h2>
+<p>Here is the efficiency breakdown for a neural network with <span class="math inline">\(N=1\)</span> million parameters (inputs) and <span class="math inline">\(M=1\)</span> output (the loss function):</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Mode</th>
+<th style="text-align: center;">Passes Required</th>
+<th style="text-align: center;">Computational Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Forward Mode</strong></td>
+<td style="text-align: center;"><span class="math inline">\(N\)</span> passes (1 million)</td>
+<td style="text-align: center;"><span class="math inline">\(O(N \cdot \text{computation})\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Reverse Mode</strong></td>
+<td style="text-align: center;"><span class="math inline">\(M\)</span> passes (1)</td>
+<td style="text-align: center;"><span class="math inline">\(O(\text{computation})\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>This difference is massive. Forward Mode is <span class="math inline">\(1\)</span> million times slower because it requires a separate pass for every parameter. Reverse Mode calculates the derivative with respect to <strong>all</strong> <span class="math inline">\(N\)</span> parameters in a single backward sweep.</p>
+<p>This efficiency is why Reverse Mode AD is the implementation technique used by all modern machine learning frameworks (like PyTorch, TensorFlow, and JAX).</p>
+<hr />
+<h2 id="ad-meets-optimization">AD Meets Optimization</h2>
+<p>Now that we have this incredibly efficient, precise gradient (a vector of 1 million partial derivatives) in hand, what does the machine learning model actually <strong>do</strong> with it?</p>
+<p>The goal of training is to adjust the 1 million parameters to minimize the error, or <strong>loss function</strong>.</p>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://huggingface.co/blog/andmholm/what-is-automatic-differentiation">What's Automatic Differentiation?</a></li>
 <li><a target="_blank" rel="noopener" href="https://fancyerii.github.io/books/autodiff/">自动微分</a></li>
 <li><a target="_blank" rel="noopener" href="https://indico.ihep.ac.cn/event/17315/attachments/64130/75771/%E8%87%AA%E5%8A%A8%E5%BE%AE%E5%88%86.pdf">自动微分</a></li>
 <li><a target="_blank" rel="noopener" href="https://vlight.me/2018/04/01/curvature-and-automatic-differentiation/">曲率与自动微分</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/s92f217JcU1AiqxC_nMkCA">自动微分（AutoDiff） - AI4Science的核心基础技术</a></li>
 </ol>
 
                 
@@ -504,7 +646,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 27, 2025</div>
+          <div>December 4, 2025</div>
         </div>
       
       
