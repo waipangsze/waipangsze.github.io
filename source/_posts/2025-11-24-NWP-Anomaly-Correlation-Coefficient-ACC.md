@@ -526,6 +526,116 @@ dimensions:
 	level = 4 ;
 ```
 
+# (Optional) Add `level(level)` 
+
+{% fold info @add_level_hPa.py %}
+```python
+#!/bin/python
+# -*- coding: utf-8 -*-
+
+import xarray as xr
+import numpy as np
+
+# --- Configuration ---
+input_file = 'ERA5_rplevs_1990_2010.nc'
+output_file = 'ERA5_rplevs_1990_2010_final.nc'
+
+# The values and attributes for the new coordinate variable
+level_values = np.array([850, 700, 500, 200], dtype=np.int32) # Use int32 for small integers
+level_attributes = {
+    'units': 'millibars',
+    'long_name': 'pressure_level'
+}
+
+print(f"Loading file: {input_file}...")
+
+try:
+    # 1. Load the NetCDF file into an xarray Dataset
+    # Use engine='netcdf4' for standard NetCDF files
+    ds = xr.open_dataset(input_file, engine='netcdf4')
+
+    # 2. Verify the dimension size (Optional but good practice)
+    expected_size = len(level_values)
+    current_size = ds.dims['level']
+
+    if current_size != expected_size:
+        raise ValueError(f"Dimension 'level' size ({current_size}) does not match the number of values to add ({expected_size}).")
+
+    print(f"Dimension 'level' has size {current_size}. Proceeding to add coordinate variable.")
+
+    # 3. Create the new coordinate variable
+    # We create a new DataArray that shares the name and dimension of the existing 'level' dimension.
+    level_coord = xr.DataArray(
+        data=level_values,
+        dims='level',  # Must match the existing dimension name
+        name='level',  # Must match the existing dimension name
+        attrs=level_attributes
+    )
+
+    # 4. Assign the new coordinate variable to the Dataset
+    # This overwrites the dimension's coordinate array if one existed, or adds it if it was missing.
+    ds = ds.assign_coords(level=level_coord)
+
+    # 5. Save the modified Dataset to a new NetCDF file
+    print(f"Saving modified data to: {output_file}")
+    ds.to_netcdf(output_file)
+
+    print("-" * 30)
+    print(f"✅ Success! Variable 'level' added with values {level_values.tolist()} and attributes.")
+
+except FileNotFoundError:
+    print(f"❌ Error: Input file '{input_file}' not found.")
+except Exception as e:
+    print(f"❌ An error occurred: {e}")
+```
+{% endfold %}
+
+# (Optional) Reordered the `level` dimension
+
+{% fold info @reorder_level.py %}
+```python
+#!/bin/python
+# -*- coding: utf-8 -*-
+
+import xarray as xr
+import numpy as np
+
+# --- Configuration ---
+input_file = 'ERA5_zplevs_1990_2010_final.nc'
+output_file = 'ERA5_zplevs_1990_2010_final_reordered.nc'
+
+try:
+    # 1. Load the NetCDF file
+    # Ensure all data and coordinates are read
+    ds = xr.open_dataset(input_file)
+    
+    print(f"Original 'level' coordinate values: {ds['level'].values}")
+    
+    # 2. Check the current order and determine the sorting direction
+    # Sorting by 'level' with ascending=False will sort the *data* so that 
+    # the lowest value (200) is at the start (index 0).
+    # Since pressure levels are typically stored in descending order (highest pressure at index 0),
+    # but you want to sort by the coordinate values, we usually sort by ascending value.
+
+    # 3. Sort the Dataset by the 'level' coordinate
+    # The sortby() function reorders all variables and coordinates along the 'level' dimension.
+    # To get {200, 500, 700, 850} you sort in ascending order of value.
+    ds_reordered = ds.sortby('level', ascending=True)
+
+    print(f"Reordered 'level' coordinate values: {ds_reordered['level'].values}")
+
+    # 4. Save the reordered Dataset to a new NetCDF file
+    ds_reordered.to_netcdf(output_file)
+    
+    print(f"\n✅ Success! File saved to: {output_file}")
+    
+except FileNotFoundError:
+    print(f"❌ Error: Input file '{input_file}' not found.")
+except Exception as e:
+    print(f"❌ An error occurred during processing: {e}")
+```
+{% endfold %}
+
 # (Optional) how to average two nc files with weighting?
 
 ## Method: Weighted Average using CDO (`mul` and `add`)
