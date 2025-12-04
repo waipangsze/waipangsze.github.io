@@ -709,6 +709,118 @@ cdo mulc,0.677 output_ERA5_scorecard_clim_1990_2010.nc weighted_ERA5_scorecard_c
 cdo add weighted_ERA5_scorecard_clim_2011_2020.nc weighted_ERA5_scorecard_clim_1990_2010.nc ERA5_scorecard_clim_1990_2020.nc
 ```
 
+#### Error
+
+```log
+ERROR NC_EHDFERR Error at HDF5 layer
+HINT: NC_EHDFERR errors indicate that the HDF5-backend to netCDF is unable to perform the requested task. NCO can receive this devilishly inscrutable error for a variety of possible reasons including: 1) The run-time dynamic linker attempts to resolve calls from the netCDF library to the HDF library with an HDF5 libhdf5.a that is incompatible with the version used to build NCO and netCDF. 2) The file system does not allow the HDF5 flock() function, as of HDF5 1.10.x, to enable multiple processes to open the same file for reading, a feature known as SWMR (Single Write Multiple Read). The fix is to disable the HDF5 flock() by setting an environment variable thusly: "export HDF5_USE_FILE_LOCKING=FALSE". 3) An incorrect netCDF4 library implementation of a procedure (e.g., nc_rename_var()) in terms of HDF function calls (e.g., HDF5Lmove()) manifests an error or inconsistent state within the HDF5 layer. This often occurs during renaming operations (https://github.com/Unidata/netcdf-c/issues/597). 4) Attempting to compress or decompress a netCDF4 dataset with a non-standard (i.e., non-DEFLATE) filter when the requisite shared library to encode/decode that compression filter is not present in either the default location (/usr/local/hdf5/lib/plugin) or in the user-configurable location referred to by the HDF5_PLUGIN_PATH environment variable. One can determine if missing plugin libraries are the culprit by dumping the hidden attributes of the dataset with, e.g., ncks --hdn -m in.nc or ncdump -s -h in.nc. Any variables with (hidden) "_Filter" attributes require the corresponding shared libraries to be located in HDF5_PLUGIN_PATH. Some HDF5 implementations (at least MacOSX with MacPorts as of 20200907) may also require explicitly setting the plugin path in the environment, even for the default location! To test this, re-try your NCO command after doing this: "export HDF5_PLUGIN_PATH=/usr/local/hdf5/lib/plugin". 5) Bad vibes.
+nco_err_exit(): ERROR Short NCO-generated message (usually name of function that triggered error): nco_rename_dim()
+nco_err_exit(): ERROR Error code is -101. Translation into English with nc_strerror(-101) is "NetCDF: HDF error"
+nco_err_exit(): ERROR NCO will now exit with system call exit(EXIT_FAILURE)
+```
+
+{% fold info @rename_dim.py %}
+```python
+import xarray as xr
+import os
+
+# --- Configuration ---
+input_file = 'new_ERA5_scorecard_clim_1990_2020.nc'
+output_file = 'test.nc'
+old_dim_name = 'time'
+new_dim_name = 'dayofyear'
+
+print(f"Starting dimension rename: '{old_dim_name}' -> '{new_dim_name}'")
+print("-" * 30)
+
+try:
+    # 1. Load the NetCDF file into an xarray Dataset
+    ds = xr.open_dataset(input_file)
+    
+    # 2. Rename the dimension
+    # The rename_dims method handles the dimension itself.
+    ds_renamed = ds.rename_dims({old_dim_name: new_dim_name})
+    
+    # 3. Rename the associated coordinate variable (if it exists)
+    # This step is crucial because the coordinate variable often shares the dimension name.
+    if old_dim_name in ds_renamed.coords:
+        ds_renamed = ds_renamed.rename({old_dim_name: new_dim_name})
+    
+    print(f"Original dimensions: {list(ds.dims)}")
+    print(f"Renamed dimensions: {list(ds_renamed.dims)}")
+
+    # 4. Save the modified Dataset to the new NetCDF file
+    ds_renamed.to_netcdf(output_file)
+    
+    print("-" * 30)
+    print(f"✅ Success! Dimension '{old_dim_name}' has been renamed to '{new_dim_name}'.")
+    print(f"New file saved as: {output_file}")
+    
+except FileNotFoundError:
+    print(f"❌ Error: Input file '{input_file}' not found.")
+except ValueError as e:
+    # Catches the error if the dimension is not found or already has the new name
+    print(f"❌ An error occurred during renaming: {e}")
+except Exception as e:
+    print(f"❌ An unexpected error occurred: {e}")
+```
+{% endfold %}
+
+But, if `An error occurred during renaming: Cannot rename time to dayofyear because dayofyear already exists. Try using swap_dims instead.`
+
+It means you have two distinct entities in your xarray Dataset with the name dayofyear:
+
+- A data variable (or possibly a coordinate variable) named dayofyear already exists.
+- You are trying to rename the dimension/coordinate variable currently called time to dayofyear.
+
+{% fold info @rename_dim_swap.py %}
+```python
+import xarray as xr
+import os
+
+input_file = 'new_ERA5_scorecard_clim_1990_2020.nc'
+output_file = 'test_swapped.nc'
+
+try:
+    # 1. Load the NetCDF file
+    ds = xr.open_dataset(input_file)
+    
+    print(f"Original Dimensions: {list(ds.dims)}")
+    print(f"Original Coordinates: {list(ds.coords)}")
+
+    # 2. Swap the dimension 'time' with the variable 'dayofyear'
+    # This promotes the 'dayofyear' variable to a dimension/coordinate
+    # and demotes the original 'time' coordinate variable.
+    ds_swapped = ds.swap_dims({'time': 'dayofyear'})
+    
+    # 3. (Optional) Drop the original 'time' coordinate variable if not needed
+    # ds_swapped = ds_swapped.drop_vars('time') 
+    
+    print(f"\nSwapped Dimensions: {list(ds_swapped.dims)}")
+    print(f"Swapped Coordinates: {list(ds_swapped.coords)}")
+
+    # 4. Save the modified Dataset
+    ds_swapped.to_netcdf(output_file)
+    
+    print(f"\n✅ Success! Dimension 'time' replaced by 'dayofyear'.")
+    print(f"New file saved as: {output_file}")
+    
+except FileNotFoundError:
+    print(f"❌ Error: Input file '{input_file}' not found.")
+except Exception as e:
+    print(f"❌ An error occurred during processing: {e}")
+```
+{% endfold %}
+
+# (Optional) int to float
+
+- `int to float` or `float to int`
+
+```sh
+ncap2 -O -s 'dayofyear=double(dayofyear)' input.nc output.nc
+ncap2 -O -s 'dayofyear=int(dayofyear);level=int(level)' input.nc output.nc
+```
+
 # References
 
 1. [Déqué, M. I. C. H. E. L., & Royer, J. F. (1992). The skill of extended-range extratropical winter dynamical forecasts. Journal of climate, 5(11), 1346-1356.](https://journals.ametsoc.org/view/journals/clim/5/11/1520-0442_1992_005_1346_tsoere_2_0_co_2.pdf)
