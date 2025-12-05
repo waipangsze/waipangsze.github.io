@@ -821,6 +821,42 @@ ncap2 -O -s 'dayofyear=double(dayofyear)' input.nc output.nc
 ncap2 -O -s 'dayofyear=int(dayofyear);level=int(level)' input.nc output.nc
 ```
 
+# (Optional) Remove var "time" and dim "time"
+
+- how to remove a variable "time" first and then remove the dimension "time" from nc file?
+
+{% fold info @remove_var_dim.py %}
+```python
+import xarray as xr
+
+input_file = 'input.nc'
+output_file = 'output.nc'
+
+try:
+    # 1. Load the NetCDF file
+    ds = xr.open_dataset(input_file)
+    
+    # 2. Remove the variable 'time'
+    # This removes the variable that holds the time values/metadata.
+    ds_no_var = ds.drop_vars('time')
+    
+    # 3. Remove the dimension 'time'
+    # The drop_dims method removes a dimension. This only works if no
+    # other variables in the dataset are indexed by 'time'.
+    ds_final = ds_no_var.drop_dims('time')
+
+    # 4. Save the modified Dataset
+    ds_final.to_netcdf(output_file)
+    
+    print(f"✅ Variable and dimension 'time' successfully removed. File saved as: {output_file}")
+
+except ValueError as e:
+    print(f"❌ Error during dimension removal. Check if other variables still depend on 'time': {e}")
+except Exception as e:
+    print(f"❌ An unexpected error occurred: {e}")
+```
+{% endfold %}
+
 # References
 
 1. [Déqué, M. I. C. H. E. L., & Royer, J. F. (1992). The skill of extended-range extratropical winter dynamical forecasts. Journal of climate, 5(11), 1346-1356.](https://journals.ametsoc.org/view/journals/clim/5/11/1520-0442_1992_005_1346_tsoere_2_0_co_2.pdf)
