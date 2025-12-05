@@ -28,10 +28,10 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/TfdXucM.png">
 <meta property="article:published_time" content="2025-11-23T22:30:00.000Z">
-<meta property="article:modified_time" content="2025-12-04T09:33:02.401Z">
+<meta property="article:modified_time" content="2025-12-05T02:36:46.053Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="GFS">
 <meta property="article:tag" content="FNL">
@@ -364,7 +364,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k words
+          2.4k words
         
       </span>
     
@@ -375,7 +375,7 @@
         
         
         
-          20 mins
+          21 mins
         
       </span>
     
@@ -926,6 +926,21 @@ A&#39;(t, x) = A(t, x) - C(d(t), x)
 <li><code>int to float</code> or <code>float to int</code></li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">ncap2 -O -s <span class="hljs-string">&#x27;dayofyear=double(dayofyear)&#x27;</span> input.nc output.nc<br>ncap2 -O -s <span class="hljs-string">&#x27;dayofyear=int(dayofyear);level=int(level)&#x27;</span> input.nc output.nc<br></code></pre></td></tr></table></figure>
+<h1 id="optional-remove-var-time-and-dim-time">(Optional) Remove var "time" and dim "time"</h1>
+<ul>
+<li>how to remove a variable "time" first and then remove the dimension "time" from nc file?</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-0994800d" role="button" aria-expanded="false" aria-controls="collapse-0994800d">
+        <div class="fold-arrow">▶</div>remove_var_dim.py
+      </div>
+      <div class="fold-collapse collapse" id="collapse-0994800d">
+        <div class="fold-content">
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> xarray <span class="hljs-keyword">as</span> xr<br><br>input_file = <span class="hljs-string">&#x27;input.nc&#x27;</span><br>output_file = <span class="hljs-string">&#x27;output.nc&#x27;</span><br><br><span class="hljs-keyword">try</span>:<br>    <span class="hljs-comment"># 1. Load the NetCDF file</span><br>    ds = xr.open_dataset(input_file)<br>    <br>    <span class="hljs-comment"># 2. Remove the variable &#x27;time&#x27;</span><br>    <span class="hljs-comment"># This removes the variable that holds the time values/metadata.</span><br>    ds_no_var = ds.drop_vars(<span class="hljs-string">&#x27;time&#x27;</span>)<br>    <br>    <span class="hljs-comment"># 3. Remove the dimension &#x27;time&#x27;</span><br>    <span class="hljs-comment"># The drop_dims method removes a dimension. This only works if no</span><br>    <span class="hljs-comment"># other variables in the dataset are indexed by &#x27;time&#x27;.</span><br>    ds_final = ds_no_var.drop_dims(<span class="hljs-string">&#x27;time&#x27;</span>)<br><br>    <span class="hljs-comment"># 4. Save the modified Dataset</span><br>    ds_final.to_netcdf(output_file)<br>    <br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;✅ Variable and dimension &#x27;time&#x27; successfully removed. File saved as: <span class="hljs-subst">&#123;output_file&#125;</span>&quot;</span>)<br><br><span class="hljs-keyword">except</span> ValueError <span class="hljs-keyword">as</span> e:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;❌ Error during dimension removal. Check if other variables still depend on &#x27;time&#x27;: <span class="hljs-subst">&#123;e&#125;</span>&quot;</span>)<br><span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;❌ An unexpected error occurred: <span class="hljs-subst">&#123;e&#125;</span>&quot;</span>)<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/clim/5/11/1520-0442_1992_005_1346_tsoere_2_0_co_2.pdf">Déqué, M. I. C. H. E. L., &amp; Royer, J. F. (1992). The skill of extended-range extratropical winter dynamical forecasts. Journal of climate, 5(11), 1346-1356.</a></li>
@@ -967,9 +982,9 @@ A&#39;(t, x) = A(t, x) - C(d(t), x)
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
-      
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
@@ -1014,7 +1029,7 @@ A&#39;(t, x) = A(t, x) - C(d(t), x)
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>December 4, 2025</div>
+          <div>December 5, 2025</div>
         </div>
       
       
