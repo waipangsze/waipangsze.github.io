@@ -615,6 +615,7 @@ python SyCLoPS_classifier.py
 # -–range 1.4 -–mintime "6h" -–maxgap "6h" -–threshold "MSLPCC55,>=,100.0,7"
 ## Since some TLCs can be very short-lived, it is recommended to keep the step/hour requirements low in the --mintime, --maxgap and --threshold arguments here.
 ```
+{% endfold %}
 
 # **MPAS_tempest-extremes
 
@@ -628,7 +629,6 @@ python SyCLoPS_classifier.py
 ./src/step5_make_filelists.sh
 ./src/step6_run_detectnodes_stitchnodes_batch.sh
 ```
-{% endfold %}
 
 # References
 
