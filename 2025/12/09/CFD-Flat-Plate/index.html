@@ -1,0 +1,1059 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1. Why the Flat Plate Case is Important in CFD The flat plate boundary layer problem is a cornerstone in fluid dynamics, and its study using CFD is critical for several reasons:  Foundation for Bound">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CFD | Flat Plate">
+<meta property="og:url" content="https://waipangsze.github.io/2025/12/09/CFD-Flat-Plate/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="1. Why the Flat Plate Case is Important in CFD The flat plate boundary layer problem is a cornerstone in fluid dynamics, and its study using CFD is critical for several reasons:  Foundation for Bound">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/h5zLAcM.png">
+<meta property="article:published_time" content="2025-12-08T22:08:00.000Z">
+<meta property="article:modified_time" content="2025-12-09T06:56:25.970Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="OpenFOAM">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/h5zLAcM.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CFD | Flat Plate - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/h5zLAcM.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CFD | Flat Plate"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-09 06:08" pubdate>
+          December 9, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          811 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CFD | Flat Plate</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><img src="https://i.imgur.com/h5zLAcM.png" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="why-the-flat-plate-case-is-important-in-cfd">1. Why the Flat Plate Case is Important in CFD</h1>
+<p>The flat plate boundary layer problem is a cornerstone in fluid dynamics, and its study using CFD is critical for several reasons:</p>
+<ul>
+<li><p><strong>Foundation for Boundary Layer Theory:</strong> The flat plate flow is the simplest geometry that exhibits a <strong>boundary layer</strong>—a thin layer of fluid near the solid surface where viscous effects are significant and the fluid velocity changes from zero (due to the <strong>no-slip condition</strong>) to the free-stream velocity. Understanding this simple case allows you to grasp the core concepts of momentum diffusion and viscous drag.</p></li>
+<li><strong>Validation and Benchmarking:</strong> Because the flat plate flow (particularly the steady, incompressible, laminar case with zero pressure gradient) has a well-known <strong>analytical solution</strong> (the <strong>Blasius solution</strong>), it serves as a crucial <strong>benchmark</strong> for validating CFD codes, meshing strategies, and turbulence models. If a CFD code cannot accurately predict the flat plate boundary layer, its results for more complex geometries are questionable.</li>
+<li><strong>Understanding Skin Friction Drag:</strong> The primary force acting on a flat plate parallel to the flow is <strong>skin friction drag</strong>, which arises from the shear stress at the wall. The flat plate case is the perfect model to study the development of this drag and how it's affected by flow conditions (laminar vs. turbulent). This is directly relevant to minimizing drag on aerodynamic surfaces like aircraft wings and turbine blades.</li>
+<li><p><strong>Transition to Turbulence:</strong> The flow over a flat plate typically starts as <strong>laminar</strong> and transitions to <strong>turbulent</strong> flow downstream, depending on the <strong>Reynolds number</strong> (<span class="math inline">\(Re_x\)</span>). This transition is a key phenomenon in fluid mechanics, and the flat plate provides a basic, controlled environment to study and model this complex change in flow regime.</p></li>
+</ul>
+<h1 id="which-aspects-to-focus-on-in-cfd-simulation">2. Which Aspects to Focus On in CFD Simulation</h1>
+<p>When performing a CFD simulation of flow over a flat plate, you should focus on the following core aspects to ensure accuracy and gain meaningful insights:</p>
+<h3 id="a.-boundary-layer-resolution-meshing">A. Boundary Layer Resolution (Meshing)</h3>
+<p>The boundary layer is very thin and characterized by steep velocity gradients near the wall.</p>
+<ul>
+<li><strong>Fine Mesh Near the Wall:</strong> You must use a very fine, highly refined mesh (often with structured, inflation layers) in the direction <strong>normal</strong> to the plate surface to accurately resolve the velocity profile within the boundary layer.</li>
+<li><strong><span class="math inline">\(y^+\)</span> Value:</strong> For turbulent flows, the dimensionless wall distance, <strong><span class="math inline">\(y^+\)</span></strong>, is the single most critical parameter. It dictates the size of the first cell layer adjacent to the wall.
+<ul>
+<li>For <strong>Low-Reynolds (Near-Wall) Models</strong> (which resolve the viscous sublayer), the first cell center must be placed in the viscous sublayer, meaning <strong><span class="math inline">\(y^+ \approx 1\)</span></strong>.</li>
+<li>For <strong>Wall Function Models</strong> (which use an empirical law-of-the-wall approach), the first cell center must be in the logarithmic layer, meaning <strong><span class="math inline">\(30 &lt; y^+ &lt; 500\)</span></strong> (or similar range depending on the solver).</li>
+</ul></li>
+</ul>
+<h3 id="b.-flow-regime-and-modeling">B. Flow Regime and Modeling</h3>
+<p>You must correctly account for whether the flow is laminar or turbulent.</p>
+<ul>
+<li><strong>Laminar Flow:</strong> For low Reynolds numbers (typically <span class="math inline">\(Re_L &lt; 500,000\)</span> based on plate length), a laminar model (solving the full Navier-Stokes equations or simplified boundary layer equations) is sufficient. Validation against the Blasius solution is key here.</li>
+<li><strong>Turbulent Flow:</strong> For higher Reynolds numbers, you need to select and implement an appropriate <strong>Turbulence Model</strong> (e.g., <span class="math inline">\(k-\epsilon\)</span>, <span class="math inline">\(k-\omega\)</span> SST, Reynolds Stress Model). The choice of turbulence model directly impacts the predicted skin friction and boundary layer thickness.</li>
+</ul>
+<h3 id="c.-key-result-parameters">C. Key Result Parameters</h3>
+<p>Your post-processing should focus on these calculated parameters:</p>
+<ul>
+<li><strong>Velocity Profiles:</strong> Plotting the velocity magnitude (<span class="math inline">\(u\)</span>) versus the distance from the wall (<span class="math inline">\(y\)</span>) at various locations (<span class="math inline">\(x\)</span>) to observe the growth of the boundary layer and compare against analytical/empirical solutions (like Blasius).</li>
+<li><strong>Boundary Layer Thickness (<span class="math inline">\(\delta\)</span>):</strong> The distance from the wall where <span class="math inline">\(u\)</span> reaches 99% of the free-stream velocity (<span class="math inline">\(U_{\infty}\)</span>).</li>
+<li><strong>Skin Friction Coefficient (<span class="math inline">\(C_f\)</span>):</strong> A dimensionless measure of the local shear stress at the wall (<span class="math inline">\(\tau_w\)</span>). This is calculated using the velocity gradient at the wall: <span class="math display">\[C_f = \frac{\tau_w}{\frac{1}{2}\rho U_{\infty}^2} = \frac{\mu (\frac{\partial u}{\partial y})_{y=0}}{\frac{1}{2}\rho U_{\infty}^2}\]</span></li>
+<li><strong>Drag Coefficient (<span class="math inline">\(C_D\)</span>):</strong> The total drag force (<span class="math inline">\(D\)</span>) acting on the plate in a dimensionless form: <span class="math display">\[C_D = \frac{D}{\frac{1}{2}\rho U_{\infty}^2 L W}\]</span> (where <span class="math inline">\(L\)</span> and <span class="math inline">\(W\)</span> are the length and width of the plate).</li>
+</ul>
+<p>Focusing on these aspects will give you a solid understanding of how to set up, run, and validate a fundamental CFD case.</p>
+<h1 id="blasius-boundary-layer"><strong>Blasius boundary layer</strong></h1>
+<p>In physics and fluid mechanics, a Blasius boundary layer (named after Paul Richard Heinrich Blasius) describes the steady two-dimensional laminar boundary layer that forms on a semi-infinite plate which is held parallel to a constant unidirectional flow. Falkner and Skan later generalized Blasius' solution to wedge flow (Falkner–Skan boundary layer), i.e. flows in which the plate is not parallel to the flow.</p>
+<p>The <strong>Blasius solution</strong> is a classic and foundational piece of fluid dynamics, essential for understanding laminar boundary layers. It's considered the <strong>exact</strong> similarity solution for the steady, two-dimensional, incompressible laminar flow over a semi-infinite flat plate with zero pressure gradient.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ThXIVDTjpb4?si=tGwld1s6QCQxvd56" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+<h2 id="governing-equations-simplification">1. Governing Equations &amp; Simplification</h2>
+<p>The Blasius solution starts with the <strong>Prandtl boundary layer equations</strong> for steady, incompressible, 2D flow. For a flat plate parallel to the flow, the pressure gradient (<span class="math inline">\(\partial p / \partial x\)</span>) is zero.</p>
+<ul>
+<li><strong>Continuity Equation:</strong> <span class="math display">\[\frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} = 0\]</span></li>
+<li><strong>x-Momentum Equation:</strong> <span class="math display">\[u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} = \nu \frac{\partial^2 u}{\partial y^2}\]</span> (where <span class="math inline">\(u\)</span> is the streamwise velocity, <span class="math inline">\(v\)</span> is the wall-normal velocity, <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are the coordinates, and <span class="math inline">\(\nu\)</span> is the kinematic viscosity).</li>
+</ul>
+<p>This is a system of <strong>coupled, non-linear partial differential equations (PDEs)</strong>.</p>
+<h2 id="the-similarity-transformation">2. The Similarity Transformation</h2>
+<p>The genius of Blasius's approach (a student of Prandtl) was recognizing that the <strong>velocity profiles</strong> at different <span class="math inline">\(x\)</span> locations along the plate are <em>self-similar</em>—they all collapse onto a single curve when plotted using the correct dimensionless variables.</p>
+<h3 id="a.-stream-function-psi">A. Stream Function (<span class="math inline">\(\psi\)</span>)</h3>
+<p>The continuity equation is satisfied identically by introducing the stream function <span class="math inline">\(\psi(x, y)\)</span>, where: <span class="math display">\[u = \frac{\partial \psi}{\partial y}, \quad v = - \frac{\partial \psi}{\partial x}\]</span></p>
+<h3 id="b.-similarity-variable-eta">B. Similarity Variable (<span class="math inline">\(\eta\)</span>)</h3>
+<p>Blasius introduced a dimensionless <strong>similarity variable</strong> <span class="math inline">\(\eta\)</span> (eta), which effectively normalizes the <span class="math inline">\(y\)</span> coordinate with the boundary layer thickness <span class="math inline">\(\delta(x)\)</span>, which is known to grow as <span class="math inline">\(\sqrt{x}\)</span>:</p>
+<p><span class="math display">\[\eta = y \sqrt{\frac{U_{\infty}}{\nu x}}\]</span></p>
+<h3 id="c.-dimensionless-stream-function-f">C. Dimensionless Stream Function (<span class="math inline">\(f\)</span>)</h3>
+<p>A dimensionless stream function, <span class="math inline">\(f(\eta)\)</span>, is defined to transform the velocity components:</p>
+<p><span class="math display">\[\psi(x, y) = \sqrt{\nu x U_{\infty}} f(\eta)\]</span></p>
+<ul>
+<li>This leads to the streamwise velocity component: <span class="math display">\[\frac{u}{U_{\infty}} = f&#39;(\eta)\]</span> (where the prime denotes differentiation with respect to <span class="math inline">\(\eta\)</span>)</li>
+</ul>
+<h3 id="d.-the-blasius-equation">D. The Blasius Equation</h3>
+<p>Substituting these definitions into the momentum PDE transforms it into a single, non-linear <strong>ordinary differential equation (ODE)</strong>:</p>
+<p><span class="math display">\[f&#39;&#39;&#39; + \frac{1}{2} f f&#39;&#39; = 0\]</span></p>
+<p>This is the <strong>Blasius equation</strong>. It's a third-order, non-linear ODE, and its solution, <span class="math inline">\(f(\eta)\)</span>, provides the universal velocity profile for the laminar flat plate.</p>
+<h2 id="boundary-conditions-bcs">3. Boundary Conditions (BCs)</h2>
+<p>The ODE must be solved subject to three boundary conditions:</p>
+<ul>
+<li><strong>1. No-Slip at the Wall:</strong> The velocity <span class="math inline">\(u\)</span> is zero at <span class="math inline">\(y=0\)</span>. <span class="math display">\[u(x, 0) = 0 \implies f&#39;(0) = 0\]</span></li>
+<li><strong>2. Impermeable Wall:</strong> The wall is a streamline, so <span class="math inline">\(v\)</span> is zero at <span class="math inline">\(y=0\)</span>, which translates to <span class="math inline">\(\psi\)</span> being constant (set to zero) at the wall. <span class="math display">\[v(x, 0) = 0 \implies f(0) = 0\]</span></li>
+<li><strong>3. Free-Stream Condition:</strong> The velocity <span class="math inline">\(u\)</span> approaches the free-stream velocity <span class="math inline">\(U_{\infty}\)</span> far from the wall. <span class="math display">\[u(x, y \to \infty) \to U_{\infty} \implies f&#39;(\eta \to \infty) = 1\]</span></li>
+</ul>
+<h2 id="solving-and-key-results">4. Solving and Key Results</h2>
+<p>The Blasius equation has no simple <strong>closed-form analytical solution</strong> and must be solved numerically (typically using the <strong>shooting method</strong>, which is a type of numerical integration).</p>
+<h3 id="a.-the-universal-velocity-profile">A. The Universal Velocity Profile</h3>
+<p>The solution for <span class="math inline">\(f&#39;(\eta) = u/U_{\infty}\)</span> is a single, <strong>universal curve</strong>. Any laminar velocity profile on a flat plate, regardless of <span class="math inline">\(x\)</span>, <span class="math inline">\(U_{\infty}\)</span>, or <span class="math inline">\(\nu\)</span>, will map onto this single curve when plotted in terms of the similarity variables <span class="math inline">\(\eta\)</span>.</p>
+<h3 id="b.-boundary-layer-thickness-delta">B. Boundary Layer Thickness (<span class="math inline">\(\delta\)</span>)</h3>
+<p>The boundary layer edge is conventionally defined as the point where <span class="math inline">\(u = 0.99 U_{\infty}\)</span>. Numerically solving the Blasius equation shows that this occurs at approximately <span class="math inline">\(\eta = 5.0\)</span>. Using the definition of <span class="math inline">\(\eta\)</span>, we can find the dimensional boundary layer thickness:</p>
+<p><span class="math display">\[\delta \approx 5.0 \sqrt{\frac{\nu x}{U_{\infty}}} \quad \implies \quad \frac{\delta}{x} \approx \frac{5.0}{\sqrt{Re_x}}\]</span> where <span class="math inline">\(Re_x = \frac{U_{\infty} x}{\nu}\)</span> is the local Reynolds number. This confirms that the boundary layer thickness grows proportional to <span class="math inline">\(x^{1/2}\)</span> and is inversely proportional to <span class="math inline">\(\sqrt{Re_x}\)</span>.</p>
+<h3 id="c.-wall-shear-stress-tau_w-and-skin-friction-coefficient-c_f">C. Wall Shear Stress (<span class="math inline">\(\tau_w\)</span>) and Skin Friction Coefficient (<span class="math inline">\(C_f\)</span>)</h3>
+<p>The wall shear stress is proportional to the slope of the velocity profile at the wall: <span class="math display">\[\tau_w = \mu \left( \frac{\partial u}{\partial y} \right)_{y=0}\]</span> In terms of the Blasius solution, the key numerical value found is: <span class="math display">\[f&#39;&#39;(0) \approx 0.332\]</span></p>
+<p>This allows the local skin friction coefficient (<span class="math inline">\(C_f\)</span>) to be determined as: <span class="math display">\[C_f = \frac{\tau_w}{\frac{1}{2}\rho U_{\infty}^2} = \frac{0.664}{\sqrt{Re_x}}\]</span></p>
+<h3 id="d.-total-drag-coefficient-c_d">D. Total Drag Coefficient (<span class="math inline">\(C_D\)</span>)</h3>
+<p>Integrating the local skin friction coefficient over the plate length <span class="math inline">\(L\)</span> yields the total drag coefficient: <span class="math display">\[C_D = \frac{1.328}{\sqrt{Re_L}}\]</span> where <span class="math inline">\(Re_L = \frac{U_{\infty} L}{\nu}\)</span>.</p>
+<p>The Blasius solution is a powerful example of how a complex system of PDEs can be reduced to a single ODE via a <strong>similarity solution</strong>, providing exact, benchmarkable results for CFD.</p>
+<h1 id="meshing-in-openfoam">Meshing in OpenFOAM</h1>
+<p>Meshing the flat plate problem in <strong>OpenFOAM</strong> is a classic case study that centers entirely on accurately resolving the <strong>boundary layer</strong>. You'll typically use the built-in <strong><code>blockMesh</code></strong> utility to create a structured, high-quality mesh.</p>
+<p>The main consideration for a flat plate mesh is the <strong>flow regime</strong> (laminar or turbulent), as this <strong>determines the required cell size near the wall</strong>, quantified by the dimensionless wall distance, <span class="math inline">\(\mathbf{y^+}\)</span>.</p>
+<h2 id="using-blockmesh-for-a-flat-plate-domain">1. Using <code>blockMesh</code> for a Flat Plate Domain</h2>
+<p>For a 2D flat plate (simulated in 3D using a single cell thick domain with <code>empty</code> front/back boundaries), the domain is usually a simple rectangular block.</p>
+<h3 id="a.-define-the-domain-and-blocks">A. Define the Domain and Blocks</h3>
+<ul>
+<li><strong>Structured Mesh:</strong> <code>blockMesh</code> creates structured, hexahedral cells, which are ideal for boundary layer resolution and computational efficiency.</li>
+<li><strong>Multi-Block Strategy (Recommended):</strong> While a single block can work for very simple cases, using <strong>two or more blocks</strong> allows for better control:
+<ul>
+<li>One block near the plate to capture the boundary layer growth.</li>
+<li>A larger block above to handle the free stream flow.</li>
+</ul></li>
+<li><strong>Leading Edge:</strong> For high-accuracy simulations, you may need a very fine mesh near the <strong>leading edge</strong> (start) of the plate, as this is where the boundary layer begins and gradients are steepest.</li>
+</ul>
+<h3 id="b.-mesh-expansiongrading">B. Mesh Expansion/Grading</h3>
+<p>The key to boundary layer meshing is stretching the cells away from the plate. You use the <strong><code>simpleGrading</code></strong> keyword in your <code>blockMeshDict</code> to define the ratio of the cell size at the far end of the block edge to the cell size at the start of that edge.</p>
+<ul>
+<li><strong>Near the Plate (y-direction):</strong> Use a high grading ratio (e.g., <code>simpleGrading (1 20 1)</code>) in the wall-normal (y) direction to ensure the smallest cells are adjacent to the plate (wall).</li>
+<li><strong>Along the Plate (x-direction):</strong> The boundary layer grows as <span class="math inline">\(\sqrt{x}\)</span>, so the cells should be progressively stretched along the plate (x-direction) to capture the boundary layer thickness increase and ensure the <strong>aspect ratio</strong> (<span class="math inline">\(L_x/L_y\)</span>) of the cells doesn't become excessively high far from the wall.</li>
+</ul>
+<h2 id="the-critical-parameter-mathbfy">2. The Critical Parameter: <span class="math inline">\(\mathbf{y^+}\)</span></h2>
+<p>The choice of your <strong>first cell height</strong> (<span class="math inline">\(\Delta y_1\)</span>) is dictated by the <strong><span class="math inline">\(y^+\)</span></strong> value required by your turbulence model's <strong>wall treatment</strong>.</p>
+<p><span class="math display">\[y^+ = \frac{u_{\tau} \Delta y_1}{\nu}\]</span></p>
+<p>where <span class="math inline">\(u_{\tau}\)</span> is the <strong>friction velocity</strong> and <span class="math inline">\(\nu\)</span> is the <strong>kinematic viscosity</strong>.</p>
+<h3 id="a.-laminar-flow-validation-case">A. Laminar Flow (Validation Case)</h3>
+<ul>
+<li><strong>Meshing Requirement:</strong> For a pure laminar case (e.g., validating against the <strong>Blasius solution</strong> at low Reynolds numbers), you generally need a very <strong>fine mesh</strong> throughout the entire boundary layer, especially near the wall, to resolve the parabolic velocity profile with high accuracy.</li>
+<li><strong>Focus:</strong> Ensure you have enough cells (e.g., 20-30 or more) <em>within</em> the expected boundary layer thickness (<span class="math inline">\(\delta \approx 5.0/\sqrt{Re_x}\)</span>) at the plate's trailing edge. <strong><span class="math inline">\(y^+\)</span> is not strictly relevant</strong>, but <span class="math inline">\(\Delta y_1\)</span> should be very small.</li>
+</ul>
+<h3 id="b.-turbulent-flow-rans">B. Turbulent Flow (RANS)</h3>
+<p>For RANS turbulence models (like <span class="math inline">\(k-\epsilon\)</span> or <span class="math inline">\(k-\omega\)</span> SST), your <span class="math inline">\(y^+\)</span> requirement determines the wall-normal mesh strategy:</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">Wall Treatment</th>
+<th style="text-align: left;">Target <span class="math inline">\(\mathbf{y^+}\)</span> for First Cell</th>
+<th style="text-align: left;">OpenFOAM Boundary Condition (Example)</th>
+<th style="text-align: left;">Meshing Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Wall Functions (WF)</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\mathbf{30 &lt; y^+ &lt; 500}\)</span></td>
+<td style="text-align: left;"><code>kqRWallFunction</code>, <code>epsilonWallFunction</code>, <code>nutkWallFunction</code></td>
+<td style="text-align: left;">The first cell is placed in the <strong>logarithmic region</strong>, bridging the viscous sublayer. This saves cell count but relies on empirical laws.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Low-Reynolds / Near-Wall Resolving</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\mathbf{y^+ \approx 1}\)</span></td>
+<td style="text-align: left;"><code>kLowReWallFunction</code>, <code>nutLowReWallFunction</code> (or often implicit in the model, like <span class="math inline">\(k-\omega\)</span> SST's blending)</td>
+<td style="text-align: left;">The first cell is placed deep within the <strong>viscous sublayer</strong> (<span class="math inline">\(y^+ &lt; 5\)</span>). This is highly accurate but computationally expensive, requiring many more cells near the wall.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="practical-steps-for-calculating-delta-y_1">3. Practical Steps for Calculating <span class="math inline">\(\Delta y_1\)</span></h2>
+<p>Since <span class="math inline">\(u_{\tau}\)</span> depends on the solution (the shear stress), you must <strong>estimate</strong> the required <span class="math inline">\(\Delta y_1\)</span> using an empirical formula, typically based on the skin friction coefficient (<span class="math inline">\(C_f\)</span>) for a flat plate:</p>
+<ol type="1">
+<li><strong>Estimate Friction Velocity (<span class="math inline">\(u_{\tau}\)</span>):</strong> Use the turbulent flat plate skin friction formula (or a similar empirical relation) at the <strong>trailing edge</strong> (where <span class="math inline">\(\delta\)</span> is largest and <span class="math inline">\(u_{\tau}\)</span> is lowest) to estimate the friction velocity: <span class="math display">\[u_{\tau} = U_{\infty} \sqrt{\frac{C_f}{2}}\]</span> (where <span class="math inline">\(C_f \approx 0.059 \cdot Re_L^{-0.2}\)</span> for turbulent flow).</li>
+<li><strong>Calculate First Cell Height (<span class="math inline">\(\Delta y_1\)</span>):</strong> Rearrange the <span class="math inline">\(y^+\)</span> definition for the desired target <span class="math inline">\(y^+\)</span>: <span class="math display">\[\Delta y_1 = \frac{y^+ \nu}{u_{\tau}}\]</span></li>
+<li><strong>Use <code>blockMesh</code> Grading:</strong> Input this calculated <span class="math inline">\(\Delta y_1\)</span> into your <code>blockMeshDict</code> by setting the total number of cells (<span class="math inline">\(N_y\)</span>) and the expansion ratio for the block adjacent to the wall. OpenFOAM also offers the <strong><code>nutUSpaldingWallFunction</code></strong> which is a blended function that works across most <span class="math inline">\(y^+\)</span> values (though <span class="math inline">\(\mathbf{y^+} \approx 1\)</span> or <span class="math inline">\(\mathbf{y^+} &gt; 30\)</span> are still best practice targets).</li>
+</ol>
+<p><em>It's crucial to run the simulation, check the resulting <strong><code>yPlus</code></strong> field using the <code>yPlus</code> function object in OpenFOAM, and refine the mesh (perform a <strong>Grid Convergence Study</strong>) until your <span class="math inline">\(y^+\)</span> values meet your chosen wall treatment criteria.</em></p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.me.psu.edu/cimbala/me320/Lesson_Notes/Fluid_Mechanics_Lesson_13D.pdf">Fluid_Mechanics_Lesson_13D.pdf **</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cfdsupport.com/flat-plate-benchmark/">NASA Turbulent Flat Plate Validation Benchmark</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CFD | Flat Plate</div>
+      <div>https://waipangsze.github.io/2025/12/09/CFD-Flat-Plate/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 9, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>December 9, 2025</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/11/26/NWP-TempestExtremes-feature-detection-tracking-and-analysis/" title="NWP | TempestExtremes | feature detection, tracking, and analysis">
+                        <span class="hidden-mobile">NWP | TempestExtremes | feature detection, tracking, and analysis</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
