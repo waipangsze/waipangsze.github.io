@@ -228,6 +228,94 @@ It has the following options:
 - `--class CLASS`: The 'class' metadata of the model output.
 - `--metadata KEY=VALUE`: Additional metadata metadata in the model output
 
+
+# Practice (2025-12-09)
+
+```log
+ $ ai-models --help
+usage: ai-models [-h] [--models] [--debug] [-v] [--retrieve-requests] [--archive-requests FILE] [--requests-extra REQUESTS_EXTRA] [--json]
+                 [--retrieve-fields-type {constants,prognostics,all}] [--retrieve-only-one-date] [--dump-provenance FILE]
+                 [--input {cds,ecmwf-open-data,file,mars,opendata}] [--file FILE] [--output {file,none}] [--date DATE] [--time TIME] [--assets ASSETS]
+                 [--assets-sub-directory | --no-assets-sub-directory] [--assets-list] [--download-assets] [--path PATH] [--fields] [--expver EXPVER] [--class CLASS]
+                 [--metadata KEY=VALUE] [--num-threads NUM_THREADS] [--lead-time LEAD_TIME] [--hindcast-reference-year HINDCAST_REFERENCE_YEAR]
+                 [--hindcast-reference-date HINDCAST_REFERENCE_DATE] [--staging-dates STAGING_DATES] [--only-gpu] [--deterministic] [--model-version MODEL_VERSION]
+                 [--version] [--remote]
+                 MODEL
+
+positional arguments:
+  MODEL                 The model to run
+
+options:
+  -h, --help            show this help message and exit
+  --models              List models and exit
+  --debug               Turn on debug
+  -v, --verbose         Increase verbosity
+  --retrieve-requests   Print mars requests to stdout.Use --requests-extra to extend or overide the requests.
+  --archive-requests FILE
+                        Save mars archive requests to FILE.Use --requests-extra to extend or overide the requests.
+  --requests-extra REQUESTS_EXTRA
+                        Extends the retrieve or archive requests with a list of key1=value1,key2=value.
+  --json                Dump the requests in JSON format.
+  --retrieve-fields-type {constants,prognostics,all}
+                        Type of field to retrieve. To use with --retrieve-requests.
+  --retrieve-only-one-date
+                        Only retrieve the last date/time. To use with --retrieve-requests.
+  --dump-provenance FILE
+                        Dump information for tracking provenance.
+  --input {cds,ecmwf-open-data,file,mars,opendata}
+                        Source to use
+  --file FILE           Source to use if source=file
+  --output {file,none}  Where to output the results
+  --date DATE           For which analysis date to start the inference (default: yesterday)
+  --time TIME           For which analysis time to start the inference (default: 12)
+  --assets ASSETS       Path to directory containing the weights and other assets
+  --assets-sub-directory, --no-assets-sub-directory
+                        Load assets from a subdirectory of --assets based on the name of the model.
+  --assets-list         List the assets used by the model
+  --download-assets     Download assets if they do not exists.
+  --path PATH           Path where to write the output of the model
+  --fields              Show the fields needed as input for the model
+  --expver EXPVER       Set the experiment version of the model output. Has higher priority than --metadata.
+  --class CLASS         Set the 'class' metadata of the model output. Has higher priority than --metadata.
+  --metadata KEY=VALUE  Set additional metadata metadata in the model output
+  --num-threads NUM_THREADS
+                        Number of threads. Only relevant for some models.
+  --lead-time LEAD_TIME
+                        Length of forecast in hours.
+  --hindcast-reference-year HINDCAST_REFERENCE_YEAR
+                        For encoding hincast-like outputs
+  --hindcast-reference-date HINDCAST_REFERENCE_DATE
+                        For encoding hincast-like outputs
+  --staging-dates STAGING_DATES
+                        For encoding hincast-like outputs
+  --only-gpu            Fail if GPU is not available
+  --deterministic       Fail if GPU is not available
+  --model-version MODEL_VERSION
+                        Model version
+  --version             Print ai-models version and exit
+  --remote              Enable remote execution, read url and token from ~/.config/ai-models/api.yaml
+```
+
+* `-v, --verbose         Increase verbosity`
+* `--json                Dump the requests in JSON format.`
+* `--input {cds,ecmwf-open-data,file,mars,opendata}`
+	* `ecmwf-open-data`: only recent 4 days from <https://data.ecmwf.int/forecasts/>
+	* `opendata`:
+	* `file`: 
+* `--file FILE`
+	* saved grib file
+* `--output {file,none}  Where to output the results`
+* `--date DATE           For which analysis date to start the inference (default: yesterday)`
+* `--time TIME           For which analysis time to start the inference (default: 12)`
+* `--assets ASSETS       Path to directory containing the weights and other assets`
+* `--path PATH           Path where to write the output of the model`
+* `--lead-time LEAD_TIME `
+
+```sh
+source /home/wpsze/micromamba/bin/activate ai-models
+ai-models -v --input ecmwf-open-data --date 20251208 --time 0000 --lead-time 240 panguweather
+```
+
 # Available products
 The output of these ML models are forecasts with 6-hourly time steps out to 10 days initialised from the ECMWF operational analysis. All forecasts are produced on a 0.25 x 0.25-degree grid.
 

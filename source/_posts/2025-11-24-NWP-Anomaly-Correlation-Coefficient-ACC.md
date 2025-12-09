@@ -195,6 +195,53 @@ In summary, when a climate scientist mentions a **climatological mean**, **anoma
 - ERA5 monthly averaged data on pressure levels from 1940 to present
   - <https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels-monthly-means?tab=download>
 
+## Downloading ERA5 Single-Layer Data
+
+This guide provides instructions for downloading single-layer atmospheric variables from the **ERA5 reanalysis dataset** using the **ECMWF CDS API (Climate Data Store Application Programming Interface)**.
+
+###  Important Data Caveats
+
+#### 1\. Daily Updates and Preliminary Data (ERA5T)
+
+  * The ERA5 dataset is updated **daily** with a latency of approximately **5 days**.
+  * The most recent data is initially released as **ERA5T** (T for "Timely"). This is a preliminary release.
+  * In the event that serious flaws are detected in the ERA5T data, the final re-release (which occurs **2 to 3 months** later) may contain corrections and differ from the ERA5T version. Users are notified if such differences occur.
+
+#### 2\. File Format and Size
+
+  * All data downloaded via the CDS API is typically provided in **GRIB format**.
+  * For bulk data processing or conversion to NetCDF, consider using tools like `grib_to_netcdf` (with the `-k 4` flag for large files) or Python libraries like `xarray` and `cfgrib`.
+
+### Standard Single-Layer Download
+
+Requests **Mean Sea Level Pressure (msl)**, **2m Temperature (t2m)**, and **10m wind components (u10, v10)** for a single day.
+
+Then,
+
+```sh
+grib_to_netcdf -k 4 file_6h.grib -o ERA5_single_yyyy_6h.nc"
+```
+
+### Downloading ERA5T (Real-Time Data)
+
+If you need the very latest, most current data (the ERA5T version, which is generally available up to 5 days ago)
+
+## Pressure Level Data Download
+
+Use a common subset for efficiency:
+
+```py
+pressure_levels = [
+    '200', '500', '700', '850'
+]
+```
+
+Then,
+
+```sh
+grib_to_netcdf -k 4 file_6h.grib -o ERA5_plevs_yyyy_6h.nc"
+```
+
 # Build the ERA5 climatology field
 
 The goal is a mean state (climatology) $C(t_{\text{cal}}, x)$ for each calendar time and grid point, using only ERA5.
