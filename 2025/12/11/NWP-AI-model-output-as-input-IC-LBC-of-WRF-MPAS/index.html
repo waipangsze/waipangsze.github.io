@@ -19,23 +19,26 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="NWP | AI for Numerical Weather Prediction (NWP) NWP | ECMWF | IFS | Open data   Introduction As the field of Numerical Weather Prediction (NWP) rapidly evolves, the integration of AI-driven forecasti">
+<meta property="og:type" content="article">
 <meta property="og:title" content="NWP | AI model output as input (IC&#x2F;LBC) of WRF&#x2F;MPAS">
 <meta property="og:url" content="https://waipangsze.github.io/2025/12/11/NWP-AI-model-output-as-input-IC-LBC-of-WRF-MPAS/index.html">
 <meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="NWP | AI for Numerical Weather Prediction (NWP) NWP | ECMWF | IFS | Open data   Introduction As the field of Numerical Weather Prediction (NWP) rapidly evolves, the integration of AI-driven forecasti">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://waipangsze.github.io/2024/10/09/NWP-AI-for-Numerical-Weather-Prediction-NWP/">
-<meta property="og:image" content="https://waipangsze.github.io/2024/11/12/ECMWF-IFS/">
+<meta property="og:image" content="https://i.imgur.com/De3YbE0.png">
 <meta property="article:published_time" content="2025-12-10T22:00:00.000Z">
-<meta property="article:modified_time" content="2025-12-11T04:06:01.482Z">
+<meta property="article:modified_time" content="2025-12-11T07:03:11.866Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="ECMWF">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
+<meta property="article:tag" content="PanguWeather">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://waipangsze.github.io/2024/10/09/NWP-AI-for-Numerical-Weather-Prediction-NWP/">
+<meta name="twitter:image" content="https://i.imgur.com/De3YbE0.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -330,7 +333,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/De3YbE0.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -359,7 +362,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 words
+          929 words
         
       </span>
     
@@ -370,7 +373,7 @@
         
         
         
-          1 mins
+          8 mins
         
       </span>
     
@@ -421,8 +424,113 @@
             
               <div class="markdown-body">
                 
-                <p><img src="https://waipangsze.github.io/2024/10/09/NWP-AI-for-Numerical-Weather-Prediction-NWP/" srcset="/img/loading.gif" lazyload alt="NWP | AI for Numerical Weather Prediction (NWP)" /> <img src="https://waipangsze.github.io/2024/11/12/ECMWF-IFS/" srcset="/img/loading.gif" lazyload alt="NWP | ECMWF | IFS | Open data" /></p>
+                <ul>
+<li><a href="https://waipangsze.github.io/2024/10/09/NWP-AI-for-Numerical-Weather-Prediction-NWP/"><strong>NWP | AI for Numerical Weather Prediction (NWP)</strong></a></li>
+<li><a href="https://waipangsze.github.io/2024/11/12/ECMWF-IFS/">NWP | ECMWF | IFS | Open data</a></li>
+</ul>
 <hr />
+<h1 id="introduction">Introduction</h1>
+<p>As the field of Numerical Weather Prediction (NWP) rapidly evolves, the integration of AI-driven forecasting models like ECMWF's Pangu-Weather offers incredible speed and efficiency. This post documents a technical workflow where I used the Pangu-Weather model to generate a 10-day forecast and encountered a critical issue when attempting to initialize the Weather Research and Forecasting (WRF) model: <strong>the absence of crucial soil temperature and soil moisture variables</strong> in the Pangu-Weather GRIB output.</p>
+<p>This article outlines the steps taken, the problem encountered, and the solution involving the use of auxiliary data from the ECMWF's operational Integrated Forecasting System (IFS).</p>
+<h1 id="literature-review">Literature review</h1>
+<h2 id="ai-driven-wrf-2025">AI-Driven WRF (2025)</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41612-025-00926-z.pdf">Xu, H., Zhao, Y., Dajun, Z., Duan, Y., &amp; Xu, X. (2025). Exploring the typhoon intensity forecasting through integrating AI weather forecasting with regional numerical weather model. npj Climate and Atmospheric Science, 8(1), 38.</a>
+<ul>
+<li>we propose an attractive approach by initiating regional Weather Research and Forecasting (WRF) model with Pangu-weather, a state-of-the-art AI weather forecasting system (AI-Driven WRF), whose forecasting power can be further augmented by the implementation of dynamic vortex initialization.</li>
+<li><img src="https://i.imgur.com/1MtDXOA.png" srcset="/img/loading.gif" lazyload /></li>
+</ul></li>
+</ul>
+<hr />
+<h1 id="the-nwp-workflow-ai-model-to-wrf-input">The NWP Workflow: AI Model to WRF Input</h1>
+<p>The process involves several standard steps in an NWP setup, with the AI model replacing the initial global model forecast:</p>
+<h2 id="ai-forecast-generation-ecmwf-pangu-weather">1. AI Forecast Generation (ECMWF Pangu-Weather)</h2>
+<p>I utilized the ECMWF implementation of the Pangu-Weather AI model to produce a 10-day forecast.</p>
+<ul>
+<li><strong>Model Used:</strong> <code>ai-models</code> (specifically utilizing the <code>pangu_weather_6.onnx</code> and <code>pangu_weather_24.onnx</code> models for 6-hourly and 24-hourly steps).</li>
+<li><strong>Time Interval:</strong> A full 10-day forecast with output at 6-hour intervals.</li>
+<li><p><strong>Output File:</strong> A single large GRIB file named <code>panguweather.grib</code>.</p></li>
+<li><p><a href="https://waipangsze.github.io/2024/10/09/NWP-AI-for-Numerical-Weather-Prediction-NWP/#practice-2025-12-09" class="uri">https://waipangsze.github.io/2024/10/09/NWP-AI-for-Numerical-Weather-Prediction-NWP/#practice-2025-12-09</a></p></li>
+</ul>
+<blockquote>
+<p><strong>Key takeaway:</strong> The Pangu-Weather model is trained primarily to forecast atmospheric variables like geopotential, wind components, temperature, and specific humidity. It does not natively output the necessary land surface variables (soil temperature and soil moisture) required for the WRF model's <code>ungrib</code> and <code>metgrid</code> steps.</p>
+</blockquote>
+<h2 id="preparing-grib-files-for-wrf">2. Preparing GRIB Files for WRF</h2>
+<p>The single 10-day GRIB file needed to be processed for the WRF Preprocessing System (WPS).</p>
+<ul>
+<li><p><strong>Step 2a: Splitting the GRIB file</strong> The monolithic <code>panguweather.grib</code> file, containing all timesteps, was split into individual GRIB2 files, one for each 6-hour forecast time. This is often necessary for robust processing by the WPS utilities.</p>
+<ul>
+<li><p>Method 1: Using CDO (Climate Data Operators)</p>
+<ul>
+<li><p>CDO is the simplest command-line solution and is often pre-installed or easily available in scientific computing environments.</p></li>
+<li><p><strong>CDO Command: <code>splitsel</code></strong></p></li>
+<li><p>The <code>splitsel,1</code> operator is designed to split a file into one output file per timestep (or more accurately, one file per selection/record). Since IFS GRIB files often have multiple fields (parameters, levels) per timestep, this command works by splitting based on the internal record count.</p></li>
+</ul>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Syntax: cdo -splitsel,N &lt;input_file&gt; &lt;output_prefix&gt;</span><br><span class="hljs-comment"># N=1 means split after every single record/timestep.</span><br><br>cdo -splitsel,1 input_ifs.grib2 output_timestep_<br></code></pre></td></tr></table></figure></p>
+<ul>
+<li><strong>Output Files:</strong> This will generate files named sequentially, like <code>output_timestep_000001.grib2</code>, <code>output_timestep_000002.grib2</code>, etc.</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Step 2b: The <code>ungrib</code> Step</strong> The <code>ungrib.exe</code> utility reads the meteorological data from the GRIB files and extracts/interpolates them onto a model-ready intermediate file format (e.g., <code>AI:YYYY-MM-DD_HH</code>).</p>
+<ul>
+<li><strong>Action:</strong> Ran <code>ungrib.exe</code> on the individual Pangu-Weather GRIB files.</li>
+<li><strong>Result:</strong> <code>ungrib</code> processed the atmospheric variables successfully.</li>
+</ul></li>
+<li><p><strong>Step 2c: The <code>metgrid</code> Step</strong> The <code>metgrid.exe</code> utility takes the intermediate files and horizontally interpolates the data onto the user-defined WRF grid domains.</p>
+<ul>
+<li><strong>Action:</strong> Ran <code>metgrid.exe</code>.</li>
+<li><strong>Result:</strong> Successful, but the resulting <code>met_em.*</code> files were deficient.</li>
+</ul></li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>ncdump -h met_em.d01.2025-12-08_00\:00\:00.nc
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br></pre></td><td class="code"><pre><code class="hljs log">netcdf met_em.d01.2025-12-08_00\:00\:00 &#123;<br>dimensions:<br>	Time = UNLIMITED ; // (1 currently)<br>	DateStrLen = 19 ;<br>	west_east = 151 ;<br>	south_north = 117 ;<br>	num_metgrid_levels = 14 ;<br>	south_north_stag = 118 ;<br>	west_east_stag = 152 ;<br>	z-dimension0003 = 3 ;<br>	z-dimension0132 = 132 ;<br>	z-dimension0012 = 12 ;<br>	z-dimension0016 = 16 ;<br>	z-dimension0020 = 20 ;<br>variables:<br>	char Times(Time, DateStrLen) ;<br>	float PRES(Time, num_metgrid_levels, south_north, west_east) ;<br>	float VV(Time, num_metgrid_levels, south_north_stag, west_east) ;<br>	float UU(Time, num_metgrid_levels, south_north, west_east_stag) ;<br>	float TT(Time, num_metgrid_levels, south_north, west_east) ;<br>	float PMSL(Time, south_north, west_east) ;<br>	float OL4SS(Time, south_north, west_east) ;<br>	float OL3SS(Time, south_north, west_east) ;<br>	float OL2SS(Time, south_north, west_east) ;<br>	float OL1SS(Time, south_north, west_east) ;<br>	float OA4SS(Time, south_north, west_east) ;<br>	float OA3SS(Time, south_north, west_east) ;<br>	float OA2SS(Time, south_north, west_east) ;<br>	float OA1SS(Time, south_north, west_east) ;<br>	float VARSS(Time, south_north, west_east) ;<br>	float CONSS(Time, south_north, west_east) ;<br>	float OL4LS(Time, south_north, west_east) ;<br>	float OL3LS(Time, south_north, west_east) ;<br>	float OL2LS(Time, south_north, west_east) ;<br>	float OL1LS(Time, south_north, west_east) ;<br>	float OA4LS(Time, south_north, west_east) ;<br>	float OA3LS(Time, south_north, west_east) ;<br>	float OA2LS(Time, south_north, west_east) ;<br>	float OA1LS(Time, south_north, west_east) ;<br>	float VARLS(Time, south_north, west_east) ;<br>	float CONLS(Time, south_north, west_east) ;<br>	float IRRIGATION(Time, south_north, west_east) ;<br>	float SANDFRAC(Time, south_north, west_east) ;<br>	float CLAYFRAC(Time, south_north, west_east) ;<br>	float EROD(Time, z-dimension0003, south_north, west_east) ;<br>	float CANFRA(Time, south_north, west_east) ;<br>	float IMPERV(Time, south_north, west_east) ;<br>	float FRC_URB2D(Time, south_north, west_east) ;<br>	float URB_PARAM(Time, z-dimension0132, south_north, west_east) ;<br>	float LAKE_DEPTH(Time, south_north, west_east) ;<br>	float VAR_SSO(Time, south_north, west_east) ;<br>	float OL4(Time, south_north, west_east) ;<br>	float OL3(Time, south_north, west_east) ;<br>	float OL2(Time, south_north, west_east) ;<br>	float OL1(Time, south_north, west_east) ;<br>	float OA4(Time, south_north, west_east) ;<br>	float OA3(Time, south_north, west_east) ;<br>	float OA2(Time, south_north, west_east) ;<br>	float OA1(Time, south_north, west_east) ;<br>	float VAR(Time, south_north, west_east) ;<br>	float CON(Time, south_north, west_east) ;<br>	float SNOALB(Time, south_north, west_east) ;<br>	float LAI12M(Time, z-dimension0012, south_north, west_east) ;<br>	float GREENFRAC(Time, z-dimension0012, south_north, west_east) ;<br>	float ALBEDO12M(Time, z-dimension0012, south_north, west_east) ;<br>	float SCB_DOM(Time, south_north, west_east) ;<br>	float SOILCBOT(Time, z-dimension0016, south_north, west_east) ;<br>	float SCT_DOM(Time, south_north, west_east) ;<br>	float SOILCTOP(Time, z-dimension0016, south_north, west_east) ;<br>	float SOILTEMP(Time, south_north, west_east) ;<br>	float HGT_M(Time, south_north, west_east) ;<br>	float LU_INDEX(Time, south_north, west_east) ;<br>	float LANDUSEF(Time, z-dimension0020, south_north, west_east) ;<br>	float COSALPHA_V(Time, south_north_stag, west_east) ;<br>	float SINALPHA_V(Time, south_north_stag, west_east) ;<br>	float COSALPHA_U(Time, south_north, west_east_stag) ;<br>	float SINALPHA_U(Time, south_north, west_east_stag) ;<br>	float XLONG_C(Time, south_north_stag, west_east_stag) ;<br>	float XLAT_C(Time, south_north_stag, west_east_stag) ;<br>	float LANDMASK(Time, south_north, west_east) ;<br>	float COSALPHA(Time, south_north, west_east) ;<br>	float SINALPHA(Time, south_north, west_east) ;<br>	float F(Time, south_north, west_east) ;<br>	float E(Time, south_north, west_east) ;<br>	float MAPFAC_UY(Time, south_north, west_east_stag) ;<br>	float MAPFAC_VY(Time, south_north_stag, west_east) ;<br>	float MAPFAC_MY(Time, south_north, west_east) ;<br>	float MAPFAC_UX(Time, south_north, west_east_stag) ;<br>	float MAPFAC_VX(Time, south_north_stag, west_east) ;<br>	float MAPFAC_MX(Time, south_north, west_east) ;<br>	float MAPFAC_U(Time, south_north, west_east_stag) ;<br>	float MAPFAC_V(Time, south_north_stag, west_east) ;<br>	float MAPFAC_M(Time, south_north, west_east) ;<br>	float CLONG(Time, south_north, west_east) ;<br>	float CLAT(Time, south_north, west_east) ;<br>	float XLONG_U(Time, south_north, west_east_stag) ;<br>	float XLAT_U(Time, south_north, west_east_stag) ;<br>	float XLONG_V(Time, south_north_stag, west_east) ;<br>	float XLAT_V(Time, south_north_stag, west_east) ;<br>	float XLONG_M(Time, south_north, west_east) ;<br>	float XLAT_M(Time, south_north, west_east) ;<br>// global attributes:<br>		:TITLE = &quot;OUTPUT FROM METGRID V4.6.0&quot; ;<br>		:SIMULATION_START_DATE = &quot;2025-12-08_00:00:00&quot; ;<br>		:WEST-EAST_GRID_DIMENSION = 152 ;<br>		:SOUTH-NORTH_GRID_DIMENSION = 118 ;<br>		:BOTTOM-TOP_GRID_DIMENSION = 14 ;<br>		:WEST-EAST_PATCH_START_UNSTAG = 1 ;<br>		:WEST-EAST_PATCH_END_UNSTAG = 151 ;<br>		:WEST-EAST_PATCH_START_STAG = 1 ;<br>		:WEST-EAST_PATCH_END_STAG = 152 ;<br>		:SOUTH-NORTH_PATCH_START_UNSTAG = 1 ;<br>		:SOUTH-NORTH_PATCH_END_UNSTAG = 117 ;<br>		:SOUTH-NORTH_PATCH_START_STAG = 1 ;<br>		:SOUTH-NORTH_PATCH_END_STAG = 118 ;<br>		:GRIDTYPE = &quot;C&quot; ;<br>		:DX = 54000.f ;<br>		:DY = 54000.f ;<br>		:DYN_OPT = 2 ;<br>		:CEN_LAT = 33.86901f ;<br>		:CEN_LON = 101.666f ;<br>		:TRUELAT1 = 33.87f ;<br>		:TRUELAT2 = 33.87f ;<br>		:MOAD_CEN_LAT = 33.86901f ;<br>		:STAND_LON = 102.186f ;<br>		:POLE_LAT = 90.f ;<br>		:POLE_LON = 0.f ;<br>		:corner_lats = 1.56295f, 50.91934f, 51.36064f, 1.790321f, 1.498215f, 50.79367f, 51.2374f, 1.72683f, 1.36425f, 51.11355f, 51.55564f, 1.590767f, 1.299759f, 50.98765f, 51.43218f, 1.527496f ;<br>		:corner_lons = 69.9118f, 43.32767f, 159.9401f, 133.7513f, 69.71295f, 43.01984f, 160.2521f, 133.951f, 69.97626f, 43.1283f, 160.1375f, 133.688f, 69.77777f, 42.81989f, 160.4501f, 133.8874f ;<br>		:MAP_PROJ = 1 ;<br>		:MMINLU = &quot;MODIFIED_IGBP_MODIS_NOAH&quot; ;<br>		:NUM_LAND_CAT = 20 ;<br>		:ISWATER = 17 ;<br>		:ISLAKE = -1 ;<br>		:ISICE = 15 ;<br>		:ISURBAN = 13 ;<br>		:ISOILWATER = 14 ;<br>		:grid_id = 1 ;<br>		:parent_id = 1 ;<br>		:i_parent_start = 1 ;<br>		:j_parent_start = 1 ;<br>		:i_parent_end = 152 ;<br>		:j_parent_end = 118 ;<br>		:parent_grid_ratio = 1 ;<br>		:sr_x = 1 ;<br>		:sr_y = 1 ;<br>		:NUM_METGRID_SOIL_LEVELS = 0 ;<br>		:FLAG_METGRID = 1 ;<br>		:FLAG_EXCLUDED_MIDDLE = 0 ;<br>		:FLAG_SLP = 1 ;<br>		:FLAG_MF_XY = 1 ;<br>		:FLAG_LAI12M = 1 ;<br>		:FLAG_VAR_SSO = 1 ;<br>		:FLAG_LAKE_DEPTH = 1 ;<br>		:FLAG_URB_PARAM = 1 ;<br>		:FLAG_FRC_URB2D = 1 ;<br>		:FLAG_IMPERV = 1 ;<br>		:FLAG_CANFRA = 1 ;<br>		:FLAG_EROD = 1 ;<br>		:FLAG_CLAYFRAC = 1 ;<br>		:FLAG_SANDFRAC = 1 ;<br>&#125;<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<hr />
+<h2 id="the-critical-problem-missing-soil-variables">The Critical Problem: Missing Soil Variables</h2>
+<p>Upon inspecting the <code>met_em.*</code> files generated by <code>metgrid</code>, a crucial issue was identified (often logged as an error or warning during <code>metgrid</code>, or discovered later during the <code>real</code> step):</p>
+<p><strong>The <code>met_em</code> files contained only atmospheric variables (geopotential height, temperature, wind, pressure, specific humidity, ...) but were completely missing land surface variables, specifically:</strong></p>
+<ul>
+<li><strong>Soil Temperature (ST000010, etc.)</strong></li>
+<li><strong>Soil Moisture (SM000010, etc.)</strong></li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/DMNgLdw.png" srcset="/img/loading.gif" lazyload alt="Left: IFS met_em. Right: AI met_em" /><figcaption>Left: IFS met_em. Right: AI met_em</figcaption>
+</figure>
+<p>The WRF model requires these variables to correctly initialize the land surface physics (Land Surface Model, LSM) and maintain a realistic energy and water balance at the lower boundary. Initializing WRF without them will lead to incorrect surface fluxes, potentially causing model "blow-up" or severe biases in near-surface forecasts.</p>
+<hr />
+<h2 id="the-solution-auxiliary-data-sourcing">The Solution: Auxiliary Data Sourcing</h2>
+<p>The fix requires obtaining the missing soil variables from a reliable source and merging them into the initialization data.</p>
+<h3 id="strategy-using-ecmwf-ifs-operational-data">Strategy: Using ECMWF-IFS Operational Data</h3>
+<p>Since <code>Pangu-Weather</code> is a re-forecast product based on ECMWF training data (<strong>ERA5</strong>), the logical step is to use the <strong>ECMWF's Integrated Forecasting System (IFS)</strong> operational analysis or short-range forecast for the same initialization time.</p>
+<p>The solution steps are:</p>
+<ol type="1">
+<li><strong>Download Auxiliary Data:</strong> Obtain the required soil variables (Soil Temperature and Volumetric Soil Water/Moisture) from the ECMWF's high-resolution operational model (HRES) or reanalysis (ERA5) for the forecast start time.
+<ul>
+<li><strong>Variables:</strong> Typically required at four soil levels.</li>
+</ul></li>
+<li><strong>Separate GRIB Processing:</strong> Process this auxiliary IFS GRIB file <em>separately</em> through <code>ungrib</code> and <code>metgrid</code>.
+<ul>
+<li>The IFS data will be processed by WPS to create a set of <code>met_em.*</code> files containing <strong>only the soil variables</strong>.</li>
+</ul></li>
+<li><strong>Data Merging (Copy/Overwrite):</strong> Use a utility to copy/merge the soil variables from the IFS-derived <code>met_em.*</code> files into the Pangu-Weather derived <code>met_em.*</code> files.</li>
+</ol>
+<blockquote>
+<p><strong>Conceptual Code Snippet (Using NetCDF tools like NCO):</strong></p>
+<ol type="1">
+<li>Generate <code>met_em_pangu.*</code> (Pangu-Weather, missing soil)</li>
+<li>Generate <code>met_em_ifs_soil.*</code> (IFS, only soil variables)</li>
+<li>Merge: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Example using NCO/NetCDF command to copy variable &#x27;TSLB&#x27; (Soil Temp)</span><br>ncks -A met_em_ifs_soil.d01.2025-12-11_00:00:00 met_em_pangu.d01.2025-12-11_00:00:00 -v TSLB<br></code></pre></td></tr></table></figure></li>
+<li><strong>Verification:</strong> Verify the final, merged <code>met_em.*</code> files contain all necessary atmospheric (from Pangu) and land surface (from IFS) fields.</li>
+</ol>
+</blockquote>
 
                 
               </div>
@@ -462,9 +570,13 @@
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
+        <a href="/tags/ECMWF/" class="print-no-link">#ECMWF</a>
+      
         <a href="/tags/AI/" class="print-no-link">#AI</a>
       
         <a href="/tags/ML/" class="print-no-link">#ML</a>
+      
+        <a href="/tags/PanguWeather/" class="print-no-link">#PanguWeather</a>
       
     </div>
   
