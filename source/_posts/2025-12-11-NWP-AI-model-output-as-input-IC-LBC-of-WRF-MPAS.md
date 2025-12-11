@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/De3YbE0.png
+banner_img: https://i.imgur.com/De3YbE0.png
 ---
 
 - [**NWP | AI for Numerical Weather Prediction (NWP)**](https://waipangsze.github.io/2024/10/09/NWP-AI-for-Numerical-Weather-Prediction-NWP/)
