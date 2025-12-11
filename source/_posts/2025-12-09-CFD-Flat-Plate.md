@@ -58,7 +58,11 @@ Focusing on these aspects will give you a solid understanding of how to set up, 
 
 # **Blasius boundary layer**
 
-In physics and fluid mechanics, a Blasius boundary layer (named after Paul Richard Heinrich Blasius) describes the steady two-dimensional laminar boundary layer that forms on a semi-infinite plate which is held parallel to a constant unidirectional flow. Falkner and Skan later generalized Blasius' solution to wedge flow (Falkner–Skan boundary layer), i.e. flows in which the plate is not parallel to the flow.
+In physics and fluid mechanics, a **Blasius boundary layer** (named after Paul Richard Heinrich Blasius) describes the steady two-dimensional laminar boundary layer that forms on a semi-infinite plate which is held parallel to a constant unidirectional flow. Falkner and Skan later generalized Blasius' solution to wedge flow (Falkner–Skan boundary layer), i.e. flows in which the plate is not parallel to the flow.
+
+- <https://en.wikipedia.org/wiki/Blasius_boundary_layer>
+
+![](https://i.imgur.com/A7IOfk3.png){width=400}
 
 The **Blasius solution** is a classic and foundational piece of fluid dynamics, essential for understanding laminar boundary layers. It's considered the **exact** similarity solution for the steady, two-dimensional, incompressible laminar flow over a semi-infinite flat plate with zero pressure gradient.
 
