@@ -19,32 +19,29 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="WRF | MPAS | MPI | halo&#x2F;ghost cell  Nesting in WRF, Kelly Werner, NCAR&#x2F;MMMJanuary 2021  https:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;wrf&#x2F;users&#x2F;tutorial&#x2F;presentation_pdfs&#x2F;202101&#x2F;werner_nesting.pdf   Difference between id">
+    <meta name="description" content="Question: When should we exclude the turbulence model? In Computational Fluid Dynamics (CFD), the decision to omit a turbulence model is usually driven by the physics of the flow or the resolution of">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WRF | Computation, Decomposition, Order of operations">
-<meta property="og:url" content="https://waipangsze.github.io/2025/07/28/WRF-Computation-Decomposition-Order-of-operations/index.html">
+<meta property="og:title" content="CFD | Turbulence model activation (use or not use)">
+<meta property="og:url" content="https://waipangsze.github.io/2025/12/19/CFD-Turbulence-model-activation/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="WRF | MPAS | MPI | halo&#x2F;ghost cell  Nesting in WRF, Kelly Werner, NCAR&#x2F;MMMJanuary 2021  https:&#x2F;&#x2F;www2.mmm.ucar.edu&#x2F;wrf&#x2F;users&#x2F;tutorial&#x2F;presentation_pdfs&#x2F;202101&#x2F;werner_nesting.pdf   Difference between id">
+<meta property="og:description" content="Question: When should we exclude the turbulence model? In Computational Fluid Dynamics (CFD), the decision to omit a turbulence model is usually driven by the physics of the flow or the resolution of">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.imgur.com/XPg6bGj.png">
-<meta property="article:published_time" content="2025-07-27T23:56:00.000Z">
-<meta property="article:modified_time" content="2025-10-27T06:03:55.823Z">
+<meta property="og:image" content="https://i.imgur.com/h5zLAcM.png">
+<meta property="article:published_time" content="2025-12-18T22:07:00.000Z">
+<meta property="article:modified_time" content="2025-12-19T06:23:27.483Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="HPC">
-<meta property="article:tag" content="NWP">
-<meta property="article:tag" content="domain">
-<meta property="article:tag" content="MPI">
-<meta property="article:tag" content="patch">
-<meta property="article:tag" content="tile">
+<meta property="article:tag" content="OpenFOAM">
+<meta property="article:tag" content="turbulence model">
+<meta property="article:tag" content="SST k-omega">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://i.imgur.com/XPg6bGj.png">
+<meta name="twitter:image" content="https://i.imgur.com/h5zLAcM.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>WRF | Computation, Decomposition, Order of operations - wpsze</title>
+  <title>CFD | Turbulence model activation (use or not use) - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -333,13 +330,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('https://i.imgur.com/XPg6bGj.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/h5zLAcM.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="WRF | Computation, Decomposition, Order of operations"></span>
+            <span id="subtitle" data-typed-text="CFD | Turbulence model activation (use or not use)"></span>
           
         </div>
 
@@ -350,8 +347,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-07-28 07:56" pubdate>
-          July 28, 2025 am
+        <time datetime="2025-12-19 06:07" pubdate>
+          December 19, 2025 am
         </time>
       </span>
     
@@ -362,7 +359,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          285 words
+          280 words
         
       </span>
     
@@ -419,95 +416,137 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">WRF | Computation, Decomposition, Order of operations</h1>
+            <h1 id="seo-header">CFD | Turbulence model activation (use or not use)</h1>
             
             
               <div class="markdown-body">
                 
-                <p><a href="https://waipangsze.github.io/2024/12/07/wrf-mpas-MPI-halocell-ghostcell/"><strong>WRF | MPAS | MPI | halo/ghost cell</strong></a></p>
+                <h1 id="question-when-should-we-exclude-the-turbulence-model">Question: When should we exclude the turbulence model?</h1>
+<p>In Computational Fluid Dynamics (CFD), the decision to <strong>omit a turbulence model</strong> is usually driven by the <strong>physics of the flow</strong> or the <strong>resolution of the simulation</strong>. Using a turbulence model when it isn't needed can introduce "artificial" viscosity that dampens real physical features or leads to incorrect results.</p>
+<h1 id="you-should-not-use-a-turbulence-model-in-the-following-scenarios">You should not use a turbulence model in the following scenarios</h1>
+<h2 id="the-flow-is-truly-laminar">1. The Flow is Truly Laminar</h2>
+<p>If the <strong>Reynolds Number</strong> of your flow is below the <strong>critical threshold for transition</strong>, the flow is laminar. In this regime, viscous forces are strong enough to dampen any chaotic fluctuations.</p>
+<ul>
+<li><strong>Pipe Flow:</strong></li>
+<li><strong>External Flow (Flat Plate):</strong></li>
+<li><strong>Typical Applications:</strong> Microfluidics, lubrication systems, high-viscosity fluids (like honey or heavy oils), and very slow-moving gases.</li>
+</ul>
+<p>You should not use a turbulence model in CFD when the flow is genuinely laminar <strong>(low Reynolds number, typically Re &lt; 2300 in pipes, or low speeds in general)</strong>, when you need extremely high resolution of large turbulent structures (use LES/DES instead of RANS), or when computational cost is a primary constraint and simpler laminar models suffice, but be very careful, <strong>as most real-world flows are turbulent</strong> and turbulence models are often necessary for accuracy, <strong>especially near walls (using SST with fine mesh is common)</strong>.</p>
+<h2 id="you-are-performing-dns-direct-numerical-simulation">2. You are Performing DNS (Direct Numerical Simulation)</h2>
+<p>If you are solving the full <strong>Navier-Stokes equations</strong> and your mesh is fine enough to resolve the smallest possible scales of motion (the <strong>Kolmogorov scales</strong>), you do not use a turbulence model.</p>
+<ul>
+<li><strong>Why:</strong> A turbulence model (like ) is a "shortcut" to approximate the effects of small eddies. In DNS, you are calculating those eddies directly. Adding a model on top of DNS would be "double-counting" the physics and would ruin the accuracy.</li>
+</ul>
+<h2 id="unsteady-laminar-phenomena-e.g.-vortex-shedding">3. Unsteady Laminar Phenomena (e.g., Vortex Shedding)</h2>
+<figure>
+<img src="https://i.imgur.com/7KaSW3W.png" srcset="/img/loading.gif" lazyload alt="Animation representing the two-dimensional flow patterns behind a rounded obstacle, known as a Von Kármán vortex street." /><figcaption>Animation representing the two-dimensional flow patterns behind a rounded obstacle, known as a Von Kármán vortex street.</figcaption>
+</figure>
+<p>Sometimes a flow is <strong>unsteady</strong> but still technically laminar. A classic example is <strong>Von Kármán vortex shedding</strong> at low Reynolds numbers (e.g., for a cylinder).</p>
+<ul>
+<li><strong>Why:</strong> If you use a steady-state RANS (Reynolds-Averaged Navier-Stokes) turbulence model here, the model might "smooth out" the vortices into a single steady wake, failing to capture the periodic oscillation that actually exists.</li>
+</ul>
+<h2 id="creeping-flow-stokes-flow">4. Creeping Flow (Stokes Flow)</h2>
+<figure>
+<img src="https://i.imgur.com/WtPH3qd.png" srcset="/img/loading.gif" lazyload alt="Flow visualization of a form of Stokes flow over a circular cylinder sandwiched between glass plates. The dye marks streamlines in water flowing at 1 mm/second. (Photograph by D. H. Peregrine.)" /><figcaption>Flow visualization of a form of Stokes flow over a circular cylinder sandwiched between glass plates. The dye marks streamlines in water flowing at 1 mm/second. (Photograph by D. H. Peregrine.)</figcaption>
+</figure>
+<p>In cases where the Reynolds number is much less than 1, inertial forces are negligible compared to viscous forces.</p>
+<p>Stokes flow (named after George Gabriel Stokes), also named creeping flow or creeping motion, is a type of fluid flow where advective inertial forces are small compared with viscous forces. The Reynolds number is low, i.e. <span class="math display">\[ Re &lt;&lt; 1\]</span>. This is a typical situation in flows where the fluid velocities are very slow, the viscosities are very large, or the length-scales of the flow are very small. Creeping flow was first studied to understand lubrication. In nature, this type of flow occurs in the swimming of microorganisms and sperm. In technology, it occurs in paint, MEMS devices, and in the flow of viscous polymers generally.</p>
+<ul>
+<li><strong>Why:</strong> Turbulence models are designed to handle the complex interaction between inertia and viscosity. In creeping flow, there is no turbulence to model; the flow is entirely dominated by diffusion.</li>
+</ul>
+<h2 id="transition-zones-use-caution">5. Transition Zones (Use Caution)</h2>
+<p>If your flow starts as laminar and only becomes turbulent halfway through the domain, a standard "fully turbulent" model will be wrong at the start.</p>
+<ul>
+<li><strong>Instead:</strong> You should either use a <strong>Laminar</strong> setting for the whole domain (if the turbulent part is tiny) or use a specialized <strong>Transition Model</strong> (like ). Avoid standard or if the laminar portion is the primary area of interest.</li>
+</ul>
+<h2 id="summary-table-when-to-skip-the-model">Summary Table: When to Skip the Model</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Scenario</th>
+<th>Flow Regime</th>
+<th>Recommended Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Microfluidics</strong></td>
+<td>Low</td>
+<td>Laminar Solver</td>
+</tr>
+<tr class="even">
+<td><strong>High-Fidelity Research</strong></td>
+<td>Any</td>
+<td>DNS (No Model)</td>
+</tr>
+<tr class="odd">
+<td><strong>Steady slow pipe flow</strong></td>
+<td></td>
+<td>Laminar Solver</td>
+</tr>
+<tr class="even">
+<td><strong>Thin film lubrication</strong></td>
+<td>Very Low</td>
+<td>Creeping Flow / Laminar</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> If you are unsure, always calculate your Reynolds number first. If is in the "Transitional" range, assuming turbulence is often the "safer" engineering choice for drag/heat transfer, but it may overpredict losses.</p>
+</blockquote>
+<h1 id="sst-k-omega-k-omega-model-and-no-turbulence-model-laminar"><strong>SST k-omega (<span class="math inline">\(k-\omega\)</span>)</strong> model and <strong>no turbulence model</strong> (Laminar)</h1>
+<p>Choosing between the <strong>SST k-omega (<span class="math inline">\(k-\omega\)</span>)</strong> model and <strong>no turbulence model</strong> (Laminar) depends entirely on whether your flow physics are dominated by chaotic fluctuations or smooth, orderly layers.</p>
+<p>The "better" option is the one that matches the <strong>Reynolds Number (Re)</strong> and the physical behavior of your specific case.</p>
 <hr />
-<h1 id="nesting-in-wrf-kelly-werner-ncarmmmjanuary-2021">Nesting in WRF, Kelly Werner, NCAR/MMMJanuary 2021</h1>
+<h2 id="quick-decision-guide">Quick Decision Guide</h2>
+<table>
+
+<thead>
+<tr class="header">
+<th>Use <strong>Laminar</strong> (No Model) if...</th>
+<th>Use <strong>SST k-omega (<span class="math inline">\(k-\omega\)</span>)</strong> if...</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Low :</strong> (Internal) or (External).</td>
+<td><strong>High :</strong> Flow is fast, fluid is thin, or geometry is large.</td>
+</tr>
+<tr class="even">
+<td><strong>Simple Physics:</strong> Microfluidics, honey/oils, or very slow air.</td>
+<td><strong>Separation:</strong> You expect flow to "detach" from a surface (e.g., an airfoil at an angle).</td>
+</tr>
+<tr class="odd">
+<td><strong>Direct Numerical Simulation (DNS):</strong> You have a massive supercomputer and an extremely fine mesh.</td>
+<td><strong>Engineering Accuracy:</strong> You need a reliable prediction of lift, drag, or pressure drop in industrial flows.</td>
+</tr>
+<tr class="even">
+<td><strong>Stability:</strong> You want to avoid "artificial" damping of small, real laminar features (like a vortex street).</td>
+<td><strong>Transition:</strong> You aren't sure if the flow is turbulent, but want a model that can handle the "boundary" better than .</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="why-sst-k-omega-is-the-safe-choice">Why SST k-omega is the "Safe" Choice</h2>
+<p>If you are unsure, <strong>SST k-omega</strong> (<span class="math inline">\(k-\omega\)</span>) is generally considered the "workhorse" of modern CFD.</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_nesting.pdf" class="uri">https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/202101/werner_nesting.pdf</a></li>
+<li><strong>The Blending Advantage:</strong> It uses the accurate formulation near walls (good for boundary layers) and switches to in the free stream (good for stability).</li>
+<li><strong>Self-Correction:</strong> In many CFD codes, if the flow is truly laminar, the SST model will naturally predict near-zero turbulent kinetic energy (<span class="math inline">\(k \approx 0\)</span>). This effectively "turns off" the turbulence model, making it behave like a laminar solver.</li>
 </ul>
-<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/X2j8OxF.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/QdUwbiD.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/ThrmGx9.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/gkATfLh.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/jpZIqrR.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/XpLTjqz.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/XPg6bGj.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/qt0IAg7.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/IVCWn3A.png" srcset="/img/loading.gif" lazyload /></div></div></div>
-<h1 id="difference-between-ids-ims-ipsits">Difference between ids, ims, ips,its</h1>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/difference-between-ids-ims-ips-its.8435/">Difference between ids, ims, ips,its | Sep 15, 2019</a>
-<ul>
-<li>"ids,, ide, jds, jde" etc. are "domain" sized indexes along the i, j, k directions.</li>
-<li>"ims, ime, jms, jme" are "memory" dimensions for arrays.</li>
-<li>"ips, ipe, jps, jpe" are computational extent for loops inside most of the WRF physics.</li>
-</ul></li>
-</ul>
-<p>A more detailed description can be found in the website:</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/" class="uri">https://www2.mmm.ucar.edu/wrf/users/tutorial/</a></li>
-</ul>
-<h1 id="tile-strategy-is-not-specified.">Tile Strategy is not specified.</h1>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/tile-strategy-is-not-specified.5523/">Tile Strategy is not specified. Jun 20, 2019</a></li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs log">So for your domain set-up, you have<br><br>e_we = 637<br>e_sn = 534<br><br>WRF domains are 1-based, which means that your domain is actually 533 x 636. <br>Since you have 12 processors, this divides your domain into a 4x3 grid with <br>tiles of size 158x177 (some rounding is done, and adjustments are made when <br>the number is not perfectly divisible). So this particular print-out looks <br>like it&#x27;s for the 2nd tile over from the start of i (SW corner), and the <br>first tile in the j-direction. Therefore this line:<br><br>Code:<br>WRF TILE 1 IS 160 IE 318 JS 1 JE 178<br><br>actually means:<br>for this particular tile,<br>i-start = 160<br>i-end = 318<br>j-start = 1<br>j-end = 178<br><br>Your decomposition should be:<br>i-direction<br>1-159<br>160-318<br>319-477<br>478-636<br><br>j-direction<br>1-178<br>179-356<br>357-534<br></code></pre></td></tr></table></figure>
-<ul>
-<li>You are correct. If this were an <code>OpenMP</code> build, the <code>"WRF Tile"</code> information would refer to a sub-tiling of the <code>MPI</code> rank's patch.</li>
-<li>It would be better if the following line in the model output did not appear unless we were running <code>OpenMP</code>:
-<ul>
-<li>Code:
-<ul>
-<li><code>Tile Strategy is not specified. Assuming 1D-Y</code></li>
-</ul></li>
-</ul></li>
-<li>Again, this printout should be removed from the output, but the line is currently there. <strong>Without OpenMP, it signifies nothing more than a reminder that the computational area on each MPI rank is the work that is handled by a single MPI task.</strong></li>
-<li>The next line(s) are useful for MPI and for OpenMP. If this is an OpenMP build, there will be as many lines with "WRF Tile" as there are OpenMP threads. When this is an MPI-only build, then the single line with the tile size (the information on the "WRF Tile" line) is identical to the patch size (the information a few lines up that, that is on the "ips,ipe,jps,jpe" line).</li>
-</ul>
-<h1 id="how-are-nested-domains-divided-in-distributed-memory-execution">How are nested domains divided in distributed memory execution?</h1>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/how-are-nested-domains-divided-in-distributed-memory-execution.9433/">How are nested domains divided in distributed memory execution? Aug 7, 2020</a></li>
-</ul>
-<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/dh4gKBo.png" srcset="/img/loading.gif" lazyload width="300" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/6ivOG3w.png" srcset="/img/loading.gif" lazyload width="300" /></div></div></div>
-<p>The first is a depiction of a WRF simulation with five total domains. The yellow area is domain 1, the blue box is domain 2, and the cyan boxes are domains 3, 4, 5. These are set up just to show us the order of operations.</p>
-<p>The second attachment shows the sequential procedure within the WRF model.</p>
+<h2 id="when-no-model-is-actually-better">When "No Model" is Actually Better</h2>
+<p>Using SST on a <strong>truly laminar</strong> flow can sometimes cause issues:</p>
 <ol type="1">
-<li>Domain 1 runs a single time step for 3 minutes (red arrow).</li>
-<li>Domain 2 runs a single time step for 1 minute (yellow arrow). Before domain 2 can do the second time step, all of domain 2's children need to catch up.</li>
-<li>Domain 3 runs multiple time steps to catch up to domain 2 (20 second time step).</li>
-<li>Domain 4 runs multiple time steps to catch up to domain 2.</li>
-<li>Domains 5 run multiple time steps to catch up to domain 2.</li>
-<li>Domains 3, 4, and 5 feed back to domain 2.</li>
-<li>The steps 2 - 6 are repeated until domain 2 has caught up with domain 1.</li>
-<li>Domain 2 feeds back to domain 1.</li>
-<li>Steps 1 - 8 are repeated until all domains are completed with the entire simulation.</li>
+<li><strong>False Viscosity:</strong> The model might calculate a tiny amount of "eddy viscosity" that doesn't exist. This can lead to a <strong>30% error in drag coefficients</strong> for very low-speed flows (like flow over a sphere at <span class="math inline">\(Re=10\)</span>).</li>
+<li><strong>Damping:</strong> It can accidentally "smooth out" real, unsteady laminar structures, such as the oscillating wake behind a cylinder at .</li>
+<li><strong>Computational Cost:</strong> Solving two extra equations (<span class="math inline">\(k\)</span> and <span class="math inline">\(\omega\)</span> ) takes more memory and time. If the flow is laminar, you are paying for math you don't need.</li>
 </ol>
-<p>For computational performance, generally the amount of time that the WRF model spends on a single grid column is nearly constant. If we assume that all domains are running the same physics, then the amount of computation is about the same for a single grid column, whether it be from domain 1 or domain 2. However, a nest causes the model to be expensive for two reasons.</p>
+<h1 id="references">References</h1>
 <ol type="1">
-<li>The fine grid time step is smaller (typically, the time ratio is the same as the grid distance ratio). While the amount of time is similar to do a single grid column, the fine grid has to do that computation more times to keep pace with the larger time step from the parent domain.</li>
-<li>A nested simulation has additional overhead: computing lateral boundaries at each parent time step, feedback at the end of the child time steps. And for a distributed memory machine, these also entail a good amount of communication.</li>
+<li><a target="_blank" rel="noopener" href="https://www.cfd-online.com/Forums/main/239115-turbulence-model-activation.html#:~:text=Most%20flows%20that%20are%20encountered%20in%20reality,use%20a%20turbulent%20model%20in%20most%20situations.">Turbulence model activation</a>
+<ol type="1">
+<li>Most flows that are encountered in reality are turbulent. Laminar flows are the exception not the rule. So be prepared to use a turbulent model in most situations.</li>
+</ol></li>
 </ol>
-<p>Let's use the 5-domain example that I depicted. We have a 3:1 ratio for the grid distance ratios and the time step ratios. Let us assume that the number of grid cells is identical in each of the domains (for example, all are 100x100 or all of 500x500, it does not really matter).</p>
-<p>Let us define the cost of running domain 1 as ONE unit of computation.</p>
-<p>Without overhead (boundary update, feedback, extra nesting communications), the cost of domain 2 would then THREE units of computation (the same number grid points, just doing the computations three times more due to the smaller time step).</p>
-<p>With the same arm waving, each of domains 3, 4, and 5 would cost NINE units of computation (due entirely to their smaller time step).</p>
-<p>Without any nesting overhead, one would expect this five domain run to be 31x more expensive than the single domain case (1 + 3 + 9 + 9 + 9).</p>
-<p>With nesting overhead, the costs are a bit unpredictable. We tend to see an additional factor of anywhere between 10-25%, depending on how expensive the communications interconnect is (hardware on the computer). The process of nesting is communication intensive. The more domains and levels of nests, the more the overhead.</p>
-<p>For your particular case, there are about 8% more grid cells on the fine domains than d01.</p>
-<ul>
-<li>d01 costs 1 unit of time</li>
-<li>d02 costs 1.08 * 5 units of time</li>
-<li>d03 costs 1.08 * 25 units of time</li>
-<li>d04 costs 1.08 * 125 units of time</li>
-<li>d05 costs 1.08 * 625 units of time</li>
-</ul>
-<p>Compared to the d01 only (which is our unit measure of time), the entire simulation without overhead relative to the coarse domain is ( 1 + 1.08*(5 + 25 + 125 + 625 ) ) = 843.4x the cost of d01.</p>
-<p>From this, you can see why the advice we give is to make the outer domains LARGE. Domains 1 and 2 together are not even 1% of the simulation's cost.</p>
-<p>For your timing estimates, on your current machine, just run the first two domains for a few time steps. Throw away the initial time and make sure that a radiation step is included in your timing. You should be able to get a good scaling from domains 1 and 2 compared to your entire simulation.</p>
-<p>Next, run the small d01 and d02 case on the new machine. Use the same scale factor to estimate what the five domain cost would be on the new machine.</p>
-<p>The absolute amount of computations per grid cell and the speed of the chip are not a direct way to handle the timing performance, due to the relatively low percent of peak that WRF is able to obtain, the wild variations in compiler performance, the huge impact that I/O can have on a full simulation, etc.</p>
-<p>Lastly, the default decomposition for each domain is based only on the number of MPI process and the number of grid cells in a domain. If the MPI processes are set up to decompose the domain into 8 chunks in the south-north direction, and 4 chunks in the west-east direction - that same decomposition is used for every domain.</p>
-<h1 id="choosing-an-appropriate-number-of-processors">Choosing an Appropriate Number of Processors</h1>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/choosing-an-appropriate-number-of-processors.5082/" class="uri">https://forum.mmm.ucar.edu/threads/choosing-an-appropriate-number-of-processors.5082/</a></li>
-</ul>
 
                 
               </div>
@@ -526,7 +565,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/WRF/" class="category-chain-item">WRF</a>
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
   
   
 
@@ -541,19 +580,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
-      
         <a href="/tags/HPC/" class="print-no-link">#HPC</a>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
       
-        <a href="/tags/domain/" class="print-no-link">#domain</a>
+        <a href="/tags/turbulence-model/" class="print-no-link">#turbulence model</a>
       
-        <a href="/tags/MPI/" class="print-no-link">#MPI</a>
-      
-        <a href="/tags/patch/" class="print-no-link">#patch</a>
-      
-        <a href="/tags/tile/" class="print-no-link">#tile</a>
+        <a href="/tags/SST-k-omega/" class="print-no-link">#SST k-omega</a>
       
     </div>
   
@@ -565,8 +598,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>WRF | Computation, Decomposition, Order of operations</div>
-      <div>https://waipangsze.github.io/2025/07/28/WRF-Computation-Decomposition-Order-of-operations/</div>
+      <div>CFD | Turbulence model activation (use or not use)</div>
+      <div>https://waipangsze.github.io/2025/12/19/CFD-Turbulence-model-activation/</div>
     </div>
     <div class="license-meta">
       
@@ -578,13 +611,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>July 28, 2025</div>
+          <div>December 19, 2025</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 27, 2025</div>
+          <div>December 19, 2025</div>
         </div>
       
       
@@ -615,18 +648,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/07/31/Obs-Lightning-data/" title="Obs | Lightning data (閃電位置資訊)">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Obs | Lightning data (閃電位置資訊)</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/07/23/NWP-Specific-Humidity/" title="NWP | Specific Humidity">
-                        <span class="hidden-mobile">NWP | Specific Humidity</span>
+                      <a href="/2025/12/11/NWP-AI-model-output-as-input-IC-LBC-of-WRF-MPAS/" title="NWP | AI model output as input (IC/LBC) of WRF/MPAS">
+                        <span class="hidden-mobile">NWP | AI model output as input (IC/LBC) of WRF/MPAS</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
