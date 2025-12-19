@@ -2,7 +2,7 @@
 layout: post
 title: CFD | Flat Plate
 categories: [CFD]
-tags: [OpenFOAM, HPC]
+tags: [OpenFOAM, HPC, Blasius Solution]
 author: wpsze
 date: 2025-12-09 06:08:00
 math: true
@@ -211,6 +211,10 @@ Since $u_{\tau}$ depends on the solution (the shear stress), you must **estimate
 3.  **Use `blockMesh` Grading:** Input this calculated $\Delta y_1$ into your `blockMeshDict` by setting the total number of cells ($N_y$) and the expansion ratio for the block adjacent to the wall. OpenFOAM also offers the **`nutUSpaldingWallFunction`** which is a blended function that works across most $y^+$ values (though $\mathbf{y^+} \approx 1$ or $\mathbf{y^+} > 30$ are still best practice targets).
 
 *It's crucial to run the simulation, check the resulting **`yPlus`** field using the `yPlus` function object in OpenFOAM, and refine the mesh (perform a **Grid Convergence Study**) until your $y^+$ values meet your chosen wall treatment criteria.* 
+
+# Turbulence model activation issue
+
+![CFD | Turbulence model activation](https://waipangsze.github.io/2025/12/19/CFD-Turbulence-model-activation/)
 
 # References
 
