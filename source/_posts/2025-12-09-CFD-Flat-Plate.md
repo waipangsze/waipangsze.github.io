@@ -214,7 +214,7 @@ Since $u_{\tau}$ depends on the solution (the shear stress), you must **estimate
 
 # Turbulence model activation issue
 
-![CFD | Turbulence model activation](https://waipangsze.github.io/2025/12/19/CFD-Turbulence-model-activation/)
+- [CFD | Turbulence model activation](https://waipangsze.github.io/2025/12/19/CFD-Turbulence-model-activation/)
 
 # References
 
