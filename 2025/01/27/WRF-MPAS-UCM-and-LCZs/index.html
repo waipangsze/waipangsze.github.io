@@ -28,10 +28,10 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/FqQXJNT.png">
 <meta property="article:published_time" content="2025-01-27T02:35:00.000Z">
-<meta property="article:modified_time" content="2025-10-27T06:03:55.771Z">
+<meta property="article:modified_time" content="2025-12-31T05:57:43.948Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="HPC">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="UCM">
@@ -361,7 +361,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k words
+          1.6k words
         
       </span>
     
@@ -372,7 +372,7 @@
         
         
         
-          12 mins
+          14 mins
         
       </span>
     
@@ -579,6 +579,96 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/how-is-10m-wind-speed-computed.75/" class="uri">https://forum.mmm.ucar.edu/threads/how-is-10m-wind-speed-computed.75/</a></li>
 </ul>
+<h1 id="how-the-slucm-interacts-with-and-talks-to-the-model">how the <strong>SLUCM</strong> interacts with and "talks" to the model</h1>
+<h2 id="the-surface-energy-balance-thermal-feedback">1. The Surface Energy Balance (Thermal Feedback)</h2>
+<p>The most critical feedback is the <strong>Sensible Heat Flux (<span class="math inline">\(H\)</span>)</strong>. SLUCM calculates how much heat is absorbed by urban surfaces and how much is released into the air.</p>
+<ul>
+<li><strong>Canyon Geometry:</strong> It considers the "trapping" of radiation within street canyons. During the day, walls and roads absorb shortwave radiation; at night, they release longwave radiation, much of which is re-absorbed by other walls rather than escaping to space.</li>
+<li><strong>Storage Heat:</strong> Because urban materials (concrete, asphalt) have high thermal inertia, SLUCM calculates the heat storage within the layers of roofs, walls, and roads. This heat is released slowly, often peaking after sunset, which feeds back into WRF to simulate the <strong>Urban Heat Island (UHI)</strong> effect.</li>
+<li><strong>Anthropogenic Heat:</strong> SLUCM adds a user-defined or calculated heat flux from human activities (AC units, traffic) directly into the lowest atmospheric layer of WRF.</li>
+</ul>
+<h2 id="momentum-exchange-dynamic-feedback">2. Momentum Exchange (Dynamic Feedback)</h2>
+<p>SLUCM changes how WRF perceives "drag" over a city. It calculates the <strong>Friction Velocity (<span class="math inline">\(u^*\)</span>)</strong> and the <strong>Roughness Length (<span class="math inline">\(z_0\)</span>)</strong> based on building height and density.</p>
+<ul>
+<li><strong>Wind Profiling:</strong> Within the urban canyon, SLUCM assumes an exponential wind profile.</li>
+<li><strong>Drag Force:</strong> It provides an integrated drag coefficient to WRF, which reduces the wind speed in the lowest atmospheric levels more accurately than a simple land-use constant. This affects the development of the <strong>Urban Boundary Layer (UBL)</strong> and can even trigger local convergence or divergence of air.</li>
+</ul>
+<p>In the WRF-SLUCM framework, the <strong>Momentum Exchange</strong> represents the physical "drag" that a complex 3D city exerts on the smooth atmospheric flow. While a flat surface only has skin friction, a city has <strong>form drag</strong>—the physical blocking of air by building walls.</p>
+<p>SLUCM handles this by modifying the lower boundary conditions of the WRF equations, specifically through the calculation of the <strong>Friction Velocity (<span class="math inline">\(u^*\)</span>)</strong> and the <strong>Momentum Roughness Length (<span class="math inline">\(z_{0m}\)</span>)</strong>.</p>
+<h3 id="the-aerodynamic-parameters-z_d-and-z_0m">2.1. The Aerodynamic Parameters: <span class="math inline">\(z_d\)</span> and <span class="math inline">\(z_{0m}\)</span></h3>
+<p>SLUCM uses the morphometric method (typically following <strong>Macdonald et al., 1998</strong>) to translate building geometry into aerodynamic variables. It doesn't "see" every building; instead, it uses the average building height (<span class="math inline">\(ZR\)</span>) and the frontal area index (<span class="math inline">\(\lambda_f\)</span>) to calculate:</p>
+<ul>
+<li><strong>Zero-plane Displacement Height (<span class="math inline">\(z_d\)</span>):</strong> This is the effective height at which the main momentum exchange occurs. In a dense city, the air "skims" over the rooftops, so the "ground" perceived by the atmosphere is actually elevated (often to <span class="math inline">\(z_d \approx 0.5h\)</span> to <span class="math inline">\(0.7h\)</span>).</li>
+<li><strong>Roughness Length for Momentum (<span class="math inline">\(z_{0m}\)</span>):</strong> This represents the intensity of the turbulence generated by the building shapes.</li>
+</ul>
+<h3 id="the-logarithmic-wind-profile-feedback">2.2. The Logarithmic Wind Profile Feedback</h3>
+<p>WRF’s atmospheric solver calculates wind speed at the first model level (<span class="math inline">\(z_1\)</span>). SLUCM feeds back into this by solving the modified log-law equation:</p>
+<p><span class="math display">\[u(z) = \frac{u^*}{\kappa} \ln \left( \frac{z - z_d}{z_{0m}} \right)\]</span></p>
+<ul>
+<li><span class="math inline">\(\kappa\)</span>: von Kármán constant (<span class="math inline">\(\approx 0.40\)</span>).</li>
+<li><span class="math inline">\(u^*\)</span> ** (Friction Velocity):** This is the most critical variable. It defines the <strong>Momentum Flux</strong> (<span class="math inline">\(\tau = \rho {u^*}^2\)</span>).</li>
+<li><strong>Feedback Mechanism:</strong> If the city is rougher (higher <span class="math inline">\(z_{0m}\)</span>), <span class="math inline">\(u^*\)</span> increases. In WRF, this acts as a <strong>sink term</strong> in the momentum equation, slowing down the horizontal wind speed (<span class="math inline">\(U, V\)</span>) in the lowest layers of the atmosphere.</li>
+</ul>
+<h3 id="dynamic-stability-the-richardson-number">2.3. Dynamic Stability &amp; The Richardson Number</h3>
+<p>The momentum exchange is not just about building height; it’s coupled with buoyancy. SLUCM calculates the <strong>Bulk Richardson Number (<span class="math inline">\(Ri_b\)</span>)</strong> to determine atmospheric stability.</p>
+<ul>
+<li><strong>Unstable (Day):</strong> Thermal plumes from hot asphalt increase turbulence, "enhancing" the momentum exchange and dragging more high-speed air down from aloft.</li>
+<li><strong>Stable (Night):</strong> The city remains warmer than the rural surroundings. While rural areas might have "decoupled" winds (calm at the surface), the urban canopy often remains turbulent, maintaining a higher momentum flux and higher night-time wind speeds compared to the countryside.</li>
+</ul>
+<h3 id="summary-of-the-feedback-loop">2.4. Summary of the Feedback Loop</h3>
+<ol type="1">
+<li><strong>WRF → SLUCM:</strong> WRF provides the "ambient" wind speed at the first vertical level (<span class="math inline">\(z_1\)</span>).</li>
+<li><strong>SLUCM Internal:</strong> Based on the buildings in the <code>URBPARM.TBL</code>, SLUCM calculates <span class="math inline">\(z_d, z_{0m},\)</span> and the drag coefficient (<span class="math inline">\(C_d\)</span>).</li>
+<li><strong>SLUCM → WRF:</strong> SLUCM returns the <strong>surface stress (momentum flux)</strong> to WRF.</li>
+<li><strong>Atmospheric Result:</strong> WRF updates the velocity fields. Generally, this results in:</li>
+</ol>
+<ul>
+<li><strong>Wind Speed Reduction:</strong> Significant slowing of winds over the urban core.</li>
+<li><strong>Convergence:</strong> The sudden increase in drag at the urban-rural fringe can cause air to "pile up," leading to low-level convergence and potentially triggering urban rainfall.</li>
+<li><strong>Enhanced Vertical Mixing:</strong> The mechanical turbulence (drag) helps grow the Planetary Boundary Layer (PBL).</li>
+</ul>
+<h2 id="coupling-via-the-noah-land-surface-model-lsm">3. Coupling via the Noah Land Surface Model (LSM)</h2>
+<p>SLUCM does not work alone; it is "tiled" within the <strong>Noah LSM</strong>. In a single WRF grid cell:</p>
+<ul>
+<li><strong>Vegetated/Natural part:</strong> Noah calculates fluxes for the parks, grass, and trees.</li>
+<li><strong>Urban part:</strong> SLUCM calculates fluxes for the impervious surfaces (buildings/roads).</li>
+<li><strong>Aggregation:</strong> These two parts are combined based on the <strong>Urban Fraction (<span class="math inline">\(F_{urb}\)</span>)</strong>.</li>
+</ul>
+<p><span class="math display">\[Flux_{Total} = F_{urb} \cdot Flux_{UCM} + (1 - F_{urb}) \cdot Flux_{Noah}\]</span></p>
+<p>This total flux is what the WRF atmospheric solver actually "sees" at each time step.</p>
+<h2 id="atmospheric-boundary-layer-abl-response">4. Atmospheric Boundary Layer (ABL) Response</h2>
+<p>The feedback from SLUCM significantly alters the structure of the atmosphere above the city:</p>
+<ul>
+<li><strong>Mixing Height:</strong> The higher sensible heat flux from the UCM leads to a deeper, more turbulent daytime boundary layer.</li>
+<li><strong>Nocturnal Stability:</strong> While rural areas develop stable nocturnal layers, the heat release from the UCM often maintains a <strong>neutral or unstable</strong> layer over the city at night, preventing the formation of strong temperature inversions near the ground.</li>
+</ul>
+<h2 id="key-variables-exchanged">Key Variables Exchanged</h2>
+<table>
+<thead>
+<tr class="header">
+<th>From WRF/Noah to SLUCM (Input)</th>
+<th>From SLUCM to WRF (Feedback/Output)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Downward Shortwave/Longwave Radiation</td>
+<td><strong>Net Radiation</strong> at the urban surface</td>
+</tr>
+<tr class="even">
+<td>Air Temperature &amp; Humidity (at <span class="math inline">\(z_1\)</span>)</td>
+<td><strong>Sensible Heat Flux</strong> (<span class="math inline">\(H\)</span>)</td>
+</tr>
+<tr class="odd">
+<td>Wind Speed ( <span class="math inline">\(u, v\)</span> at <span class="math inline">\(z_1\)</span> )</td>
+<td><strong>Momentum Flux / Drag</strong></td>
+</tr>
+<tr class="even">
+<td>Precipitation</td>
+<td><strong>Latent Heat Flux</strong> (via evaporation from surfaces)</td>
+</tr>
+</tbody>
+</table>
 <h1 id="literature-review">Literature Review</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://ams.confex.com/ams/pdfpapers/79765.pdf">Chen, Fei, et al. "<strong>Utilizing the coupled WRF/LSM/Urban modeling system with detailed urban classification</strong> to simulate the urban heat island phenomena over the Greater Houston area." Fifth Symposium on the Urban Environment. Vol. 25. American Meteorological Society Vancouver, BC, Canada, 2004.</a></li>
@@ -671,9 +761,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
-      
         <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
@@ -712,7 +802,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 27, 2025</div>
+          <div>December 31, 2025</div>
         </div>
       
       
