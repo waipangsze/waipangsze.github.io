@@ -4,7 +4,7 @@ title: NWP | shapefile
 categories: [NWP]
 tags: [MPAS, WRF, NWP, GFS, FNL, IFS, ERA5, CMA]
 author: wpsze
-date: 2025-09-11 06:00:00
+date: 2025-09-10 06:00:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
@@ -63,7 +63,7 @@ Shapefile是一種比較原始的向量數據儲存方式，它僅僅能夠儲�
 #!/bin/bash
 source /home/wpsze/micromamba/bin/activate venv
 export shp_name=${1}
-ncl /EM/wpsze/NCL/shapefiles/plot_shp.ncl
+ncl /home/wpsze/NCL/shapefiles/plot_shp.ncl
 ```
 
 ```plot_shp.ncl
