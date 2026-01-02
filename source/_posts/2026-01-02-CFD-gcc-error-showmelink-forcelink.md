@@ -33,7 +33,7 @@ The error message you are seeing, gcc: error: unrecognized command line option â
 > gcc  -m64 -fPIC  -m64 ... /openfoam13/ThirdParty-13/Zoltan-3.90/build/src -lzoltan -lmpi  -lm
 
 - under `mpi/intel64/lib/release` path
-- set `export LIBRARY_PATH=$LIBRARY_PATH:/EM/wpsze/intel/oneapi/mpi/2021.9.0/lib/release`
+- set `export LIBRARY_PATH=$LIBRARY_PATH:/home/wpsze/intel/oneapi/mpi/2021.9.0/lib/release`
 
 ## Error 3
 
