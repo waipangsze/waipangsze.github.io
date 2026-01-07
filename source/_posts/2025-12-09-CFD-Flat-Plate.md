@@ -216,6 +216,11 @@ Since $u_{\tau}$ depends on the solution (the shear stress), you must **estimate
 
 - [CFD | Turbulence model activation](https://waipangsze.github.io/2025/12/19/CFD-Turbulence-model-activation/)
 
+# OpenFOAM壁面y+验证：低雷诺数模型
+
+- [CFD中文网 - OpenFOAM壁面y+验证：低雷诺数模型](https://www.cfd-china.com/topic/6507/openfoam%E5%A3%81%E9%9D%A2y-%E9%AA%8C%E8%AF%81-%E4%BD%8E%E9%9B%B7%E8%AF%BA%E6%95%B0%E6%A8%A1%E5%9E%8B?lang=en-US)
+- [CFD中文网  - LES直流槽道边界层模拟，如何得到正则化速度u+以及正则化坐标y+？](https://www.cfd-china.com/topic/6248/les%E7%9B%B4%E6%B5%81%E6%A7%BD%E9%81%93%E8%BE%B9%E7%95%8C%E5%B1%82%E6%A8%A1%E6%8B%9F-%E5%A6%82%E4%BD%95%E5%BE%97%E5%88%B0%E6%AD%A3%E5%88%99%E5%8C%96%E9%80%9F%E5%BA%A6u-%E4%BB%A5%E5%8F%8A%E6%AD%A3%E5%88%99%E5%8C%96%E5%9D%90%E6%A0%87y?_=1690794589667)
+
 # References
 
 1. [Fluid_Mechanics_Lesson_13D.pdf **](https://www.me.psu.edu/cimbala/me320/Lesson_Notes/Fluid_Mechanics_Lesson_13D.pdf)
