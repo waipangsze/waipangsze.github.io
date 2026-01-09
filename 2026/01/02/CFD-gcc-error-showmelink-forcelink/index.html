@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/AquZ91E.png">
 <meta property="article:published_time" content="2026-01-01T22:08:00.000Z">
-<meta property="article:modified_time" content="2026-01-02T04:02:27.795Z">
+<meta property="article:modified_time" content="2026-01-09T06:21:57.127Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -361,7 +361,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          91 words
+          343 words
         
       </span>
     
@@ -372,7 +372,7 @@
         
         
         
-          1 mins
+          3 mins
         
       </span>
     
@@ -465,6 +465,52 @@
 </ul></li>
 </ul></li>
 </ul>
+<h2 id="error-4">Error 4</h2>
+<ul>
+<li><code>undefined reference to '__gmpq_init' / '__gmpq_set'/ '__gmpn_copyi'</code>
+<ul>
+<li><pre class="log"><code>1858 collect2: error: ld returned 1 exit status
+1859 make[2]: *** [/home/wpsze/openfoam/OpenFOAM-v2412/OpenFOAM-v2412/wmake/makefiles/general:174: /home/wpsze/openfoam/OpenFOAM-v2412/OpenFOAM-v2412/platforms/linux64GccDP     Int32Opt/bin/surfaceBooleanFeatures] Error 1
+1860 make[1]: *** [/home/wpsze/openfoam/OpenFOAM-v2412/OpenFOAM-v2412/wmake/makefiles/apps:28: surfaceBooleanFeatures] Error 2
+1861 make: *** [/home/wpsze/openfoam/OpenFOAM-v2412/OpenFOAM-v2412/wmake/makefiles/apps:28: surface] Error 2
+1862 make: *** Waiting for unfinished jobs....</code></pre>
+<blockquote>
+<p>The error "undefined reference to __gmpq_init'" is a <strong>linker error</strong> in a <strong>C/C++ OpenFOAM</strong> project, indicating that the linker cannot find the implementation of the <strong><code>__gmpq_init</code></strong> function. This function belongs to the <strong>GNU Multiple Precision Arithmetic Library (GMP)</strong>, which is often used as a dependency for other libraries like <strong>CGAL</strong> (CGAL（Computational Geometry Algorithms Library）是一個開源的 C++ 程式庫，提供高效且可靠的計算幾何演算法，涵蓋了多邊形、凸包、三角剖分、網格生成等各種幾何資料結構與演算法，廣泛應用於電腦輔助設計、地理資訊系統、電腦圖形、醫學影像、機器人學等領域，並採用雙授權模式 (LGPL/GPL 適用開源，商用需付費)。).</p>
+</blockquote></li>
+</ul></li>
+</ul>
+<h3 id="disucss">disucss</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://develop.openfoam.com/Development/openfoam/blob/develop/doc/BuildIssues.md#thirdparty-clang-without-gmpmpfr">ThirdParty clang without gmp/mpfr</a>
+<ul>
+<li>If using ThirdParty <code>clang</code> without <code>gmp/mpfr</code>, the ThirdParty <code>makeCGAL</code> script will need to be run manually and specify that there is no <code>gmp/mpfr</code>.</li>
+<li>Subequent compilation with <code>Allwmake</code> will now run largely without any problems, except that the components linking against <code>CGAL</code> (<strong>foamyMesh and surfaceBooleanFeatures</strong>) will also try to link against a nonexistent <code>mpfr</code> library. As a workaround, the link-dependency will be removed in <code>wmake/rules/General/cgal</code> by specifying the <code>CGAL_FLAVOUR</code> when compiling:
+<ul>
+<li><blockquote>
+<p><code>no-cgal | cgal-header | cgal-header-no-mpfr | cgal-no-mpfr | cgal-mpfr</code></p>
+</blockquote></li>
+</ul></li>
+<li>A robuster solution is still being sought.</li>
+</ul></li>
+</ul>
+<h3 id="common-solutions">Common Solutions</h3>
+<ul>
+<li><strong>Explicitly link the library</strong>: Ensure that your project's <code>Make/options</code> file (if you are compiling within <strong>OpenFOAM</strong>'s wmake environment) or your compiler command includes the linker flag for <strong>GMP</strong>.
+<ul>
+<li>Add <code>-lgmp</code> to the linker flags (e.g., <code>LIBS</code> variable in the <code>options</code> file). The order matters, and dependent libraries should typically appear after the libraries that use them in the linker command.</li>
+<li>e.g. <code>OpenFOAM-v2412/wmake/makefiles/general</code>
+<ul>
+<li><code>EXE_LIBS        = -lgmp</code>, seems not works.</li>
+</ul></li>
+</ul></li>
+<li><strong>Verify the library path</strong>: If <strong>GMP</strong> is installed in a non-standard location (e.g., in the <strong>OpenFOAM</strong> <strong>ThirdParty</strong> directory or a custom path), you need to specify the library directory using the <code>-L</code> flag and the include directory using the <code>-I</code> flag in your <code>Make/options</code> file.
+<ul>
+<li><code>LDFLAGS = -L$(GMP_LIB_PATH)</code></li>
+<li><code>LIBS = -lgmp ...</code></li>
+</ul></li>
+<li><strong>Check compatibility</strong>: Ensure that the architecture (32-bit vs. 64-bit) of your compiled code matches that of the GMP library you are linking against.</li>
+<li><strong>Clean and rebuild</strong>: After making changes to your installation or <code>options</code> files, perform a clean build to ensure all object files and dependencies are correctly re-linked. Use <code>wclean</code> within your <strong>OpenFOAM</strong> project directory before running <code>wmake</code> again.</li>
+</ul>
 
                 
               </div>
@@ -539,7 +585,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 2, 2026</div>
+          <div>January 9, 2026</div>
         </div>
       
       
