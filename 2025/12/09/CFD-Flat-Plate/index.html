@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/h5zLAcM.png">
 <meta property="article:published_time" content="2025-12-08T22:08:00.000Z">
-<meta property="article:modified_time" content="2026-01-09T02:42:52.116Z">
+<meta property="article:modified_time" content="2026-01-13T02:47:45.121Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -358,7 +358,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          875 words
+          1.1k words
         
       </span>
     
@@ -369,7 +369,7 @@
         
         
         
-          8 mins
+          10 mins
         
       </span>
     
@@ -437,7 +437,10 @@
 <li><strong>Fine Mesh Near the Wall:</strong> You must use a very fine, highly refined mesh (often with structured, inflation layers) in the direction <strong>normal</strong> to the plate surface to accurately resolve the velocity profile within the boundary layer.</li>
 <li><strong><span class="math inline">\(y^+\)</span> Value:</strong> For turbulent flows, the dimensionless wall distance, <strong><span class="math inline">\(y^+\)</span></strong>, is the single most critical parameter. It dictates the size of the first cell layer adjacent to the wall.
 <ul>
-<li>For <strong>Low-Reynolds (Near-Wall) Models</strong> (which resolve the viscous sublayer), the first cell center must be placed in the viscous sublayer, meaning <strong><span class="math inline">\(y^+ \approx 1\)</span></strong>.</li>
+<li>For <strong>Low-Reynolds (Near-Wall) Models</strong> (which resolve the viscous sublayer), the first cell center must be placed in the viscous sublayer, meaning <strong><span class="math inline">\(y^+ \approx 1\)</span></strong>.
+<ul>
+<li>Setting <strong>k to zero (FixedValue 0) at the lower boundary (wall)</strong>.</li>
+</ul></li>
 <li>For <strong>Wall Function Models</strong> (which use an empirical law-of-the-wall approach), the first cell center must be in the logarithmic layer, meaning <strong><span class="math inline">\(30 &lt; y^+ &lt; 500\)</span></strong> (or similar range depending on the solver).</li>
 </ul></li>
 </ul>
@@ -566,6 +569,69 @@
 </tr>
 </tbody>
 </table>
+<h4 id="b1.-wall-resolved-low-re-approach-sst-k-omega-implementations">B1. Wall-Resolved (Low-Re) Approach (SST <span class="math inline">\(k-\omega\)</span> implementations)</h4>
+<p>Used when your mesh is fine enough to resolve the viscous sublayer (typically <span class="math inline">\(y^+ &lt; 1\)</span> or <span class="math inline">\(y^+ &lt; 5\)</span>).</p>
+<ul>
+<li><strong>Turbulent Kinetic Energy (<span class="math inline">\(k\)</span>):</strong></li>
+</ul>
+<p><span class="math inline">\(k = 0\)</span>. At the wall, the velocity fluctuations must vanish due to the no-slip condition. This is a simple Dirichlet (fixed value) boundary condition.</p>
+<ul>
+<li><strong>Specific Dissipation Rate (<span class="math inline">\(\omega\)</span>):</strong></li>
+</ul>
+<p><span class="math inline">\(\omega\)</span> does not go to zero; in fact, it goes to infinity at the wall. In practice, a very high value is prescribed for the first cell based on the analytical solution:</p>
+<p><span class="math display">\[\omega_{wall} = \frac{6 \nu}{\beta_1 y^2}\]</span></p>
+<p>where <span class="math inline">\(\nu\)</span> is the kinematic viscosity, <span class="math inline">\(y\)</span> is the distance to the wall, and <span class="math inline">\(\beta_1\)</span> is a model constant (typically <strong>0.075</strong>).</p>
+<h4 id="b2.-wall-function-high-re-approach-sst-k-omega-implementations">B2. Wall-Function (High-Re) Approach (SST <span class="math inline">\(k-\omega\)</span> implementations)</h4>
+<p>Used when your mesh is coarse (<span class="math inline">\(30 &lt; y^+ &lt; 300\)</span>), and you are modeling the log-law region rather than resolving it.</p>
+<ul>
+<li><strong>Turbulent Kinetic Energy (<span class="math inline">\(k\)</span>):</strong> <span class="math inline">\(k\)</span> is usually calculated based on the friction velocity (<span class="math inline">\(u_\tau\)</span>):</li>
+</ul>
+<p><span class="math display">\[k = \frac{u_\tau^2}{\sqrt{C_\mu}}\]</span></p>
+<ul>
+<li><strong>Specific Dissipation Rate (<span class="math inline">\(\omega\)</span>):</strong> The value is set based on the assumption that production and dissipation of turbulence are in equilibrium:</li>
+</ul>
+<p><span class="math display">\[\omega = \frac{u_\tau}{\sqrt{C_\mu} \kappa y}\]</span></p>
+<p>where is the von Kármán constant (<span class="math inline">\(\approx 0.41\)</span>) and <span class="math inline">\(C_\mu = 0.09\)</span>.</p>
+<h4 id="b3.-automatic-wall-treatment-the-blended-bc-sst-k-omega-implementations">B3. Automatic Wall Treatment (The "Blended" BC) (SST <span class="math inline">\(k-\omega\)</span> implementations)</h4>
+<p>Most <strong>modern SST <span class="math inline">\(k-\omega\)</span> implementations</strong> (like those in Ansys Fluent, SimScale, or OpenFOAM) use a blending formula. This allows the simulation to stay accurate even if your <span class="math inline">\(y^+\)</span> falls in the "buffer layer" (<span class="math inline">\(5 &lt; y^+ &lt; 30\)</span>), which is usually a danger zone for other models.</p>
+<p>The specific dissipation rate is calculated as a blend of the viscous and logarithmic solutions:</p>
+<p><span class="math display">\[\omega = \sqrt{\omega_{vis}^2 + \omega_{log}^2}\]</span></p>
+<hr />
+<h4 id="summary-table-sst-k-omega-implementations">Summary Table (SST <span class="math inline">\(k-\omega\)</span> implementations)</h4>
+<table>
+
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Wall-Resolved (<span class="math inline">\(y^+ &lt; 1\)</span>)</th>
+<th>Wall-Functions (<span class="math inline">\(y^+ &gt; 30\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(k\)</span></td>
+<td><strong>Fixed Value:</strong></td>
+<td><strong>Wall Function: <span class="math inline">\(u_\tau^2 / \sqrt{C_\mu}\)</span></strong></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\omega\)</span></td>
+<td><strong>Analytical: <span class="math inline">\(\frac{6 \nu}{\beta_1 y^2}\)</span></strong> (Very Large)</td>
+<td><strong>Analytical: <span class="math inline">\(\frac{u_\tau}{\sqrt{C_\mu} \kappa y}\)</span></strong> (Log-law)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\nu_t\)</span> (Viscosity)</td>
+<td><strong>Zero</strong></td>
+<td><strong>Log-law based</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="pro-tip-for-setup">Pro-Tip for Setup:</h4>
+<p>If you are using a code like <strong>OpenFOAM</strong>, these are typically defined in your <code>0/</code> folder files:</p>
+<ul>
+<li><strong>k:</strong> <code>type kqRWallFunction;</code> (or <code>fixedValue 0;</code> for resolved).</li>
+<li><strong>omega:</strong> <code>type omegaWallFunction;</code> (this handles the blending automatically).</li>
+<li><strong>nut:</strong> <code>type nutkWallFunction;</code> or <code>nutUSpaldingWallFunction;</code>.</li>
+</ul>
 <h2 id="practical-steps-for-calculating-delta-y_1">3. Practical Steps for Calculating <span class="math inline">\(\Delta y_1\)</span></h2>
 <p>Since <span class="math inline">\(u_{\tau}\)</span> depends on the solution (the shear stress), you must <strong>estimate</strong> the required <span class="math inline">\(\Delta y_1\)</span> using an empirical formula, typically based on the skin friction coefficient (<span class="math inline">\(C_f\)</span>) for a flat plate:</p>
 <ol type="1">
@@ -660,7 +726,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 9, 2026</div>
+          <div>January 13, 2026</div>
         </div>
       
       
