@@ -35,6 +35,7 @@ The boundary layer is very thin and characterized by steep velocity gradients ne
 * **Fine Mesh Near the Wall:** You must use a very fine, highly refined mesh (often with structured, inflation layers) in the direction **normal** to the plate surface to accurately resolve the velocity profile within the boundary layer.
 * **$y^+$ Value:** For turbulent flows, the dimensionless wall distance, **$y^+$**, is the single most critical parameter. It dictates the size of the first cell layer adjacent to the wall.
     * For **Low-Reynolds (Near-Wall) Models** (which resolve the viscous sublayer), the first cell center must be placed in the viscous sublayer, meaning **$y^+ \approx 1$**.
+      * Setting **k to zero (FixedValue 0) at the lower boundary (wall)**.
     * For **Wall Function Models** (which use an empirical law-of-the-wall approach), the first cell center must be in the logarithmic layer, meaning **$30 < y^+ < 500$** (or similar range depending on the solver).
 
 ### B. Flow Regime and Modeling
@@ -198,6 +199,64 @@ For RANS turbulence models (like $k-\epsilon$ or $k-\omega$ SST), your $y^+$ req
 | :--- | :--- | :--- | :--- |
 | **Wall Functions (WF)** | $\mathbf{30 < y^+ < 500}$ | `kqRWallFunction`, `epsilonWallFunction`, `nutkWallFunction` | The first cell is placed in the **logarithmic region**, bridging the viscous sublayer. This saves cell count but relies on empirical laws. |
 | **Low-Reynolds / Near-Wall Resolving** | $\mathbf{y^+ \approx 1}$ | `kLowReWallFunction`, `nutLowReWallFunction` (or often implicit in the model, like $k-\omega$ SST's blending) | The first cell is placed deep within the **viscous sublayer** ($y^+ < 5$). This is highly accurate but computationally expensive, requiring many more cells near the wall. |
+
+#### B1. Wall-Resolved (Low-Re) Approach (SST $k-\omega$ implementations)
+
+Used when your mesh is fine enough to resolve the viscous sublayer (typically $y^+ < 1$ or $y^+ < 5$).
+
+* **Turbulent Kinetic Energy ($k$):**
+
+$k = 0$. At the wall, the velocity fluctuations must vanish due to the no-slip condition. This is a simple Dirichlet (fixed value) boundary condition.
+
+* **Specific Dissipation Rate ($\omega$):**
+
+$\omega$ does not go to zero; in fact, it goes to infinity at the wall. In practice, a very high value is prescribed for the first cell based on the analytical solution:
+
+$$\omega_{wall} = \frac{6 \nu}{\beta_1 y^2}$$
+
+where $\nu$  is the kinematic viscosity, $y$ is the distance to the wall, and $\beta_1$ is a model constant (typically **0.075**).
+
+#### B2. Wall-Function (High-Re) Approach (SST $k-\omega$ implementations)
+
+Used when your mesh is coarse ($30 < y^+ < 300$), and you are modeling the log-law region rather than resolving it.
+
+* **Turbulent Kinetic Energy ($k$):**
+$k$ is usually calculated based on the friction velocity ($u_\tau$):
+
+$$k = \frac{u_\tau^2}{\sqrt{C_\mu}}$$
+
+* **Specific Dissipation Rate ($\omega$):**
+The value is set based on the assumption that production and dissipation of turbulence are in equilibrium:
+
+$$\omega = \frac{u_\tau}{\sqrt{C_\mu} \kappa y}$$
+
+where  is the von Kármán constant ($\approx 0.41$) and $C_\mu = 0.09$.
+
+#### B3. Automatic Wall Treatment (The "Blended" BC) (SST $k-\omega$ implementations)
+
+Most **modern SST $k-\omega$ implementations** (like those in Ansys Fluent, SimScale, or OpenFOAM) use a blending formula. This allows the simulation to stay accurate even if your $y^+$ falls in the "buffer layer"  ($5 < y^+ < 30$), which is usually a danger zone for other models.
+
+The specific dissipation rate is calculated as a blend of the viscous and logarithmic solutions:
+
+$$\omega = \sqrt{\omega_{vis}^2 + \omega_{log}^2}$$
+
+---
+
+#### Summary Table (SST $k-\omega$ implementations)
+
+| Variable | Wall-Resolved ($y^+ < 1$) | Wall-Functions ($y^+ > 30$) |
+| --- | --- | --- |
+| $k$ | **Fixed Value:**  | **Wall Function: $u_\tau^2 / \sqrt{C_\mu}$**  |
+| $\omega$ | **Analytical: $\frac{6 \nu}{\beta_1 y^2}$**  (Very Large) | **Analytical: $\frac{u_\tau}{\sqrt{C_\mu} \kappa y}$**  (Log-law) |
+| $\nu_t$  (Viscosity) | **Zero** | **Log-law based** |
+
+#### Pro-Tip for Setup:
+
+If you are using a code like **OpenFOAM**, these are typically defined in your `0/` folder files:
+
+* **k:** `type kqRWallFunction;` (or `fixedValue 0;` for resolved).
+* **omega:** `type omegaWallFunction;` (this handles the blending automatically).
+* **nut:** `type nutkWallFunction;` or `nutUSpaldingWallFunction;`.
 
 ## 3. Practical Steps for Calculating $\Delta y_1$
 

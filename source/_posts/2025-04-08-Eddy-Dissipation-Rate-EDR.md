@@ -31,9 +31,28 @@ where$ \epsilon$ is the dissipation rate of TKE, typically in $m^2/s^3$.
 ## Derivation of Dissipation Rate ($\epsilon$)
 In fluid dynamics, the dissipation rate of TKE can be related to the turbulent velocity fluctuations ($u', v', w'$) and the integral scale of turbulence ($l_0$) through Kolmogorov's hypothesis:
 $$
-\epsilon = \frac{u'^3}{l_0} 
+\begin{align}
+k &= \frac{1}{2} \left(\, \overline{(u')^2} + \overline{(v')^2} + \overline{(w')^2} \,\right) \\
+\epsilon &= \frac{u'^3}{l_0} \approx \frac{k^{3/2}}{l_0}
+\end{align}
 $$
 However, in practical applications,$\epsilon$ **is often derived from mesoscale models using TKE closure schemes**.
+
+- K-epsilon turbulence model models assume **isotropy of turbulence** whereby the normal stresses are equal.
+  - $\overline{(u')^2} = \overline{(v')^2} = \overline{(w')^2}$
+
+### Definition of the turbulence length scale
+
+It is a physical quantity describing the size of the large energy-containing eddies in a turbulent flow.
+
+- The classical definition used in the **k-epsilon model** and also used in the **classical book on Turbulence Modeling by Wilcox** the turbulence length scale is defined as:
+  - $L_{classical} = C_\mu \frac{k^\frac{3}{2}}{\epsilon}$
+- Many people using a **mixing-length based derivation** get a slightly different definition of the turbulence length scale. This definition is also used in for example **Fluent and OpenFOAM**.:
+  - $L_{mixing} = C_\mu^{3/4} \, \frac{k^\frac{3}{2}}{\epsilon}$
+- There is also another definition of the turbulence length scale based purely only on dimensional argument. This definition is use in for example **CFX**:
+  - $L_{dimensional} =\frac{k^\frac{3}{2}}{\epsilon}$
+- $C_\mu$ is a model constant which in the standard version of the k-epsilon model has a value of 0.09.
+
 
 ## Practical Interpretation
 - **EDR Values**: Range from 0 (smooth air) to 1 (intense turbulence), though actual values are often scaled for easier interpretation (e.g., multiplied by 100).
@@ -84,9 +103,7 @@ $$
 \text{EDR} \sim \left( \frac{u'}{L^{1/3}} \right) \sim \epsilon^{1/3}
 $$
 
-This is why the EDR can be approximated as the one-third power of the energy dissipation rate in certain contexts. It captures the relationship between the energy scale and the turbulent structures present in the flow. 
-
-(More ......)
+This is why the EDR can be approximated as the one-third power of the energy dissipation rate in certain contexts. It captures the relationship between the energy scale and the turbulent structures present in the flow.
 
 # HKO
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "CFD | gcc : error: unrecognized command line option ‘--showme:link’; did you mean ‘--force-link’?"
+title: "CFD | OpenFOAM | gcc : error: unrecognized command line option ‘--showme:link’; did you mean ‘--force-link’?"
 categories: [CFD]
 tags: [OpenFOAM, HPC, error, MPI, intelmpi, openmpi]
 author: wpsze
