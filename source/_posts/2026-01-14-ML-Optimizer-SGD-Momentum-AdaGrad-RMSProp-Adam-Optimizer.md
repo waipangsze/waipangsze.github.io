@@ -19,7 +19,7 @@ In machine learning, an Optimizer is the **"engine" that minimizes the loss func
 
 The evolution from basic **Stochastic Gradient Descent (SGD)** to **Adam** represents a journey of solving specific mathematical hurdles like **"pathological curvature" (oscillations)** and **"vanishing learning rates"**.
 
-# Stochastic Gradient Descent (SGD)
+## Stochastic Gradient Descent (SGD)
 
 Standard Gradient Descent computes the gradient for the entire dataset before making one update. SGD instead updates parameters using only one sample (or a small "mini-batch") at a time. 
 
@@ -30,7 +30,7 @@ where $\eta$ is the learning rate and $J$ is the loss.
 - **Intuition**: It is like a drunk person walking down a hill; they take frequent, noisy steps. This noise actually helps the model "jump" out of shallow local minima.
 - **Problem**: In "ravines" (where the surface curves much more steeply in one dimension than another), SGD oscillates wildly across the slopes, making very slow progress toward the actual minimum.
 
-# Momentum
+## Momentum
 
 - [Polyak, Boris T. "Some methods of speeding up the convergence of iteration methods." Ussr computational mathematics and mathematical physics 4.5 (1964): 1-17.](https://hengshuaiyao.github.io/papers/polyak64.pdf)
 - [Sutskever, I., Martens, J., Dahl, G., & Hinton, G. (2013, May). **On the importance of initialization and momentum in deep learning**. In International conference on machine learning (pp. 1139-1147). pmlr.](https://www.cs.toronto.edu/~fritz/absps/momentum.pdf)
@@ -43,7 +43,7 @@ where $\mu$ (usually 0.9) is the "momentum" or friction.
 - **Intuition**: Imagine a heavy ball rolling down a hill. It gains speed in the direction of the consistent downward slope and ignores minor bumps or side-to-side noise.
 - **Why use it?** It speeds up convergence significantly and "dampens" the zig-zagging seen in plain SGD.
 
-# AdaGrad
+## AdaGrad
 
 - [Duchi, J., Hazan, E., & Singer, Y. (2011). Adaptive subgradient methods for online learning and stochastic optimization. Journal of machine learning research, 12(7).](https://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf)
 
@@ -53,7 +53,7 @@ AdaGrad was introduced by Duchi et al. in a highly cited paper published in the 
 
 ![](https://i.imgur.com/echwH7z.png){width=400}
 
-# RMSProp
+## RMSProp
 
 - **Tieleman and Hinton (2012)** proposed the RMSProp algorithm as a simple fix to decouple rate scheduling from coordinate-adaptive learning rates.
 - **RMSprop** is unpublished optimization algorithm designed for neural networks, first proposed by *Geoff Hinton* in **lecture 6 of the online course “Neural Networks for Machine Learning”**.
@@ -64,7 +64,7 @@ AdaGrad was introduced by Duchi et al. in a highly cited paper published in the 
 
 ![](https://i.imgur.com/zuNsQja.png){width=400}
 
-# Adam
+## Adam
 
 - [Adam: A Method for Stochastic Optimization | Diederik P. Kingma, Jimmy Ba | 2014](https://arxiv.org/abs/1412.6980)
 
@@ -75,6 +75,14 @@ AdaGrad was introduced by Duchi et al. in a highly cited paper published in the 
 - **Bias Correction**: Adjust $m_t$ and $v_t$ because they are initialized at zero.
 - **Update**: $\theta_{t+1} = \theta_t - \frac{\eta \cdot \hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}$
 - **Why use it?** It is computationally efficient, requires little memory, and usually works well with "default" hyperparameters ($\beta_1 = 0.9, \beta_2 = 0.999$).
+
+# Second-order optimization
+
+- [Newton's method in optimization](https://en.wikipedia.org/wiki/Newton%27s_method_in_optimization)
+- [**深度学习为啥不用二阶牛顿寻优？**](https://www.zhihu.com/question/1972776588379723619/answer/1994569156629132508?share_code=14WGIubJlmEyK&utm_psn=1995056906151155477)
+- [(210912) Lecture-一阶与二阶优化技术](https://zhuanlan.zhihu.com/p/413763263)
+
+![](https://i.imgur.com/6xZTUH9.png){width=400}
 
 # References
 
