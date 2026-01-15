@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/jNLbGHh.gif">
 <meta property="article:published_time" content="2026-01-13T22:17:00.000Z">
-<meta property="article:modified_time" content="2026-01-15T02:18:43.652Z">
+<meta property="article:modified_time" content="2026-01-15T06:48:17.262Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML">
@@ -364,7 +364,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          232 words
+          260 words
         
       </span>
     
@@ -375,7 +375,7 @@
         
         
         
-          2 mins
+          3 mins
         
       </span>
     
@@ -429,7 +429,7 @@
                 <h1 id="optimizer">Optimizer</h1>
 <p>In machine learning, an Optimizer is the <strong>"engine" that minimizes the loss function</strong>. It updates the weights and biases of a model based on the gradients calculated during backpropagation.</p>
 <p>The evolution from basic <strong>Stochastic Gradient Descent (SGD)</strong> to <strong>Adam</strong> represents a journey of solving specific mathematical hurdles like <strong>"pathological curvature" (oscillations)</strong> and <strong>"vanishing learning rates"</strong>.</p>
-<h1 id="stochastic-gradient-descent-sgd">Stochastic Gradient Descent (SGD)</h1>
+<h2 id="stochastic-gradient-descent-sgd">Stochastic Gradient Descent (SGD)</h2>
 <p>Standard Gradient Descent computes the gradient for the entire dataset before making one update. SGD instead updates parameters using only one sample (or a small "mini-batch") at a time.</p>
 <p><span class="math display">\[\theta_{t+1} = \theta_t - \eta \cdot \nabla_{\theta} J(\theta_t; x^{(i)}, y^{(i)})\]</span></p>
 <p>where <span class="math inline">\(\eta\)</span> is the learning rate and <span class="math inline">\(J\)</span> is the loss.</p>
@@ -437,7 +437,7 @@
 <li><strong>Intuition</strong>: It is like a drunk person walking down a hill; they take frequent, noisy steps. This noise actually helps the model "jump" out of shallow local minima.</li>
 <li><strong>Problem</strong>: In "ravines" (where the surface curves much more steeply in one dimension than another), SGD oscillates wildly across the slopes, making very slow progress toward the actual minimum.</li>
 </ul>
-<h1 id="momentum">Momentum</h1>
+<h2 id="momentum">Momentum</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://hengshuaiyao.github.io/papers/polyak64.pdf">Polyak, Boris T. "Some methods of speeding up the convergence of iteration methods." Ussr computational mathematics and mathematical physics 4.5 (1964): 1-17.</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cs.toronto.edu/~fritz/absps/momentum.pdf">Sutskever, I., Martens, J., Dahl, G., &amp; Hinton, G. (2013, May). <strong>On the importance of initialization and momentum in deep learning</strong>. In International conference on machine learning (pp. 1139-1147). pmlr.</a>
@@ -451,14 +451,14 @@
 <li><strong>Intuition</strong>: Imagine a heavy ball rolling down a hill. It gains speed in the direction of the consistent downward slope and ignores minor bumps or side-to-side noise.</li>
 <li><strong>Why use it?</strong> It speeds up convergence significantly and "dampens" the zig-zagging seen in plain SGD.</li>
 </ul>
-<h1 id="adagrad">AdaGrad</h1>
+<h2 id="adagrad">AdaGrad</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf">Duchi, J., Hazan, E., &amp; Singer, Y. (2011). Adaptive subgradient methods for online learning and stochastic optimization. Journal of machine learning research, 12(7).</a></li>
 </ul>
 <p>AdaGrad's name comes from <strong>Adaptative Gradient</strong>. Intuitively, it adapts the learning rate for each feature depending on the estimated geometry of the problem; particularly, it tends to assign higher learning rates to infrequent features, which ensures that the parameter updates rely less on frequency and more on relevance.</p>
 <p>AdaGrad was introduced by Duchi et al. in a highly cited paper published in the Journal of machine learning research in 2011. It is arguably one of the most popular algorithms for machine learning (particularly for training deep neural networks) and it influenced the development of the Adam algorithm.</p>
 <p><img src="https://i.imgur.com/echwH7z.png" srcset="/img/loading.gif" lazyload width="400" /></p>
-<h1 id="rmsprop">RMSProp</h1>
+<h2 id="rmsprop">RMSProp</h2>
 <ul>
 <li><strong>Tieleman and Hinton (2012)</strong> proposed the RMSProp algorithm as a simple fix to decouple rate scheduling from coordinate-adaptive learning rates.</li>
 <li><p><strong>RMSprop</strong> is unpublished optimization algorithm designed for neural networks, first proposed by <em>Geoff Hinton</em> in <strong>lecture 6 of the online course “Neural Networks for Machine Learning”</strong>.</p></li>
@@ -466,7 +466,7 @@
 </ul>
 <p><strong>RMSProp (Root Mean Square Propagation)</strong> is an adaptive learning rate optimization algorithm for training deep neural networks, designed to make training faster and more stable by <code>adjusting the learning rate for each parameter **individually**</code>, preventing issues like vanishing/exploding gradients and slow convergence, especially in complex models.</p>
 <p><img src="https://i.imgur.com/zuNsQja.png" srcset="/img/loading.gif" lazyload width="400" /></p>
-<h1 id="adam">Adam</h1>
+<h2 id="adam">Adam</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1412.6980">Adam: A Method for Stochastic Optimization | Diederik P. Kingma, Jimmy Ba | 2014</a></li>
 </ul>
@@ -478,6 +478,13 @@
 <li><strong>Update</strong>: <span class="math inline">\(\theta_{t+1} = \theta_t - \frac{\eta \cdot \hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon}\)</span></li>
 <li><strong>Why use it?</strong> It is computationally efficient, requires little memory, and usually works well with "default" hyperparameters (<span class="math inline">\(\beta_1 = 0.9, \beta_2 = 0.999\)</span>).</li>
 </ul>
+<h1 id="second-order-optimization">Second-order optimization</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Newton%27s_method_in_optimization">Newton's method in optimization</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/1972776588379723619/answer/1994569156629132508?share_code=14WGIubJlmEyK&amp;utm_psn=1995056906151155477"><strong>深度学习为啥不用二阶牛顿寻优？</strong></a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/413763263">(210912) Lecture-一阶与二阶优化技术</a></li>
+</ul>
+<p><img src="https://i.imgur.com/6xZTUH9.png" srcset="/img/loading.gif" lazyload width="400" /></p>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://medium.com/%E9%9B%9E%E9%9B%9E%E8%88%87%E5%85%94%E5%85%94%E7%9A%84%E5%B7%A5%E7%A8%8B%E4%B8%96%E7%95%8C/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92ml-note-sgd-momentum-adagrad-adam-optimizer-f20568c968db">[機器學習ML NOTE]SGD, Momentum, AdaGrad, Adam Optimizer</a></li>
