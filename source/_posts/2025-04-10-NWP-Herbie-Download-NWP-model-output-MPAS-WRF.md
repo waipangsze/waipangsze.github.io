@@ -43,6 +43,12 @@ and more! Check out the [gallery](https://herbie.readthedocs.io/en/latest/galler
 conda install -c conda-forge herbie-data
 ```
 
+## Update
+
+```console
+conda update herbie-data
+```
+
 # Capabilities
 
 - **Search for model output** from different data sources.
@@ -80,6 +86,26 @@ H.download(":500 mb")
 # Read subset with xarray, like 2-m temperature.
 H.xarray("TMP:2 m")
 ```
+
+# Download sources?
+
+- `"{your_env}/lib/python3.12/site-packages/herbie/models/ecmwf.py"`
+- -<https://github.com/blaylockbk/Herbie/blob/main/src/herbie/models/ecmwf.py>
+
+```python
+        # If user asks for 'oper' or 'wave', still look for data in scda and waef for the short cut-off high resolution forecast.
+        self.SOURCES = {
+            "google": f"https://storage.googleapis.com/ecmwf-open-data/{post_root}",
+            "aws": f"https://ecmwf-forecasts.s3.eu-central-1.amazonaws.com/{post_root}",
+            "ecmwf": f"https://data.ecmwf.int/forecasts/{post_root}",
+            "azure": f"https://ai4edataeuwest.blob.core.windows.net/ecmwf/{post_root}",
+            "azure-scda": f"https://ai4edataeuwest.blob.core.windows.net/ecmwf/{post_root.replace('oper', 'scda')}",
+            "azure-waef": f"https://ai4edataeuwest.blob.core.windows.net/ecmwf/{post_root.replace('wave', 'waef')}",
+        }
+```
+
+- [ECMWF is available via google, add to ecmwf.py model file?](https://github.com/blaylockbk/Herbie/issues/488)
+  - ![](https://i.imgur.com/WzZCi9H.png)
 
 ## IFS/AIFS
 
@@ -127,7 +153,7 @@ export HERBIE_SAVE_DIR="/home/wpsze/cpas/IFS/herbie/"
 # Check if all required arguments are provided
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
     echo "Usage: $0 <yyyymmddhh> <time_interval> <hour_periods>"
-    echo "Example: $0 2025101000 6 48"
+    echo "Example: $0 2025101000 3 48"
     echo ""
     echo "  <yyyymmddhh> : IFS run date and hour (e.g., 2025101000)"
     echo "  <time_interval>: Interval between fxx hours (e.g., 6 for 0,6,12...)"
@@ -159,6 +185,15 @@ echo "--------------------------------------------------------"
 # Execute the Python script, passing the datetime and generated fxx range
 # Ensure you have 'herbie' and 'python3' installed in your environment.
 python3 "${PYTHON_SCRIPT}" --datetime "${DATETIME_INPUT}" --fxx "${FXX_RANGE}"
+
+# move grib files to yyyymm/yyyymmdd
+#mkdir -p ./ifs/${yyyymm}/
+#mv ./ifs/${yyyymmdd} ./ifs/${yyyymm}
+
+# do padding like 3h to 003h,
+cd ./ifs/${yyyymmdd}
+ln -s ${SCRIPT_DIR}/rename_padding.sh ./
+./rename_padding.sh
 
 # Check the exit status of the python script
 if [ $? -eq 0 ]; then
@@ -222,6 +257,8 @@ def download_ifs_data(datetime_str: str, fxx_periods: str):
                 model="ifs",
                 product="oper",
                 fxx=fxx,
+                priority="google",
+                # ecmwf/azure/aws/google
                 # Example of specifying a search string for faster downloads
                 # If left unspecified, it will download all GRIB messages found
                 # searchString=':(U|V|T|Z|G)GRD:10 m above ground|500 hPa:', 
@@ -260,6 +297,32 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     download_ifs_data(args.datetime, args.fxx)
+```
+{% endfold %}
+
+{% fold info @rename_padding.sh %}
+```sh
+#!/bin/bash
+
+set -o pipefail
+
+source /home/wpsze/micromamba/bin/activate venv
+export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+for file in *h-oper-fc.grib2; do
+    # Check if the filename matches the pattern (prefix-number-suffix)
+    if [[ $file =~ (.*-)([0-9]+)(h-.*) ]]; then
+        prefix="${BASH_REMATCH[1]}"
+        hour="${BASH_REMATCH[2]}"
+        suffix="${BASH_REMATCH[3]}"
+        
+        # Format the hour to be 3 digits with leading zeros
+        padded_hour=$(printf "%03d" "$hour")
+        
+        # Rename the file
+        mv "$file" "${prefix}${padded_hour}${suffix}"
+    fi
+done
 ```
 {% endfold %}
 
