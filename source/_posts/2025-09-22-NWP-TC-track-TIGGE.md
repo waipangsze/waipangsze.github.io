@@ -2,7 +2,7 @@
 layout: post
 title: NWP | Tropical Cyclone Track Data | TIGGE
 categories: [NWP]
-tags: [MPAS, WRF, NWP, GFS, FNL, IFS, ERA5, CMA, TIGGE, TC, tracker]
+tags: [MPAS, WRF, NWP, GFS, FNL, IFS, ERA5, CMA, TIGGE, TC, typhoon, tracker]
 author: wpsze
 date: 2025-09-22 07:00:00
 math: true

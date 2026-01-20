@@ -2,7 +2,7 @@
 layout: post
 title: NWP | TC Best Track | IBTrACS
 categories: [NWP]
-tags: [MPAS, WRF, NWP, GFS, FNL, IFS, ERA5, CMA, TIGGE, TC, tracker, IBTrACS]
+tags: [MPAS, WRF, NWP, GFS, FNL, IFS, ERA5, CMA, TIGGE, TC, typhoon, tracker, IBTrACS]
 author: wpsze
 date: 2025-10-30 07:30:00
 math: true
