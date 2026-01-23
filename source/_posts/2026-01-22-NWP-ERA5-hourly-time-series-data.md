@@ -22,6 +22,10 @@ banner_img: https://i.imgur.com/IvH5kTx.png
 
 --- 
 
+- [ERA5 Variables](https://ecmwf-models.readthedocs.io/en/latest/variables_era5.html)
+
+---
+
 # ERA5
 
 ERA5 is the fifth generation ECMWF atmospheric reanalysis of the global climate covering the period from January 1940 to present. ERA5 is produced by the Copernicus Climate Change Service (C3S) at ECMWF.
