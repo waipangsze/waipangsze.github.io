@@ -1,0 +1,1049 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="MPAS | WRF | precipitation calculation   中国气象局  降雪量与降雪深度 | 中国气象报社 降雪的形成条件及等级划分 | 中国气象报社 科普 | 降雪量≠积雪深度？  降雪量与降雪深度是两个不同的概念，降雪量并不是指积雪深度。  在气象观测上，降水量是指某一时段内的未经蒸发、渗透、流失的降水，在水平面上积累的深度，以毫米为单位，取一位小数。如果是降雪量，则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Snowfall&#x2F;Snow depth | 降雪量&#x2F;降雪深度">
+<meta property="og:url" content="https://waipangsze.github.io/2026/01/23/Snowfall-Snow-depth/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="MPAS | WRF | precipitation calculation   中国气象局  降雪量与降雪深度 | 中国气象报社 降雪的形成条件及等级划分 | 中国气象报社 科普 | 降雪量≠积雪深度？  降雪量与降雪深度是两个不同的概念，降雪量并不是指积雪深度。  在气象观测上，降水量是指某一时段内的未经蒸发、渗透、流失的降水，在水平面上积累的深度，以毫米为单位，取一位小数。如果是降雪量，则">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/mker4Mc.png">
+<meta property="article:published_time" content="2026-01-22T22:15:00.000Z">
+<meta property="article:modified_time" content="2026-01-23T08:13:34.446Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="MAPS">
+<meta property="article:tag" content="Snowfall">
+<meta property="article:tag" content="Snow depth">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/mker4Mc.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Snowfall/Snow depth | 降雪量/降雪深度 - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/mker4Mc.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Snowfall/Snow depth | 降雪量/降雪深度"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-23 06:15" pubdate>
+          January 23, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Snowfall/Snow depth | 降雪量/降雪深度</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li><a href="https://waipangsze.github.io/2025/03/10/MPAS-WRF-precipitation-calculation/">MPAS | WRF | precipitation calculation</a></li>
+</ul>
+<hr />
+<h1 id="中国气象局">中国气象局</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cma.gov.cn/2011xzt/2012zhuant/20120302/2012030205/201203020502/201203/t20120306_163750.html">降雪量与降雪深度 | 中国气象报社</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cma.gov.cn/2011xzt/kpbd/SnowStorm/2018050902/201811/t20181106_482641.html">降雪的形成条件及等级划分 | 中国气象报社</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/XSAuyfz4QGVu5pFLLXJKCg">科普 | 降雪量≠积雪深度？</a></li>
+</ul>
+<p><strong>降雪量</strong>与<strong>降雪深度</strong>是两个不同的概念，<strong>降雪量并不是指积雪深度</strong>。</p>
+<ul>
+<li>在气象观测上，降水量是指某一时段内的未经蒸发、渗透、流失的降水，在水平面上积累的深度，以毫米为单位，取一位小数。如果是降雪量，则指溶化后的水，在水平面上积累的深度，对于降雪量的大小需要用统一规定的标准进行界定，它是气象观测员用标准的降水观测容器（俗称雨量器），将收集到的雪水融化后测量出的量度，<strong>以毫米为单位</strong>，亦称<strong>降水量</strong>。目前气象部门安装有固态降水自动观测站,可适时自动观测降雪量。</li>
+<li>而<strong>积雪深度</strong>是指从积雪表面到地面的积雪垂直深度，是指气象员使用量雪尺在观测场内或附近平坦、开阔的地方，当落地雪尚未融化时，<strong>测得的积雪的深度（厚度），以厘米为单位</strong>。</li>
+</ul>
+<p>当然，降雪量与降雪深度之间存在一定的关系，下雪大，积雪必定深厚，此外积雪厚度还与气温、风等气象要素相连，温度高，积雪很快就会融化，而温度低，积雪就不易融化甚至维持一段较长时间了。</p>
+<ul>
+<li>按照降水量强度，降雪分为小雪、中雪、大雪和暴雪四个等级。
+<ul>
+<li><strong>小雪</strong>：是指下雪时水平能见距离等于或大于1000米，地面积雪深度在3厘米以下，降水量级为24小时降雪量在0.1～2.4毫米之间。</li>
+<li><strong>中雪</strong>：是指下雪时水平能见距离在500～1000米之间，地面积雪深度为3～5厘米，24小时降雪量达2.5～4.9毫米。</li>
+<li><strong>大雪</strong>：是指下雪时能见度很差，水平能见距离小于500米，地面积雪深度等于或大于5厘米，24小时降雪量达5.0～9.9毫米。</li>
+<li>如果有降雪而没有形成积雪，一般称之为“零星小雪”。</li>
+<li>当24小时降雪量达到10.0～19.9毫米时为<strong>暴雪</strong>，20.0～29.9毫米为<strong>大暴雪</strong>，超过30.0毫米为特<strong>大暴雪</strong>。</li>
+</ul></li>
+</ul>
+<div class="note note-primary">
+            <p>当降雪落地后无融化时，一般而言，<strong>在北方地区 1毫米降雪可形成的积雪深度有8～10毫米</strong>，<strong>在南方地区积雪深度有6～8毫米</strong>。</p>
+          </div>
+<p>日常生活中流传的“1毫米降雪量对应1厘米积雪深度”，其实是一个非常粗略的经验值，并非科学意义上的固定换算公式。两者的实际比例，核心取决于雪的“蓬松度”，而雪的蓬松度又由雪花的类型和形成环境决定。</p>
+<p>雪花的本质是冰晶，不同条件下形成的雪花，密度差异极大。我们可以把雪花分为<strong>干雪</strong>和<strong>湿雪</strong>两类：干雪通常形成于气温较低的环境（一般在-10℃以下），这类雪花晶体结构疏松，内部空隙多，含水量低，蓬松度很高。此时，1毫米的降雪量对应的积雪深度可能达到0.9厘米甚至1.2厘米；而湿雪则形成于气温接近0℃的环境，雪花在降落过程中会部分融化，又重新冻结，晶体结构紧密，含水量高，蓬松度低。这种情况下，1毫米的降雪量对应的积雪深度可能只有0.6厘米到0.8厘米左右。</p>
+<ul>
+<li>干雪（气温低、雪粒松散）：密度小，1毫米降雪量大概能积1-1.2厘米积雪，手感蓬松，适合堆雪人；</li>
+<li>湿雪（气温接近0℃、含水分多）：密度大，1毫米降雪量可能只积0.5-0.8厘米积雪，手感沉重，容易压断树枝。</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/5SF8hRn.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/WnhXkfd.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/MoIVKgr.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<h2 id="figures">Figures</h2>
+<h3 id="降水量"><strong>降水量</strong></h3>
+<ul>
+<li><code>mm of water equivalent</code></li>
+</ul>
+<figure>
+<img src="https://i.imgur.com/rVe9gY3.png" srcset="/img/loading.gif" lazyload alt="https://www.nmc.cn/publish/precipitation/1-day.html" /><figcaption><a target="_blank" rel="noopener" href="https://www.nmc.cn/publish/precipitation/1-day.html" class="uri">https://www.nmc.cn/publish/precipitation/1-day.html</a></figcaption>
+</figure>
+<figure>
+<img src="https://i.imgur.com/mker4Mc.png" srcset="/img/loading.gif" lazyload alt="https://www.nmc.cn/publish/precipitation/1-day.html" /><figcaption><a target="_blank" rel="noopener" href="https://www.nmc.cn/publish/precipitation/1-day.html" class="uri">https://www.nmc.cn/publish/precipitation/1-day.html</a></figcaption>
+</figure>
+<h2 id="colormap">colormap</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs log">#ffffff, #cccccc, #a2a2a2, #707070, #474446, #753eee, #4e006f<br>0.01, 2.5, 5.0, 10.0, 20.0, 30.0<br></code></pre></td></tr></table></figure>
+<h1 id="nwp">NWP</h1>
+<p>In NWP models like WRF and MPAS, these three variables represent different physical aspects of snow. Understanding the difference between a <strong>state variable</strong> (what is there now/<strong>instantaneous</strong>) and an <strong>accumulated variable</strong> (what has fallen over time) is key.</p>
+<table>
+
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Full Name</th>
+<th>Units</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong><code>SNOWC</code></strong></td>
+<td>Snow Cover</td>
+<td>Fraction (<span class="math inline">\(0–1\)</span>)</td>
+<td><strong>State</strong></td>
+<td>The horizontal area of the grid cell covered by snow.</td>
+</tr>
+<tr class="even">
+<td><strong><code>SNOWH</code></strong></td>
+<td>Snow Depth</td>
+<td>Meters (<span class="math inline">\(m\)</span>)</td>
+<td><strong>State</strong></td>
+<td>The actual physical height (thickness) of the snowpack on the ground.</td>
+</tr>
+<tr class="odd">
+<td><strong><code>ACSNOW</code></strong></td>
+<td>Accumulated Snow</td>
+<td><span class="math inline">\(kg/m^2\)</span> (or <span class="math inline">\(mm\)</span>)</td>
+<td><strong>Accumulated</strong></td>
+<td>The total amount of snow that has fallen since the model start (Water Equivalent).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="snowc-snow-cover">1. <code>SNOWC</code> (Snow Cover)</h2>
+<ul>
+<li><strong>What it represents:</strong> The "horizontal" extent. If <code>SNOWC</code> is <span class="math inline">\(0.5\)</span> , it means <span class="math inline">\(50\%\)</span> of that grid box is covered in snow and <span class="math inline">\(50\%\)</span> is bare soil or vegetation.</li>
+<li><strong>Why it matters:</strong> It is used by the Land Surface Model (LSM) to calculate the <strong>Grid Albedo</strong>. If the ground is only half-covered, the model will blend the high albedo of snow with the lower albedo of the soil.</li>
+<li><strong>Common trap:</strong> Even if you have a very deep snowpack (<span class="math inline">\(1m\)</span>), <code>SNOWC</code> can never exceed <span class="math inline">\(1\)</span>.</li>
+</ul>
+<h2 id="snowh-snow-depth">2. <code>SNOWH</code> (Snow Depth)</h2>
+<ul>
+<li><strong>What it represents:</strong> The "vertical" extent. This is what you would measure with a ruler in your backyard.</li>
+<li><strong>Dynamic Nature:</strong> Unlike the variables that track water mass, <code>SNOWH</code> changes due to <strong>compaction</strong>. Over time, the model (especially Noah-MP) simulates the snow settling under its own weight, so the depth may decrease even if no melting occurs.</li>
+<li><strong>Note:</strong> If you are comparing model data to weather station observations, this is the variable you want.</li>
+</ul>
+<h2 id="acsnow-accumulated-snowfall">3. <code>ACSNOW</code> (Accumulated Snowfall)</h2>
+<ul>
+<li><strong>What it represents:</strong> The "history" of the run. This is a bucket that collects every snowflake that hits the ground.</li>
+<li><strong>The Key Difference:</strong></li>
+<li><strong><code>SNOW</code> (SWE)</strong> tells you how much snow is on the ground <strong>right now</strong>. If the snow melts, <code>SNOW</code> goes down.</li>
+<li><p><strong><code>ACSNOW</code></strong> tells you how much has fallen <strong>in total</strong>. If the snow melts, <code>ACSNOW</code> <strong>does not</strong> go down. It only increases.</p></li>
+<li><p><strong>Units:</strong> While it's called "snow," it is almost always stored as <strong>Liquid Water Equivalent</strong>. To get the "accumulated depth" in inches or cm, you would need to divide by a snow-to-liquid ratio (e.g., <span class="math inline">\(10:1\)</span>).</p></li>
+</ul>
+<h2 id="how-they-work-together">How they work together</h2>
+<p>Imagine a storm where <span class="math inline">\(10\text{ mm}\)</span> of water equivalent falls as snow.</p>
+<ol type="1">
+<li><strong><code>ACSNOW</code></strong> jumps from <span class="math inline">\(0\)</span> to <span class="math inline">\(10\)</span></li>
+<li><strong><code>SNOWH</code></strong> jumps from <span class="math inline">\(0\)</span> to <span class="math inline">\(0.1\text{ m}\)</span> (assuming a <span class="math inline">\(10:1\)</span> ratio).</li>
+<li><strong><code>SNOWC</code></strong> jumps from <span class="math inline">\(0\)</span> to <span class="math inline">\(1.0\)</span>.</li>
+</ol>
+<p>Six hours later, if half of that snow melts:</p>
+<ol type="1">
+<li><strong><code>ACSNOW</code></strong> stays at <span class="math inline">\(10\)</span> (it records the event, not the current state).</li>
+<li><strong><code>SNOWH</code></strong> drops to <span class="math inline">\(0.05\text{ m}\)</span>.</li>
+<li><strong><code>SNOWC</code></strong> might stay at <span class="math inline">\(1.0\)</span> (if the ground is still fully covered) or drop slightly if the melting is patchy.</li>
+</ol>
+<h1 id="wrf">WRF</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/how-to-get-hourly-snowfall.12370/">How to get hourly snowfall? | 2023</a>
+<ul>
+<li>If you're looking at a case that <strong>only had snowfall (no liquid precipitation)</strong>, then you can use the value of <code>RAINC + RAINNC</code> because these equal total convective and non-convective precipitation (including snow and ice). Otherwise, yes, I believe ACSNOW would be the way to go. It is initialized to zero at the model initial time and then accumulates over time. <strong>Regarding melting, this variable is handled differently in various surface physics schemes.</strong> For whichever surface scheme you're using, you can take a look at specific code in the <code>WRF/phys/module_sf_&lt;scheme&gt;.F</code> file (for e.g., if you're using Noah, look in module_sf_noahdrv.F). Another option would be the SNOWH variable, which is the physical snow depth. You would need to subtract the depth at the previous hour so determine the hourly rate.</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/how-to-calculate-acsnow.10360/">How to calculate ACSNOW | 2021</a>
+<ul>
+<li>This is true in general for WRF. <code>ACSNOW</code> is <strong>always initialized to be zero at the beginning of the model run</strong>, It is then calculated in various surface schemes . You can find related codes in <code>phys/module_sf_clm.F</code>, <code>phys/module_sf_noahdrv.F</code>. etc.</li>
+<li><img src="https://i.imgur.com/xxpXdIR.png" srcset="/img/loading.gif" lazyload width="600" /></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/question-about-snow-in-wrf.366/">question about snow in WRF | 2018</a>
+<ul>
+<li>You can probably use the variable <code>ACSNOW</code>, <strong>but you will need to turn it on,</strong> as the registry file does not have it automatically output. There are 2 ways to turn it on</li>
+</ul></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Meteorology/" class="category-chain-item">Meteorology</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/MAPS/" class="print-no-link">#MAPS</a>
+      
+        <a href="/tags/Snowfall/" class="print-no-link">#Snowfall</a>
+      
+        <a href="/tags/Snow-depth/" class="print-no-link">#Snow depth</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Snowfall/Snow depth | 降雪量/降雪深度</div>
+      <div>https://waipangsze.github.io/2026/01/23/Snowfall-Snow-depth/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 23, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>January 23, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/22/NWP-ERA5-hourly-time-series-data/" title="NWP | ERA5 hourly time-series data">
+                        <span class="hidden-mobile">NWP | ERA5 hourly time-series data</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

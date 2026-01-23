@@ -1,0 +1,999 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ERA5 dataset ERA5 ERA5T expver dimension issue ERA5 dataset (2) contains invariant variables MPAS | ERA5| Update SST and sea-ice fraction NWP | ERA5 | GRIB1 and GRIB2 WRF | ERA5 IC | SMOIS issue    E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | ERA5 hourly time-series data">
+<meta property="og:url" content="https://waipangsze.github.io/2026/01/22/NWP-ERA5-hourly-time-series-data/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="ERA5 dataset ERA5 ERA5T expver dimension issue ERA5 dataset (2) contains invariant variables MPAS | ERA5| Update SST and sea-ice fraction NWP | ERA5 | GRIB1 and GRIB2 WRF | ERA5 IC | SMOIS issue    E">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/IvH5kTx.png">
+<meta property="article:published_time" content="2026-01-21T22:35:00.000Z">
+<meta property="article:modified_time" content="2026-01-22T05:30:04.874Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="time-series">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/IvH5kTx.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | ERA5 hourly time-series data - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/IvH5kTx.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | ERA5 hourly time-series data"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-22 06:35" pubdate>
+          January 22, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          388 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | ERA5 hourly time-series data</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li><a href="https://waipangsze.github.io/2023/04/30/ERA5_dataset/">ERA5 dataset</a></li>
+<li><a href="https://waipangsze.github.io/2023/05/07/ERA5-expver-issue/">ERA5 ERA5T expver dimension issue</a></li>
+<li><a href="https://waipangsze.github.io/2023/05/11/ERA5-2-invariant-variables/">ERA5 dataset (2) contains invariant variables</a></li>
+<li><a href="https://waipangsze.github.io/2025/02/14/MPAS-ERA5-Update-SST-and-sea-ice-fraction/">MPAS | ERA5| Update SST and sea-ice fraction</a></li>
+<li><a href="https://waipangsze.github.io/2025/02/05/NWP-ERA5-GRIB1-GRIB2/">NWP | ERA5 | GRIB1 and GRIB2</a></li>
+<li><a href="https://waipangsze.github.io/2025/11/06/WRF-ERA5-IC-SMOIS-issue/">WRF | ERA5 IC | SMOIS issue</a></li>
+</ul>
+<hr />
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ecmwf-models.readthedocs.io/en/latest/variables_era5.html">ERA5 Variables</a></li>
+</ul>
+<hr />
+<h1 id="era5">ERA5</h1>
+<p>ERA5 is the fifth generation ECMWF atmospheric reanalysis of the global climate covering the period from January 1940 to present. ERA5 is produced by the Copernicus Climate Change Service (C3S) at ECMWF.</p>
+<p>ERA5 provides hourly estimates of a large number of atmospheric, land and oceanic climate variables. The data cover the Earth on a 31km grid and resolve the atmosphere using 137 levels from the surface up to a height of 80km. ERA5 includes information about uncertainties for all variables at reduced spatial and temporal resolutions.</p>
+<p><strong>ERA5 data has a typical latency of about 5 days (ERA5T)</strong> for near real-time data, providing preliminary hourly information before it's fully quality-controlled and finalized as the main ERA5 dataset, which can take months to fully consolidate. This means you can access recent data for about the last five days with a slight delay, suitable for detailed analysis of recent conditions, but be aware it's subject to revision.</p>
+<ul>
+<li>Key points about ERA5 latency:
+<ul>
+<li><strong>ERA5T (T for 'T'emporary/Preliminary)</strong>: This is the initial release, available up to about 5 days before the present, and is used for applications needing recent data.</li>
+<li><strong>Final ERA5</strong>: The full, verified dataset is released later, often with a delay of a couple of months from the current date.</li>
+</ul></li>
+</ul>
+<h1 id="era5-hourly-time-series-data">ERA5 hourly time-series data</h1>
+<ul>
+<li>17 Mar 2025
+<ul>
+<li>Please be aware that the generation of this dataset is using an alternative source for the ERA5 data and may be subject to changes over time (e.g. file format, data file structure, deprecation etc). This dataset should therefore be regarded as <strong>“experimental”</strong> and is not recommended for use in a production environment.</li>
+<li>Notification of changes via this catalogue entry banner and/or in the <a target="_blank" rel="noopener" href="https://forum.ecmwf.int/">Forum</a> will be provided on best efforts.</li>
+</ul></li>
+</ul>
+<h1 id="era5-hourly-time-series-data-product-user-guide">ERA5 hourly time-series data: Product User Guide</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://confluence.ecmwf.int/pages/viewpage.action?pageId=505390919">ERA5 hourly time-series data: Product User Guide</a>
+<ul>
+<li>ERA5 is the fifth generation ECMWF reanalysis for the global climate and weather and currently covers the past 80 years. It covers the period from January 1940 to the present with hourly sampling and continues to be extended forward with 5 days behind real time.</li>
+<li>This dataset presented here is a subset of some parameters of the full CDS ERA5 single levels hourly dataset on 0.25 degrees resolution and is stored in Analysis Ready Cloud Optimised (ARCO) format, which has been implemented for retrieving long time-series for a single point in a efficient way. It is this source of ERA5 data that is used by the ERA-Explorer to ensure response times required for the interactive web-application.</li>
+</ul></li>
+</ul>
+<h2 id="spatial-grid">Spatial grid</h2>
+<p>The atmospheric parameters have a grid of 0.25 degrees as the wave parameters have a grid of 0.5 degrees.</p>
+<blockquote>
+<p>Please be aware when you select a "Location" on the form, the latitude and longitude values are rounded to the closest neighborhood point of the 0.25 degrees grid.</p>
+</blockquote>
+<h2 id="temporal-frequency">Temporal frequency</h2>
+<p>Temporal frequency of the data is <strong>hourly and every day has 24 hourly steps</strong>.</p>
+<h2 id="data-format">Data format</h2>
+<p>In the CDS, there are the options of retrieving the data in <strong>netCDF format</strong> or <strong>CSV format</strong>.</p>
+<h2 id="data-update-frequency">Data update frequency</h2>
+<ul>
+<li>ERA5 is updated on a daily basis. New daily data in ERA5 becomes available in ERA5 Time Series in a few hours.</li>
+<li>Variations in delivery times may occur due to the non-operational nature of this CDS service, as issues may arise which cause delays.</li>
+</ul>
+<h1 id="scripts">Scripts</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-timeseries?tab=download">ERA5 hourly time-series data on single levels from 1940 to present</a></li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">
+        <div class="fold-arrow">▶</div>run_downloand_ERA5_time_series.sh
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8f7bdefe">
+        <div class="fold-content">
+          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#------------------------------------------------#</span><br><span class="hljs-comment"># Author:         wpsze</span><br><span class="hljs-comment"># Email:          </span><br><span class="hljs-comment"># File:           run_downloand_ERA5_time_series.sh</span><br><span class="hljs-comment"># Date:           </span><br><span class="hljs-comment"># Version:        0.0 </span><br><span class="hljs-comment"># Description:    The purpose of the script</span><br><span class="hljs-comment"># Copyright (C):  2026 All rights reserved</span><br><span class="hljs-comment">#------------------------------------------------#</span><br><br><span class="hljs-comment">#set -e # stop the shell on first error</span><br><span class="hljs-comment">#set -u # fail when using an undefined variable</span><br><span class="hljs-comment">#set -x # echo script lines as they are executed</span><br><span class="hljs-built_in">set</span> -o pipefail<br><br><span class="hljs-built_in">source</span> /home/wpsze/micromamba/bin/activate venv <span class="hljs-comment">#micromamba activate venv</span><br><span class="hljs-built_in">export</span> SCRIPT_DIR=<span class="hljs-string">&quot;<span class="hljs-subst">$( cd <span class="hljs-string">&quot;<span class="hljs-subst">$( dirname <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;BASH_SOURCE[0]&#125;</span>&quot;</span> )</span>&quot;</span> &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd )</span>&quot;</span><br><br><span class="hljs-comment"># Get the system date in yyyy-mm-dd format</span><br>DEFAULT_DATE=$(<span class="hljs-built_in">date</span> -d<span class="hljs-string">&quot;-5 day&quot;</span> +%Y-%m-%d)<br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Shell Wrapper: Preparing to download data for <span class="hljs-variable">$DEFAULT_DATE</span>&quot;</span><br><br><span class="hljs-comment"># Create folder</span><br><span class="hljs-built_in">export</span> target_dir=<span class="hljs-variable">$&#123;DEFAULT_DATE:0:7&#125;</span>/<span class="hljs-variable">$&#123;DEFAULT_DATE&#125;</span><br><span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$&#123;target_dir&#125;</span><br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$&#123;target_dir&#125;</span><br><br><span class="hljs-comment"># Check if the file exists</span><br><span class="hljs-keyword">if</span> [ -f <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;DEFAULT_DATE&#125;</span>.csv&quot;</span> ]; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Check failed: <span class="hljs-variable">$&#123;DEFAULT_DATE&#125;</span>.csv already exists.&quot;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Exiting to avoid duplicate download.&quot;</span><br>    <span class="hljs-built_in">exit</span> 0<br><span class="hljs-keyword">fi</span><br><br><span class="hljs-comment"># Execute the python script</span><br>python3 <span class="hljs-variable">$&#123;SCRIPT_DIR&#125;</span>/download_ERA5_time_series.py <span class="hljs-string">&quot;<span class="hljs-variable">$DEFAULT_DATE</span>&quot;</span><br><br><span class="hljs-comment"># unzip file</span><br>unzip <span class="hljs-variable">$&#123;DEFAULT_DATE&#125;</span>.zip<br><br><span class="hljs-comment"># rename file</span><br><span class="hljs-built_in">mv</span> reanalysis-era5* <span class="hljs-variable">$&#123;DEFAULT_DATE&#125;</span>.csv<br><br><span class="hljs-comment"># remove zip fle</span><br><span class="hljs-built_in">rm</span> <span class="hljs-variable">$&#123;DEFAULT_DATE&#125;</span>.zip<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>download_ERA5_time_series.py
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
+        <div class="fold-content">
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> cdsapi<br><span class="hljs-keyword">import</span> argparse<br><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># Setup argument parser</span><br>    parser = argparse.ArgumentParser(description=<span class="hljs-string">&quot;Download ERA5 data for a specific date.&quot;</span>)<br>    parser.add_argument(<br>        <span class="hljs-string">&quot;date&quot;</span>, <br>        <span class="hljs-built_in">help</span>=<span class="hljs-string">&quot;Date in yyyy-mm-dd format&quot;</span><br>    )<br>    <br>    args = parser.parse_args()<br>    date_str = args.date<br>    target_file = <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;date_str&#125;</span>.zip&quot;</span><br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Requesting data for: <span class="hljs-subst">&#123;date_str&#125;</span>...&quot;</span>)<br><br>    client = cdsapi.Client()<br><br>    dataset = <span class="hljs-string">&quot;reanalysis-era5-single-levels-timeseries&quot;</span><br>    request = &#123;<br>        <span class="hljs-string">&quot;variable&quot;</span>: [<br>            <span class="hljs-string">&quot;2m_dewpoint_temperature&quot;</span>,<br>            <span class="hljs-string">&quot;10m_wind_gust_since_previous_post_processing&quot;</span>,<br>            <span class="hljs-string">&quot;mean_sea_level_pressure&quot;</span>,<br>            <span class="hljs-string">&quot;skin_temperature&quot;</span>,<br>            <span class="hljs-string">&quot;surface_pressure&quot;</span>,<br>            <span class="hljs-string">&quot;surface_solar_radiation_downwards&quot;</span>,<br>            <span class="hljs-string">&quot;sea_surface_temperature&quot;</span>,<br>            <span class="hljs-string">&quot;surface_thermal_radiation_downwards&quot;</span>,<br>            <span class="hljs-string">&quot;2m_temperature&quot;</span>,<br>            <span class="hljs-string">&quot;total_precipitation&quot;</span>,<br>            <span class="hljs-string">&quot;10m_u_component_of_wind&quot;</span>,<br>            <span class="hljs-string">&quot;10m_v_component_of_wind&quot;</span>,<br>            <span class="hljs-string">&quot;100m_u_component_of_wind&quot;</span>,<br>            <span class="hljs-string">&quot;100m_v_component_of_wind&quot;</span>,<br>            <span class="hljs-comment">#&quot;mean_wave_direction&quot;,</span><br>            <span class="hljs-comment">#&quot;mean_wave_period&quot;,</span><br>            <span class="hljs-comment">#&quot;significant_height_of_combined_wind_waves_and_swell&quot;</span><br>        ],<br>        <span class="hljs-string">&quot;location&quot;</span>: &#123;<span class="hljs-string">&quot;longitude&quot;</span>: <span class="hljs-number">117</span>, <span class="hljs-string">&quot;latitude&quot;</span>: <span class="hljs-number">36.5</span>&#125;,<br>        <span class="hljs-string">&quot;date&quot;</span>: [date_str],<br>        <span class="hljs-string">&quot;data_format&quot;</span>: <span class="hljs-string">&quot;csv&quot;</span><br>    &#125;<br><br>    <span class="hljs-keyword">try</span>:<br>        client.retrieve(dataset, request, target_file)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Successfully saved to <span class="hljs-subst">&#123;target_file&#125;</span>&quot;</span>)<br>    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;An error occurred: <span class="hljs-subst">&#123;e&#125;</span>&quot;</span>)<br>        sys.exit(<span class="hljs-number">1</span>)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/time-series/" class="print-no-link">#time-series</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | ERA5 hourly time-series data</div>
+      <div>https://waipangsze.github.io/2026/01/22/NWP-ERA5-hourly-time-series-data/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 22, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>January 22, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/01/23/Snowfall-Snow-depth/" title="Snowfall/Snow depth | 降雪量/降雪深度">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Snowfall/Snow depth | 降雪量/降雪深度</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/20/NWP-Tropical-Cyclone-Track%20Data-adecks_open-UCAR/" title="NWP | ADEckS | Tropical Cyclone Track Data | UCAR">
+                        <span class="hidden-mobile">NWP | ADEckS | Tropical Cyclone Track Data | UCAR</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
