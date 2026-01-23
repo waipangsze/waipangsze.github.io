@@ -2,15 +2,19 @@
 layout: post
 title: Snowfall/Snow depth | 降雪量/降雪深度
 categories: [Meteorology]
-tags: [NWP, MAPS, WRF]
+tags: [NWP, MAPS, WRF, Snowfall, Snow depth]
 author: wpsze
 math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 date: 2026-01-23 06:15:00
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/mker4Mc.png
+banner_img: https://i.imgur.com/mker4Mc.png
+---
+
+- [MPAS | WRF | precipitation calculation](https://waipangsze.github.io/2025/03/10/MPAS-WRF-precipitation-calculation/)
+
 ---
 
 # 中国气象局
@@ -52,7 +56,13 @@ banner_img:
 
 ## Figures
 
+### **降水量** 
 
+- `mm of water equivalent`
+
+![<https://www.nmc.cn/publish/precipitation/1-day.html>](https://i.imgur.com/rVe9gY3.png)
+
+![<https://www.nmc.cn/publish/precipitation/1-day.html>](https://i.imgur.com/mker4Mc.png)
 
 ## colormap
 
@@ -60,3 +70,62 @@ banner_img:
 #ffffff, #cccccc, #a2a2a2, #707070, #474446, #753eee, #4e006f
 0.01, 2.5, 5.0, 10.0, 20.0, 30.0
 ```
+
+# NWP
+
+In NWP models like WRF and MPAS, these three variables represent different physical aspects of snow. Understanding the difference between a **state variable** (what is there now/**instantaneous**) and an **accumulated variable** (what has fallen over time) is key.
+
+
+| Variable | Full Name | Units | Category | Description |
+| --- | --- | --- | --- | --- |
+| **`SNOWC`** | Snow Cover | Fraction ($0–1$) | **State** | The horizontal area of the grid cell covered by snow. |
+| **`SNOWH`** | Snow Depth | Meters ($m$) | **State** | The actual physical height (thickness) of the snowpack on the ground. |
+| **`ACSNOW`** | Accumulated Snow |  $kg/m^2$ (or $mm$) | **Accumulated** | The total amount of snow that has fallen since the model start (Water Equivalent). |
+
+---
+
+## 1. `SNOWC` (Snow Cover)
+
+* **What it represents:** The "horizontal" extent. If `SNOWC` is $0.5$ , it means $50\%$ of that grid box is covered in snow and $50\%$ is bare soil or vegetation.
+* **Why it matters:** It is used by the Land Surface Model (LSM) to calculate the **Grid Albedo**. If the ground is only half-covered, the model will blend the high albedo of snow with the lower albedo of the soil.
+* **Common trap:** Even if you have a very deep snowpack ($1m$), `SNOWC` can never exceed $1$.
+
+## 2. `SNOWH` (Snow Depth)
+
+* **What it represents:** The "vertical" extent. This is what you would measure with a ruler in your backyard.
+* **Dynamic Nature:** Unlike the variables that track water mass, `SNOWH` changes due to **compaction**. Over time, the model (especially Noah-MP) simulates the snow settling under its own weight, so the depth may decrease even if no melting occurs.
+* **Note:** If you are comparing model data to weather station observations, this is the variable you want.
+
+## 3. `ACSNOW` (Accumulated Snowfall)
+
+* **What it represents:** The "history" of the run. This is a bucket that collects every snowflake that hits the ground.
+* **The Key Difference:**
+* **`SNOW` (SWE)** tells you how much snow is on the ground **right now**. If the snow melts, `SNOW` goes down.
+* **`ACSNOW`** tells you how much has fallen **in total**. If the snow melts, `ACSNOW` **does not** go down. It only increases.
+
+
+* **Units:** While it's called "snow," it is almost always stored as **Liquid Water Equivalent**. To get the "accumulated depth" in inches or cm, you would need to divide by a snow-to-liquid ratio (e.g., $10:1$).
+
+## How they work together
+
+Imagine a storm where $10\text{ mm}$ of water equivalent falls as snow.
+
+1. **`ACSNOW`** jumps from  $0$ to $10$
+2. **`SNOWH`** jumps from  $0$ to $0.1\text{ m}$ (assuming a $10:1$ ratio).
+3. **`SNOWC`** jumps from  $0$ to $1.0$.
+
+Six hours later, if half of that snow melts:
+
+1. **`ACSNOW`** stays at  $10$ (it records the event, not the current state).
+2. **`SNOWH`** drops to  $0.05\text{ m}$.
+3. **`SNOWC`** might stay at $1.0$ (if the ground is still fully covered) or drop slightly if the melting is patchy.
+
+# WRF
+
+- [How to get hourly snowfall? | 2023](https://forum.mmm.ucar.edu/threads/how-to-get-hourly-snowfall.12370/)
+  - If you're looking at a case that **only had snowfall (no liquid precipitation)**, then you can use the value of `RAINC + RAINNC` because these equal total convective and non-convective precipitation (including snow and ice). Otherwise, yes, I believe ACSNOW would be the way to go. It is initialized to zero at the model initial time and then accumulates over time. **Regarding melting, this variable is handled differently in various surface physics schemes.** For whichever surface scheme you're using, you can take a look at specific code in the `WRF/phys/module_sf_<scheme>.F` file (for e.g., if you're using Noah, look in module_sf_noahdrv.F). Another option would be the SNOWH variable, which is the physical snow depth. You would need to subtract the depth at the previous hour so determine the hourly rate.
+- [How to calculate ACSNOW | 2021](https://forum.mmm.ucar.edu/threads/how-to-calculate-acsnow.10360/)
+  - This is true in general for WRF. `ACSNOW` is **always initialized to be zero at the beginning of the model run**, It is then calculated in various surface schemes . You can find related codes in `phys/module_sf_clm.F`, `phys/module_sf_noahdrv.F`. etc.
+  - ![](https://i.imgur.com/xxpXdIR.png){width=600}
+- [question about snow in WRF | 2018](https://forum.mmm.ucar.edu/threads/question-about-snow-in-wrf.366/)
+  - You can probably use the variable `ACSNOW`, **but you will need to turn it on,** as the registry file does not have it automatically output. There are 2 ways to turn it on
