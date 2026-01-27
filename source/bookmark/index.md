@@ -39,8 +39,16 @@ date: 2024-09-30 21:26:27
   - [数据同化的算法演变：3DVar、EKF、EnKF (**推薦**)| 海洋学院，沈浙奇，2024年6月](https://curian127.github.io/From3dVarToEnKF.html)
   - [微信公众號](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzkxNjczOTc3Nw==&action=getalbum&album_id=3873066994576556039&scene=173&subscene=&sessionid=svr_955f66a00a8&enterid=1742432287&from_msgid=2247485004&from_itemidx=1&count=3&nolastread=1#wechat_redirect)
 - [CUHK Atmospheric Dynamics Group](https://atmosphericdynamicsgroup.github.io/)
-- [香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)
 - [时间、历法与 NetCDF 中的时间坐标](https://mp.weixin.qq.com/s/E9s2zHbyX2LmJVcR9rEFxw)
+
+### 測資料庫
+
+- [香港自動氣象站氣候觀測資料庫](https://i-lens.hk/hkweather/)
+- [https://q-weather.info/](https://q-weather.info/)
+- [https://119.29.229.118:8081/index](https://119.29.229.118:8081/index)
+- [https://www.weather.com.cn/](https://www.weather.com.cn/)
+- [https://rp5.ru/Weather_in_the_world](https://rp5.ru/Weather_in_the_world)
+- [广西壮族自治区水文水资源局版](http://124.227.12.36:8259/)
 
 ## 空氣污染
 
@@ -49,6 +57,8 @@ date: 2024-09-30 21:26:27
 
 ## CFD
 
+- [National Committee for Fluid Mechanics Films (NCFMF) | MIT | Youtube](https://web.mit.edu/hml/ncfmf.html)
+- [Album-Fluid-Motion-Van-Dyke](https://courses.washington.edu/me431/handouts/Album-Fluid-Motion-Van-Dyke.pdf)
 - [东岳流体 CFD-OpenFOAM | 数据驱动](http://www.dyfluid.com/)
   - [CFD: 公式速查/教材推荐](http://www.dyfluid.com/tensors.html)
   - [OpenFOAM Releases](https://openfoam.org/download/history/)

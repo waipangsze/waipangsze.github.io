@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Obs | China weather observations
+title: Obs | China weather observations | 中国天气网
 categories: [NWP]
 tags: [NWP, WRF, MPAS, HKO, GBA, China, obs]
 author: wpsze
