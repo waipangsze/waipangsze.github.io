@@ -50,6 +50,13 @@ date: 2024-09-30 21:26:27
 - [https://rp5.ru/Weather_in_the_world](https://rp5.ru/Weather_in_the_world)
 - [广西壮族自治区水文水资源局版](http://124.227.12.36:8259/)
 
+### sh/geojson/KMZ
+
+- [Download GADM data (version 4.1)](https://gadm.org/download_country.html)
+  - shapefiles
+  - geojson
+  - **KMZ for Google Map** 
+
 ## 空氣污染
 
 - [空氣品質模式簡介與操作 - 概說 | 鳥哥](https://linux.vbird.org/enve/illustration.php#)

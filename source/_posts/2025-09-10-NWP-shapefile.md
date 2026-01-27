@@ -652,6 +652,15 @@ end
 
 ![](https://i.imgur.com/htVo0nI.png){width=400}
 
+
+# Download
+
+- [Download GADM data (version 4.1)](https://gadm.org/download_country.html)
+  - shapefiles
+  - geojson
+  - **KMZ for Google Map** 
+    - ![](https://i.imgur.com/aLxlrpC.png)
+
 # Files
 
 ## ne_10m_admin_0_countries (Admin 0 – Countries)
