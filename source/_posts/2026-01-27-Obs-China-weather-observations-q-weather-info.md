@@ -62,3 +62,77 @@ banner_img: https://i.imgur.com/wbciBdw.png
 2019-06-03 23:00 +0800,22.9,1001.1,68,127/SE,7.2,0.0,6.271
 2019-06-04 00:00 +0800,21.3,1001.4,78,124/SE,2.7,0.0,4.253
 ```
+
+# get station's info
+
+{% fold info @get_stations_info.sh %}
+```sh
+#!/bin/bash
+
+set -o pipefail
+
+source /home/wpsze/micromamba/bin/activate venv 
+export SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+#!/bin/bash
+
+# 定义输出文件名
+input_file="all_stations.csv"
+output="info_stations_data.csv"
+
+# 检查输入文件是否存在
+if [ ! -f "$input_file" ]; then
+    echo "错误: 找不到文件 $input_file"
+    exit 1
+fi
+
+echo "开始从 $input_file 读取编号并抓取数据..."
+
+# 写入表头
+echo "WMO编号,站名,所在市,纬度,经度,高度" > $output
+
+echo "开始提取数据..."
+
+# 逐行读取输入文件 (忽略空行)
+while IFS= read -r id || [ -n "$id" ]; do
+    # 去除编号两端的空格或回车符
+    id=$(echo "$id" | xargs)
+    
+    # 如果行不为空则执行
+    if [ -n "$id" ]; then        
+        # 获取网页源码
+        url="https://q-weather.info/weather/$id/"
+        # 使用 curl 获取 HTML，-s 静默模式
+        html=$(curl -s $url)
+
+        # 1. 提取站名: 取 <td>站名</td> 下一行的数据
+        name=$(echo "$html" | grep -A 1 "<td>站名</td>" | tail -n 1 | sed 's/.*<td>\(.*\)<\/td>.*/\1/')
+
+        # 2. 提取城市: 取 <td>所在市</td> 下一行的数据
+        city=$(echo "$html" | grep -A 1 "<td>所在市</td>" | tail -n 1 | sed 's/.*<td>\(.*\)<\/td>.*/\1/')
+
+        # 3. 提取地理位置: 取 <td>地理位置</td> 下一行开始的块，并移除 HTML 标签和多余空格
+        geo_block=$(echo "$html" | grep -A 4 "<td>地理位置</td>" | tail -n 4)
+        
+        # 分别提取纬度、经度、高度
+        lat=$(echo "$geo_block" | sed -n '1p' | sed 's/<td>//g' | sed 's/N<br \/>//g' | xargs)
+        lon=$(echo "$geo_block" | sed -n '2p' | sed 's/E<br \/>//g' | xargs)
+        alt=$(echo "$geo_block" | sed -n '3p' | sed 's/<br \/>//g' | sed 's/m<\/td>//g' | xargs)
+
+        # 如果抓取到了站名，则写入文件
+        if [ -n "$name" ]; then
+            echo "$id, $name, $city, $lat, $lon, $alt" >> $output
+            echo "已处理: $id ($name)"
+        else
+            echo "错误: 无法获取站点 $id 的信息"
+        fi
+
+        # 稍微延迟，保护服务器
+        sleep 2.0
+    fi
+done < "$input_file"
+
+echo "抓取完成！结果保存在 $output"
+```
+{% endfold %}
+
