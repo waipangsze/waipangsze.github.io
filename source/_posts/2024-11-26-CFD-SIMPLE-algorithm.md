@@ -145,6 +145,9 @@ $$
 - 這裡，我們近似地忽略四周鄰點速度修正值的影響，即設係數 $a_{nb}=0$（這就是**半隱式方法**的意義，**保留這部分就是全隱**了）
 - **Explicit** vs **Implicit** vs **Semi-Implicit (not fully implicit)**
 - In a **fully implicit** system, every change in pressure at one node would instantaneously account for the velocity changes at all neighboring nodes.
+- **Why this makes it "Semi"**:
+  - Implicit part: The pressure correction $p'$ is solved globally (implicitly) across the whole domain using a matrix.
+  - Explicit part: The velocity correction $u'$ is calculated locally (explicitly) based only on the local pressure gradient, ignoring how neighbors are moving.
 {% endnote %}
 
 因此，修正後的速度為：
@@ -244,6 +247,8 @@ Yes, this is exactly where the "fun" (and the difficulty) of the Navier-Stokes e
 
 In the advection term $\rho u \frac{\partial u}{\partial x}$, the velocity $u$ is both the **carrier (the flow moving the fluid)** and the **quantity being carried (the momentum)**.
 
+Consider **Central Differencing Scheme (CDS)**, 
+
 $$
 \begin{cases}
 \rho u \frac{\partial u}{\partial x} = \mu \frac{\partial^2 u}{\partial x^2} + S \\
@@ -254,6 +259,20 @@ D = \frac{\mu}{\Delta x^2} \mbox{(Diffusion coefficient)} \\
 \underbrace{(-C - D)}_{a_W} u_{i-1} + \underbrace{(2D)}_{a_P} u_i + \underbrace{(C - D)}_{a_E} u_{i+1} = S_i
 \end{cases}
 $$
+
+For a domain with $n$ interior points, this creates a **Tridiagonal Matrix**. If we assume **Dirichlet boundary conditions** ($u_0$ and $u_{n+1}$ are known), the system $\mathbf{A} \mathbf{u} = \mathbf{b}$ looks like this:
+
+$$
+\begin{bmatrix} a_P & a_E & 0 & \cdots & 0 \\ a_W & a_P & a_E & \cdots & 0 \\ 0 & a_W & a_P & \ddots & \vdots \\ \vdots & \vdots & \ddots & \ddots & a_E \\ 0 & 0 & \cdots & a_W & a_P \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \\ u_3 \\ \vdots \\ u_n \end{bmatrix} = \begin{bmatrix} S_1 - a_W u_0 \\ S_2 \\ S_3 \\ \vdots \\ S_n - a_E u_{n+1} \end{bmatrix}
+$$
+
+- Key Characteristics of the **Central Differencing Scheme (CDS) Matrix**
+  - **Tridiagonal**: In 1D, the matrix only has non-zero values on the main diagonal and the two immediate diagonals. In 2D/3D, it becomes "pentadiagonal" or "heptadiagonal."
+  - **Non-Symmetric**: Because of the advection term ($C$), $a_W \neq a_E$. In pure diffusion ($\rho=0$), the matrix is symmetric.
+  - **Diagonal Dominance**: For the solver to be stable, we ideally want $|a_P| \geq \sum |a_{nb}|$.
+    - With CDS, if the velocity (convection) is too high, the $D$ term is "overpowered."
+    - If $|C| > |D|$, the matrix loses diagonal dominance, leading to the non-physical oscillations we discussed earlier.
+
 
 ## 1. The Linearization Strategy
 
@@ -295,7 +314,7 @@ Recall that for a matrix solver to be stable, we want the diagonal $a_P$ to be l
 
 In Central Differencing (CDS), look at $a_E = C - D$. If the velocity $u^\circ$ is very high, $C$ becomes much larger than $D$. This can make the neighbor coefficients positive or negative in a way that destroys the diagonal dominance of the matrix.
 
-This is exactly why high-speed (high Reynolds number) flows often crash when using Central Differencing—the "coefficients depending on $u$" make the matrix mathematically "unhealthy."
+**This is exactly why high-speed (high Reynolds number) flows often crash when using Central Differencing—the "coefficients depending on $u$" make the matrix mathematically "unhealthy."**
 
 ## Summary of the "Coefficient Loop":
 
@@ -309,9 +328,9 @@ This is exactly why high-speed (high Reynolds number) flows often crash when usi
 2. [珐式的CFD笔记 02：SIMPLE算法（2）交错网格](https://zhuanlan.zhihu.com/p/385224499)
 3. [珐式的CFD笔记 03：SIMPLE算法（3）稳态问题交错网格的SIMPLE算法](https://zhuanlan.zhihu.com/p/386201003)
 4. [5 交错网格与SIMPLE算法（末尾有彩蛋）](https://www.cnblogs.com/yukibvvd/p/18636761/5-cross-grid-and-simple-algorithm-2xwxj)
-5. [第6章 回流问题流动－传热 耦合计算的数值方法](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.0.pdf)
-6. [6.4 原始变量顺序求解流场的 压力修正方法](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf)
+5. [6.4 原始变量顺序求解流场的 压力修正方法 | 胡 茂 彬](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf)
+6. [第6章 回流问题流动－传热 耦合计算的数值方法](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.0.pdf)
 7. [OpenFOAM编程案例 | 14 SIMPLE算法](https://mp.weixin.qq.com/s/vEoW0lTb5QbfTFs7FZwGQQ)
 8. [[CFD] The SIMPLE Algorithm (to solve incompressible Navier-Stokes)](https://www.youtube.com/watch?v=OOILoJ1zuiw&ab_channel=FluidMechanics101)
-9. [什么是SIMPLE及PISO算法？](https://zhuanlan.zhihu.com/p/126368311?utm_psn=1845836334389919744)
+9.  [什么是SIMPLE及PISO算法？](https://zhuanlan.zhihu.com/p/126368311?utm_psn=1845836334389919744)
 10. [SIMPLE algorithm description](https://www.cfdsupport.com/OpenFOAM-Training-by-CFD-Support/node199.html)
