@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-11-26T05:36:00.000Z">
-<meta property="article:modified_time" content="2026-02-06T09:28:48.980Z">
+<meta property="article:modified_time" content="2026-02-06T10:00:54.085Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -357,7 +357,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.8k words
+          2.9k words
         
       </span>
     
@@ -368,7 +368,7 @@
         
         
         
-          24 mins
+          25 mins
         
       </span>
     
@@ -515,7 +515,7 @@ a_t w_t&#39; = A_t (p_{P}&#39; - p_T&#39;)
 \quad (4)
 \]</span></p>
 <div class="note note-primary">
-            <ul><li>這裡，我們近似地忽略四周鄰點速度修正值的影響，即設係數 <span class="math inline">\(a_{nb}=0\)</span>（這就是<strong>半隱式方法</strong>的意義，<strong>保留這部分就是全隱</strong>了）</li><li><strong>Explicit</strong> vs <strong>Implicit</strong> vs <strong>Semi-Implicit (not fully implicit)</strong></li><li>In a <strong>fully implicit</strong> system, every change in pressure at one node would instantaneously account for the velocity changes at all neighboring nodes.</li></ul>
+            <ul><li>這裡，我們近似地忽略四周鄰點速度修正值的影響，即設係數 <span class="math inline">\(a_{nb}=0\)</span>（這就是<strong>半隱式方法</strong>的意義，<strong>保留這部分就是全隱</strong>了）</li><li><strong>Explicit</strong> vs <strong>Implicit</strong> vs <strong>Semi-Implicit (not fully implicit)</strong></li><li>In a <strong>fully implicit</strong> system, every change in pressure at one node would instantaneously account for the velocity changes at all neighboring nodes.</li><li><strong>Why this makes it "Semi"</strong>:<ul><li>Implicit part: The pressure correction <span class="math inline">\(p&#39;\)</span> is solved globally (implicitly) across the whole domain using a matrix.</li><li>Explicit part: The velocity correction <span class="math inline">\(u&#39;\)</span> is calculated locally (explicitly) based only on the local pressure gradient, ignoring how neighbors are moving.</li></ul></li></ul>
           </div>
 <p>因此，修正後的速度為：</p>
 <p><span class="math display">\[
@@ -593,6 +593,7 @@ a_P p_P&#39; = a_W p_W&#39; + a_E p_E&#39; + a_S p_S&#39; + a_N p_N&#39; + a_B p
 <h1 id="q-動量方程的離散方程-linearization">Q: 動量方程的離散方程 Linearization ?</h1>
 <p>Yes, this is exactly where the "fun" (and the difficulty) of the Navier-Stokes equations lies! This is the Non-Linearity of fluid dynamics.</p>
 <p>In the advection term <span class="math inline">\(\rho u \frac{\partial u}{\partial x}\)</span>, the velocity <span class="math inline">\(u\)</span> is both the <strong>carrier (the flow moving the fluid)</strong> and the <strong>quantity being carried (the momentum)</strong>.</p>
+<p>Consider <strong>Central Differencing Scheme (CDS)</strong>,</p>
 <p><span class="math display">\[
 \begin{cases}
 \rho u \frac{\partial u}{\partial x} = \mu \frac{\partial^2 u}{\partial x^2} + S \\
@@ -603,6 +604,22 @@ D = \frac{\mu}{\Delta x^2} \mbox{(Diffusion coefficient)} \\
 \underbrace{(-C - D)}_{a_W} u_{i-1} + \underbrace{(2D)}_{a_P} u_i + \underbrace{(C - D)}_{a_E} u_{i+1} = S_i
 \end{cases}
 \]</span></p>
+<p>For a domain with <span class="math inline">\(n\)</span> interior points, this creates a <strong>Tridiagonal Matrix</strong>. If we assume <strong>Dirichlet boundary conditions</strong> (<span class="math inline">\(u_0\)</span> and <span class="math inline">\(u_{n+1}\)</span> are known), the system <span class="math inline">\(\mathbf{A} \mathbf{u} = \mathbf{b}\)</span> looks like this:</p>
+<p><span class="math display">\[
+\begin{bmatrix} a_P &amp; a_E &amp; 0 &amp; \cdots &amp; 0 \\ a_W &amp; a_P &amp; a_E &amp; \cdots &amp; 0 \\ 0 &amp; a_W &amp; a_P &amp; \ddots &amp; \vdots \\ \vdots &amp; \vdots &amp; \ddots &amp; \ddots &amp; a_E \\ 0 &amp; 0 &amp; \cdots &amp; a_W &amp; a_P \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \\ u_3 \\ \vdots \\ u_n \end{bmatrix} = \begin{bmatrix} S_1 - a_W u_0 \\ S_2 \\ S_3 \\ \vdots \\ S_n - a_E u_{n+1} \end{bmatrix}
+\]</span></p>
+<ul>
+<li>Key Characteristics of the <strong>Central Differencing Scheme (CDS) Matrix</strong>
+<ul>
+<li><strong>Tridiagonal</strong>: In 1D, the matrix only has non-zero values on the main diagonal and the two immediate diagonals. In 2D/3D, it becomes "pentadiagonal" or "heptadiagonal."</li>
+<li><strong>Non-Symmetric</strong>: Because of the advection term (<span class="math inline">\(C\)</span>), <span class="math inline">\(a_W \neq a_E\)</span>. In pure diffusion (<span class="math inline">\(\rho=0\)</span>), the matrix is symmetric.</li>
+<li><strong>Diagonal Dominance</strong>: For the solver to be stable, we ideally want <span class="math inline">\(|a_P| \geq \sum |a_{nb}|\)</span>.
+<ul>
+<li>With CDS, if the velocity (convection) is too high, the <span class="math inline">\(D\)</span> term is "overpowered."</li>
+<li>If <span class="math inline">\(|C| &gt; |D|\)</span>, the matrix loses diagonal dominance, leading to the non-physical oscillations we discussed earlier.</li>
+</ul></li>
+</ul></li>
+</ul>
 <h2 id="the-linearization-strategy">1. The Linearization Strategy</h2>
 <p>Computers cannot solve a system of equations where the unknowns are multiplied by each other (like <span class="math inline">\(u_i \cdot u_{i+1}\)</span>) in a single direct step. We must linearize the equation to create the matrix <span class="math inline">\(\mathbf{A} \mathbf{u} = \mathbf{b}\)</span>.</p>
 <p>In the SIMPLE algorithm, we use the values from the previous iteration (notated with a superscript <span class="math inline">\(\circ\)</span>) to calculate the coefficients, while the current iteration's values remain the unknowns.</p>
@@ -629,7 +646,7 @@ D = \frac{\mu}{\Delta x^2} \mbox{(Diffusion coefficient)} \\
 <h2 id="the-stability-risk-diagonal-dominance">4. The Stability Risk (Diagonal Dominance)</h2>
 <p>Recall that for a matrix solver to be stable, we want the diagonal <span class="math inline">\(a_P\)</span> to be larger than the sum of the neighbors: <span class="math inline">\(|a_P| &gt; |a_W| + |a_E|\)</span>.</p>
 <p>In Central Differencing (CDS), look at <span class="math inline">\(a_E = C - D\)</span>. If the velocity <span class="math inline">\(u^\circ\)</span> is very high, <span class="math inline">\(C\)</span> becomes much larger than <span class="math inline">\(D\)</span>. This can make the neighbor coefficients positive or negative in a way that destroys the diagonal dominance of the matrix.</p>
-<p>This is exactly why high-speed (high Reynolds number) flows often crash when using Central Differencing—the "coefficients depending on <span class="math inline">\(u\)</span>" make the matrix mathematically "unhealthy."</p>
+<p><strong>This is exactly why high-speed (high Reynolds number) flows often crash when using Central Differencing—the "coefficients depending on <span class="math inline">\(u\)</span>" make the matrix mathematically "unhealthy."</strong></p>
 <h2 id="summary-of-the-coefficient-loop">Summary of the "Coefficient Loop":</h2>
 <ul>
 <li><span class="math inline">\(u\)</span> unknown: The value we are solving for in the current iteration.</li>
@@ -641,8 +658,8 @@ D = \frac{\mu}{\Delta x^2} \mbox{(Diffusion coefficient)} \\
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/385224499">珐式的CFD笔记 02：SIMPLE算法（2）交错网格</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/386201003">珐式的CFD笔记 03：SIMPLE算法（3）稳态问题交错网格的SIMPLE算法</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yukibvvd/p/18636761/5-cross-grid-and-simple-algorithm-2xwxj">5 交错网格与SIMPLE算法（末尾有彩蛋）</a></li>
+<li><a target="_blank" rel="noopener" href="http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf">6.4 原始变量顺序求解流场的 压力修正方法 | 胡 茂 彬</a></li>
 <li><a target="_blank" rel="noopener" href="http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.0.pdf">第6章 回流问题流动－传热 耦合计算的数值方法</a></li>
-<li><a target="_blank" rel="noopener" href="http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf">6.4 原始变量顺序求解流场的 压力修正方法</a></li>
 <li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/vEoW0lTb5QbfTFs7FZwGQQ">OpenFOAM编程案例 | 14 SIMPLE算法</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=OOILoJ1zuiw&amp;ab_channel=FluidMechanics101">[CFD] The SIMPLE Algorithm (to solve incompressible Navier-Stokes)</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/126368311?utm_psn=1845836334389919744">什么是SIMPLE及PISO算法？</a></li>
