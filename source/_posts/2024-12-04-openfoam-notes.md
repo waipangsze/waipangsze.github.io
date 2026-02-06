@@ -23,3 +23,11 @@ banner_img: https://i.imgur.com/GkV6pMK.png
       2. 3D Building Models: `OpenStreetMap (OSM)` data using Overpass API.
    2. `NVIDIA Modulus` and `PyTorch` are employed
 3. [Wall functions for the kappa-epsilon turbulence model in generalized nonorthogonal curvilinear coordinates | NASA 1992](https://ntrs.nasa.gov/citations/19920016719)
+
+# Books
+
+- [An introduction to computational fluid dynamics the finite volume method | Versteeg](https://www.researchgate.net/profile/Ghassan-Smaisim/post/FEM_mesh_generator/attachment/59d655b479197b80779acc78/AS%3A526908706508800%401502636233004/download/110+Versteeg+2007+an+introduction+to+computational+fluid+dynamics+the+finite+volume+method+2nd+edition.pdf)
+
+# Algorithm
+
+- [PISO 算法](https://marinecfd.xyz/post/piso-algorithm/)

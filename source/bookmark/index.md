@@ -64,12 +64,16 @@ date: 2024-09-30 21:26:27
 
 ## CFD
 
-- [National Committee for Fluid Mechanics Films (NCFMF) | MIT | Youtube](https://web.mit.edu/hml/ncfmf.html)
-- [Album-Fluid-Motion-Van-Dyke](https://courses.washington.edu/me431/handouts/Album-Fluid-Motion-Van-Dyke.pdf)
+- [**National Committee for Fluid Mechanics Films (NCFMF) | MIT | Youtube**](https://web.mit.edu/hml/ncfmf.html)
+- [**https://www.youtube.com/@CFDSupport/videos**](https://www.youtube.com/@CFDSupport/videos)
+  - [CFD | Video](https://waipangsze.github.io/2026/02/05/CFD-Video/)
+- [**Album-Fluid-Motion-Van-Dyke**](https://courses.washington.edu/me431/handouts/Album-Fluid-Motion-Van-Dyke.pdf)
 - [东岳流体 CFD-OpenFOAM | 数据驱动](http://www.dyfluid.com/)
   - [CFD: 公式速查/教材推荐](http://www.dyfluid.com/tensors.html)
   - [OpenFOAM Releases](https://openfoam.org/download/history/)
 -  [筆記/部落格列表](https://waipangsze.github.io/2024/12/04/openfoam-notes/)
+-  [Joel Guerrero's homepage | University of Genoa](http://www3.dicca.unige.it/guerrero/teaching_turbulence.html)
+-  [5 交错网格与SIMPLE算法（末尾有彩蛋）](https://www.cnblogs.com/yukibvvd/p/18636761/5-cross-grid-and-simple-algorithm-2xwxj)
 
 ## 生物信息學分析
 

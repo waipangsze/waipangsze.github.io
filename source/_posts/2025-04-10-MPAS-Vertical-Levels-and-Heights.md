@@ -13,7 +13,8 @@ index_img: https://i.imgur.com/ueKU0IE.png
 banner_img: https://i.imgur.com/ueKU0IE.png
 ---
 
-[WRF | Vertical Levels and Heights](https://waipangsze.github.io/2025/01/27/WRF-Vertical-Levels-and-Heights/)
+- [WRF | Vertical Levels and Heights](https://waipangsze.github.io/2025/01/27/WRF-Vertical-Levels-and-Heights/)
+- [Laprise, René. "**The Euler equations of motion with hydrostatic pressure as an independent variable**." Monthly weather review 120.1 (1992): 197-207.](https://journals.ametsoc.org/view/journals/mwre/120/1/1520-0493_1992_120_0197_teeomw_2_0_co_2.pdf)
 
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: Water Vapor Flux | 水汽通量
 categories: [Meteorology]
-tags: [Water Vapor Budget Equation, Water Vapor Flux, Precipitable Water]
+tags: [NWP, WRF, MPAS, Water Vapor Budget Equation, Water Vapor Flux, Precipitable Water]
 author: wpsze
 math: true
 mathjax: true
@@ -13,11 +13,11 @@ index_img: https://i.imgur.com/Ur9oZcE.png
 banner_img: https://i.imgur.com/Ur9oZcE.png
 ---
 
-# Water Vapor Budget Equation
+# Water Vapor Budget Equation (moisture budget equation)
 
-The water vapor budget equation dictates that the local change in atmospheric moisture **over an area** equals evaporation minus precipitation and net horizontal moisture transport.
+The water vapor budget equation (moisture budget equation) dictates that the local change in atmospheric moisture **over an area** equals evaporation minus precipitation and net horizontal moisture transport.
 
-The Water Vapor Budget Equation relates precipitable water $(PW)$ and water vapor flux divergence $\nabla \cdot \mathbf{Q}$ to precipitation $(P)$ and evaporation $(E)$: 
+The Water Vapor Budget Equation (moisture budget equation) relates precipitable water $(PW)$ and water vapor flux divergence $\nabla \cdot \mathbf{Q}$ to precipitation $(P)$ and evaporation $(E)$: 
 
 $$\frac{\partial PW}{\partial t}+\nabla \cdot \mathbf{Q}=E-P$$ 
 
@@ -180,7 +180,19 @@ $$\text{VFD} = m^2 \left[ \frac{\partial}{\partial x} \left( \frac{qu}{m} \right
 
 ---
 
+# WRF
+
+- [Output advection tendency of moisture variables](https://forum.mmm.ucar.edu/threads/output-advection-tendency-of-moisture-variables.8077/)
+- [Weather Research and Forecasting (WRF) model with moisture tracers](https://github.com/damianinsua/WRF-WVTs)
+  - The github branch you posted is from a WRF user, and we (UCAR) don't support codes specifically developed by individual users.
+
 # MPAS
+
+- [Yang, Q., L. R. Leung, S. A. Rauscher, T. D. Ringler, and M. A. Taylor, 2014: **Atmospheric Moisture Budget and Spatial Resolution Dependence of Precipitation Extremes in Aquaplanet Simulations**. J. Climate, 27, 3565–3581, https://doi.org/10.1175/JCLI-D-13-00468.1.](https://journals.ametsoc.org/view/journals/clim/27/10/jcli-d-13-00468.1.xml)
+- [Núñez Ocasio, K. M., & Rios‐Berrios, R. (2023). African easterly wave evolution and tropical cyclogenesis in a Pre‐Helene (2006) hindcast using the model for prediction across scales‐atmosphere (MPAS‐A). Journal of Advances in Modeling Earth Systems, 15(2), e2022MS003181.](https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1029/2022MS003181)
+- [Cheng, Y., Lu, Y., Zhou, P., & Tang, J. (2026). Variable Resolution Simulations Over the Tibetan Plateau: Insights From MPAS‐A Transitioning Across Convective‐Permitting, Gray Zone, and Quasi‐Hydrostatic Scales. Journal of Geophysical Research: Atmospheres, 131(3), e2025JD044470.](https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2025JD044470)
+- [MPAS moisture tracking? | Dec 24, 2025](https://forum.mmm.ucar.edu/threads/mpas-moisture-tracking.24835/)
+  - As far as I know, MPAS doesn't have the capability to track water vapor.
 
 ```xml
 <var name="precipw" type="real" dimensions="nCells Time" units="kg m^{-2}"
