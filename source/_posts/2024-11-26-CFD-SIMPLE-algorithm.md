@@ -324,13 +324,22 @@ In Central Differencing (CDS), look at $a_E = C - D$. If the velocity $u^\circ$ 
 
 # References
 
-1. [珐式的CFD笔记 01：SIMPLE算法（1）压力速度耦合的计算难点](https://zhuanlan.zhihu.com/p/384557517)
-2. [珐式的CFD笔记 02：SIMPLE算法（2）交错网格](https://zhuanlan.zhihu.com/p/385224499)
-3. [珐式的CFD笔记 03：SIMPLE算法（3）稳态问题交错网格的SIMPLE算法](https://zhuanlan.zhihu.com/p/386201003)
-4. [5 交错网格与SIMPLE算法（末尾有彩蛋）](https://www.cnblogs.com/yukibvvd/p/18636761/5-cross-grid-and-simple-algorithm-2xwxj)
-5. [6.4 原始变量顺序求解流场的 压力修正方法 | 胡 茂 彬](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf)
-6. [第6章 回流问题流动－传热 耦合计算的数值方法](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.0.pdf)
-7. [OpenFOAM编程案例 | 14 SIMPLE算法](https://mp.weixin.qq.com/s/vEoW0lTb5QbfTFs7FZwGQQ)
-8. [[CFD] The SIMPLE Algorithm (to solve incompressible Navier-Stokes)](https://www.youtube.com/watch?v=OOILoJ1zuiw&ab_channel=FluidMechanics101)
-9.  [什么是SIMPLE及PISO算法？](https://zhuanlan.zhihu.com/p/126368311?utm_psn=1845836334389919744)
-10. [SIMPLE algorithm description](https://www.cfdsupport.com/OpenFOAM-Training-by-CFD-Support/node199.html)
+1. [**第三章 压力与速度耦合算法研究进展 | 陶文铨**](https://nht.xjtu.edu.cn/__local/0/95/C1/94BF5BCACC263CDBA129967E44D_E50E2F8A_511209.pdf)
+   1. 两个基本简化假设 SIMPLE
+      1. 压力修正算法是一种预估－校正算法
+      2. 假设1：p*独立设定
+      3. 假设2：略去邻点速度修正量的影响。
+   2. SIMPLER完全克服了第一个简化假设（1980）
+   3. SIMPLEC减轻了第二个简化假设的影响（1984）
+   4. SIMPLEX-SIMPLEC思想的拓展 （1986)
+   5. 1986年提出的PISO算法则进行两次校正，在一定程度上该进了算法的收敛性
+2. [珐式的CFD笔记 01：SIMPLE算法（1）压力速度耦合的计算难点](https://zhuanlan.zhihu.com/p/384557517)
+3. [珐式的CFD笔记 02：SIMPLE算法（2）交错网格](https://zhuanlan.zhihu.com/p/385224499)
+4. [珐式的CFD笔记 03：SIMPLE算法（3）稳态问题交错网格的SIMPLE算法](https://zhuanlan.zhihu.com/p/386201003)
+5. [5 交错网格与SIMPLE算法（末尾有彩蛋）](https://www.cnblogs.com/yukibvvd/p/18636761/5-cross-grid-and-simple-algorithm-2xwxj)
+6. [6.4 原始变量顺序求解流场的 压力修正方法 | 胡 茂 彬](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.4.pdf)
+7. [第6章 回流问题流动－传热 耦合计算的数值方法](http://staff.ustc.edu.cn/~humaobin/course/cht/ppt/6.0.pdf)
+8. [OpenFOAM编程案例 | 14 SIMPLE算法](https://mp.weixin.qq.com/s/vEoW0lTb5QbfTFs7FZwGQQ)
+9.  [[CFD] The SIMPLE Algorithm (to solve incompressible Navier-Stokes)](https://www.youtube.com/watch?v=OOILoJ1zuiw&ab_channel=FluidMechanics101)
+10. [什么是SIMPLE及PISO算法？](https://zhuanlan.zhihu.com/p/126368311?utm_psn=1845836334389919744)
+11. [SIMPLE algorithm description](https://www.cfdsupport.com/OpenFOAM-Training-by-CFD-Support/node199.html)
