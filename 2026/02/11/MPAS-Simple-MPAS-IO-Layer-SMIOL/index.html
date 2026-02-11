@@ -1,0 +1,1060 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Simple MPAS I&#x2F;O Layer (SMIOL) The Simple MPAS I&#x2F;O Layer (SMIOL) is a lightweight, parallel I&#x2F;O library introduced in MPAS v8.0+ as an alternative to the Parallel I&#x2F;O (PIO) library. It provides necessa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS | Simple MPAS I&#x2F;O Layer (SMIOL)">
+<meta property="og:url" content="https://waipangsze.github.io/2026/02/11/MPAS-Simple-MPAS-IO-Layer-SMIOL/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Simple MPAS I&#x2F;O Layer (SMIOL) The Simple MPAS I&#x2F;O Layer (SMIOL) is a lightweight, parallel I&#x2F;O library introduced in MPAS v8.0+ as an alternative to the Parallel I&#x2F;O (PIO) library. It provides necessa">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/xBoWNBP.png">
+<meta property="article:published_time" content="2026-02-10T23:01:00.000Z">
+<meta property="article:modified_time" content="2026-02-11T07:18:38.815Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="SMIOL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/xBoWNBP.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS | Simple MPAS I/O Layer (SMIOL) - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/xBoWNBP.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS | Simple MPAS I/O Layer (SMIOL)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-02-11 07:01" pubdate>
+          February 11, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          320 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS | Simple MPAS I/O Layer (SMIOL)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="simple-mpas-io-layer-smiol">Simple MPAS I/O Layer (SMIOL)</h1>
+<p>The <strong>Simple MPAS I/O Layer (SMIOL)</strong> is a lightweight, parallel I/O library introduced in MPAS v8.0+ as an alternative to the Parallel I/O (PIO) library. It provides necessary parallel I/O functionality for reading/writing distributed arrays with minimal dependencies, relying solely on MPI and PNetCDF. SMIOL is enabled at compile time by not setting the $PIO environment variable.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/releases/tag/v8.0.0">https://github.com/MPAS-Dev/MPAS-Model/releases/tag/v8.0.0</a>
+<ul>
+<li>Introduce a new I/O layer, the <code>Simple MPAS I/O Layer</code>. <code>SMIOL</code> provides a subset of the parallel I/O functionality of PIO, but with a simplified design that minimizes external dependencies to just the <code>Parallel-NetCDF library</code>. When the <code>$PIO</code> environment variable is not set at compile time, <code>SMIOL</code> will be used in MPAS.</li>
+</ul></li>
+</ul>
+<h1 id="compiling">Compiling</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/lectures/downloading_and_compiling.pdf">https://www2.mmm.ucar.edu/projects/mpas/tutorial/Howard2024/lectures/downloading_and_compiling.pdf</a></li>
+</ul>
+<h2 id="setup">Setup</h2>
+<ul>
+<li>When the <code>$PIO</code> environment variable is not set at compile time, <code>SMIOL</code> will be used in MPAS.</li>
+<li>As you noted, the toggle for <code>SMIOL</code> happens at the compile stage. If the build system doesn't detect a <code>$PIO</code> path, it defaults to this "Simple" layer.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> JASPERLIB=<span class="hljs-variable">$libs_DIR</span><br><span class="hljs-built_in">export</span> PNETCDF_PATH=<span class="hljs-variable">$libs_DIR</span><br><span class="hljs-built_in">export</span> PNETCDF=<span class="hljs-variable">$libs_DIR</span><br><span class="hljs-comment">#export NETCDF_PATH=$libs_DIR</span><br><span class="hljs-comment">#export NETCDF=$libs_DIR</span><br><span class="hljs-comment">#export PIO_PATH=$libs_DIR</span><br><span class="hljs-comment">#export PIO=$libs_DIR</span><br></code></pre></td></tr></table></figure>
+<p>If success,</p>
+<ul>
+<li><code>Using the SMIOL library.</code> at the end of your log file.</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">
+        <div class="fold-arrow">▶</div>log
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dcdac752">
+        <div class="fold-content">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs log">*******************************************************************************<br>MPAS was built with default single-precision reals.<br>Debugging is off.<br>Parallel version is on.<br>Using the mpi_f08 module.<br>Papi libraries are off.<br>TAU Hooks are off.<br>MPAS was built without OpenMP support.<br>MPAS was built without OpenMP-offload GPU support.<br>MPAS was built without OpenACC accelerator support.<br>Position-dependent code was generated.<br>MPAS was built with .F files.<br>The native timer interface is being used<br>Using the SMIOL library.<br>*******************************************************************************<br>make[1]: Leaving directory &#x27;/home/wpsze/MPAS-A/intel-oneapi/mpasv831_SMIOL/build-mpas&#x27;<br>=== atmosphere_model (end) ====<br>  <br> Constructing tables for Thompson cloud microphysics scheme.<br> This may take as much as 15-20 minutes with an optimized build...<br> <br> --- building MP_THOMPSON_QRacrQG_DATA.DBL<br> <br> --- building MP_THOMPSON_QRacrQS_DATA.DBL<br> <br> --- building MP_THOMPSON_freezeH2O_DATA.DBL<br> <br> --- building MP_THOMPSON_QIautQS_DATA.DBL<br> <br> Finished building all tables.<br> <br> *******************************************************************************<br> To preserve these tables when running &#x27;make clean&#x27;, please copy the following<br> files to the src/core_atmosphere/physics/physics_wrf/files/ directory:<br> <br>   MP_THOMPSON_QRacrQG_DATA.DBL<br>   MP_THOMPSON_QRacrQS_DATA.DBL<br>   MP_THOMPSON_freezeH2O_DATA.DBL<br>   MP_THOMPSON_QIautQS_DATA.DBL<br> <br> Tables in the src/core_atmosphere/physics/physics_wrf/files/ directory <br> will be automatically linked to the top-level MPAS directory when compiling<br> the &#x27;atmosphere&#x27; core.<br> *******************************************************************************<br></code></pre></td></tr></table></figure>
+        </div>
+      </div>
+    </div>
+<h1 id="why-use-smiol">Why Use SMIOL?</h1>
+<p>The primary "sell" for SMIOL is its minimalist footprint. While PIO is powerful, it often requires a complex stack of libraries (like NetCDF-C, PnetCDF, and sometimes HDF5). SMIOL strips this back to the essentials.</p>
+<h2 id="key-features">Key Features</h2>
+<ul>
+<li><strong>Dependency</strong> Light: It only requires MPI and PNetCDF.</li>
+<li><strong>Built-in Logic</strong>: It handles the remapping between the distributed memory layout (how MPI tasks hold data) and the file layout (how data sits on the disk) internally.</li>
+<li><strong>Lower Overhead</strong>: Because it doesn't have the abstraction layers of PIO, it can be easier to debug and faster to link during the build process.</li>
+</ul>
+<table>
+
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>PIO (Parallel I/O Library)</th>
+<th>SMIOL (Simple MPAS I/O Layer)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ease of Setup</td>
+<td>Challenging (Multiple dependencies)</td>
+<td>Easy (Minimal dependencies)</td>
+</tr>
+<tr class="even">
+<td>Required Libraries</td>
+<td>MPI, PnetCDF, NetCDF-4, HDF5, PIO</td>
+<td>MPI, PnetCDF</td>
+</tr>
+<tr class="odd">
+<td>Integration</td>
+<td>External library</td>
+<td>Integrated within MPAS v8.0+</td>
+</tr>
+<tr class="even">
+<td>Use Case</td>
+<td>Large-scale production runs</td>
+<td>High-performance runs with fewer dependencies</td>
+</tr>
+<tr class="odd">
+<td>File Format</td>
+<td>Supports NetCDF-4 (HDF5) &amp; Classic</td>
+<td>Primarily PnetCDF (Classic/64-bit)</td>
+</tr>
+<tr class="even">
+<td>Maintenance</td>
+<td>High (Updates to any lib can break it)</td>
+<td>Low (Integrated in MPAS core)</td>
+</tr>
+</tbody>
+</table>
+<h1 id="a-quick-reality-check">A Quick Reality Check</h1>
+<p>While <code>SMIOL</code> is excellent for performance, remember that it specifically targets <code>PNetCDF</code> <strong>(Parallel NetCDF)</strong>. This means your output files will be in <code>classic NetCDF</code> formats. If your workflow strictly requires <strong>NetCDF-4/HDF5 features (like internal compression)</strong>, you might still find yourself reaching for the full <code>PIO</code> library.</p>
+<div class="note note-primary">
+            <p><strong>Note</strong>: The only trade-off to keep in mind is that <code>SMIOL</code> focuses on the <code>PnetCDF</code> format. If your specific post-processing workflow requires <code>NetCDF-4</code> features like transparent compression or <code>HDF5</code>-based files, you would still need the traditional <code>PIO</code> library.</p>
+          </div>
+<h1 id="classic-netcdf-vs-netcdf-4hdf5">Classic NetCDF vs NetCDF-4/HDF5</h1>
+<p>When choosing between <strong>Classic NetCDF</strong> (used by <code>SMIOL</code> via <code>PnetCDF</code>) and <strong>NetCDF-4/HDF5</strong> (supported by <code>PIO</code>), you are essentially trading off raw I/O speed for storage efficiency and data structure complexity.</p>
+<h2 id="file-structure-and-performance">File Structure and Performance</h2>
+<p>The "Classic" formats are flat and predictable, while NetCDF-4 is hierarchical and flexible.</p>
+<ul>
+<li><strong>Classic (CDF-1, CDF-2, CDF-5)</strong>: Uses a <strong>linear layout</strong>. Because the data's location on the disk is mathematically predictable, PnetCDF can perform high-speed, non-blocking parallel writes. This is why SMIOL is so efficient for large MPAS meshes.</li>
+<li><strong>NetCDF-4 (HDF5-based)</strong>: Uses a complex <strong>"B-tree" structure</strong>. While this allows for features like "Groups" (folders within a file), it adds metadata overhead that can slow down massive parallel write operations compared to the classic format.</li>
+</ul>
+<h2 id="key-feature-comparison">Key Feature Comparison</h2>
+<p>If you use <code>SMIOL</code>, you are opting for the <code>Classic/PnetCDF</code> side of this table:</p>
+<table>
+
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Classic / 64-bit Offset (SMIOL)</th>
+<th>NetCDF-4 / HDF5 (PIO)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Compression</td>
+<td>No (Files are larger)</td>
+<td>Yes (Zlib/Deflate compression)</td>
+</tr>
+<tr class="even">
+<td>Parallelism</td>
+<td>High-speed via PnetCDF</td>
+<td>Variable via HDF5 layer</td>
+</tr>
+<tr class="odd">
+<td>Data Types</td>
+<td>Basic (Int, Float, Double)</td>
+<td>Complex (Strings, User-defined types)</td>
+</tr>
+<tr class="even">
+<td>File Size Limit</td>
+<td>Virtually unlimited (with 64-bit)</td>
+<td>Virtually unlimited</td>
+</tr>
+<tr class="odd">
+<td>Chunking</td>
+<td>No</td>
+<td>Yes (Improves subsetting speed)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="which-one-should-you-use">Which one should you use?</h2>
+<ul>
+<li>Choose <code>Classic</code> (<code>SMIOL</code> / <code>PnetCDF</code>) if:
+<ul>
+<li><strong>Performance is King</strong>: You are running very large simulations where I/O bottlenecks are a concern.</li>
+<li><strong>Simplicity</strong>: You want a build process with fewer dependencies and less chance of library version conflicts.</li>
+<li><strong>HPC Environments</strong>: Your supercomputer has a high-performance Lustre or GPFS parallel file system that PnetCDF is optimized for.</li>
+</ul></li>
+<li>Choose <code>NetCDF-4</code> (<code>PIO</code> / <code>HDF5</code>) if:
+<ul>
+<li><strong>Disk Space is Limited</strong>: You need internal compression to keep output file sizes manageable.</li>
+<li><strong>Downstream Tools</strong>: Your specific post-processing or visualization software requires NetCDF-4 features (like groups or specific metadata standards).</li>
+<li><strong>Complex Metadata</strong>: You need to store many different types of related data in a single, organized file structure.</li>
+</ul></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/SMIOL/" class="print-no-link">#SMIOL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS | Simple MPAS I/O Layer (SMIOL)</div>
+      <div>https://waipangsze.github.io/2026/02/11/MPAS-Simple-MPAS-IO-Layer-SMIOL/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 11, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>February 11, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/11/MPAS-Tangential-Velocity-at-Edge/" title="MPAS | Tangential Velocity at Edge">
+                        <span class="hidden-mobile">MPAS | Tangential Velocity at Edge</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

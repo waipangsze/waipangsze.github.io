@@ -1,0 +1,1032 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Literature review  Skamarock, W. C., Klemp, J. B., Duda, M., Fowler, L., &amp; Park, S. H. (2010, November). Global nonhydrostatic modeling using Voronoi meshes: the MPAS model. In Proceedings of the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPAS | Tangential Velocity at Edge">
+<meta property="og:url" content="https://waipangsze.github.io/2026/02/11/MPAS-Tangential-Velocity-at-Edge/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Literature review  Skamarock, W. C., Klemp, J. B., Duda, M., Fowler, L., &amp; Park, S. H. (2010, November). Global nonhydrostatic modeling using Voronoi meshes: the MPAS model. In Proceedings of the">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/VNoG2zS.png">
+<meta property="article:published_time" content="2026-02-10T22:56:00.000Z">
+<meta property="article:modified_time" content="2026-02-11T06:38:37.333Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="Tangential Velocity">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/VNoG2zS.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MPAS | Tangential Velocity at Edge - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/VNoG2zS.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MPAS | Tangential Velocity at Edge"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-02-11 06:56" pubdate>
+          February 11, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          315 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MPAS | Tangential Velocity at Edge</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="literature-review">Literature review</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.ecmwf.int/sites/default/files/medialibrary/2020-08/12299-global-nonhydrostatic-modelling-using-voronoi-meshes.comp_.pdf">Skamarock, W. C., Klemp, J. B., Duda, M., Fowler, L., &amp; Park, S. H. (2010, November). <strong>Global nonhydrostatic modeling using Voronoi meshes: the MPAS model. In Proceedings of the ECMWF Workshop on Nonhydrostatic Modelling</strong>, European Center for Medium Range Forecasting, Reading (pp. 8-10).</a>
+<ol type="1">
+<li>The determination of the horizontal velocity tangential to the cell edges lies at the heart of the MPAS formulation. Consider the determination of the velocity perpendicular to u1 in figure 2.</li>
+<li>Thuburn et al (2009) developed a <strong>reconstruction of the tangential velocity</strong> that recovered the stationary mode. It consists of a weighted sum of all the prognostic velocities from the edges of the two cells sharing the edge where the tangential velocity reconstruction is required.</li>
+<li>The reconstruction has the important property that the mass divergence computed on the dual (Delauney) triangulation, using the reconstructed mass fluxes (velocities) normal to the Delaunay cell edges, is the weighted sum of the mass divergences of the three Voronoi cells.</li>
+<li>We can <strong>define the Thuburn et al (2009) tangential velocity reconstruction</strong> (eq 6)</li>
+</ol></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/mpas_website_linked_files/MPAS-A_tech_note.pdf#page=22.47">MPAS-A_tech_note.pdf</a>
+<ol type="1">
+<li>Tangential Velocity Reconstruction
+<ol type="1">
+<li><img src="https://i.imgur.com/7CDniFk.png" srcset="/img/loading.gif" lazyload /></li>
+<li><img src="https://i.imgur.com/VBOhGtW.png" srcset="/img/loading.gif" lazyload /></li>
+</ol></li>
+</ol></li>
+</ol>
+<h1 id="horizontal-velocity-components">Horizontal Velocity Components</h1>
+<p>How MPAS handles its staggered horizontal velocity components. Because MPAS uses a <strong>C-grid staggering</strong> on a <strong>non-traditional mesh (centroidal Voronoi tessellation)</strong>, the way it handles vector components is a bit more nuanced than a standard rectangular grid. Here is a breakdown of how those components interact and why that tangential reconstruction is so vital.</p>
+<ol type="1">
+<li>The Geometry of the Staggering
+<ol type="1">
+<li>In a traditional Arakawa C-grid on a square mesh, <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> are naturally orthogonal. In MPAS, the "normal" velocity <span class="math inline">\(u\)</span> is the primary prognostic variable, representing the flow directly across the cell face (the edge).
+<ol type="1">
+<li><strong>Normal Velocity (<span class="math inline">\(u\)</span>)</strong>: Located at the edge midpoint, perpendicular to the edge.</li>
+<li><strong>Tangential Velocity (<span class="math inline">\(v\)</span>)</strong>: Directed along the edge. As you noted, it is defined by the orientation between <code>verticesOnEdge(1, iEdge)</code> and <code>verticesOnEdge(2, iEdge)</code>.</li>
+</ol></li>
+</ol></li>
+<li>The Role of Tangential Velocity
+<ol type="1">
+<li><strong>Since <span class="math inline">\(v\)</span> is not a primary prognostic variable (we don't "evolve" it directly through its own partial differential equation in the same way</strong>), <strong>it must be reconstructed</strong>. This is typically done using the RBF (Radial Basis Function) interpolation or a similar weighted linear combination of the surrounding normal velocities.</li>
+<li>This reconstruction is essential for:
+<ol type="1">
+<li><strong>Vorticity (<span class="math inline">\(\zeta\)</span>)</strong>: Relative vorticity is defined at the vertices. To calculate the circulation around a vertex, you need the tangential components along the three edges that meet at that point.</li>
+<li><strong>Coriolis Force</strong>: The vector-invariant form of the momentum equations requires a full velocity vector at the edge to compute the <span class="math inline">\(f \times u\)</span> term.</li>
+<li><strong>Advection</strong>: To accurately move tracers across the mesh, the model needs to understand the full flow field, not just the "through-flow" at the edges.</li>
+</ol></li>
+</ol></li>
+<li>Coordinate System and Orientation
+<ol type="1">
+<li>A key detail in MPAS is the local coordinate system for each edge. Because the edges aren't aligned to a global X-Y axis (due to the icosahedral structure), the "positive" direction for <span class="math inline">\(v\)</span> is determined by the indexing of the vertices. If you swap the order of verticesOnEdge, the sign of your tangential velocity flips.</li>
+</ol></li>
+</ol>
+<table>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Normal Velocity (u)</th>
+<th>Tangential Velocity (v)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Location</td>
+<td>Edge Midpoint</td>
+<td>Along the Edge</td>
+</tr>
+<tr class="even">
+<td>Type</td>
+<td>Prognostic (Primary)</td>
+<td>Reconstructed (Diagnostic)</td>
+</tr>
+<tr class="odd">
+<td>Grid Role</td>
+<td>Mass flux between cells</td>
+<td>Calculation of vorticity at vertices</td>
+</tr>
+<tr class="even">
+<td>Orientation</td>
+<td>Cell 1 <span class="math inline">\(\rightarrow\)</span> Cell 2</td>
+<td>Vertex 1 <span class="math inline">\(\rightarrow\)</span> Vertex 2</td>
+</tr>
+</tbody>
+</table>
+<h1 id="key-aspects-of-mpas-tangential-velocity">Key Aspects of MPAS Tangential Velocity</h1>
+<p>In the Model for Prediction Across Scales (MPAS), the definition and reconstruction of tangential velocity (<span class="math inline">\(v\)</span>) are fundamental to maintaining accuracy on an unstructured Voronoi mesh. While <strong>the normal velocity (<span class="math inline">\(u\)</span>)</strong> is the primary prognostic variable located at the centers of cell edges, <strong>the tangential velocity (<span class="math inline">\(v\)</span>)</strong> is a diagnostic quantity necessary for computing the full horizontal velocity vector.</p>
+<h2 id="key-aspects-of-mpas-tangential-velocity-1">Key Aspects of MPAS Tangential Velocity</h2>
+<p>Based on the technical documentation for MPAS-Atmosphere, here is how the tangential velocity is structured and used:</p>
+<ol type="1">
+<li><strong>Primary Definition</strong>: The horizontal velocity is staggered using a <strong>C-grid</strong> configuration. In this setup, the prognostic velocity is defined as the component normal to the Voronoi cell faces (edges). The tangential velocity is the component oriented along that same edge, flowing between the two vertices.</li>
+<li><strong>Vector-Invariant Formulation</strong>: MPAS utilizes a vector-invariant form of the horizontal momentum equations. In this formulation, nonlinear momentum transport is recast into terms involving the <strong>gradient of kinetic energy</strong> and a <strong>nonlinear Coriolis</strong> term. <strong>This approach requires a reconstructed tangential velocity at the edges to accurately compute these terms without the complexities of standard advective forms on unstructured meshes.</strong></li>
+<li><strong>Reconstruction for Vorticity</strong>: Tangential velocities are essential for <strong>calculating relative vorticity</strong>, which is defined at the vertices of the Voronoi cells. To determine the circulation around a vertex, the model uses the tangential components of the three edges that intersect at that vertex.</li>
+<li><strong>Numerical Accuracy and SCVT Properties</strong>: The mesh used is a Spherical Centroidal Voronoi Tessellation (SCVT). A critical property of this mesh is that the lines connecting cell centers (Delaunay triangles) are perpendicular to the cell edges at their intersection points. This orthogonality is vital for the accuracy of the reconstruction schemes, as it ensures that the normal and tangential components are strictly orthogonal.</li>
+<li><strong>Transport and Conservation</strong>: While <span class="math inline">\(v\)</span> is reconstructed, the overall discretization of the flux divergence on the Voronoi mesh guarantees the exact conservation of air mass, scalar mass, and entropy. The reconstruction of the full velocity vector allows for high-order transport schemes (typically third-order accurate) to be used for scalars and potential temperature.</li>
+</ol>
+<h1 id="mathematical-foundation-of-reconstruction">Mathematical Foundation of Reconstruction</h1>
+<p>The reconstruction follows the methodology described by Thuburn et al. (2009), which <strong>ensures that the discrete system maintains key physical properties such as stationary geostrophic modes and conservation of potential vorticity (PV), enstrophy, and energy</strong>.</p>
+<ol type="1">
+<li>General Reconstruction Formula The tangential velocity at a specific edge is computed as a weighted sum of the normal velocities from the neighboring edges of the adjacent Voronoi cells. The general form can be expressed as:</li>
+</ol>
+<p><span class="math display">\[v_e = \sum_{e&#39; \in \text{nb}(e)} w_{e,e&#39;} u_{e&#39;}\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(v_e\)</span> is the reconstructed tangential velocity at edge <span class="math inline">\(e\)</span>.</li>
+<li><span class="math inline">\(u_{e&#39;}\)</span> represents the prognostic normal velocities at neighboring edges <span class="math inline">\(e&#39;\)</span>.</li>
+<li><span class="math inline">\(w_{e,e&#39;}\)</span> are pre-computed weights based on the mesh geometry.</li>
+</ul>
+<ol start="2" type="1">
+<li>Connection to Absolute Vorticity</li>
+</ol>
+<p>The tangential velocity is directly tied to the <strong>calculation of absolute vorticity</strong> (<span class="math inline">\(\eta\)</span>), which lives at the vertices of the Voronoi cells. For a vertex <span class="math inline">\(a\)</span> shared by three cells (forming a Delaunay triangle <span class="math inline">\(ABC\)</span>), the absolute vorticity is defined by the circulation around that triangle:</p>
+<p><span class="math display">\[\eta_a = f_a + \frac{1}{\text{Area}(ABC)} \left( u_{13} \cdot \overline{CA} + u_{14} \cdot \overline{AB} + u_{15} \cdot \overline{BC} \right)\]</span></p>
+<p>(Note: <span class="math inline">\(u_{13}, u_{14}, u_{15}\)</span> are normal velocities on the edges of the triangle, and <span class="math inline">\(\overline{CA}, \overline{AB}, \overline{BC}\)</span> are the lengths of the corresponding triangle edges).</p>
+<p>The absolute vorticity at an edge center (<span class="math inline">\(e_{13}\)</span>) is then reconstructed as the average of the vorticity at its two endpoints (vertices <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>):</p>
+<p><span class="math display">\[\eta_{13} = \frac{1}{2} (\eta_a + \eta_b)\]</span></p>
+<h2 id="why-this-specific-math-is-used">Why this specific math is used</h2>
+<ul>
+<li><strong>Geostrophic Stationarity</strong>: Simple weighted sums of the four nearest neighbors fail because they do not allow geostrophically balanced flow to remain stationary in a discrete system. The Thuburn et al. (2009) approach solves this "nonstationary geostrophic mode" problem.</li>
+<li><strong>Consistency</strong>: This method produces a consistent divergence on both the primal (Voronoi) and dual (Delaunay) grids. In the discrete analogue, the divergence on the Delaunay triangle is identical to the divergence on the Voronoi hexagons integrated over that triangle.</li>
+<li><strong>Radial Basis Functions (RBF)</strong>: For certain operations, such as computing horizontal momentum components <span class="math inline">\((U, V)\)</span> at cell centers for the vertical momentum equation, MPAS may use an RBF reconstruction instead of the simple weighted sum.</li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Boulder2019/slides/04.mesh_structure.pdf">04.mesh_structure.pdf</a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/Tangential-Velocity/" class="print-no-link">#Tangential Velocity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MPAS | Tangential Velocity at Edge</div>
+      <div>https://waipangsze.github.io/2026/02/11/MPAS-Tangential-Velocity-at-Edge/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 11, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>February 11, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/02/11/MPAS-Simple-MPAS-IO-Layer-SMIOL/" title="MPAS | Simple MPAS I/O Layer (SMIOL)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | Simple MPAS I/O Layer (SMIOL)</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/10/Obs-CMFD/" title="Obs | CMFD | 中国区域地面气象要素驱动数据集">
+                        <span class="hidden-mobile">Obs | CMFD | 中国区域地面气象要素驱动数据集</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
