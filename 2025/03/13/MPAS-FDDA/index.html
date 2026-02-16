@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/oOsTWeD.png">
 <meta property="article:published_time" content="2025-03-13T06:56:00.000Z">
-<meta property="article:modified_time" content="2025-10-27T06:03:55.803Z">
+<meta property="article:modified_time" content="2026-02-16T08:01:19.448Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="NWP">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="FDDA">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/oOsTWeD.png">
@@ -359,7 +359,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          779 words
+          908 words
         
       </span>
     
@@ -370,7 +370,7 @@
         
         
         
-          7 mins
+          8 mins
         
       </span>
     
@@ -606,17 +606,41 @@ ywavenum (max_dom)                  = 3,       ; top wave number to nudge in y d
 <li>This EPA_PXLSM_with_FDDA PR will add the Pleim-Xiu land surface model codes (<a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/pull/1025">PR #1025</a>) and the 3-D grid analysis nudging FDDA codes (<a target="_blank" rel="noopener" href="https://github.com/MPAS-Dev/MPAS-Model/pull/995">PR #995</a>) to MPAS-A.</li>
 </ul></li>
 </ul>
-<h1 id="spectral-nudging-on-mpas">Spectral Nudging on MPAS?</h1>
-<h2 id="idea-fourier-transform-on-fdda.nc">Idea: Fourier transform on fdda.nc</h2>
-<ol type="1">
-<li>generate raw fdda.nc</li>
-<li>convert raw fdda.nc to k-fdda.nc with k-space</li>
-<li>truncate wavelength less than 1000km</li>
-<li>convert back to real space r-fdda.nc</li>
-<li>apply this r-fdda.nc on simulation run</li>
-</ol>
+<h1 id="spectral-nudging-on-mpas">Spectral Nudging on MPAS</h1>
+<h2 id="spectral-nudging">spectral nudging</h2>
 <ul>
-<li>t, q, u</li>
+<li><a target="_blank" rel="noopener" href="https://egusphere.copernicus.org/preprints/2026/egusphere-2026-176/">Cheng, Y. and Tang, J.: Scale-selective nudging with a diffusion-based filter in the variable-resolution Model for Prediction Across Scales version 8.2.2, EGUsphere [preprint], https://doi.org/10.5194/egusphere-2026-176, 2026.</a>
+<ul>
+<li>南京大学大气科学学院, 汤剑平 教授</li>
+<li><strong>spectral nudging</strong></li>
+<li>The <strong>diffusion-based filter developed by Grooms et al. (2021)</strong> extends this concept to geometries or grids where Fourier modes are not readily available by leveraging the spectral properties of a discrete Laplacian operator 𝐿.</li>
+<li>Building on the <a target="_blank" rel="noopener" href="https://doi.org/10.21105/joss.03947"><strong>GCM-filter Python implementation (Loose et al., 2022)</strong></a>, we developed polynomial coefficients for Taper and Gaussian filter shapes for MPAS-A by applying the diffusion operator.</li>
+<li>The MPAS-A spectral nudging implementation used in this study is openly available at: <a target="_blank" rel="noopener" href="https://doi.org/10.5281/zenodo.18229522" class="uri">https://doi.org/10.5281/zenodo.18229522</a>
+<ul>
+<li><strong>Bullock Jr., O. R., Foroutan, H., Gilliam, R. C., and Herwehe, J. A. (2018)</strong>:Adding four-dimensional data assimilation by analysis nudging to the Model for Prediction Across Scales – Atmosphere (version 4.0),Geosci. Model Dev., 11, 2897–2922, <a target="_blank" rel="noopener" href="https://doi.org/10.5194/gmd-11-2897-2018" class="uri">https://doi.org/10.5194/gmd-11-2897-2018</a></li>
+<li><strong>Grooms, I. et al. (2021): Diffusion-Based Smoothers for Spatial Filtering of Gridded Geophysical Data</strong>,JAMES, 13, e2021MS002552, <a target="_blank" rel="noopener" href="https://doi.org/10.1029/2021MS002552" class="uri">https://doi.org/10.1029/2021MS002552</a></li>
+<li><strong>Loose, N. et al. (2022): GCM-Filters: A Python Package for Diffusion-based Spatial Filtering of Gridded Data</strong>, JOSS, 7(70), 3947, <a target="_blank" rel="noopener" href="https://doi.org/10.21105/joss.03947" class="uri">https://doi.org/10.21105/joss.03947</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="zenodo">zenodo</h3>
+<ul>
+<li>The MPAS-A spectral nudging implementation used in this study is openly available at: <a target="_blank" rel="noopener" href="https://doi.org/10.5281/zenodo.18229522" class="uri">https://doi.org/10.5281/zenodo.18229522</a>
+<ul>
+<li><strong>MPAS-A spectral nudging v1.0</strong></li>
+<li><code>chmod -R 777 folder</code></li>
+<li>Need to add files
+<ul>
+<li><code>src/core_atmosphere/physics</code>
+<ul>
+<li>copy <code>checkout_data_files.sh</code> from MPAS-v8.2.2</li>
+</ul></li>
+<li>src/core_atmosphere/physics/physics_noahmp/utility
+<ul>
+<li>copy <code>src/core_atmosphere/physics/physics_noahmp</code> from MPAS-v8.2.2</li>
+</ul></li>
+</ul></li>
+</ul></li>
 </ul>
 
                 
@@ -651,11 +675,11 @@ ywavenum (max_dom)                  = 3,       ; top wave number to nudge in y d
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/FDDA/" class="print-no-link">#FDDA</a>
       
@@ -688,7 +712,7 @@ ywavenum (max_dom)                  = 3,       ; top wave number to nudge in y d
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 27, 2025</div>
+          <div>February 16, 2026</div>
         </div>
       
       
