@@ -19,25 +19,28 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Issue &amp; solution  needs cmake &gt; $ micromamba env create -n mpas_env python&#x3D;3.9 &gt; micromamba install anaconda::cmake cmake  12345678910111213export libs_DIR&#x3D;$HOME&#x2F;Library&#x2F;### Compilersexport">
+    <meta name="description" content="全球大氣環流現象 一個非常經典且有趣的全球大氣環流現象：無論是在北半球還是南半球，中高緯度的高空（對流層中上部到平流層）基本上都被強勁的西風所統治。 這聽起來可能有點反直覺，畢竟地面上有信風（東風）、中緯度西風和極地東風，但到了高空，情況就變得出奇地統一。   以下是造成這種「全球高空皆西風」局面的核心邏輯： 1. 根本驅動力：南北溫差 太陽輻射在赤道最強，極地最弱。這導致赤道大氣的溫度遠高於極地">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MPAS | install ParallelIO-pio2_5_8">
-<meta property="og:url" content="https://waipangsze.github.io/2024/05/31/MPAS_install_ParallelIO-pio2_error/index.html">
+<meta property="og:title" content="三圈環流與高空西風 | Three-cell circulation and upper-level westerly winds">
+<meta property="og:url" content="https://waipangsze.github.io/2026/02/23/Three-cell-circulation-and-upper-level-westerly-winds/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="Issue &amp; solution  needs cmake &gt; $ micromamba env create -n mpas_env python&#x3D;3.9 &gt; micromamba install anaconda::cmake cmake  12345678910111213export libs_DIR&#x3D;$HOME&#x2F;Library&#x2F;### Compilersexport">
+<meta property="og:description" content="全球大氣環流現象 一個非常經典且有趣的全球大氣環流現象：無論是在北半球還是南半球，中高緯度的高空（對流層中上部到平流層）基本上都被強勁的西風所統治。 這聽起來可能有點反直覺，畢竟地面上有信風（東風）、中緯度西風和極地東風，但到了高空，情況就變得出奇地統一。   以下是造成這種「全球高空皆西風」局面的核心邏輯： 1. 根本驅動力：南北溫差 太陽輻射在赤道最強，極地最弱。這導致赤道大氣的溫度遠高於極地">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-05-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-10-27T06:03:55.691Z">
+<meta property="og:image" content="https://i.imgur.com/co63hRF.png">
+<meta property="article:published_time" content="2026-02-22T22:57:00.000Z">
+<meta property="article:modified_time" content="2026-02-23T09:50:34.535Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="Installation">
-<meta property="article:tag" content="PIO">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/co63hRF.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>MPAS | install ParallelIO-pio2_5_8 - wpsze</title>
+  <title>三圈環流與高空西風 | Three-cell circulation and upper-level westerly winds - wpsze</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -326,13 +329,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/co63hRF.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="MPAS | install ParallelIO-pio2_5_8"></span>
+            <span id="subtitle" data-typed-text="三圈環流與高空西風 | Three-cell circulation and upper-level westerly winds"></span>
           
         </div>
 
@@ -343,8 +346,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-05-31 00:00" pubdate>
-          May 31, 2024 am
+        <time datetime="2026-02-23 06:57" pubdate>
+          February 23, 2026 am
         </time>
       </span>
     
@@ -355,7 +358,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          335 words
+          3.3k words
         
       </span>
     
@@ -366,7 +369,7 @@
         
         
         
-          3 mins
+          28 mins
         
       </span>
     
@@ -412,23 +415,202 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">MPAS | install ParallelIO-pio2_5_8</h1>
+            <h1 id="seo-header">三圈環流與高空西風 | Three-cell circulation and upper-level westerly winds</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="issue-solution">Issue &amp; solution</h1>
+                <h1 id="全球大氣環流現象">全球大氣環流現象</h1>
+<p>一個非常經典且有趣的全球大氣環流現象：<strong>無論是在北半球還是南半球，中高緯度的高空（對流層中上部到平流層）基本上都被強勁的西風所統治。</strong></p>
+<p>這聽起來可能有點反直覺，畢竟地面上有信風（東風）、中緯度西風和極地東風，但到了高空，情況就變得出奇地統一。</p>
+<p><img src="https://i.imgur.com/co63hRF.png" srcset="/img/loading.gif" lazyload /> <img src="https://i.imgur.com/XCXawzE.png" srcset="/img/loading.gif" lazyload /></p>
+<p>以下是造成這種「全球高空皆西風」局面的核心邏輯：</p>
+<h2 id="根本驅動力南北溫差">1. 根本驅動力：南北溫差</h2>
+<p>太陽輻射在赤道最強，極地最弱。這導致赤道大氣的溫度遠高於極地。</p>
+<ul>
+<li><strong>熱脹冷縮：</strong> 赤道上空的空氣受熱膨脹，大氣層厚度大，相同高度的氣壓較高。</li>
+<li><strong>氣壓梯度：</strong> 這種溫差在南北方向上形成了一個巨大的<strong>水平氣壓梯度力</strong>（從赤道指向兩極）。</li>
+</ul>
+<h2 id="高空氣壓場南高北低">2. 高空氣壓場：南高北低</h2>
+<p>由於赤道熱、極地冷，在萬米高空，赤道上方維持高壓，而極地上方則是低壓。</p>
+<ul>
+<li><strong>北半球：</strong> 氣壓梯度力由南向北。</li>
+<li><strong>南半球：</strong> 氣壓梯度力由北向南。</li>
+</ul>
+<h2 id="地轉偏向力科氏力的調味">3. 地轉偏向力（科氏力）的“調味”</h2>
+<p>空氣一旦在高空開始從赤道向兩極流動，地轉偏向力就會介入：</p>
+<ul>
+<li><strong>在北半球：</strong> 運動物體向<strong>右</strong>偏。向北流動的氣流向右偏轉，最後變成了自西向東的<strong>西風</strong>。</li>
+<li><strong>在南半球：</strong> 運動物體向<strong>左</strong>偏。向南流動的氣流向左偏轉，結果也變成了自西向東的<strong>西風</strong>。</li>
+</ul>
+<h2 id="總結">總結</h2>
+<p>我們可以用一個簡單的邏輯鏈來概括：</p>
+<div class="note note-primary">
+            <p><strong>赤道熱/極地冷</strong> <strong>高空氣壓赤道高/極地低</strong> <strong>氣流向極地運動</strong> <strong>地轉偏向力使其偏轉</strong> <strong>形成全球性高空西風（地轉風）</strong>。</p>
+          </div>
+<h2 id="這種現象的實際影響">這種現象的實際影響</h2>
+<ul>
+<li><strong>噴流（Jet Stream）：</strong> 這種高空西風在對流層頂附近會形成時速極快的「空中走廊」。</li>
+<li><strong>民航飛行：</strong> 這種西風對航空影響極大。從中國飛往美國（自西向東）通常比回程快得多，就是因為在高空可以「順風順水」地利用這些盛行西風。</li>
+</ul>
+<hr />
+<h1 id="噴流jet-stream">噴流（Jet Stream</h1>
+<p>既然你對<strong>噴流（Jet Stream）</strong>感興趣，那我們就像剝洋蔥一樣，看看這些在大氣高層縱橫馳騁的「超級高速公路」到底是怎麼回事。</p>
+<p>噴流不僅是高空西風的加強版，它也是地球大氣層中能量最集中的地方。</p>
+<p><img src="https://i.imgur.com/4MONocN.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="噴流的長相狹長而強勁">1. 噴流的「長相」：狹長而強勁</h2>
+<p>噴流通常位於對流層頂（海拔約 7-12 公里），長可達數千公里，寬幾百公里，厚度卻只有幾公里。</p>
+<ul>
+<li><strong>速度極快：</strong> 中心風速通常超過 <span class="math inline">\(30 \text{ m/s}\)</span>（約 <span class="math inline">\(108 \text{ km/h}\)</span> ），強悍時甚至能達到 <span class="math inline">\(100 \text{ m/s}\)</span> 以上。</li>
+<li><strong>位置：</strong> 主要分佈在中高緯度地區。最著名的兩條是<strong>極鋒噴流</strong>（Polar Jet）和<strong>副熱帶噴流</strong>（Subtropical Jet）。</li>
+</ul>
+<h2 id="為什麼會形成噴口">2. 為什麼會形成「噴口」？</h2>
+<p>雖然全球高空都是西風，但噴流之所以「噴」起來，是因為那裡有<strong>極其劇烈的溫差</strong>。</p>
+<ul>
+<li><strong>溫度階梯：</strong> 當冷氣團和暖氣團在高空狹路相逢時，氣壓梯度力會瞬間飆升。</li>
+<li><strong>熱力風關係：</strong> 物理學上的「熱力風」原理告訴我們，水平溫差越大的地方，風速隨高度增加得越快。在極地冷空氣和赤道暖空氣交界的地方，西風被壓縮成了細長的高速氣流帶。</li>
+</ul>
+<h2 id="噴流的調皮羅斯貝波rossby-waves">3. 噴流的「調皮」：羅斯貝波（Rossby Waves）</h2>
+<p>噴流並不是平直的，它像一條在空中扭動的巨蛇。這種巨大的波動被稱為<strong>羅斯貝波</strong>。</p>
+<ul>
+<li><strong>脊（Ridge）：</strong> 噴流向北凸起，帶來南方的暖空氣，天空晴朗。</li>
+<li><strong>槽（Trough）：</strong> 噴流向南凹陷，引導北極的冷空氣南下。</li>
+</ul>
+<h2 id="它如何主宰我們的天氣">4. 它如何主宰我們的天氣？</h2>
+<p>噴流不僅是天氣的“搬運工”，更是“製造機”：</p>
+<table>
+<thead>
+<tr class="header">
+<th>影響方面</th>
+<th>現象描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>寒流爆發</strong></td>
+<td>當噴流波動劇烈（大槽大脊）時，北極的冷空氣會順著「槽」一路狂飆南下，引發極端降溫。</td>
+</tr>
+<tr class="even">
+<td><strong>氣旋生成</strong></td>
+<td>在噴流槽的東側，空氣劇烈上升，是地面氣旋和強降雨的「助產士」。</td>
+</tr>
+<tr class="odd">
+<td><strong>航空飛行</strong></td>
+<td>飛行員會盡量躲避逆向噴流（費油、顛簸），並尋找順向噴流以節省時間和燃料。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="現在的隱憂氣候變遷的影響">5. 現在的隱憂：氣候變遷的影響</h2>
+<p>有個科學假說認為，隨著北極暖化的速度超過赤道（北極放大效應），南北溫差正在縮小。這可能導致噴流變得「鬆垮」且波動更慢。</p>
+<ul>
+<li><strong>後果：</strong> 天氣系統會在一個地方“卡住”，導致原本幾天的降雨變成持續數週的洪澇，或者持久的旱災。</li>
+</ul>
+<hr />
+<h1 id="三圈環流">三圈環流</h1>
+<p>經典的大氣環流<strong>三圈環流模型</strong>。如果把地球大氣比喻成一個巨大的熱力發動機，這三個對流單元（Cells）就是它的三個核心齒輪。</p>
+<p>有趣的是，這三個齒輪的「驅動方式」完全不同。</p>
+<p><img src="https://i.imgur.com/YZ7XIWl.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="哈德里環流圈-hadley-cell-動力來源">1. 哈德里環流圈 (Hadley Cell) —— “動力來源”</h2>
+<p>這是最強大的對流單元，位於赤道到緯度 <span class="math inline">\(30^\circ\)</span> 之間。</p>
+<ul>
+<li><strong>成因：</strong> 赤道受熱最強，空氣劇烈上升，並在高空向極地流動。</li>
+<li><strong>結果：</strong> * 在北緯 <span class="math inline">\(30^\circ\)</span> 附近，氣流因地轉偏向力和冷卻而下沉，形成<strong>副熱帶高壓帶</strong>（這就是為什麼世界許多大沙漠都在這個緯度）。</li>
+<li>近地面氣流折回赤道，形成<strong>信風</strong>（東北信風/東南信風）。</li>
+</ul>
+<h2 id="極地環流圈-polar-cell-冷鋒哨兵">2. 極地環流圈 (Polar Cell) —— “冷鋒哨兵”</h2>
+<p>位於緯度 <span class="math inline">\(60^\circ\)</span> 到極點之間。</p>
+<ul>
+<li><strong>成因：</strong> 極地極度寒冷，空氣重而下沉，在地面形成高壓。</li>
+<li><strong>結果：</strong> 冷空氣向低緯度流動，形成<strong>極地東風</strong>。</li>
+<li>在 <span class="math inline">\(60^\circ\)</span> 附近與暖空氣相遇並被迫抬升。</li>
+</ul>
+<h2 id="費雷爾環流圈-ferrel-cell-從動的齒輪">3. 費雷爾環流圈 (Ferrel Cell) —— “從動的齒輪”</h2>
+<p>位於 <span class="math inline">\(30^\circ\)</span> 到 <span class="math inline">\(60^\circ\)</span> 之間（中緯度地區）。它是最特殊的一個，因為它是<strong>被動</strong>運行的。</p>
+<ul>
+<li><strong>特殊性：</strong> 它不像前兩者是靠熱力驅動（熱升冷降），而是像一個夾在兩個大齒輪之間的「中介齒輪」。</li>
+<li><strong>結果：</strong> 為了補位，這裡的空氣在 <span class="math inline">\(30^\circ\)</span> 下沉，在 <span class="math inline">\(60^\circ\)</span> 上升。</li>
+<li>這種逆向轉動在地轉偏向力的作用下，造就了我們熟悉的<strong>盛行西風帶</strong>。</li>
+</ul>
+<h2 id="噴流與這三個齒輪的關係">噴流與這三個「齒輪」的關係</h2>
+<p>噴流其實就產生在這些環流圈的<strong>交界處</strong>，因為那裡是溫差最劇烈、氣壓梯度最陡峭的地方：</p>
 <ol type="1">
-<li><p>needs cmake &gt; $ micromamba env create -n mpas_env python=3.9 &gt; micromamba install anaconda::cmake</p></li>
-<li><p>cmake</p></li>
+<li><strong>亞熱帶噴流 (Subtropical Jet)：</strong> 位於 <strong>Hadley Cell</strong> 和 <strong>Ferrel Cell</strong> 的交會處（約 <span class="math inline">\(30^\circ\)</span> 上空）。</li>
+<li><strong>極鋒噴流 (Polar Front Jet)：</strong> 位於 <strong>Ferrel Cell</strong> 和 <strong>Polar Cell</strong> 的交會處（約 <span class="math inline">\(60^\circ\)</span> 上空）。</li>
 </ol>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> libs_DIR=<span class="hljs-variable">$HOME</span>/Library/<br><span class="hljs-comment">### Compilers</span><br><span class="hljs-built_in">export</span> MPI_FC=mpifort<br><span class="hljs-built_in">export</span> MPI_F77=mpifort<br><span class="hljs-built_in">export</span> MPI_F90=mpifort<br><span class="hljs-built_in">export</span> MPI_CC=mpicc<br><span class="hljs-built_in">export</span> MPI_CXX=mpic++<br><span class="hljs-comment">### all serial are same as MPI</span><br><span class="hljs-built_in">export</span> FC=<span class="hljs-variable">$&#123;MPI_FC&#125;</span><br><span class="hljs-built_in">export</span> F77=<span class="hljs-variable">$&#123;MPI_F77&#125;</span><br><span class="hljs-built_in">export</span> F90=<span class="hljs-variable">$&#123;MPI_F77&#125;</span><br><span class="hljs-built_in">export</span> CC=<span class="hljs-variable">$&#123;MPI_F77&#125;</span><br><span class="hljs-built_in">export</span> CXX=<span class="hljs-variable">$&#123;MPI_F77&#125;</span><br></code></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">############################## Pio ############################</span><br><span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$&#123;do_pio&#125;</span> == True ]]; <span class="hljs-keyword">then</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== PIO ====&quot;</span><br>    <span class="hljs-built_in">cd</span> <span class="hljs-variable">$download_DIR</span><br>    tar xvf ParallelIO-pio2_5_8.tar.gz 1&gt;/dev/null 2&gt;&amp;1<br>    <span class="hljs-built_in">cd</span> ParallelIO-pio2_5_8/<br><br>    <span class="hljs-built_in">export</span> CC=mpicc <br>    <span class="hljs-built_in">export</span> FC=mpif90 <br>    <span class="hljs-comment">#./configure --prefix=$libs_DIR --enable-fortran</span><br>    <span class="hljs-comment">#cmake -DNetCDF_C_PATH=$libs_DIR -DNetCDF_Fortran_PATH=$libs_DIR -DPnetCDF_PATH=$libs_DIR -DPIO_ENABLE_TIMING=OFF -DCMAKE_INSTALL_PREFIX=$libs_DIR</span><br>    cmake -DNetCDF_C_PATH=<span class="hljs-variable">$NETCDF</span> -DNetCDF_Fortran_PATH=<span class="hljs-variable">$NETCDF</span> -DPnetCDF_PATH=<span class="hljs-variable">$PNETCDF</span> -DHDF5_PATH=<span class="hljs-variable">$libs_DIR</span> -DCMAKE_INSTALL_PREFIX=<span class="hljs-variable">$libs_DIR</span> -DPIO_USE_MALLOC=ON -DCMAKE_VERBOSE_MAKEFILE=1 -DPIO_ENABLE_TIMING=OFF ./<br>    make<br>    <span class="hljs-comment">#make check</span><br>    make install<br>    <span class="hljs-built_in">cd</span> ..<br>    <span class="hljs-built_in">rm</span> -rf ParallelIO-pio2_5_8<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== PIO (end) ====&quot;</span><br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
-<p>where ./ is PIO directory.</p>
-<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">568 </span>Install the project...<br><span class="hljs-symbol">569 </span>/home/wpsze/micromamba/envs/mpas_env/bin/cmake -P cmake_install.cmake<br><span class="hljs-symbol">570 </span>-- Install configuration: <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-symbol">571 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/lib/libpio.settings<br><span class="hljs-symbol">572 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/lib/libpioc.a<br><span class="hljs-symbol">573 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio.h<br><span class="hljs-symbol">574 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/uthash.h<br><span class="hljs-symbol">575 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/lib/libpiof.a<br><span class="hljs-symbol">576 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">577 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio_nf.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">578 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio_types.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">579 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/piolib_mod.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">580 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pionfget_mod.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">581 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio_kinds.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">582 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pio_support.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">583 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/piodarray.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">584 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pionfatt_mod.<span class="hljs-keyword">mod</span><br><span class="hljs-symbol">585 </span>-- Installing: /home/wpsze/MPAS-A/modules_library/Library/include/pionfput_mod.<span class="hljs-keyword">mod</span><br></code></pre></td></tr></table></figure>
-<p>Output files are,</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"> $ <span class="hljs-built_in">ls</span> Library/lib/*pio*<br>Library/lib/libpioc.a  Library/lib/libpiof.a<br> $ <span class="hljs-built_in">ls</span> Library/include/*pio*<br>Library/include/H5FDmpio.h  Library/include/piodarray.mod  Library/include/piolib_mod.mod    Library/include/pionfget_mod.mod  Library/include/pio_support.mod<br>Library/include/mpiof.h     Library/include/pio.h          Library/include/pio.mod           Library/include/pio_nf.mod        Library/include/pio_types.mod<br>Library/include/mpio.h      Library/include/pio_kinds.mod  Library/include/pionfatt_mod.mod  Library/include/pionfput_mod.mod<br></code></pre></td></tr></table></figure>
-<p>Ref: 1. <a target="_blank" rel="noopener" href="https://forum.mmm.ucar.edu/threads/mpas-a-installation-failed-due-to-pio1-f90-and-pio2-f90.9902/">MPAS-A installation failed due to pio1.f90 and pio2.f90</a> 2.</p>
+<div class="note note-primary">
+            <p><strong>關鍵點：</strong> 極鋒噴流通常比亞熱帶噴流更強、波動更大，因為它面對的是極地冷氣團和中緯度暖氣團的直接硬碰硬。</p>
+          </div>
+<h2 id="為什麼這個模型只是理想化的">為什麼這個模型只是「理想化」的？</h2>
+<p>雖然三圈環流解釋了全球風帶，但現實中它並不是完美連續的圓環：</p>
+<ul>
+<li><strong>海陸差異：</strong> 陸地和海洋的比熱容不同，打碎了連續的氣壓帶。</li>
+<li><strong>季節移動：</strong> 隨著太陽直射點的移動，這三個齒輪會整體「北漂」或「南移」。</li>
+</ul>
+<hr />
+<h1 id="矛盾-ferrel-cell-高空偏南風受地轉偏向力影響不應該變成東風">矛盾: Ferrel Cell 高空偏南風受地轉偏向力影響，不應該變成<strong>東風</strong></h1>
+<p>這是一個非常敏銳的觀察！你可能發現了其中的「矛盾」：在<strong>三圈環流模型</strong>的簡化示意圖中，費雷爾環流（Ferrel Cell）在地面是西風，但在高空，氣流似乎是從北向南（北半球）移動的。</p>
+<div class="note note-primary">
+            <p>依直覺，高空偏南風受地轉偏向力影響，不應該變成<strong>東風</strong>嗎？</p>
+          </div>
+<p>事實恰恰相反：<strong>費雷爾環流圈的高空依然是強勁的西風。</strong> 這裡有兩個核心原因可以解釋這個「反常」現象：</p>
+<h2 id="熱力風效應的統治力最核心原因">1. 「熱力風」效應的統治力（最核心原因）</h2>
+<p>三圈環流主要描述的是<strong>經向（南北方向）</strong>的空氣翻轉，但它忽略了一個更強大的力量：<strong>全球性的南北溫差。</strong></p>
+<ul>
+<li><strong>溫差製造壓力差：</strong> 無論哪個對流層單元，赤道方向總是比極地向溫暖。這意味著在任何緯度，只要你往高處走，赤道方向的大氣柱都會比極地方向的更「厚」（氣壓更高）。</li>
+<li><strong>西風累加：</strong> 這種由溫差引起的氣壓梯度力，在對流層中隨高度增加而增強。</li>
+<li><strong>結果：</strong> 這種力量遠比費雷爾環流那點微弱的南北移動（經向環流）要強。它強制性地讓整個中緯度高空維持著自西向東的運動。</li>
+</ul>
+<h2 id="費雷爾環流其實是個從動齒輪">2. 費雷爾環流其實是個“從動齒輪”</h2>
+<p>你提到的費雷爾環流在氣象學上被稱為 <strong>動力驅動</strong> 而非 <strong>熱力驅動</strong>。</p>
+<ul>
+<li>它不像哈德里環流那樣靠受熱上升，它是被兩側的哈德里環流和極地環流像齒輪一樣「帶」著轉的。</li>
+<li>在高空，費雷爾環流那股微弱的由北向南（北半球）的回流，實際上被極其強勁的<strong>西風急流（Jet Stream）</strong>給淹沒了。</li>
+</ul>
+<h2 id="動量輸送從低緯度借來的力量">3. 動量輸送：從低緯度借來的力量</h2>
+<p>哈德里環流在赤道上升時，攜帶著巨大的<strong>角動量</strong>（因為赤道轉得最快）。當這些氣流在高空向極地移動進入中緯度（費雷爾環流區）時，由於旋轉半徑縮小，為了守恆，它的西風速度會變得極快。</p>
+<h2 id="總結高空風的真實面貌">總結：高空風的真實面貌</h2>
+<p>如果我們把費雷爾環流圈的高空風拆解開，你會看到：</p>
+<ul>
+<li><strong>南北分量（經向）：</strong> 非常微弱，表現為從北向南（北半球）。</li>
+<li><strong>東西分量（緯向）：</strong> 極為強大，表現為盛行西風。</li>
+</ul>
+<p><strong>兩者疊加的結果：</strong> 空氣在高空並不是簡單的南北循環，而是以一種<strong>極快的速度一邊自西向東旋轉，一邊極其緩慢地向南偏移。 </strong></p>
+<h2 id="換句話說">換句話說：</h2>
+<div class="note note-primary">
+            <p>在地面，費雷爾環流表現為<strong>西風</strong>（盛行西風帶）；到了高空，它依然是<strong>西風</strong>，而且是更猛烈的西風（噴流就在其邊緣）。</p>
+          </div>
+<hr />
+<h1 id="大氣環流中一個非常穩健的季節性規律">大氣環流中一個非常穩健的季節性規律</h1>
+<p>大氣環流中一個非常穩健的季節性規律：<strong>無論在哪個半球，冬季的高空西風（及噴流）都顯著強於夏季。</strong></p>
+<p>要理解這個現象，我們不需要複雜的公式，只需要抓住一個核心邏輯：<strong>溫差驅動風速。</strong></p>
+<h2 id="核心原理南北溫差的陡峭度">1. 核心原理：南北溫差的“陡峭度”</h2>
+<p>高空西風的動力來源是<strong>熱帶與極地之間的溫差</strong>。</p>
+<ul>
+<li><strong>夏季：</strong> 極地進入極晝，接收的太陽輻射增加，雖然還是比赤道涼快，但差距縮小了。大氣層變得相對“平緩”，氣壓梯度力較小。</li>
+<li><strong>冬季：</strong> 極地進入極夜，完全沒有陽光，氣溫驟降；而赤道依然炎熱。這種<strong>劇烈的南北溫差</strong>導致了極高的氣壓梯度。</li>
+</ul>
+<div class="note note-primary">
+            <p><strong>物理直覺：</strong> 想像一個溜滑梯。夏季的溫差像是緩坡，空氣滑下來的速度（風速）較慢；冬季的溫差像是一個陡峭的斷崖，空氣「墜落」的速度極快。</p>
+          </div>
+<h2 id="噴流的中心移動與增強">2. 噴流的中心移動與增強</h2>
+<p>由於冬季冷氣團極為強盛，它會將南北交界處的「主戰場」（鋒區）向低緯度推送：</p>
+<ul>
+<li><strong>風速：</strong> 冬季噴流的平均風速通常是夏季的 <strong>2 倍</strong>左右。在強冷空氣爆發時，中心風速甚至能超過 <span class="math inline">\(100 \text{ m/s}\)</span> 。</li>
+<li><strong>位置：</strong> 冬季噴流會更向<strong>赤道方向</strong>偏移（南移至北緯 <span class="math inline">\(30^\circ\)</span> 附近）；夏季則會向<strong>極地方向</strong>退縮（北移至北緯 <span class="math inline">\(40^\circ\)</span>-<span class="math inline">\(50^\circ\)</span> 附近）。</li>
+</ul>
+<h2 id="為什麼北半球的冬季西風比南半球更狂野">3. 為什麼北半球的冬季西風比南半球更「狂野」？</h2>
+<p>雖然兩個半球都有這個規律，但北半球的冬季西風更具戲劇性。</p>
+<ul>
+<li><strong>海陸分佈：</strong> 北半球有巨大的青藏高原、洛磯山脈。當強勁的西風吹過這些高山時，會產生劇烈的波動（羅斯貝波）。</li>
+<li><strong>阻塞高壓：</strong> 這種強波動力會導致冬季頻繁出現“阻塞高壓”，讓原本平直的西風變得彎曲，從而引發極其劇烈的寒潮。</li>
+</ul>
+<h2 id="對生活的實際影響">4. 對生活的實際影響</h2>
+<ul>
+<li><strong>民航：</strong> 冬季從北京飛往洛杉磯（順風），飛行時間往往比夏季短；但回程（逆風）則會比夏季更慢、更耗油，甚至可能因為逆風太強需要中途加油。</li>
+<li><strong>極端天氣：</strong> 如果冬季噴流變得異常強烈且不穩定，它就像一根失去控制的水管，會把北極的「冷氣」直接甩到南方，造成類似 2021 年德州那樣的極寒天氣。</li>
+</ul>
+<h2 id="總結-1">總結</h2>
+<p><strong>冬天的西風更強，本質上是因為地球在努力平衡極地和赤道之間巨大的「熱量虧空」。</strong></p>
 
                 
               </div>
@@ -447,7 +629,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/MPAS/" class="category-chain-item">MPAS</a>
+  <a href="/categories/Meteorology/" class="category-chain-item">Meteorology</a>
   
   
 
@@ -462,9 +644,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Installation/" class="print-no-link">#Installation</a>
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
-        <a href="/tags/PIO/" class="print-no-link">#PIO</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
     </div>
   
@@ -476,8 +660,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>MPAS | install ParallelIO-pio2_5_8</div>
-      <div>https://waipangsze.github.io/2024/05/31/MPAS_install_ParallelIO-pio2_error/</div>
+      <div>三圈環流與高空西風 | Three-cell circulation and upper-level westerly winds</div>
+      <div>https://waipangsze.github.io/2026/02/23/Three-cell-circulation-and-upper-level-westerly-winds/</div>
     </div>
     <div class="license-meta">
       
@@ -489,13 +673,13 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>May 31, 2024</div>
+          <div>February 23, 2026</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 27, 2025</div>
+          <div>February 23, 2026</div>
         </div>
       
       
@@ -526,18 +710,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/06/01/MPAS_intel_spack_installation/" title="MPAS | Installation by Spack and Intel">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MPAS | Installation by Spack and Intel</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/05/31/MPAS_install_metis_error/" title="MPAS | install Metis">
-                        <span class="hidden-mobile">MPAS | install Metis</span>
+                      <a href="/2026/02/13/MPAS-MPAS-JEDI-V302/" title="MPAS | MPAS-JEDI V3.0.2">
+                        <span class="hidden-mobile">MPAS | MPAS-JEDI V3.0.2</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
