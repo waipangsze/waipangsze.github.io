@@ -60,7 +60,7 @@ banner_img: https://i.imgur.com/co63hRF.png
 
 ---
 
-# 噴流（Jet Stream
+# 噴流（Jet Stream)
 
 既然你對**噴流（Jet Stream）**感興趣，那我們就像剝洋蔥一樣，看看這些在大氣高層縱橫馳騁的「超級高速公路」到底是怎麼回事。
 
@@ -245,3 +245,85 @@ banner_img: https://i.imgur.com/co63hRF.png
 
 **冬天的西風更強，本質上是因為地球在努力平衡極地和赤道之間巨大的「熱量虧空」。**
 
+# 熱力風方程（Thermal Wind Equation）
+
+釋高空西風及其季節性增強的核心工具是**熱力風方程（Thermal Wind Equation）**。高空西風並非獨立存在，**它是地轉偏向力（Coriolis Force）與水平溫度梯度耦合的結果**。
+
+## 1. 基礎控制方程：地轉流 (Geostrophic Flow)
+
+在對流層中上部，摩擦力可忽略，大氣運動處於**地轉平衡狀態**。其水平運動方程為：
+
+$$f u_g = -\frac{1}{\rho} \frac{\partial p}{\partial y}, \quad f v_g = \frac{1}{\rho} \frac{\partial p}{\partial x}$$
+
+其中：$f = 2\Omega \sin \phi$ 是科里奧利參數（北半球 $f > 0$）。$(u_g, v_g)$ 是地轉風的緯向和經向分量。
+
+為了簡化，我們考慮**靜力學平衡（Hydrostatic Balance）**：$\frac{\partial p}{\partial z} = -\rho g$。結合狀態方程 $p = \rho RT$，引入位勢高度 $Z$，地轉風可寫為：
+
+$$u_g = -\frac{g}{f} \frac{\partial Z}{\partial y}, \quad v_g = \frac{g}{f} \frac{\partial Z}{\partial x}$$
+
+## 2. 熱力風方程 (The Thermal Wind Equation)
+
+![](https://i.imgur.com/aRn1sSh.png)
+
+$$
+\begin{align}
+\mathbf{v}_g &= \frac{1}{f} \mathbf{k} \times \nabla_p \Phi \\
+\mathbf{v}_T &= \frac{1}{f} \mathbf{k} \times \nabla_p ( \Phi_1 - \Phi_0 ) \\
+\mathbf{v}_T &= \frac{R}{f} \ln \left [ \frac{p_0}{p_1}\right ] \mathbf{k} \times \nabla_p \overline{T} \\
+\end{align}
+\tag{1}
+$$
+
+- The thermal wind vector ($\mathbf{v}_T$) is the difference between the upper-level wind and lower-level wind ($\mathbf{v}_{g,upper} - \mathbf{v}_{g,lower}$)
+- subscript "p" on the gradient operator denotes gradient on a constant pressure surface
+
+$$
+\begin{align}
+&\text{(1) Geostrophic Balance} \\
+&v_g = \frac{1}{f} \frac{\partial \Phi}{\partial x} \quad \text{and} \quad u_g = -\frac{1}{f} \frac{\partial \Phi}{\partial y} \\[1.2em]
+&\text{(2) Hydrostatic Balance}  \\
+&\frac{\partial \Phi}{\partial p} = -\alpha = -\frac{RT}{p}  \\[1.2em]
+&\text{Combine (1) and (2)} \nonumber \\
+&p \frac{\partial v_g}{\partial p} \equiv \frac{\partial v_g}{\partial \ln p} = -\frac{R}{f} \left( \frac{\partial T}{\partial x} \right)_p  \\[0.8em]
+&p \frac{\partial u_g}{\partial p} \equiv \frac{\partial u_g}{\partial \ln p} = +\frac{R}{f} \left( \frac{\partial T}{\partial y} \right)_p  \\
+\end{align}
+\tag{2}
+$$
+
+**熱力風定義為地轉風隨高度的垂直剪切** 。通過對地轉風方程關於氣壓 $p$ 求導，並利用靜力學方程，可以得到經典的熱力風方程（以 $p$ 為座標）：
+
+$$\frac{\partial u_g}{\partial p} =  \frac{R}{f p} \left( \frac{\partial T}{\partial y} \right)_p, \quad \frac{\partial v_g}{\partial p} = -\frac{R}{f p} \left( \frac{\partial T}{\partial x} \right)_p$$
+
+若以高度 $z$ 為座標，則近似為：
+
+$$\frac{\partial u_g}{\partial z} \approx -\frac{g}{f T_0} \frac{\partial T}{\partial y}$$
+
+- **數學物理含義**：符號判斷： 在北半球（$f > 0$），大氣溫度通常隨緯度增加而降低（$\frac{\partial T}{\partial y} < 0$，指向北）。
+- **西風增強**： 根據公式，$\frac{\partial u_g}{\partial z} > 0$。這意味著隨著高度增加，緯向風速 $u_g$ 會向正方向（西風）不斷累積增強。
+- **全球一致性**： 
+  - 北半球：$\frac{\partial T}{\partial y} < 0, f > 0 \implies \text{西風隨高度增加}$。
+  - 南半球：$\frac{\partial T}{\partial y} > 0$（向南變冷）, $f < 0 \implies \text{西風隨高度增加}$。
+  - **這完美解釋了為什麼兩半球高空皆為西風**。
+
+## 3. 為什麼冬天西風更強？
+
+現在我們利用 $\frac{\partial u_g}{\partial z} \propto -\frac{\partial T}{\partial y}$ 來分析季節變化。**緯向溫差的變化高空西風（特別是噴流）的速度可以看作是底層風速加上熱力風的累加**：
+
+$$u_g(z) = u_g(0) + \int_{0}^{z} \left( -\frac{g}{f T_0} \frac{\partial T}{\partial y} \right) dz$$
+
+- **冬季（Winter）**： 太陽直射點在另一半球，極地進入極夜，放射冷卻極強，而熱帶溫度維持較高。這使得經向溫度梯度 $|\frac{\partial T}{\partial y}|$ 達到全年最大值。
+- **夏季（Summer）**： 太陽直射點移向本半球高緯度，極地受熱增加，南北溫差縮小，$|\frac{\partial T}{\partial y}|$ 變小。
+
+### 結論
+
+由於冬季的 $\left| \frac{\partial T}{\partial y} \right|_{winter} \gg \left| \frac{\partial T}{\partial y} \right|_{summer}$，根據**熱力風方程**，**冬季高空的垂直風剪切極大**。從地面累加到對流層頂，冬季的西風動能遠高於夏季。
+
+## 4. 角動量守恒的視角 (Angular Momentum Conservation)
+
+除了熱力風平衡，還必須考慮**哈德里環流（Hadley Cell）**的貢獻。空氣從赤道（旋轉半徑 $R_{earth}$）向極地移動時，根據角動量守恒。為了保持 $L$ 不變，緯向速度 $u$ 必須劇烈增加。冬季： 哈德里環流顯著加強且向低緯度偏移，將更多的角動量從赤道向中緯度輸送。噴流位置： 這也是為什麼亞熱帶噴流（Subtropical Jet）在冬季會變得極其尖銳且位置南移。
+
+總結從物理學角度看，高空西風是**斜壓性（Baroclinicity）**的體現。**冬季極地與赤道之間巨大的能量勢位差，通過熱力風平衡轉化成了猛烈的高空西風動能。**
+
+# References
+
+1. [Thermal wind | MIT](https://ocw.mit.edu/courses/12-307-weather-and-climate-laboratory-spring-2009/b5b2713aee9842960630961e0e4e7a52_thermal_wind.pdf)
