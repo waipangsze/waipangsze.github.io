@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 三圈環流與高空西風 | Three-cell circulation and upper-level westerly winds
+title: 高空西風帶與三圈環流 | Three-cell circulation and upper-level westerly winds
 categories: [Meteorology]
 tags: [NWP, MPAS, WRF]
 author: wpsze
@@ -327,3 +327,5 @@ $$u_g(z) = u_g(0) + \int_{0}^{z} \left( -\frac{g}{f T_0} \frac{\partial T}{\part
 # References
 
 1. [Thermal wind | MIT](https://ocw.mit.edu/courses/12-307-weather-and-climate-laboratory-spring-2009/b5b2713aee9842960630961e0e4e7a52_thermal_wind.pdf)
+2. [不少地理老师讲错了，三圈环流存在局限！中纬度高空也是西风！](https://zhuanlan.zhihu.com/p/1940221983720740264?share_code=ofeSJs5tWn0O&utm_psn=2009757221345566825)
+3. [气象学上如何定义西风带的『野性』？这种野性具体体现在哪？为何它一旦野起来，就会引发一系列极端天气？](https://www.zhihu.com/question/1969710843659805344/answer/1971512103375475245?share_code=1ia1tYfYFW1q7&utm_psn=2009759507325133773)
