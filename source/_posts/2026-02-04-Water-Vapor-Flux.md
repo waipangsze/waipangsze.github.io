@@ -15,7 +15,7 @@ banner_img: https://i.imgur.com/Ur9oZcE.png
 
 # 基本輸送方程
 
-在流體力學與氣象學中，水汽輸送方程是由基本輸送方程（General Transport Equation）推導而來的。
+在流體力學與氣象學中，水汽輸送方程是由[基本輸送方程（General Transport Equation）]([Convection–diffusion equation](https://en.wikipedia.org/wiki/Convection%E2%80%93diffusion_equation))推導而來的。
 
 我們可以透過雷諾輸送定理（Reynolds Transport Theorem），將特定物理量（此處為水汽質量）隨時間的變化，分解為區域變化項與平流輸送項。
 
