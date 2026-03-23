@@ -19,20 +19,20 @@
   <meta name="author" content="wpsze">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Water Vapor Budget Equation (moisture budget equation) The water vapor budget equation (moisture budget equation) dictates that the local change in atmospheric moisture over an area equals evaporation">
+    <meta name="description" content="基本輸送方程 在流體力學與氣象學中，水汽輸送方程是由基本輸送方程（General Transport Equation）推導而來的。 我們可以透過雷諾輸送定理（Reynolds Transport Theorem），將特定物理量（此處為水汽質量）隨時間的變化，分解為區域變化項與平流輸送項。 1. 基本輸送方程的通用形式 基本輸送方程的通用形式 \(\phi\) 對於任一單位質量的純量屬性 ，其在流">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Water Vapor Flux | 水汽通量">
 <meta property="og:url" content="https://waipangsze.github.io/2026/02/04/Water-Vapor-Flux/index.html">
 <meta property="og:site_name" content="wpsze">
-<meta property="og:description" content="Water Vapor Budget Equation (moisture budget equation) The water vapor budget equation (moisture budget equation) dictates that the local change in atmospheric moisture over an area equals evaporation">
+<meta property="og:description" content="基本輸送方程 在流體力學與氣象學中，水汽輸送方程是由基本輸送方程（General Transport Equation）推導而來的。 我們可以透過雷諾輸送定理（Reynolds Transport Theorem），將特定物理量（此處為水汽質量）隨時間的變化，分解為區域變化項與平流輸送項。 1. 基本輸送方程的通用形式 基本輸送方程的通用形式 \(\phi\) 對於任一單位質量的純量屬性 ，其在流">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/Ur9oZcE.png">
 <meta property="article:published_time" content="2026-02-03T22:31:00.000Z">
-<meta property="article:modified_time" content="2026-02-06T04:09:40.121Z">
+<meta property="article:modified_time" content="2026-03-02T15:06:39.262Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="Water Vapor Budget Equation">
 <meta property="article:tag" content="Water Vapor Flux">
 <meta property="article:tag" content="Precipitable Water">
@@ -361,7 +361,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          3.5k words
         
       </span>
     
@@ -372,7 +372,7 @@
         
         
         
-          14 mins
+          30 mins
         
       </span>
     
@@ -423,7 +423,130 @@
             
               <div class="markdown-body">
                 
-                <h1 id="water-vapor-budget-equation-moisture-budget-equation">Water Vapor Budget Equation (moisture budget equation)</h1>
+                <h1 id="基本輸送方程">基本輸送方程</h1>
+<p>在流體力學與氣象學中，水汽輸送方程是由基本輸送方程（General Transport Equation）推導而來的。</p>
+<p>我們可以透過雷諾輸送定理（Reynolds Transport Theorem），將特定物理量（此處為水汽質量）隨時間的變化，分解為區域變化項與平流輸送項。</p>
+<h1 id="基本輸送方程的通用形式">1. 基本輸送方程的通用形式</h1>
+<p>基本輸送方程的通用形式 <span class="math inline">\(\phi\)</span> 對於任一單位質量的純量屬性 ，其在流場中的收支方程為：</p>
+<p><span class="math display">\[
+\frac{\partial \rho \phi}{\partial t} + \nabla \cdot (\rho \phi \vec{V}) = S
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\rho\)</span>: 流體（空氣）密度</li>
+<li><span class="math inline">\(\vec{V}\)</span> : 風向量</li>
+<li><span class="math inline">\(S\)</span>: 來源或消失項（Source or Sink）</li>
+</ul>
+<h1 id="水汽輸送方程的推導">2. 水汽輸送方程的推導</h1>
+<p>當我們將 <span class="math inline">\(\phi\)</span> 替換為比濕 <span class="math inline">\(q\)</span>（單位質量濕空氣中所含的水汽質量），並考慮大氣的連續性方程（質量守恆），我們可以得到水汽連續方程。</p>
+<h3 id="形式一單位體積的水汽通量局部變化形式">形式一：單位體積的水汽通量（局部變化形式）</h3>
+<p>在固定空間點觀測水汽含量的變化：</p>
+<p><span class="math display">\[
+\frac{\partial \rho q}{\partial t}  = - \nabla \cdot (\rho q \vec{V}) + (E - C)
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\frac{\partial \rho q}{\partial t}\)</span>：該點水汽密度的隨時間變化率。</li>
+<li><span class="math inline">\(\nabla \cdot (\rho q \vec{V})\)</span>：水汽通量散度。這是輸送的核心，代表水汽經由風力的匯聚（輻合）或散開（輻散）。</li>
+<li><span class="math inline">\(E - C\)</span>：源匯項。
+<ul>
+<li><span class="math inline">\(E\)</span> 為蒸發（Evaporation），</li>
+<li><span class="math inline">\(C\)</span> 為凝結（Condensation）。</li>
+</ul></li>
+</ul>
+<h3 id="形式二氣壓坐標系下的水平輸送氣象預報常用">形式二：氣壓坐標系下的水平輸送（氣象預報常用）</h3>
+<p>由於氣象觀測多在氣壓層（如 850hPa）進行，利用靜力學方程替換密度，可得到常用的水平水汽輸送向量 <span class="math inline">\(\vec{Q}\)</span>：</p>
+<p><span class="math display">\[
+\vec{Q} = \frac{1}{g} q \vec{V_h}
+\]</span></p>
+<h2 id="四個組成項的來源與物理意義">四個組成項的來源與物理意義</h2>
+<p>根據上述方程，水汽輸送的強弱由以下四個關鍵維度決定：</p>
+<table>
+
+<thead>
+<tr class="header">
+<th>項次</th>
+<th>符號</th>
+<th>物理量名稱</th>
+<th>來源與作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><span class="math inline">\(q\)</span></td>
+<td>比濕 (Specific Humidity)</td>
+<td>熱力學來源：來自下墊面（海洋）的蒸發。決定了「有多少水汽可供輸送」。</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><span class="math inline">\(\vec{V_h}\)</span></td>
+<td>水平風向量 (Horizontal Wind)</td>
+<td>動力學來源：由氣壓梯度力驅動（如副高與氣旋間的南風）。決定了「輸送的方向與速度」。</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><span class="math inline">\(\nabla \cdot (..)\)</span></td>
+<td>通量散度 (Flux Divergence)</td>
+<td>幾何結構來源：風場的空間變化。若風速減慢或風向輻合，水汽會在此堆積成霧。</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><span class="math inline">\(dp\)</span> (或 <span class="math inline">\(p\)</span>)</td>
+<td>垂直氣壓厚度</td>
+<td>空間權重來源：定義了輸送發生的層位。華南春季雨霧主要發生在底層（1000-850hPa）。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="華南地區的春天約-2-月至-4-月常被形容為回南天那種空氣濕到能擰出水牆壁冒汗的景象背後其實是一場複雜的大氣物理博弈">華南地區的春天（約 2 月至 4 月）常被形容為「回南天」，那種空氣濕到能擰出水、牆壁「冒汗」的景象，背後其實是一場複雜的大氣物理博弈。</h2>
+<p>以下為你拆解華南春天初期雨霧形成的機制與過程：</p>
+<ol type="1">
+<li><strong>核心形成機制：暖濕氣流與冷墊的對抗</strong> 華南春季雨霧的本質是變性冷高壓與加強的南風（暖濕氣流）之間的交鋒。</li>
+</ol>
+<ul>
+<li>冷空氣的遺留（冷墊）： 冬末春初，冷空氣勢力雖然減弱，但仍有殘餘的冷高壓脊控制華南。地表與近地層大氣經過一個冬天的冷卻，溫度較低。</li>
+<li>暖濕氣流的強勢回歸： 隨著副熱帶高壓北抬或南海低壓槽活動，來自南海及孟加拉灣的暖濕氣流（偏南風）開始大規模北上。</li>
+<li>逆溫層的形成： 當溫暖、潮濕的空氣爬升在較冷、較重的殘餘冷空氣之上時，會形成一個「下冷上暖」的逆溫層。這個逆溫層像一個巨大的「蓋子」，將水汽封鎖在近地面，極易冷凝成霧或低雲。</li>
+</ul>
+<ol start="2" type="1">
+<li><strong>兩大主要天氣現象：平流霧與回南天</strong></li>
+</ol>
+<ul>
+<li><strong>A. 平流霧 (Advection Fog)</strong> 這是華南春季最常見的霧。 水汽過飽和： 暖濕空氣在經過寒冷的海面或地面時，底層大氣溫度迅速下降至露點以下。 凝結成霧： 空氣中的水汽凝結成微小水滴，隨風飄向陸地。這就是為什麼沿海城市（如香港、澳門、珠海）常出現「霧鎖大霧山」或「海霧入城」的奇觀。</li>
+<li><strong>B. 回南天 (The "Sweating" Walls)</strong> 這是一種特殊的冷凝現象。 熱力滯後性： 建築物牆壁、地板在冬天被徹底冷卻。當極端潮濕的暖空氣突然襲來時，固體表面的溫度仍低於空氣露點。 物理過程： 暖空氣接觸到冰冷的表面，直接在物體表面液化，形成密集的珠水。這並非從牆內滲水，而是空氣中的水汽「抓」住了牆面的冷。</li>
+</ul>
+<ol start="3" type="1">
+<li><strong>雨的形成：地形抬升與層狀雲降雨</strong> 春季初期的降雨通常不是夏天的雷陣雨，而是綿綿細雨（Drizzle）：</li>
+</ol>
+<ul>
+<li><strong>層雲降雨</strong>： 暖濕氣流在冷墊上滑升，形成深厚的層狀雲。<strong>由於上升動力較弱，水滴緩慢碰撞增大。</strong></li>
+<li><strong>地形效應</strong>： 華南多丘陵山地。暖濕氣流遇到南嶺等山脈阻擋，被迫抬升，進一步冷卻凝結，導致山前地帶常年雲霧繚繞且細雨不斷。</li>
+</ul>
+<h2 id="深入了解如何從專業氣象圖如-850hpa-風場圖或探空圖中預判這種天氣的到來嗎">深入了解如何從專業氣象圖(如 850hPa 風場圖或探空圖)中預判這種天氣的到來嗎?</h2>
+<p>要預判華南春季的雨霧（回南天），<strong>氣象預報員主要觀察低空大氣的垂直構造與水汽輸送強度。</strong> 以下是從 <strong>850hPa 風場圖與探空圖</strong>進行判讀的專業要點：</p>
+<ol type="1">
+<li><strong>850hPa 風場圖：尋找「水汽傳送帶」</strong></li>
+</ol>
+<ul>
+<li><strong>850hPa（約海拔 1,500 米）是大氣低層的重要層位</strong>，能反映暖濕氣流的強弱。</li>
+<li><strong>低空急流 (Low-Level Jet, LLJ)</strong>： 當 850hPa 出現強勁的偏南風（風速通常超過 12 m/s），代表大量來自南海的暖濕空氣正向北進攻。</li>
+<li><strong>切變線與輻合</strong>： 若偏南風與北方的偏北風（冷空氣殘餘）在此高度交匯形成切變線，通常預示著持久的層狀雲降雨。</li>
+<li><strong>水汽通量</strong>： 觀察等高線與風向，若風從海面直吹向陸地，且伴隨高濕區（比濕較大），則是典型的雨霧前兆。</li>
+</ul>
+<ol start="2" type="1">
+<li><strong>探空圖 (Skew-T Log-P)：解讀「垂直密碼」</strong> 探空圖能顯示某地從地面到高空的溫度與濕度垂直分布，是判斷霧與回南天的「金標準」。</li>
+</ol>
+<ul>
+<li><strong>逆溫層 (Inversion Layer)</strong>： 觀察溫度曲線。正常是大氣隨高度遞減，若在近地面（約 925hPa 至 850hPa 之間）出現「下冷上暖」的現象，這就是逆溫層。它像蓋子一樣阻礙空氣對流，使水汽聚集在地面形成濃霧。</li>
+<li><strong>露點間隔 (Dew Point Depression)</strong>： 查看溫度線（T）與露點線（Td）的距離。
+<ul>
+<li><strong>貼合（T ≈ Td）</strong>： 代表該層大氣已飽和。若這種貼合出現在近地面且厚度較薄，即為霧。</li>
+<li><strong>深厚飽和</strong>： 若從地面到 700hPa 兩線都很接近，則會出現連綿細雨。</li>
+</ul></li>
+<li><strong>回南天判斷</strong>： 當探空圖顯示底層（如 1000hPa）溫度顯著高於前幾日的地面溫度，且濕度極高（接近 100%），代表暖濕空氣已覆蓋在冰冷的建築物表面，即會引發反潮現象。</li>
+</ul>
+<div class="note note-primary">
+            <p><strong>簡單來說，華南春天的雨霧就是</strong>：高比濕 (<span class="math inline">\(q\)</span>) 的空氣，被強南風 (<span class="math inline">\(\vec{V}\)</span>) 從海洋載運而來，並在低層大氣 (<span class="math inline">\(dp\)</span>) 堆積的物理過程。</p>
+          </div>
+<h1 id="water-vapor-budget-equation-moisture-budget-equation">Water Vapor Budget Equation (moisture budget equation)</h1>
 <p>The water vapor budget equation (moisture budget equation) dictates that the local change in atmospheric moisture <strong>over an area</strong> equals evaporation minus precipitation and net horizontal moisture transport.</p>
 <p>The Water Vapor Budget Equation (moisture budget equation) relates precipitable water <span class="math inline">\((PW)\)</span> and water vapor flux divergence <span class="math inline">\(\nabla \cdot \mathbf{Q}\)</span> to precipitation <span class="math inline">\((P)\)</span> and evaporation <span class="math inline">\((E)\)</span>:</p>
 <p><span class="math display">\[\frac{\partial PW}{\partial t}+\nabla \cdot \mathbf{Q}=E-P\]</span></p>
@@ -621,11 +744,11 @@ q = \frac{q_v}{1+q_v}
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
-      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/Water-Vapor-Budget-Equation/" class="print-no-link">#Water Vapor Budget Equation</a>
       
@@ -662,7 +785,7 @@ q = \frac{q_v}{1+q_v}
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>February 6, 2026</div>
+          <div>March 2, 2026</div>
         </div>
       
       
