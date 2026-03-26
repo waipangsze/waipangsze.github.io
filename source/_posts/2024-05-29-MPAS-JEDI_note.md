@@ -38,19 +38,20 @@ banner_img: https://i.imgur.com/6oGdLJk.png
 
 # Papers
 
-- 3DEnVar
+- **3DEnVar** (2022)
   - [Liu, Zhiquan, et al. "Data assimilation for the Model for Prediction Across Scales–Atmosphere with the Joint Effort for Data assimilation Integration (JEDI-MPAS 1.0. 0): EnVar implementation and evaluation." Geoscientific Model Development Discussions 2022 (2022): 1-33.](https://gmd.copernicus.org/preprints/gmd-2022-133/gmd-2022-133.pdf)
-- IAU
+- **IAU** (2023)
   - [Ha, S., Guerrette, J. J., Hernandez Banos, I., Skamarock, W. C., & Duda, M. G. (2023). Incremental Analysis Update (IAU) in the Model for Prediction Across Scales coupled with the Joint Effort for Data assimilation Integration (MPAS-JEDI 2.0. 0). EGUsphere, 2023, 1-21.](https://egusphere.copernicus.org/preprints/2023/egusphere-2023-2299/egusphere-2023-2299.pdf)
-- 3DVar
+- **3DVar** (2024)
   - [Jung, Byoung-Joo, et al. "Three-dimensional variational assimilation with a multivariate background error covariance for the Model for Prediction Across Scales–Atmosphere with the Joint Effort for data Assimilation Integration (JEDI-MPAS 2.0. 0-beta)." Geoscientific Model Development 17.9 (2024): 3879-3895.](https://gmd.copernicus.org/articles/17/3879/2024/gmd-17-3879-2024.html)
-- Ensemble/EDA
+- **Ensemble/EDA** (2025)
   - [Guerrette, Jonathan J., et al. "Data assimilation for the Model for Prediction Across Scales–Atmosphere with the Joint Effort for Data assimilation Integration (JEDI-MPAS 2.0. 0-beta): ensemble of 3D ensemble-variational (En-3DEnVar) assimilations." Geoscientific Model Development Discussions 2023 (2023): 1-34.](https://gmd.copernicus.org/preprints/gmd-2023-54/gmd-2023-54.pdf)
-- Local Ensemble Transform Kalman filter
+- **Local Ensemble Transform Kalma (All-sky AMSU-A)** (2025)
   - [Sun, T., Guerrette, J. J., Liu, Z., Ban, J., Jung, B. J., Baños, I. H., & Snyder, C. (2025). All-sky AMSU-A radiance data assimilation using the gain-form of Local Ensemble Transform Kalman filter within MPAS-JEDI-2.1. 0: implementation, tuning, and evaluation. EGUsphere, 2025, 1-29.](https://egusphere.copernicus.org/preprints/2025/egusphere-2025-2079/)
-- 4DEnVar
-  - [Nystrom, R. G., Snyder, C., Liu, Z., Jung, B. J., Ban, J., & Banos, I. H. (2025). A Hybrid Four‐Dimensional Variational Data Assimilation System for the Model for Prediction Across Scales (MPAS‐Atmosphere): Leveraging the Joint Effort for Data Assimilation Integration (JEDI). Journal of Advances in Modeling Earth Systems, 17(12), e2025MS005183.](https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2025MS005183)
-
+- **4DEnVar** (2025)
+  - [Nystrom, R. G., Snyder, C., Liu, Z., Jung, B. J., Ban, J., & Banos, I. H. (2025). A Hybrid Four‐Dimensional Variational Data Assimilation System for the Model for Prediction Across Scales (MPAS‐Atmosphere): Leveraging the Joint Effort for Data Assimilation Integration (JEDI). Journal of Advances in Modeling Earth Systems, 17(12), e2025MS005183.](https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2025MS005183)  
+- **All-sky ATMS radiance** (2026)
+  - [Ban, J., Liu, Z., Jung, B. J., Banos, I. H., Ruston, B., & Collard, A. (2026). All-sky ATMS radiance data assimilation with MPAS-JEDI. EGUsphere, 2026, 1-24.](https://egusphere.copernicus.org/preprints/2026/egusphere-2026-1047/)
 
 # Github
 
