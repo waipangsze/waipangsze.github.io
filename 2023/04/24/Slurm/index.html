@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Slurm_logo.svg/255px-Slurm_logo.svg.png">
 <meta property="article:published_time" content="2023-04-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-10-27T06:03:55.659Z">
+<meta property="article:modified_time" content="2026-03-31T02:09:58.690Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="slurm">
@@ -358,7 +358,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          423 words
+          609 words
         
       </span>
     
@@ -369,7 +369,7 @@
         
         
         
-          4 mins
+          6 mins
         
       </span>
     
@@ -471,6 +471,22 @@
 <p>Upon job completion, the standard output will be stored in the job submission directory under the filename <strong>slurm-<your_slurm_jobid>.out</strong> or assign filename as</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#SBATCH --output=slurm.out     # file to collect standard output</span><br><span class="hljs-comment">#SBATCH --error=slurm.err      # file to collect standard errors</span><br></code></pre></td></tr></table></figure>
 <p>If the time limit is not specified in the submit script, SLURM will assign the default run time, 3 days. This means the job will be terminated by SLURM in 72 hrs. If the memory limit is not requested, SLURM will assign the default 16 GB. The maximum allowed memory per node is 128 GB. To see how much RAM per node your job is using, you can run commands sacct or sstat to query MaxRSS for the job on the node.</p>
+<h2 id="task-allocation">Task allocation</h2>
+<ul>
+<li>These flags tell the scheduler exactly how many nodes, how many tasks (usually one MPI rank/process per task), and how many cores (CPUs) per task you want.</li>
+</ul>
+<h3 id="exclusive"><code>--exclusive</code></h3>
+<ul>
+<li>Add <code>--exclusive</code> to your sbatch script
+<ul>
+<li>e.g. You want to occupy 4 entire nodes exclusively (no other users' jobs can run on them), but still use only 2 cores per node for your tasks.</li>
+</ul></li>
+</ul>
+<div class="note note-primary">
+            <p>You want to occupy 4 entire nodes exclusively (no other users' jobs can run on them), but still use only 2 cores per node for your tasks.</p>
+          </div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment">#SBATCH --job-name=mpi_test</span><br><span class="hljs-comment">#SBATCH -p XXX</span><br><span class="hljs-comment">#SBATCH --nodes=4                    # Request 4 nodes</span><br><span class="hljs-comment">#SBATCH --ntasks-per-node=2          # 2 MPI tasks per node</span><br><span class="hljs-comment">#SBATCH --cpus-per-task=1            # 1 core per MPI task → 2 cores/node</span><br><span class="hljs-comment">#SBATCH --exclusive                  # Nodes are occupied by you only (no sharing)</span><br><span class="hljs-comment">#SBATCH --time=00:10:00              # 10 minutes should be enough for test</span><br><span class="hljs-comment">#SBATCH --output=mpi_test_%j.out     # Output file</span><br><span class="hljs-comment">#SBATCH --error=mpi_test_%j.err      # Error file</span><br><br><span class="hljs-comment"># Print some useful Slurm environment info</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;=== Job started on <span class="hljs-subst">$(date)</span> ===&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Number of nodes: <span class="hljs-variable">$SLURM_JOB_NUM_NODES</span>&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Tasks per node: <span class="hljs-variable">$SLURM_NTASKS_PER_NODE</span>&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Total tasks: <span class="hljs-variable">$SLURM_NTASKS</span>&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Allocated nodes: <span class="hljs-variable">$SLURM_NODELIST</span>&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;==================================&quot;</span><br><br>mpirun -np <span class="hljs-variable">$SLURM_NTASKS</span> python3 mpi_hello.py<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/env python3</span><br><span class="hljs-keyword">from</span> mpi4py <span class="hljs-keyword">import</span> MPI<br><span class="hljs-keyword">import</span> socket<br><span class="hljs-keyword">import</span> time<br><br>comm = MPI.COMM_WORLD<br>rank = comm.Get_rank()<br>size = comm.Get_size()<br><br><span class="hljs-comment"># Get the hostname (node name)</span><br>hostname = socket.gethostname()<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Hello from rank <span class="hljs-subst">&#123;rank&#125;</span> out of <span class="hljs-subst">&#123;size&#125;</span> processes | Running on node: <span class="hljs-subst">&#123;hostname&#125;</span> | PID: <span class="hljs-subst">&#123;MPI.Get_processor_name() <span class="hljs-keyword">if</span> <span class="hljs-built_in">hasattr</span>(MPI,<span class="hljs-string">&#x27;Get_processor_name&#x27;</span>) <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;N/A&#x27;</span>&#125;</span>&quot;</span>)<br><br><span class="hljs-comment"># Small delay so output doesn&#x27;t interleave too much</span><br>time.sleep(<span class="hljs-number">0.1</span>)<br><br><span class="hljs-comment"># Rank 0 prints a summary at the end</span><br><span class="hljs-keyword">if</span> rank == <span class="hljs-number">0</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\n=== MPI Test Completed ===&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Total MPI processes: <span class="hljs-subst">&#123;size&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Nodes requested: 4&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Tasks per node: 2&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Each using 1 core → 2 cores per node&quot;</span>)<br></code></pre></td></tr></table></figure>
 <h2 id="query-job-information">Query job information</h2>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;===========================================================&quot;</span><br>sacct --format=JobID,Jobname,start,end,elapsed,nnodes,ncpus,AveRSS,MaxRSS,MaxDiskRead,MaxDiskWrite,CPUTime,MaxVMSize<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;===========================================================&quot;</span><br>squeue -o<span class="hljs-string">&quot;%.7i %.9P %.8j %.8u %.2t %.10M %.6D %C %m %z %V %l&quot;</span><br>squeue -o<span class="hljs-string">&quot;%.7i %o&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;===========================================================&quot;</span><br></code></pre></td></tr></table></figure>
 <p><a target="_blank" rel="noopener" href="https://slurm.schedmd.com/sinfo.html"><strong>sinfo</strong></a></p>
@@ -597,7 +613,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 27, 2025</div>
+          <div>March 31, 2026</div>
         </div>
       
       
