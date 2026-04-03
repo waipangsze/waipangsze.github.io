@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/WtPH3qd.png
+banner_img: https://i.imgur.com/WtPH3qd.png
 ---
 
 在計算流體力學（CFD）的最高境界——直接數值模擬 (Direct Numerical Simulation, DNS) 中，耗散率（Dissipation Rate）是衡量能量如何從大尺度渦流傳遞至微小尺度並最終轉化為熱能的核心物理量。
