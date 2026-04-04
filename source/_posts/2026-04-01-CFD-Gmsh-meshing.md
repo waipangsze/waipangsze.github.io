@@ -474,4 +474,73 @@ If you want a low-Reynolds simulation instead (no wall functions):
 But for most industrial cylinder/pipe flows, **wall functions (nutkWallFunction) + type wall**; is the standard and recommended way.
 {% endnote %}
 
+### What is `physicalType patch;`?
+
+- `physicalType` is an old, optional entry that `gmshToFoam` (and some other mesh converters) adds for backward compatibility with very old OpenFOAM GUIs (FoamX).
+- It has almost no effect on the actual simulation in modern `OpenFOAM` (v8, v9, v10, v11, etc.).
+- The important entry is type (e.g. type wall;, type symmetryPlane;, type patch;, type empty;).
+- You can safely leave physicalType patch; as it is, or comment it out with `//` if you want a cleaner file. Deleting the whole line is also fine in most cases.
+
+```txt
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+6  // ← number of patches, change if needed
+
+frontandback
+{
+    type            symmetryPlane;
+    // physicalType    patch;     ← you can leave or comment out
+    nFaces          XXX;
+    startFace       YYY;
+}
+
+wall
+{
+    type            wall;          // ← This must be "wall" for wall functions!
+    // physicalType    patch;
+    nFaces          XXX;
+    startFace       YYY;
+}
+
+inlet
+{
+    type            patch;
+    // physicalType    patch;
+    nFaces          XXX;
+    startFace       YYY;
+}
+
+outlet
+{
+    type            patch;
+    // physicalType    patch;
+    nFaces          XXX;
+    startFace       YYY;
+}
+
+top
+{
+    type            patch;
+    // physicalType    patch;
+    nFaces          XXX;
+    startFace       YYY;
+}
+
+bottom
+{
+    type            patch;
+    // physicalType    patch;
+    nFaces          XXX;
+    startFace       YYY;
+}
+```
+
 # References
