@@ -13,6 +13,10 @@ index_img:
 banner_img: 
 ---
 
+# Build
+
+- old computer, rebuild OS
+
 ```console
 sudo apt update && sudo apt install -y build-essential python3 make cmake
 sudo apt install openssh-server
@@ -123,3 +127,38 @@ Solution: Change the ownership of the npm directory to your current user so you 
 ```console
 sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
 ```
+
+# For example
+
+- local (computer) fails to run any local model
+- apply `kimi-k2.5:cloud`
+  - **ollama has free cloud usage** for session and weekly
+
+## Build WRF/WPS
+
+```Prompt
+under /home/wpsze/Documents/WRF,
+1. build WRF from https://github.com/wrf-model/WRF/tree/v4.7.0
+2. use micromamba to build env for WRF env
+```
+
+{% gi 5 2-3 %}
+![](https://i.imgur.com/kEbqW9C.png)
+![](https://i.imgur.com/IYG1La0.png)
+![](https://i.imgur.com/4g4EERZ.png)
+![](https://i.imgur.com/iQaUiFs.png)
+![](https://i.imgur.com/G9XjuzA.png)
+{% endgi %}
+
+```Prompt
+1. microamamba activate /home/wpsze/micromamba/envs/wrf-build
+2. use /home/wpsze/Documents/WRF/WRF
+3. build WPS from https://github.com/wrf-model/WPS/tree/v4.5 on folder /home/wpsze/Documents/WPS
+```
+
+{% gi 4 2-2 %}
+![](https://i.imgur.com/Ou0hFAO.png)
+![](https://i.imgur.com/GVfhn4F.png)
+![](https://i.imgur.com/94HYU6C.png)
+![](https://i.imgur.com/YXpcB7M.png)
+{% endgi %}
