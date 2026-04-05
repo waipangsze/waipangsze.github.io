@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/kEbqW9C.png
+banner_img: https://i.imgur.com/kEbqW9C.png
 ---
 
 # Build
