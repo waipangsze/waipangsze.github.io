@@ -15,7 +15,7 @@ banner_img: https://i.imgur.com/kEbqW9C.png
 
 # Build
 
-- old computer, rebuild OS
+- Reinstall Ubuntu on an older computer.
 
 ```console
 sudo apt update && sudo apt install -y build-essential python3 make cmake
