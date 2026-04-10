@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/htVo0nI.png">
 <meta property="article:published_time" content="2025-09-09T22:00:00.000Z">
-<meta property="article:modified_time" content="2026-01-27T07:13:40.985Z">
+<meta property="article:modified_time" content="2026-04-10T05:57:25.492Z">
 <meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="GFS">
 <meta property="article:tag" content="FNL">
 <meta property="article:tag" content="ERA5">
@@ -363,7 +363,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k words
+          2.4k words
         
       </span>
     
@@ -374,7 +374,7 @@
         
         
         
-          19 mins
+          20 mins
         
       </span>
     
@@ -496,6 +496,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs log">(0)	======================================================================<br>(0)	Filename: &quot;Hong_Kong_18_Districts.shp&quot;<br>(0)	   Geometry type: polygon<br>(0)	   # of features: 18<br>(0)	   Min/max lat:     22.15/  22.56<br>(0)	   Min/max lon:    113.84/ 114.44<br>(0)	   Variable names and their types:<br>(0)	       geometry : integer<br>(0)	       segments : integer<br>(0)	       x : double<br>(0)	       y : double<br>(0)	       OBJECTID : int64<br>(0)	       TCNAME : string<br>(0)	       ENAME : string<br>(0)	       Shape__Are : double<br>(0)	       Shape__Len : double<br>(0)	======================================================================<br></code></pre></td></tr></table></figure>
 <p><img src="https://i.imgur.com/htVo0nI.png" srcset="/img/loading.gif" lazyload width="400" /></p>
 <h1 id="download">Download</h1>
+<h2 id="download-gadm-data-version-4.1">Download GADM data (version 4.1)</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://gadm.org/download_country.html">Download GADM data (version 4.1)</a>
 <ul>
@@ -507,6 +508,23 @@
 </ul></li>
 </ul></li>
 </ul>
+<h2 id="hong_kong_18_districts_20260410">**Hong_Kong_18_Districts_20260410</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://opendata.esrichina.hk/datasets/hong-kong-18-districts/explore?location=22.357821%2C114.139117%2C10"><strong>Esri China (HK) Esri China (Hong Kong) Ltd.</strong></a>
+<ul>
+<li>This is a layer showing the 18 Districts in Hong Kong. (Last update: March, 2026)</li>
+<li>csv, <strong>shapefile</strong>, <strong>KML</strong>, <strong>GeoJSON</strong>, ...</li>
+<li><img src="https://i.imgur.com/NlyzWOQ.png" srcset="/img/loading.gif" lazyload /></li>
+</ul></li>
+</ul>
+<p>But, its original lat/lon or x/y are mismatched,</p>
+<ul>
+<li>One more step process from <strong>GeoJSON</strong> to shapefile,</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/bin/python</span><br><br><span class="hljs-keyword">import</span> geopandas <span class="hljs-keyword">as</span> gpd<br><br><span class="hljs-comment"># 1. 讀取你的 GeoJSON 檔案</span><br>input_geojson = <span class="hljs-string">&quot;Hong_Kong_18_Districts_20260410.geojson&quot;</span>     <span class="hljs-comment"># ← 改成你的實際檔名</span><br><br>gdf = gpd.read_file(input_geojson)<br><br><span class="hljs-comment"># 2. 顯示基本資訊（建議先執行這幾行檢查）</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original CRS:&quot;</span>, gdf.crs)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Number of features:&quot;</span>, <span class="hljs-built_in">len</span>(gdf))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Geometry type:&quot;</span>, gdf.geometry.<span class="hljs-built_in">type</span>.unique())<br><br><span class="hljs-comment"># 3. 轉存成 Shapefile（會自動產生 .shp、.shx、.dbf、.prj 等檔案）</span><br>output_shp = <span class="hljs-string">&quot;Hong_Kong_18_Districts_20260410.shp&quot;</span>            <span class="hljs-comment"># ← 建議改成新檔名</span><br>gdf.to_file(output_shp)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;轉換完成！Shapefile 已儲存為：<span class="hljs-subst">&#123;output_shp&#125;</span>&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p>results are,</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs console">Hong_Kong_18_Districts_20260410.cpg   <br>Hong_Kong_18_Districts_20260410.prj  <br>Hong_Kong_18_Districts_20260410.shx<br>Hong_Kong_18_Districts_20260410.dbf      <br>Hong_Kong_18_Districts_20260410.shp<br></code></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/mUeSQH3.png" srcset="/img/loading.gif" lazyload width="400" /></p>
 <h1 id="files">Files</h1>
 <h2 id="ne_10m_admin_0_countries-admin-0-countries">ne_10m_admin_0_countries (Admin 0 – Countries)</h2>
 <ul>
@@ -552,11 +570,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
-      
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/GFS/" class="print-no-link">#GFS</a>
       
@@ -597,7 +615,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>January 27, 2026</div>
+          <div>April 10, 2026</div>
         </div>
       
       
