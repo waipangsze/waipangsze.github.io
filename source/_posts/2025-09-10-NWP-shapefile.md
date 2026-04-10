@@ -655,11 +655,58 @@ end
 
 # Download
 
+## Download GADM data (version 4.1)
+
 - [Download GADM data (version 4.1)](https://gadm.org/download_country.html)
   - shapefiles
   - geojson
   - **KMZ for Google Map** 
     - ![](https://i.imgur.com/aLxlrpC.png)
+
+## **Hong_Kong_18_Districts_20260410
+
+- [**Esri China (HK) Esri China (Hong Kong) Ltd.**](https://opendata.esrichina.hk/datasets/hong-kong-18-districts/explore?location=22.357821%2C114.139117%2C10)
+  - This is a layer showing the 18 Districts in Hong Kong. (Last update: March, 2026)
+  - csv, **shapefile**, **KML**, **GeoJSON**, ...
+  - ![](https://i.imgur.com/NlyzWOQ.png)
+
+But, its original lat/lon or x/y are mismatched,
+
+- One more step process from **GeoJSON** to shapefile,
+
+```python
+#!/bin/python
+
+import geopandas as gpd
+
+# 1. 讀取你的 GeoJSON 檔案
+input_geojson = "Hong_Kong_18_Districts_20260410.geojson"     # ← 改成你的實際檔名
+
+gdf = gpd.read_file(input_geojson)
+
+# 2. 顯示基本資訊（建議先執行這幾行檢查）
+print("Original CRS:", gdf.crs)
+print("Number of features:", len(gdf))
+print("Geometry type:", gdf.geometry.type.unique())
+
+# 3. 轉存成 Shapefile（會自動產生 .shp、.shx、.dbf、.prj 等檔案）
+output_shp = "Hong_Kong_18_Districts_20260410.shp"            # ← 建議改成新檔名
+gdf.to_file(output_shp)
+
+print(f"轉換完成！Shapefile 已儲存為：{output_shp}")
+```
+
+results are,
+
+```console
+Hong_Kong_18_Districts_20260410.cpg   
+Hong_Kong_18_Districts_20260410.prj  
+Hong_Kong_18_Districts_20260410.shx
+Hong_Kong_18_Districts_20260410.dbf      
+Hong_Kong_18_Districts_20260410.shp
+```
+
+![](https://i.imgur.com/mUeSQH3.png){width=400}
 
 # Files
 
