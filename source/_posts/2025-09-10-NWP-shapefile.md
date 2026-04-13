@@ -708,6 +708,19 @@ Hong_Kong_18_Districts_20260410.shp
 
 ![](https://i.imgur.com/mUeSQH3.png){width=400}
 
+## 省边界Shapefile下载
+
+- <https://www.poi86.com/>
+
+### 北京市边界Shapefile下载
+
+- <https://www.poi86.com/poi/download_area_shapefile/110000.html>
+
+### 湖北省边界Shapefile下载
+
+- <https://www.poi86.com/poi/download_area_shapefile/420000.html>
+
+  
 # Files
 
 ## ne_10m_admin_0_countries (Admin 0 – Countries)
