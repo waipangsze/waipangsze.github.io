@@ -60,6 +60,16 @@ banner_img: https://www.researchgate.net/profile/Zhen-Li-105/publication/3359901
 - [**Spline-PINN**: Approaching PDEs without Data using Fast, Physics-Informed Hermite-Spline CNNs](https://arxiv.org/abs/2109.07143)
   - <https://github.com/vc-bonn/Spline_PINN>
 
+
+---
+
+- [Su, Zijie, et al. "Finite volume physical informed neural network (**FV-PINN**) with reduced derivative order for incompressible flows." arXiv preprint arXiv:2411.17095 (2024).](https://arxiv.org/abs/2411.17095)
+- [Wei, Chang, et al. "Bridging Computational Fluid Dynamics Algorithm and Physics-Informed Learning: **SIMPLE-PINN** for Incompressible Navier-Stokes Equations." arXiv preprint arXiv:2603.24013 (2026).](https://arxiv.org/abs/2603.24013)
+
+---
+
+- [PINN论文精读（5）：Physics-informed neural operator (PINO)](https://zhuanlan.zhihu.com/p/670488261)
+
 ---
 
 - [Nature Communications：物理信息深度学习的方程发现、模型发现、知识发现 | 当方程本身就是未知数：PINN-SR 如何从稀缺数据中"发现"物理定律](https://mp.weixin.qq.com/s/SAVkHSJqwmL_GbVDFc7dFg)
@@ -72,8 +82,13 @@ banner_img: https://www.researchgate.net/profile/Zhen-Li-105/publication/3359901
 - Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. Journal of Computational Physics, 378, 686–707. https://doi.org/10.1016/j.jcp.2018.10.045
 - Jacot, A., Gabriel, F., & Hongler, C. (2018). Neural tangent kernel: Convergence and generalization in neural networks. In Advances in Neural Information Processing Systems (NeurIPS 2018), 31, 8571–8580.
 - Tancik, M., Srinivasan, P. P., Mildenhall, B., Fridovich-Keil, S., Raghavan, N., Singhal, U., Ramamoorthi, R., Barron, J. T., & Ng, R. (2020). Fourier features let networks learn high frequency functions in low dimensional domains. In Advances in Neural Information Processing Systems (NeurIPS 2020), 33, 7537–7547.
-- Wang, S., Yu, X., & Perdikaris, P. (2022). When and why PINNs fail to train: A neural tangent kernel perspective. Journal of Computational Physics, 449, 110768. https://doi.org/10.1016/j.jcp.2021.110768
 - Xiong, X., Lu, K., Zhang, Z., Zeng, Z., Zhou, S., Hu, R., & Deng, Z. (2025). High-frequency flow field super-resolution via physics-informed hierarchical adaptive Fourier feature networks. Physics of Fluids, 37(9). AIP Publishing.
 - Xiong, X., Lu, K., Zhang, Z., Zeng, Z., Zhou, S., Deng, Z., & Hu, R. (2025). J-PIKAN: A physics-informed KAN network based on Jacobi orthogonal polynomials for solving fluid dynamics. Communications in Nonlinear Science and Numerical Simulation, 109414. Elsevier.
 - Xiong, X., Zhang, Z., Hu, R., Gao, C., & Deng, Z. (2025). Separated-variable spectral neural networks: A physics-informed learning approach for high-frequency PDEs. arXiv preprint arXiv:2508.00628.
 
+---
+
+- Wang, S., Yu, X., & Perdikaris, P. (2022). **When and why PINNs fail to train**: A neural tangent kernel perspective. Journal of Computational Physics, 449, 110768. https://doi.org/10.1016/j.jcp.2021.110768
+- [Wang S, Sankaran S, Wang H, Perdikaris P. **An expert's guide to training physics-informed neural networks**. Computer Methods in Applied Mechanics and Engineering, 2024, 419: 116462.](https://arxiv.org/pdf/2308.08468)
+  - <https://github.com/PredictiveIntelligenceLab/jaxpi>
+- Wang S, Sankaran S, Perdikaris P. **Respecting causality for training physics-informed neural networks**. Computer Methods in Applied Mechanics and Engineering, 2024, 421: 116813.
