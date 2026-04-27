@@ -109,6 +109,15 @@ PS1="$(clock_prompt)$python_venv${hostname}:${_omb_prompt_bold_teal}\${PWD} $(sc
 
 The key here is **\w** gives the full path while **\W** gives only the directory.
 
+## get rid of git info
+
+```sh
+#PS1="$(clock_prompt)$python_venv${hostname} ${_omb_prompt_bold_teal}\W $(scm_prompt_char_info)${ret_status}→ ${_omb_prompt_normal}"
+#PS1="$(clock_prompt)$python_venv${hostname}:${_omb_prompt_bold_teal}\${PWD} $(scm_prompt_char_info)${ret_status} \n $ ${_omb_prompt_normal}"
+## get rid of git info,
+PS1="$(clock_prompt)$python_venv${hostname}:${_omb_prompt_bold_teal}\${PWD} \n $ ${_omb_prompt_normal}"
+```
+
 ## conda initialize 
 Add the following into .bashrc
 

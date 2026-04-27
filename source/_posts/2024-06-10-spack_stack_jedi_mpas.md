@@ -162,6 +162,9 @@ $ spack add mpich
 $ spack add hdf5^mpich parallelio^mpich
 $ spack add ecmwf-atlas@0.31.1^mpich
 
+## remove if not need
+$ spack remove xxxxx
+
 $ spack install
 
 # all are successful.
