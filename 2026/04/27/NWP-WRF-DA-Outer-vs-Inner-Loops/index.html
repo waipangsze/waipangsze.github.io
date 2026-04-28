@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/50GS6rm.png">
 <meta property="article:published_time" content="2026-04-26T22:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-27T08:04:54.622Z">
+<meta property="article:modified_time" content="2026-04-28T00:58:46.242Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="MPAS">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="GFS">
 <meta property="article:tag" content="FNL">
 <meta property="article:tag" content="ERA5">
@@ -364,7 +364,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k words
+          1.4k words
         
       </span>
     
@@ -375,7 +375,7 @@
         
         
         
-          11 mins
+          13 mins
         
       </span>
     
@@ -428,6 +428,9 @@
                 
                 <h1 id="wrf-da">WRF-DA</h1>
 <p>In WRF Data Assimilation (WRF-DA), particularly for <strong>3DVar</strong> (Three-Dimensional Variational) and <strong>4DVar</strong>, the use of "loops" is a strategy to handle the inherent <strong>non-linearity</strong> of the atmosphere while keeping the math computationally feasible.</p>
+<div class="note note-primary">
+            <p>In WRF Data Assimilation (WRFDA), particularly 3DVar, the outer and inner loops constitute an <strong>incremental approach</strong> to <strong>minimize the cost function</strong>.</p><ul><li>The outer loop updates non-linear observations/trajectory,</li><li>while the inner loop solves the linearized minimization problem.</li><li>This structure handles non-linearities, improves observation usage, and enhances accuracy.</li></ul>
+          </div>
 <p>Think of it as a "refinement" process: the outer loop handles the complex, messy physics, while the inner loop does the heavy lifting of finding the mathematical best fit.</p>
 <hr />
 <h2 id="the-outer-loop-non-linear">1. The Outer Loop (Non-linear)</h2>
@@ -782,6 +785,36 @@
 </tbody>
 </table>
 <p><strong>The Verdict:</strong> It is not only valid; it is the industry standard for high-resolution forecasting. It prevents the <span class="math inline">\(B\)</span> matrix from becoming so large that it crashes the computer's RAM.</p>
+<h1 id="quality-control">Quality Control</h1>
+<p>This process is often called <strong>Variational Quality Control (VarQC)</strong> or <strong>Dynamic QC</strong>.</p>
+<p>When you run more than one outer loop, the system performs a "clean-up" of your observation data based on the progress made in the previous iteration.</p>
+<hr />
+<h2 id="the-logic-of-data-re-screening">1. The Logic of Data Re-screening</h2>
+<p>In the first outer loop, the "First Guess" (<span class="math inline">\(x_b\)</span>) might be quite far from reality (e.g., the model missed the timing of a fast-moving cold front).</p>
+<ol type="1">
+<li><strong>Outer Loop 1:</strong> An observation (<span class="math inline">\(y\)</span>) shows a huge temperature drop. Because it is so far from the First Guess, the QC system thinks, <em>"This sensor must be broken,"</em> and flags it as a "Gross Error," rejecting it.</li>
+<li><strong>Inner Loop 1:</strong> The model adjusts slightly based on <em>other</em> nearby observations that weren't quite as extreme.</li>
+<li><strong>Outer Loop 2:</strong> The model state (<span class="math inline">\(x^1\)</span>) is now updated. It’s closer to the cold front. Now, when the system checks that "rejected" observation again, the innovation <span class="math inline">\(d^1 = y - H(x^1)\)</span> is much smaller.</li>
+<li><strong>Acceptance:</strong> The system realizes the observation was correct all along. It is "re-screened," accepted, and used in the second inner loop to sharpen the analysis.</li>
+</ol>
+<hr />
+<h2 id="mathematical-trigger-the-innovation-check">2. Mathematical Trigger: The Innovation Check</h2>
+<p>The specific mathematical threshold used in WRF-DA for this is often the <strong>Check Max IV</strong> (Innovation Vector) test.</p>
+<p>In the code, an observation is rejected if: <span class="math display">\[|y - H(x^n)| &gt; \text{Threshold} \times \sigma_o\]</span> <em>(Where <span class="math inline">\(\sigma_o\)</span> is the observation error.)</em></p>
+<p>By updating <span class="math inline">\(x^n\)</span> in each outer loop, you are effectively reducing the numerator of that fraction for valid observations that were initially flagged as "outliers" simply because the background model was poor.</p>
+<hr />
+<h2 id="why-this-matters-for-your-setup">3. Why This Matters for Your Setup</h2>
+<p>If you only run <strong>one</strong> outer loop, your QC is "static." You risk throwing away the most valuable observations—the ones that show the model is significantly wrong.</p>
+<p>By using <strong>two or more</strong> outer loops: * <strong>Non-linear recovery:</strong> You recover data in high-gradient areas (like fronts or storm centers). * <strong>Balance:</strong> You prevent the model from being "shocked" by massive increments all at once. * <strong>Refined Weights:</strong> As the inner loop brings the increment closer to the truth, the subsequent outer loop re-calculates the weights, ensuring the final "sharp" map you want isn't missing critical data.</p>
+<h3 id="important-namelist-note">Important Namelist Note</h3>
+<p>To ensure this re-screening happens, check these settings in <code>&amp;wrfvar4</code>: * <strong><code>check_max_iv = .true.</code></strong>: Enables the innovation check. * <strong><code>max_ext_its &gt; 1</code></strong>: You must have at least 2 outer loops for the "re-evaluation" to actually occur.</p>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.3/users_guide_chap6.html#_Introduction_2">Chapter 6: WRF Data Assimilation (WRFDA)</a></li>
+<li><a target="_blank" rel="noopener" href="https://journals.ametsoc.org/view/journals/wefo/27/5/waf-d-11-00131_1.xml">Hsiao, L., Chen, D., Kuo, Y., Guo, Y., Yeh, T., Hong, J., Fong, C., &amp; Lee, C. (2012). Application of WRF 3DVAR to Operational Typhoon Prediction in Taiwan: Impact of Outer Loop and Partial Cycling Approaches. Weather and Forecasting, 27(5), 1249-1263. https://doi.org/10.1175/WAF-D-11-00131.1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/wrfda/Tutorials/2015_Aug/docs/WRFDA_Setup_Run_Diagnostics.pdf">WRFDA-3DVar Setup, Run, and Diagnostics | WRFDA Tutorial, August 2015</a></li>
+<li></li>
+</ol>
 
                 
               </div>
@@ -815,11 +848,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/GFS/" class="print-no-link">#GFS</a>
       
@@ -862,7 +895,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>April 27, 2026</div>
+          <div>April 28, 2026</div>
         </div>
       
       
@@ -892,6 +925,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2026/04/28/MPAS-MPAS-JEDI-spack-stack-1-9-3/" title="MPAS | MPAS-JEDI | spack-stack 1.9.3">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | MPAS-JEDI | spack-stack 1.9.3</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
