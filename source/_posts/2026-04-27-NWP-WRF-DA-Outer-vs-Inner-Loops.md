@@ -17,6 +17,14 @@ banner_img: https://i.imgur.com/50GS6rm.png
 
 In WRF Data Assimilation (WRF-DA), particularly for **3DVar** (Three-Dimensional Variational) and **4DVar**, the use of "loops" is a strategy to handle the inherent **non-linearity** of the atmosphere while keeping the math computationally feasible.
 
+{% note primary %}
+In WRF Data Assimilation (WRFDA), particularly 3DVar, the outer and inner loops constitute an **incremental approach** to **minimize the cost function**. 
+
+- The outer loop updates non-linear observations/trajectory, 
+- while the inner loop solves the linearized minimization problem. 
+- This structure handles non-linearities, improves observation usage, and enhances accuracy.
+{% endnote %}
+
 Think of it as a "refinement" process: the outer loop handles the complex, messy physics, while the inner loop does the heavy lifting of finding the mathematical best fit.
 
 ---
@@ -414,3 +422,53 @@ For WRF-DA to accept this "mismatch" as valid, you must ensure:
 | **Link** | **Interpolation** | Moves data between $N_{high}$ and $N_{low}$. |
 
 **The Verdict:** It is not only valid; it is the industry standard for high-resolution forecasting. It prevents the $B$ matrix from becoming so large that it crashes the computer's RAM.
+
+# Quality Control
+
+This process is often called **Variational Quality Control (VarQC)** or **Dynamic QC**.
+
+When you run more than one outer loop, the system performs a "clean-up" of your observation data based on the progress made in the previous iteration.
+
+---
+
+## 1. The Logic of Data Re-screening
+In the first outer loop, the "First Guess" ($x_b$) might be quite far from reality (e.g., the model missed the timing of a fast-moving cold front).
+
+1.  **Outer Loop 1:** An observation ($y$) shows a huge temperature drop. Because it is so far from the First Guess, the QC system thinks, *"This sensor must be broken,"* and flags it as a "Gross Error," rejecting it.
+2.  **Inner Loop 1:** The model adjusts slightly based on *other* nearby observations that weren't quite as extreme.
+3.  **Outer Loop 2:** The model state ($x^1$) is now updated. It’s closer to the cold front. Now, when the system checks that "rejected" observation again, the innovation $d^1 = y - H(x^1)$ is much smaller.
+4.  **Acceptance:** The system realizes the observation was correct all along. It is "re-screened," accepted, and used in the second inner loop to sharpen the analysis.
+
+---
+
+## 2. Mathematical Trigger: The Innovation Check
+The specific mathematical threshold used in WRF-DA for this is often the **Check Max IV** (Innovation Vector) test.
+
+In the code, an observation is rejected if:
+$$|y - H(x^n)| > \text{Threshold} \times \sigma_o$$
+*(Where $\sigma_o$ is the observation error.)*
+
+By updating $x^n$ in each outer loop, you are effectively reducing the numerator of that fraction for valid observations that were initially flagged as "outliers" simply because the background model was poor.
+
+---
+
+## 3. Why This Matters for Your Setup
+If you only run **one** outer loop, your QC is "static." You risk throwing away the most valuable observations—the ones that show the model is significantly wrong. 
+
+By using **two or more** outer loops:
+* **Non-linear recovery:** You recover data in high-gradient areas (like fronts or storm centers).
+* **Balance:** You prevent the model from being "shocked" by massive increments all at once.
+* **Refined Weights:** As the inner loop brings the increment closer to the truth, the subsequent outer loop re-calculates the weights, ensuring the final "sharp" map you want isn't missing critical data.
+
+### Important Namelist Note
+To ensure this re-screening happens, check these settings in `&wrfvar4`:
+* **`check_max_iv = .true.`**: Enables the innovation check.
+* **`max_ext_its > 1`**: You must have at least 2 outer loops for the "re-evaluation" to actually occur.
+
+
+# References
+
+1. [Chapter 6: WRF Data Assimilation (WRFDA)](https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_v4/v4.3/users_guide_chap6.html#_Introduction_2)
+2. [Hsiao, L., Chen, D., Kuo, Y., Guo, Y., Yeh, T., Hong, J., Fong, C., & Lee, C. (2012). Application of WRF 3DVAR to Operational Typhoon Prediction in Taiwan: Impact of Outer Loop and Partial Cycling Approaches. Weather and Forecasting, 27(5), 1249-1263. https://doi.org/10.1175/WAF-D-11-00131.1](https://journals.ametsoc.org/view/journals/wefo/27/5/waf-d-11-00131_1.xml)
+3. [WRFDA-3DVar Setup, Run, and Diagnostics | WRFDA Tutorial, August 2015](https://www2.mmm.ucar.edu/wrf/users/wrfda/Tutorials/2015_Aug/docs/WRFDA_Setup_Run_Diagnostics.pdf)
+4. 
