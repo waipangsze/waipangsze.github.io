@@ -13,6 +13,10 @@ index_img: https://i.imgur.com/UGRrdak.png
 banner_img: https://i.imgur.com/UGRrdak.png
 ---
 
+- [Data Processing – NCEP Data Processand PrepBUFR/BUFR | 2014 GSI Community Tutorial](https://ftp.cpc.ncep.noaa.gov/hwang/HW/BUFR/20140715_L08_Hu_data_process.pdf)
+
+---
+
 # Binary Universal Form for the Representation of meteorological data
 
 The Global Forecast System (GFS) utilizes Binary Universal Form for the Representation of meteorological data (BUFR), a World Meteorological Organization (WMO) table-driven, binary code designed for efficient storage and exchange of observational data. BUFR handles massive datasets, such as satellite and station observations, in a compressed, machine-independent format. It is essential for representing diverse, high-volume meteorological data, offering flexibility compared to character-based codes. 
