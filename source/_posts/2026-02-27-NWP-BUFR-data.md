@@ -76,6 +76,44 @@ The Global Forecast System (GFS) utilizes Binary Universal Form for the Represen
 | Mean Sea-level Pressure bogus reports                                   | sfcbog.tm00.bufr_d           |           |
 | Surface marine                                                          | sfcshp.tm00.bufr_d           |           |
 
+# Delivery time
+
+- gdas.*
+
+```console
+https://nomads.ncep.noaa.gov/pub/data/nccf/com/obsproc/prod/gdas.20260428/
+
+gdas.t00z.prepbufr.nr            29-Apr-2026 06:01   65M
+gdas.t06z.prepbufr.nr            29-Apr-2026 11:59   62M
+gdas.t12z.prepbufr.nr            29-Apr-2026 18:00   62M
+gdas.t18z.prepbufr.nr            30-Apr-2026 00:39   56M 
+
+gdas.t00z.1bamua.tm00.bufr_d     29-Apr-2026 05:53  5.0M
+gdas.t06z.1bamua.tm00.bufr_d     29-Apr-2026 11:53  5.0M
+gdas.t12z.1bamua.tm00.bufr_d     29-Apr-2026 17:53  5.0M
+gdas.t18z.1bamua.tm00.bufr_d     29-Apr-2026 23:53  4.9M
+```
+
+{% note primary %}
+The gdas.t12z.prepbufr.nr file (Global Data Assimilation System, 1200 UTC cycle, PrepBUFR, near-real-time) is part of the NCEP operational data flow, **which is typically delivered roughly 6 hours** after the 1200 UTC analysis time.
+{% endnote %}
+
+- gfs.*
+
+```console
+https://nomads.ncep.noaa.gov/pub/data/nccf/com/obsproc/prod/gfs.20260429/
+
+gfs.t00z.prepbufr.nr             29-Apr-2026 02:58   61M
+gfs.t06z.prepbufr.nr             29-Apr-2026 08:56   57M  
+gfs.t12z.prepbufr.nr             29-Apr-2026 14:57   57M
+gfs.t18z.prepbufr.nr             29-Apr-2026 20:58   51M
+
+gfs.t00z.1bamua.tm00.bufr_d      29-Apr-2026 02:49  4.3M
+gfs.t06z.1bamua.tm00.bufr_d      29-Apr-2026 08:49  3.8M
+gfs.t12z.1bamua.tm00.bufr_d      29-Apr-2026 14:50  4.1M
+gfs.t18z.1bamua.tm00.bufr_d      29-Apr-2026 20:50  3.9M
+```
+
 # Historical data
 
 ## NCEP ADP Global Upper Air and Surface Weather Observations (PREPBUFR format)

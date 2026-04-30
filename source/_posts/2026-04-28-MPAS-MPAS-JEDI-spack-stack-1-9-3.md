@@ -34,6 +34,10 @@ banner_img: https://i.imgur.com/6oGdLJk.png
 
 - <https://spack-stack.readthedocs.io/en/latest/NewSiteConfigs.html#linux>
 
+{% note primary %}
+Do not use Conda environment, and keep the environment definition clear.
+{% endnote %}
+
 It is recommended to increase the stacksize limit by using **`ulimit -S -s unlimited`**,
 
 ```sh
@@ -48,6 +52,24 @@ source setup.sh
 spack stack create env --site linux.default [--template skylab-dev] --name skylab-dev.mylinux --compiler=gcc
 cd envs/skylab-dev.mylinux/
 spack env activate [-p] .
+```
+
+# command
+
+{% note primary %}
+Do not use Conda environment, and keep the environment definition clear.
+{% endnote %}
+
+```sh
+spack env activate envs/gcc_mpich
+spack env deactivate
+spack env status
+spack find
+spack info --all xxx
+spack add xxx
+space remove xxx
+spack install
+spack module tcl refresh or lmod ?
 ```
 
 # jedi-mpas-env
@@ -93,4 +115,31 @@ Run Dependencies:
 
 Licenses: 
     None
+```
+
+```sh
+ulimit -s unlimited
+
+# Clone repo
+git clone -b spack-stack-1.9.3 --recurse-submodules https://github.com/jcsda/spack-stack.git spack-stack-1.9.3
+cd spack-stack-1.9.3/
+
+source setup.sh
+spack stack create env --name=skylab-dev --site=linux.default --compiler gcc
+spack env activate -p $PWD/envs/skylab-dev
+
+spack add gcc@9.4.0
+spack install
+spack compiler find "$(spack location -i gcc)"
+
+spack add lmod
+spack add jedi-mpas-env%gcc@9.4.0
+
+spack concretize 2>&1 | tee log.concretize
+util/show_duplicate_packages.py -d log.concretize
+spack install --verbose --fail-fast 2>&1 | tee log.install
+
+# Finalize
+spack module lmod refresh
+#spack stack setup-meta-modules
 ```
