@@ -1,8 +1,8 @@
 ---
 layout: post
 title: MPAS | MPAS-JEDI V3.0.2
-categories: [MPAS]
-tags: [MPAS, DA, MPAS-JEDI]
+categories: [MPAS-JEDI]
+tags: [MPAS, DA, MPAS-JEDI, Spack, Spack-Stack]
 author: wpsze
 date: 2026-02-13 06:25:00
 math: true

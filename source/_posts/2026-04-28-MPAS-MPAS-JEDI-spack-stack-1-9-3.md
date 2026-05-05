@@ -14,6 +14,7 @@ banner_img: https://i.imgur.com/6oGdLJk.png
 ---
 
 - [MPAS | MPAS-JEDI](https://waipangsze.github.io/2024/05/29/MPAS-JEDI_note/)
+- [**MPAS | MPAS-JEDI V3.0.2**](https://waipangsze.github.io/2026/02/13/MPAS-MPAS-JEDI-V302/)
 - [MPAS | Joint MPAS/WRF Users Workshop 2025 | MPASv8.3.0](https://waipangsze.github.io/2025/06/05/MPAS-Joint-MPAS-WRF-Users-Workshop-2025/)
 - [**Spack-Stack: building JEDIbundles on your own machine | 202506NCAS** ](https://www2.mmm.ucar.edu/projects/mpas-jedi/tutorial/202506NCAS/lectures/12-spackstack.pdf)
 
@@ -472,3 +473,95 @@ Error: Missing actual argument for argument 'omax' at (1)
 make[2]: *** [MPAS/src/core_atmosphere/CMakeFiles/core_atmosphere.dir/build.make:2766: MPAS/src/core_atmosphere/CMakeFiles/core_atmosphere.dir/physics/physics_wrf/module_bl_gwdo.F.o] Error 1
 make[2]: *** Waiting for unfinished jobs....
 ```
+
+- <https://github.com/MPAS-Dev/MPAS-Model/blob/v8.2.2/src/core_atmosphere/physics/physics_wrf/module_bl_gwdo.F>
+  - No `omax` as input
+  
+```fortran
+    call bl_gwdo_run(sina=sina_hv,cosa=cosa_hv                &
+                    ,rublten=rublten_hv,rvblten=rvblten_hv    &
+                    ,dtaux3d=dtaux3d_hv,dtauy3d=dtauy3d_hv    &
+                    ,dusfcg=dusfcg_hv,dvsfcg=dvsfcg_hv        &
+                    ,uproj=u3d_hv,vproj=v3d_hv                &
+                    ,t1=t3d_hv,q1=qv3d_hv                     &
+                    ,prsi=p3di_hv                             &
+                    ,prsl=p3d_hv,prslk=pi3d_hv                &
+                    ,zl=z_hv                                  &
+                    ,var=var2d_hv,oc1=oc12d_hv                &
+                    ,oa2d1=oa2d1_hv, oa2d2=oa2d2_hv           &
+                    ,oa2d3=oa2d3_hv, oa2d4=oa2d4_hv           &
+                    ,ol2d1=ol2d1_hv, ol2d2=ol2d2_hv           &
+                    ,ol2d3=ol2d3_hv, ol2d4=ol2d4_hv           &
+                    ,g_=g,cp_=cp,rd_=rd,rv_=rv,fv_=ep1,pi_=pi &
+                    ,dxmeter=dx_hv,deltim=dt                  &
+                    ,its=its,ite=ite,kte=kte,kme=kte+1        &
+                    ,errmsg=errmsg,errflg=errflg)
+```
+
+- **MPAS/src/core_atmosphere/physics/physics_mmm/bl_gwdo.F90**
+  - `omax`
+  - **2024-11-27  introduced elevation maximum (omax) and numerous revisions song-you hong**
+
+```fortran
+!===============================================================================
+!>\section arg_table_bl_gwdo_run
+!!\html\include bl_gwdo_run.html
+!!
+   subroutine bl_gwdo_run(sina, cosa,                                          &
+                     rublten,rvblten,                                          &
+                     dtaux3d,dtauy3d,                                          &
+                     dusfcg,dvsfcg,                                            &
+                     uproj, vproj,                                             &
+                     t1, q1,                                                   &
+                     prsi, prsl, prslk, zl,                                    &
+                     var, oc1,                                                 &
+                     oa2d1, oa2d2,                                             &
+                     oa2d3, oa2d4,                                             &
+                     ol2d1, ol2d2,                                             &
+                     ol2d3, ol2d4, omax,                                       &
+                     dx_factor, if_nonhyd,                                     &
+                     g_, cp_, rd_, rv_, fv_, pi_,                              &
+                     dxmeter, deltim,                                          &
+                     its, ite, kte, kme,                                       &
+                     errmsg, errflg                                            )
+!-------------------------------------------------------------------------------
+```
+
+### Solution
+
+- modify `Externals.cfg`
+  - **tag = 20240626-MPASv8.2** (older version) is applied.
+
+```sh
+ $ cat src/core_atmosphere/Externals.cfg
+[MMM-physics]
+local_path = ./physics_mmm
+protocol = git
+repo_url = https://github.com/NCAR/MMM-physics.git
+tag = 20240626-MPASv8.2
+```
+
+# physics_mmm
+
+`physics_mmm` refers to a shared directory and repository of physics parameterizations used by both the MPAS-Atmosphere and WRF models.
+
+- <https://github.com/NCAR/MMM-physics>
+
+- **Key Functions**
+  - **Shared Physics Repository**: The MMM-physics GitHub repository contains code for various atmospheric processes (like microphysics and radiation) that are common to MPAS, WRF, and CM1.CCPP 
+  - **Integration**: This shared infrastructure is moving toward Common Community Physics Package (**CCPP**) compliance, allowing the same physics schemes to be used across different host models through a standardized interface.
+  - **MPAS Physics Suites**: MPAS-Atmosphere organizes these shared schemes into "suites" (e.g., mesoscale or convection_permitting), which are groups of physics parameterizations pre-tested to work well together.
+
+## MPAS-A
+
+```sh
+$ src/core_atmosphere/Externals.cfg
+
+[MMM-physics]
+local_path = ./physics_mmm
+protocol = git
+repo_url = https://github.com/NCAR/MMM-physics.git
+tag = 20250616-MPASv8.3
+required = True
+```
+
