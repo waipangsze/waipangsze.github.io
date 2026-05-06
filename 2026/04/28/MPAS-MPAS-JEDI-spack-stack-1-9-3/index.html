@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/6oGdLJk.png">
 <meta property="article:published_time" content="2026-04-27T22:25:00.000Z">
-<meta property="article:modified_time" content="2026-05-05T09:18:59.253Z">
+<meta property="article:modified_time" content="2026-05-06T01:23:59.241Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="DA">
@@ -360,7 +360,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.4k words
+          4.5k words
         
       </span>
     
@@ -371,7 +371,7 @@
         
         
         
-          37 mins
+          38 mins
         
       </span>
     
@@ -519,6 +519,8 @@
 <h1 id="install-mpas-jedi">Install MPAS-JEDI</h1>
 <h2 id="source">source</h2>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sh">. /home/wpsze/spack-stack/spack-stack-1.9.3/envs/skylab-dev/install/gcc/9.4.0/lmod-8.7.37-2qs4zuc/lmod/lmod/init/bash<br>module use /home/wpsze/spack-stack/spack-stack-1.9.3/envs/skylab-dev/install/modulefiles<br><br>module load gcc/8.5.0/gcc/9.4.0<br>module load openmpi/5.0.5/gcc/9.4.0/jedi-mpas-env/1.0.0<br><br>module load \<br>  gcc/9.4.0/ecbuild/3.7.2 \<br>  gcc/9.4.0/git-lfs/3.5.1 \<br>  openmpi/5.0.5/gcc/9.4.0/ecmwf-atlas/0.40.0 \<br>  openmpi/5.0.5/gcc/9.4.0/parallelio/2.6.2 \<br>  gcc/9.4.0/gsl-lite/0.37.0 \<br>  gcc/9.4.0/udunits/2.2.28 \<br></code></pre></td></tr></table></figure>
+<h2 id="match-same-version-of-eckitfckitatlas">match same version of eckit/fckit/atlas</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">sed -i <span class="hljs-string">&#x27;s|PROJECT eckit     GIT &quot;https://github.com/ecmwf/eckit.git&quot; TAG 1.24.4|PROJECT eckit     GIT &quot;https://github.com/ecmwf/eckit.git&quot; TAG 1.28.3|g&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$JEDI_SRC</span>&quot;</span>/CMakeLists.txt<br>sed -i <span class="hljs-string">&#x27;s|PROJECT fckit     GIT &quot;https://github.com/ecmwf/fckit.git&quot; TAG 0.11.0|PROJECT fckit     GIT &quot;https://github.com/ecmwf/fckit.git&quot; TAG 0.13.2|g&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$JEDI_SRC</span>&quot;</span>/CMakeLists.txt<br>sed -i <span class="hljs-string">&#x27;s|PROJECT atlas     GIT &quot;https://github.com/ecmwf/atlas.git&quot; TAG 0.34.0|PROJECT atlas     GIT &quot;https://github.com/ecmwf/atlas.git&quot; TAG 0.40.0|g&#x27;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$JEDI_SRC</span>&quot;</span>/CMakeLists.txt<br></code></pre></td></tr></table></figure>
 <h2 id="error">Error</h2>
 <h3 id="missing-actual-argument-for-argument-omax-at-1">Missing actual argument for argument 'omax' at (1)</h3>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs console">[ 60%] Building Fortran object MPAS/src/core_atmosphere/CMakeFiles/core_atmosphere.dir/physics/physics_wrf/module_bl_gwdo.F.o<br>/home/wpsze/cpas/CPAS-DA/cpas-da/jedi/my_302/mpas-bundle/MPAS/src/core_atmosphere/physics/physics_wrf/module_bl_gwdo.F:215:49:<br><br>  215 |                     ,errmsg=errmsg,errflg=errflg)<br>      |                                                 1<br>Error: Missing actual argument for argument &#x27;omax&#x27; at (1)<br>make[2]: *** [MPAS/src/core_atmosphere/CMakeFiles/core_atmosphere.dir/build.make:2766: MPAS/src/core_atmosphere/CMakeFiles/core_atmosphere.dir/physics/physics_wrf/module_bl_gwdo.F.o] Error 1<br>make[2]: *** Waiting for unfinished jobs....<br></code></pre></td></tr></table></figure>
@@ -537,7 +539,7 @@
 </ul></li>
 </ul>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">!===============================================================================</span><br><span class="hljs-comment">!&gt;\section arg_table_bl_gwdo_run</span><br><span class="hljs-comment">!!\html\include bl_gwdo_run.html</span><br><span class="hljs-comment">!!</span><br>   <span class="hljs-function"><span class="hljs-keyword">subroutine</span></span> bl_gwdo_run(sina, cosa,                                          &amp;<br>                     rublten,rvblten,                                          &amp;<br>                     dtaux3d,dtauy3d,                                          &amp;<br>                     dusfcg,dvsfcg,                                            &amp;<br>                     uproj, vproj,                                             &amp;<br>                     t1, q1,                                                   &amp;<br>                     prsi, prsl, prslk, zl,                                    &amp;<br>                     var, oc1,                                                 &amp;<br>                     oa2d1, oa2d2,                                             &amp;<br>                     oa2d3, oa2d4,                                             &amp;<br>                     ol2d1, ol2d2,                                             &amp;<br>                     ol2d3, ol2d4, omax,                                       &amp;<br>                     dx_factor, if_nonhyd,                                     &amp;<br>                     g_, cp_, rd_, rv_, fv_, pi_,                              &amp;<br>                     dxmeter, deltim,                                          &amp;<br>                     its, ite, kte, kme,                                       &amp;<br>                     errmsg, errflg                                            )<br><span class="hljs-comment">!-------------------------------------------------------------------------------</span><br></code></pre></td></tr></table></figure>
-<h3 id="solution">Solution</h3>
+<h3 id="solved">Solved</h3>
 <ul>
 <li>modify <code>Externals.cfg</code>
 <ul>
@@ -545,6 +547,7 @@
 </ul></li>
 </ul>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ <span class="hljs-built_in">cat</span> src/core_atmosphere/Externals.cfg<br>[MMM-physics]<br>local_path = ./physics_mmm<br>protocol = git<br>repo_url = https://github.com/NCAR/MMM-physics.git<br>tag = 20240626-MPASv8.2<br></code></pre></td></tr></table></figure>
+<p>or, download the <code>20240626-MPASv8.2</code> version to <code>mpas_bundle</code> folder.</p>
 <h1 id="physics_mmm">physics_mmm</h1>
 <p><code>physics_mmm</code> refers to a shared directory and repository of physics parameterizations used by both the MPAS-Atmosphere and WRF models.</p>
 <ul>
@@ -630,7 +633,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>May 5, 2026</div>
+          <div>May 6, 2026</div>
         </div>
       
       
