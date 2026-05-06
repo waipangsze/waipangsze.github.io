@@ -113,6 +113,10 @@ $ ldd obs2ioda-v2/src/obs2ioda-v2.x
 
 - <https://github.com/JCSDA/mpas-jedi/tree/release/3.0.2>
 
+## Install
+
+- <https://waipangsze.github.io/2026/04/28/MPAS-MPAS-JEDI-spack-stack-1-9-3/#install-mpas-jedi>
+
 ## Test
 
 - All *yaml under

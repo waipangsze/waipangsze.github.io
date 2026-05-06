@@ -459,6 +459,14 @@ module load \
   gcc/9.4.0/udunits/2.2.28 \
 ```
 
+## match same version of eckit/fckit/atlas
+
+```sh
+sed -i 's|PROJECT eckit     GIT "https://github.com/ecmwf/eckit.git" TAG 1.24.4|PROJECT eckit     GIT "https://github.com/ecmwf/eckit.git" TAG 1.28.3|g' "$JEDI_SRC"/CMakeLists.txt
+sed -i 's|PROJECT fckit     GIT "https://github.com/ecmwf/fckit.git" TAG 0.11.0|PROJECT fckit     GIT "https://github.com/ecmwf/fckit.git" TAG 0.13.2|g' "$JEDI_SRC"/CMakeLists.txt
+sed -i 's|PROJECT atlas     GIT "https://github.com/ecmwf/atlas.git" TAG 0.34.0|PROJECT atlas     GIT "https://github.com/ecmwf/atlas.git" TAG 0.40.0|g' "$JEDI_SRC"/CMakeLists.txt
+```
+
 ## Error 
 
 ### Missing actual argument for argument 'omax' at (1)
@@ -527,7 +535,7 @@ make[2]: *** Waiting for unfinished jobs....
 !-------------------------------------------------------------------------------
 ```
 
-### Solution
+### Solved
 
 - modify `Externals.cfg`
   - **tag = 20240626-MPASv8.2** (older version) is applied.
@@ -540,6 +548,8 @@ protocol = git
 repo_url = https://github.com/NCAR/MMM-physics.git
 tag = 20240626-MPASv8.2
 ```
+
+or, download the `20240626-MPASv8.2` version to `mpas_bundle` folder.
 
 # physics_mmm
 
