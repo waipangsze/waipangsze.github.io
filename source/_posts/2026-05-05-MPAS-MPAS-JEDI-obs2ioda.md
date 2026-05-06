@@ -59,6 +59,18 @@ banner_img: https://i.imgur.com/6oGdLJk.png
     - `bufr_v11.5.0`
   - Edit `obs2ioda-v2/src/Makefile` to set proper `BUFR_LIB` before make.
 
+### For bufr_v11.5.0 
+
+#### bufr.tar is not available
+
+```console
+[ 97%] (curl) downloading https://ftp.emc.ncep.noaa.gov/static_files/public/bufr.tar curl: (22) The requested URL returned error: 404 make[2]: *** [test/CMakeFiles/get_bufr_test_data.dir/build.make:73: test/bufr.tar] Error 22 make[1]: *** [CMakeFiles/Makefile2:934: test/CMakeFiles/get_bufr_test_data.dir/all] Error 2 make: *** [Makefile:146: all] Error 2
+```
+
+- Download
+  - <https://ftp.emc.ncep.noaa.gov/static_files/public/>
+  - move to `NCEPLIBS-bufr/build/test`
+
 # conda env
 
 - may apply channel `- conda-forge` only.
