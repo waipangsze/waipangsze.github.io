@@ -52,6 +52,13 @@ banner_img: https://i.imgur.com/6oGdLJk.png
   - [Nystrom, R. G., Snyder, C., Liu, Z., Jung, B. J., Ban, J., & Banos, I. H. (2025). A Hybrid Four‐Dimensional Variational Data Assimilation System for the Model for Prediction Across Scales (MPAS‐Atmosphere): Leveraging the Joint Effort for Data Assimilation Integration (JEDI). Journal of Advances in Modeling Earth Systems, 17(12), e2025MS005183.](https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2025MS005183)  
 - **All-sky ATMS radiance** (2026)
   - [Ban, J., Liu, Z., Jung, B. J., Banos, I. H., Ruston, B., & Collard, A. (2026). All-sky ATMS radiance data assimilation with MPAS-JEDI. EGUsphere, 2026, 1-24.](https://egusphere.copernicus.org/preprints/2026/egusphere-2026-1047/)
+- **TCWA2/Dual-Polarization Radar Operator** (March 02, 2026)
+  - [Tsai, Tzu-Chin, et al. "Development of the TCWA2 Bulk Cloud Microphysics Scheme and Its Integration with a Dual-Polarization Radar Operator for Forecasting Applications." (2026).](https://essopenarchive.org/doi/full/10.22541/essoar.177248713.30739498/v1)
+
+# Others
+
+- **All‐sky assimilation/microwave sounder** (6 December 2025)
+  - [Guerrette, Jonathan J., et al. "All‐sky assimilation impacts of the Tomorrow. io microwave sounder constellation on global weather forecasts." Quarterly Journal of the Royal Meteorological Society (2026): e70106.](https://rmets.onlinelibrary.wiley.com/doi/pdfdirect/10.1002/qj.70106)
 
 # Github
 
