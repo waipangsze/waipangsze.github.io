@@ -1,0 +1,1135 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="TS and ETS Equitable Threat Score (ETS) 與 Threat Score (TS) 是氣象預報驗證中，用來衡量數值模式對特定降雨門檻預報能力的關鍵指標。   1. Threat Score (TS) TS 又稱為 Critical Success Index (CSI)，主要衡量模式對「事件發生」的掌握能力。  定義：正確預報出的事件次數（hits），除以「所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NWP | TS and ETS">
+<meta property="og:url" content="https://waipangsze.github.io/2026/05/12/NWP-TS-and-ETS/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="TS and ETS Equitable Threat Score (ETS) 與 Threat Score (TS) 是氣象預報驗證中，用來衡量數值模式對特定降雨門檻預報能力的關鍵指標。   1. Threat Score (TS) TS 又稱為 Critical Success Index (CSI)，主要衡量模式對「事件發生」的掌握能力。  定義：正確預報出的事件次數（hits），除以「所有">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/TgEccF7.png">
+<meta property="article:published_time" content="2026-05-11T22:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-12T02:33:51.782Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="Precipitation">
+<meta property="article:tag" content="TS">
+<meta property="article:tag" content="ETS">
+<meta property="article:tag" content="FSS">
+<meta property="article:tag" content="Rainfall">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/TgEccF7.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>NWP | TS and ETS - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/TgEccF7.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="NWP | TS and ETS"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-05-12 06:00" pubdate>
+          May 12, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">NWP | TS and ETS</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ts-and-ets">TS and ETS</h1>
+<p>Equitable Threat Score (ETS) 與 Threat Score (TS) 是氣象預報驗證中，用來衡量數值模式對特定降雨門檻預報能力的關鍵指標。</p>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/hW5nCJe.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/YokKi7h.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/asHBuUQ.png" srcset="/img/loading.gif" lazyload /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/epeG0AK.png" srcset="/img/loading.gif" lazyload /></div><div class="group-image-wrap"><img src="https://i.imgur.com/pAwTs11.png" srcset="/img/loading.gif" lazyload /></div></div></div>
+<hr />
+<h2 id="threat-score-ts">1. Threat Score (TS)</h2>
+<p>TS 又稱為 Critical Success Index (CSI)，主要衡量模式對「事件發生」的掌握能力。</p>
+<ul>
+<li>定義：正確預報出的事件次數（hits），除以「所有預報或實際發生的事件」總數。</li>
+<li>公式：<span class="math inline">\(TS = \frac{hits}{hits + false\ alarms + misses}\)</span>。</li>
+<li>數值範圍：<span class="math inline">\(0\)</span> 到 <span class="math inline">\(1\)</span>。<span class="math inline">\(1\)</span> 代表完全正確的完美預報；<span class="math inline">\(0\)</span> 則表示毫無預報能力。</li>
+<li>限制：TS 對「稀有事件」（如強降雨）較為敏感，且不考慮僅憑「隨機猜測」而矇中的正確次數。</li>
+</ul>
+<h2 id="equitable-threat-score-ets">2. Equitable Threat Score (ETS)</h2>
+<p>ETS 是 TS 的進階版，旨在修正「隨機矇中」的偏差，使其在比較不同氣候背景下的預報表現時更加公平（公正）。</p>
+<ul>
+<li>核心差異：ETS 從 hits 中減去了 預期隨機命中次數 (hits expected by chance)。</li>
+<li>公式：<span class="math inline">\(ETS = \frac{hits - hits_{chance}}{hits + false\ alarms + misses - hits_{chance}}\)</span>。</li>
+<li>其中 <span class="math inline">\(hits_{chance}\)</span> 是假設預報與觀測完全無關時，僅憑隨機性可能命中的次數。</li>
+<li>數值範圍：通常介於 <span class="math inline">\(-1/3\)</span> 到 <span class="math inline">\(1\)</span> 之間。</li>
+<li>ETS &gt; 0：代表預報優於隨機猜測（具備預報技巧）。
+<ul>
+<li>ETS = 0：代表預報與隨機猜測無異。</li>
+<li>ETS &lt; 0：代表預報比隨機猜測還糟糕。</li>
+</ul></li>
+</ul>
+<h2 id="總結對比">總結對比</h2>
+<table>
+<thead>
+<tr class="header">
+<th>特性</th>
+<th>TS / CSI</th>
+<th>ETS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>主要用途</td>
+<td>衡量事件預報的成功率</td>
+<td>移除隨機因素後的預報技巧評估</td>
+</tr>
+<tr class="even">
+<td>優點</td>
+<td>計算直觀，考量了漏報與空報</td>
+<td>適合比較稀有事件，對模式表現更具區分度</td>
+</tr>
+<tr class="odd">
+<td>隨機性</td>
+<td>未校正隨機命中，得分可能虛高</td>
+<td>已校正隨機命中，結果更具公平性</td>
+</tr>
+</tbody>
+</table>
+<h2 id="如何計算隨機命中次數-hits_chance">如何計算隨機命中次數 (<span class="math inline">\(hits_{chance}\)</span>)？</h2>
+<p><span class="math inline">\(hits_{chance}\)</span> 的邏輯源自於機率論中的<strong>獨立事件</strong>。假設預報與實際觀測之間完全沒有物理關聯（純屬瞎猜），那麼兩者同時發生「事件」的機率，就是各自發生機率的乘積。</p>
+<p>我們通常使用 <strong>列聯表 (Contingency Table)</strong> 來輔助計算：</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>觀測：有發生 (Yes)</th>
+<th>觀測：未發生 (No)</th>
+<th>總計</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>預報：有預報 (Yes)</strong></td>
+<td><strong>Hits (a)</strong></td>
+<td><strong>False Alarms (b)</strong></td>
+<td><span class="math inline">\(F = a + b\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>預報：未預報 (No)</strong></td>
+<td><strong>Misses (c)</strong></td>
+<td><strong>Correct Negatives (d)</strong></td>
+<td><span class="math inline">\(M = c + d\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>總計</strong></td>
+<td><span class="math inline">\(O = a + c\)</span></td>
+<td><span class="math inline">\(N = b + d\)</span></td>
+<td><strong><span class="math inline">\(Total (T) = a+b+c+d\)</span></strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="計算公式">計算公式：</h2>
+<p><span class="math display">\[hits_{chance} = \frac{(hits + false\ alarms) \times (hits + misses)}{Total}\]</span></p>
+<p>或者用更直觀的說法：</p>
+<p><span class="math display">\[hits_{chance} = \frac{預報有降雨的次數 (F) \times 實際有降雨的次數 (O)}{總樣本數 (T)}\]</span></p>
+<p><strong>為什麼這樣算？</strong> 這代表如果我們隨機亂撒預報，命中率會正比於「你預報得有多頻繁」以及「該事件發生的頻率」。</p>
+<hr />
+<h3 id="具體案例解讀強降雨驗證">具體案例解讀：強降雨驗證</h3>
+<p>假設某模式在 100 天的夏季預報中，針對「豪雨門檻」的表現如下：</p>
+<ul>
+<li><strong>Hits (a):</strong> 5 天 (正確抓到豪雨)</li>
+<li><strong>False Alarms (b):</strong> 10 天 (報了沒下)</li>
+<li><strong>Misses (c):</strong> 5 天 (漏掉沒報)</li>
+<li><strong>Correct Negatives (d):</strong> 80 天 (成功預測沒大雨)</li>
+</ul>
+<h4 id="計算-ts">1. 計算 TS：</h4>
+<p><span class="math display">\[TS = \frac{5}{5 + 10 + 5} = \frac{5}{20} = 0.25\]</span></p>
+<h4 id="計算-hits_chance">2. 計算 <span class="math inline">\(hits_{chance}\)</span>：</h4>
+<p>首先找出預報總天數 <span class="math inline">\(F = 15\)</span>，觀測總天數 <span class="math inline">\(O = 10\)</span>，總樣本 <span class="math inline">\(T = 100\)</span>。</p>
+<p><span class="math display">\[hits_{chance} = \frac{15 \times 10}{100} = 1.5\]</span></p>
+<h4 id="計算-ets">3. 計算 ETS：</h4>
+<p><span class="math display">\[ETS = \frac{5 - 1.5}{5 + 10 + 5 - 1.5} = \frac{3.5}{18.5} \approx 0.189\]</span></p>
+<hr />
+<h3 id="深度解讀為什麼-ets-會變低">深度解讀：為什麼 ETS 會變低？</h3>
+<p>從上面的例子可以看出：</p>
+<ol type="1">
+<li><strong>數值下降：</strong> <span class="math inline">\(ETS (0.189) &lt; TS (0.25)\)</span>。這是因為 ETS 扣除了那 1.5 天「可能只是運氣好」的成分。</li>
+<li><strong>稀有事件的挑戰：</strong> 當事件越稀有（如極端降雨），<span class="math inline">\(hits_{chance}\)</span> 會變得很小，TS 與 ETS 的差距就會縮小；但如果模式採取「亂槍打鳥」策略（大幅增加預報頻率），<span class="math inline">\(hits_{chance}\)</span> 會迅速攀升，導致 <strong>ETS 劇降</strong> 甚至變成負值。這就是為什麼 ETS 能有效懲罰那些過度預報、企圖靠數量換取命中的模式。</li>
+</ol>
+<h1 id="problems-in-traditional-statistical-measures">Problems in traditional statistical measures</h1>
+<p>Traditional statistical measures like the <strong>Threat Score (TS)</strong> and <strong>Equitable Threat Score (ETS)</strong> are "point-to-point" metrics. While they are rigorous, they often fail to capture the value of high-resolution models, leading to what we call the <strong>Double Penalty</strong> problem.</p>
+<p>To address this, the <strong>Fractions Skill Score (FSS)</strong> was developed as a "neighborhood-based" verification method. Here is a detailed breakdown of why traditional scores struggle and how FSS provides a more realistic evaluation.</p>
+<hr />
+<h2 id="the-double-penalty-problem">1. The "Double Penalty" Problem</h2>
+<p>In high-resolution modeling, a forecast that is physically realistic but slightly shifted in space or time is penalized twice by traditional metrics:</p>
+<ol type="1">
+<li><strong>A False Alarm:</strong> The model predicted rain where none occurred.</li>
+<li><strong>A Miss:</strong> The model failed to predict rain where it actually occurred.</li>
+</ol>
+<p>A coarse-grained model that predicts "light rain everywhere" might actually achieve a higher TS than a high-resolution model that correctly simulates a thunderstorm's structure but misses the exact location by 10 kilometers. This creates a paradox where a <strong>visually better forecast</strong> receives a <strong>statistically worse score</strong>.</p>
+<hr />
+<h2 id="neighborhood-verification-fractions-skill-score-fss">2. Neighborhood Verification: Fractions Skill Score (FSS)</h2>
+<p>Instead of requiring an exact pixel-to-pixel match, FSS evaluates how the <strong>frequency (fraction)</strong> of an event (e.g., rainfall &gt; 5mm) compares between the forecast and observation within a specific spatial window (neighborhood).</p>
+<h3 id="stage-i-transformation-to-fraction-grids">Stage I: Transformation to Fraction Grids</h3>
+<ol type="1">
+<li><strong>Thresholding:</strong> Both the forecast and observation fields are converted into binary fields (1 if above threshold, 0 if below).</li>
+<li><strong>Smoothing:</strong> A "neighborhood" (a square window of size <span class="math inline">\(n \times n\)</span>) is moved across the grid.</li>
+<li><strong>Fraction Calculation:</strong> Within each window, we calculate the percentage of grid points that exceed the threshold.</li>
+</ol>
+<h3 id="stage-ii-calculating-the-fss">Stage II: Calculating the FSS</h3>
+<p>The FSS compares the forecast fractions (<span class="math inline">\(P_f\)</span>) and observed fractions (<span class="math inline">\(P_o\)</span>) using a formula similar to a mean squared error, normalized to range from <strong>0 to 1</strong>:</p>
+<p><span class="math display">\[FSS = 1 - \frac{\frac{1}{N} \sum_{i=1}^{N} (P_{f,i} - P_{o,i})^2}{\frac{1}{N} [\sum_{i=1}^{N} P_{f,i}^2 + \sum_{i=1}^{N} P_{o,i}^2]}\]</span></p>
+<ul>
+<li><strong>FSS = 1:</strong> Perfect match of fractions across the domain.</li>
+<li><strong>FSS = 0:</strong> Complete mismatch.</li>
+<li><strong>FSS &gt; <span class="math inline">\(0.5 + f_o/2\)</span>:</strong> Generally considered the threshold for "useful" skill (where <span class="math inline">\(f_o\)</span> is the domain-wide observed fraction).</li>
+</ul>
+<hr />
+<h2 id="key-advantages-of-fss">3. Key Advantages of FSS</h2>
+<ul>
+<li><strong>Scale-Dependency:</strong> Unlike TS/ETS, FSS is calculated for various neighborhood sizes (e.g., 5km, 10km, 50km). This allows researchers to identify the <strong>"useful scale"</strong>—the point where the model starts becoming accurate.</li>
+<li><strong>Reward for Realism:</strong> It recognizes that a high-resolution model simulating intense, localized cells is "closer to the truth" than a smooth, low-resolution blur, even if the placement isn't perfect.</li>
+<li><strong>Scientific Insight:</strong> It tells us <em>how far off</em> the model is. If FSS is low at a 5km scale but high at a 20km scale, we know the model has the right intensity but a 20km displacement error.</li>
+</ul>
+<hr />
+<h3 id="summary-comparison">Summary Comparison</h3>
+<table>
+
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Traditional Scores (TS/ETS)</th>
+<th>Neighborhood Method (FSS)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Matching</strong></td>
+<td>Exact grid-to-grid</td>
+<td>Area-based fractions</td>
+</tr>
+<tr class="even">
+<td><strong>Sensitivity</strong></td>
+<td>Very sensitive to small displacements</td>
+<td>Tolerant of small spatial shifts</td>
+</tr>
+<tr class="odd">
+<td><strong>Best For</strong></td>
+<td>Coarse, synoptic-scale events</td>
+<td>High-resolution, convective-scale events</td>
+</tr>
+<tr class="even">
+<td><strong>Primary Output</strong></td>
+<td>Single accuracy value</td>
+<td>Skill as a function of spatial scale</td>
+</tr>
+</tbody>
+</table>
+<h1 id="中国气象局">中国气象局</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://qxqk.nmc.cn/html/2017/1/20170107.html">唐文苑, 周庆亮, 刘鑫华, 朱文剑, &amp; 毛旭. (2017). 国家级强对流天气分类预报检验分析. 气象, 43(1), 67-76.</a></li>
+<li><a target="_blank" rel="noopener" href="http://qxqk.nmc.cn/html/2021/6/20210602.html">谌芸, 曹勇, 孙健, 等, 2021. 中央气象台精细化网格降水预报技术的发展和思考. 气象, 47(6): 655-670. DOI: 10.7519/j.issn.1000-0526.2021.06.002.</a>
+<ul>
+<li><img src="https://i.imgur.com/TgEccF7.png" srcset="/img/loading.gif" lazyload width="300" /></li>
+<li><img src="https://i.imgur.com/6F3FCa5.png" srcset="/img/loading.gif" lazyload width="300" /></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://rdqxxb.itmm.org.cn/cn/article/doi/10.16032/j.issn.1004-4965.2022.055">刘段灵, 陈超. 最优TS评分方法在逐时降水订正中的初步应用及评估[J]. 热带气象学报, 2022, 38(4): 611-620. doi: 10.16032/j.issn.1004-4965.2022.055</a></li>
+<li><a target="_blank" rel="noopener" href="https://qikan.camscma.cn/article/doi/10.11898/1001-7313.20220601">黄丽萍, 邓莲堂, 王瑞春, 等. CMA-MESO关键技术集成及应用. 应用气象学报, 2022, 33(6): 641-654. DOI: 10.11898/1001-7313.20220601</a>
+<ul>
+<li><img src="https://i.imgur.com/yGV9pWy.png" srcset="/img/loading.gif" lazyload width="300" /></li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://www.iapjournals.ac.cn/dqkx/cn/article/pdf/preview/10.3878/j.issn.1006-9895.2307.22115.pdf">刘会军, 吴启树, 危国飞, 等. 2024. 数值模式降水预报 OTS 订正法的实现技术 [J]. 大气科学, 48(5): 1891−1900.</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.iapjournals.ac.cn/dqkx/cn/article/pdf/preview/10.3878/j.issn.1006-9895.2501.24061.pdf">张海燕, 吴启树, 危国飞, 等. 2025. 基于多源资料融合集成的短时强降水短时临近预报技术 [J]. 大气科学, 49(6): 1711−1726.</a></li>
+<li><a target="_blank" rel="noopener" href="https://qikan.camscma.cn/article/doi/10.11898/1001-7313.20260201">张博, 张迪, 陈双, 等. “25·7”华北特大暴雨数值预报检验评估. 应用气象学报, 2026, 37(2): 129-144. DOI: 10.11898/1001-7313.20260201</a></li>
+</ul>
+<h1 id="中央氣象局">中央氣象局</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://mopl.as.ntu.edu.tw/web/ASJ/44/44-4-2.pdf">陳冠杰, &amp; 黃婉如. (2016). 中央氣象局全球預報模式對 2016 年 5~ 6 月東亞區域降雨之預報能力評析. 大氣科學, 44(4), 305-327.</a></li>
+</ul>
+<h1 id="references">References</h1>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www2.mmm.ucar.edu/wrf/users/tutorial/presentation_pdfs/201901/chen_verification.pdf"><strong>Verification of WRF Simulations | Ming Chen</strong></a></li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/GFS/" class="print-no-link">#GFS</a>
+      
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
+        <a href="/tags/Precipitation/" class="print-no-link">#Precipitation</a>
+      
+        <a href="/tags/TS/" class="print-no-link">#TS</a>
+      
+        <a href="/tags/ETS/" class="print-no-link">#ETS</a>
+      
+        <a href="/tags/FSS/" class="print-no-link">#FSS</a>
+      
+        <a href="/tags/Rainfall/" class="print-no-link">#Rainfall</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>NWP | TS and ETS</div>
+      <div>https://waipangsze.github.io/2026/05/12/NWP-TS-and-ETS/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 12, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>May 12, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/05/07/NWP-MPAS-WRF-Physics/" title="NWP | MPAS/WRF Physics">
+                        <span class="hidden-mobile">NWP | MPAS/WRF Physics</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
