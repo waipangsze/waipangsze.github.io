@@ -185,3 +185,42 @@ rsync -av --include-from='include.txt' --exclude='*' /source/ /destination/
 - Use `--include-from` for large or reusable pattern lists to keep commands clean.
 - Store the include file in a version-controlled location if used frequently.
 - Test complex patterns with `rsync -av --dry-run --include-from='file'`.
+
+# 跳板連線
+
+要實作 myPC ➔ 代理伺服器 A（Port: 231456）➔ 目標伺服器（Port: 12345） 的 SSH 隧道設定，你需要修改 `~/.ssh/config` 檔案。
+由於單個 TCP/UDP 連接埠的最大數值是 65535，你提到的 231456 已超出範圍。以下設定範例將假設代理伺服器 A 的實際埠號為 23145（或請改為您實際的 5 位數以內埠號）。
+請將以下內容貼上至你的 `~/.ssh/config`：
+
+## 1. 先定義代理伺服器 A 的連線資訊
+
+```
+Host proxy-A
+    HostName 代理伺服器A的IP或網址
+    User 你的A伺服器帳號
+    Port 23145
+```
+
+## 2. 定義目標伺服器，並透過 proxy-A 進行跳板連線
+
+```
+Host target-server
+    HostName 目標伺服器的IP或網址
+    User 你的目標伺服器帳號
+    Port 12345
+    ProxyCommand ssh -W %h:%p proxy-A
+```
+
+### Rsync 執行指令
+設定完成後，你的 rsync 指令會變得非常簡潔，完全不需要在指令中重複輸入埠號和代理設定：
+
+```
+rsync -av /local/path/ target-server:/remote/path/
+```
+
+### 設定要點說明
+
+* `ProxyCommand ssh -W %h:%p proxy-A`：這是最現代且安全的 SSH 跳板方法。它會先透過 proxy-A 設定建立安全通道，再將流量轉發至 target-server 的 12345 埠。
+* 自動繼承：rsync 會自動讀取 target-server 區塊內的 Port 12345 以及跳板設定。
+
+
