@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MPAS | MPAS-JEDI 
+title: MPAS | MPAS-JEDI Notes
 categories: [MPAS]
 tags: [MPAS, DA, MPAS-JEDI]
 author: wpsze
@@ -46,6 +46,7 @@ banner_img: https://i.imgur.com/6oGdLJk.png
   - [Jung, Byoung-Joo, et al. "Three-dimensional variational assimilation with a multivariate background error covariance for the Model for Prediction Across Scales–Atmosphere with the Joint Effort for data Assimilation Integration (JEDI-MPAS 2.0. 0-beta)." Geoscientific Model Development 17.9 (2024): 3879-3895.](https://gmd.copernicus.org/articles/17/3879/2024/gmd-17-3879-2024.html)
 - **Ensemble/EDA** (2025)
   - [Guerrette, Jonathan J., et al. "Data assimilation for the Model for Prediction Across Scales–Atmosphere with the Joint Effort for Data assimilation Integration (JEDI-MPAS 2.0. 0-beta): ensemble of 3D ensemble-variational (En-3DEnVar) assimilations." Geoscientific Model Development Discussions 2023 (2023): 1-34.](https://gmd.copernicus.org/preprints/gmd-2023-54/gmd-2023-54.pdf)
+    - [Assimilation Algorithms: EDAand Hybrid Data Assimilation | ECMWF | 2024](https://events.ecmwf.int/event/376/contributions/4280/attachments/2465/4264/Bonavita_EDA_HYBRID_DA_TC_2024.pdf)
 - **Local Ensemble Transform Kalma (All-sky AMSU-A)** (2025)
   - [Sun, T., Guerrette, J. J., Liu, Z., Ban, J., Jung, B. J., Baños, I. H., & Snyder, C. (2025). All-sky AMSU-A radiance data assimilation using the gain-form of Local Ensemble Transform Kalman filter within MPAS-JEDI-2.1. 0: implementation, tuning, and evaluation. EGUsphere, 2025, 1-29.](https://egusphere.copernicus.org/preprints/2025/egusphere-2025-2079/)
 - **4DEnVar** (2025)
