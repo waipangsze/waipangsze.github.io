@@ -29,6 +29,98 @@ banner_img: https://i.imgur.com/dPlkBuU.png
 - <https://codes.ecmwf.int/grib/param-db/>
   - ![](https://i.imgur.com/W0pbXLZ.png){width=400}
 
+# Check lat/lon
+
+- To see the whole geographic structure cleanly without typing a massive string of keys
+
+{% fold info @check_grib.sh %}
+```sh
+#!/bin/bash
+
+#--- List Distinct Lat/Lons in Table
+#grib_ls -p Ni,Nj,latitudeOfFirstGridPointInDegrees,longitudeOfFirstGridPointInDegrees,latitudeOfLastGridPointInDegrees,longitudeOfLastGridPointInDegrees,iDirectionIncrementInDegrees,jDirectionIncrementInDegrees ${1}
+
+#--- Comprehensive Check
+##--- To see the whole geographic structure cleanly without typing a massive string of keys,
+grib_dump ${1} | grep -E "GridPoint|Increment|N[ij]"
+
+#--- Dump Coordinates for Every Pixel
+##--- Print lat, lon, and value for the first few points
+#grib_get_data ${1} | head -n 10
+```
+{% endfold %}
+
+like,
+
+{% fold info @lat/lon of grib file %}
+```log
+GFS 0.25deg grib file:
+  Ni = 1440;
+  Nj = 721;
+  latitudeOfFirstGridPointInDegrees = 90;
+  longitudeOfFirstGridPointInDegrees = 0;
+  latitudeOfLastGridPointInDegrees = -90;
+  longitudeOfLastGridPointInDegrees = 359.75;
+  iDirectionIncrementInDegrees = 0.25;
+  jDirectionIncrementInDegrees = 0.25;
+
+ERA5 0.25deg grib file:
+  Ni = 1440;
+  Nj = 721;
+  latitudeOfFirstGridPointInDegrees = 90;
+  longitudeOfFirstGridPointInDegrees = 0;
+  latitudeOfLastGridPointInDegrees = -90;
+  longitudeOfLastGridPointInDegrees = 359.75;
+  jDirectionIncrementInDegrees = 0.25;
+  iDirectionIncrementInDegrees = 0.25;
+
+IFS open data 0.25deg grib file:
+  Ni = 1440;
+  Nj = 721;
+  latitudeOfFirstGridPointInDegrees = 90;
+  longitudeOfFirstGridPointInDegrees = 180;
+  latitudeOfLastGridPointInDegrees = -90;
+  longitudeOfLastGridPointInDegrees = 179.75;
+  iDirectionIncrementInDegrees = 0.25;
+  jDirectionIncrementInDegrees = 0.25;
+```
+{% endfold %}
+
+for ifs-0.1deg grib file, lat/lon may be not common,
+
+```log
+IFS 0.1deg grib file:
+  Ni = 3600;
+  Nj = 1801;
+  latitudeOfFirstGridPointInDegrees = 90;
+  longitudeOfFirstGridPointInDegrees = -180;
+  latitudeOfLastGridPointInDegrees = -90;
+  longitudeOfLastGridPointInDegrees = 179.9;
+  jDirectionIncrementInDegrees = 0.1;
+  iDirectionIncrementInDegrees = 0.1;
+```
+
+- `$ cdo sellonlatbox,0,360,-90,90 input.grib output_shifted.grib`
+  - `cdo sellonlatbox` works perfectly fine on GRIB2 files.
+  - The **warnings** and `gribapiEncode` messages you are seeing do not mean the command failed. Your output file (ifs-grid-shifted.grib2) was likely created successfully and the coordinates were correctly shifted.
+
+```log
+After conversion:
+  Ni = 3600;
+  Nj = 1801;
+  latitudeOfFirstGridPointInDegrees = 90;
+  longitudeOfFirstGridPointInDegrees = 0;
+  latitudeOfLastGridPointInDegrees = -90;
+  longitudeOfLastGridPointInDegrees = 359.9;
+  jDirectionIncrementInDegrees = 0.1;
+  iDirectionIncrementInDegrees = 0.1;
+```
+
+{% gi 2 2 %}
+![](https://i.imgur.com/um59Cxv.png)
+![](https://i.imgur.com/5MACWTV.png)
+{% endgi %}
+
 # cdo
 
 - `cdo showname`
