@@ -45,6 +45,7 @@ Param| Type |Level1|Level2| Name     | Units    | Description                   
  134 |  1   |   0  |      | PSFC     | Pa       | Surface Pressure                         |  0  |  3  |  0  |   1 |
  151 |  1   |   0  |      | PMSL     | Pa       | Sea-level Pressure                       |  0  |  3  |  0  | 101 |
  235 |  1   |   0  |      | SKINTEMP | K        | Skin temperature                         |  0  |  0  | 17  |   1 |
+ 141 |  1   |   0  |      | SNOW     | kg m-2   |Water Equivalent of Accumulated Snow Depth|  0  |  1  | 254 |   1 | 
   0  |  1   |   0  |   7  | ST000007 | K        | T of 0-7 cm ground layer                 |  2  |  3  | 18  | 151 | 
   1  |  2   |   7  |  28  | ST007028 | K        | T of 7-28 cm ground layer                |  2  |  3  | 18  | 151 | 
   2  |  3   |  28  | 100  | ST028100 | K        | T of 28-100 cm ground layer              |  2  |  3  | 18  | 151 | 
