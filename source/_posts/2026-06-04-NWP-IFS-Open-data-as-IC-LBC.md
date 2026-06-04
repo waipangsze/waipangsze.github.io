@@ -1,8 +1,8 @@
 ---
 layout: post
-title: NWP | IFS | Open data
+title: NWP | IFS | Open data as IC/LBC
 categories: [NWP]
-tags: [WRF,WPS,MPAS,IC/BC,IFS,ECMWF]
+tags: [WRF,WPS,MPAS,IC/LBC,IFS,ECMWF]
 author: wpsze
 date: 2026-06-04 06:00:00
 math: true
