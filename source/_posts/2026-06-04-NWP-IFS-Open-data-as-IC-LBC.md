@@ -21,6 +21,10 @@ banner_img: https://www.ecmwf.int/sites/default/files/flags-council-chamber-650p
 
 ---
 
+- [Parameter database](https://codes.ecmwf.int/grib/param-db/)
+
+---
+
 # Vtable ***
 
 ```
@@ -79,11 +83,7 @@ grib_ls -p shortName,discipline,parameterCategory,typeOfLevel,level,typeOfLevel 
 #grib_ls -p typeOfLevel,level,topLevel,bottomLevel,unitsOfFirstFixedSurface ${1} # typeOfLevel = grib2 Level
 #grib_ls -w shortName=t -p discipline,parameterCategory,parameterNumber,level,shortName ${1}
 grib_ls -w level=0 -p shortName,discipline,parameterCategory,parameterNumber,level,typeOfLevel ${1} # check surface
-
 ```
-
-<!-- {% fold info @title %}
-{% endfold %} -->
 
 {% fold info @grib_ls -n parameter ${1} %}
 ```log
@@ -477,3 +477,31 @@ sp                 0                  3                  0                  0   
    Successful completion of g2print   
 ```
 {% endfold %}
+
+# Variables
+
+## `HGT` and `GEOPT`
+
+In meteorological `GRIB` files, `HGT` and `GEOPT` both represent the vertical height of a given atmospheric layer, but they are encoded in different mathematical units and formats.
+
+| Parameter [1, 2, 4, 5, 6] | Name | Variable Description | Unit | Common Application |
+|---|---|---|---|---|
+| HGT | Geopotential Height | The height of a pressure surface above mean sea level. | $\text{gpm}$ (geopotential meters) or $\text{m}$ | Synoptic chart plotting (e.g., finding $500\text{ hPa}$ troughs/ridges). |
+| GEOPT | Geopotential | The gravitational potential energy per unit mass at a specific location. | $\text{m}^2\text{ s}^{-2}$ | Raw model output data; used as surface orography in dynamic modeling. |
+
+You can easily convert between the two using the Earth's standard gravitational acceleration ($g = 9.80665 \text{ m s}^{-2}$): 
+
+$$HGT = \frac{GEOPT}{g}$$
+
+### Practical Use in GRIB Data
+
+* If you are extracting GEOPT (e.g., from an `ECMWF invariant GRIB file`), you will need to divide the grid values by $9.80665$ to get the physical altitude in meters required by weather models like WRF. 
+* If you are analyzing `HGT`, the values are already practically identical to geometric meters, making them immediately readable for overlaying on weather maps.
+
+## `SOILGEO` and `SOILHGT`
+
+`SOILGEO` and `SOILHGT` represent the surface orography (the elevation of the ground/terrain) at the bottom boundary of weather models, mirroring the exact relationship between `GEOPT` and `HGT`.
+
+* **SOILGEO (Surface Geopotential)**: The gravitational potential energy per unit mass at surface terrain level. It is encoded in $\text{m}^2\text{ s}^{-2}$. This corresponds to the standard ECMWF variable parameter Z (Geopotential) extracted explicitly from an "invariant" surface file.
+* **SOILHGT (Terrain / Surface Height)**: The physical altitude of the ground surface above mean sea level. It is encoded in geometric meters ($\text{m}$). 
+* Just like free-atmosphere profiles, the two variables are linked strictly by the standard gravity of Earth ($g = 9.80665 \text{ m s}^{-2}$): $\text{SOILHGT} = \frac{\text{SOILGEO}}{9.80665}$
