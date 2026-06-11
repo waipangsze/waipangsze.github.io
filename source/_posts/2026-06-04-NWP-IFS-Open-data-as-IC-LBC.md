@@ -21,7 +21,7 @@ banner_img: https://www.ecmwf.int/sites/default/files/flags-council-chamber-650p
 
 ---
 
-- [Parameter database](https://codes.ecmwf.int/grib/param-db/)
+- [**Parameter database | ECMWF**](https://codes.ecmwf.int/grib/param-db/)
 
 ---
 
@@ -483,9 +483,12 @@ sp                 0                  3                  0                  0   
 
 ## `HGT` and `GEOPT`
 
+- <https://codes.ecmwf.int/grib/param-db/129>
+- <https://codes.ecmwf.int/grib/param-db/156>
+
 In meteorological `GRIB` files, `HGT` and `GEOPT` both represent the vertical height of a given atmospheric layer, but they are encoded in different mathematical units and formats.
 
-| Parameter [1, 2, 4, 5, 6] | Name | Variable Description | Unit | Common Application |
+| Parameter | Name | Variable Description | Unit | Common Application |
 |---|---|---|---|---|
 | HGT | Geopotential Height | The height of a pressure surface above mean sea level. | $\text{gpm}$ (geopotential meters) or $\text{m}$ | Synoptic chart plotting (e.g., finding $500\text{ hPa}$ troughs/ridges). |
 | GEOPT | Geopotential | The gravitational potential energy per unit mass at a specific location. | $\text{m}^2\text{ s}^{-2}$ | Raw model output data; used as surface orography in dynamic modeling. |
@@ -506,3 +509,39 @@ $$HGT = \frac{GEOPT}{g}$$
 * **SOILGEO (Surface Geopotential)**: The gravitational potential energy per unit mass at surface terrain level. It is encoded in $\text{m}^2\text{ s}^{-2}$. This corresponds to the standard ECMWF variable parameter Z (Geopotential) extracted explicitly from an "invariant" surface file.
 * **SOILHGT (Terrain / Surface Height)**: The physical altitude of the ground surface above mean sea level. It is encoded in geometric meters ($\text{m}$). 
 * Just like free-atmosphere profiles, the two variables are linked strictly by the standard gravity of Earth ($g = 9.80665 \text{ m s}^{-2}$): $\text{SOILHGT} = \frac{\text{SOILGEO}}{9.80665}$
+
+## Snow depth
+
+- <https://codes.ecmwf.int/grib/param-db/141>
+
+|       Name | Snow depth            |
+|-----------:|-----------------------|
+| Short name | sd                    |
+|       Unit | m of water equivalent |
+
+- grib 2 format
+  
+| Key	Value          |     | 
+|--------------------|-----|
+| localTablesVersion | 1   | 
+| discipline         | 0   |  
+| parameterCategory  | 1   | 
+| parameterNumber    | 254 |  
+
+## Seaice
+
+- <https://codes.ecmwf.int/grib/param-db/31>
+
+|       Name | Sea ice area fraction |
+|-----------:|-----------------------|
+| Short name | ci                    |
+|       Unit | (0 - 1)               |
+
+- grib 2 format
+
+| Key	Value               |    | 
+|-------------------------|----|
+| discipline              | 10 |
+| parameterCategory       | 2  |
+| parameterNumber         | 0  |
+| typeOfFirstFixedSurface | 1  |
