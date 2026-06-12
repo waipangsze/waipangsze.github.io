@@ -479,6 +479,194 @@ sp                 0                  3                  0                  0   
 ```
 {% endfold %}
 
+- <https://forum.mmm.ucar.edu/threads/how-to-build-vtable.11753/>
+
+```log
+ ungrib - grib edition num           2
+ reading from grib file = ifs-grid-shifted.grib2                                                                                                  
+      ECMWF                           
+---------------------------------------------------------------------------------------
+ rec Prod Cat Param  Lvl    Lvl      Lvl     Prod    Name            Time          Fcst
+ num Disc     num    code   one      two     Templ                                 hour
+---------------------------------------------------------------------------------------
+
+  77   2    0   0       1       0       0       0     LAND     2026-05-19_00:00:00   00
+
+  22   0    3   5     100   30000       0       0     HGT      2026-05-19_00:00:00   00          
+  23   0    3   5     100  100000       0       0     HGT      2026-05-19_00:00:00   00          
+  24   0    3   5     100    5000       0       0     HGT      2026-05-19_00:00:00   00          
+  25   0    3   5     100   60000       0       0     HGT      2026-05-19_00:00:00   00          
+  31   0    3   5     100   85000       0       0     HGT      2026-05-19_00:00:00   00          
+  33   0    3   5     100    1000       0       0     HGT      2026-05-19_00:00:00   00          
+  35   0    3   5     100   20000       0       0     HGT      2026-05-19_00:00:00   00          
+ 119   0    3   5     100   92500       0       0     HGT      2026-05-19_00:00:00   00          
+ 121   0    3   5     100   10000       0       0     HGT      2026-05-19_00:00:00   00          
+ 125   0    3   5     100   40000       0       0     HGT      2026-05-19_00:00:00   00          
+ 126   0    3   5     100   25000       0       0     HGT      2026-05-19_00:00:00   00          
+ 127   0    3   5     100   15000       0       0     HGT      2026-05-19_00:00:00   00          
+ 129   0    3   5     100   50000       0       0     HGT      2026-05-19_00:00:00   00          
+ 130   0    3   5     100   70000       0       0     HGT      2026-05-19_00:00:00   00 
+
+   2   0    3   4       1       0       0       0     GP       2026-05-19_00:00:00   00          
+  18   0    3   4     100   85000       0       0     GP       2026-05-19_00:00:00   00          
+  19   0    3   4     100    1000       0       0     GP       2026-05-19_00:00:00   00          
+  20   0    3   4     100   20000       0       0     GP       2026-05-19_00:00:00   00          
+  29   0    3   4     100   30000       0       0     GP       2026-05-19_00:00:00   00          
+  30   0    3   4     100  100000       0       0     GP       2026-05-19_00:00:00   00          
+  32   0    3   4     100    5000       0       0     GP       2026-05-19_00:00:00   00          
+  34   0    3   4     100   60000       0       0     GP       2026-05-19_00:00:00   00          
+ 116   0    3   4     100   40000       0       0     GP       2026-05-19_00:00:00   00          
+ 117   0    3   4     100   25000       0       0     GP       2026-05-19_00:00:00   00          
+ 118   0    3   4     100   15000       0       0     GP       2026-05-19_00:00:00   00          
+ 120   0    3   4     100   50000       0       0     GP       2026-05-19_00:00:00   00          
+ 122   0    3   4     100   70000       0       0     GP       2026-05-19_00:00:00   00          
+ 123   0    3   4     100   10000       0       0     GP       2026-05-19_00:00:00   00          
+ 124   0    3   4     100   92500       0       0     GP       2026-05-19_00:00:00   00  
+
+   1   0    2  63       1       0       0       8     UNKNOWN  2026-05-19_00:00:00   00  PDT4.8  
+   4   2    3  18     151       2       3       0     UNKNOWN  2026-05-19_00:00:00   00          
+   6  10    3  14       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+   8   0    1  51       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  10  10    3  15       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  11   0    1  64       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  14   2    3  18     151       0       1       0     UNKNOWN  2026-05-19_00:00:00   00          
+  16   0    3  20       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  21   0    3  22       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  37   0    0  17       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  39   2    3  18     151       3       4       0     UNKNOWN  2026-05-19_00:00:00   00          
+  47   0    1  19       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  56   0    1  52       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  67   0    1  61       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00          
+  68   2    3  18     151       1       2       0     UNKNOWN  2026-05-19_00:00:00   00          
+  71   2    0  25     151       0       1       0     UNKNOWN  2026-05-19_00:00:00   00          
+  78   2    0  25     151       1       2       0     UNKNOWN  2026-05-19_00:00:00   00          
+  87   2    0  25     151       2       3       0     UNKNOWN  2026-05-19_00:00:00   00          
+  92   2    0  25     151       3       4       0     UNKNOWN  2026-05-19_00:00:00   00          
+  97   0    4   9       1       0       0       8     UNKNOWN  2026-05-19_00:00:00   00  PDT4.8  
+  99   0    5   5       1       0       0       8     UNKNOWN  2026-05-19_00:00:00   00  PDT4.8  
+ 100   0    5   5       8       0       0       8     UNKNOWN  2026-05-19_00:00:00   00  PDT4.8  
+ 110   0    2  62       1       0       0       8     UNKNOWN  2026-05-19_00:00:00   00  PDT4.8  
+ 128   0    1 254       1       0       0       0     UNKNOWN  2026-05-19_00:00:00   00 
+```
+
+# 0.5-degree (GRIB2) GFS data sets (For reference)
+
+For example, the Vtable.GFS file contains GRIB2 Vtable fields, but is used for both 1-degree (GRIB1) GFS and **0.5-degree (GRIB2) GFS data sets**.
+
+- <https://github.com/wrf-model/WPS/blob/master/ungrib/Variable_Tables/Vtable.GFS>
+
+```log
+GRIB1| Level| From |  To  | metgrid  | metgrid | metgrid                                 |GRIB2|GRIB2|GRIB2|GRIB2|
+Param| Type |Level1|Level2| Name     | Units   | Description                             |Discp|Catgy|Param|Level|
+-----+------+------+------+----------+---------+-----------------------------------------+-----------------------+
+  11 | 100  |   *  |      | TT       | K       | Temperature                             |  0  |  0  |  0  | 100 |
+  33 | 100  |   *  |      | UU       | m s-1   | U                                       |  0  |  2  |  2  | 100 |
+  34 | 100  |   *  |      | VV       | m s-1   | V                                       |  0  |  2  |  3  | 100 |
+  52 | 100  |   *  |      | RH       | %       | Relative Humidity                       |  0  |  1  |  1  | 100 |
+   7 | 100  |   *  |      | HGT      | m       | Height                                  |  0  |  3  |  5  | 100 |
+  11 | 105  |   2  |      | TT       | K       | Temperature       at 2 m                |  0  |  0  |  0  | 103 |
+  52 | 105  |   2  |      | RH       | %       | Relative Humidity at 2 m                |  0  |  1  |  1  | 103 |
+  33 | 105  |  10  |      | UU       | m s-1   | U                 at 10 m               |  0  |  2  |  2  | 103 |
+  34 | 105  |  10  |      | VV       | m s-1   | V                 at 10 m               |  0  |  2  |  3  | 103 |
+   1 |   1  |   0  |      | PSFC     | Pa      | Surface Pressure                        |  0  |  3  |  0  |   1 |
+ 130 | 102  |   0  |      | PMSL     | Pa      | Sea-level Pressure                      |  0  |  3  | 192 | 101 |
+ 144 | 112  |   0  |  10  | SM000010 | fraction| Soil Moist 0-10 cm below grn layer (Up) |  2  |  0  | 192 | 106 |
+ 144 | 112  |  10  |  40  | SM010040 | fraction| Soil Moist 10-40 cm below grn layer     |  2  |  0  | 192 | 106 |
+ 144 | 112  |  40  | 100  | SM040100 | fraction| Soil Moist 40-100 cm below grn layer    |  2  |  0  | 192 | 106 |
+ 144 | 112  | 100  | 200  | SM100200 | fraction| Soil Moist 100-200 cm below gr layer    |  2  |  0  | 192 | 106 |
+ 144 | 112  |  10  | 200  | SM010200 | fraction| Soil Moist 10-200 cm below gr layer     |  2  |  0  | 192 | 106 |
+  11 | 112  |   0  |  10  | ST000010 | K       | T 0-10 cm below ground layer (Upper)    |  0  |  0  |  0  | 106 |
+  11 | 112  |  10  |  40  | ST010040 | K       | T 10-40 cm below ground layer (Upper)   |  0  |  0  |  0  | 106 |
+  11 | 112  |  40  | 100  | ST040100 | K       | T 40-100 cm below ground layer (Upper)  |  0  |  0  |  0  | 106 |
+  11 | 112  | 100  | 200  | ST100200 | K       | T 100-200 cm below ground layer (Bottom)|  0  |  0  |  0  | 106 |
+  85 | 112  |   0  |  10  | ST000010 | K       | T 0-10 cm below ground layer (Upper)    |  2  |  0  |  2  | 106 |
+  85 | 112  |  10  |  40  | ST010040 | K       | T 10-40 cm below ground layer (Upper)   |  2  |  0  |  2  | 106 |
+  85 | 112  |  40  | 100  | ST040100 | K       | T 40-100 cm below ground layer (Upper)  |  2  |  0  |  2  | 106 |
+  85 | 112  | 100  | 200  | ST100200 | K       | T 100-200 cm below ground layer (Bottom)|  2  |  0  |  2  | 106 |
+  11 | 112  |  10  | 200  | ST010200 | K       | T 10-200 cm below ground layer (Bottom) |  0  |  0  |  0  | 106 |
+  91 |   1  |   0  |      | SEAICE   | proprtn | Ice flag                                | 10  |  2  |  0  |   1 |
+  81 |   1  |   0  |      | LANDSEA  | proprtn | Land/Sea flag (1=land, 0 or 2=sea)      |  2  |  0  |  0  |   1 |
+  81 |   1  |   0  |      | LANDN    | proprtn |                                         |  2  |  0  | 218 |   1 |
+   7 |   1  |   0  |      | SOILHGT  | m       | Terrain field of source analysis        |  0  |  3  |  5  |   1 |
+  11 |   1  |   0  |      | SKINTEMP | K       | Skin temperature                        |  0  |  0  |  0  |   1 |
+  65 |   1  |   0  |      | SNOW     | kg m-2  | Water equivalent snow depth             |  0  |  1  | 13  |   1 |
+     |   1  |   0  |      | SNOWH    | m       | Physical Snow Depth                     |  0  |  1  |     |   1 |
+  33 |   6  |   0  |      | UMAXW    | m s-1   | U                 at max wind           |  0  |  2  |  2  |   6 |
+  34 |   6  |   0  |      | VMAXW    | m s-1   | V                 at max wind           |  0  |  2  |  3  |   6 |
+   2 |   6  |   0  |      | PMAXW    | Pa      | Pressure of max wind level              |  0  |  3  |  0  |   6 |
+     |   6  |   0  |      | PMAXWNN  | Pa      | PMAXW, used for nearest neighbor interp |  0  |  3  |  0  |   6 |
+   2 |   6  |   0  |      | TMAXW    | K       | Temperature at max wind level           |  0  |  0  |  0  |   6 |
+   7 |   6  |   0  |      | HGTMAXW  | m       | Height of max wind level                |  0  |  3  |  5  |   6 |
+  33 |   7  |   0  |      | UTROP    | m s-1   | U                 at tropopause         |  0  |  2  |  2  |   7 |
+  34 |   7  |   0  |      | VTROP    | m s-1   | V                 at tropopause         |  0  |  2  |  3  |   7 |
+   2 |   7  |   0  |      | PTROP    | Pa      | Pressure of tropopause                  |  0  |  3  |  0  |   7 |
+     |   7  |   0  |      | PTROPNN  | Pa      | PTROP, used for nearest neighbor interp |  0  |  3  |  0  |   7 |
+   2 |   7  |   0  |      | TTROP    | K       | Temperature at tropopause               |  0  |  0  |  0  |   7 |
+   7 |   7  |   0  |      | HGTTROP  | m       | Height of tropopause                    |  0  |  3  |  5  |   7 |
+-----+------+------+------+----------+---------+-----------------------------------------+-----------------------+
+#
+#  Vtable for GFS pressure-level data from the ncep server.
+#  This version includes fields from the Tropopause and Max Wind levels used by WRF V3.6.1 and later.
+#  NCEP has used multiple definitions of the soil temperature in their output and the Vtable attempts
+#  to account for these possibilities. (Definition changed 14 Jan 2015).
+#
+# As of 22 March 2021:
+#
+#  https://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/gfs.ccyymmdd/hh/atmos/
+#  ftp://ftpprd.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/gfs.ccyymmdd/hh/atmos/
+#
+#                          approx.    grid    hours      domain  dx       notes
+#                         file size   no.
+#
+#  gfs.t12z.pgrb2.0p25    510000 Kb   193  1-h to 120-h  global  0.25 deg  (41 p-levels plus sfc and trop, 1000 to .01 hPa).
+#                                          3-h to 384-h
+#  gfs.t12z.pgrb2.0p50    150000 Kb     4  3-h to 384-h  global  0.5  deg  (41 p-levels plus sfc and trop, 1000 to .01 hPa).
+#
+#
+#  As of mid-2017 the GFS provides two land mask fields in the pressure-level output. WPS uses LANDN if available
+#  and renames it LANDSEA.
+#
+#  As of WPS V4.1 (April 2019) the default PMSL is changed to MSLET. MSLET is an unsmoothed sea level pressure.
+#  NCEP included MSLET in their GFS files beginning 12z on 10 May 2011 and in their GDAS files at 12z 14 January 2015.
+#  The smoother PRMSL is in all GFS/GDAS pressure files.
+#  For GFS files prior to those dates use PRMSL as shown in the following line:
+#  2 | 102  |   0  |      | PMSL     | Pa      | Sea-level Pressure                      |  0  |  3  |  1  | 101 |
+#
+#
+#   Abbreviated history of GFS changes (all starting at 12 UTC)
+#
+# 29 November 2022  - Updated GFS to V16.3.0. Improved snow depth prediction. 
+#                   - Assimilate Leo-Geo winds, MetOp-C AVHRR and ASCAT winds. Upgrade CRTM to V2.4.0
+# 22 March 2021     - Upgrade GFS to V16. Update FV3. Add a new gravity wave parameterization, scale-aware 
+#                     TKE-EDMF scheme, update RRTMG. Use LETKF, 4D-IAU, new satellite obs.
+#  7 November 2019  - Updated to V15.2.0. Assimilate more satellite data. Fix mask issues over water and 
+#                     add LANDN field.
+# 12 June 2019      - Updated to V15.1.0 with FV3 dynamical core. (requires WPS V4.0 or later)
+# 19 July 2017      - Change to land mask and other terrestrial variables (requires WPS V3.9.1.1)
+#                   - Change missing value, removal of grid 211 (80km conus). Flag value of .468 in soil moisture.
+# 11 May 2016       - Assimilate AMSU-A radiances, AVHRR winds, CRTMv2.2.1, 4d hybrid das.
+#                   - Add 5 stratospheric levels to ouput. UPP V7.0. Land surface and GWD upates.
+# 14 January 2015   - Add MSLET to GDAS. Change from T574 (27km) to T1534 (13km). Fcst length to 240 h.
+#                   - semi-lagrangian, uses rtgsst, Z0 dependent on vegetation type, CRTMv2.1.3, 0.25 deg output
+# 10 May 2011       - Add MSLET to output. New thermal roughness length. Elevation of buoys to 10m.
+#                   - Improved GSI, update CRTM. Recomputed BE.
+# 27 July 2010      - T382 (35km) to T574 (27km). new pbl, gravity wave drag, updated deep convective scheme
+# 13 May 2008       - RRTM radiation, aerosol, cloud overlap, windsat sfc winds, flow dependent bev.
+# 25 September 2007 - Implement UPP.
+# 31 May 2005       - T254L64 to T382L64. Change in soil output to 3 levels.
+# 29 October 2002   - Change from T170L42  to T254L64. Model top changed from 2 hPA to .2 hPa
+#
+#  Prior to 12z 22 March 2021:
+#
+#  gfs.t12z.pgrb2.0p25    220000 Kb   193  3-h to 240-h  global  0.25 deg  (26 p-levels plus sfc and trop, 1000 to 10 mb).
+#  gfs.t12z.pgrb2.0p50     68000 Kb     4  3-h to 240-h  global  0.5  deg  (26 p-levels plus sfc and trop, 1000 to 10 mb).
+#                                          
+#  Prior to 12z 14 January 2015:
+#
+#  gfs.t12z.pgrb2f00       56000 Kb     4  3-h to 192-h  global  0.5  deg  (26 p-levels plus sfc and trop, 1000 to 10 mb).
+#  gfs.t12z.pgrbf00.grib2  18000 Kb     3  3-h to 384-h  global  1.0  deg  (26 p-levels plus sfc and trop, 1000 to 10 mb).
+```
+
 # Variables
 
 ## `HGT` and `GEOPT`
