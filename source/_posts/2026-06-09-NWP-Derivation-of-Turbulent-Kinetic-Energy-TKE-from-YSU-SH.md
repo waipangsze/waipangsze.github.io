@@ -32,6 +32,10 @@ banner_img: https://i.imgur.com/NtQb7zF.png
 - The **introduced TKE calculationis a one-way method such that calculated TKE is sensitive to the length scale**,given the same mean meteorological fields.
 - Note that in the TKE budget profiles, **the TKE budgets at the lower boundary are excluded**. This is because TKE is directly imposed by the lower boundary condition, rather than calculated by solving the TKE equation. Therefore, the underestimated near-surface TKE cannot be inferred from the TKE budgets.
 
+{% note primary %}
+**Note that this development is for convective boundary layers.**
+{% endnote %}
+
 Remarks:
 
 - **A convective boundary layer** is the part of the **lower atmosphere that becomes turbulent and well mixed** because the surface heats the air from below, making warmer air rise and cooler air sink.
