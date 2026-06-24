@@ -28,13 +28,13 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/gXPusJ6.png">
 <meta property="article:published_time" content="2025-02-12T10:02:00.000Z">
-<meta property="article:modified_time" content="2025-10-27T06:03:55.783Z">
+<meta property="article:modified_time" content="2026-06-24T06:15:50.380Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
-<meta property="article:tag" content="GFS">
 <meta property="article:tag" content="ERA5">
+<meta property="article:tag" content="GFS">
+<meta property="article:tag" content="NWP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/gXPusJ6.png">
   
@@ -360,7 +360,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k words
+          1.5k words
         
       </span>
     
@@ -371,7 +371,7 @@
         
         
         
-          11 mins
+          13 mins
         
       </span>
     
@@ -527,6 +527,12 @@
 <li><code>SWDDIR</code> "Shortwave surface downward direct irradiance" "W m-2" ""</li>
 <li><code>SWDDIF</code> "Shortwave surface downward diffuse irradiance" "W m-2" ""</li>
 </ul>
+<p>WRF: <a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/06d4240ae989cc3e50af412bb472df3d9048783c/phys/module_radiation_driver.F#L712" class="uri">https://github.com/wrf-model/WRF/blob/06d4240ae989cc3e50af412bb472df3d9048783c/phys/module_radiation_driver.F#L712</a></p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-comment">! ------------------------------------------------------------------------------ jararias 2013/08/10 -----------</span><br>   <span class="hljs-keyword">REAL</span>, <span class="hljs-keyword">DIMENSION</span>( ims:ime, jms:jme ),  <span class="hljs-keyword">INTENT</span>(<span class="hljs-keyword">OUT</span>) :: swddir, &amp; <span class="hljs-comment">! All-sky SW broadband surface direct irradiance</span><br>                                                        swddni, &amp; <span class="hljs-comment">! All-sky SW broadband surface direct normal irradiance</span><br>                                                        swddif    <span class="hljs-comment">! All-sky SW broadband surface diffuse irradiance</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wrf-model/WRF/blob/06d4240ae989cc3e50af412bb472df3d9048783c/phys/module_radiation_driver.F#L2897" class="uri">https://github.com/wrf-model/WRF/blob/06d4240ae989cc3e50af412bb472df3d9048783c/phys/module_radiation_driver.F#L2897</a></li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">IF</span> (coszen(i,j).GT<span class="hljs-number">.1e-3</span>) <span class="hljs-keyword">THEN</span><br>  ioh=solcon*coszen(i,j) <span class="hljs-comment">! TOA irradiance</span><br>  kt=swdown(i,j)/<span class="hljs-built_in">max</span>(ioh,<span class="hljs-number">1e-3</span>) <span class="hljs-comment">! clearness index</span><br>  <span class="hljs-comment">! Optical air mass: Rigollier et al. (2000) doi:</span><br>  <span class="hljs-comment">! 10.1016/S0038-092X(99)00055-9</span><br>  airmass=<span class="hljs-built_in">exp</span>(-ht(i,j)/<span class="hljs-number">8434.5</span>)/(coszen(i,j)+ &amp;<br>        <span class="hljs-number">0.50572</span>*(<span class="hljs-built_in">asin</span>(coszen(i,j))*<span class="hljs-number">57.295779513082323</span>+<span class="hljs-number">6.07995</span>)**(-<span class="hljs-number">1.6364</span>))<br>  <span class="hljs-comment">! kt correction for air-mass at large sza: Perez et al. (1990)</span><br>  <span class="hljs-comment">! doi: 10.1016/0038-092X(90)90036-C</span><br>  kt=kt/(<span class="hljs-number">0.1</span>+<span class="hljs-number">1.031</span>*<span class="hljs-built_in">exp</span>(-<span class="hljs-number">1.4</span>/(<span class="hljs-number">0.9</span>+(<span class="hljs-number">9.4</span>/<span class="hljs-built_in">max</span>(airmass,<span class="hljs-number">1e-3</span>)))))<br>  <span class="hljs-comment">! Diffuse fraction: Ruiz-Arias et al. (2010) (Eq 33) doi:</span><br>  <span class="hljs-comment">! 10.1016/j.enconman.2009.11.024</span><br>  kd=<span class="hljs-number">0.952</span>-<span class="hljs-number">1.041</span>*<span class="hljs-built_in">exp</span>(-<span class="hljs-built_in">exp</span>(<span class="hljs-number">2.300</span>-<span class="hljs-number">4.702</span>*kt))<br>  swddif(i,j)=kd*swdown(i,j)<br>  swddir(i,j)=(<span class="hljs-number">1.</span>-kd)*swdown(i,j)<br>  swddni(i,j)=swddir(i,j)/<span class="hljs-built_in">max</span>(coszen(i,j),<span class="hljs-number">1e-4</span>)<br><span class="hljs-keyword">ENDIF</span><br></code></pre></td></tr></table></figure>
 <h1 id="wrf-solar">WRF-Solar</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://ral.ucar.edu/solutions/products/wrf-solar" class="uri">https://ral.ucar.edu/solutions/products/wrf-solar</a></li>
@@ -589,15 +595,15 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
-      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
+        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+      
         <a href="/tags/GFS/" class="print-no-link">#GFS</a>
       
-        <a href="/tags/ERA5/" class="print-no-link">#ERA5</a>
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
     </div>
   
@@ -628,7 +634,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 27, 2025</div>
+          <div>June 24, 2026</div>
         </div>
       
       
