@@ -1,0 +1,1114 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Wall function Wall functions act as a boundary condition on this first cell. Instead of resolving the complicated flow within the viscous sublayer directly, the software bridges the gap by using semi-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CFD | Urban CFD | Atmospheric Boundary Layer (ABL) simulation">
+<meta property="og:url" content="https://waipangsze.github.io/2026/06/24/CFD-Urban-CFD-Atmospheric-Boundary-Layer-ABL-simulation/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="Wall function Wall functions act as a boundary condition on this first cell. Instead of resolving the complicated flow within the viscous sublayer directly, the software bridges the gap by using semi-">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-06-24T15:06:00.000Z">
+<meta property="article:modified_time" content="2026-06-24T16:04:52.720Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="Urban">
+<meta property="article:tag" content="OpenFOAM">
+<meta property="article:tag" content="CFD">
+<meta property="article:tag" content="ABL">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CFD | Urban CFD | Atmospheric Boundary Layer (ABL) simulation - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CFD | Urban CFD | Atmospheric Boundary Layer (ABL) simulation"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-24 23:06" pubdate>
+          June 24, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CFD | Urban CFD | Atmospheric Boundary Layer (ABL) simulation</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="wall-function">Wall function</h1>
+<p><strong>Wall functions act as a boundary condition on this first cell</strong>. Instead of resolving the complicated flow within the viscous sublayer directly, the software bridges the gap by using semi-empirical formulas to calculate the wall shear stress directly at the first cell center.</p>
+<p>When using the standard k-ε turbulence model, you do not manually assign separate wall functions to velocity (u, v, w), pressure (p), or density (ρ). Instead, the wall function acts automatically as a unified boundary condition applied to the Wall zone, which internally modifies how the fluid solver calculates values at the first cell layer. Here is how each variable is handled at the wall boundary when wall functions are enabled:</p>
+<h2 id="boundary-condition-setup-checklist">Boundary Condition Setup Checklist</h2>
+<ul>
+<li><strong>Velocity (u, v, w)</strong>: Set the wall boundary condition to <strong>No-Slip</strong>. The solver automatically applies the logarithmic law of the wall to compute the wall shear stress, rather than forcing the velocity to zero throughout the cell.</li>
+<li><strong>Pressure (p)</strong>: Set to Zero Gradient (or Neumann boundary condition). The pressure at the wall is extrapolated directly from the first cell center.</li>
+<li><strong>Density (ρ)</strong>: Set to Zero Gradient for compressible flows. For incompressible flows, density remains constant across the domain.</li>
+<li><strong>Turbulent Kinetic Energy (k)</strong>: Set to Zero Gradient or specify a wall function. The solver computes k at the first cell based on local equilibrium (production equals dissipation).<br />
+</li>
+<li><strong>Turbulence Dissipation Rate (ε)</strong>: Automatically computed by the solver at the first cell layer using an algebraic equation (<span class="math display">\[\epsilon = \frac{C_{\mu}^{3/4} k^{3/2}}{\kappa y}\]</span> ), where κ is the von Kármán constant and y is the distance to the cell center.</li>
+</ul>
+<h3 id="critical-meshing-requirement">Critical Meshing Requirement</h3>
+<p>Because you are using the standard k-ε model, it is incapable of resolving the low-Reynolds number flow near the wall. You must ensure your first grid cell center sits inside the log-law region. Target a y⁺ value between 30 and 300 for your first layer. If your y⁺ drops below 30, the standard wall functions will output highly inaccurate skin friction and heat transfer results.</p>
+<p>The velocity values at the exact wall boundary are always zero (0, 0, 0) due to the no-slip condition. However, the velocity values computed at the center of the first layer cell are non-zero, calculated algebraically by the software using the Logarithmic Law of the Wall. Instead of tracking absolute values for <span class="math inline">\(u\)</span>, <span class="math inline">\(v\)</span>, and <span class="math inline">\(w\)</span>, the software dynamically rotates the local velocity vector relative to the wall orientation.</p>
+<h2 id="local-velocity-components-at-the-first-cell-center">Local Velocity Components at the First Cell Center</h2>
+<ul>
+<li><strong>Wall-Parallel Velocity</strong> (<span class="math inline">\(U_{\parallel}\)</span>): This is the component of velocity moving along the surface of the wall. It is calculated based on your target grid layout (<span class="math inline">\(y^+\)</span>) using the law of the wall: <span class="math display">\[u^+ = \frac{U_{\parallel}}{u_{\tau}} = \frac{1}{\kappa} \ln(y^+) + B\]</span></li>
+<li>Where <span class="math inline">\(u_{\tau}\)</span> is the friction velocity, <span class="math inline">\(\kappa \approx 0.41\)</span> is the von Kármán constant, and <span class="math inline">\(B \approx 5.2\)</span>.
+<ul>
+<li>The absolute magnitude of this velocity component depends directly on the core flow speed of your simulation.</li>
+</ul></li>
+<li><strong>Wall-Normal Velocity</strong> (<span class="math inline">\(U_{\perp}\)</span>): This is the velocity moving directly into or out of the wall. It is set strictly to 0 m/s because fluid cannot penetrate a solid boundary (<span class="math inline">\(u \cdot n = 0\)</span>).</li>
+</ul>
+<h1 id="friction-velocity">Friction velocity</h1>
+<p><strong>Friction velocity</strong> (usually written as <span class="math inline">\(u_{\tau}\)</span>) is a theoretical velocity scale that measures the intensity of shear stress and turbulent friction near a solid wall. It does not represent a physical fluid speed you can measure with a probe, but it dictates how fast momentum changes as you move away from the surface.</p>
+<h2 id="the-core-formula">1. The Core Formula</h2>
+<p>The exact analytical definition of friction velocity is based on the wall shear stress (<span class="math inline">\(\tau_w\)</span>) and the fluid density (<span class="math inline">\(\rho\)</span>): <span class="math display">\[u_{\tau} = \sqrt{\frac{\tau_w}{\rho}}\]</span></p>
+<ul>
+<li><span class="math inline">\(u_{\tau}\)</span> = Friction velocity (<span class="math inline">\(\text{m/s}\)</span>)</li>
+<li><span class="math inline">\(\tau_w\)</span> = Wall shear stress (<span class="math inline">\(\text{Pa}\)</span> or <span class="math inline">\(\text{N/m}^2\)</span>)</li>
+<li><span class="math inline">\(\rho\)</span> = Fluid density (<span class="math inline">\(\text{kg/m}^3\)</span>)</li>
+</ul>
+<h3 id="wall-shear-stress">wall shear stress</h3>
+<p>For simple laminar flows, wall shear stress (represented by the symbol <span class="math inline">\(\tau _{w}\)</span> is mathematically defined as: <span class="math display">\[\tau_w = \mu \left( \frac{\partial u}{\partial y} \right)_{y=0}\]</span></p>
+<ul>
+<li><span class="math inline">\(\tau _{w}\)</span> = Wall shear stress (typically expressed in Pascals or N/m²)</li>
+<li>μ = Dynamic viscosity of the fluid</li>
+<li><span class="math inline">\(\frac{\partial u}{\partial y}\)</span> = The velocity gradient, representing how fast the fluid speed (u) increases as you move away from the wall (y)</li>
+<li><span class="math inline">\(y=0\)</span> = Evaluated exactly at the surface of the wall</li>
+</ul>
+<h2 id="how-to-calculate-it-step-by-step">2. How to Calculate It (Step-by-Step)</h2>
+<p>In a real engineering or CFD application, you rarely know <span class="math inline">\(\tau_w\)</span> upfront. Instead, you calculate <span class="math inline">\(u_{\tau}\)</span> using a dynamic estimation process based on your flow properties.</p>
+<h2 id="step-1-calculate-the-skin-friction-coefficient-c_f">Step 1: Calculate the Skin Friction Coefficient (<span class="math inline">\(C_f\)</span>)</h2>
+<p>For internal pipe flow or flow over a flat plate, estimate <span class="math inline">\(C_f\)</span> using empirical formulas based on the Reynolds number (<span class="math inline">\(Re\)</span>):</p>
+<ul>
+<li>For flat plates: <span class="math inline">\(C_f = 0.0592 \cdot Re^{-1/5}\)</span></li>
+<li>For smooth pipes: <span class="math inline">\(C_f = 0.079 \cdot Re^{-1/4}\)</span></li>
+</ul>
+<h2 id="step-2-compute-wall-shear-stress-tau_w">Step 2: Compute Wall Shear Stress (<span class="math inline">\(\tau_w\)</span>)</h2>
+<p>Use the skin friction coefficient and your core freestream velocity (<span class="math inline">\(U_{\infty}\)</span>) to find the wall stress: <span class="math display">\[\tau_w = \frac{1}{2} C_f \rho U_{\infty}^2\]</span></p>
+<h2 id="step-3-solve-for-friction-velocity-u_tau">Step 3: Solve for Friction Velocity (<span class="math inline">\(u_{\tau}\)</span>)</h2>
+<p>Substitute <span class="math inline">\(\tau_w\)</span> back into the core formula. By combining the two equations, you get a direct shortcut: <span class="math display">\[u_{\tau} = U_{\infty} \sqrt{\frac{C_f}{2}}\]</span></p>
+<h2 id="example-calculation">3. Example Calculation</h2>
+<p>Suppose you have air flowing at <span class="math inline">\(U_{\infty} = 20\text{ m/s}\)</span> over a flat plate.</p>
+<ul>
+<li>Density (<span class="math inline">\(\rho\)</span>): <span class="math inline">\(1.2\text{ kg/m}^3\)</span></li>
+<li>Calculated <span class="math inline">\(C_f\)</span>: <span class="math inline">\(0.003\)</span> (based on the local Reynolds number)</li>
+</ul>
+<h2 id="step-a-find-wall-shear-stress">Step A: Find Wall Shear Stress</h2>
+<p><span class="math display">\[\tau_w = 0.5 \times 0.003 \times 1.2 \times (20)^2 = 0.72\text{ Pa}\]</span></p>
+<h2 id="step-b-find-friction-velocity">Step B: Find Friction Velocity</h2>
+<p><span class="math display">\[u_{\tau} = \sqrt{\frac{0.72}{1.2}} = \sqrt{0.6} \approx \mathbf{0.775\text{ m/s}}\]</span></p>
+<h2 id="how-the-cfd-solver-uses-it">4. How the CFD Solver Uses It</h2>
+<p>Inside your <span class="math inline">\(k-\epsilon\)</span> simulation, the solver actually works backward. It knows the velocity at the first cell center (<span class="math inline">\(U_{\parallel}\)</span>) and its distance from the wall (<span class="math inline">\(y\)</span>).</p>
+<ol type="1">
+<li>It assumes the cell is in the log-law region where <span class="math inline">\(y^+ = \frac{u_{\tau} y}{\nu}\)</span> and <span class="math inline">\(\frac{U_{\parallel}}{u_{\tau}} = \frac{1}{\kappa} \ln(y^+) + B\)</span>.</li>
+<li>It uses an iterative root-finding algorithm to solve for the only unknown variable: <span class="math inline">\(u_{\tau}\)</span>.</li>
+<li>Once the solver extracts <span class="math inline">\(u_{\tau}\)</span>, it multiplies it out to compute the local wall shear stress (<span class="math inline">\(\tau_w = \rho u_{\tau}^2\)</span>) and updates the cell's momentum equation.</li>
+</ol>
+<h1 id="roughness-of-a-surface">Roughness of a surface</h1>
+<p><strong>Yes, friction velocity and wall shear stress are directly and heavily influenced by the roughness of a surface.</strong> When a surface is rough, it disrupts the fluid flow near the wall, increases turbulence generation, and drastically alters both values. Here is exactly how roughness impacts these variables and how it changes the mathematical calculations.</p>
+<h2 id="physical-impact-on-friction-and-stress">1. Physical Impact on Friction and Stress</h2>
+<ul>
+<li><strong>Increased Wall Shear Stress</strong> (<span class="math inline">\(\tau_w\)</span>): Microscopic peaks and valleys on a rough surface act as tiny physical obstructions. The fluid collides with these bumps, generating form drag (pressure resistance) on a micro-scale. This causes a massive increase in the total force resisting the flow, driving <span class="math inline">\(\tau_w\)</span> upward.</li>
+<li><strong>Increased Friction Velocity</strong> (<span class="math inline">\(u_{\tau}\)</span>): Because friction velocity is mathematically defined by shear stress (<span class="math inline">\(u_{\tau} = \sqrt{\tau_w / \rho}\)</span>), any increase in wall shear stress automatically forces the friction velocity to increase.</li>
+</ul>
+<h2 id="how-roughness-modifies-the-law-of-the-wall">2. How Roughness Modifies the Law of the Wall</h2>
+<p><strong>For a smooth wall</strong>, the dimensionless velocity (<span class="math inline">\(u^+\)</span>) in the log-law region is calculated as: <span class="math display">\[u^+ = \frac{1}{\kappa} \ln(y^+) + B\]</span> <strong>When a wall is rough</strong>, it physically shifts the velocity profile downward. To account for this, the CFD solver subtracts a roughness shift function (<span class="math inline">\(\Delta B\)</span>) from the equation: <span class="math display">\[u^+ = \frac{1}{\kappa} \ln(y^+) + B - \Delta B\]</span> The value of <span class="math inline">\(\Delta B\)</span> depends entirely on your <strong>surface's equivalent sand-grain roughness height</strong> (<span class="math inline">\(k_s\)</span>), which is converted into a dimensionless roughness Reynolds number (<span class="math inline">\(k_s^+\)</span>): <span class="math display">\[k_s^+ = \frac{u_{\tau} k_s}{\nu}\]</span></p>
+<h2 id="the-three-roughness-regimes">3. The Three Roughness Regimes</h2>
+<p>Depending on the size of the roughness elements (<span class="math inline">\(k_s\)</span>) relative to the thickness of the viscous sublayer, the flow falls into one of three categories:</p>
+<ul>
+<li>Hydraulically Smooth (<span class="math inline">\(k_s^+ &lt; 5\)</span>): The roughness elements are entirely submerged inside the thin, stagnant viscous sublayer. The fluid flows right over them smoothly. <span class="math inline">\(\Delta B = 0\)</span>, meaning roughness has no effect on wall shear stress or friction velocity.</li>
+<li>Transitionally Rough (<span class="math inline">\(5 \le k_s^+ \le 70\)</span>): The roughness peaks begin to poke through the viscous sublayer into the turbulent zone. Wall shear stress and friction velocity begin to steadily rise.</li>
+<li>Fully Rough (<span class="math inline">\(k_s^+ &gt; 70\)</span>): The roughness elements completely destroy the viscous sublayer. The drag is now entirely dominated by the physical shape of the rough bumps. In this regime, wall shear stress becomes independent of fluid viscosity (<span class="math inline">\(\nu\)</span>) and depends solely on the physical height (<span class="math inline">\(k_s\)</span>) of the roughness.</li>
+</ul>
+<h2 id="how-to-set-this-up-in-a-k-epsilon-model">4. How to Set This Up in a <span class="math inline">\(k-\epsilon\)</span> Model</h2>
+<p>If you are simulating a rough pipe, a cast iron plate, or a corroded surface, you must explicitly pass this information to your CFD software. In your wall boundary condition menu:</p>
+<ol type="1">
+<li>Change the wall roughness option from Smooth to Rough.</li>
+<li>Input the Roughness Height (<span class="math inline">\(k_s\)</span>) in meters or millimeters (this is the average peak-to-valley height of the surface texture).</li>
+<li>Input the Roughness Constant (<span class="math inline">\(C_s\)</span>) (default is usually 0.5 for uniform sand-grain roughness, but can be raised up to 1.0 if the roughness elements are jagged or non-uniform).</li>
+</ol>
+<h1 id="any-differences-of-handing-wall-function-on-buildings-surface-and-on-the-ground-surface">Any differences of handing wall function on buildings surface and on the ground surface?</h1>
+<p><strong>Yes, there are major differences.</strong> When simulating a large urban domain (several kilometers) with explicit 3D building geometries, treating the building walls and the ground exactly the same is one of the most common mistakes in wind engineering. [1, 2] In an Atmospheric Boundary Layer (ABL) simulation, the building surfaces and the ground surface play entirely different hydrodynamic roles, requiring a Double Wall Function strategy. [2]</p>
+<h2 id="ground-surface-handled-as-an-atmospheric-wall">1. Ground Surface: Handled as an "Atmospheric" Wall</h2>
+<p>The ground represents kilometers of upstream landscape (trees, roads, small structures) that you did not explicitly model in CAD. [3, 4]</p>
+<div class="note note-primary">
+            <p><strong>The Goal</strong>: <strong>Maintain a stable, realistic wind velocity gradient (the ABL profile) across the entire domain without letting the wind "decay" or flatten out before it hits the buildings.</strong></p>
+          </div>
+<ul>
+<li><strong>The Goal</strong>: <strong>Maintain a stable, realistic wind velocity gradient (the ABL profile) across the entire domain without letting the wind "decay" or flatten out before it hits the buildings.</strong> [1, 5]</li>
+<li><strong>Roughness Selection</strong>: You must use an implicit aerodynamic roughness length (<span class="math inline">\(z_0\)</span>) based on meteorological parameters (e.g., <span class="math inline">\(z_0 = 0.03\text{ m}\)</span> for open grassland, or <span class="math inline">\(z_0 = 0.1\text{ m}\)</span> for parkland). [6]</li>
+<li><strong>CFD Input</strong> (<span class="math inline">\(K_s\)</span>): Convert your terrain <span class="math inline">\(z_0\)</span> to equivalent sand-grain roughness using the standard formula <span class="math inline">\(K_s \approx 20 \times z_0\)</span>. If your terrain is grassland (<span class="math inline">\(z_0=0.03\text{ m}\)</span>), set the ground wall to <span class="math inline">\(K_s = 0.6\text{ m}\)</span> (600 mm). [6, 7]</li>
+<li><strong>Mesh Requirement</strong>: Because <span class="math inline">\(K_s\)</span> is huge (600 mm), your first cell layer center at the ground must be physically higher than 0.6 meters. [7, 8]</li>
+</ul>
+<h2 id="building-surfaces-handled-as-industrial-walls">2. Building Surfaces: Handled as "Industrial" Walls</h2>
+<p>The buildings are explicit 3D solid obstacles interacting directly with the wind. They cause flow separation, vortex shedding, and downwashes. [6, 9]</p>
+<ul>
+<li>The Goal: Accurately resolve how wind splits around a solid block of concrete or glass.</li>
+<li>Roughness Selection: Treat these as standard, physically smooth materials.</li>
+<li>CFD Input (<span class="math inline">\(K_s\)</span>): Set the building walls to <span class="math inline">\(K_s = 0\text{ m}\)</span> (Smooth) or a negligible material roughness like <span class="math inline">\(K_s = 0.001\text{ m}\)</span> (1 mm) for rough concrete.</li>
+<li>Mesh Requirement: To catch the tight wind vortices on the edges of roofs and building corners, the mesh needs to be highly refined. The first cell layer on the building walls will be very thin, typically a few centimeters wide. [6]</li>
+</ul>
+<h2 id="summary-comparison-table">Summary Comparison Table</h2>
+<table>
+
+<thead>
+<tr class="header">
+<th>Feature [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]</th>
+<th>Ground Surface</th>
+<th>Building Surfaces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Physical Context</td>
+<td>Broad open terrain (landscape scale)</td>
+<td>Localized engineering structures</td>
+</tr>
+<tr class="even">
+<td>Wall Function Mode</td>
+<td>Rough (Atmospheric)</td>
+<td>Smooth or minimally rough (Standard)</td>
+</tr>
+<tr class="odd">
+<td>Typical Target <span class="math inline">\(K_s\)</span></td>
+<td><span class="math inline">\(0.5\text{ m}\)</span> to <span class="math inline">\(2.0\text{ m}\)</span> (600 to 2000 mm)</td>
+<td><span class="math inline">\(0.0\text{ m}\)</span> to <span class="math inline">\(0.002\text{ m}\)</span> (0 to 2 mm)</td>
+</tr>
+<tr class="even">
+<td>First Layer Cell Height</td>
+<td>Coarse (<span class="math inline">\(&gt; K_s\)</span>, usually 1 to 2 meters high)</td>
+<td>Very fine (a few centimeters thin)</td>
+</tr>
+<tr class="odd">
+<td>Flow Phenomenon</td>
+<td>Friction drag driving the ABL velocity profile</td>
+<td>Flow separation, stagnation, and wakes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="software-implementation-tip">Software Implementation Tip</h2>
+<p>In your software (such as ANSYS Fluent or OpenFOAM), do not lump all surfaces under a single "wall" boundary type. Create two distinct boundary zones: [2, 13]</p>
+<ol type="1">
+<li>Name one Ground: Select a rough wall function and assign the high macro-roughness (<span class="math inline">\(K_s\)</span>).</li>
+<li>Name the other Buildings: Select a standard wall function and leave it smooth or at default factory values. [2, 6, 7]</li>
+</ol>
+<p>[1] <a target="_blank" rel="noopener" href="https://research.tue.nl/en/publications/cfd-simulation-of-the-atmospheric-boundary-layer-wall-function-pr/">https://research.tue.nl</a> [2] <a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/233823549_CFD_simulation_of_wind-induced_pressure_coefficients_on_buildings_with_and_without_balconies_Validation_and_sensitivity_analysis">https://www.researchgate.net</a> [3] <a target="_blank" rel="noopener" href="https://www.urbanphysics.net/2007_AE_CFD_ABL_simulation_Preprint.pdf">https://www.urbanphysics.net</a> [4] <a target="_blank" rel="noopener" href="https://www.urbanphysics.net/2007_AE_CFD_ABL_simulation_Preprint.pdf">https://www.urbanphysics.net</a> [5] <a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/228680223_On_the_use_of_the_k-_model_in_commercial_CFD_software_to_model_the_neutral_atmospheric_boundary_layer">https://www.researchgate.net</a> [6] <a target="_blank" rel="noopener" href="https://docs.nablaflow.io/archiwind/guide/methodology/inlet-boundaries-ref-height/">https://docs.nablaflow.io</a> [7] <a target="_blank" rel="noopener" href="https://www.reddit.com/r/CFD/comments/1nie7km/abl_ansys_problem/">https://www.reddit.com</a> [8] <a target="_blank" rel="noopener" href="https://www.cfd-online.com/Forums/openfoam-solving/117137-yplus-values-atmospheric-boundary-layer-over-complex-terrain-rough-surface.html">https://www.cfd-online.com</a> [9] <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0360132316300415">https://www.sciencedirect.com</a> [10] <a target="_blank" rel="noopener" href="https://help.sim-flow.com/boundary-conditions/atmospheric-wall-function">https://help.sim-flow.com</a> [11] <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/abs/pii/S135223100600834X">https://www.sciencedirect.com</a> [12] <a target="_blank" rel="noopener" href="https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.70146">https://besjournals.onlinelibrary.wiley.com</a> [13] <a target="_blank" rel="noopener" href="https://repository.tudelft.nl/file/File_d69526a2-1b41-4163-b18d-398250ec72b5">https://repository.tudelft.nl</a></p>
+<h1 id="the-goal-maintain-a-stable-realistic-wind-velocity-gradient-the-abl-profile-across-the-entire-domain-without-letting-the-wind-decay-or-flatten-out-before-it-hits-the-buildings.">The Goal: Maintain a stable, realistic wind velocity gradient (the ABL profile) across the entire domain without letting the wind "decay" or flatten out before it hits the buildings.</h1>
+<ul>
+<li>The reason we need this goal—technically termed Horizontal Homogeneity—is that if the wind profile decays as it travels from your inlet boundary to your buildings, the flow that actually hits your buildings will not be the wind you specified at the boundary. [1]</li>
+<li>Because your domain spans several kilometers, the wind has a long distance to travel before it reaches the structures. If the inlet profile is mathematically incompatible with the ground’s wall functions, the wind velocity and turbulence energy will rapidly "flatten out," dissipate, or deform. [1, 2, 3, 4]</li>
+<li>Failing to maintain a stable profile compromises the engineering validity of your results for four critical reasons:</li>
+</ul>
+<h2 id="severe-underestimation-of-wind-loads-on-tall-buildings-5">1. Severe Underestimation of Wind Loads on Tall Buildings [5]</h2>
+<p>The physical Atmospheric Boundary Layer (ABL) means wind speed is low near the ground but increases exponentially or logarithmically with height. [6]</p>
+<ul>
+<li>If the profile decays: The high-velocity wind at the top of your domain will bleed momentum downward or flatten out.</li>
+<li>The Consequence: By the time the wind hits a tall skyscraper, the actual velocity striking the upper floors will be significantly lower than real-world conditions. Your calculation of drag forces, base moments, and structural wind loads will be unsafely low, risking structural under-design. [1, 6, 7, 8]</li>
+</ul>
+<h2 id="flawed-pedestrian-wind-comfort-pwc-assessments">2. Flawed Pedestrian Wind Comfort (PWC) Assessments</h2>
+<p>Urban planners use CFD to ensure that downwashes (wind hitting a skyscraper facade and shooting straight down to the street) do not create dangerous gale-force zones for pedestrians. [9, 10, 11]</p>
+<ul>
+<li>If the profile decays: The structural turbulence kinetic energy (<span class="math inline">\(k\)</span>) typically drops off drastically over long distances if the ground roughness doesn't actively sustain it. [2, 12]</li>
+<li>The Consequence: The wind reaching the ground level around your buildings will artificially lack energy. Your simulation will falsely report that a street corner is calm and safe, when in reality, the real-world wind would create highly uncomfortable or hazardous wind tunnels. [13]</li>
+</ul>
+<h2 id="inaccurate-hvac-exhaust-and-pollutant-dispersion-14">3. Inaccurate HVAC Exhaust and Pollutant Dispersion [14]</h2>
+<p>Simulations often check if generator exhaust or cooling tower plumes will pull back into building fresh air intakes. [1, 9]</p>
+<ul>
+<li>If the profile decays: Dispersion depends entirely on the wind's vertical mixing capability, which is driven by the turbulence profile (<span class="math inline">\(\epsilon\)</span> and <span class="math inline">\(k\)</span>). [15]</li>
+<li>The Consequence: If turbulence decays, the exhaust plumes will not mix or dilute properly in the air. They will either hover like a dense blanket or drift inaccurately, giving completely false readings of gas and heat concentrations around the building envelopes. [7]</li>
+</ul>
+<h2 id="flawed-validation-and-virtual-wind-tunnel-ethics">4. Flawed Validation and "Virtual Wind Tunnel" Ethics</h2>
+<p>In computational wind engineering (CWE), your simulation must mimic a real wind tunnel or real-world meteorological data. [12, 16, 17]</p>
+<ul>
+<li><strong>If you tell a client or regulatory board, "I tested this building at 30 m/s wind speeds," but the profile decayed to 22 m/s by the time it reached the building site</strong>, <code>your test is invalid</code>. You are essentially testing the building under the wrong weather conditions.</li>
+</ul>
+<h2 id="the-solution-how-to-stop-the-decay">🛠️ The Solution: How to Stop the Decay</h2>
+<p>To prevent this decay over a multi-kilometer domain, you cannot just input a standard velocity profile. You must use mathematically matched equations at the inlet that act as a perfectly balanced equilibrium solution for your turbulence solver. [1, 18] <strong>The industry standard approach is the Richards and Hoxey (1993) boundary conditions</strong>. They derived a linked set of equations where the Inlet Velocity, Turbulent Kinetic Energy (<span class="math inline">\(k\)</span>), and Dissipation Rate (<span class="math inline">\(\epsilon\)</span>) perfectly balance out the friction generated by your rough ground wall function: [1, 18, 19]</p>
+<ul>
+<li>Velocity Profile: <span class="math inline">\(u(y) = \frac{u_{\tau}}{\kappa} \ln\left(\frac{y + z_0}{z_0}\right)\)</span></li>
+<li>Turbulent Kinetic Energy: <span class="math inline">\(k = \frac{u_{\tau}^2}{\sqrt{C_{\mu}}}\)</span></li>
+<li>Dissipation Rate: <span class="math inline">\(\epsilon(y) = \frac{u_{\tau}^3}{\kappa (y + z_0)}\)</span> [7, 15, 20]</li>
+</ul>
+<p>When these three inlet profiles are used alongside a ground wall function set to <span class="math inline">\(K_s \approx 20 \times z_0\)</span>, the forces perfectly balance. The wind will travel across 5 kilometers of empty terrain and arrive at your building group perfectly intact—exactly as you designed it. [1, 3, 18]</p>
+<p>[1] <a target="_blank" rel="noopener" href="https://www.linkedin.com/posts/ryansayko_cfd-datacenters-windengineering-activity-7468658829501734912-sl6B">https://www.linkedin.com</a> [2] <a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/264177865_Numerical_calculation_of_the_wind_action_on_buildings_using_Eurocode_1_atmospheric_boundary_layer_velocity_profiles">https://www.researchgate.net</a> [3] <a target="_blank" rel="noopener" href="https://iawe.org/wp-content/uploads/2025/07/WA2-04.pdf">https://iawe.org</a> [4] <a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10990122/">https://pmc.ncbi.nlm.nih.gov</a> [5] <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/abs/pii/S0167610521000441">https://www.sciencedirect.com</a> [6] <a target="_blank" rel="noopener" href="https://cadeengineering.com/atmospheric-boundary-layer-assessing-wind-loads-on-urban-structures/">https://cadeengineering.com</a> [7] <a target="_blank" rel="noopener" href="https://www.jafmonline.net/article_2240_64ed19038730cc7a1c45cd60782bea88.pdf">https://www.jafmonline.net</a> [8] <a target="_blank" rel="noopener" href="https://cadeengineering.com/atmospheric-boundary-layer-assessing-wind-loads-on-urban-structures/">https://cadeengineering.com</a> [9] <a target="_blank" rel="noopener" href="https://www.simscale.com/docs/analysis-types/pedestrian-wind-comfort-analysis/wind-conditions/atmospheric-boundary-layer/">https://www.simscale.com</a> [10] <a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/330535567_Review_for_practical_application_of_CFD_for_the_determination_of_wind_load_on_high-rise_buildings">https://www.researchgate.net</a> [11] <a target="_blank" rel="noopener" href="https://www.simscale.com/blog/building-downwash-mitigation-strategies/">https://www.simscale.com</a> [12] <a target="_blank" rel="noopener" href="https://wes.copernicus.org/preprints/wes-2025-2/wes-2025-2.pdf">https://wes.copernicus.org</a> [13] <a target="_blank" rel="noopener" href="https://www.easternengineeringgroup.com/aerodynamic-design-in-skyscrapers-balancing-wind-comfort-and-structural-performance/">https://www.easternengineeringgroup.com</a> [14] <a target="_blank" rel="noopener" href="https://www.urbanphysics.net/2007_AE_CFD_ABL_simulation_Preprint.pdf">https://www.urbanphysics.net</a> [15] <a target="_blank" rel="noopener" href="https://web.aimgroupinternational.com/2023/icwe/papers/ICWE2023_AbstractSubmission-677_2023-01-31%2009_59_50.pdf">https://web.aimgroupinternational.com</a> [16] <a target="_blank" rel="noopener" href="https://scholars.cityu.edu.hk/en/studentTheses/cfd-modelling-of-atmospheric-boundary-layer-flow-and-wind-effects/">https://scholars.cityu.edu.hk</a> [17] <a target="_blank" rel="noopener" href="https://airshaper.com/blog/wind-engineering">https://airshaper.com</a> [18] <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S016761051930131X">https://www.sciencedirect.com</a> [19] <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1875963723000150">https://www.sciencedirect.com</a> [20] <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S2950601824000058">https://www.sciencedirect.com</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CFD/" class="category-chain-item">CFD</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HPC/" class="print-no-link">#HPC</a>
+      
+        <a href="/tags/Urban/" class="print-no-link">#Urban</a>
+      
+        <a href="/tags/OpenFOAM/" class="print-no-link">#OpenFOAM</a>
+      
+        <a href="/tags/CFD/" class="print-no-link">#CFD</a>
+      
+        <a href="/tags/ABL/" class="print-no-link">#ABL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CFD | Urban CFD | Atmospheric Boundary Layer (ABL) simulation</div>
+      <div>https://waipangsze.github.io/2026/06/24/CFD-Urban-CFD-Atmospheric-Boundary-Layer-ABL-simulation/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 24, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>June 25, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/06/25/MPAS-Joint-MPAS-WRF-Users-Workshop-2026/" title="MPAS | Joint MPAS/WRF Users Workshop 2026 | MPASv8.4.1">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MPAS | Joint MPAS/WRF Users Workshop 2026 | MPASv8.4.1</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/06/18/MPAS-MPAS-JEDI-ioda-observation-h5/" title="MPAS | MPAS-JEDI | ioda | observation | .h5">
+                        <span class="hidden-mobile">MPAS | MPAS-JEDI | ioda | observation | .h5</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
