@@ -479,6 +479,59 @@ This means that .gitignore is a tracked file.... so you changed it, so it shows 
 3. `jenkins`代碼發布
    - 當使用者git review後，程式碼透過jenkins自動測試（verified）、人工review 後，程式碼只是merge到了Gerrit的專案中，並沒有merge到Gitlab的專案中，所以需要當Gerrit 專案倉庫有變更時自動同步到Gitlab的項目倉庫中。 Gerrit 自備一個 Replication 功能，同時我們在安裝 Gerrit 時候預設安裝了這個 Plugin，透過新增replication.config 給 Gerrit
 
+# To push your local Git repository to GitHub
+
+To push your local Git repository to GitHub, you need to create an empty repository on GitHub, link your local project to it, and execute the git push command. 
+
+## (optional) 0. Create a Repository on GitHub
+
+   1. Log into your [GitHub account](https://github.com/).
+   2. Click the `+` icon in the upper-right corner and select New repository.
+   3. Give your repository a name.
+   4. Do not check any boxes to add a README, .gitignore, or license. Leave them completely blank.
+   5. Click Create repository.
+   6. Copy the HTTPS or SSH repository URL provided on the quick setup page. It will look like https://github.com/your-username/your-repo-name.git. 
+
+## 1. Switch to SSH (Recommended to avoid passwords forever)
+
+If you want to stop typing credentials completely, switch your repository link from HTTPS to `SSH`.
+
+   1. Generate an `SSH` key on your computer if you do not have one.
+   2. Add the public key to your `GitHub` account under `Settings → SSH and GPG keys`.
+   3. Change your local repository URL to the SSH version by running:
+   
+   `git remote set-url origin git@github.com:your-username/your-repo-name.git`
+   
+   4. Rename default branch: `git branch -M main` (**This ensures your primary branch is called main instead of master**). 
+   5. Push your code: `git push -u origin main` 
+
+## 2. Prepare Your Local Project
+
+Open your computer's terminal, navigate to your local project folder, and run these foundational steps if you haven't already: 
+
+* Initialize Git: `git init`
+* Stage files: `git add .`
+* Commit files: `git commit -m "Initial commit"`
+* Rename default branch: `git branch -M main` (**This ensures your primary branch is called main instead of master**). 
+
+## 3. Connect and Push to GitHub
+Run the final two commands in your terminal, replacing the URL with the one you copied from GitHub:
+
+- `git remote add origin https://github.com/your-username/your-repo-name.git`
+  - or Update the existing link
+    - `git remote set-url origin https://github.com`
+- `git push -u origin main`
+
+### Check where the current link goes
+
+- `git remote -v`
+
+## Command Breakdown
+
+* `git remote add origin <URL>`: Creates a link between your local project and the GitHub repository, naming that connection origin.
+* `git push -u origin main`: Uploads your files to the main branch on GitHub. The `-u` flag saves origin main as your default path so future updates only require typing git push. 
+
+
 # References
 
 1. [日常开发场景Git使用技巧记录](https://mp.weixin.qq.com/s/YhTDnBKXC1ENbu8i6-1pJw)
