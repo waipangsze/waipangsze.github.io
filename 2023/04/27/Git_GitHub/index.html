@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Git_session.svg/1920px-Git_session.svg.png">
 <meta property="article:published_time" content="2023-04-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-10-27T06:03:55.659Z">
+<meta property="article:modified_time" content="2026-06-29T06:07:03.092Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="Github">
 <meta property="article:tag" content="git">
@@ -357,7 +357,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.9k words
+          4k words
         
       </span>
     
@@ -602,6 +602,58 @@
 <li>當使用者git review後，程式碼透過jenkins自動測試（verified）、人工review 後，程式碼只是merge到了Gerrit的專案中，並沒有merge到Gitlab的專案中，所以需要當Gerrit 專案倉庫有變更時自動同步到Gitlab的項目倉庫中。 Gerrit 自備一個 Replication 功能，同時我們在安裝 Gerrit 時候預設安裝了這個 Plugin，透過新增replication.config 給 Gerrit</li>
 </ul></li>
 </ol>
+<h1 id="to-push-your-local-git-repository-to-github">To push your local Git repository to GitHub</h1>
+<p>To push your local Git repository to GitHub, you need to create an empty repository on GitHub, link your local project to it, and execute the git push command.</p>
+<h2 id="optional-0.-create-a-repository-on-github">(optional) 0. Create a Repository on GitHub</h2>
+<ol type="1">
+<li>Log into your <a target="_blank" rel="noopener" href="https://github.com/">GitHub account</a>.</li>
+<li>Click the <code>+</code> icon in the upper-right corner and select New repository.</li>
+<li>Give your repository a name.</li>
+<li>Do not check any boxes to add a README, .gitignore, or license. Leave them completely blank.</li>
+<li>Click Create repository.</li>
+<li>Copy the HTTPS or SSH repository URL provided on the quick setup page. It will look like https://github.com/your-username/your-repo-name.git.</li>
+</ol>
+<h2 id="switch-to-ssh-recommended-to-avoid-passwords-forever">1. Switch to SSH (Recommended to avoid passwords forever)</h2>
+<p>If you want to stop typing credentials completely, switch your repository link from HTTPS to <code>SSH</code>.</p>
+<ol type="1">
+<li>Generate an <code>SSH</code> key on your computer if you do not have one.</li>
+<li>Add the public key to your <code>GitHub</code> account under <code>Settings → SSH and GPG keys</code>.</li>
+<li>Change your local repository URL to the SSH version by running:</li>
+</ol>
+<p><code>git remote set-url origin git@github.com:your-username/your-repo-name.git</code></p>
+<ol start="4" type="1">
+<li>Rename default branch: <code>git branch -M main</code> (<strong>This ensures your primary branch is called main instead of master</strong>).</li>
+<li>Push your code: <code>git push -u origin main</code></li>
+</ol>
+<h2 id="prepare-your-local-project">2. Prepare Your Local Project</h2>
+<p>Open your computer's terminal, navigate to your local project folder, and run these foundational steps if you haven't already:</p>
+<ul>
+<li>Initialize Git: <code>git init</code></li>
+<li>Stage files: <code>git add .</code></li>
+<li>Commit files: <code>git commit -m "Initial commit"</code></li>
+<li>Rename default branch: <code>git branch -M main</code> (<strong>This ensures your primary branch is called main instead of master</strong>).</li>
+</ul>
+<h2 id="connect-and-push-to-github">3. Connect and Push to GitHub</h2>
+<p>Run the final two commands in your terminal, replacing the URL with the one you copied from GitHub:</p>
+<ul>
+<li><code>git remote add origin https://github.com/your-username/your-repo-name.git</code>
+<ul>
+<li>or Update the existing link
+<ul>
+<li><code>git remote set-url origin https://github.com</code></li>
+</ul></li>
+</ul></li>
+<li><code>git push -u origin main</code></li>
+</ul>
+<h3 id="check-where-the-current-link-goes">Check where the current link goes</h3>
+<ul>
+<li><code>git remote -v</code></li>
+</ul>
+<h2 id="command-breakdown">Command Breakdown</h2>
+<ul>
+<li><code>git remote add origin &lt;URL&gt;</code>: Creates a link between your local project and the GitHub repository, naming that connection origin.</li>
+<li><code>git push -u origin main</code>: Uploads your files to the main branch on GitHub. The <code>-u</code> flag saves origin main as your default path so future updates only require typing git push.</li>
+</ul>
 <h1 id="references">References</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/YhTDnBKXC1ENbu8i6-1pJw">日常开发场景Git使用技巧记录</a></li>
@@ -675,7 +727,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>October 27, 2025</div>
+          <div>June 29, 2026</div>
         </div>
       
       
