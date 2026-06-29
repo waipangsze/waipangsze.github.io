@@ -491,6 +491,7 @@ To push your local Git repository to GitHub, you need to create an empty reposit
    4. Do not check any boxes to add a README, .gitignore, or license. Leave them completely blank.
    5. Click Create repository.
    6. Copy the HTTPS or SSH repository URL provided on the quick setup page. It will look like https://github.com/your-username/your-repo-name.git. 
+   7. (optional) `Add collaborators` to this repository.
 
 ## 1. Switch to SSH (Recommended to avoid passwords forever)
 
