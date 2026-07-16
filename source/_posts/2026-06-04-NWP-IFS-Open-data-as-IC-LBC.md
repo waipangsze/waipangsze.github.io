@@ -13,7 +13,7 @@ index_img: https://www.ecmwf.int/sites/default/files/flags-council-chamber-650px
 banner_img: https://www.ecmwf.int/sites/default/files/flags-council-chamber-650px.jpg
 ---
 
-- [NWP | ECMWF | IFS | Open data](https://waipangsze.github.io/2026/06/04/ECMWF-IFS/)
+- [NWP | ECMWF | IFS | Open data](https://waipangsze.github.io/2024/11/12/ECMWF-IFS/)
 - [NWP | Check grib files](https://waipangsze.github.io/2025/02/05/NWP-Check-grib-files/)
 - [NWP | plot GFS grib files](https://waipangsze.github.io/2025/09/11/NWP-plot-GFS-grib-files/)
 - [NWP | ECMWF（歐洲中期天氣預報中心）的IFS（Integrated Forecasting System）購買數據實際成本](https://waipangsze.github.io/2026/04/09/NWP-ECMEF-IFS-purchasing-data-IC/)
@@ -26,6 +26,10 @@ banner_img: https://www.ecmwf.int/sites/default/files/flags-council-chamber-650p
 ---
 
 # Vtable ***
+
+- 2026-07-16 update (solve: `skintemp` by soilgeo/soilhgt)
+  - IFS-0.25deg has not `SOILHGT` at `surface`, so have to consider `SOILGEO` at `surface`
+  - Final result of MPAS has shown the make sense `skintemp`
 
 ```
 GRIB1| Level| From |  To  | metgrid  | metgrid  | metgrid                                  |GRIB2|GRIB2|GRIB2|GRIB2|
@@ -42,10 +46,14 @@ Param| Type |Level1|Level2| Name     | Units    | Description                   
  168 |  1   |   0  |      | DEWPT    | K        |                                          |  0  |  0  |  6  | 103 |
      |  1   |   0  |      | RH       | %        | Relative Humidity at 2 m                 |  0  |  1  |  1  | 103 |
  172 |  1   |   0  |      | LANDSEA  | 0/1 Flag | Land/Sea flag (1=land, 0 or 2=sea)       |  2  |  0  |  0  |   1 |
+ 129 |  1   |   0  |      | SOILGEO  | m2 s-2   |                                          |  0  |  3  |  4  |   1 | 
+ 156 |  1   |   0  |      | SOILHGT  | m        | Terrain field of source analysis         |  0  |  3  |  5  |   1 |
  134 |  1   |   0  |      | PSFC     | Pa       | Surface Pressure                         |  0  |  3  |  0  |   1 |
  151 |  1   |   0  |      | PMSL     | Pa       | Sea-level Pressure                       |  0  |  3  |  0  | 101 |
  235 |  1   |   0  |      | SKINTEMP | K        | Skin temperature                         |  0  |  0  | 17  |   1 |
- 141 |  1   |   0  |      | SNOW     | kg m-2   |Water Equivalent of Accumulated Snow Depth|  0  |  1  | 254 |   1 | 
+  34 |  1   |   0  |      | SST      | K        | Sea-Surface Temperature                  | 10  |  3  |  0  |   1 |
+  31 |  1   |   0  |      | SEAICE   | 0/1 Flag | Sea-Ice-Flag                             | 10  |  2  |  0  |   1 |
+ 141 |  1   |   0  |      | SNOW     | kg m-2   |Water Equivalent of Accumulated Snow Depth|  0  |  1  | 254 |   1 |
   0  |  1   |   0  |   7  | ST000007 | K        | T of 0-7 cm ground layer                 |  2  |  3  | 18  | 151 | 
   1  |  2   |   7  |  28  | ST007028 | K        | T of 7-28 cm ground layer                |  2  |  3  | 18  | 151 | 
   2  |  3   |  28  | 100  | ST028100 | K        | T of 28-100 cm ground layer              |  2  |  3  | 18  | 151 | 
