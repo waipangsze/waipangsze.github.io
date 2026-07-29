@@ -675,6 +675,54 @@ Param| Type |Level1|Level2| Name     | Units   | Description                    
 #  gfs.t12z.pgrbf00.grib2  18000 Kb     3  3-h to 384-h  global  1.0  deg  (26 p-levels plus sfc and trop, 1000 to 10 mb).
 ```
 
+# Seaice and Snow
+
+IFS 0.25 deg open data doesn't contains `seaice` and `snow`. 
+
+- Test without `seaice` and `snow`, MAPS-A run normally.
+
+## Extract from GFS?
+
+In GFS GRIB2 files, the water equivalent of accumulated snow depth is designated by the variable abbreviation `WEASD` (or `WEASD` / `SNOW` depending on the table) at the surface level. It measures the `liquid water equivalent mass per unit area`.
+
+- <https://www.nco.ncep.noaa.gov/pmb/products/gfs/gfs.t00z.sfluxgrbf001.grib2.shtml>
+- `surface	WEASD	1 hour fcst	Water Equivalent of Accumulated Snow Depth [kg/m^2]`
+
+```sh
+wgrib2 gfs_20260724_0000_0p25_000 -match ':(ICEC|WEASD):'  -grib xice_snow.grib2
+```
+
+```sh
+ $ grib_ls xice_snow.grib2 
+xice_snow.grib2
+edition      centre       date         dataType     gridType     stepRange    typeOfLevel  level        shortName    packingType  
+2            kwbc         20260724     fc           regular_ll   0            surface      0            sdwe         grid_complex_spatial_differencing 
+2            kwbc         20260724     fc           regular_ll   0            surface      0            ci           grid_complex_spatial_differencing 
+2 of 2 messages in xice_snow.grib2
+
+2 of 2 total messages in 1 files
+```
+
+```sh
+ $ ./g2print.exe xice_snow.grib2 
+ ungrib - grib edition num           2
+ reading from grib file = xice_snow.grib2                                                                                                         
+      NCEP GFS Analysis               
+---------------------------------------------------------------------------------------
+ rec Prod Cat Param  Lvl    Lvl      Lvl     Prod    Name            Time          Fcst
+ num Disc     num    code   one      two     Templ                                 hour
+---------------------------------------------------------------------------------------
+   1   0    1  13       1       0       0       0     WEASD    2026-07-24_00:00:00   00          
+   2  10    2   0       1       0       0       0     ICEC     2026-07-24_00:00:00   00          
+  
+   Successful completion of g2print   
+```
+
+- `$ ln -s ifs.grib GRIBFILE.AAA`
+- `$ ln -s xice_snow.grib2 GRIBFILE.AAB`
+- `$./ungrib.exe`
+
+                                                                                                  
 # Variables
 
 ## `HGT` and `GEOPT`

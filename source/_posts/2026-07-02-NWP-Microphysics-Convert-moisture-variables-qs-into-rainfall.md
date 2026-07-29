@@ -9,11 +9,13 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/yQQ0vzb.png
+banner_img: https://i.imgur.com/yQQ0vzb.png
 ---
 
 Atmospheric models convert moisture variables ($q_v, q_c, q_r, q_i, q_s, q_g$) into rainfall and precipitation through microphysics parameterizations that simulate microphysical phase changes and droplet growth mechanics.  
+
+![](https://i.imgur.com/yQQ0vzb.png)
 
 ## The Microphysical Variables Explained
 
