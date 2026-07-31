@@ -688,12 +688,24 @@ In GFS GRIB2 files, the water equivalent of accumulated snow depth is designated
 - <https://www.nco.ncep.noaa.gov/pmb/products/gfs/gfs.t00z.sfluxgrbf001.grib2.shtml>
 - `surface	WEASD	1 hour fcst	Water Equivalent of Accumulated Snow Depth [kg/m^2]`
 
+The `snow` field in the `init.nc` file exhibits values **approximately half of those obtained when using the default GFS GRIB file as input**. This discrepancy necessitates the application of a scaling factor of two to the `snow` variable.
+
 ```sh
-wgrib2 gfs_20260724_0000_0p25_000 -match ':(ICEC|WEASD):'  -grib xice_snow.grib2
+wgrib2 gfs_20260724_0000_0p25_000 -match ':(ICEC):'  -grib xice.grib2
+wgrib2 gfs_20260724_0000_0p25_000 -match ':(WEASD):'  -grib snow.grib2
+
+# multiply all values in your GRIB file by 2 
+grib_set -s scaleValuesBy=2 snow.grib2 snow2.grib2
+
+# To view the statistics of the original file
+grib_get -F "%.2f" -p max,min,average snow.grib2
+
+# check the new file to confirm the statistics have indeed doubled:
+grib_get -F "%.2f" -p max,min,average snow2.grib2
 ```
 
 ```sh
- $ grib_ls xice_snow.grib2 
+ $ grib_ls xice/snow2.grib2 
 xice_snow.grib2
 edition      centre       date         dataType     gridType     stepRange    typeOfLevel  level        shortName    packingType  
 2            kwbc         20260724     fc           regular_ll   0            surface      0            sdwe         grid_complex_spatial_differencing 
@@ -718,8 +730,16 @@ edition      centre       date         dataType     gridType     stepRange    ty
    Successful completion of g2print   
 ```
 
-- `$ ln -s ifs.grib GRIBFILE.AAA`
-- `$ ln -s xice_snow.grib2 GRIBFILE.AAB`
+update `Vtable`,
+
+```sh
+  91 |  1   |   0  |      | SEAICE   | proprtn  | Ice flag                                 | 10  |  2  |  0  |   1 |
+  65 |  1   |   0  |      | SNOW     | kg m-2   | Water equivalent snow depth              |  0  |  1  | 13  |   1 |
+```
+
+- `$ ln -s xice.grib2 GRIBFILE.AAA`
+- `$ ln -s snow2.grib2 GRIBFILE.AAB`
+- `$ ln -s ifs.grib GRIBFILE.AAC`
 - `$./ungrib.exe`
 
                                                                                                   
