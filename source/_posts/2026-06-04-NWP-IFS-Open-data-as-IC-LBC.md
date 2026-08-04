@@ -681,7 +681,15 @@ IFS 0.25 deg open data doesn't contains `seaice` and `snow`.
 
 - Test without `seaice` and `snow`, MAPS-A run normally.
 
-## Extract from GFS?
+## Method 1: raw 
+
+```sh
+  31 |  1   |   0  |      | SEAICE   | 0/1 Flag | Sea-Ice-Flag                             | 10  |  2  |  1  |   1 |
+ 141 |  1   |   0  |      | SNOW_EC  | m        | Snow_EC                                  |  0  |  1  | 254 |   1 | 
+     |  1   |   0  |      | SNOW     | kg m-2   |Water Equivalent of Accumulated Snow Depth|  0  |  1  | 254 |   1 | 
+```
+
+## Method 2: Extract from GFS?
 
 In GFS GRIB2 files, the water equivalent of accumulated snow depth is designated by the variable abbreviation `WEASD` (or `WEASD` / `SNOW` depending on the table) at the surface level. It measures the `liquid water equivalent mass per unit area`.
 
@@ -691,6 +699,7 @@ In GFS GRIB2 files, the water equivalent of accumulated snow depth is designated
 The `snow` field in the `init.nc` file exhibits values **approximately half of those obtained when using the default GFS GRIB file as input**. This discrepancy necessitates the application of a scaling factor of two to the `snow` variable.
 
 ```sh
+# wgrib2 gfs_20260724_0000_0p25_000 -match ':(ICEC|WEASD):'  -grib xice.grib2
 wgrib2 gfs_20260724_0000_0p25_000 -match ':(ICEC):'  -grib xice.grib2
 wgrib2 gfs_20260724_0000_0p25_000 -match ':(WEASD):'  -grib snow.grib2
 
@@ -742,7 +751,150 @@ update `Vtable`,
 - `$ ln -s ifs.grib GRIBFILE.AAC`
 - `$./ungrib.exe`
 
-                                                                                                  
+## Method 3: from `sd` and `ICETK` of IFS
+
+```sh
+# 13:17133132:d=2026012900:ICETK:surface:anl:
+wgrib2 ifs-GRIBFILE.AAA -match ':(ICETK):'  -grib ICETK.grib2
+
+# 55:74703714:d=2026012900:sd:surface:anl
+wgrib2 ifs-GRIBFILE.AAA -match ':(sd):'  -grib sd.grib2
+
+# multiply all values in your GRIB file by 1000/5 (200)
+grib_set -s scaleValuesBy=200 sd.grib2 v0_snow.grib2
+
+# For example, to change only the variable with the shortName "st1" to sea surface temperature (sst):
+#grib_set -S -s shortName=sst -w shortName=st1 input.grib2 output.grib2
+
+# Conver to `Snow depth water equivalent`, https://codes.ecmwf.int/grib/param-db/228141
+grib_set -s discipline=0,parameterCategory=1,parameterNumber=60 v0_snow.grib2 snow.grib2
+```
+
+`Sea ice thickness` and `area fraction` in the ECMWF IFS are related through the underlying physical model that simulates them, but they are used in distinct ways. While `area fraction` is the **primary field fed back to the atmosphere**, `thickness` is a key prognostic variable for forecasting the future state of the ice, and their interplay is an area of active development for the IFS.
+
+In areas where the sea ice area fraction is near 100%, the sea ice thickness can still be highly variable, ranging from below 0.5m to over 1m.
+
+The sea ice fraction (often called "sea-ice concentration") is a separate, distinct field in the IFS. It is not derived from the thickness field. Instead, it is a primary prognostic variable of the dynamic sea ice model (LIM2) used in the IFS and is provided directly to the atmospheric model. <https://www.ecmwf.int/en/newsletter/156/meteorology/dynamic-sea-ice-ifs>
+
+
+### Create sea-ice flag
+
+Create a sea-ice flag from sea-ice thickness in an IFS GRIB file.
+
+- Flag = 1 where sea-ice thickness > 0, Flag = 0 where sea-ice thickness <= 0.
+- Missing values (9999.0) are preserved as missing.
+
+* `python create_sea_ice_flag.py ICETK.grib2 ci.grib2`
+
+{% fold info @create_sea_ice_flag.py %}
+```python
+#!/usr/bin/env python3
+"""
+Simplest reliable version - creates the flag and preserves essential metadata.
+"""
+
+import numpy as np
+import eccodes
+import sys
+import os
+from argparse import ArgumentParser
+
+def create_sea_ice_flag_simple(input_grib, output_grib, threshold=1e-6, missing_value=9999.0):
+    """
+    Simple and reliable creation of sea-ice flag.
+    """
+    
+    infile = open(input_grib, 'rb')
+    gid = eccodes.codes_grib_new_from_file(infile)
+    
+    if gid is None:
+        print(f"Error: No GRIB messages found in {input_grib}")
+        infile.close()
+        return False
+    
+    try:
+        # Get values
+        values = eccodes.codes_get_array(gid, 'values')
+        
+        # Create flag
+        missing_mask = np.isclose(values, missing_value, rtol=1e-5, atol=1e-5)
+        flag_values = np.where(
+            missing_mask,
+            missing_value,
+            np.where(values > threshold, 1.0, 0.0)
+        )
+        
+        # Print statistics
+        print(f"Points with ice: {np.sum(flag_values == 1.0)}")
+        print(f"Points without ice: {np.sum(flag_values == 0.0)}")
+        print(f"Missing points: {np.sum(flag_values == missing_value)}")
+        
+        # Clone the message and set values
+        new_gid = eccodes.codes_clone(gid)
+        eccodes.codes_set_array(new_gid, 'values', flag_values)
+        
+        # Try to set metadata (ignore errors)
+        try:
+            eccodes.codes_set(new_gid, 'paramId', 31)
+        except:
+            pass
+        
+        # Write output
+        outfile = open(output_grib, 'wb')
+        eccodes.codes_write(new_gid, outfile)
+        outfile.close()
+        
+        eccodes.codes_release(new_gid)
+        
+        print(f"\nCreated: {output_grib}")
+        return True
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+    finally:
+        eccodes.codes_release(gid)
+        infile.close()
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python create_flag.py input.grib [output.grib]")
+        sys.exit(1)
+    
+    input_file = sys.argv[1]
+    output_file = sys.argv[2] if len(sys.argv) > 2 else input_file.replace('.grib', '_flag.grib')
+    
+    success = create_sea_ice_flag_simple(input_file, output_file)
+    sys.exit(0 if success else 1)
+```
+{% endfold %}
+
+```sh
+ $ ./g2print.exe ci.grib2 
+ ungrib - grib edition num           2
+ reading from grib file = ci.grib2                                                                                                                
+      ECMWF                           
+---------------------------------------------------------------------------------------
+ rec Prod Cat Param  Lvl    Lvl      Lvl     Prod    Name            Time          Fcst
+ num Disc     num    code   one      two     Templ                                 hour
+---------------------------------------------------------------------------------------
+   1  10    2   0       1       0       0       0     ICEC     2026-01-29_00:00:00   00          
+  
+  
+   Successful completion of g2print 
+```
+
+#### Vtable
+
+```sh
+GRIB1| Level| From |  To  | metgrid  | metgrid  | metgrid                                  |GRIB2|GRIB2|GRIB2|GRIB2|
+Param| Type |Level1|Level2| Name     | Units    | Description                              |Discp|Catgy|Param|Level|
+-----+------+------+------+----------+----------+------------------------------------------+-----------------------+
+  1  |  1   |   0  |      | ICEC     | fraction | Sea ice flag                             | 10  |  2  |  0  |   1 |
+  1  |  1   |   0  |      | SNOW     | kg m-2   | Depth of snow from the snow-covered      |  0  |  1  | 60  |   1 |
+-----+------+------+------+----------+---------+-----------------------------------------+-------------------------+
+```
+
 # Variables
 
 ## `HGT` and `GEOPT`
