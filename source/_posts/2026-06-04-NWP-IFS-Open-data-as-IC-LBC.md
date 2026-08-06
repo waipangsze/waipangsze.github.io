@@ -682,6 +682,12 @@ IFS 0.25 deg open data doesn't contains `seaice` and `snow`.
 
 - Test without `seaice` and `snow`, MAPS-A run normally.
 
+Important code, `ungrib/src/rrpr.F`
+
+{% note primary %}
+- <https://github.com/wrf-model/WPS/blob/5feccecd63384381b6942371c7a837f66e4ccb84/ungrib/src/rrpr.F#L864>
+{% endnote %}
+
 ## Method 1: raw 
 
 ```sh
