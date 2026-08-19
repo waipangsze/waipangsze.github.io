@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/E6zeJnR.png">
 <meta property="article:published_time" content="2026-08-17T20:27:00.000Z">
-<meta property="article:modified_time" content="2026-08-18T03:25:13.813Z">
+<meta property="article:modified_time" content="2026-08-19T07:23:13.290Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="NWP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/E6zeJnR.png">
   
@@ -358,7 +358,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          99 words
+          238 words
         
       </span>
     
@@ -369,7 +369,7 @@
         
         
         
-          1 mins
+          2 mins
         
       </span>
     
@@ -451,8 +451,53 @@
 <h2 id="github">github</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/HKUST-MPAS/HKUST-MPAS" class="uri">https://github.com/HKUST-MPAS/HKUST-MPAS</a></li>
-<li>commit differences</li>
+<li>commit differences
+<ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/HKUST-MPAS/HKUST-MPAS/commit/210889d157cc3698369ddbe09e57ccaca4cae49a" class="uri">https://github.com/HKUST-MPAS/HKUST-MPAS/commit/210889d157cc3698369ddbe09e57ccaca4cae49a</a></li>
+</ul></li>
+</ul>
+<h2 id="highlight">highlight</h2>
+<div class="note note-primary">
+            <p><strong>The main purposes of SLUCM are to parameterize the effects of the urban canopy layer and to calculate the exchanges of energy and momentum between the urban surface and the atmosphere using amore realistic geometry than slab models.</strong></p>
+          </div>
+<ul>
+<li>We therefore generated a <strong>30 km–500 m</strong> variable-resolution meshcentered on Hong Kong.
+<ul>
+<li>The mesh was generated using the <strong>Python-basedtoolkit MPAS_tool (Asay-Davis et al., 2026)</strong> together with the <strong>meshing package jigsaw_py(Engwirda, 2020)</strong>.</li>
+</ul></li>
+<li>The transparent region outside the solidlines indicates the buffer zone, where the <strong>resolution changes gradually at a rate of 1/12km/degree</strong> to ensure grid smoothness.</li>
+<li>Coupling single layer urban canopy model <strong>to MPAS/Noah-MP</strong></li>
+<li>we develop a hybrid land-use dataset by combining the 100 m CGLC–LCZ product with <strong>the default 1-km MODIS dataset</strong>.</li>
+<li>implemented a <strong>100-m global LCZ dataset (CGLC-LCZ)</strong> specifically for the WRF-Urban modelingframework.</li>
+<li>Experiment setup:
+<ul>
+<li>All lower boundary conditions in the SLUCM scheme were set to <strong>constant mode (BOUNDR =BOUNDB = BOUNDG = 2)</strong>, This configuration allows the building elements to act as either heatsinks or sources during the simulations.</li>
+<li>The temperature solution scheme was configured as <strong>TS_SCHEME=2 (force–restore method)</strong> to ensure urban surface energy balance.</li>
+<li><strong>Anthropogenic sensible and latent heat fluxes</strong> were both activated, using prescribed diurnal profiles.</li>
+</ul></li>
+</ul>
+<h3 id="initialization-notes">Initialization Notes</h3>
+<p>When creating initial conditions with <code>init_atmosphere_model</code>, users should ensure that the first atmospheric model level is high enough for the urban canopy parameters used in the simulation.</p>
+<div class="note note-primary">
+            <p>An example vertical level file (56 levels, first level at ~76 m, model top at 30 km) is provided in: - vertical_levels/urban_ZR_75.txt</p>
+          </div>
+<ul>
+<li>vertical_levels/urban_ZR_75.txt</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">0.00000 <br>75.9370 <br>106.240 <br>178.373 <br>263.801 <br>......<br></code></pre></td></tr></table></figure>
+<ul>
+<li>URBPARM_LCZ.TBL</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sh">......<br><span class="hljs-comment">#</span><br><span class="hljs-comment">#  Where there are multiple columns of values, the values refer, in</span><br><span class="hljs-comment">#  order, to: 1) Commercial, 2) High intensity residential, and 3) Low</span><br><span class="hljs-comment">#  intensity residential:  I.e.:</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment">#  Index:         1              2             3            4          5          6               7                8              9             10         11</span><br><span class="hljs-comment">#  Type:  Comp High-Rise, Comp Mid-Rise, Comp Low-Rise, Op H-Rise, Op M-Rise, Op L-Rise, Lightweight L-Rise, Large L-Rise, Sparsely Built, Heavy Indus  Asphalt</span><br><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># ZR:  Roof level (building height)  [ m ]</span><br><span class="hljs-comment">#      (sf_urban_physics=1)</span><br><br>ZR: 37.5, 17.5, 6.5, 37.5, 17.5, 6.5, 3., 6.5, 6.5, 10., 10.<br>......<br></code></pre></td></tr></table></figure>
+<div class="note note-primary">
+            <p>Warning ZR : Mean Height Table + 2 m is larger than the 1st WRF level</p>
+          </div>
+<ul>
+<li>???
+<ul>
+<li>if <code>building height = 37.5 m</code> and then <code>first layer height = (37.5+2)*2 = 79 m</code></li>
+<li>if <code>first layer = 75.9370 m</code> and then <code>75.9370/2 = 37.9685 m</code></li>
+</ul></li>
 </ul>
 
                 
@@ -487,11 +532,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
-      
         <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
       
     </div>
   
@@ -522,7 +567,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>August 18, 2026</div>
+          <div>August 19, 2026</div>
         </div>
       
       
