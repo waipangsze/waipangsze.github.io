@@ -19,7 +19,17 @@ author: wpsze
 date: 2026-08-21 02:55:11
 --- -->
 
-# HKO-蒲福氏風級
+- [<font color="blue">**香港地圖**</font>](https://www.yearbook.gov.hk/2001/chtml/maps/m01.htm)
+
+# 熱帶氣旋
+
+- [<font color="blue">**熱帶氣旋警告信號小冊子 (PDF檔案)**</font>](https://www.hko.gov.hk/tc/publica/gen_pub/files/tcws.pdf)
+- [<font color="blue">**8個參考測風站所組成的網絡**</font>](https://www.hko.gov.hk/tc/education/weather/weather-warnings/00054-the-tropical-cyclone-warning-system-in-hong-kong.html)
+- [<font color="blue">**二零二五年報告內提及的測風站及潮汐測量站之分佈地點**</font>](https://www.hko.gov.hk/tc/informtc/station2025.html)
+- ![](https://i.imgur.com/yywPQDr.png)
+- ![](https://i.imgur.com/pQUVNV9.png){width=300}
+
+<!-- # HKO-蒲福氏風級
 
 「風速 (米/秒)」換算欄位的完整表格（換算基準：1 公里/小時 = 0.27778 米/秒）：
 
@@ -55,19 +65,19 @@ date: 2026-08-21 02:55:11
 | 14   | 81-89       | 150-166        | 41.4-46.1     |
 | 15   | 90-99       | 167-183        | 46.2-50.8     |
 | 16   | 100-108     | 184-201        | 50.9-55.9     |
-| 17   | 109+        | 202+           | 56.0+         |
+| 17   | 109+        | 202+           | 56.0+         | -->
 
 # 自動氣象站資料
 
-- [HKO 氣象站資料](https://www.hko.gov.hk/tc/cis/stn.htm)
-- [香港自動氣象站氣候觀測資料庫 | 氣象站資料](https://i-lens.hk/hkweather/aws_info.php)
+- [<font color="blue">**HKO 氣象站資料**</font>](https://www.hko.gov.hk/tc/cis/stn.htm)
+- [<font color="blue">**香港自動氣象站氣候觀測資料庫 | 氣象站資料**</font>](https://i-lens.hk/hkweather/aws_info.php)
 
 * 天文台自一八八四年首次進行天氣觀測以來，天文台總部一直是本港的基準天氣站 (Synoptic station) 。天氣站在一九九二年七月一日由京士柏氣象站替代。香港國際機場則由二零零零年四月一日起成為本港的基準天氣站。
 * 備註：啟德跑道公園自動氣象站因應業務運作需要於2022年4月22日在原址稍微移動至鄰近位置。
 * 備註：大埔自動氣象站於2022年4月1日由大埔自然環境保護研究中心遷往大埔元洲仔公園。同日，「大埔」自動氣象站改名為「大埔 (元洲仔公園)」，而「大埔」自動氣象站過往的數據可於「已停用的氣象站/潮汐測量站」表格內的「大埔 (自然環境保護研究中心)」查閱。
 * 備註：塔門東自動測風站於2017年7月6日開始運作，並於同日起取代塔門自動測風站。
 
-- [HKO station and analysis](https://waipangsze.github.io/2023/06/24/HKO-station-and-analysis/)
+- [<font color="blue">**HKO station and analysis**</font>](https://waipangsze.github.io/2023/06/24/HKO-station-and-analysis/)
 
 # Windy.com
 
