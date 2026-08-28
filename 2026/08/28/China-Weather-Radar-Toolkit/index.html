@@ -1,0 +1,1098 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wpsze">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="pycwr PyCWR简介 PyCWR 解决的是中国天气雷达基数据“格式多、年代跨度大、业务链路不一致”的现实问题。 它把 reader、体扫对象、绘图、QC、HID、风场反演、插值和标准格式导出连成一条 连贯的 Python 工作流，让你不必为每一种输入格式单独重写处理逻辑。  https:&#x2F;&#x2F;pycwr.readthedocs.io&#x2F;en&#x2F;latest&#x2F;PyCWR_intro.html htt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="China Weather Radar | 中国天气雷达基数据">
+<meta property="og:url" content="https://waipangsze.github.io/2026/08/28/China-Weather-Radar-Toolkit/index.html">
+<meta property="og:site_name" content="wpsze">
+<meta property="og:description" content="pycwr PyCWR简介 PyCWR 解决的是中国天气雷达基数据“格式多、年代跨度大、业务链路不一致”的现实问题。 它把 reader、体扫对象、绘图、QC、HID、风场反演、插值和标准格式导出连成一条 连贯的 Python 工作流，让你不必为每一种输入格式单独重写处理逻辑。  https:&#x2F;&#x2F;pycwr.readthedocs.io&#x2F;en&#x2F;latest&#x2F;PyCWR_intro.html htt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/pfRn8xE.png">
+<meta property="article:published_time" content="2026-08-27T20:27:00.000Z">
+<meta property="article:modified_time" content="2026-08-28T09:32:36.271Z">
+<meta property="article:author" content="wpsze">
+<meta property="article:tag" content="WRF">
+<meta property="article:tag" content="MPAS">
+<meta property="article:tag" content="NWP">
+<meta property="article:tag" content="DA">
+<meta property="article:tag" content="Radar">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/pfRn8xE.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>China Weather Radar | 中国天气雷达基数据 - wpsze</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"waipangsze.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":"F7MK-FcxSomhtc1N3hIUDA"},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=F7MK-FcxSomhtc1N3hIUDA", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'F7MK-FcxSomhtc1N3hIUDA');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>wpsze</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/" target="_self">
+                <i class="iconfont icon-bookmark"></i>
+                <span>Bookmarks</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                <span>Docs</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Physics/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Physics</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Maths/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Maths</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/CFD/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>CFD</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/ML/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>ML</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Meteorology/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Meteorology</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MPAS/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>MPAS</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/PALM/" target="_self">
+                    <i class="iconfont icon-plan"></i>
+                    <span>PALM</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/monitor/" target="_self">
+                    
+                    <span>Real Time Monitoring</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/HKO/" target="_self">
+                    
+                    <span>HKO</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About Me</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://i.imgur.com/pfRn8xE.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="China Weather Radar | 中国天气雷达基数据"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-28 04:27" pubdate>
+          August 28, 2026 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">China Weather Radar | 中国天气雷达基数据</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="pycwr">pycwr</h1>
+<p>PyCWR简介</p>
+<p>PyCWR 解决的是中国天气雷达基数据“格式多、年代跨度大、业务链路不一致”的现实问题。 它把 reader、体扫对象、绘图、QC、HID、风场反演、插值和标准格式导出连成一条 连贯的 Python 工作流，让你不必为每一种输入格式单独重写处理逻辑。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://pycwr.readthedocs.io/en/latest/PyCWR_intro.html" class="uri">https://pycwr.readthedocs.io/en/latest/PyCWR_intro.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/YvZheng/pycwr" class="uri">https://github.com/YvZheng/pycwr</a></li>
+<li><code>pycwr</code> 是一个面向中国天气雷达业务流程的 Python 工具库，覆盖雷达基数据读取、 几何计算、绘图、质量控制、水凝物分类、单雷达风场反演、多雷达组网插值和导出。</li>
+<li>The China Weather Radar Toolkit, support most of China's radar formats(<strong>WSR98D, CINRAD/SA/SB/CB, CINRAD/CC/CCJ, CINRAD/SC/CD</strong>)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Create and activate a new Conda environment (Python ≥ 3.9 is required, ≥ 3.10 is recommended for full features):</span><br>conda create -n pycwr_env python=3.10<br>conda activate pycwr_env<br><br><span class="hljs-comment"># 全功能安装</span><br>python -m pip install -r requirements-full.txt<br>python -m pip install <span class="hljs-string">&quot;.[full]&quot;</span><br><br><span class="hljs-comment"># Verify your installation by running this command in your terminal:</span><br>python -c <span class="hljs-string">&quot;import pycwr; print(pycwr.__version__)&quot;</span><br></code></pre></td></tr></table></figure>
+<h1 id="example-data">Example data</h1>
+<h2 id="example-case-data-of-forward-radar-operator-zju-aero-release-v0.6.0">Example Case Data of Forward Radar Operator ZJU-AERO Release V0.6.0</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2024JD040725">Xie, H., Bi, L., Wang, Z., &amp; Han, W. (2024). <strong>Modeling of melting layer in cross-platforms radar observation operator ZJU-AERO: Multi-stage melting particle model, scattering computation, and bulk parameterization</strong>. Journal of Geophysical Research: Atmospheres, 129, e2024JD040725. https://doi.org/10.1029/2024JD040725</a>
+<ul>
+<li>ZJU-AERO V0.6.0 是由浙江大學發展的雷達正向觀測算子（Accurate and Efficient Radar Operator）的更新版本。</li>
+<li>V0.6.0 版本引入並評估了多階段融化粒子模型與散射計算，能更精確地模擬融化層場景中的雷達觀測。</li>
+<li>體積採樣方法：提出了全新的體積採樣（volume-sampling）方法以提升模擬效率與準確度。</li>
+<li>應用範圍：用於介接數值天氣預報（NWP）模型（如中國氣象局 CMA-GFS/MESO），支援地面雷達與星載雷達的極化雷達變數模擬。</li>
+</ul></li>
+<li><a target="_blank" rel="noopener" href="https://zenodo.org/records/11307206" class="uri">https://zenodo.org/records/11307206</a></li>
+<li>./case-04-Doksuri-2023-07-28.zip is for a demonstration forward simulation case of <strong>typhoon</strong> observed by ground based radar (as required by one of the reviewers of the GMD paper, new).</li>
+<li>Z_RADR_I_Z9592_20230728020437_<strong>O_DOR_SAD_CAP_FMT.bin.bz2</strong></li>
+</ul>
+<h1 id="数据格式">数据格式</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.cmastd.cn/standardView.jspx?id=4131"><strong>QX/T 653-2022《天气雷达基数据和单站产品格式》</strong></a></li>
+<li><a target="_blank" rel="noopener" href="http://gx.cma.gov.cn/zfxxgk/zwgk/flfgbz/dfbz/202307/P020230712582565380137.pdf#16#1"><strong>QX/T 653-2022 天气雷达基数据和单站产品格式</strong></a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mengcheng.gov.cn/upload_bz/download?siteId=4&amp;id=810200#8#5">安徽省天气雷达观测业务管理规定（试行）.pdf | 2024 年 03 月</a></li>
+<li><a target="_blank" rel="noopener" href="https://pycinrad.cn/io/ftype.html">如何判断文件类型？</a></li>
+</ul>
+<p>目前，最权威的现行标准是气象行业标准 <code>QX/T 653-2022</code> ——《天气雷达基数据和单站产品格式》。该标准自2023年2月1日起实施，明确规定了新一代多普勒天气雷达基数据和单站产品的数据类型与格式，适用于业务中的传输、存储和交换。</p>
+<ul>
+<li><strong>格式统一进程</strong>：中国气象局近年来大力推行数据格式标准化，通过发布《天气雷达基数据和单站产品格式》等行业标准，解决了过去不同厂家、不同型号雷达数据格式各异的问题。文件名中带 <code>FMT</code> 标识的，就是这种统一后的标准格式文件。</li>
+<li><strong>数据字段差异</strong>：随着技术发展，新一代双偏振雷达能获取的数据也更多了。除了传统的反射率因子、径向速度和速度谱宽，还增加了<strong>差分反射率因子、差分传播相移、相关系数</strong>等双偏振参数。</li>
+<li>所以，在处理雷达数据时，首先看文件名里是否有 <code>FMT</code>，如果有，说明它遵循的是统一的“标准格式”规范，数据结构和读取方式比较通用。对于新型的X波段相控阵雷达，则需要留意它可能使用了专门的格式。</li>
+</ul>
+<p>下面这个表格整理了主流雷达的数据格式情况：</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">雷达类型</th>
+<th style="text-align: left;">当前数据格式</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>新一代天气雷达</strong> (S/C波段)</td>
+<td style="text-align: left;"><strong>标准格式 (含 <code>FMT</code> 标识)</strong></td>
+<td style="text-align: left;">根据2022年发布的行业标准，所有在业务运行的S、C波段雷达基数据和产品都统一为此格式。该格式规范了文件结构、命名规则和数据字段。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>X波段天气雷达</strong></td>
+<td style="text-align: left;"><strong>参照/等同于标准格式</strong></td>
+<td style="text-align: left;">X波段天气雷达的基数据格式与新一代天气雷达（S/C波段）<strong>相同</strong>，遵循同一套标准。其产品格式则另有规定。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>X波段相控阵雷达</strong></td>
+<td style="text-align: left;"><strong>专用格式</strong></td>
+<td style="text-align: left;">作为近年来的新型设备，其基数据格式参照单独的<a target="_blank" rel="noopener" href="https://www.mengcheng.gov.cn/upload_bz/download?siteId=4&amp;id=810200#8#5">《相控阵 X 波段雷达基数据格式（试用）》</a>执行，与普通X波段雷达格式不同。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="s波段与c波段雷达详解">S波段与C波段雷达详解</h2>
+<p>中国新一代天气雷达网主要根据探测波段的不同，分为S波段和C波段两大系列，功能上各有侧重。</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">波段</th>
+<th style="text-align: left;">具体型号</th>
+<th style="text-align: left;">主要特点与用途</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>S波段</strong><br>(波长约10cm)</td>
+<td style="text-align: left;">CINRAD/SA, CINRAD/SB, CINRAD/SC</td>
+<td style="text-align: left;">堪称雷达家族里的“大块头”，球罩直径可达<strong>12米</strong>。电磁波穿透力强，最大探测半径可达<strong>460公里</strong>，是追踪<strong>台风、大范围暴雨</strong>的绝对主力，因此主要布防在<strong>沿海及大江大河流域</strong>。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>C波段</strong><br>(波长约5cm)</td>
+<td style="text-align: left;">CINRAD/CB, CINRAD/CC, CINRAD/CD, CINRAD/CCJ</td>
+<td style="text-align: left;">个头相对紧凑（球罩直径约<strong>7米</strong>），探测半径约<strong>200公里</strong>。探测精度更高，特别擅长捕捉<strong>冰雹、短时强降雨</strong>等局地强对流天气，主要分布在<strong>内陆地区</strong>，作为S波段雷达网的补充。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>值得一提的是，中国新一代天气雷达的起步，源于对美国先进多普勒雷达技术（NEXRAD）的引进和国产化，CINRAD/SA型号与美国的WSR-88D雷达有着紧密的技术渊源。</p>
+</blockquote>
+<p>除了这些主流的S、C波段固定式雷达，近年来，<strong>X波段</strong>雷达和<strong>相控阵</strong>雷达也作为重要补充被广泛使用。它们更轻便灵活，能有效填补大城市或复杂地形的近地面观测盲区。</p>
+<h2 id="根据文件名中的特定标识">根据文件名中的特定标识</h2>
+<h3 id="o_dor_sad_cap_fmt"><code>O_DOR_SAD_CAP_FMT</code></h3>
+<p>根据文件名中的特定标识，<code>O_DOR_SAD_CAP_FMT</code> 表明这是一个<strong>采用中国气象局标准格式的S波段雷达基数据文件</strong>。这个字段是文件命名规则的一部分，拆解开来，各部分含义如下：</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">字段部分</th>
+<th style="text-align: left;">含义</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>O</strong></td>
+<td style="text-align: left;">数据级别（Data Level）</td>
+<td style="text-align: left;">代表观测数据（Observation），表明这是雷达直接探测得到的原始基数据，而非经过二次加工的产品。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>DOR</strong></td>
+<td style="text-align: left;">数据类型（Data Type）</td>
+<td style="text-align: left;">是“Doppler Radar”的缩写，指明数据来源为多普勒天气雷达。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>SAD</strong></td>
+<td style="text-align: left;">雷达型号（Radar Model）</td>
+<td style="text-align: left;">代表雷达具体型号，这里的 <strong>SAD</strong> 很可能指代 <strong>CINRAD/SA</strong> 或同系列 <strong>S波段</strong> 雷达的某种命名变体。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>CAP</strong></td>
+<td style="text-align: left;">扫描方式/策略（Scan Strategy）</td>
+<td style="text-align: left;">代表 <strong>体扫模式（Volume Scan）</strong>，通常指雷达以多个仰角完成一次完整的“体积扫描”，这也是最主要的业务扫描方式。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>FMT</strong></td>
+<td style="text-align: left;">格式标识（Format Flag）</td>
+<td style="text-align: left;">这是 <strong>“标准格式”（Format）</strong> 的明确标识，用于区分于旧的、非标准的数据格式。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="o_dor_cd_cap_fmt"><code>O_DOR_CD_CAP_FMT</code></h3>
+<p><code>O_DOR_CD_CAP_FMT</code> 中的 <code>CD</code> 指的是雷达型号为 <strong>CINRAD/CD</strong>。</p>
+<p>可以将这个文件名拆解为以下几个部分来理解：</p>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">字段</th>
+<th style="text-align: left;">含义</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>O</strong></td>
+<td style="text-align: left;">数据级别</td>
+<td style="text-align: left;">代表这是一份观测数据（Observation），即雷达直接探测得到的原始基数据。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>DOR</strong></td>
+<td style="text-align: left;">数据类型</td>
+<td style="text-align: left;">是“Doppler Radar”的缩写，表明数据来自多普勒天气雷达。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>CD</strong></td>
+<td style="text-align: left;">雷达型号</td>
+<td style="text-align: left;">代表雷达具体型号为 <strong>CINRAD/CD</strong>，这是一款<strong>C波段</strong>的新一代天气雷达。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>CAP</strong></td>
+<td style="text-align: left;">扫描方式</td>
+<td style="text-align: left;">代表这是<strong>体扫（Volume Scan）</strong> 数据，即雷达在多个仰角完成的一次完整扫描，这是最主要的业务扫描模式。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>FMT</strong></td>
+<td style="text-align: left;">格式标识</td>
+<td style="text-align: left;">是“标准格式”（Format）的明确标识。这个标识表明该文件遵循中国气象局自2021年起推行的<strong>统一标准格式</strong>，不同型号雷达的数据可以更规范地被读取和处理。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="补充背景关于标准格式">补充背景：关于“标准格式”</h3>
+<p>文件名中的 <code>FMT</code> 并非随意标记。自2021年起，中国天气雷达基数据已全面切换为这种<strong>统一的标准格式</strong>。这套格式统一了此前因不同厂家、不同型号雷达（如SA、SB、CB、CC等）而产生的7种格式，让数据读取和处理更加规范和高效。标准格式的数据在存储方式上也与旧格式不同，例如，数据可能按径向流式存储，而不是按体扫文件存储，这提升了数据传输时效。</p>
+<h1 id="trial">Trial</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pycwr.io <span class="hljs-keyword">import</span> read_auto<br><br>radar = read_auto(<span class="hljs-string">&quot;Z_RADR_I_Z9592_20230728020437_O_DOR_SAD_CAP_FMT.bin.bz2&quot;</span>)<br><span class="hljs-built_in">print</span>(radar.summary())<br><span class="hljs-built_in">print</span>(radar.available_fields())<br><span class="hljs-built_in">print</span>(radar.sweep_summary()[<span class="hljs-number">0</span>])<br><br><span class="hljs-comment"># extract level 0</span><br>dBZ0 = radar.get_sweep_field(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;dBZ&quot;</span>)<br>velocity0 = radar.get_sweep_field(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;V&quot;</span>)<br><br><span class="hljs-comment"># plot with map</span><br><span class="hljs-keyword">from</span> pycwr.draw <span class="hljs-keyword">import</span> plot_ppi_map<br>plot_ppi_map(radar, field=<span class="hljs-string">&quot;dBZ&quot;</span>, sweep=<span class="hljs-number">0</span>, show=<span class="hljs-literal">True</span>)<br><br><span class="hljs-comment"># plot vertical</span><br><span class="hljs-keyword">from</span> pycwr.draw <span class="hljs-keyword">import</span> plot_section<br>plot_section(radar, start=(-<span class="hljs-number">50</span>, <span class="hljs-number">0</span>), end=(<span class="hljs-number">50</span>, <span class="hljs-number">0</span>), field=<span class="hljs-string">&quot;dBZ&quot;</span>, show=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/NWP/" class="category-chain-item">NWP</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
+      
+        <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
+      
+        <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/DA/" class="print-no-link">#DA</a>
+      
+        <a href="/tags/Radar/" class="print-no-link">#Radar</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>China Weather Radar | 中国天气雷达基数据</div>
+      <div>https://waipangsze.github.io/2026/08/28/China-Weather-Radar-Toolkit/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>wpsze</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 28, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Updated on</div>
+          <div>August 28, 2026</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/18/MPAS-MPAS-UCM-Urban-Canopy-Model-HKUST/" title="MPAS | MPAS UCM | Urban Canopy Model | HKUST">
+                        <span class="hidden-mobile">MPAS | MPAS UCM | Urban Canopy Model | HKUST</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9HL36SZ28R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9HL36SZ28R');
+</script>
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+
+  <span id="sitetime"></span>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2023,04,23,00,00,00); //北京时间2018-2-13 00:00:00
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      /*document.getElementById("sitetime").innerHTML=" 已运行"+/*diffYears+" 年 "+*/diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+      document.getElementById("sitetime").innerHTML=" 已運行"+diffYears+" 年 "+diffDays+" 天 ";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+  </script>
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
