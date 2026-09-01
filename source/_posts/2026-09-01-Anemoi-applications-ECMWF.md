@@ -25,6 +25,9 @@ banner_img: https://i.imgur.com/iZNjOUN.png
 3. 宁愿牺牲部分长时效 RMSE，也尽量保住高分辨率 ICON-DREAM 里的小尺度信息
 4. 用 flip-flop index 衡量这种逐次预报的不一致 (业务价值：预报一致性。一个不乱跳的模式，对预报员的信任建立和决策辅助，可能比 RMSE 的微小提升更实在。)
 5. 平滑问题没有彻底解决 (球谐功率谱分析)
+   1. First, the data of ICON forecasts, AICON forecasts, ICON operational analysis (ICON ANA) and ICON-DREAM reanalysis on each model level separately have been horizontally interpolated from the **original irregular R03B07icosahedral grid** to a **full Gaussian F640 grid (with 1280 Gaussian-spaced latitudes and 2560 Gaussian-spaced longitudes,approx. 0.14°)**, using first order conservative mapping with **cdo** `remapcon`.
+   2. The resulting 2D global fields are transformed into **spherical wave components** after **subtraction of the cell-area-weighted global mean value**. The subtraction of the global mean ensures that the integral over the full spectra equals the variance. `Power spectra` are obtained by the sum of squared amplitudes of the components for each spatial scale to measure how much variance exists at different scales (wavelengths).
+   3. ![](https://i.imgur.com/E4H2GfL.png)
 6. 台风路径好，强度弱
  
 AICON 预测产品进入 DWD 数据分发体系和天气预警业务。
