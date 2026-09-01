@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/iZNjOUN.png">
 <meta property="article:published_time" content="2026-08-31T22:59:00.000Z">
-<meta property="article:modified_time" content="2026-09-01T01:34:59.241Z">
+<meta property="article:modified_time" content="2026-09-01T06:03:15.893Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="ECMWF">
@@ -370,7 +370,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          723 words
+          743 words
         
       </span>
     
@@ -443,7 +443,12 @@
 <li>接使用 ICON 的 terrain-following 模式层</li>
 <li>宁愿牺牲部分长时效 RMSE，也尽量保住高分辨率 ICON-DREAM 里的小尺度信息</li>
 <li>用 flip-flop index 衡量这种逐次预报的不一致 (业务价值：预报一致性。一个不乱跳的模式，对预报员的信任建立和决策辅助，可能比 RMSE 的微小提升更实在。)</li>
-<li>平滑问题没有彻底解决 (球谐功率谱分析)</li>
+<li>平滑问题没有彻底解决 (球谐功率谱分析)
+<ol type="1">
+<li>First, the data of ICON forecasts, AICON forecasts, ICON operational analysis (ICON ANA) and ICON-DREAM reanalysis on each model level separately have been horizontally interpolated from the <strong>original irregular R03B07icosahedral grid</strong> to a <strong>full Gaussian F640 grid (with 1280 Gaussian-spaced latitudes and 2560 Gaussian-spaced longitudes,approx. 0.14°)</strong>, using first order conservative mapping with <strong>cdo</strong> <code>remapcon</code>.</li>
+<li>The resulting 2D global fields are transformed into <strong>spherical wave components</strong> after <strong>subtraction of the cell-area-weighted global mean value</strong>. The subtraction of the global mean ensures that the integral over the full spectra equals the variance. <code>Power spectra</code> are obtained by the sum of squared amplitudes of the components for each spatial scale to measure how much variance exists at different scales (wavelengths).</li>
+<li><img src="https://i.imgur.com/E4H2GfL.png" srcset="/img/loading.gif" lazyload /></li>
+</ol></li>
 <li>台风路径好，强度弱</li>
 </ol>
 <p>AICON 预测产品进入 DWD 数据分发体系和天气预警业务。</p>
