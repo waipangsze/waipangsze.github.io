@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AI–DOP | Artificial Intelligence–Direct Observation Prediction | ECMWF
+title: AI-DOP | Artificial Intelligence-Direct Observation Prediction | ECMWF
 categories: NWP
 tags: [NWP, ML, AI, ECMWF, Anemoi, AIFS, AI–DOP]
 author: wpsze
