@@ -13,6 +13,10 @@ index_img: https://i.imgur.com/iZNjOUN.png
 banner_img: https://i.imgur.com/iZNjOUN.png
 ---
 
+- [ML | ECMWF | Anemoi](https://waipangsze.github.io/2025/01/25/ML-ECMWF-Anemoi/)
+
+---
+
 # Anemoi
 
 [Anemoi](https://anemoi.ecmwf.int/) is a collaborative and open-source framework for developing machine learning weather forecasting models. Named after the Greek gods of the winds, the goal of Anemoi is to provide the key building blocks to train state‑of-the‑art data-driven weather forecasting models and run them in an operational context. As a framework it seeks to handle many of the complexities that meteorological organisations will share, allowing them to easily train models from existing recipes but with their own data.
