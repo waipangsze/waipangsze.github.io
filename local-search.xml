@@ -4,6 +4,80 @@
   
   
   <entry>
+    <title>AI-DOP | Artificial Intelligence-Direct Observation Prediction | ECMWF</title>
+    <link href="/2026/09/01/AI-DOP-ECMWF/"/>
+    <url>/2026/09/01/AI-DOP-ECMWF/</url>
+    
+    <content type="html"><![CDATA[<h1 id="aifs-dop">AIFS-DOP</h1><p>We introduce the <strong>Artificial Intelligence Forecasting System for Direct Observation Prediction (AIFS-DOP)</strong>. AIFS-DOP is trained on</p><ul><li><strong>a 40-year harmonized dataset of gridded observations, without using numerical weather prediction (NWP) reanalysis or model data.</strong></li></ul><p>The resulting model is competitive with ECMWF's Integrated Forecasting System (IFS) when scored on a one year period of forecasts across 2021/2022. This progress on Direct Observation Prediction represents the first time that a data-driven model, trained solely on observations, is competitive with the IFS at medium ranges for several key upper-air and surface headline scores, when verified against observation data.</p><ul><li><a href="https://www.ecmwf.int/en/newsletter/182/earth-system-science/update-ai-dop-skilful-weather-forecasts-produced-directly">An update on AI–DOP: skilful weather forecasts produced directly from observations</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/news/2026/machine-learning-opens-new-opportunities-global-reanalysis">Machine learning opens new opportunities for global reanalysis | 20 July 2026</a></li><li><a href="https://arxiv.org/abs/2606.19093">AIFS-DOP: End-to-End Medium-Range Weather Prediction from Observations Alone with Machine Learning | arxiv</a><ul><li>The model uses an encoder-processor-decoder architecture, using a graph-based attention encoder/decoder and a transformer processor with sliding window attention as described in <a href="https://arxiv.org/abs/2406.01465">Lang et al. [2024]</a>.</li></ul></li></ul><figure><img src="https://i.imgur.com/NNOTKtj.png" alt="Figure 1: High-level model schematic: A single encoder is used for all observation types. The processor is as described in Lang et al. [2024] using a residual connection. Then a single decoder to predict observations out onto a full grid." /><figcaption>Figure 1: High-level model schematic: A single encoder is used for all observation types. The processor is as described in Lang et al. [2024] using a residual connection. Then a single decoder to predict observations out onto a full grid.</figcaption></figure><ul><li><strong>A single decoder</strong> to predict observations out onto a <strong>full grid</strong>.</li><li>AIFS-DOP operates on an <strong>O96 octahedral reduced Gaussian grid</strong>, which has a horizontal resolution of <strong>approximately 1-degree (100 km to 112 km)</strong>.</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NWP</tag>
+      
+      <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
+      
+      <tag>Anemoi</tag>
+      
+      <tag>AIFS</tag>
+      
+      <tag>AI–DOP</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Anemoi applications | ECMWF</title>
+    <link href="/2026/09/01/Anemoi-applications-ECMWF/"/>
+    <url>/2026/09/01/Anemoi-applications-ECMWF/</url>
+    
+    <content type="html"><![CDATA[<h1 id="aicon">AICON</h1><ul><li><a href="https://mp.weixin.qq.com/s/g0qH8cMaQZeXMgAONiJMSQ">德国国家气象局用自己的数据体系，训练AICON并真正部署进业务 | 那么预报员怎么说？</a></li><li><a href="https://arxiv.org/pdf/2608.24651" class="uri">https://arxiv.org/pdf/2608.24651</a></li></ul><p>德国国家气象局用自己的数据体系，训练AICON并真正部署进业务 (预报员, 国家气象业务)</p><ol type="1"><li>Anemoi 框架</li><li>接使用 ICON 的 terrain-following 模式层</li><li>宁愿牺牲部分长时效 RMSE，也尽量保住高分辨率 ICON-DREAM 里的小尺度信息</li><li>用 flip-flop index 衡量这种逐次预报的不一致 (业务价值：预报一致性。一个不乱跳的模式，对预报员的信任建立和决策辅助，可能比 RMSE 的微小提升更实在。)</li><li>平滑问题没有彻底解决 (球谐功率谱分析)</li><li>台风路径好，强度弱</li></ol><p>AICON 预测产品进入 DWD 数据分发体系和天气预警业务。</p><ol type="1"><li>软件栈采用 containerization</li><li>放弃 bit-wise reproducibility</li></ol><h1 id="nested-eagle-noaa">Nested-EAGLE (NOAA)</h1><ul><li><a href="https://mp.weixin.qq.com/s/Tls75uq8R7bIq5ZTARJPWg">天气模式一定要分全球和区域吗？NOAA给出了一个AI答案</a></li><li><a href="https://arxiv.org/abs/2608.26822" class="uri">https://arxiv.org/abs/2608.26822</a></li></ul><ol type="1"><li>Anemoi 框架</li><li>把短时和中期合成一个系统。</li><li>在 0.25° 全球网格上，嵌入一个 6 km 的 CONUS 精细化区域。模型的状态空间由两部分拼成——CONUS 上用 HRRR 数据（从 3 km 保守重网格到 6 km，用 Lambert 等角圆锥投影），全球其余部分用 GFS 数据（0.25° 经纬网格）。</li><li>模型是自回归的，输入 t 和 t−6h 两个时刻，预测 t+6h，采用 encoder–processor–decoder 的图 transformer 架构。关键差异在 latent mesh（潜网格）：它比数据空间粗约 16 倍（全球 O96 八面体网格），但在 CONUS 上保持相对更高的分辨率——这样模型既能看到全球天气尺度，又能聚焦 CONUS 的局地结构。</li><li>训练用 8 年数据（2015 年 2 月–2023 年 1 月，共 11,616 个样本），验证 1 年，测试 1 年（2024 年 2 月–2025 年 1 月）。基准线有三个：业务 GFS、业务 HRRR、以及一个几乎相同但只用 GFS 数据训练的 ML-GFS-Base（用来隔离"嵌套 HRRR 数据"的作用）。</li><li>近地面全面领先</li><li>这是论文最有价值的实验。一个根本问题是：Nested-EAGLE 相对 ML-GFS-Base 的增益，究竟是推理时喂给它更好的 HRRR 初始场带来的，还是训练时把 HRRR 数据学进了模型权重？<ol type="1"><li>结论：技巧是训练时学到的（baked into the model weights），并能在推理时携带过去，即使初始条件不那么准。这一方面说明模型对退化的初始条件是稳健的；另一方面也意味着，单纯升级初始条件不会立刻改善预报，必须把改进纳入训练才能让 ML 模型受益。</li></ol></li><li>Nested-EAGLE 在本质上学会了"把 GFS 分析校正到 HRRR 分析"这个映射，并把这种校正能力延伸到了预报中。</li><li>降水：位置准，幅度糊</li><li>目标区外：技巧不迁移</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NWP</tag>
+      
+      <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
+      
+      <tag>Anemoi</tag>
+      
+      <tag>AIFS</tag>
+      
+      <tag>AICON</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>China Weather Radar | 中国天气雷达基数据</title>
     <link href="/2026/08/28/China-Weather-Radar-Toolkit/"/>
     <url>/2026/08/28/China-Weather-Radar-Toolkit/</url>
@@ -20,11 +94,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -53,11 +127,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -82,11 +156,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Microphysics</tag>
       
@@ -113,11 +187,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>NaN</tag>
       
@@ -146,11 +220,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -247,11 +321,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>TKE</tag>
       
@@ -288,13 +362,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
+      <tag>slurm</tag>
       
       <tag>HPC</tag>
       
       <tag>NWP</tag>
       
-      <tag>slurm</tag>
+      <tag>WRF</tag>
       
       <tag>sinfo</tag>
       
@@ -323,9 +397,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>ECMWF</tag>
       
@@ -356,11 +430,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>CMA</tag>
       
@@ -393,11 +467,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -438,11 +512,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -481,11 +555,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -588,11 +662,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -714,11 +788,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -753,11 +827,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -889,11 +963,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -969,11 +1043,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -1031,11 +1105,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>SMIOL</tag>
       
@@ -1062,11 +1136,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Tangential Velocity</tag>
       
@@ -1093,11 +1167,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -1169,11 +1243,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Water Vapor Budget Equation</tag>
       
@@ -1204,11 +1278,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -1241,9 +1315,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -1274,11 +1348,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ERA5</tag>
       
@@ -1307,11 +1381,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1358,11 +1432,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1564,11 +1638,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ECMWF</tag>
       
@@ -1630,11 +1704,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1667,11 +1741,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1708,9 +1782,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>HKO</tag>
       
@@ -1745,9 +1819,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
       
@@ -1776,11 +1850,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1854,11 +1928,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -1899,11 +1973,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Boussinesq</tag>
       
@@ -1967,9 +2041,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>meshDensity</tag>
       
@@ -2000,9 +2074,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -2031,9 +2105,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -2060,11 +2134,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -2109,9 +2183,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -2148,11 +2222,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -2187,11 +2261,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -2226,11 +2300,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>MMM</tag>
       
@@ -2257,11 +2331,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>diffusion</tag>
       
@@ -2288,11 +2362,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -2323,11 +2397,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -2360,9 +2434,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>HKO</tag>
       
@@ -2397,11 +2471,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>domain</tag>
       
@@ -2434,9 +2508,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -2490,17 +2564,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -2535,11 +2609,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Urban</tag>
       
@@ -2572,11 +2646,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>FDDA</tag>
       
@@ -2605,11 +2679,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>partition</tag>
       
@@ -2644,13 +2718,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
+      <tag>WRF</tag>
+      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Urban</tag>
       
@@ -2681,11 +2755,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Climate</tag>
       
@@ -2712,9 +2786,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -2739,15 +2813,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Intel OneAPI</tag>
       
@@ -2778,11 +2852,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>partition</tag>
       
@@ -2817,11 +2891,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -2854,11 +2928,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -2887,11 +2961,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -2932,11 +3006,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PBL</tag>
       
@@ -2963,9 +3037,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -2992,11 +3066,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>cloud fraction</tag>
       
@@ -3025,9 +3099,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -3054,9 +3128,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -3083,11 +3157,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3112,11 +3186,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3141,11 +3215,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3170,11 +3244,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Meteorology</tag>
       
@@ -3205,11 +3279,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3267,11 +3341,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>CCPP</tag>
       
@@ -3298,11 +3372,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>TKE</tag>
       
@@ -3333,11 +3407,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3362,11 +3436,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ecFlow</tag>
       
@@ -3500,11 +3574,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -3539,11 +3613,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -3578,11 +3652,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Meteorology</tag>
       
@@ -3617,11 +3691,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -3650,11 +3724,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -3679,13 +3753,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>PGW</tag>
       
@@ -3712,13 +3786,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Linux</tag>
       
@@ -3747,13 +3821,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Noah surface scheme</tag>
       
@@ -3809,13 +3883,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>mesh generation</tag>
       
@@ -3846,13 +3920,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -3879,13 +3953,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
+      <tag>WRF</tag>
+      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>GFS</tag>
       
@@ -3924,11 +3998,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>HKO</tag>
       
@@ -3961,11 +4035,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>CMA</tag>
       
@@ -3996,11 +4070,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4033,11 +4107,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4070,11 +4144,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4136,11 +4210,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Precipitation</tag>
       
@@ -4200,11 +4274,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>IC</tag>
       
@@ -4233,11 +4307,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>FDDA</tag>
       
@@ -4299,11 +4373,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4336,11 +4410,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4373,11 +4447,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -4406,11 +4480,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -4435,11 +4509,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4470,11 +4544,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4507,11 +4581,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4540,11 +4614,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PINN</tag>
       
@@ -4577,11 +4651,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4612,11 +4686,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4645,13 +4719,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>HKO</tag>
       
@@ -4684,11 +4758,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>mesh generation</tag>
       
@@ -4717,17 +4791,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -4758,11 +4832,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4791,11 +4865,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>GFS</tag>
       
@@ -4824,17 +4898,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -4861,17 +4935,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -4902,17 +4976,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>PGW</tag>
       
       <tag>NetCDF</tag>
       
@@ -4945,17 +5019,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>PGW</tag>
       
       <tag>NetCDF</tag>
       
@@ -4990,17 +5064,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -5062,17 +5136,17 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
       
-      <tag>NWP</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>GFS</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>PGW</tag>
       
       <tag>GRIB</tag>
       
@@ -5291,13 +5365,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -5324,13 +5398,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>UCM</tag>
       
@@ -5413,7 +5487,7 @@
     <link href="/2025/01/25/ML-ECMWF-Anemoi/"/>
     <url>/2025/01/25/ML-ECMWF-Anemoi/</url>
     
-    <content type="html"><![CDATA[<h1 id="anemoi">Anemoi</h1><p><a href="https://anemoi.ecmwf.int/">Anemoi</a> is a collaborative and open-source framework for developing machine learning weather forecasting models. Named after the Greek gods of the winds, the goal of Anemoi is to provide the key building blocks to train state‑of-the‑art data-driven weather forecasting models and run them in an operational context. As a framework it seeks to handle many of the complexities that meteorological organisations will share, allowing them to easily train models from existing recipes but with their own data.</p><ul><li><a href="https://eurocc-austria.at/fileadmin/eurocc-main/events/Webinar_Weather_Climate_13.11.2024/4_Mariana_Clare_AIFS_a_data-driven_probabilistic_weather_forecasting_system_-2.pdf">AIFS: a data-driven probabilistic forecasting system | Slides | November 13, 2024</a></li><li><a href="https://arxiv.org/abs/2406.01465v1">AIFS - ECMWF’s data-driven forecasting system | arXiv | 03 Jun 2024</a></li><li><a href="https://charts.ecmwf.int/?facets=%7B%22Product%20type%22%3A%5B%22Experimental%3A%20AIFS%22%2C%22Experimental%3A%20Machine%20learning%20models%22%5D%7D">Experimental: AIFS, Experimental: Machine learning models | Charts</a></li><li><a href="https://huggingface.co/ecmwf">https://huggingface.co/ecmwf | ecmwf/aifs-single</a><ul><li>To generate a new forecast using AIFS, you can use <code>anemoi-inference</code>. In the following notebook, a step-by-step workflow is specified to run the AIFS using the HuggingFace model:</li></ul></li></ul><h2 id="aifs">AIFS</h2><p><strong>AIFS</strong> is based on a <strong>graph neural network (GNN) encoder and decoder</strong>, and a sliding window transformer processor, and is trained on ECMWF’s ERA5 re-analysis and ECMWF’s operational numerical weather prediction (NWP) analyses.</p><ul><li>AIFS training data, <a href="https://www.ecmwf.int/en/newsletter/178/news/aifs-new-ecmwf-forecasting-system">AIFS: a new ECMWF forecasting system</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/first-update-aifs">First update to the AIFS | 16 January 2024</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/news/2024/bringing-together-users-researchers-and-coders-ecmwfs-machine">Bringing together users, researchers and coders in ECMWF’s machine learning efforts | 15 May 2024</a><ul><li>“Because of the code adaptation we’ve done, we can easily expand parts of the AIFS and Anemoi to regional systems,”</li></ul></li></ul><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/GBcuV9S.png" width="600" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/zHcuWYK.png" width="600" /></div></div></div><h2 id="webinar-anemoi---a-framework-for-building-the-aifs-and-other-data-driven-weather-forecasting-models-virtual-april-30-2024">Webinar: Anemoi - a framework for building the AIFS and other data-driven weather forecasting models | Virtual | April 30, 2024</h2><ul><li><a href="https://events.ecmwf.int/event/409/" class="uri">https://events.ecmwf.int/event/409/</a></li><li>Description<ul><li>Last year ECMWF introduced the AIFS, building on a series of innovative papers which demonstrated the potential of machine learning in creating data-driven weather forecasting models.</li><li>Machine learning models typically build on <strong>open-source frameworks, such as Tensorflow, PyTorch and JAX</strong> which allow communities to work together and build on one another's work. Weather forecasting brings its own challenges for machine learning, with large datasets and spatial-temporal problems.</li><li>In this webinar, we will introduce Anemoi, the toolbox from which the AIFS is trained.</li><li>We have been developing this toolbox with a view to many users both inside and outside of ECMWF to <strong>use the toolbox to train both global and local weather forecasting models</strong>. The toolbox aims to allow users to bring their own datasets and customise their ML models.</li><li>We will introduce the toolbox, talk through the steps needed to train a data-driven model and explain how Anemoi helps with these tasks. Finally we will outline a roadmap for future Anemoi development.</li></ul></li><li>Additional utility tools exist in supporting repositories beyond these core modules. Anemoi builds on top of ECMWF’s Artificial Intelligence Forecasting System (AIFS), expanding that codebase to enable wider functionality for a greater range of users. <strong>Future AIFS models will be trained using Anemoi</strong>.</li></ul><h2 id="discover-anemoi-webinar-series-online-13-30-january-2025">Discover Anemoi: Webinar Series | Online | 13-30 January 2025</h2><ul><li><a href="https://events.ecmwf.int/event/446/" class="uri">https://events.ecmwf.int/event/446/</a></li></ul><p>Discover Anemoi will feature six webinars, demonstrating the use of key components of the Anemoi ecosystem. The webinars will cover:</p><ul><li>An introduction to Anemoi</li><li>Creating datasets</li><li>Building graphs</li><li>Training models</li><li>Inference</li><li>Contributing as a developer</li></ul><h1 id="high-resolution-inside-the-nordic">High resolution inside the Nordic</h1><p>The AIFS is a global system, but work has also been going on in <strong>Anemoi to create regional (limited-area) ML systems</strong>. For example, <em>MET Norway</em> has created a regional model for Scandinavia (<a href="https://arxiv.org/abs/2409.02891v1">Nipen et al., 2024, arXiv:2409.02891</a>).</p><p>The plot shows a 7-day forecast of 10 m wind speed (shading) and sea-level pressure (contours). The model has learned to forecast at high resolution (here ~10 km) inside the Nordic region, and at low resolution (here ~100 km) outside of this domain. The model successfully creates a higher-resolution structure over the Nordics.</p><ul><li><a href="https://arxiv.org/pdf/2409.02891v1">Nipen, T. N., Haugen, H. H., Ingstad, M. S., Nordhagen, E. M., Salihi, A. F. S., Tedesco, P., ... &amp; Chantry, M. (2024). Regional data-driven weather modeling with a global stretched-grid. arXiv preprint arXiv:2409.02891.</a><ul><li>A <strong>data-driven model (DDM)</strong> suitable for regional weather forecasting applications is presented. The model extends the Artificial Intelligence Forecasting System by introducing a stretched-grid architecture that dedicates higher resolution over a regional area of interest and maintains a lower resolution elsewhere on the globe. The model is based on graph neural networks, which naturally affords arbitrary multi-resolution grid configurations.</li><li>The model is pre-trained on 43 years of global <strong>ERA5</strong> data at 31 km resolution and is further refined using 3.3 years of <strong>2.5 km resolution operational analyses from the MetCoOp Ensemble Prediction System (MEPS)</strong>.</li></ul></li></ul><p>The DDM was trained on compute nodes equipped with four AMD Instinct MI250X GPUs, each with 128 GB memory. To speed up training, we used <strong>data parallelism across 32 model instances for stages A–C</strong> and <strong>16 for stage D</strong>. For stages B–D, we used model parallelism to run one instance of the model on each node. This splits the nodes and edges of the graphs across multiple GPUs and is necessary for fitting the 31 km global and 2.5 km regional stretched-grid model within the available GPU memory</p><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/xHsB08i.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/yDB2LwN.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/i8uLpch.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/20hdCXS.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/zzSAUKE.png" /></div></div></div><h1 id="build-anemoi">Build Anemoi</h1><p><strong>Anemoi</strong> is a framework for developing machine learning weather forecasting models. It comprises of components or packages for</p><ul><li>preparing training datasets,</li><li>conducting ML model training and</li><li>a registry for datasets and trained models.</li></ul><p>Anemoi provides tools for operational inference, including interfacing to verification software. As a framework it seeks to handle many of the complexities that meteorological organisations will share, allowing them to easily train models from existing recipes but with their own data.</p><ul><li><a href="https://anemoi.ecmwf.int/" class="uri">https://anemoi.ecmwf.int/</a></li></ul><p><img src="https://i.imgur.com/LqJLGkK.png" width="500" /></p><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">anemoi</span><br><span class="hljs-attr">channels:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">conda-forge</span><br><span class="hljs-attr">dependencies:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">python==3.10.15</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">cuda==12.4.1</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">kerchunk</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">h5py</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">s3fs</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">pip:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-utils[all]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-transform[all]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-datasets[create]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-models</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-graphs</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-training</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-inference</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-registry[all]</span><br></code></pre></td></tr></table></figure><h2 id="dependencies">Dependencies</h2><ul><li>Arrows indicate dependencies between packages.</li><li>Dashed lines indicate optional dependencies.</li></ul><p><img src="https://i.imgur.com/PIR32YC.png" width="300" /></p><h2 id="flow-of-data-in-inference">Flow of data in inference</h2><p>The schema above is a high-level overview of the data flow in the <strong>inference process</strong> (click on the image for a larger version).</p><p>Several key concepts are introduced:</p><p>Input:</p><ul><li>Prognostic variables:</li><li>Diagnostic variables:</li></ul><p>Output:</p><ul><li>Constant forcings:</li><li>Dynamic forcings:</li><li>Computed constants:</li><li>Computed forcings:</li></ul><p><img src="https://i.imgur.com/69OpDZv.png" width="700" /></p><h2 id="hugging-face-aifs-single-via-anemoi">Hugging Face | AIFS-single via anemoi</h2><ul><li><a href="https://huggingface.co/ecmwf/aifs-single/tree/main">Download the Model's Checkpoint</a> from <a href="https://huggingface.co/ecmwf/aifs-single">Hugging Face</a><ul><li>Note the aifs_single_v0.2.1.ckpt checkpoint just contains the model’s weights. That file does not contain any information about the optimizer states, lr-scheduler states, etc.</li><li>Training Procedure</li><li>Training Hyperparameters</li><li>Speeds, Sizes, Times<br /></li><li>Evaluation</li><li>Known limitations</li><li>Technical Specifications<ul><li>Hardware</li><li>Software<ul><li>The model was developed and trained using the AnemoI framework.</li></ul></li></ul></li></ul></li><li><a href="https://huggingface.co/ecmwf/aifs-single/blob/main/run_AIFS_v0_2_1.ipynb">https://huggingface.co/ecmwf/aifs-single/blob/main/run_AIFS_v0_2_1.ipynb</a><ul><li>DATE = OpendataClient().latest()</li></ul></li></ul><p><img src="https://i.imgur.com/rOuLVhs.png" width="400" /></p><h3 id="save-input_state">save input_state</h3><p>These functions are all that you need for saving and loading almost any object:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pickle <br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;saved_dictionary.pkl&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    pickle.dump(dictionary, f)<br>        <br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;saved_dictionary.pkl&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    loaded_dict = pickle.load(f)<br></code></pre></td></tr></table></figure><h1 id="discover-anemoi-webinar-series">Discover Anemoi: Webinar Series</h1><ul><li><a href="https://events.ecmwf.int/event/446/timetable/" class="uri">https://events.ecmwf.int/event/446/timetable/</a></li></ul><iframe width="560" height="315" src="https://www.youtube.com/embed/AiO-GCIPcM4" title="Discover Anemoi: Introduction to Anemoi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/S91TGYrKg00" title="Discover Anemoi: Anemoi Datasets" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/tIuyeQgGEG4" title="Discover Anemoi: Anemoi Graphs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/hbzgAsxDMX4" title="Discover Anemoi: Anemoi Training" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/CEXqlpSuNPo" title="Discover Anemoi: Inference" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><h1 id="references">References</h1><ol type="1"><li><a href="https://www.ecmwf.int/en/newsletter/178/news/aifs-new-ecmwf-forecasting-system">AIFS: a new ECMWF forecasting system | ECMWF | January 2024</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/news/2024/bringing-together-users-researchers-and-coders-ecmwfs-machine">Bringing together users, researchers and coders in ECMWF’s machine learning efforts | 15 May 2024</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/news/2024/machine-learning-play-growing-role-weather-forecasting-says-dg">Machine learning to play growing role in weather forecasting, says DG | ECMWF | 9 September 2024</a><ol type="1"><li>Machine learning is well suited to weather forecasting due to the vast amounts of data that are used to determine the best possible initial conditions and to produce global forecasts.<br /></li></ol></li><li><a href="https://www.ecmwf.int/en/newsletter/181/editorial/machine-learning-ensembles">Machine learning ensembles | ECMWF | October 2024</a></li><li><a href="https://data.cma.cn/site/article/id/42435.html">欧洲中期天气预报中心联合多国共推人工智能天气预报计划 | CMA</a><ol type="1"><li>目前，Anemoi吸引了西班牙国家气象局、丹麦气象研究所、德国气象局、芬兰气象研究所、意大利空军气象局、荷兰皇家气象研究所、挪威气象局、法国气象局、瑞士气象局和比利时皇家气象研究所的参与。一些国家基于Anemoi在机器学习模型的创建上取得了进展，如挪威气象局为斯堪的纳维亚创建了区域模型，德国气象局正利用其全球数值预报模式(ICON)数据开发一个名为AICON的数据驱动天气预报模型。</li></ol></li></ol>]]></content>
+    <content type="html"><![CDATA[<ul><li><a href="https://waipangsze.github.io/2025/01/25/ML-ECMWF-Anemoi/">ML | ECMWF | Anemoi</a></li></ul><hr /><h1 id="anemoi">Anemoi</h1><p><a href="https://anemoi.ecmwf.int/">Anemoi</a> is a collaborative and open-source framework for developing machine learning weather forecasting models. Named after the Greek gods of the winds, the goal of Anemoi is to provide the key building blocks to train state‑of-the‑art data-driven weather forecasting models and run them in an operational context. As a framework it seeks to handle many of the complexities that meteorological organisations will share, allowing them to easily train models from existing recipes but with their own data.</p><ul><li><a href="https://eurocc-austria.at/fileadmin/eurocc-main/events/Webinar_Weather_Climate_13.11.2024/4_Mariana_Clare_AIFS_a_data-driven_probabilistic_weather_forecasting_system_-2.pdf">AIFS: a data-driven probabilistic forecasting system | Slides | November 13, 2024</a></li><li><a href="https://arxiv.org/abs/2406.01465v1">AIFS - ECMWF’s data-driven forecasting system | arXiv | 03 Jun 2024</a></li><li><a href="https://charts.ecmwf.int/?facets=%7B%22Product%20type%22%3A%5B%22Experimental%3A%20AIFS%22%2C%22Experimental%3A%20Machine%20learning%20models%22%5D%7D">Experimental: AIFS, Experimental: Machine learning models | Charts</a></li><li><a href="https://huggingface.co/ecmwf">https://huggingface.co/ecmwf | ecmwf/aifs-single</a><ul><li>To generate a new forecast using AIFS, you can use <code>anemoi-inference</code>. In the following notebook, a step-by-step workflow is specified to run the AIFS using the HuggingFace model:</li></ul></li></ul><h2 id="aifs">AIFS</h2><p><strong>AIFS</strong> is based on a <strong>graph neural network (GNN) encoder and decoder</strong>, and a sliding window transformer processor, and is trained on ECMWF’s ERA5 re-analysis and ECMWF’s operational numerical weather prediction (NWP) analyses.</p><ul><li>AIFS training data, <a href="https://www.ecmwf.int/en/newsletter/178/news/aifs-new-ecmwf-forecasting-system">AIFS: a new ECMWF forecasting system</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/aifs-blog/2024/first-update-aifs">First update to the AIFS | 16 January 2024</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/news/2024/bringing-together-users-researchers-and-coders-ecmwfs-machine">Bringing together users, researchers and coders in ECMWF’s machine learning efforts | 15 May 2024</a><ul><li>“Because of the code adaptation we’ve done, we can easily expand parts of the AIFS and Anemoi to regional systems,”</li></ul></li></ul><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/GBcuV9S.png" width="600" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/zHcuWYK.png" width="600" /></div></div></div><h2 id="webinar-anemoi---a-framework-for-building-the-aifs-and-other-data-driven-weather-forecasting-models-virtual-april-30-2024">Webinar: Anemoi - a framework for building the AIFS and other data-driven weather forecasting models | Virtual | April 30, 2024</h2><ul><li><a href="https://events.ecmwf.int/event/409/" class="uri">https://events.ecmwf.int/event/409/</a></li><li>Description<ul><li>Last year ECMWF introduced the AIFS, building on a series of innovative papers which demonstrated the potential of machine learning in creating data-driven weather forecasting models.</li><li>Machine learning models typically build on <strong>open-source frameworks, such as Tensorflow, PyTorch and JAX</strong> which allow communities to work together and build on one another's work. Weather forecasting brings its own challenges for machine learning, with large datasets and spatial-temporal problems.</li><li>In this webinar, we will introduce Anemoi, the toolbox from which the AIFS is trained.</li><li>We have been developing this toolbox with a view to many users both inside and outside of ECMWF to <strong>use the toolbox to train both global and local weather forecasting models</strong>. The toolbox aims to allow users to bring their own datasets and customise their ML models.</li><li>We will introduce the toolbox, talk through the steps needed to train a data-driven model and explain how Anemoi helps with these tasks. Finally we will outline a roadmap for future Anemoi development.</li></ul></li><li>Additional utility tools exist in supporting repositories beyond these core modules. Anemoi builds on top of ECMWF’s Artificial Intelligence Forecasting System (AIFS), expanding that codebase to enable wider functionality for a greater range of users. <strong>Future AIFS models will be trained using Anemoi</strong>.</li></ul><h2 id="discover-anemoi-webinar-series-online-13-30-january-2025">Discover Anemoi: Webinar Series | Online | 13-30 January 2025</h2><ul><li><a href="https://events.ecmwf.int/event/446/" class="uri">https://events.ecmwf.int/event/446/</a></li></ul><p>Discover Anemoi will feature six webinars, demonstrating the use of key components of the Anemoi ecosystem. The webinars will cover:</p><ul><li>An introduction to Anemoi</li><li>Creating datasets</li><li>Building graphs</li><li>Training models</li><li>Inference</li><li>Contributing as a developer</li></ul><h1 id="high-resolution-inside-the-nordic">High resolution inside the Nordic</h1><p>The AIFS is a global system, but work has also been going on in <strong>Anemoi to create regional (limited-area) ML systems</strong>. For example, <em>MET Norway</em> has created a regional model for Scandinavia (<a href="https://arxiv.org/abs/2409.02891v1">Nipen et al., 2024, arXiv:2409.02891</a>).</p><p>The plot shows a 7-day forecast of 10 m wind speed (shading) and sea-level pressure (contours). The model has learned to forecast at high resolution (here ~10 km) inside the Nordic region, and at low resolution (here ~100 km) outside of this domain. The model successfully creates a higher-resolution structure over the Nordics.</p><ul><li><a href="https://arxiv.org/pdf/2409.02891v1">Nipen, T. N., Haugen, H. H., Ingstad, M. S., Nordhagen, E. M., Salihi, A. F. S., Tedesco, P., ... &amp; Chantry, M. (2024). Regional data-driven weather modeling with a global stretched-grid. arXiv preprint arXiv:2409.02891.</a><ul><li>A <strong>data-driven model (DDM)</strong> suitable for regional weather forecasting applications is presented. The model extends the Artificial Intelligence Forecasting System by introducing a stretched-grid architecture that dedicates higher resolution over a regional area of interest and maintains a lower resolution elsewhere on the globe. The model is based on graph neural networks, which naturally affords arbitrary multi-resolution grid configurations.</li><li>The model is pre-trained on 43 years of global <strong>ERA5</strong> data at 31 km resolution and is further refined using 3.3 years of <strong>2.5 km resolution operational analyses from the MetCoOp Ensemble Prediction System (MEPS)</strong>.</li></ul></li></ul><p>The DDM was trained on compute nodes equipped with four AMD Instinct MI250X GPUs, each with 128 GB memory. To speed up training, we used <strong>data parallelism across 32 model instances for stages A–C</strong> and <strong>16 for stage D</strong>. For stages B–D, we used model parallelism to run one instance of the model on each node. This splits the nodes and edges of the graphs across multiple GPUs and is necessary for fitting the 31 km global and 2.5 km regional stretched-grid model within the available GPU memory</p><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/xHsB08i.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/yDB2LwN.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/i8uLpch.png" /></div></div><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/20hdCXS.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/zzSAUKE.png" /></div></div></div><h1 id="build-anemoi">Build Anemoi</h1><p><strong>Anemoi</strong> is a framework for developing machine learning weather forecasting models. It comprises of components or packages for</p><ul><li>preparing training datasets,</li><li>conducting ML model training and</li><li>a registry for datasets and trained models.</li></ul><p>Anemoi provides tools for operational inference, including interfacing to verification software. As a framework it seeks to handle many of the complexities that meteorological organisations will share, allowing them to easily train models from existing recipes but with their own data.</p><ul><li><a href="https://anemoi.ecmwf.int/" class="uri">https://anemoi.ecmwf.int/</a></li></ul><p><img src="https://i.imgur.com/LqJLGkK.png" width="500" /></p><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">anemoi</span><br><span class="hljs-attr">channels:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">conda-forge</span><br><span class="hljs-attr">dependencies:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">python==3.10.15</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">cuda==12.4.1</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">kerchunk</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">h5py</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">s3fs</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">pip:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-utils[all]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-transform[all]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-datasets[create]</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-models</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-graphs</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-training</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-inference</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anemoi-registry[all]</span><br></code></pre></td></tr></table></figure><h2 id="dependencies">Dependencies</h2><ul><li>Arrows indicate dependencies between packages.</li><li>Dashed lines indicate optional dependencies.</li></ul><p><img src="https://i.imgur.com/PIR32YC.png" width="300" /></p><h2 id="flow-of-data-in-inference">Flow of data in inference</h2><p>The schema above is a high-level overview of the data flow in the <strong>inference process</strong> (click on the image for a larger version).</p><p>Several key concepts are introduced:</p><p>Input:</p><ul><li>Prognostic variables:</li><li>Diagnostic variables:</li></ul><p>Output:</p><ul><li>Constant forcings:</li><li>Dynamic forcings:</li><li>Computed constants:</li><li>Computed forcings:</li></ul><p><img src="https://i.imgur.com/69OpDZv.png" width="700" /></p><h2 id="hugging-face-aifs-single-via-anemoi">Hugging Face | AIFS-single via anemoi</h2><ul><li><a href="https://huggingface.co/ecmwf/aifs-single/tree/main">Download the Model's Checkpoint</a> from <a href="https://huggingface.co/ecmwf/aifs-single">Hugging Face</a><ul><li>Note the aifs_single_v0.2.1.ckpt checkpoint just contains the model’s weights. That file does not contain any information about the optimizer states, lr-scheduler states, etc.</li><li>Training Procedure</li><li>Training Hyperparameters</li><li>Speeds, Sizes, Times<br /></li><li>Evaluation</li><li>Known limitations</li><li>Technical Specifications<ul><li>Hardware</li><li>Software<ul><li>The model was developed and trained using the AnemoI framework.</li></ul></li></ul></li></ul></li><li><a href="https://huggingface.co/ecmwf/aifs-single/blob/main/run_AIFS_v0_2_1.ipynb">https://huggingface.co/ecmwf/aifs-single/blob/main/run_AIFS_v0_2_1.ipynb</a><ul><li>DATE = OpendataClient().latest()</li></ul></li></ul><p><img src="https://i.imgur.com/rOuLVhs.png" width="400" /></p><h3 id="save-input_state">save input_state</h3><p>These functions are all that you need for saving and loading almost any object:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pickle <br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;saved_dictionary.pkl&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    pickle.dump(dictionary, f)<br>        <br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;saved_dictionary.pkl&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>    loaded_dict = pickle.load(f)<br></code></pre></td></tr></table></figure><h1 id="discover-anemoi-webinar-series">Discover Anemoi: Webinar Series</h1><ul><li><a href="https://events.ecmwf.int/event/446/timetable/" class="uri">https://events.ecmwf.int/event/446/timetable/</a></li></ul><iframe width="560" height="315" src="https://www.youtube.com/embed/AiO-GCIPcM4" title="Discover Anemoi: Introduction to Anemoi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/S91TGYrKg00" title="Discover Anemoi: Anemoi Datasets" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/tIuyeQgGEG4" title="Discover Anemoi: Anemoi Graphs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/hbzgAsxDMX4" title="Discover Anemoi: Anemoi Training" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><iframe width="560" height="315" src="https://www.youtube.com/embed/CEXqlpSuNPo" title="Discover Anemoi: Inference" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><h1 id="references">References</h1><ol type="1"><li><a href="https://www.ecmwf.int/en/newsletter/178/news/aifs-new-ecmwf-forecasting-system">AIFS: a new ECMWF forecasting system | ECMWF | January 2024</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/news/2024/bringing-together-users-researchers-and-coders-ecmwfs-machine">Bringing together users, researchers and coders in ECMWF’s machine learning efforts | 15 May 2024</a></li><li><a href="https://www.ecmwf.int/en/about/media-centre/news/2024/machine-learning-play-growing-role-weather-forecasting-says-dg">Machine learning to play growing role in weather forecasting, says DG | ECMWF | 9 September 2024</a><ol type="1"><li>Machine learning is well suited to weather forecasting due to the vast amounts of data that are used to determine the best possible initial conditions and to produce global forecasts.<br /></li></ol></li><li><a href="https://www.ecmwf.int/en/newsletter/181/editorial/machine-learning-ensembles">Machine learning ensembles | ECMWF | October 2024</a></li><li><a href="https://data.cma.cn/site/article/id/42435.html">欧洲中期天气预报中心联合多国共推人工智能天气预报计划 | CMA</a><ol type="1"><li>目前，Anemoi吸引了西班牙国家气象局、丹麦气象研究所、德国气象局、芬兰气象研究所、意大利空军气象局、荷兰皇家气象研究所、挪威气象局、法国气象局、瑞士气象局和比利时皇家气象研究所的参与。一些国家基于Anemoi在机器学习模型的创建上取得了进展，如挪威气象局为斯堪的纳维亚创建了区域模型，德国气象局正利用其全球数值预报模式(ICON)数据开发一个名为AICON的数据驱动天气预报模型。</li></ol></li></ol>]]></content>
     
     
     <categories>
@@ -5458,13 +5532,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>MPI</tag>
       
@@ -5524,11 +5598,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -6231,13 +6305,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -6262,13 +6336,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>MPI</tag>
       
@@ -6299,13 +6373,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -6567,9 +6641,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -6654,11 +6728,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -6759,9 +6833,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -6790,9 +6864,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -6821,9 +6895,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -6854,11 +6928,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -6883,11 +6957,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -6914,13 +6988,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -6945,11 +7019,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -6974,9 +7048,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -7213,11 +7287,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>ECMWF</tag>
       
@@ -7286,11 +7360,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -7348,11 +7422,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -7523,11 +7597,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>Google</tag>
       
@@ -7554,11 +7628,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
     </tags>
     
@@ -7583,11 +7657,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -7614,11 +7688,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -7645,11 +7719,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>PGW</tag>
       
@@ -7676,11 +7750,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -7844,11 +7918,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>DA</tag>
       
@@ -7877,9 +7951,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -7916,9 +7990,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -7949,15 +8023,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>NWP</tag>
       
       <tag>gnu</tag>
       
+      <tag>WRF</tag>
+      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>DA</tag>
       
@@ -8206,9 +8280,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Micromamba</tag>
       
@@ -8397,9 +8471,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>Spack</tag>
       
@@ -8669,9 +8743,9 @@
     
     <tags>
       
-      <tag>MPAS</tag>
-      
       <tag>Installation</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -8972,9 +9046,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>tile files</tag>
       
@@ -9045,33 +9119,6 @@
   
   
   <entry>
-    <title>Approximate Metric Equivalents for Degrees, Minutes, and Seconds</title>
-    <link href="/2023/06/24/degree-to-meter/"/>
-    <url>/2023/06/24/degree-to-meter/</url>
-    
-    <content type="html"><![CDATA[<h1 id="approximate-metric-equivalents-for-degrees-minutes-and-seconds">Approximate Metric Equivalents for Degrees, Minutes, and Seconds</h1><p>At the equator for longitude and for latitude anywhere, the following approximations are valid:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs sh">1° = 111 km  (or 60 nautical miles)<br>0.1° = 11.1 km<br>0.01° = 1.11 km (2 decimals, km accuracy)<br>0.001° =111 m<br>0.0001° = 11.1 m<br>0.00001° = 1.11 m<br>0.000001° = 0.11 m (7 decimals, cm accuracy)<br><br>1<span class="hljs-string">&#x27; = 1.85 km  (or 1 nautical mile)</span><br><span class="hljs-string">0.1&#x27;</span> = 185 m<br>0.01<span class="hljs-string">&#x27; = 18.5 m</span><br><span class="hljs-string">0.001&#x27;</span> = 1.85 m<br><br>30<span class="hljs-string">&quot; = 900 m</span><br><span class="hljs-string">15&quot;</span> = 450 m<br>3<span class="hljs-string">&quot; = 90 m</span><br><span class="hljs-string">1&quot;</span> = 30 m<br>1/3<span class="hljs-string">&quot; = 10 m</span><br><span class="hljs-string">0.1&quot;</span> = 3 m<br>1/9<span class="hljs-string">&quot; = 3 m</span><br><span class="hljs-string">1/27&quot;</span> = 1 m<br></code></pre></td></tr></table></figure><p>If you report a position to the nearest 0.01° (two decimal places for latitude and longitude), you will only be accurate to around 1 km. While this is adequate for rough locations on a global scale, for detailed work it will be inadequate.</p><h1 id="latitude-and-longitude">Latitude and longitude</h1><p>Lines of latitude and longitude form the grid system used on globes, maps and charts. Latitude is a measure of how far north or south somewhere is from the Equator; longitude is a measure of how far east or west it is from the Prime Meridian. Whilst lines (or parallels) of latitude all run parallel to the Equator, lines (or meridians) of longitude all converge at the Earth’s North and South Poles. The north–south line passing through any particular point on the Earth’s surface is known as the “local meridian”.</p><p>Although the Equator is the obvious zero point from which to measure latitude, there is no equivalent point from which to measure longitude. In 1884, an international conference decided that the Greenwich Meridian, as defined by the Airy Transit Circle at the Royal Observatory, Greenwich, should be adopted as the Prime or Zero Meridian for the World.</p><p>Latitude and longitude are both measured in degrees. <strong>Each degree (°) is subdivided into 60 minutes (') and each minute into 60 seconds (")</strong>. Each degree of latitude corresponds to a distance on the Earth‘s surface of about 111 km. Each degree of longitude however, corresponds to a distance that varies with latitude. The distance is about 111 km at the Equator, reducing to 0 km at the Poles.</p><h1 id="the-prime-meridian">The prime meridian</h1><p>The prime meridian forms the reference point by which longitudes are defined and expressed. This line makes it possible to measure the position of a location on Earth based on the longitude.</p><p>On Earth, the prime meridian -- which, like all other latitude and longitude lines, is also imaginary -- passes through Greenwich, England. For this reason, it also called the Greenwich meridian. Thus, the prime meridian is the imaginary north-south line that passes through the north and south poles, as well as Greenwich. It has a longitude of 0 degrees. The antemeridian, which is the opposite of the prime meridian, is located on the other side of the Earth and has a longitude of 180 degrees.</p><p>Longitudes and the prime meridian are both used to define time zones. <strong>Greenwich Mean Time (GMT)</strong>, also known as Coordinated Universal Time, is the standard time by which all other time zones are expressed -- for example:</p><p>GMT + 0 = Time in Greenwich, U.K. GMT + 8 = China Standard Time GMT - 8 = Pacific Standard Time</p><h1 id="coordinated-universal-time-or-utc">Coordinated Universal Time or UTC</h1><p>Coordinated Universal Time or UTC is the primary time standard by which the world regulates clocks and time. It is within about one second of mean solar time (such as UT1) at 0° longitude (at the IERS Reference Meridian as the currently used prime meridian) and is not adjusted for daylight saving time. It is effectively a successor to Greenwich Mean Time (GMT).</p><p>世界協調時間是世界上調節時鐘和時間的主要時間標準，它與0度經線的平太陽時相差不超過1秒，並不遵守夏令時。世界協調時間是最接近格林威治標準時間（GMT）的幾個替代時間系統之一。對於大多數用途來說，UTC時間被認為能與GMT時間互換，但GMT時間已不再被科學界所確定。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>NWP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>NetCDF and its Conversion</title>
     <link href="/2023/06/24/netcdf/"/>
     <url>/2023/06/24/netcdf/</url>
@@ -9118,6 +9165,33 @@
     <tags>
       
       <tag>download</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Approximate Metric Equivalents for Degrees, Minutes, and Seconds</title>
+    <link href="/2023/06/24/degree-to-meter/"/>
+    <url>/2023/06/24/degree-to-meter/</url>
+    
+    <content type="html"><![CDATA[<h1 id="approximate-metric-equivalents-for-degrees-minutes-and-seconds">Approximate Metric Equivalents for Degrees, Minutes, and Seconds</h1><p>At the equator for longitude and for latitude anywhere, the following approximations are valid:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs sh">1° = 111 km  (or 60 nautical miles)<br>0.1° = 11.1 km<br>0.01° = 1.11 km (2 decimals, km accuracy)<br>0.001° =111 m<br>0.0001° = 11.1 m<br>0.00001° = 1.11 m<br>0.000001° = 0.11 m (7 decimals, cm accuracy)<br><br>1<span class="hljs-string">&#x27; = 1.85 km  (or 1 nautical mile)</span><br><span class="hljs-string">0.1&#x27;</span> = 185 m<br>0.01<span class="hljs-string">&#x27; = 18.5 m</span><br><span class="hljs-string">0.001&#x27;</span> = 1.85 m<br><br>30<span class="hljs-string">&quot; = 900 m</span><br><span class="hljs-string">15&quot;</span> = 450 m<br>3<span class="hljs-string">&quot; = 90 m</span><br><span class="hljs-string">1&quot;</span> = 30 m<br>1/3<span class="hljs-string">&quot; = 10 m</span><br><span class="hljs-string">0.1&quot;</span> = 3 m<br>1/9<span class="hljs-string">&quot; = 3 m</span><br><span class="hljs-string">1/27&quot;</span> = 1 m<br></code></pre></td></tr></table></figure><p>If you report a position to the nearest 0.01° (two decimal places for latitude and longitude), you will only be accurate to around 1 km. While this is adequate for rough locations on a global scale, for detailed work it will be inadequate.</p><h1 id="latitude-and-longitude">Latitude and longitude</h1><p>Lines of latitude and longitude form the grid system used on globes, maps and charts. Latitude is a measure of how far north or south somewhere is from the Equator; longitude is a measure of how far east or west it is from the Prime Meridian. Whilst lines (or parallels) of latitude all run parallel to the Equator, lines (or meridians) of longitude all converge at the Earth’s North and South Poles. The north–south line passing through any particular point on the Earth’s surface is known as the “local meridian”.</p><p>Although the Equator is the obvious zero point from which to measure latitude, there is no equivalent point from which to measure longitude. In 1884, an international conference decided that the Greenwich Meridian, as defined by the Airy Transit Circle at the Royal Observatory, Greenwich, should be adopted as the Prime or Zero Meridian for the World.</p><p>Latitude and longitude are both measured in degrees. <strong>Each degree (°) is subdivided into 60 minutes (') and each minute into 60 seconds (")</strong>. Each degree of latitude corresponds to a distance on the Earth‘s surface of about 111 km. Each degree of longitude however, corresponds to a distance that varies with latitude. The distance is about 111 km at the Equator, reducing to 0 km at the Poles.</p><h1 id="the-prime-meridian">The prime meridian</h1><p>The prime meridian forms the reference point by which longitudes are defined and expressed. This line makes it possible to measure the position of a location on Earth based on the longitude.</p><p>On Earth, the prime meridian -- which, like all other latitude and longitude lines, is also imaginary -- passes through Greenwich, England. For this reason, it also called the Greenwich meridian. Thus, the prime meridian is the imaginary north-south line that passes through the north and south poles, as well as Greenwich. It has a longitude of 0 degrees. The antemeridian, which is the opposite of the prime meridian, is located on the other side of the Earth and has a longitude of 180 degrees.</p><p>Longitudes and the prime meridian are both used to define time zones. <strong>Greenwich Mean Time (GMT)</strong>, also known as Coordinated Universal Time, is the standard time by which all other time zones are expressed -- for example:</p><p>GMT + 0 = Time in Greenwich, U.K. GMT + 8 = China Standard Time GMT - 8 = Pacific Standard Time</p><h1 id="coordinated-universal-time-or-utc">Coordinated Universal Time or UTC</h1><p>Coordinated Universal Time or UTC is the primary time standard by which the world regulates clocks and time. It is within about one second of mean solar time (such as UT1) at 0° longitude (at the IERS Reference Meridian as the currently used prime meridian) and is not adjusted for daylight saving time. It is effectively a successor to Greenwich Mean Time (GMT).</p><p>世界協調時間是世界上調節時鐘和時間的主要時間標準，它與0度經線的平太陽時相差不超過1秒，並不遵守夏令時。世界協調時間是最接近格林威治標準時間（GMT）的幾個替代時間系統之一。對於大多數用途來說，UTC時間被認為能與GMT時間互換，但GMT時間已不再被科學界所確定。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -9196,9 +9270,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -9256,9 +9330,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -9343,9 +9417,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -9370,13 +9444,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
       <tag>HPC</tag>
       
+      <tag>WRF</tag>
+      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
     </tags>
     
@@ -9430,9 +9504,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -9523,9 +9597,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -9697,9 +9771,9 @@
       
       <tag>WRF</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>WPS</tag>
+      
+      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -9846,13 +9920,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
       <tag>gnu</tag>
       
       <tag>gcc</tag>
+      
+      <tag>WRF</tag>
       
       <tag>WPS</tag>
       
@@ -9881,11 +9955,11 @@
     
     <tags>
       
+      <tag>slurm</tag>
+      
       <tag>HPC</tag>
       
       <tag>NWP</tag>
-      
-      <tag>slurm</tag>
       
     </tags>
     
