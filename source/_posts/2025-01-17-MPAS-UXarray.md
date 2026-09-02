@@ -71,6 +71,9 @@ uxds["ivgtyp"].plot(coastline="10m", cmap="jet", clim=(1, 20), dynamic=True)
 cmap = colors.ListedColormap(['white', 'green', 'red', 'blue', 'white'])
 uxds["ivgtyp"].plot(coastline="10m", cmap=cmap, clim=(11, 15), dynamic=True)
 
+# Plot ivgtyp with show CellID as well (Hover Tooltip)
+uxds["ivgtyp"].plot(coastline="10m", cmap="jet", clim=(1, 20), dynamic=True, hover_cols=["indexToCellID"]) ?????
+
 # wind speed from u10 and v10
 tmp = uxds["u10"]
 tmp["u10"] = np.sqrt(uxds["u10"]**2 + uxds["v10"]**2)
@@ -78,12 +81,35 @@ tmin, tmax = int(tmp["u10"].min().values), int(tmp["u10"].max().values)
 tmp["u10"].isel(Time=0).plot(coastline="10m", cmap="jet", clim=(tmin, tmax), dynamic=True)
 ```
 
+- The Hover Tooltip: When you point your mouse cursor over any cell in the interactive map, the popup bubble will dynamically compute and print the exact geographical location along with your real cell identification 
+  - tag:text
+    - Longitude: -105.27
+    - Latitude: 40.01
+    - indexToCellID: 481052
+
 {% gi 5 2-2-1 %}
 ![](https://i.imgur.com/JuNIoOk.png)
 ![](https://i.imgur.com/qV0CrXV.png)
 ![](https://i.imgur.com/EWzShPE.png)
 ![](https://i.imgur.com/WjlzFsd.png)
 {% endgi %}
+
+## Error
+
+- `ERROR 1: PROJ: proj_create_from_database: Open of /uxarray/share/proj failed`
+  - This error occurs because the `GDAL/PROJ` geospatial libraries cannot locate the mandatory `proj.db` database file at the hardcoded or environment-specified path `/uxarray/share/proj`. This usually happens when utilizing geospatial tools inside isolated environments (like Conda or Docker) without properly initializing the underlying library paths.
+
+```sh
+import uxarray as ux
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import colors
+
+import os
+import pyproj
+# Automatically finds and points PROJ to the correct database directory
+os.environ["PROJ_LIB"] = pyproj.datadir.get_data_dir()
+```
 
 # Plot vorticity_500hPa
 
