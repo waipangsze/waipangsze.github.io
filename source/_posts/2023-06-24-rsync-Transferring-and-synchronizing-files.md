@@ -224,3 +224,7 @@ rsync -av /local/path/ target-server:/remote/path/
 * 自動繼承：rsync 會自動讀取 target-server 區塊內的 Port 12345 以及跳板設定。
 
 
+# --remove-source-files moves
+
+- `rsync --remove-source-files moves`: files by transferring them to a destination and deleting them from the source only after a successful transfer.
+- Adding `--checksum (-c)` forces rsync to compare file contents using a 128-bit MD4/XXH64 hash rather than relying on quick check criteria like file size and modification time (mtime). When paired with `--remove-source-files`, it provides an extreme level of transfer verification, but comes with important trade-offs.
