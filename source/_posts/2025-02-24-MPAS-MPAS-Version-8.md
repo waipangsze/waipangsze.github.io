@@ -419,3 +419,5 @@ Beginning MPAS-init_atmosphere Output Log File for task       0 of       6
 # Referecnes
 
 1. [MPAS v8.2 fails to compile GNU 13.2 Linux64 | Jul 2, 2024](https://forum.mmm.ucar.edu/threads/mpas-v8-2-fails-to-compile-gnu-13-2-linux64.17999/)
+   1. It looks like the Noah-MP code that is included in MPAS v8.2.0 breaks the GNU 13.2.0 compiler. Specifically, it seems that Fortran ASSOCIATE statements (which as far as I can tell are completely fine) in Noah-MP code cause the gfortran compiler to segfault.
+   2. I've been able to successfully compile with the GNU 12.2.0 compilers, so if stepping back to an older version of the GNU compilers would be an option for you, that might be the simplest workaround for now.
