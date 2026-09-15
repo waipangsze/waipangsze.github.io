@@ -39,13 +39,14 @@ micromamba install conda-forge::tmux
 ## Edit .tmux.conf
 
 ```sh
-# prefix setting (screen-like)
-set -g prefix C-a
-unbind C-b
-bind C-a send-prefix
+# wpsze: apply Default
+# # prefix setting (screen-like)
+# set -g prefix C-a
+# unbind C-b
+# bind C-a send-prefix
 
-# Use the mouse
 set -g mouse on
+set -g set-clipboard on
 
 bind | split-window -h
 bind - split-window -v
@@ -59,6 +60,11 @@ bind -r ^Left select-pane -L
 bind -r ^Right select-pane -R
 
 set -g default-terminal "xterm-256color"
+
+setw -g mode-keys         vi    # 进入复制模式的时候使用 vi 键位（默认是 EMACS）
+
+# Copy mouse selections to Linux system clipboard
+bind-key -T copy-mode-vi MouseScreenDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -i"
 ```
 
 ## Usage
@@ -68,7 +74,7 @@ set -g default-terminal "xterm-256color"
 tmux new -s <session-name>
 
 # Detach
-tmux detach
+tmux detach # or Ctrl + B then d
 
 # List all sessions
 tmux ls
@@ -87,22 +93,27 @@ tmux source-file ~/.tmux.conf
 
 ```sh
 # Move bewteen panes
-C trl + A (up,down,lef,right)
+C trl + B (up,down,lef,right)
 
 # the window into two panes horizontally.
-Ctrl + A —
+Ctrl + B —
 
 # Split the window into two panes vertically.
-Ctrl + A |
+Ctrl + B |
 
 # Ctrl+B X — Close pane.
-Ctrl + A X
+Ctrl + B X
 ```
 
-## 選擇文字
+## copy text
 
-在bash中選擇文字本不是一件難事，但是到了tmux中，情況會稍有複雜。如果一個window裡面有多個pane，普通的選擇是會橫跨並排的pane的，這讓複製文字變得困難了起來。那麼如何解決呢？答案是：使用Alt。利用Alt+滑鼠框選，我們可以控制選擇的文字範圍，就可以實現選擇單一pane裡的文字啦。 如果在tmux中啟用滑鼠模式(tmux set mouse on)的話，會發現無法直接透過滑鼠來選擇複製文字，這個時候可以用過Shift+滑鼠選擇來選擇文字。 不過對於有多個pane的窗口，選擇一個pane裡的文字就不能簡單透過Shift+滑鼠選擇來完成了，因為這樣可能會選取多個pane裡的文字。 那麼如何來實現只選擇單一pane裡的文字呢？方法很簡單，只需要多按一個鍵即可： 
+If you prefer using your mouse to highlight and copy text just like a normal terminal, you can turn on mouse mode.
 
-- `Shift + Alt + 滑鼠框選`
-  - copy: `Ctrl + Shift + C`
-  - paste: `Ctrl + Shift + V`
+1. Open or create your tmux configuration file: vim ~/.tmux.conf
+2. Add the following line:
+   1. `set -g mouse on`
+3. Save the file, and reload your tmux environment inside the terminal:
+   1. `tmux source ~/.tmux.conf`
+4. Enter Copy Mode: Press `Ctrl + b`, then release and press `[`. (The screen will freeze, and a line counter will appear in the top right).
+5. Simply click and drag your mouse over the text.
+6. You can still paste it using `Ctrl + b` followed by `]`
