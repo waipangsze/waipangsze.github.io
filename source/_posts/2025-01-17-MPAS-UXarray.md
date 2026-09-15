@@ -62,12 +62,12 @@ The “U” in UXarray stands for “Unstructured Grids”.
 ```console
 micromamba env create -n uxarray
 micromamba activate uxarray
-micromamba install conda-forge::uxarray==2024.11.1
-micromamba install scipy
-micromamba install conda-forge::netcdf4
-micromamba install conda-forge::wrf-python
-micromamba install conda-forge::cartopy
-micromamba install conda-forge::basemap
+micromamba install conda-forge::uxarray==2024.11.1 -y
+micromamba install conda-forge scipy -y
+micromamba install conda-forge::netcdf4 -y
+micromamba install conda-forge::wrf-python -y
+micromamba install conda-forge::cartopy -y
+micromamba install conda-forge::basemap -y
 ```
 
 where `uxarray==2024.11.1` can be changed. 
