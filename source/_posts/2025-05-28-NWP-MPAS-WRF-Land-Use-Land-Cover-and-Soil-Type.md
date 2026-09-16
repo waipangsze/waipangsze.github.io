@@ -277,3 +277,7 @@ In the WRF model, land use/land cover and soil type are mutually reinforcing inp
 [^7]: <https://journals.ametsoc.org/view/journals/mwre/140/3/mwr-d-11-00056.1.xml>
 [^8]: <https://pmc.ncbi.nlm.nih.gov/articles/PMC11191672/>
 [^9]: <https://pmc.ncbi.nlm.nih.gov/articles/PMC6360509/>
+
+# References \[Forum\]
+
+1. [What year are the USGS and MODIS land cover in WRF v4 based on? | 2021](https://forum.mmm.ucar.edu/threads/what-year-are-the-usgs-and-modis-land-cover-in-wrf-v4-based-on.10501/)
