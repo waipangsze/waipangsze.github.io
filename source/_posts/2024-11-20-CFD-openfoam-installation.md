@@ -46,6 +46,10 @@ OpenFOAM是一個CFD軟體。它包括一系列應用程序，這些應用程式
 [Intel OneAPI installation](https://waipangsze.github.io/2023/05/06/Intel_OneAPI/)
 {% endnote %}
 
+{% note primary %}
+[Recipe: Compile OpenFOAM* with Intel® Compiler for Intel® Xeon® Scalable Processors](https://www.intel.com/content/www/us/en/developer/articles/technical/recipe-compile-openfoam-with-intel-compiler-for-intel-xeon-scalable-processors.html)
+{% endnote %}
+
 原理：OpenFOAM編譯需要一些軟體和函式庫，像是 `flex`, `zlib` 之類
 
 Repository and compilation software:
@@ -297,6 +301,7 @@ echo $MPI_ROOT
 ## 配置運作環境
 
 設定與編譯時相同的 MPI 編譯環境
+
 - 將 OpenFOAM-x.0 裡面的 bin和platforms/linux64IccDPInt32Opt/bin 加入 PATH
 - 將 OpenFOAM-x.0 裡面的 platforms/linux64IccDPInt32Opt/lib 及其子目錄加入 LD_LIBRARY_PATH
 - 將 ThirdParty-x.0 裡面的 platforms/linux64IccDPInt32/lib 及其子目錄加入 LD_LIBRARY_PATH
@@ -308,6 +313,100 @@ echo $MPI_ROOT
 - cd pitzDaily
 - blockMesh
 - simpleFoam
+
+# Compilation Error
+
+## `error in IOstream "OSHA1stream.sinkFile_" for operation Ostream& operator<<(Ostream&, const word&)`
+
+```log
+[10] 
+[10] 
+[10] --> FOAM FATAL IO ERROR: 
+[10] error in IOstream "OSHA1stream.sinkFile_" for operation Ostream& operator<<(Ostream&, const word&)
+[2] 
+[2] 
+[2] --> FOAM FATAL IO ERROR: 
+[2] error in IOstream "OSHA1stream.sinkFile_" for operation Ostream& operator<<(Ostream&, const word&)
+[2] 
+[2] file: OSHA1stream.sinkFile_ at line 0.
+[2] 
+[2]     From function bool Foam::IOstream::check(const char *) const
+[2]     in file db/IOstreams/IOstreams/IOstream.C at line 96.
+[2] 
+FOAM parallel run exiting
+```
+
+- This is a known compiler compatibility issue specific to **OpenFOAM 9 (and sometimes 8)** when built with newer GCC versions (such as GCC 11, 12, or 13). The `OSHA1stream` class used for **hashing dictionary entries was not C++11 compliant**, causing it to fail when writing function object output.
+-  `icpc -std=c++11 -fp-trap=common -fp-model precise -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wnon-virtual-dtor -Wno-unused-parameter -     Wno-invalid-offsetof -diag-disable 327,654,1125,1292,2289,2304,11062,11074,11076 -O3  -DNoRepository -I/EM/wpsze/openfoam/CT/openfoam/Installation/OFv8/OpenFOAM-8/     platforms/linux64IccDPInt32Opt/src/OpenFOAM -IlnInclude -I. -I/EM/wpsze/openfoam/CT/openfoam/Installation/OFv8/OpenFOAM-8/src/OpenFOAM/lnInclude -I/EM/wpsze/openfo     am/CT/openfoam/Installation/OFv8/OpenFOAM-8/src/OSspecific/POSIX/lnInclude   -fPIC -c db/IOstreams/IOstreams/IOstream.C -o /EM/wpsze/openfoam/CT/openfoam/Installat     ion/OFv8/OpenFOAM-8/platforms/linux64IccDPInt32Opt/src/OpenFOAM/db/IOstreams/IOstreams/IOstream.o$`
+
+在 OpenFOAM 中，[OpenFOAM osha1stream Class Reference](https://api.openfoam.com/2212/classFoam_1_1osha1stream.html) 是一個用來計算 SHA1 檢查碼（digests）的基本輸出串流類別。[https://api.openfoam.com](https://api.openfoam.com/2212/classFoam_1_1osha1stream.html) 
+
+### 常見錯誤與原因
+
+* 錯誤訊息：**FOAM FATAL IO ERROR in IOstream "OSHA1stream.sinkFile_"**
+* 發生時機：在除錯模式（debug mode）下使用 functionObjects 或在 `controlDict` 內新增函數時，程式常會立刻崩潰。
+* 根本原因：較新的 GCC 編譯器版本（如 GCC 11.2.0 或 13.x）與舊版 OpenFOAM（v6 至 v9）存在相容性問題。 
+* [https://github.com](https://github.com/OpenFOAM/OpenFOAM-9/issues/12)
+* [https://aur.archlinux.org](https://aur.archlinux.org/packages/openfoam-org?O=50&PP=10)
+* [https://cfd-china.com](https://cfd-china.com/topic/7679/%E5%9C%A8controldict%E6%96%87%E4%BB%B6%E4%B8%AD%E6%B7%BB%E5%8A%A0function%E6%8A%A5%E9%94%99-%E6%B7%BB%E5%8A%A0%E4%B8%9C%E5%B2%B3%E6%B5%81%E4%BD%93%E4%B8%AD%E7%9A%84%E4%B9%9F%E4%BC%9A%E6%8A%A5%E8%BF%99%E4%B8%AA%E9%94%99)
+
+
+### 解決方法
+
+* 更新軟體：將 OpenFOAM 更新至包含修復提交（commit b0c15be）的版本。
+* 降低編譯器版本：使用較舊的 GCC 版本（如 GCC 8.x 或 9.x）重新從頭編譯 OpenFOAM。
+
+or 
+
+- [Error in IOstream "OSHA1stream.sinkFile_"... in debug mode when using functionObjects
+ #12](https://github.com/OpenFOAM/OpenFOAM-9/issues/12)
+- Commit [b0c15be](https://github.com/OpenFOAM/OpenFOAM-9/commit/b0c15bebd37142f3902901ed5e9a60e33ed456eb) solved this problem. Thank you Henry Weller.
+- `src/OpenFOAM/db/IOstreams/hashes/OSHA1stream.H`
+
+### Furthermore, `C++ 標準不一致`?
+
+* 由於你使用的是 GCC 8.5.0，這個版本理論上不應該觸發因新版 GCC（如 GCC 11+）引起的 OSHA1stream.sinkFile_ 記憶體相容性崩潰。
+* 在 GCC 8.5.0 搭配 Intel ONEAPI MPI (2021.10.0) 的環境下，OSHA1stream 相關的錯誤通常是由於 **MPI 編譯器包裝器（Compiler Wrappers）的 C++ 標準不一致 或 動態連結庫（Shared Libraries）衝突 引起的。**
+
+#### 1. 檢查 C++ 標準與二進位庫相容性 (ABI)
+
+Intel MPI 的 `mpicxx` **有時會預設連結特定版本的 C++ 標準庫**。如果 OpenFOAM 編譯時使用的標準與 Intel MPI 內建的不一致，會導致 `OSHA1stream` 這類涉及標準串流（std::ostream）的類別發生記憶體對齊錯誤。
+
+* 排查方法：檢查你的 etc/bashrc（或 zshrc），確保 `WM_COMPILER` 設定正確。
+* 建議調整：在 OpenFOAM 的 `wmake/rules/LinuxGcc/c++` 檔案中，確認 `-std=c++11` 或 `-std=c++14` 被正確套用，並與 **Intel MPI 宣告的標準一致**。
+
+#### 2. 強制指定使用 GCC 的 g++ 作為底層編譯器
+
+Intel MPI 的 mpicxx 預設可能會去尋找 Intel C++ 編譯器（icx/icc），而不是你的 GCC 8.5.0。這會導致混合編譯錯誤。
+
+請在載入 OpenFOAM 環境變數之前，在終端機強制指定環境變數：
+
+```sh
+export MPICH_CXX=g++
+export OMPI_CXX=g++
+```
+
+（註：雖然這是 Intel MPI，但它相容 MPICH 的環境變數設定，強制指定可以確保它調用 GCC 8.5.0 的 g++。）
+
+#### 3. 清除並重新編譯對應模組
+
+如果你先前曾用不同的環境或模組（Modules）編譯過 OpenFOAM，舊的 .o 暫存檔會污染編譯環境。請徹底清理後再編譯
+
+## error: C++ header location not resolved; check installed C++ dependencies
+
+```sh
+    ln: ./lnInclude
+    wmkdep: codeStreamTemplate.C
+    Ctoo: codeStreamTemplate.C
+icpx: error: C++ header location not resolved; check installed C++ dependencies
+```
+
+- The error icpx: error: C++ header location not resolved is a classic issue where the Intel oneAPI C++ compiler (icpx) cannot find the standard C++ headers from the GNU compiler (g++) that it relies on internally.
+- <https://docs.discoverer.bg/openfoam.html>
+
+{% note primary %}
+It's worth noting that on some HPC systems, the **Intel oneAPI compilers (icx/icpx) are not recommended for OpenFOAM builds**. Testing on OpenFOAM 10 and 11 showed that Intel oneAPI compilers did not provide a performance advantage over GCC or LLVM (Clang) for the produced executables.
+{% endnote %}
 
 # [ParaView（後處理工具）安裝](http://dyfluid.com/install.html#paraview)
 
