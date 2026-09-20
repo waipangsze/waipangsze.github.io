@@ -68,11 +68,12 @@ Software for `OpenFOAM` (and `ParaView`):
  $ micromamba env create -n cfd_env
 Empty environment created at prefix: /home/wpsze/micromamba/envs/cfd_env
  $ micromamba install conda-forge::zlib
- $ micromamba install anaconda::cmake
+ $ micromamba install conda-forge::cmake
  $ micromamba install conda-forge::flex
  $ micromamba install conda-forge::bison
  $ micromamba install conda-forge::cgal
- $ micromamba install anaconda::metis
+ $ micromamba install conda-forge::metis
+ $ micromamba install -c conda-forge gcc=8.5.0 gxx=8.5.0 gfortran=8.5.0
 ```
 
 ## 載入環境
