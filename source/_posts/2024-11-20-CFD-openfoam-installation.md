@@ -351,46 +351,12 @@ FOAM parallel run exiting
 * [https://cfd-china.com](https://cfd-china.com/topic/7679/%E5%9C%A8controldict%E6%96%87%E4%BB%B6%E4%B8%AD%E6%B7%BB%E5%8A%A0function%E6%8A%A5%E9%94%99-%E6%B7%BB%E5%8A%A0%E4%B8%9C%E5%B2%B3%E6%B5%81%E4%BD%93%E4%B8%AD%E7%9A%84%E4%B9%9F%E4%BC%9A%E6%8A%A5%E8%BF%99%E4%B8%AA%E9%94%99)
 
 
-### 解決方法
-
-* 更新軟體：將 OpenFOAM 更新至包含修復提交（commit b0c15be）的版本。
-* 降低編譯器版本：使用較舊的 GCC 版本（如 GCC 8.x 或 9.x）重新從頭編譯 OpenFOAM。
-
-or 
+### 解決方法 ***
 
 - [Error in IOstream "OSHA1stream.sinkFile_"... in debug mode when using functionObjects
  #12](https://github.com/OpenFOAM/OpenFOAM-9/issues/12)
 - Commit [b0c15be](https://github.com/OpenFOAM/OpenFOAM-9/commit/b0c15bebd37142f3902901ed5e9a60e33ed456eb) solved this problem. Thank you Henry Weller.
 - `src/OpenFOAM/db/IOstreams/hashes/OSHA1stream.H`
-
-### Furthermore, `C++ 標準不一致`?
-
-* 由於你使用的是 GCC 8.5.0，這個版本理論上不應該觸發因新版 GCC（如 GCC 11+）引起的 OSHA1stream.sinkFile_ 記憶體相容性崩潰。
-* 在 GCC 8.5.0 搭配 Intel ONEAPI MPI (2021.10.0) 的環境下，OSHA1stream 相關的錯誤通常是由於 **MPI 編譯器包裝器（Compiler Wrappers）的 C++ 標準不一致 或 動態連結庫（Shared Libraries）衝突 引起的。**
-
-#### 1. 檢查 C++ 標準與二進位庫相容性 (ABI)
-
-Intel MPI 的 `mpicxx` **有時會預設連結特定版本的 C++ 標準庫**。如果 OpenFOAM 編譯時使用的標準與 Intel MPI 內建的不一致，會導致 `OSHA1stream` 這類涉及標準串流（std::ostream）的類別發生記憶體對齊錯誤。
-
-* 排查方法：檢查你的 etc/bashrc（或 zshrc），確保 `WM_COMPILER` 設定正確。
-* 建議調整：在 OpenFOAM 的 `wmake/rules/LinuxGcc/c++` 檔案中，確認 `-std=c++11` 或 `-std=c++14` 被正確套用，並與 **Intel MPI 宣告的標準一致**。
-
-#### 2. 強制指定使用 GCC 的 g++ 作為底層編譯器
-
-Intel MPI 的 mpicxx 預設可能會去尋找 Intel C++ 編譯器（icx/icc），而不是你的 GCC 8.5.0。這會導致混合編譯錯誤。
-
-請在載入 OpenFOAM 環境變數之前，在終端機強制指定環境變數：
-
-```sh
-export MPICH_CXX=g++
-export OMPI_CXX=g++
-```
-
-（註：雖然這是 Intel MPI，但它相容 MPICH 的環境變數設定，強制指定可以確保它調用 GCC 8.5.0 的 g++。）
-
-#### 3. 清除並重新編譯對應模組
-
-如果你先前曾用不同的環境或模組（Modules）編譯過 OpenFOAM，舊的 .o 暫存檔會污染編譯環境。請徹底清理後再編譯
 
 ## error: C++ header location not resolved; check installed C++ dependencies
 
@@ -407,6 +373,31 @@ icpx: error: C++ header location not resolved; check installed C++ dependencies
 {% note primary %}
 It's worth noting that on some HPC systems, the **Intel oneAPI compilers (icx/icpx) are not recommended for OpenFOAM builds**. Testing on OpenFOAM 10 and 11 showed that Intel oneAPI compilers did not provide a performance advantage over GCC or LLVM (Clang) for the produced executables.
 {% endnote %}
+
+### Solution
+
+- OpenFOAM-v13,
+
+You can use `WM_COMPILER=Gcc` together with `WM_MPLIB=INTELMPI`.
+
+This is a supported and **fairly common combination in OpenFOAM**:
+
+- `WM_COMPILER=Gcc` → uses the GNU compilers (`g++`, `gcc`, `gfortran`)
+- `WM_MPLIB=INTELMPI` → links against Intel MPI (`mpiicpc` / `mpiicc` wrappers or the Intel MPI libraries)
+
+### How to set it
+
+```bash
+export WM_COMPILER=Gcc
+export WM_MPLIB=INTELMPI
+```
+
+This pairing is frequently used in HPC environments for good reason:
+
+*   **Proven Performance**: A study comparing compiler/MPI combinations for a CFD solver found that **GCC coupled with Intel MPI (IMPI) outperformed other configurations by nearly 20%**. Another source notes OpenFOAM is often compiled with GCC and Intel MPI specifically for performance reasons. <https://mediatum.ub.tum.de/doc/1446031/1446031.pdf#22#8>, <https://wiki.anl.gov/wiki_tracc/index.php?title=OpenFOAM&diff=1938&oldid=1775>.
+*   **Common Practice**: This setup is standard enough that the OpenFOAM `bashrc` explicitly lists `INTELMPI` as a supported option for `WM_MPLIB`. 
+
+- [6.4_在HPC群集上安装OpenFOAM.html](https://topcfd.cn/Ebook/OF_Primer/OF_Primer/6.4_%e5%9c%a8HPC%e7%be%a4%e9%9b%86%e4%b8%8a%e5%ae%89%e8%a3%85OpenFOAM.html)
 
 # [ParaView（後處理工具）安裝](http://dyfluid.com/install.html#paraview)
 
