@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/fFT42Yk.png">
 <meta property="article:published_time" content="2024-11-20T08:21:00.000Z">
-<meta property="article:modified_time" content="2026-09-18T07:40:24.927Z">
+<meta property="article:modified_time" content="2026-09-20T14:12:09.932Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="OpenFOAM">
@@ -365,7 +365,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.3k words
+          3k words
         
       </span>
     
@@ -376,7 +376,7 @@
         
         
         
-          28 mins
+          25 mins
         
       </span>
     
@@ -473,7 +473,7 @@
 <li><code>OpenMPI</code> message passing interface for parallel computation.</li>
 <li><code>ParaView</code> can be installed as a system package, in which case its dependencies do not need to be installed. However, in order to compile its reader modules within OpenFOAM, all its dependencies need to be installed including the development environments of QT, graphics (GL), data formats, etc</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ micromamba <span class="hljs-built_in">env</span> create -n cfd_env<br>Empty environment created at prefix: /home/wpsze/micromamba/envs/cfd_env<br> $ micromamba install conda-forge::zlib<br> $ micromamba install anaconda::cmake<br> $ micromamba install conda-forge::flex<br> $ micromamba install conda-forge::bison<br> $ micromamba install conda-forge::cgal<br> $ micromamba install anaconda::metis<br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ micromamba <span class="hljs-built_in">env</span> create -n cfd_env<br>Empty environment created at prefix: /home/wpsze/micromamba/envs/cfd_env<br> $ micromamba install conda-forge::zlib<br> $ micromamba install conda-forge::cmake<br> $ micromamba install conda-forge::flex<br> $ micromamba install conda-forge::bison<br> $ micromamba install conda-forge::cgal<br> $ micromamba install conda-forge::metis<br> $ micromamba install -c conda-forge gcc=8.5.0 gxx=8.5.0 gfortran=8.5.0<br></code></pre></td></tr></table></figure>
 <h2 id="載入環境">載入環境</h2>
 <p>安裝需要載入 Intel 編譯環境和 gcc 環境，且 gcc 環境不應高於 Intel 編譯器環境</p>
 <h2 id="environment-variables">Environment variables</h2>
@@ -566,35 +566,12 @@
 <li><a target="_blank" rel="noopener" href="https://aur.archlinux.org/packages/openfoam-org?O=50&amp;PP=10">https://aur.archlinux.org</a></li>
 <li><a target="_blank" rel="noopener" href="https://cfd-china.com/topic/7679/%E5%9C%A8controldict%E6%96%87%E4%BB%B6%E4%B8%AD%E6%B7%BB%E5%8A%A0function%E6%8A%A5%E9%94%99-%E6%B7%BB%E5%8A%A0%E4%B8%9C%E5%B2%B3%E6%B5%81%E4%BD%93%E4%B8%AD%E7%9A%84%E4%B9%9F%E4%BC%9A%E6%8A%A5%E8%BF%99%E4%B8%AA%E9%94%99">https://cfd-china.com</a></li>
 </ul>
-<h3 id="解決方法">解決方法</h3>
-<ul>
-<li>更新軟體：將 OpenFOAM 更新至包含修復提交（commit b0c15be）的版本。</li>
-<li>降低編譯器版本：使用較舊的 GCC 版本（如 GCC 8.x 或 9.x）重新從頭編譯 OpenFOAM。</li>
-</ul>
-<p>or</p>
+<h3 id="解決方法">解決方法 ***</h3>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/OpenFOAM/OpenFOAM-9/issues/12">Error in IOstream "OSHA1stream.sinkFile_"... in debug mode when using functionObjects #12</a></li>
 <li>Commit <a target="_blank" rel="noopener" href="https://github.com/OpenFOAM/OpenFOAM-9/commit/b0c15bebd37142f3902901ed5e9a60e33ed456eb">b0c15be</a> solved this problem. Thank you Henry Weller.</li>
 <li><code>src/OpenFOAM/db/IOstreams/hashes/OSHA1stream.H</code></li>
 </ul>
-<h3 id="furthermore-c-標準不一致">Furthermore, <code>C++ 標準不一致</code>?</h3>
-<ul>
-<li>由於你使用的是 GCC 8.5.0，這個版本理論上不應該觸發因新版 GCC（如 GCC 11+）引起的 OSHA1stream.sinkFile_ 記憶體相容性崩潰。</li>
-<li>在 GCC 8.5.0 搭配 Intel ONEAPI MPI (2021.10.0) 的環境下，OSHA1stream 相關的錯誤通常是由於 <strong>MPI 編譯器包裝器（Compiler Wrappers）的 C++ 標準不一致 或 動態連結庫（Shared Libraries）衝突 引起的。</strong></li>
-</ul>
-<h4 id="檢查-c-標準與二進位庫相容性-abi">1. 檢查 C++ 標準與二進位庫相容性 (ABI)</h4>
-<p>Intel MPI 的 <code>mpicxx</code> <strong>有時會預設連結特定版本的 C++ 標準庫</strong>。如果 OpenFOAM 編譯時使用的標準與 Intel MPI 內建的不一致，會導致 <code>OSHA1stream</code> 這類涉及標準串流（std::ostream）的類別發生記憶體對齊錯誤。</p>
-<ul>
-<li>排查方法：檢查你的 etc/bashrc（或 zshrc），確保 <code>WM_COMPILER</code> 設定正確。</li>
-<li>建議調整：在 OpenFOAM 的 <code>wmake/rules/LinuxGcc/c++</code> 檔案中，確認 <code>-std=c++11</code> 或 <code>-std=c++14</code> 被正確套用，並與 <strong>Intel MPI 宣告的標準一致</strong>。</li>
-</ul>
-<h4 id="強制指定使用-gcc-的-g-作為底層編譯器">2. 強制指定使用 GCC 的 g++ 作為底層編譯器</h4>
-<p>Intel MPI 的 mpicxx 預設可能會去尋找 Intel C++ 編譯器（icx/icc），而不是你的 GCC 8.5.0。這會導致混合編譯錯誤。</p>
-<p>請在載入 OpenFOAM 環境變數之前，在終端機強制指定環境變數：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> MPICH_CXX=g++<br><span class="hljs-built_in">export</span> OMPI_CXX=g++<br></code></pre></td></tr></table></figure>
-<p>（註：雖然這是 Intel MPI，但它相容 MPICH 的環境變數設定，強制指定可以確保它調用 GCC 8.5.0 的 g++。）</p>
-<h4 id="清除並重新編譯對應模組">3. 清除並重新編譯對應模組</h4>
-<p>如果你先前曾用不同的環境或模組（Modules）編譯過 OpenFOAM，舊的 .o 暫存檔會污染編譯環境。請徹底清理後再編譯</p>
 <h2 id="error-c-header-location-not-resolved-check-installed-c-dependencies">error: C++ header location not resolved; check installed C++ dependencies</h2>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">    <span class="hljs-built_in">ln</span>: ./lnInclude<br>    wmkdep: codeStreamTemplate.C<br>    Ctoo: codeStreamTemplate.C<br>icpx: error: C++ header location not resolved; check installed C++ dependencies<br></code></pre></td></tr></table></figure>
 <ul>
@@ -604,6 +581,24 @@
 <div class="note note-primary">
             <p>It's worth noting that on some HPC systems, the <strong>Intel oneAPI compilers (icx/icpx) are not recommended for OpenFOAM builds</strong>. Testing on OpenFOAM 10 and 11 showed that Intel oneAPI compilers did not provide a performance advantage over GCC or LLVM (Clang) for the produced executables.</p>
           </div>
+<h3 id="solution">Solution</h3>
+<ul>
+<li>OpenFOAM-v13,</li>
+</ul>
+<p>You can use <code>WM_COMPILER=Gcc</code> together with <code>WM_MPLIB=INTELMPI</code>.</p>
+<p>This is a supported and <strong>fairly common combination in OpenFOAM</strong>:</p>
+<ul>
+<li><code>WM_COMPILER=Gcc</code> → uses the GNU compilers (<code>g++</code>, <code>gcc</code>, <code>gfortran</code>)</li>
+<li><code>WM_MPLIB=INTELMPI</code> → links against Intel MPI (<code>mpiicpc</code> / <code>mpiicc</code> wrappers or the Intel MPI libraries)</li>
+</ul>
+<h3 id="how-to-set-it">How to set it</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">export</span> WM_COMPILER=Gcc<br><span class="hljs-built_in">export</span> WM_MPLIB=INTELMPI<br></code></pre></td></tr></table></figure>
+<p>This pairing is frequently used in HPC environments for good reason:</p>
+<ul>
+<li><strong>Proven Performance</strong>: A study comparing compiler/MPI combinations for a CFD solver found that <strong>GCC coupled with Intel MPI (IMPI) outperformed other configurations by nearly 20%</strong>. Another source notes OpenFOAM is often compiled with GCC and Intel MPI specifically for performance reasons. <a target="_blank" rel="noopener" href="https://mediatum.ub.tum.de/doc/1446031/1446031.pdf#22#8" class="uri">https://mediatum.ub.tum.de/doc/1446031/1446031.pdf#22#8</a>, <a target="_blank" rel="noopener" href="https://wiki.anl.gov/wiki_tracc/index.php?title=OpenFOAM&amp;diff=1938&amp;oldid=1775" class="uri">https://wiki.anl.gov/wiki_tracc/index.php?title=OpenFOAM&amp;diff=1938&amp;oldid=1775</a>.</li>
+<li><p><strong>Common Practice</strong>: This setup is standard enough that the OpenFOAM <code>bashrc</code> explicitly lists <code>INTELMPI</code> as a supported option for <code>WM_MPLIB</code>.</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://topcfd.cn/Ebook/OF_Primer/OF_Primer/6.4_%e5%9c%a8HPC%e7%be%a4%e9%9b%86%e4%b8%8a%e5%ae%89%e8%a3%85OpenFOAM.html">6.4_在HPC群集上安装OpenFOAM.html</a></p></li>
+</ul>
 <h1 id="paraview後處理工具安裝"><a target="_blank" rel="noopener" href="http://dyfluid.com/install.html#paraview">ParaView（後處理工具）安裝</a></h1>
 <p>安裝OpenFOAM之後，還需要安裝ParaView。主要用於對OpenFOAM算例進行後處理。 Paraview的安裝有倆種方式。</p>
 <ul>
@@ -779,7 +774,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>September 18, 2026</div>
+          <div>September 20, 2026</div>
         </div>
       
       
