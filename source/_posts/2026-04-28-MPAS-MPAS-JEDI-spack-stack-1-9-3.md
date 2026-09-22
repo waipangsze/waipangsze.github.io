@@ -551,6 +551,11 @@ tag = 20240626-MPASv8.2
 
 or, download the `20240626-MPASv8.2` version to `mpas_bundle` folder.
 
+{% note primary %}
+It looks like the download issue for **MPAS-A v8.2.2**: the **bl_gwdo.F90** file does not have the required **omax**. However, in **mpasjedi**, the **bl_gwdo.F90** file is the wrong version. Please replace it with the corrected **bl_gwdo.F90** from GitHub (MMM-physics).
+- <https://github.com/NCAR/MMM-physics/blob/20240626-MPASv8.2/bl_gwdo.F90>
+{% endnote %}
+
 # physics_mmm
 
 `physics_mmm` refers to a shared directory and repository of physics parameterizations used by both the MPAS-Atmosphere and WRF models.
