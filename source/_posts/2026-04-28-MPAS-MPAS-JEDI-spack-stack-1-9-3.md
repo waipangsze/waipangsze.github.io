@@ -553,7 +553,18 @@ or, download the `20240626-MPASv8.2` version to `mpas_bundle` folder.
 
 {% note primary %}
 It looks like the download issue for **MPAS-A v8.2.2**: the **bl_gwdo.F90** file does not have the required **omax**. However, in **mpasjedi**, the **bl_gwdo.F90** file is the wrong version. Please replace it with the corrected **bl_gwdo.F90** from GitHub (MMM-physics).
+
 - <https://github.com/NCAR/MMM-physics/blob/20240626-MPASv8.2/bl_gwdo.F90>
+{% endnote %}
+
+Root cause:
+
+{% note primary %}
+According to the download script, MPAS-A v8.2.2 should be downloaded. However, there are some external files that are not hosted on the MPAS GitHub repository, such as `physics_mmm` from another repository.
+
+The issue is that MPAS-JEDI downloads the latest version of `physics_mmm`, but MPAS-JEDI v3.0.2 is designed to work with an older MPAS-A version (e.g., v8.2.2). Because these versions do not match, an error occurs.
+
+The solution is to repeatedly verify and download the correct versions—specifically, ensure that the `physics_mmm` files are compatible with MPAS-A v8.2.2.
 {% endnote %}
 
 # physics_mmm
