@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/6oGdLJk.png">
 <meta property="article:published_time" content="2026-04-27T22:25:00.000Z">
-<meta property="article:modified_time" content="2026-09-22T06:48:15.551Z">
+<meta property="article:modified_time" content="2026-09-23T02:31:57.239Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="DA">
@@ -368,7 +368,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.5k words
+          4.6k words
         
       </span>
     
@@ -557,7 +557,11 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"> $ <span class="hljs-built_in">cat</span> src/core_atmosphere/Externals.cfg<br>[MMM-physics]<br>local_path = ./physics_mmm<br>protocol = git<br>repo_url = https://github.com/NCAR/MMM-physics.git<br>tag = 20240626-MPASv8.2<br></code></pre></td></tr></table></figure>
 <p>or, download the <code>20240626-MPASv8.2</code> version to <code>mpas_bundle</code> folder.</p>
 <div class="note note-primary">
-            <p>It looks like the download issue for <strong>MPAS-A v8.2.2</strong>: the <strong>bl_gwdo.F90</strong> file does not have the required <strong>omax</strong>. However, in <strong>mpasjedi</strong>, the <strong>bl_gwdo.F90</strong> file is the wrong version. Please replace it with the corrected <strong>bl_gwdo.F90</strong> from GitHub (MMM-physics). - <a target="_blank" rel="noopener" href="https://github.com/NCAR/MMM-physics/blob/20240626-MPASv8.2/bl_gwdo.F90" class="uri">https://github.com/NCAR/MMM-physics/blob/20240626-MPASv8.2/bl_gwdo.F90</a></p>
+            <p>It looks like the download issue for <strong>MPAS-A v8.2.2</strong>: the <strong>bl_gwdo.F90</strong> file does not have the required <strong>omax</strong>. However, in <strong>mpasjedi</strong>, the <strong>bl_gwdo.F90</strong> file is the wrong version. Please replace it with the corrected <strong>bl_gwdo.F90</strong> from GitHub (MMM-physics).</p><ul><li><a target="_blank" rel="noopener" href="https://github.com/NCAR/MMM-physics/blob/20240626-MPASv8.2/bl_gwdo.F90" class="uri">https://github.com/NCAR/MMM-physics/blob/20240626-MPASv8.2/bl_gwdo.F90</a></li></ul>
+          </div>
+<p>Root cause:</p>
+<div class="note note-primary">
+            <p>According to the download script, MPAS-A v8.2.2 should be downloaded. However, there are some external files that are not hosted on the MPAS GitHub repository, such as <code>physics_mmm</code> from another repository.</p><p>The issue is that MPAS-JEDI downloads the latest version of <code>physics_mmm</code>, but MPAS-JEDI v3.0.2 is designed to work with an older MPAS-A version (e.g., v8.2.2). Because these versions do not match, an error occurs.</p><p>The solution is to repeatedly verify and download the correct versions—specifically, ensure that the <code>physics_mmm</code> files are compatible with MPAS-A v8.2.2.</p>
           </div>
 <h1 id="physics_mmm">physics_mmm</h1>
 <p><code>physics_mmm</code> refers to a shared directory and repository of physics parameterizations used by both the MPAS-Atmosphere and WRF models.</p>
@@ -644,7 +648,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>September 22, 2026</div>
+          <div>September 23, 2026</div>
         </div>
       
       
