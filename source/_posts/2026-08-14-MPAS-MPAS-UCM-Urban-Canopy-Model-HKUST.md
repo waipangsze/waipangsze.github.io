@@ -47,6 +47,11 @@ DOI: https://doi.org/10.22541/essoar.15007108/v1
 - commit differences
   - <https://github.com/HKUST-MPAS/HKUST-MPAS/commit/210889d157cc3698369ddbe09e57ccaca4cae49a>
 
+## Plotting Scripts/Sample data
+
+- [Toward high-resolution urban modeling with MPAS–Urban: System development and sub-kilometer application for record-breaking 2022 Hong Kong Heatwave
+Authors/Creators](https://zenodo.org/records/21330749)
+
 ## highlight
 
 {% note primary %}
