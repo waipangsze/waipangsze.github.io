@@ -26,10 +26,9 @@ date: 2026-08-21 02:55:11
 - [<font color="blue">**熱帶氣旋警告信號小冊子 (PDF檔案)**</font>](https://www.hko.gov.hk/tc/publica/gen_pub/files/tcws.pdf)
 - [<font color="blue">**8個參考測風站所組成的網絡**</font>](https://www.hko.gov.hk/tc/education/weather/weather-warnings/00054-the-tropical-cyclone-warning-system-in-hong-kong.html)
 - [<font color="blue">**二零二五年報告內提及的測風站及潮汐測量站之分佈地點**</font>](https://www.hko.gov.hk/tc/informtc/station2025.html)
-- ![](https://i.imgur.com/yywPQDr.png)
 - ![](https://i.imgur.com/pQUVNV9.png){width=300}
 
-<!-- # HKO-蒲福氏風級
+## HKO-蒲福氏風級
 
 「風速 (米/秒)」換算欄位的完整表格（換算基準：1 公里/小時 = 0.27778 米/秒）：
 
@@ -65,7 +64,7 @@ date: 2026-08-21 02:55:11
 | 14   | 81-89       | 150-166        | 41.4-46.1     |
 | 15   | 90-99       | 167-183        | 46.2-50.8     |
 | 16   | 100-108     | 184-201        | 50.9-55.9     |
-| 17   | 109+        | 202+           | 56.0+         | -->
+| 17   | 109+        | 202+           | 56.0+         |
 
 # 自動氣象站資料
 
