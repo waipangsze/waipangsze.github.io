@@ -1,0 +1,112 @@
+---
+layout: post
+title: MPAS-JEDI | config_do_DAcycling vs config_do_restart
+categories: [MPAS-JEDI]
+tags: [MPAS, DA, MPAS-JEDI, atm]
+author: wpsze
+date: 2026-10-09 06:25:00
+math: true
+mathjax: true
+mathjax_autoNumber: true
+mermaid: true
+index_img: https://i.imgur.com/gDqKWIs.png
+banner_img: https://i.imgur.com/gDqKWIs.png
+---
+
+- [**NWP | BUFR data | GFS - Binary Universal Form for the Representation of meteorological data**](https://waipangsze.github.io/2026/02/27/NWP-BUFR-data/)
+- [MPAS | MPAS-JEDI](https://waipangsze.github.io/2024/05/29/MPAS-JEDI_note/)
+- [**MPAS | MPAS-JEDI V3.0.2**](https://waipangsze.github.io/2026/02/13/MPAS-MPAS-JEDI-V302/)
+- [**MPAS | MPAS-JEDI | spack-stack 1.9.3**](https://waipangsze.github.io/2026/04/28/MPAS-MPAS-JEDI-spack-stack-1-9-3/)
+- [MPAS | Joint MPAS/WRF Users Workshop 2025 | MPASv8.3.0](https://waipangsze.github.io/2025/06/05/MPAS-Joint-MPAS-WRF-Users-Workshop-2025/)
+- [**Spack-Stack: building JEDIbundles on your own machine | 202506NCAS** ](https://www2.mmm.ucar.edu/projects/mpas-jedi/tutorial/202506NCAS/lectures/12-spackstack.pdf)
+
+---
+
+- [**Cycling, MPAS-Workflow, diagnostic/verification** | MPAS-JEDI Tutorial, Howard UniversityOctober 3-4, 2024](https://www2.mmm.ucar.edu/projects/mpas-jedi/tutorial/202410HOWARD/lectures/10-Workflow-Graphics.pdf#1#1)
+
+---
+
+![DA workflow](https://i.imgur.com/V31zge5.png)
+![DA step](https://i.imgur.com/gDqKWIs.png)
+![Forecast step](https://i.imgur.com/x0Cwm99.png)
+![Forecast step](https://i.imgur.com/KqE5IIN.png)
+
+---
+
+For simulation using the MPAS-JEDI analysis file (`an.nc`) as the initial condition, the recommended settings are:
+
+In `namelist.atmosphere` file,
+
+*   **`config_do_DAcycling` = `true`**
+*   **`config_do_restart` = `false`**
+
+### Why These Settings?
+
+*   **`config_do_DAcycling = true`**: This option tells MPAS to recalculate the model's coupled prognostic fields (like `theta_m`, `rho_zz`, and `ru`) from the uncoupled analysis variables in the file . Because JEDI's analysis output (whether a `restart` or `mpasout` file) contains uncoupled fields, setting this to `true` is necessary to ensure the model initializes correctly from the updated analysis .
+    *   When JEDI updates state variables like temperature ($T$), surface pressure ($p_{s}$), or moisture ($q_{v}$), coupled and diagnostic state variables (such as modify-coupled potential temperature $\theta_m$, dry air density $\rho_{zz}$, and pressure $p$) must be recalculated to restore thermodynamic consistency across the grid.
+        * Setting `config_do_DAcycling = .true.` instructs MPAS-A upon initialization to **recompute these coupled atmospheric variables directly from the newly analyzed state fields** rather than assuming they were inherited unchanged from a prior hydrostatic/prognostic step.
+*   **`config_do_restart = false`**: While the `an.nc` file is technically a restart-style file, the JEDI documentation specifies that `config_do_restart` should be set to `false` for the MPAS-A forecast when using the recommended 2-stream input approach (where the analysis is stored in `mpasout` files) . If you are instead using the `restart` stream for your JEDI input, you would set it to `true` . Given the common use of `an.nc` as a JEDI analysis output, `false` is the correct choice for the forecast step.
+
+In short, setting **`DO_DACYCLING = true`** is the key step that ensures your forecast starts correctly from the JEDI analysis field.
+
+# The Key Difference: Initialization vs. Direct Read
+
+There is a significant difference. Setting `config_do_DAcycling = true` fundamentally changes how MPAS initializes the model state from the input file, compared to a standard restart run.
+
+The core distinction lies in what happens to the coupled variables (`theta_m`, `rho_zz`, etc.) when the model starts.
+
+*   **Standard Restart (`config_do_DAcycling = false`)**: The model trusts the file completely. It reads the prognostic variables directly from the restart file and uses them "as-is" to continue the simulation. There is no recalculation of the coupled state.
+*   **DA Cycling Setup (`config_do_DAcycling = true`)**: The model **distrusts** the file's coupled state. Even if the file contains `theta_m` and `rho_zz`, the model ignores those values and **forces a call** to the `atm_init_coupled_diagnostics` routine . This routine recalculates the coupled fields (`theta_m`, `rho_zz`, `ru`, etc.) from the uncoupled analysis variables (like `theta`, `rho`, `qv`, `u`).
+
+## Core Differences
+
+Using `config_do_DAcycling = .true.` with `config_do_restart = .false.` is fundamentally different from a standard **Restart Run** (`config_do_restart = .true.`).
+
+| Feature | Data Assimilation Run (`DAcycling = .true.`, `restart = .false.`) | Standard Restart Run (`restart = .true.`) |
+| --- | --- | --- |
+| **Input Source** | Reads state variables from an updated analysis file (e.g., `an.nc` supplied as `init.nc`). | Reads state variables from a binary restart file generated by a prior MPAS run. |
+| **Coupled Variables ($\theta_m, \rho_{zz}$)** | **Recomputed dynamically** from updated basic state variables ($T, p_s, q_v$). | **Loaded directly** as exact values saved at the restart time step. |
+| **Integrity of Physics/Dynamics** | Recalculates missing hydrostatic and diagnostic fields to ensure physical balance before stepping forward. | Resumes exact mathematical state continuously from the last model time step. |
+| **Accumulated Diagnostics** | **Reset to zero** (e.g., accumulated rainfall, diagnostic radiation flux totals). | **Preserved continuously** from the start of the simulation sequence. |
+
+### What Happens Behind the Scenes
+
+#### 1. Variable Coupling & Recalculation
+
+In MPAS-A, the prognostic variables are coupled mass/thermodynamic state variables like **modified coupled potential temperature** ($\theta_m$) and **dry air mass density** ($\rho_{zz}$).
+
+* **DA Cycling Mode:** JEDI (or DART) updates standard meteorological variables ($T$, $u$, $v$, $q$, $p_s$). When MPAS boots up with `config_do_DAcycling = .true.`, it reads those updated analysis fields and recalculates internal coupled parameters ($\theta_m, \rho_{zz}$) to keep the model hydrostatically consistent.
+* **Restart Mode:** The model expects that **no fields have been changed externally**. It bypasses diagnostic recalculation and assumes $\theta_m$ and $\rho_{zz}$ are perfectly matched to the exact millisecond the prior run stopped.
+
+#### 2. Diagnostic Accumulators
+
+* **DA Cycling Mode:** Resets time-integrated diagnostics (like `rainc` or `rainnc` precipitation accumulation).
+* **Restart Mode:** Retains time-integrated diagnostics so total rainfall maps reflect the entire run duration.
+
+### When to Use Which?
+
+* **Use `config_do_DAcycling = .true.` & `config_do_restart = .false.`:** Whenever you insert a **new analysis state** into MPAS from JEDI, WRFDA, or DART.
+* **Use `config_do_restart = .true.`:** Whenever you are simply **extending a forecast** that paused or stopped (e.g., running hours 0–24, stopping, then resuming hours 24–48 with no external data modification).
+
+
+# Why This Matters for MPAS-JEDI
+
+This behavior is specifically designed for data assimilation workflows:
+
+1.  **JEDI Output Format**: The MPAS-JEDI analysis file (`an.nc`) primarily updates **uncoupled** variables (potential temperature `theta`, dry density `rho`, water vapor `qv`, and edge-normal wind `u`) .
+2.  **Necessary Coupling**: To run the forecast model, these uncoupled variables must be mathematically coupled into the model's prognostic variables (`theta_m` is moist potential temperature, `rho_zz` is the dry-air density in the terrain-following coordinate, etc.).
+3.  **The Solution**: By setting `config_do_DAcycling = true`, you tell MPAS, "Do not read the coupled variables from this file. Instead, take the uncoupled analysis variables and run the initialization routine to generate a consistent, coupled model state from them" .
+
+## The "Bit-Level" Difference
+
+A crucial technical detail: even if you take a **standard restart file** and run it with `config_do_DAcycling = true`, you will get **different results** than if you ran it with `config_do_DAcycling = false` .
+
+This is because the `atm_init_coupled_diagnostics` routine uses floating-point calculations that introduce **bit-level differences**. The recalculated `theta_m` will be *mathematically equivalent* to the stored value in the restart file, but not *bitwise identical*. This is expected and correct behavior for a DA run—the model is starting from a fresh, internally consistent initialization derived from the analysis variables.
+
+# References
+
+1. [config_do_DAcycling in MPAS | JiaWang  Start dateSep 24, 2026](https://forum.mmm.ucar.edu/threads/config_do_dacycling-in-mpas.28677/#post-64151)
+      1. For a `restart run`, setting `config_do_DAcycling = true` **will force a call to the `atm_init_coupled_diagnostics` routine**, **which is otherwise only called at the beginning of a cold-start simulation**; see the logic in `atm_mpas_init_block`: [MPAS-Model/src/core_atmosphere/mpas_atm_core.F at v8.4.2 · MPAS-Dev/MPAS-Model](https://github.com/MPAS-Dev/MPAS-Model/blob/v8.4.2/src/core_atmosphere/mpas_atm_core.F#L522-L530) . The **re-computation** of `theta_m`, `rho_zz`, etc. in the `atm_init_coupled_diagnostics` routine will generally lead to **bit-level differences** in these fields compared with their values in the restart file.
+2. [Some questions about the parameter cong_do_DAcycling | ateNov 21, 2022](https://forum.mmm.ucar.edu/threads/some-questions-about-the-parameter-cong_do_dacycling.12178/)
+   1. The 'config_do_DAcycling' option essentially controls whether the [atm_init_coupled_diagnostics](https://github.com/MPAS-Dev/MPAS-Model/blob/v7.3/src/core_atmosphere/dynamics/mpas_atm_time_integration.F#L5825-L5827) routine is called at the beginning of a restart simulation. The logic for this can be found around [L.389 of mpas_atm_core.F](https://github.com/MPAS-Dev/MPAS-Model/blob/v7.3/src/core_atmosphere/mpas_atm_core.F#L389) (in MPAS v7.3).
+   2. Within the `atm_init_coupled_diagnostics` routine -- among other fields -- we compute `theta_m`, `rho_zz`, `ru`, and `rw` from the uncoupled `theta`, `rho`, `u`, `w`, and `qv` fields in the restart file.

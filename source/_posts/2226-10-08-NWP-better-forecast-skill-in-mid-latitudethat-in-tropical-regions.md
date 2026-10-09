@@ -10,7 +10,7 @@ mathjax: true
 mathjax_autoNumber: true
 mermaid: true
 index_img: https://journals.ametsoc.org/view/journals/atsc/81/5/full-JAS-D-23-0138.1-f10.jpg
-banner_img: https://journals.ametsoc.org/view/journals/atsc/81/5/full-JAS-D-23-0138.1-f10.jpg
+banner_img: https://journals.ametsoc.org/view/journals/atsc/81/5/full-JAS-D-23-0138.1-f10.jpg   
 ---
 
 - From Deepseek and Gemini
