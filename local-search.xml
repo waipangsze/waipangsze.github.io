@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>MPAS | Noah-MP</title>
+    <link href="/2026/10/13/MPAS-Noah-MP/"/>
+    <url>/2026/10/13/MPAS-Noah-MP/</url>
+    
+    <content type="html"><![CDATA[<h1 id="mpas-release">MPAS release</h1><ol type="1"><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases#release-v8.2.0">MPAS Version 8.2.0</a><ol type="1"><li>New physics<ol type="1"><li>The <strong>Noah-MP v5.0.1</strong> land-surface model is now available by setting <code>config_lsm_scheme = 'sf_noahmp'</code> in the <code>&amp;physics</code> namelist group.</li><li><strong>New static files</strong> that include the <code>soilcomp</code>, <code>soilcl1</code>, <code>soilcl2</code>, <code>soilcl3</code>, and <code>soilcl4</code> fields are required when activating Noah-MP in the model.</li></ol></li></ol></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases#release-v8.2.3">MPAS Version 8.2.3</a><ol type="1"><li>Correction to the computation of the <code>soil temperature (TSLB)</code> in the Noah-MP land surface scheme through the addition of <strong>initialization of the soil liquid water (SH2O)</strong> in the <code>noahmp_init</code> subroutine in module <code>mpas_atmphys_lsm_noahmpinit.F</code> prior to calling <code>NoahmpInitMain</code></li><li>Correction of the loop for Noah-MP snow initialization, capping snow water equivalent maximum at 2000 mm.</li><li>Correction to the calculation of the 2-meter diagnostics (T2M, TH2M, and Q2) when using the Noah-MP land surface scheme.</li></ol></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases#release-v8.3.0">MPAS Version 8.3.0</a><ol type="1"><li>Addition of support for <strong>15" MODIS land use dataset</strong>. The <strong>15" MODIS land use dataset</strong> may be selected by setting the existing namelist option <code>config_landuse_data</code> to <code>'MODIFIED_IGBP_MODIS_NOAH_15s'</code> in the <code>&amp;data_sources</code> namelist group. Use of this dataset requires a separate static dataset download.</li><li>Addition of an option to <strong>skip processing of Noah-MP-only static fields</strong> in the init_atmosphere core. Setting the new <code>config_noahmp_static</code> namelist option to <code>false</code> in the <code>&amp;data_sources</code> namelist group prevents the Noah-MP static fields from being processed when <code>config_static_interp = true</code> in the namelist.init_atmosphere file</li></ol></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases#release-v8.4.0">MPAS Version 8.4.0</a><ol type="1"><li>Correct an issue with high q2 values over urban cells in Noah-MP.</li></ol></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/releases#release-v8.4.1">MPAS Version 8.4.1</a><ol type="1"><li>Fix a bug that occurs when the number of soil layers in Noah-MP is not the default (4 layers), resulting in the model not conserving water.</li></ol></li></ol><h1 id="prepare">Prepare</h1><ol type="1"><li>New static files that include the <code>soilcomp</code>, <code>soilcl1</code>, <code>soilcl2</code>, <code>soilcl3</code>, and <code>soilcl4</code> fields are required.</li><li>For high resolution mesh like 500m or below, you may apply supersampling as 3.</li><li>Be carefull that format of nc file like netcdf4 or pnetcdf</li><li>For atm step,<ol type="1"><li>add <code>NoahmpTable.TBL</code></li><li>config_lsm_scheme = 'sf_noahmp'</li></ol></li></ol><h1 id="running-issues">Running &amp; Issues</h1><ol type="1"><li><a href="https://forum.mmm.ucar.edu/threads/mpas-a-stops-and-raises-error-with-noah-mp-land-surface-model-option-on-global-variable-resolution-15km-3km-mesh.20949/">MPAS-A stops and raises error with Noah MP land surface model option on global variable resolution 15km-3km mesh | Feb 17, 2025</a><ol type="1"><li>The model stops and raises the following error: <code>CRITICAL ERROR: NaN detected in 'w' field.</code></li><li>We found the issue that caused MPAS crash.This is because, SWE from ERA5 is up to 10m, which leads to more than 30m of snow depth. As a result, NoahMP snow package becomes physically unreasonable and yields TSK that is totally wrong. TSK subsequently affects radiation, eventually leading to model crash.</li><li>If you din't feel like to wait until the release of MPASV8.3.0, then you can modify the code:</li></ol></li><li><a href="https://forum.mmm.ucar.edu/threads/high-urban-moisture-with-noah-mp-in-mpas-atmosphere-8-2-3.22160/">High Urban Moisture with NOAH-MP in MPAS-Atmosphere 8.2.3 | May 29, 2025</a><ol type="1"><li>I noticed that urban areas quickly develop high q2, despite qflx being lower than surrounding areas.</li></ol></li><li><a href="https://forum.mmm.ucar.edu/threads/snow-depth-error-of-using-era5-driving-mpas.21541/#post-52579#1">Snow depth error of using ERA5 driving MPAS | Apr 5, 2025</a><ol type="1"><li>We have explored the reason for the MPAS crash. We believe that the information of SWE from ERA5 is not correct. A 10m SWE leads to more than 30m of snow depth, and the snow package in NoahMP cannot handle such a deep snow.</li><li>We will fix this problem in MPASv8.3.0, which will be released before the end of June 2025. As a temporary fix, please modify the code</li></ol></li></ol><h1 id="papers">Papers</h1><ol type="1"><li>Zhang, Z., He, C., Berner, J., Jaye, A., Barlage, M., Liu, C., et al. (2026). <strong>Extending MPAS-NoahMP model system capability beyond weather timescales: Evaluation of hydroclimate and land-atmosphere interactions</strong>. Journal of Geophysical Research: Atmospheres, 131, e2025JD045334. <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1029/2025JD045334">https://doi.org/10.1029/2025JD045334</a></li></ol><h1 id="links">Links</h1><ol type="1"><li><a href="https://waipangsze.github.io/2026/08/18/MPAS-MPAS-UCM-Urban-Canopy-Model-HKUST/">MPAS | MPAS UCM | Urban Canopy Model | HKUST</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>MPAS</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>MPAS</tag>
+      
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
+      
+      <tag>Noah-MP</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MPAS-JEDI | config_do_DAcycling vs config_do_restart</title>
     <link href="/2026/10/09/MPAS-JEDI-config_do_DAcycling-vs-config_do_restart/"/>
     <url>/2026/10/09/MPAS-JEDI-config_do_DAcycling-vs-config_do_restart/</url>
@@ -51,11 +86,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>CMA</tag>
       
@@ -93,7 +128,7 @@
     <link href="/2026/09/09/MPAS-Modify-Source-Code/"/>
     <url>/2026/09/09/MPAS-Modify-Source-Code/</url>
     
-    <content type="html"><![CDATA[<ul><li>Comparing changes<ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/compare/release-v8.1.0...v8.2.2" class="uri">https://github.com/MPAS-Dev/MPAS-Model/compare/release-v8.1.0...v8.2.2</a></li></ul></li></ul><hr /><h1 id="compilation">Compilation</h1><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><code class="hljs clean">#!/bin/bash<br>############################## Directory Listing ############################<br><span class="hljs-keyword">export</span> SCRIPT_DIR=<span class="hljs-string">&quot;$( cd &quot;</span>$( dirname <span class="hljs-string">&quot;$&#123;BASH_SOURCE[0]&#125;&quot;</span> )<span class="hljs-string">&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd )&quot;</span><br>source /home/wpsze/MPAS-A/intel-oneapi/mpas_env_intel.sh<br><br>which mpiicc &amp;&amp; mpiicc --version<br>which mpiifort &amp;&amp; mpiifort --version<br>which mpiicpc &amp;&amp; mpiicpc --version<br>which icc &amp;&amp; icc --version<br>which ifort &amp;&amp; ifort --version<br><br>echo $NETCDF<br>echo $PNETCDF<br>echo $PIO<br><br>##--Intel MPI与Open MPI、MPICH等MPI实现不同：<br>##--mpiicc、mpiicpc和mpiifort命令：使用Intel编译器<br>##--mpicc、mpif90和mpifc命令：默认使用GNU编译器<br><br>do_init_atmosphere=<span class="hljs-literal">True</span> # <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span><br>do_atmosphere=<span class="hljs-literal">True</span><br>do_build_tables=<span class="hljs-literal">True</span><br><br>mpas_version=<span class="hljs-string">&quot;MPASv822-verify&quot;</span><br><br>echo <span class="hljs-string">&quot;Copy MPAS-Model to build-mpas ... &quot;</span><br>rm -rf build-mpas<br>rm -rf $&#123;mpas_version&#125;<br>cp -r <span class="hljs-string">&quot;MPASv8.2.2-modify&quot;</span> <span class="hljs-string">&quot;build-mpas&quot;</span><br>cd build-mpas<br><br>############################## init_atmosphere ############################ <br><span class="hljs-keyword">if</span> [[ $&#123;do_init_atmosphere&#125; == <span class="hljs-literal">True</span> ]]; then<br>echo <span class="hljs-string">&quot;=== init_atmosphere ====&quot;</span><br><br>make clean CORE=init_atmosphere<br>make clean CORE=atmosphere<br><br># mpas_dmpar.F:<br> # call MPI_Allreduce(inArray, outArray, nElements, MPI_INTEGERKIND, MPI_MAX, dminfo % comm, mpi_ierr) <br># Warning: Rank mismatch between actual argument at (<span class="hljs-number">1</span>) and actual argument at (<span class="hljs-number">2</span>) (scalar and rank<span class="hljs-number">-1</span>)<br><br>#<span class="hljs-keyword">export</span> FFLAGS=<span class="hljs-string">&quot;-w -fallow-argument-mismatch -O2&quot;</span><br>#<span class="hljs-keyword">export</span> FCFLAGS=<span class="hljs-string">&quot;-w -fallow-argument-mismatch -O2&quot;</span><br><br>#make -j8 gfortran CORE=init_atmosphere PRECISION=single DEBUG=true USE_PIO2=true &gt;&amp; log_build2.txt<br>make intel-mpi CORE=init_atmosphere PRECISION=single USE_PIO2=true <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> |tee log_build_init.txt<br><br>### Check MPAS model.<br>#ls -la init_atmosphere_model<br>echo <span class="hljs-string">&quot;=== init_atmosphere (end) ====&quot;</span><br>fi<br><br>############################## atmosphere_model ############################<br><span class="hljs-keyword">if</span> [[ $&#123;do_atmosphere&#125; == <span class="hljs-literal">True</span> ]]; then<br>echo <span class="hljs-string">&quot;=== atmosphere_model ====&quot;</span><br>#--- To preserve all executables except atmosphere_model and clean the MPAS infrastructure, run: <br>make clean CORE=atmosphere<br><br>#<span class="hljs-keyword">export</span> FFLAGS=<span class="hljs-string">&quot;-w -fallow-argument-mismatch -O2&quot;</span><br>#<span class="hljs-keyword">export</span> FCFLAGS=<span class="hljs-string">&quot;-w -fallow-argument-mismatch -O2&quot;</span><br><br># DEBUG=true<br>    make -j8 intel-mpi CORE=atmosphere PRECISION=single USE_PIO2=true <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> |tee log_build_atm.txt<br>#make -j8 intel-mpi CORE=atmosphere PRECISION=single USE_PIO2=true DEBUG=true <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> |tee log_build_atm.txt<br>#make intel-mpi CORE=atmosphere PRECISION=single MPAS_MPI_F08=false USE_PIO2=true <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> |tee log_build_atm.txt<br><br>### Check MPAS model.<br>#ls -la atmosphere_model<br>echo <span class="hljs-string">&quot;=== atmosphere_model (end) ====&quot;</span><br>wait<br><br>fi<br><br><span class="hljs-keyword">if</span> [[ -f atmosphere_model ]]; then<br>mkdir -p $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv streams.init_atmosphere $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv namelist.init_atmosphere $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv init_atmosphere_model $SCRIPT_DIR/$&#123;mpas_version&#125;<br><br>mv atmosphere_model $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv build_tables $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv namelist.atmosphere $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv streams.atmosphere $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv stream_list.atmosphere.diagnostics $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv stream_list.atmosphere.output $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv stream_list.atmosphere.surface $SCRIPT_DIR/$&#123;mpas_version&#125;<br><br>mv ./src/core_atmosphere/physics/physics_wrf/files<span class="hljs-comment">/* $SCRIPT_DIR/$&#123;mpas_version&#125;/</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">if [[ $&#123;do_build_tables&#125; == True ]]; then</span><br><span class="hljs-comment">cd $SCRIPT_DIR/$&#123;mpas_version&#125;</span><br><span class="hljs-comment">./build_tables</span><br><span class="hljs-comment">fi</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">fi</span><br></code></pre></td></tr></table></figure><h1 id="serialparallel-compilation">Serial/Parallel compilation</h1><ul><li>Serial</li><li>Parallel <code>make -j8</code></li></ul><h1 id="mpi_f08-issue"><code>mpi_f08</code> issue</h1><ul><li>encounter: <code>75 forrtl: severe (408): fort: (3): Subscript #1 of the array GROUPTOFIELDRECVIDX has value 0 which is less than the lower bound of 1$</code><ul><li><code>mpas_halo_mp_mpas         728  mpas_halo.F$</code></li></ul></li><li>MPASv8.2.2: call more MPI functions from <code>mpi_f08</code><ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/framework/mpas_halo.F#L488" class="uri">https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/framework/mpas_halo.F#L488</a></li><li>if it is the bug, you can disable it<ul><li>set <code>MPAS_MPI_F08=false</code>, please check <code>Makefile</code> first</li><li><code>make intel-mpi CORE=atmosphere PRECISION=single MPAS_MPI_F08=false USE_PIO2=true 2&gt;&amp;1 |tee log_build_atm.txt</code></li></ul></li></ul></li></ul><h1 id="simple-mpas-io-layer-smiol">Simple MPAS I/O Layer (SMIOL)</h1><ul><li><a href="https://waipangsze.github.io/2026/02/11/MPAS-Simple-MPAS-IO-Layer-SMIOL/">MPAS | Simple MPAS I/O Layer (SMIOL)</a></li></ul>]]></content>
+    <content type="html"><![CDATA[<ul><li>Comparing changes<ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/compare/release-v8.1.0...v8.2.2" class="uri">https://github.com/MPAS-Dev/MPAS-Model/compare/release-v8.1.0...v8.2.2</a></li></ul></li></ul><hr /><h1 id="compilation">Compilation</h1><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><code class="hljs clean">#!/bin/bash<br>############################## Directory Listing ############################<br><span class="hljs-keyword">export</span> SCRIPT_DIR=<span class="hljs-string">&quot;$( cd &quot;</span>$( dirname <span class="hljs-string">&quot;$&#123;BASH_SOURCE[0]&#125;&quot;</span> )<span class="hljs-string">&quot; &gt;/dev/null 2&gt;&amp;1 &amp;&amp; pwd )&quot;</span><br>source /home/wpsze/MPAS-A/intel-oneapi/mpas_env_intel.sh<br><br>which mpiicc &amp;&amp; mpiicc --version<br>which mpiifort &amp;&amp; mpiifort --version<br>which mpiicpc &amp;&amp; mpiicpc --version<br>which icc &amp;&amp; icc --version<br>which ifort &amp;&amp; ifort --version<br><br>echo $NETCDF<br>echo $PNETCDF<br>echo $PIO<br><br>##--Intel MPI与Open MPI、MPICH等MPI实现不同：<br>##--mpiicc、mpiicpc和mpiifort命令：使用Intel编译器<br>##--mpicc、mpif90和mpifc命令：默认使用GNU编译器<br><br>do_init_atmosphere=<span class="hljs-literal">True</span> # <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span><br>do_atmosphere=<span class="hljs-literal">True</span><br>do_build_tables=<span class="hljs-literal">True</span><br><br>mpas_version=<span class="hljs-string">&quot;MPASv822-verify&quot;</span><br><br>echo <span class="hljs-string">&quot;Copy MPAS-Model to build-mpas ... &quot;</span><br>rm -rf build-mpas<br>rm -rf $&#123;mpas_version&#125;<br>cp -r <span class="hljs-string">&quot;MPASv8.2.2-modify&quot;</span> <span class="hljs-string">&quot;build-mpas&quot;</span><br>cd build-mpas<br><br>############################## init_atmosphere ############################ <br><span class="hljs-keyword">if</span> [[ $&#123;do_init_atmosphere&#125; == <span class="hljs-literal">True</span> ]]; then<br>echo <span class="hljs-string">&quot;=== init_atmosphere ====&quot;</span><br><br>make clean CORE=init_atmosphere<br>make clean CORE=atmosphere<br><br># mpas_dmpar.F:<br> # call MPI_Allreduce(inArray, outArray, nElements, MPI_INTEGERKIND, MPI_MAX, dminfo % comm, mpi_ierr) <br># Warning: Rank mismatch between actual argument at (<span class="hljs-number">1</span>) and actual argument at (<span class="hljs-number">2</span>) (scalar and rank<span class="hljs-number">-1</span>)<br><br>#<span class="hljs-keyword">export</span> FFLAGS=<span class="hljs-string">&quot;-w -fallow-argument-mismatch -O2&quot;</span><br>#<span class="hljs-keyword">export</span> FCFLAGS=<span class="hljs-string">&quot;-w -fallow-argument-mismatch -O2&quot;</span><br><br>#make -j8 gfortran CORE=init_atmosphere PRECISION=single DEBUG=true USE_PIO2=true &gt;&amp; log_build2.txt<br>make intel-mpi CORE=init_atmosphere PRECISION=single USE_PIO2=true <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> |tee log_build_init.txt<br><br>### Check MPAS model.<br>#ls -la init_atmosphere_model<br>echo <span class="hljs-string">&quot;=== init_atmosphere (end) ====&quot;</span><br>fi<br><br>############################## atmosphere_model ############################<br><span class="hljs-keyword">if</span> [[ $&#123;do_atmosphere&#125; == <span class="hljs-literal">True</span> ]]; then<br>echo <span class="hljs-string">&quot;=== atmosphere_model ====&quot;</span><br>#--- To preserve all executables except atmosphere_model and clean the MPAS infrastructure, run: <br>make clean CORE=atmosphere<br><br>#<span class="hljs-keyword">export</span> FFLAGS=<span class="hljs-string">&quot;-w -fallow-argument-mismatch -O2&quot;</span><br>#<span class="hljs-keyword">export</span> FCFLAGS=<span class="hljs-string">&quot;-w -fallow-argument-mismatch -O2&quot;</span><br><br># DEBUG=true<br>    make -j8 intel-mpi CORE=atmosphere PRECISION=single USE_PIO2=true <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> |tee log_build_atm.txt<br>#make -j8 intel-mpi CORE=atmosphere PRECISION=single USE_PIO2=true DEBUG=true <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> |tee log_build_atm.txt<br>#make intel-mpi CORE=atmosphere PRECISION=single MPAS_MPI_F08=false USE_PIO2=true <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span> |tee log_build_atm.txt<br><br>### Check MPAS model.<br>#ls -la atmosphere_model<br>echo <span class="hljs-string">&quot;=== atmosphere_model (end) ====&quot;</span><br>wait<br><br>fi<br><br><span class="hljs-keyword">if</span> [[ -f atmosphere_model ]]; then<br>mkdir -p $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv streams.init_atmosphere $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv namelist.init_atmosphere $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv init_atmosphere_model $SCRIPT_DIR/$&#123;mpas_version&#125;<br><br>mv atmosphere_model $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv build_tables $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv namelist.atmosphere $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv streams.atmosphere $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv stream_list.atmosphere.diagnostics $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv stream_list.atmosphere.output $SCRIPT_DIR/$&#123;mpas_version&#125;<br>mv stream_list.atmosphere.surface $SCRIPT_DIR/$&#123;mpas_version&#125;<br><br>mv ./src/core_atmosphere/physics/physics_wrf/files<span class="hljs-comment">/* $SCRIPT_DIR/$&#123;mpas_version&#125;/</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">if [[ $&#123;do_build_tables&#125; == True ]]; then</span><br><span class="hljs-comment">cd $SCRIPT_DIR/$&#123;mpas_version&#125;</span><br><span class="hljs-comment">./build_tables</span><br><span class="hljs-comment">fi</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">fi</span><br></code></pre></td></tr></table></figure><h1 id="serialparallel-compilation">Serial/Parallel compilation</h1><ul><li>Serial</li><li>Parallel <code>make -j8</code></li></ul><h1 id="mpi_f08-issue"><code>mpi_f08</code> issue</h1><ul><li>encounter: <code>75 forrtl: severe (408): fort: (3): Subscript #1 of the array GROUPTOFIELDRECVIDX has value 0 which is less than the lower bound of 1$</code><ul><li><code>mpas_halo_mp_mpas         728  mpas_halo.F$</code></li></ul></li><li>MPASv8.2.2: call more MPI functions from <code>mpi_f08</code><ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/framework/mpas_halo.F#L488" class="uri">https://github.com/MPAS-Dev/MPAS-Model/blob/41e9a3fb8ca6b9250a7405209a5c60996318409f/src/framework/mpas_halo.F#L488</a></li><li>if it is the bug, you can disable it<ul><li>set <code>MPAS_MPI_F08=false</code>, please check <code>Makefile</code> first</li><li><code>make intel-mpi CORE=atmosphere PRECISION=single MPAS_MPI_F08=false USE_PIO2=true 2&gt;&amp;1 |tee log_build_atm.txt</code></li></ul></li></ul></li></ul><h1 id="simple-mpas-io-layer-smiol">Simple MPAS I/O Layer (SMIOL)</h1><ul><li><a href="https://waipangsze.github.io/2026/02/11/MPAS-Simple-MPAS-IO-Layer-SMIOL/">MPAS | Simple MPAS I/O Layer (SMIOL)</a></li></ul><h1 id="mpas_timekeeping.f">mpas_timekeeping.F</h1><p>Error:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs log">forrtl: severe (59): list-directed I/O syntax error, unit -5, file Internal List-Directed Read<br>Image              PC                Routine            Line        Source             <br>atmosphere_model   00000000038852CB  Unknown               Unknown  Unknown<br>atmosphere_model   00000000038848FB  Unknown               Unknown  Unknown<br>atmosphere_model   00000000031BDD74  mpas_timekeeping_        1545  mpas_timekeeping.F<br>atmosphere_model   0000000000DF8C81  mpas_atmphys_mana         627  mpas_atmphys_manager.F<br>atmosphere_model   00000000008FBE5C  atm_core_mp_atm_m         583  mpas_atm_core.F<br>atmosphere_model   00000000008F3310  atm_core_mp_atm_c         280  mpas_atm_core.F<br>atmosphere_model   000000000041D6F3  mpas_subdriver_mp         454  mpas_subdriver.F<br>atmosphere_model   0000000000417A3C  MAIN__                     18  mpas.F<br>atmosphere_model   000000000041797D  Unknown               Unknown  Unknown<br>libc-2.28.so       000014CAD029FD85  __libc_start_main     Unknown  Unknown<br>atmosphere_model   000000000041789E  Unknown               Unknown  Unknown<br></code></pre></td></tr></table></figure><ul><li>streams.atmosphere includes "output"</li></ul><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs abnf">&lt;streams&gt;<br>&lt;immutable_stream name<span class="hljs-operator">=</span><span class="hljs-string">&quot;input&quot;</span><br>                  type<span class="hljs-operator">=</span><span class="hljs-string">&quot;input&quot;</span><br>                  io_type<span class="hljs-operator">=</span><span class="hljs-string">&quot;pnetcdf&quot;</span><br>                  filename_template<span class="hljs-operator">=</span><span class="hljs-string">&quot;init.nc&quot;</span><br>                  input_interval<span class="hljs-operator">=</span><span class="hljs-string">&quot;initial_only&quot;</span> /&gt;<br><br>&lt;immutable_stream name<span class="hljs-operator">=</span><span class="hljs-string">&quot;restart&quot;</span><br>                  type<span class="hljs-operator">=</span><span class="hljs-string">&quot;input&quot;</span><br>                  io_type<span class="hljs-operator">=</span><span class="hljs-string">&quot;pnetcdf&quot;</span><br>                  filename_template<span class="hljs-operator">=</span><span class="hljs-string">&quot;restart.nc&quot;</span><br>                  input_interval<span class="hljs-operator">=</span><span class="hljs-string">&quot;initial_only&quot;</span><br>                  /&gt;<br><br>&lt;stream name<span class="hljs-operator">=</span><span class="hljs-string">&quot;output&quot;</span><br>        type<span class="hljs-operator">=</span><span class="hljs-string">&quot;output&quot;</span><br>        filename_template<span class="hljs-operator">=</span><span class="hljs-string">&quot;output.$Y-$M-$D_$h.$m.$s.nc&quot;</span><br>        output_interval<span class="hljs-operator">=</span><span class="hljs-string">&quot;none&quot;</span><br>        io_type<span class="hljs-operator">=</span><span class="hljs-string">&quot;pnetcdf&quot;</span><br>        clobber_mode<span class="hljs-operator">=</span><span class="hljs-string">&quot;replace_files&quot;</span> &gt;<br>        &lt;file name<span class="hljs-operator">=</span><span class="hljs-string">&quot;stream_list.atmosphere.output&quot;</span>/&gt;<br>&lt;/stream&gt;<br><br>&lt;stream name<span class="hljs-operator">=</span><span class="hljs-string">&quot;diagnostics&quot;</span><br>        type<span class="hljs-operator">=</span><span class="hljs-string">&quot;output&quot;</span><br>        io_type<span class="hljs-operator">=</span><span class="hljs-string">&quot;pnetcdf&quot;</span><br>        filename_template<span class="hljs-operator">=</span><span class="hljs-string">&quot;diag.$Y-$M-$D_$h.$m.$s.nc&quot;</span><br>        output_interval<span class="hljs-operator">=</span><span class="hljs-string">&quot;000_06:00:00&quot;</span><br>        clobber_mode<span class="hljs-operator">=</span><span class="hljs-string">&quot;replace_files&quot;</span> &gt;<br>        &lt;file name<span class="hljs-operator">=</span><span class="hljs-string">&quot;stream_list.atmosphere.diagnostics&quot;</span>/&gt;<br>&lt;/stream&gt;<br><br>&lt;/streams&gt;<br></code></pre></td></tr></table></figure>]]></content>
     
     
     <categories>
@@ -105,11 +140,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -134,9 +169,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
       <tag>Rhie-Chow</tag>
       
@@ -165,9 +200,9 @@
       
       <tag>NWP</tag>
       
-      <tag>AI</tag>
-      
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
       
       <tag>ML</tag>
       
@@ -204,9 +239,9 @@
       
       <tag>NWP</tag>
       
-      <tag>AI</tag>
-      
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
       
       <tag>ML</tag>
       
@@ -241,9 +276,9 @@
       
       <tag>NWP</tag>
       
-      <tag>AI</tag>
-      
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
       
       <tag>ML</tag>
       
@@ -276,11 +311,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -309,11 +344,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -338,11 +373,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Microphysics</tag>
       
@@ -369,11 +404,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>NaN</tag>
       
@@ -402,11 +437,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -431,11 +466,11 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
       
       <tag>Urban</tag>
+      
+      <tag>OpenFOAM</tag>
       
       <tag>CFD</tag>
       
@@ -503,11 +538,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>TKE</tag>
       
@@ -544,13 +579,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
       
-      <tag>HPC</tag>
+      <tag>WRF</tag>
       
       <tag>slurm</tag>
+      
+      <tag>HPC</tag>
       
       <tag>sinfo</tag>
       
@@ -577,15 +612,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
+      <tag>ECMWF</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ECMWF</tag>
       
       <tag>IC/LBC</tag>
       
@@ -612,11 +647,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>CMA</tag>
       
@@ -649,23 +684,23 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
+      <tag>HKO</tag>
+      
       <tag>IFS</tag>
       
-      <tag>ERA5</tag>
-      
       <tag>CMA</tag>
-      
-      <tag>HKO</tag>
       
       <tag>HKG</tag>
       
@@ -694,15 +729,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>Precipitation</tag>
       
@@ -737,19 +772,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -844,21 +879,21 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>DA</tag>
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
-      <tag>IFS</tag>
+      <tag>DA</tag>
       
-      <tag>ERA5</tag>
+      <tag>IFS</tag>
       
       <tag>CMA</tag>
       
@@ -885,9 +920,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
@@ -970,19 +1005,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -1009,19 +1044,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -1081,13 +1116,13 @@
     
     <tags>
       
-      <tag>Gmsh</tag>
-      
-      <tag>meshing</tag>
+      <tag>HPC</tag>
       
       <tag>OpenFOAM</tag>
       
-      <tag>HPC</tag>
+      <tag>Gmsh</tag>
+      
+      <tag>meshing</tag>
       
     </tags>
     
@@ -1145,19 +1180,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -1186,9 +1221,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
       <tag>LES</tag>
       
@@ -1225,11 +1260,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -1287,11 +1322,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>SMIOL</tag>
       
@@ -1318,11 +1353,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Tangential Velocity</tag>
       
@@ -1349,11 +1384,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -1388,9 +1423,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
       <tag>LES</tag>
       
@@ -1425,11 +1460,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Water Vapor Budget Equation</tag>
       
@@ -1460,11 +1495,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -1497,9 +1532,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -1530,11 +1565,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
       
@@ -1563,19 +1598,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -1614,19 +1649,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -1754,9 +1789,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
       <tag>MPI</tag>
       
@@ -1789,9 +1824,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
       <tag>turbulence model</tag>
       
@@ -1820,15 +1855,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>AI</tag>
+      <tag>WRF</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
       
       <tag>ML</tag>
       
@@ -1857,9 +1892,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
       <tag>Blasius Solution</tag>
       
@@ -1886,15 +1921,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>TC</tag>
       
@@ -1923,19 +1958,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -2001,9 +2036,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
       
@@ -2032,19 +2067,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -2110,23 +2145,23 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
+      
       <tag>GFS</tag>
+      
+      <tag>grib</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
       
-      <tag>ERA5</tag>
-      
       <tag>CMA</tag>
-      
-      <tag>grib</tag>
       
       <tag>wgrib2</tag>
       
@@ -2155,11 +2190,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Boussinesq</tag>
       
@@ -2256,9 +2291,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -2287,9 +2322,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -2316,19 +2351,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -2363,15 +2398,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>GFS</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>GFS</tag>
       
       <tag>FNL</tag>
       
@@ -2404,19 +2439,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -2443,19 +2478,19 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>GFS</tag>
       
       <tag>FNL</tag>
       
       <tag>IFS</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>CMA</tag>
       
@@ -2482,11 +2517,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MMM</tag>
       
@@ -2513,11 +2548,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>diffusion</tag>
       
@@ -2544,11 +2579,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -2579,11 +2614,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -2653,9 +2688,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -2690,9 +2725,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -2746,23 +2781,23 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
-      
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
-      <tag>GRIB</tag>
+      <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>NetCDF</tag>
       
       <tag>CMIP6</tag>
+      
+      <tag>GRIB</tag>
       
       <tag>scale_factor</tag>
       
@@ -2791,11 +2826,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Urban</tag>
       
@@ -2828,11 +2863,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>FDDA</tag>
       
@@ -2861,11 +2896,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>partition</tag>
       
@@ -2900,11 +2935,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Installation</tag>
       
@@ -2937,11 +2972,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Climate</tag>
       
@@ -2995,13 +3030,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>WPS</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>WPS</tag>
       
       <tag>Installation</tag>
       
@@ -3034,11 +3069,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>partition</tag>
       
@@ -3073,15 +3108,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>RH</tag>
       
@@ -3110,15 +3145,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
     </tags>
     
@@ -3143,21 +3178,21 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
+      <tag>WRF</tag>
+      
       <tag>DA</tag>
+      
+      <tag>WRFDA</tag>
       
       <tag>KF</tag>
       
       <tag>EKF</tag>
       
       <tag>EnKF</tag>
-      
-      <tag>WRFDA</tag>
       
       <tag>VarBC</tag>
       
@@ -3188,11 +3223,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>PBL</tag>
       
@@ -3219,9 +3254,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -3248,11 +3283,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>cloud fraction</tag>
       
@@ -3281,9 +3316,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -3310,9 +3345,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -3339,11 +3374,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3368,11 +3403,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3397,11 +3432,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3426,11 +3461,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Meteorology</tag>
       
@@ -3461,11 +3496,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3523,11 +3558,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>CCPP</tag>
       
@@ -3554,11 +3589,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>TKE</tag>
       
@@ -3589,11 +3624,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3618,11 +3653,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>ecFlow</tag>
       
@@ -3653,9 +3688,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Micromamba</tag>
       
@@ -3688,9 +3723,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Micromamba</tag>
       
@@ -3756,11 +3791,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>mesh generation</tag>
       
@@ -3795,11 +3830,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>mesh generation</tag>
       
@@ -3834,11 +3869,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Meteorology</tag>
       
@@ -3873,11 +3908,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -3906,11 +3941,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -3935,15 +3970,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>HPC</tag>
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     
@@ -3968,11 +4003,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -4003,11 +4038,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -4065,11 +4100,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -4102,11 +4137,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -4135,23 +4170,23 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>WPS</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
+      <tag>WRF</tag>
+      
       <tag>GFS</tag>
+      
+      <tag>grib</tag>
+      
+      <tag>WPS</tag>
       
       <tag>IFS</tag>
       
       <tag>GEFS</tag>
       
       <tag>AIFS</tag>
-      
-      <tag>grib</tag>
       
       <tag>grib2</tag>
       
@@ -4180,11 +4215,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -4217,11 +4252,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>CMA</tag>
       
@@ -4252,11 +4287,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -4289,11 +4324,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -4326,11 +4361,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -4392,11 +4427,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Precipitation</tag>
       
@@ -4456,11 +4491,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>IC</tag>
       
@@ -4489,11 +4524,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>FDDA</tag>
       
@@ -4520,9 +4555,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Urban</tag>
       
@@ -4555,15 +4590,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>CMAQ</tag>
       
@@ -4592,15 +4627,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>rainc</tag>
       
@@ -4629,11 +4664,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -4662,11 +4697,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -4691,15 +4726,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>Wave</tag>
       
@@ -4726,15 +4761,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>CMAQ</tag>
       
@@ -4763,15 +4798,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
     </tags>
     
@@ -4796,15 +4831,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>AI</tag>
+      <tag>WRF</tag>
       
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
@@ -4833,15 +4868,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>RRTM</tag>
       
@@ -4868,15 +4903,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
     </tags>
     
@@ -4901,11 +4936,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -4940,11 +4975,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>mesh generation</tag>
       
@@ -4973,23 +5008,23 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
-      
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
-      <tag>GRIB</tag>
+      <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>NetCDF</tag>
       
       <tag>CMIP6</tag>
+      
+      <tag>GRIB</tag>
       
     </tags>
     
@@ -5014,15 +5049,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
     </tags>
     
@@ -5047,15 +5082,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
       
       <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
     </tags>
     
@@ -5080,17 +5115,17 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
+      <tag>WRF</tag>
+      
+      <tag>PGW</tag>
       
       <tag>ERA5</tag>
       
-      <tag>PGW</tag>
+      <tag>GFS</tag>
       
       <tag>GRIB</tag>
       
@@ -5117,19 +5152,64 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>PGW</tag>
+      
+      <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
+      
+      <tag>NetCDF</tag>
+      
+      <tag>CMIP6</tag>
+      
+      <tag>GRIB</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>NWP | Check grib files</title>
+    <link href="/2025/02/05/NWP-Check-grib-files/"/>
+    <url>/2025/02/05/NWP-Check-grib-files/</url>
+    
+    <content type="html"><![CDATA[<div class="note note-primary">            <ul><li><a href="https://waipangsze.github.io/2023/05/06/GRIB1_GRIB2_NetCDF/"><strong>WRF | GRIB1, GRIB2, NetCDF</strong></a></li><li><a href="https://waipangsze.github.io/2024/08/16/ERA5-2024-upgrade/"><strong>ERA5 CDS upgrade (2024 Sep)</strong></a></li><li><a href="https://waipangsze.github.io/2025/02/05/NWP-ERA5-GRIB1-GRIB2/"><strong>NWP | ERA5 | GRIB1 and GRIB2</strong></a></li><li><a href="https://waipangsze.github.io/2025/02/19/MPAS-WRF-Extract-GFS-GRIB-files/"><strong>MPAS | WRF | Extract subset of GFS GRIB files</strong></a></li><li><a href="https://waipangsze.github.io/2025/04/02/NWP-CMA-CMA_GFS-real-time-data/"><strong>NWP | CMA | CMA_GFS real time data</strong></a></li><li><a href="https://waipangsze.github.io/2025/04/10/NWP-Herbie-Download-NWP-model-output-MPAS-WRF/"><strong>NWP | Herbie | Download NWP model output (grib2) | MPAS | WRF</strong></a></li></ul>          </div><hr /><h1 id="ecmwf-parameter-database">ECMWF Parameter database</h1><ul><li><a href="https://codes.ecmwf.int/grib/param-db/" class="uri">https://codes.ecmwf.int/grib/param-db/</a><ul><li><img src="https://i.imgur.com/W0pbXLZ.png" width="400" /></li></ul></li></ul><h1 id="check-latlon">Check lat/lon</h1><ul><li>To see the whole geographic structure cleanly without typing a massive string of keys</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">        <div class="fold-arrow">▶</div>check_grib.sh      </div>      <div class="fold-collapse collapse" id="collapse-8f7bdefe">        <div class="fold-content">          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#--- List Distinct Lat/Lons in Table</span><br><span class="hljs-comment">#grib_ls -p Ni,Nj,latitudeOfFirstGridPointInDegrees,longitudeOfFirstGridPointInDegrees,latitudeOfLastGridPointInDegrees,longitudeOfLastGridPointInDegrees,iDirectionIncrementInDegrees,jDirectionIncrementInDegrees $&#123;1&#125;</span><br><br><span class="hljs-comment">#--- Comprehensive Check</span><br><span class="hljs-comment">##--- To see the whole geographic structure cleanly without typing a massive string of keys,</span><br>grib_dump <span class="hljs-variable">$&#123;1&#125;</span> | grep -E <span class="hljs-string">&quot;GridPoint|Increment|N[ij]&quot;</span><br><br><span class="hljs-comment">#--- Dump Coordinates for Every Pixel</span><br><span class="hljs-comment">##--- Print lat, lon, and value for the first few points</span><br><span class="hljs-comment">#grib_get_data $&#123;1&#125; | head -n 10</span><br></code></pre></td></tr></table></figure>        </div>      </div>    </div><p>like,</p>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">        <div class="fold-arrow">▶</div>lat/lon of grib file      </div>      <div class="fold-collapse collapse" id="collapse-dcdac752">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs log">GFS 0.25deg grib file:<br>  Ni = 1440;<br>  Nj = 721;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = 0;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 359.75;<br>  iDirectionIncrementInDegrees = 0.25;<br>  jDirectionIncrementInDegrees = 0.25;<br><br>ERA5 0.25deg grib file:<br>  Ni = 1440;<br>  Nj = 721;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = 0;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 359.75;<br>  jDirectionIncrementInDegrees = 0.25;<br>  iDirectionIncrementInDegrees = 0.25;<br><br>IFS open data 0.25deg grib file:<br>  Ni = 1440;<br>  Nj = 721;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = 180;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 179.75;<br>  iDirectionIncrementInDegrees = 0.25;<br>  jDirectionIncrementInDegrees = 0.25;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><p>for ifs-0.1deg grib file, lat/lon may be not common,</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs log">IFS 0.1deg grib file:<br>  Ni = 3600;<br>  Nj = 1801;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = -180;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 179.9;<br>  jDirectionIncrementInDegrees = 0.1;<br>  iDirectionIncrementInDegrees = 0.1;<br></code></pre></td></tr></table></figure><ul><li><code>$ cdo sellonlatbox,0,360,-90,90 input.grib output_shifted.grib</code><ul><li><code>cdo sellonlatbox</code> works perfectly fine on GRIB2 files.</li><li>The <strong>warnings</strong> and <code>gribapiEncode</code> messages you are seeing do not mean the command failed. Your output file (ifs-grid-shifted.grib2) was likely created successfully and the coordinates were correctly shifted.</li></ul></li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs log">After conversion:<br>  Ni = 3600;<br>  Nj = 1801;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = 0;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 359.9;<br>  jDirectionIncrementInDegrees = 0.1;<br>  iDirectionIncrementInDegrees = 0.1;<br></code></pre></td></tr></table></figure><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/um59Cxv.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/5MACWTV.png" /></div></div></div><h1 id="cdo">cdo</h1><ul><li><code>cdo showname</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">        <div class="fold-arrow">▶</div>cdo showname ERA5-0p25-SL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-05eef982">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs log">    $ cdo showname ERA5-0p25-SL-2023052100.grib<br>var165 var166 var168 var167 var172 var151 var31 var34 var235 var33 var141 var139 var170 var183 var236 var134 var39 var40 var41 var42 var129<br>cdo    showname: Processed 21 variables [0.07s 33MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">        <div class="fold-arrow">▶</div>cdo showname ERA5-0p25-PL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-90469042">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs log">$ cdo showname ERA5-0p25-PL-2023052100.grib<br>var129 var157 var133 var130 var131 var132<br>cdo    showname: Processed 6 variables [0.35s 31MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li><li><code>cdo info</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">        <div class="fold-arrow">▶</div>cdo info ERA5-0p25-SL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-738764b7">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs log">$ cdo info ERA5-0p25-SL-2023052100.grib<br>    -1 :       Date     Time   Level Gridsize    Miss :     Minimum        Mean     Maximum : Parameter ID<br>    1 : 2023-05-21 00:00:00       0  1038240       0 :     -21.115     0.39898      22.422 : 165.128       <br>    2 : 2023-05-21 00:00:00       0  1038240       0 :     -21.346     0.35972      21.077 : 166.128       <br>    3 : 2023-05-21 00:00:00       0  1038240       0 :      197.14      274.89      302.18 : 168.128       <br>    4 : 2023-05-21 00:00:00       0  1038240       0 :      201.04      279.49      311.52 : 167.128       <br>    5 : 2023-05-21 00:00:00       0  1038240       0 :      0.0000     0.33590      1.0000 : 172.128       <br>    6 : 2023-05-21 00:00:00       0  1038240       0 :      94799.  1.0077e+05  1.0389e+05 : 151.128       <br>    7 : 2023-05-21 00:00:00       0  1038240  351876 :      0.0000     0.17234      1.0000 : 31.128        <br>    8 : 2023-05-21 00:00:00       0  1038240  351876 :      269.65      287.09      307.00 : 34.128        <br>    9 : 2023-05-21 00:00:00       0  1038240       0 :      200.20      279.62      322.07 : 235.128       <br>    10 : 2023-05-21 00:00:00       0  1038240       0 :      100.00      130.06      450.00 : 33.128        <br>    11 : 2023-05-21 00:00:00       0  1038240       0 :      0.0000      1.1549      10.000 : 141.128       <br>    12 : 2023-05-21 00:00:00     3.5  1038240       0 :      215.26      280.31      323.69 : 139.128       <br>    13 : 2023-05-21 00:00:00    17.5  1038240       0 :      215.73      280.54      318.04 : 170.128       <br>    14 : 2023-05-21 00:00:00      64  1038240       0 :      216.82      280.37      314.96 : 183.128       <br>    15 : 2023-05-21 00:00:00   177.5  1038240       0 :      219.36      279.96      312.29 : 236.128       <br>    16 : 2023-05-21 00:00:00       0  1038240       0 :      49688.      96483.  1.0365e+05 : 134.128       <br>    17 : 2023-05-21 00:00:00     3.5  1038240       0 :   -0.014522    0.087194     0.76871 : 39.128        <br>    18 : 2023-05-21 00:00:00    17.5  1038240       0 : -0.00035179    0.089905     0.76121 : 40.128        <br>    19 : 2023-05-21 00:00:00      64  1038240       0 : -0.00012223    0.090184     0.76250 : 41.128        <br>    20 : 2023-05-21 00:00:00   177.5  1038240       0 :      0.0000    0.085637     0.75583 : 42.128        <br>    21 : 2023-05-21 00:00:00       0  1038240       0 :     -1386.5      3724.3      57458. : 129.128       <br>cdo    info: Processed 21 variables over 1 timestep [0.33s 42MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dfb167e8" role="button" aria-expanded="false" aria-controls="collapse-dfb167e8">        <div class="fold-arrow">▶</div>cdo info ERA5-0p25-PL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-dfb167e8">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs log">$ cdo info ERA5-0p25-PL-2023052100.grib<br>    -1 :       Date     Time   Level Gridsize    Miss :     Minimum        Mean     Maximum : Parameter ID<br>    1 : 2023-05-21 00:00:00     100  1038240       0 :  4.1082e+05  4.6062e+05  4.8298e+05 : 129.128       <br>    2 : 2023-05-21 00:00:00     100  1038240       0 :  5.7310e-05  0.00092131    0.025504 : 157.128       <br>    3 : 2023-05-21 00:00:00     100  1038240       0 :  3.2372e-06  3.9020e-06  4.1034e-06 : 133.128       <br>    4 : 2023-05-21 00:00:00     100  1038240       0 :      221.09      258.37      281.97 : 130.128       <br>    5 : 2023-05-21 00:00:00     100  1038240       0 :     -34.221      23.626      115.38 : 131.128       <br><br>212 : 2023-05-21 00:00:00   97500  1038240       0 :     0.96080      78.736      157.37 : 157.128       <br>213 : 2023-05-21 00:00:00   97500  1038240       0 :  3.1545e-06   0.0070588    0.022532 : 133.128       <br>214 : 2023-05-21 00:00:00   97500  1038240       0 :      221.14      280.76      314.10 : 130.128       <br>215 : 2023-05-21 00:00:00   97500  1038240       0 :     -31.454     0.78810      25.805 : 131.128       <br>216 : 2023-05-21 00:00:00   97500  1038240       0 :     -29.676     0.38837      25.550 : 132.128       <br>217 : 2023-05-21 00:00:00  100000  1038240       0 :     -4127.8      603.85      3193.9 : 129.128       <br>218 : 2023-05-21 00:00:00  100000  1038240       0 :     0.87153      76.483      157.51 : 157.128       <br>219 : 2023-05-21 00:00:00  100000  1038240       0 :  3.1545e-06   0.0072340    0.023612 : 133.128       <br>220 : 2023-05-21 00:00:00  100000  1038240       0 :      234.08      282.30      315.62 : 130.128       <br>221 : 2023-05-21 00:00:00  100000  1038240       0 :     -25.980     0.47058      22.410 : 131.128       <br>222 : 2023-05-21 00:00:00  100000  1038240       0 :     -23.276     0.37781      22.248 : 132.128       <br>    :       Date     Time   Level Gridsize    Miss :     Minimum        Mean     Maximum : Parameter ID<br>cdo    info: Processed 6 variables over 1 timestep [1.88s 39MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li><li><code>cdo sinfo</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">        <div class="fold-arrow">▶</div>cdo sinfo ERA5-0p25-SL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-5d5d193e">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs log">$ cdo sinfo ERA5-0p25-SL-2023052100.grib<br>File format : GRIB<br>    -1 : Institut Source   T Steptype Levels Num    Points Num Dtype : Parameter ID<br>    1 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 165.128       <br>    2 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 166.128       <br>    3 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 168.128       <br>    4 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 167.128       <br>    5 : ECMWF    unknown  v instant       1   1   1038240   1  P24  : 172.128       <br>    6 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 151.128       <br>    7 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 31.128        <br>    8 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 34.128        <br>    9 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 235.128       <br>    10 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 33.128        <br>    11 : ECMWF    unknown  v instant       1   1   1038240   1  P24  : 141.128       <br>    12 : ECMWF    unknown  v instant       1   2   1038240   1  P16  : 139.128       <br>    13 : ECMWF    unknown  v instant       1   3   1038240   1  P16  : 170.128       <br>    14 : ECMWF    unknown  v instant       1   4   1038240   1  P16  : 183.128       <br>    15 : ECMWF    unknown  v instant       1   5   1038240   1  P16  : 236.128       <br>    16 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 134.128       <br>    17 : ECMWF    unknown  v instant       1   2   1038240   1  P16  : 39.128        <br>    18 : ECMWF    unknown  v instant       1   3   1038240   1  P16  : 40.128        <br>    19 : ECMWF    unknown  v instant       1   4   1038240   1  P16  : 41.128        <br>    20 : ECMWF    unknown  v instant       1   5   1038240   1  P16  : 42.128        <br>    21 : ECMWF    unknown  v instant       1   1   1038240   1  P24  : 129.128       <br>Grid coordinates :<br>    1 : lonlat                   : points=1038240 (1440x721)<br>                            lon : 0 to 359.75 by 0.25 degrees_east  circular<br>                            lat : 90 to -90 by -0.25 degrees_north<br>Vertical coordinates :<br>    1 : surface                  : levels=1<br>    2 : depth_below_land         : levels=1<br>                            depth : 3.5 cm<br>                        bounds : 0-7 cm<br>    3 : depth_below_land         : levels=1<br>                            depth : 17.5 cm<br>                        bounds : 7-28 cm<br>    4 : depth_below_land         : levels=1<br>                            depth : 64 cm<br>                        bounds : 28-100 cm<br>    5 : depth_below_land         : levels=1<br>                            depth : 177.5 cm<br>                        bounds : 100-255 cm<br>Time coordinate :  1 step<br>    RefTime =  2023-05-21 00:00:00  Units = hours  Calendar = proleptic_gregorian<br>YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss<br>2023-05-21 00:00:00<br>cdo    sinfo: Processed 21 variables over 1 timestep [0.08s 34MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bbf6858" role="button" aria-expanded="false" aria-controls="collapse-8bbf6858">        <div class="fold-arrow">▶</div>cdo sinfo ERA5-0p25-PL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-8bbf6858">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs log">    $ cdo sinfo ERA5-0p25-PL-2023052100.grib<br>File format : GRIB<br>    -1 : Institut Source   T Steptype Levels Num    Points Num Dtype : Parameter ID<br>    1 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 129.128       <br>    2 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 157.128       <br>    3 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 133.128       <br>    4 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 130.128       <br>    5 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 131.128       <br>    6 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 132.128       <br>Grid coordinates :<br>    1 : lonlat                   : points=1038240 (1440x721)<br>                            lon : 0 to 359.75 by 0.25 degrees_east  circular<br>                            lat : 90 to -90 by -0.25 degrees_north<br>Vertical coordinates :<br>    1 : pressure                 : levels=37<br>                            plev : 100 to 100000 Pa<br>Time coordinate :  1 step<br>    RefTime =  2023-05-21 00:00:00  Units = hours  Calendar = proleptic_gregorian<br>YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss<br>2023-05-21 00:00:00<br>cdo    sinfo: Processed 6 variables over 1 timestep [0.35s 31MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li></ul><h1 id="grib_ls">grib_ls</h1><ul><li><code>grib ls</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8e159bd8" role="button" aria-expanded="false" aria-controls="collapse-8e159bd8">        <div class="fold-arrow">▶</div>grib_ls ERA5-0p25-SL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-8e159bd8">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs log">$ grib_ls ERA5-0p25-SL-2023052100.grib<br>ERA5-0p25-SL-2023052100.grib<br>edition      centre       typeOfLevel  level        dataDate     stepRange    dataType     shortName    packingType  gridType     <br>1            ecmf         surface      0            20230521     0            an           10u          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           10v          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           2d           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           2t           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           lsm          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           msl          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           ci           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           sst          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           skt          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           rsn          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           sd           grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  0            20230521     0            an           stl1         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  7            20230521     0            an           stl2         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  28           20230521     0            an           stl3         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  100          20230521     0            an           stl4         grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           sp           grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  0            20230521     0            an           swvl1        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  7            20230521     0            an           swvl2        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  28           20230521     0            an           swvl3        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  100          20230521     0            an           swvl4        grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           z            grid_simple  regular_ll  <br>21 of 21 messages in ERA5-0p25-SL-2023052100.grib<br><br>21 of 21 total messages in 1 files<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li></ul><h1 id="wgrib2">wgrib2</h1><ul><li><code>wgrib2</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-42d133e0" role="button" aria-expanded="false" aria-controls="collapse-42d133e0">        <div class="fold-arrow">▶</div>title      </div>      <div class="fold-collapse collapse" id="collapse-42d133e0">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log"><br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>NWP</category>
+      
+    </categories>
+    
+    
+    <tags>
       
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
-      
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
-      <tag>GRIB</tag>
+      <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
+      
+      <tag>grib</tag>
+      
+      <tag>GRIB1</tag>
+      
+      <tag>GRIB2</tag>
       
       <tag>NetCDF</tag>
       
@@ -5158,70 +5238,25 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
-      
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
-      <tag>NetCDF</tag>
+      <tag>ERA5</tag>
       
-      <tag>CMIP6</tag>
+      <tag>GFS</tag>
       
       <tag>GRIB1</tag>
       
       <tag>GRIB2</tag>
       
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>NWP | Check grib files</title>
-    <link href="/2025/02/05/NWP-Check-grib-files/"/>
-    <url>/2025/02/05/NWP-Check-grib-files/</url>
-    
-    <content type="html"><![CDATA[<div class="note note-primary">            <ul><li><a href="https://waipangsze.github.io/2023/05/06/GRIB1_GRIB2_NetCDF/"><strong>WRF | GRIB1, GRIB2, NetCDF</strong></a></li><li><a href="https://waipangsze.github.io/2024/08/16/ERA5-2024-upgrade/"><strong>ERA5 CDS upgrade (2024 Sep)</strong></a></li><li><a href="https://waipangsze.github.io/2025/02/05/NWP-ERA5-GRIB1-GRIB2/"><strong>NWP | ERA5 | GRIB1 and GRIB2</strong></a></li><li><a href="https://waipangsze.github.io/2025/02/19/MPAS-WRF-Extract-GFS-GRIB-files/"><strong>MPAS | WRF | Extract subset of GFS GRIB files</strong></a></li><li><a href="https://waipangsze.github.io/2025/04/02/NWP-CMA-CMA_GFS-real-time-data/"><strong>NWP | CMA | CMA_GFS real time data</strong></a></li><li><a href="https://waipangsze.github.io/2025/04/10/NWP-Herbie-Download-NWP-model-output-MPAS-WRF/"><strong>NWP | Herbie | Download NWP model output (grib2) | MPAS | WRF</strong></a></li></ul>          </div><hr /><h1 id="ecmwf-parameter-database">ECMWF Parameter database</h1><ul><li><a href="https://codes.ecmwf.int/grib/param-db/" class="uri">https://codes.ecmwf.int/grib/param-db/</a><ul><li><img src="https://i.imgur.com/W0pbXLZ.png" width="400" /></li></ul></li></ul><h1 id="check-latlon">Check lat/lon</h1><ul><li>To see the whole geographic structure cleanly without typing a massive string of keys</li></ul>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8f7bdefe" role="button" aria-expanded="false" aria-controls="collapse-8f7bdefe">        <div class="fold-arrow">▶</div>check_grib.sh      </div>      <div class="fold-collapse collapse" id="collapse-8f7bdefe">        <div class="fold-content">          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span><br><br><span class="hljs-comment">#--- List Distinct Lat/Lons in Table</span><br><span class="hljs-comment">#grib_ls -p Ni,Nj,latitudeOfFirstGridPointInDegrees,longitudeOfFirstGridPointInDegrees,latitudeOfLastGridPointInDegrees,longitudeOfLastGridPointInDegrees,iDirectionIncrementInDegrees,jDirectionIncrementInDegrees $&#123;1&#125;</span><br><br><span class="hljs-comment">#--- Comprehensive Check</span><br><span class="hljs-comment">##--- To see the whole geographic structure cleanly without typing a massive string of keys,</span><br>grib_dump <span class="hljs-variable">$&#123;1&#125;</span> | grep -E <span class="hljs-string">&quot;GridPoint|Increment|N[ij]&quot;</span><br><br><span class="hljs-comment">#--- Dump Coordinates for Every Pixel</span><br><span class="hljs-comment">##--- Print lat, lon, and value for the first few points</span><br><span class="hljs-comment">#grib_get_data $&#123;1&#125; | head -n 10</span><br></code></pre></td></tr></table></figure>        </div>      </div>    </div><p>like,</p>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dcdac752" role="button" aria-expanded="false" aria-controls="collapse-dcdac752">        <div class="fold-arrow">▶</div>lat/lon of grib file      </div>      <div class="fold-collapse collapse" id="collapse-dcdac752">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs log">GFS 0.25deg grib file:<br>  Ni = 1440;<br>  Nj = 721;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = 0;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 359.75;<br>  iDirectionIncrementInDegrees = 0.25;<br>  jDirectionIncrementInDegrees = 0.25;<br><br>ERA5 0.25deg grib file:<br>  Ni = 1440;<br>  Nj = 721;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = 0;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 359.75;<br>  jDirectionIncrementInDegrees = 0.25;<br>  iDirectionIncrementInDegrees = 0.25;<br><br>IFS open data 0.25deg grib file:<br>  Ni = 1440;<br>  Nj = 721;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = 180;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 179.75;<br>  iDirectionIncrementInDegrees = 0.25;<br>  jDirectionIncrementInDegrees = 0.25;<br></code></pre></td></tr></table></figure>        </div>      </div>    </div><p>for ifs-0.1deg grib file, lat/lon may be not common,</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs log">IFS 0.1deg grib file:<br>  Ni = 3600;<br>  Nj = 1801;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = -180;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 179.9;<br>  jDirectionIncrementInDegrees = 0.1;<br>  iDirectionIncrementInDegrees = 0.1;<br></code></pre></td></tr></table></figure><ul><li><code>$ cdo sellonlatbox,0,360,-90,90 input.grib output_shifted.grib</code><ul><li><code>cdo sellonlatbox</code> works perfectly fine on GRIB2 files.</li><li>The <strong>warnings</strong> and <code>gribapiEncode</code> messages you are seeing do not mean the command failed. Your output file (ifs-grid-shifted.grib2) was likely created successfully and the coordinates were correctly shifted.</li></ul></li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs log">After conversion:<br>  Ni = 3600;<br>  Nj = 1801;<br>  latitudeOfFirstGridPointInDegrees = 90;<br>  longitudeOfFirstGridPointInDegrees = 0;<br>  latitudeOfLastGridPointInDegrees = -90;<br>  longitudeOfLastGridPointInDegrees = 359.9;<br>  jDirectionIncrementInDegrees = 0.1;<br>  iDirectionIncrementInDegrees = 0.1;<br></code></pre></td></tr></table></figure><div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="https://i.imgur.com/um59Cxv.png" /></div><div class="group-image-wrap"><img src="https://i.imgur.com/5MACWTV.png" /></div></div></div><h1 id="cdo">cdo</h1><ul><li><code>cdo showname</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-05eef982" role="button" aria-expanded="false" aria-controls="collapse-05eef982">        <div class="fold-arrow">▶</div>cdo showname ERA5-0p25-SL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-05eef982">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs log">    $ cdo showname ERA5-0p25-SL-2023052100.grib<br>var165 var166 var168 var167 var172 var151 var31 var34 var235 var33 var141 var139 var170 var183 var236 var134 var39 var40 var41 var42 var129<br>cdo    showname: Processed 21 variables [0.07s 33MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-90469042" role="button" aria-expanded="false" aria-controls="collapse-90469042">        <div class="fold-arrow">▶</div>cdo showname ERA5-0p25-PL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-90469042">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs log">$ cdo showname ERA5-0p25-PL-2023052100.grib<br>var129 var157 var133 var130 var131 var132<br>cdo    showname: Processed 6 variables [0.35s 31MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li><li><code>cdo info</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-738764b7" role="button" aria-expanded="false" aria-controls="collapse-738764b7">        <div class="fold-arrow">▶</div>cdo info ERA5-0p25-SL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-738764b7">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs log">$ cdo info ERA5-0p25-SL-2023052100.grib<br>    -1 :       Date     Time   Level Gridsize    Miss :     Minimum        Mean     Maximum : Parameter ID<br>    1 : 2023-05-21 00:00:00       0  1038240       0 :     -21.115     0.39898      22.422 : 165.128       <br>    2 : 2023-05-21 00:00:00       0  1038240       0 :     -21.346     0.35972      21.077 : 166.128       <br>    3 : 2023-05-21 00:00:00       0  1038240       0 :      197.14      274.89      302.18 : 168.128       <br>    4 : 2023-05-21 00:00:00       0  1038240       0 :      201.04      279.49      311.52 : 167.128       <br>    5 : 2023-05-21 00:00:00       0  1038240       0 :      0.0000     0.33590      1.0000 : 172.128       <br>    6 : 2023-05-21 00:00:00       0  1038240       0 :      94799.  1.0077e+05  1.0389e+05 : 151.128       <br>    7 : 2023-05-21 00:00:00       0  1038240  351876 :      0.0000     0.17234      1.0000 : 31.128        <br>    8 : 2023-05-21 00:00:00       0  1038240  351876 :      269.65      287.09      307.00 : 34.128        <br>    9 : 2023-05-21 00:00:00       0  1038240       0 :      200.20      279.62      322.07 : 235.128       <br>    10 : 2023-05-21 00:00:00       0  1038240       0 :      100.00      130.06      450.00 : 33.128        <br>    11 : 2023-05-21 00:00:00       0  1038240       0 :      0.0000      1.1549      10.000 : 141.128       <br>    12 : 2023-05-21 00:00:00     3.5  1038240       0 :      215.26      280.31      323.69 : 139.128       <br>    13 : 2023-05-21 00:00:00    17.5  1038240       0 :      215.73      280.54      318.04 : 170.128       <br>    14 : 2023-05-21 00:00:00      64  1038240       0 :      216.82      280.37      314.96 : 183.128       <br>    15 : 2023-05-21 00:00:00   177.5  1038240       0 :      219.36      279.96      312.29 : 236.128       <br>    16 : 2023-05-21 00:00:00       0  1038240       0 :      49688.      96483.  1.0365e+05 : 134.128       <br>    17 : 2023-05-21 00:00:00     3.5  1038240       0 :   -0.014522    0.087194     0.76871 : 39.128        <br>    18 : 2023-05-21 00:00:00    17.5  1038240       0 : -0.00035179    0.089905     0.76121 : 40.128        <br>    19 : 2023-05-21 00:00:00      64  1038240       0 : -0.00012223    0.090184     0.76250 : 41.128        <br>    20 : 2023-05-21 00:00:00   177.5  1038240       0 :      0.0000    0.085637     0.75583 : 42.128        <br>    21 : 2023-05-21 00:00:00       0  1038240       0 :     -1386.5      3724.3      57458. : 129.128       <br>cdo    info: Processed 21 variables over 1 timestep [0.33s 42MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dfb167e8" role="button" aria-expanded="false" aria-controls="collapse-dfb167e8">        <div class="fold-arrow">▶</div>cdo info ERA5-0p25-PL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-dfb167e8">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs log">$ cdo info ERA5-0p25-PL-2023052100.grib<br>    -1 :       Date     Time   Level Gridsize    Miss :     Minimum        Mean     Maximum : Parameter ID<br>    1 : 2023-05-21 00:00:00     100  1038240       0 :  4.1082e+05  4.6062e+05  4.8298e+05 : 129.128       <br>    2 : 2023-05-21 00:00:00     100  1038240       0 :  5.7310e-05  0.00092131    0.025504 : 157.128       <br>    3 : 2023-05-21 00:00:00     100  1038240       0 :  3.2372e-06  3.9020e-06  4.1034e-06 : 133.128       <br>    4 : 2023-05-21 00:00:00     100  1038240       0 :      221.09      258.37      281.97 : 130.128       <br>    5 : 2023-05-21 00:00:00     100  1038240       0 :     -34.221      23.626      115.38 : 131.128       <br><br>212 : 2023-05-21 00:00:00   97500  1038240       0 :     0.96080      78.736      157.37 : 157.128       <br>213 : 2023-05-21 00:00:00   97500  1038240       0 :  3.1545e-06   0.0070588    0.022532 : 133.128       <br>214 : 2023-05-21 00:00:00   97500  1038240       0 :      221.14      280.76      314.10 : 130.128       <br>215 : 2023-05-21 00:00:00   97500  1038240       0 :     -31.454     0.78810      25.805 : 131.128       <br>216 : 2023-05-21 00:00:00   97500  1038240       0 :     -29.676     0.38837      25.550 : 132.128       <br>217 : 2023-05-21 00:00:00  100000  1038240       0 :     -4127.8      603.85      3193.9 : 129.128       <br>218 : 2023-05-21 00:00:00  100000  1038240       0 :     0.87153      76.483      157.51 : 157.128       <br>219 : 2023-05-21 00:00:00  100000  1038240       0 :  3.1545e-06   0.0072340    0.023612 : 133.128       <br>220 : 2023-05-21 00:00:00  100000  1038240       0 :      234.08      282.30      315.62 : 130.128       <br>221 : 2023-05-21 00:00:00  100000  1038240       0 :     -25.980     0.47058      22.410 : 131.128       <br>222 : 2023-05-21 00:00:00  100000  1038240       0 :     -23.276     0.37781      22.248 : 132.128       <br>    :       Date     Time   Level Gridsize    Miss :     Minimum        Mean     Maximum : Parameter ID<br>cdo    info: Processed 6 variables over 1 timestep [1.88s 39MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li><li><code>cdo sinfo</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5d5d193e" role="button" aria-expanded="false" aria-controls="collapse-5d5d193e">        <div class="fold-arrow">▶</div>cdo sinfo ERA5-0p25-SL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-5d5d193e">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs log">$ cdo sinfo ERA5-0p25-SL-2023052100.grib<br>File format : GRIB<br>    -1 : Institut Source   T Steptype Levels Num    Points Num Dtype : Parameter ID<br>    1 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 165.128       <br>    2 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 166.128       <br>    3 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 168.128       <br>    4 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 167.128       <br>    5 : ECMWF    unknown  v instant       1   1   1038240   1  P24  : 172.128       <br>    6 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 151.128       <br>    7 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 31.128        <br>    8 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 34.128        <br>    9 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 235.128       <br>    10 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 33.128        <br>    11 : ECMWF    unknown  v instant       1   1   1038240   1  P24  : 141.128       <br>    12 : ECMWF    unknown  v instant       1   2   1038240   1  P16  : 139.128       <br>    13 : ECMWF    unknown  v instant       1   3   1038240   1  P16  : 170.128       <br>    14 : ECMWF    unknown  v instant       1   4   1038240   1  P16  : 183.128       <br>    15 : ECMWF    unknown  v instant       1   5   1038240   1  P16  : 236.128       <br>    16 : ECMWF    unknown  v instant       1   1   1038240   1  P16  : 134.128       <br>    17 : ECMWF    unknown  v instant       1   2   1038240   1  P16  : 39.128        <br>    18 : ECMWF    unknown  v instant       1   3   1038240   1  P16  : 40.128        <br>    19 : ECMWF    unknown  v instant       1   4   1038240   1  P16  : 41.128        <br>    20 : ECMWF    unknown  v instant       1   5   1038240   1  P16  : 42.128        <br>    21 : ECMWF    unknown  v instant       1   1   1038240   1  P24  : 129.128       <br>Grid coordinates :<br>    1 : lonlat                   : points=1038240 (1440x721)<br>                            lon : 0 to 359.75 by 0.25 degrees_east  circular<br>                            lat : 90 to -90 by -0.25 degrees_north<br>Vertical coordinates :<br>    1 : surface                  : levels=1<br>    2 : depth_below_land         : levels=1<br>                            depth : 3.5 cm<br>                        bounds : 0-7 cm<br>    3 : depth_below_land         : levels=1<br>                            depth : 17.5 cm<br>                        bounds : 7-28 cm<br>    4 : depth_below_land         : levels=1<br>                            depth : 64 cm<br>                        bounds : 28-100 cm<br>    5 : depth_below_land         : levels=1<br>                            depth : 177.5 cm<br>                        bounds : 100-255 cm<br>Time coordinate :  1 step<br>    RefTime =  2023-05-21 00:00:00  Units = hours  Calendar = proleptic_gregorian<br>YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss<br>2023-05-21 00:00:00<br>cdo    sinfo: Processed 21 variables over 1 timestep [0.08s 34MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bbf6858" role="button" aria-expanded="false" aria-controls="collapse-8bbf6858">        <div class="fold-arrow">▶</div>cdo sinfo ERA5-0p25-PL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-8bbf6858">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs log">    $ cdo sinfo ERA5-0p25-PL-2023052100.grib<br>File format : GRIB<br>    -1 : Institut Source   T Steptype Levels Num    Points Num Dtype : Parameter ID<br>    1 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 129.128       <br>    2 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 157.128       <br>    3 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 133.128       <br>    4 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 130.128       <br>    5 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 131.128       <br>    6 : ECMWF    unknown  v instant      37   1   1038240   1  P16  : 132.128       <br>Grid coordinates :<br>    1 : lonlat                   : points=1038240 (1440x721)<br>                            lon : 0 to 359.75 by 0.25 degrees_east  circular<br>                            lat : 90 to -90 by -0.25 degrees_north<br>Vertical coordinates :<br>    1 : pressure                 : levels=37<br>                            plev : 100 to 100000 Pa<br>Time coordinate :  1 step<br>    RefTime =  2023-05-21 00:00:00  Units = hours  Calendar = proleptic_gregorian<br>YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss  YYYY-MM-DD hh:mm:ss<br>2023-05-21 00:00:00<br>cdo    sinfo: Processed 6 variables over 1 timestep [0.35s 31MB].<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li></ul><h1 id="grib_ls">grib_ls</h1><ul><li><code>grib ls</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8e159bd8" role="button" aria-expanded="false" aria-controls="collapse-8e159bd8">        <div class="fold-arrow">▶</div>grib_ls ERA5-0p25-SL-2023052100.grib      </div>      <div class="fold-collapse collapse" id="collapse-8e159bd8">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs log">$ grib_ls ERA5-0p25-SL-2023052100.grib<br>ERA5-0p25-SL-2023052100.grib<br>edition      centre       typeOfLevel  level        dataDate     stepRange    dataType     shortName    packingType  gridType     <br>1            ecmf         surface      0            20230521     0            an           10u          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           10v          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           2d           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           2t           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           lsm          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           msl          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           ci           grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           sst          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           skt          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           rsn          grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           sd           grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  0            20230521     0            an           stl1         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  7            20230521     0            an           stl2         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  28           20230521     0            an           stl3         grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  100          20230521     0            an           stl4         grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           sp           grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  0            20230521     0            an           swvl1        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  7            20230521     0            an           swvl2        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  28           20230521     0            an           swvl3        grid_simple  regular_ll  <br>1            ecmf         depthBelowLandLayer  100          20230521     0            an           swvl4        grid_simple  regular_ll  <br>1            ecmf         surface      0            20230521     0            an           z            grid_simple  regular_ll  <br>21 of 21 messages in ERA5-0p25-SL-2023052100.grib<br><br>21 of 21 total messages in 1 files<br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li></ul><h1 id="wgrib2">wgrib2</h1><ul><li><code>wgrib2</code><ul><li>    <div class="fold">      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-42d133e0" role="button" aria-expanded="false" aria-controls="collapse-42d133e0">        <div class="fold-arrow">▶</div>title      </div>      <div class="fold-collapse collapse" id="collapse-42d133e0">        <div class="fold-content">          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log"><br></code></pre></td></tr></table></figure>        </div>      </div>    </div></li></ul></li></ul>]]></content>
-    
-    
-    <categories>
-      
-      <category>NWP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>WRF</tag>
-      
-      <tag>MPAS</tag>
-      
-      <tag>NWP</tag>
-      
-      <tag>GFS</tag>
-      
-      <tag>ERA5</tag>
-      
-      <tag>PGW</tag>
-      
       <tag>NetCDF</tag>
       
       <tag>CMIP6</tag>
-      
-      <tag>GRIB1</tag>
-      
-      <tag>GRIB2</tag>
-      
-      <tag>grib</tag>
       
     </tags>
     
@@ -5246,23 +5281,23 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
-      
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
-      <tag>GRIB</tag>
+      <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>NetCDF</tag>
       
       <tag>CMIP6</tag>
+      
+      <tag>GRIB</tag>
       
     </tags>
     
@@ -5318,23 +5353,23 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>GFS</tag>
-      
-      <tag>ERA5</tag>
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
-      <tag>GRIB</tag>
+      <tag>ERA5</tag>
+      
+      <tag>GFS</tag>
       
       <tag>NetCDF</tag>
       
       <tag>CMIP6</tag>
+      
+      <tag>GRIB</tag>
       
     </tags>
     
@@ -5547,11 +5582,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -5580,11 +5615,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -5683,9 +5718,9 @@
       
       <tag>NWP</tag>
       
-      <tag>AI</tag>
-      
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
       
       <tag>ML</tag>
       
@@ -5714,11 +5749,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -5780,11 +5815,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -5838,9 +5873,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
       <tag>fluent</tag>
       
@@ -6092,9 +6127,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6119,9 +6154,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
@@ -6216,9 +6251,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6272,9 +6307,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6299,9 +6334,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6392,9 +6427,9 @@
       
       <tag>NWP</tag>
       
-      <tag>AI</tag>
-      
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
       
       <tag>ML</tag>
       
@@ -6425,9 +6460,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
@@ -6487,11 +6522,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -6518,11 +6553,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -6555,11 +6590,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -6586,9 +6621,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6642,9 +6677,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6669,9 +6704,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6742,9 +6777,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6794,9 +6829,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6821,11 +6856,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -6852,9 +6887,9 @@
     
     <tags>
       
-      <tag>OpenFOAM</tag>
-      
       <tag>HPC</tag>
+      
+      <tag>OpenFOAM</tag>
       
     </tags>
     
@@ -6879,9 +6914,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>ECMWF</tag>
       
@@ -6910,11 +6945,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -7015,9 +7050,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>MAPS</tag>
       
@@ -7044,11 +7079,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>IC/BC</tag>
       
@@ -7075,17 +7110,17 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
       
-      <tag>IFS</tag>
-      
       <tag>ECMWF</tag>
+      
+      <tag>IFS</tag>
       
     </tags>
     
@@ -7110,11 +7145,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -7139,13 +7174,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>WPS</tag>
-      
       <tag>NWP</tag>
       
+      <tag>WRF</tag>
+      
       <tag>HPC</tag>
+      
+      <tag>WPS</tag>
       
     </tags>
     
@@ -7170,11 +7205,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -7201,9 +7236,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HPC</tag>
       
@@ -7230,9 +7265,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -7376,9 +7411,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
@@ -7407,9 +7442,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
@@ -7438,9 +7473,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
@@ -7469,15 +7504,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>AI</tag>
+      <tag>WRF</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
       
       <tag>ML</tag>
       
@@ -7542,11 +7577,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -7604,11 +7639,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -7687,9 +7722,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Urban</tag>
       
@@ -7779,11 +7814,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Google</tag>
       
@@ -7810,11 +7845,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -7839,11 +7874,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
@@ -7870,11 +7905,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
@@ -7901,11 +7936,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>PGW</tag>
       
@@ -7932,11 +7967,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -8100,11 +8135,11 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>DA</tag>
       
@@ -8131,15 +8166,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>GFS</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>GFS</tag>
       
       <tag>FNL</tag>
       
@@ -8170,15 +8205,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -8205,17 +8240,17 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
       
       <tag>NWP</tag>
       
-      <tag>DA</tag>
+      <tag>WRF</tag>
       
       <tag>gnu</tag>
       
       <tag>Installation</tag>
+      
+      <tag>DA</tag>
       
       <tag>WRFDA</tag>
       
@@ -8294,9 +8329,9 @@
     
     <tags>
       
-      <tag>python</tag>
-      
       <tag>Jupyter</tag>
+      
+      <tag>python</tag>
       
     </tags>
     
@@ -8346,9 +8381,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
       <tag>DeepONet</tag>
       
@@ -8377,9 +8412,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
     </tags>
     
@@ -8460,9 +8495,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>Installation</tag>
       
@@ -9143,9 +9178,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>HKO</tag>
       
@@ -9174,9 +9209,9 @@
     
     <tags>
       
-      <tag>python</tag>
-      
       <tag>Jupyter</tag>
+      
+      <tag>python</tag>
       
     </tags>
     
@@ -9226,11 +9261,11 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>MPAS</tag>
       
       <tag>tile files</tag>
       
@@ -9284,9 +9319,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>netcdf</tag>
       
@@ -9317,9 +9352,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
     </tags>
     
@@ -9344,9 +9379,9 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
       <tag>MPAS</tag>
+      
+      <tag>WRF</tag>
       
       <tag>netcdf</tag>
       
@@ -9450,15 +9485,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -9510,15 +9545,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -9626,13 +9661,13 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>WPS</tag>
-      
       <tag>MPAS</tag>
       
+      <tag>WRF</tag>
+      
       <tag>HPC</tag>
+      
+      <tag>WPS</tag>
       
     </tags>
     
@@ -9686,11 +9721,11 @@
     
     <tags>
       
+      <tag>NWP</tag>
+      
       <tag>WRF</tag>
       
       <tag>WPS</tag>
-      
-      <tag>NWP</tag>
       
       <tag>domain</tag>
       
@@ -9777,15 +9812,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>ERA5</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
       
@@ -9951,15 +9986,15 @@
     
     <tags>
       
+      <tag>MPAS</tag>
+      
       <tag>WRF</tag>
+      
+      <tag>GFS</tag>
       
       <tag>WPS</tag>
       
-      <tag>MPAS</tag>
-      
       <tag>IC/BC</tag>
-      
-      <tag>GFS</tag>
       
       <tag>FNL</tag>
       
@@ -10102,15 +10137,15 @@
     
     <tags>
       
-      <tag>WRF</tag>
-      
-      <tag>WPS</tag>
-      
       <tag>NWP</tag>
+      
+      <tag>WRF</tag>
       
       <tag>gnu</tag>
       
       <tag>gcc</tag>
+      
+      <tag>WPS</tag>
       
       <tag>Installation</tag>
       
@@ -10139,9 +10174,9 @@
       
       <tag>NWP</tag>
       
-      <tag>HPC</tag>
-      
       <tag>slurm</tag>
+      
+      <tag>HPC</tag>
       
     </tags>
     

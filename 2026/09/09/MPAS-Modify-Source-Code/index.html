@@ -28,11 +28,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/cvgItH2.png">
 <meta property="article:published_time" content="2026-09-08T22:27:00.000Z">
-<meta property="article:modified_time" content="2026-09-09T02:07:23.875Z">
+<meta property="article:modified_time" content="2026-10-13T09:21:37.892Z">
 <meta property="article:author" content="wpsze">
-<meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
 <meta property="article:tag" content="NWP">
+<meta property="article:tag" content="WRF">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i.imgur.com/cvgItH2.png">
   
@@ -366,7 +366,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          422 words
+          588 words
         
       </span>
     
@@ -377,7 +377,7 @@
         
         
         
-          4 mins
+          5 mins
         
       </span>
     
@@ -462,6 +462,13 @@
 <ul>
 <li><a href="https://waipangsze.github.io/2026/02/11/MPAS-Simple-MPAS-IO-Layer-SMIOL/">MPAS | Simple MPAS I/O Layer (SMIOL)</a></li>
 </ul>
+<h1 id="mpas_timekeeping.f">mpas_timekeeping.F</h1>
+<p>Error:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs log">forrtl: severe (59): list-directed I/O syntax error, unit -5, file Internal List-Directed Read<br>Image              PC                Routine            Line        Source             <br>atmosphere_model   00000000038852CB  Unknown               Unknown  Unknown<br>atmosphere_model   00000000038848FB  Unknown               Unknown  Unknown<br>atmosphere_model   00000000031BDD74  mpas_timekeeping_        1545  mpas_timekeeping.F<br>atmosphere_model   0000000000DF8C81  mpas_atmphys_mana         627  mpas_atmphys_manager.F<br>atmosphere_model   00000000008FBE5C  atm_core_mp_atm_m         583  mpas_atm_core.F<br>atmosphere_model   00000000008F3310  atm_core_mp_atm_c         280  mpas_atm_core.F<br>atmosphere_model   000000000041D6F3  mpas_subdriver_mp         454  mpas_subdriver.F<br>atmosphere_model   0000000000417A3C  MAIN__                     18  mpas.F<br>atmosphere_model   000000000041797D  Unknown               Unknown  Unknown<br>libc-2.28.so       000014CAD029FD85  __libc_start_main     Unknown  Unknown<br>atmosphere_model   000000000041789E  Unknown               Unknown  Unknown<br></code></pre></td></tr></table></figure>
+<ul>
+<li>streams.atmosphere includes "output"</li>
+</ul>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs abnf">&lt;streams&gt;<br>&lt;immutable_stream name<span class="hljs-operator">=</span><span class="hljs-string">&quot;input&quot;</span><br>                  type<span class="hljs-operator">=</span><span class="hljs-string">&quot;input&quot;</span><br>                  io_type<span class="hljs-operator">=</span><span class="hljs-string">&quot;pnetcdf&quot;</span><br>                  filename_template<span class="hljs-operator">=</span><span class="hljs-string">&quot;init.nc&quot;</span><br>                  input_interval<span class="hljs-operator">=</span><span class="hljs-string">&quot;initial_only&quot;</span> /&gt;<br><br>&lt;immutable_stream name<span class="hljs-operator">=</span><span class="hljs-string">&quot;restart&quot;</span><br>                  type<span class="hljs-operator">=</span><span class="hljs-string">&quot;input&quot;</span><br>                  io_type<span class="hljs-operator">=</span><span class="hljs-string">&quot;pnetcdf&quot;</span><br>                  filename_template<span class="hljs-operator">=</span><span class="hljs-string">&quot;restart.nc&quot;</span><br>                  input_interval<span class="hljs-operator">=</span><span class="hljs-string">&quot;initial_only&quot;</span><br>                  /&gt;<br><br>&lt;stream name<span class="hljs-operator">=</span><span class="hljs-string">&quot;output&quot;</span><br>        type<span class="hljs-operator">=</span><span class="hljs-string">&quot;output&quot;</span><br>        filename_template<span class="hljs-operator">=</span><span class="hljs-string">&quot;output.$Y-$M-$D_$h.$m.$s.nc&quot;</span><br>        output_interval<span class="hljs-operator">=</span><span class="hljs-string">&quot;none&quot;</span><br>        io_type<span class="hljs-operator">=</span><span class="hljs-string">&quot;pnetcdf&quot;</span><br>        clobber_mode<span class="hljs-operator">=</span><span class="hljs-string">&quot;replace_files&quot;</span> &gt;<br>        &lt;file name<span class="hljs-operator">=</span><span class="hljs-string">&quot;stream_list.atmosphere.output&quot;</span>/&gt;<br>&lt;/stream&gt;<br><br>&lt;stream name<span class="hljs-operator">=</span><span class="hljs-string">&quot;diagnostics&quot;</span><br>        type<span class="hljs-operator">=</span><span class="hljs-string">&quot;output&quot;</span><br>        io_type<span class="hljs-operator">=</span><span class="hljs-string">&quot;pnetcdf&quot;</span><br>        filename_template<span class="hljs-operator">=</span><span class="hljs-string">&quot;diag.$Y-$M-$D_$h.$m.$s.nc&quot;</span><br>        output_interval<span class="hljs-operator">=</span><span class="hljs-string">&quot;000_06:00:00&quot;</span><br>        clobber_mode<span class="hljs-operator">=</span><span class="hljs-string">&quot;replace_files&quot;</span> &gt;<br>        &lt;file name<span class="hljs-operator">=</span><span class="hljs-string">&quot;stream_list.atmosphere.diagnostics&quot;</span>/&gt;<br>&lt;/stream&gt;<br><br>&lt;/streams&gt;<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -495,11 +502,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
-      
         <a href="/tags/MPAS/" class="print-no-link">#MPAS</a>
       
         <a href="/tags/NWP/" class="print-no-link">#NWP</a>
+      
+        <a href="/tags/WRF/" class="print-no-link">#WRF</a>
       
     </div>
   
@@ -530,7 +537,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>September 9, 2026</div>
+          <div>October 13, 2026</div>
         </div>
       
       
