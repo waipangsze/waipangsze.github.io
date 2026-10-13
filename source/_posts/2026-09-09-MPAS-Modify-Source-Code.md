@@ -137,3 +137,62 @@ fi
 # Simple MPAS I/O Layer (SMIOL)
 
 - [MPAS | Simple MPAS I/O Layer (SMIOL)](https://waipangsze.github.io/2026/02/11/MPAS-Simple-MPAS-IO-Layer-SMIOL/)
+
+# mpas_timekeeping.F
+
+Error:
+
+```log
+forrtl: severe (59): list-directed I/O syntax error, unit -5, file Internal List-Directed Read
+Image              PC                Routine            Line        Source             
+atmosphere_model   00000000038852CB  Unknown               Unknown  Unknown
+atmosphere_model   00000000038848FB  Unknown               Unknown  Unknown
+atmosphere_model   00000000031BDD74  mpas_timekeeping_        1545  mpas_timekeeping.F
+atmosphere_model   0000000000DF8C81  mpas_atmphys_mana         627  mpas_atmphys_manager.F
+atmosphere_model   00000000008FBE5C  atm_core_mp_atm_m         583  mpas_atm_core.F
+atmosphere_model   00000000008F3310  atm_core_mp_atm_c         280  mpas_atm_core.F
+atmosphere_model   000000000041D6F3  mpas_subdriver_mp         454  mpas_subdriver.F
+atmosphere_model   0000000000417A3C  MAIN__                     18  mpas.F
+atmosphere_model   000000000041797D  Unknown               Unknown  Unknown
+libc-2.28.so       000014CAD029FD85  __libc_start_main     Unknown  Unknown
+atmosphere_model   000000000041789E  Unknown               Unknown  Unknown
+```
+
+- streams.atmosphere includes "output"
+
+```
+<streams>
+<immutable_stream name="input"
+                  type="input"
+                  io_type="pnetcdf"
+                  filename_template="init.nc"
+                  input_interval="initial_only" />
+
+<immutable_stream name="restart"
+                  type="input"
+                  io_type="pnetcdf"
+                  filename_template="restart.nc"
+                  input_interval="initial_only"
+                  />
+
+<stream name="output"
+        type="output"
+        filename_template="output.$Y-$M-$D_$h.$m.$s.nc"
+        output_interval="none"
+        io_type="pnetcdf"
+        clobber_mode="replace_files" >
+        <file name="stream_list.atmosphere.output"/>
+</stream>
+
+<stream name="diagnostics"
+        type="output"
+        io_type="pnetcdf"
+        filename_template="diag.$Y-$M-$D_$h.$m.$s.nc"
+        output_interval="000_06:00:00"
+        clobber_mode="replace_files" >
+        <file name="stream_list.atmosphere.diagnostics"/>
+</stream>
+
+</streams>
+```
+
