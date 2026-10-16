@@ -138,7 +138,7 @@ fi
 
 - [MPAS | Simple MPAS I/O Layer (SMIOL)](https://waipangsze.github.io/2026/02/11/MPAS-Simple-MPAS-IO-Layer-SMIOL/)
 
-# mpas_timekeeping.F
+# mpas_timekeeping.F issue
 
 Error:
 
@@ -196,3 +196,11 @@ atmosphere_model   000000000041789E  Unknown               Unknown  Unknown
 </streams>
 ```
 
+# parse ../Registry_processed.xml issue
+
+```sh
+/bin/sh: line 1: 3505672 Segmentation fault      (core dumped) /home/wpsze/MPAS-A/intel-oneapi/mpasv8.x.x/build/src/tools/registry/parse ../Registry_processed.xml -D_MPI -DCORE_INIT_ATMOSPHERE -DMPAS_NAMELIST_SUFFIX=init_atmosphere -DMPAS_EXE_NAME=init_atmosphere_model -DSINGLE_PRECISION -DMPAS_NATIVE_TIMERS -DMPAS_GIT_VERSION=unknown -DMPAS_BUILD_TARGET=intel-mpi -DMPAS_PIO_SUPPORT -DUSE_PIO2
+```
+
+- [8.2.0: parse for .inc not working correctly (macos, osx) | Aug 27, 2024](https://forum.mmm.ucar.edu/threads/8-2-0-parse-for-inc-not-working-correctly-macos-osx.18831/#top#1)
+  - I think we have a fix for this issue in MPAS-Dev/MPAS-Model [PR#1229](https://github.com/MPAS-Dev/MPAS-Model/pull/1229).

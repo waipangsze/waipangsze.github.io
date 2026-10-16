@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://gmd.copernicus.org/articles/16/5131/2023/gmd-16-5131-2023-f01-web.png
+banner_img: https://gmd.copernicus.org/articles/16/5131/2023/gmd-16-5131-2023-f01-web.png
 ---
 
 # MPAS release
