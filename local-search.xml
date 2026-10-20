@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>Linux | 如何分析可執行程序？例如使用 ldd 或其他工具？</title>
+    <link href="/2026/10/20/Linux-analysis-executable-program/"/>
+    <url>/2026/10/20/Linux-analysis-executable-program/</url>
+    
+    <content type="html"><![CDATA[<p>From Gemini</p><hr /><h1 id="executable-binary-analysis">Executable Binary Analysis</h1><p>分析可執行程序（Executable Binary Analysis）通常分為<strong>靜態分析</strong>（不運行程序）和<strong>動態分析</strong>（運行程序並觀察行為）。以下是常見的工具與分析流程：</p><hr /><h2 id="一-靜態分析工具static-analysis">一、 靜態分析工具（Static Analysis）</h2><p>靜態分析在不安裝或不執行程序的情況下，檢查其結構、依賴項與符號資訊。</p><h3 id="ldd-查看動態連結庫依賴">1. <code>ldd</code> — 查看動態連結庫依賴</h3><p>用於查看程序運行時需要加載的共享庫（Shared Libraries, <code>.so</code>）。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ldd /path/to/binary<br><br></code></pre></td></tr></table></figure><ul><li><strong>常見用途</strong>：檢查是否缺少依賴庫（如 <code>not found</code> 錯誤）。</li><li><strong>注意事項</strong>：不要對<strong>來源不明的未知程序</strong>直接運行 <code>ldd</code>，因為在某些系統上 <code>ldd</code> 可能會嘗試加載並執行部分代碼。</li></ul><h3 id="file-查看文件基本類型與架構">2. <code>file</code> — 查看文件基本類型與架構</h3><p>確定程序的檔案類型（ELF、PE、Mach-O）、架構（x86_64、AArch64）以及編譯屬性（如是否為 <code>statically linked</code> 或 <code>dynamically linked</code>）。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">file /path/to/binary<br><br></code></pre></td></tr></table></figure><h3 id="readelf-查看-elf-文件細節-linux">3. <code>readelf</code> — 查看 ELF 文件細節 (Linux)</h3><p>針對 Linux 下的 ELF 格式程序，提供比 <code>ldd</code> 更深入且安全的靜態分析：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看動態依賴庫（安全替代 ldd）</span><br>readelf -d /path/to/binary | grep NEEDED<br><br><span class="hljs-comment"># 查看程序頭部資訊（包含 Entry Point 進入點）</span><br>readelf -h /path/to/binary<br><br><span class="hljs-comment"># 查看段落結構 (Sections)</span><br>readelf -S /path/to/binary<br><br></code></pre></td></tr></table></figure><h3 id="nm-查看符號表symbols">4. <code>nm</code> — 查看符號表（Symbols）</h3><p>列出程序中定義與引用的函數和全域變數（若未被 <code>strip</code> 剝離）：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">nm -D /path/to/binary    <span class="hljs-comment"># 查看動態符號</span><br>nm -C /path/to/binary    <span class="hljs-comment"># 解析 C++ 名稱修飾 (Demangle)</span><br><br></code></pre></td></tr></table></figure><h3 id="objdump-反匯編與節區查看">5. <code>objdump</code> — 反匯編與節區查看</h3><p>將機器碼還原為組合語言（Disassembly）：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 反匯編 .text 節（主要代碼段）</span><br>objdump -d -M intel /path/to/binary | less<br><br><span class="hljs-comment"># 查看包含來源代碼行的反匯編（若包含 Debug symbol）</span><br>objdump -S /path/to/binary<br><br></code></pre></td></tr></table></figure><hr /><h2 id="二-動態分析工具dynamic-analysis">二、 動態分析工具（Dynamic Analysis）</h2><p>動態分析通過追蹤程序執行過程中的系統調用、函數調用與記憶體狀態來分析行為。</p><h3 id="strace-追蹤系統調用-system-calls">1. <code>strace</code> — 追蹤系統調用 (System Calls)</h3><p>記錄程序向 Linux 核心發出的所有請求（如檔案讀寫 <code>open</code>/<code>read</code>/<code>write</code>、網路通訊 <code>socket</code> 等）。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">strace -f -o trace.log ./binary<br><br></code></pre></td></tr></table></figure><ul><li><strong>常用參數</strong>：<code>-f</code> 追蹤子進程，<code>-e</code> 過濾特定調用（例如 <code>-e trace=file,network</code>）。</li></ul><h3 id="ltrace-追蹤動態庫函數調用-library-calls">2. <code>ltrace</code> — 追蹤動態庫函數調用 (Library Calls)</h3><p>記錄程序調用了哪些 C 標準庫或其他共享庫函數（如 <code>malloc</code>, <code>printf</code>, <code>strcmp</code>）。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ltrace ./binary<br><br></code></pre></td></tr></table></figure><h3 id="gdb-gnu-調試器-interactive-debugging">3. <code>gdb</code> — GNU 調試器 (Interactive Debugging)</h3><p>進行單步調試、設置中斷點（Breakpoints）、檢查寄存器與記憶體內容：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">gdb ./binary<br>(gdb) <span class="hljs-built_in">break</span> main      <span class="hljs-comment"># 在 main 函數設中斷點</span><br>(gdb) run             <span class="hljs-comment"># 開始執行</span><br>(gdb) info registers  <span class="hljs-comment"># 查看寄存器內容</span><br>(gdb) x/10xw <span class="hljs-variable">$rsp</span>     <span class="hljs-comment"># 檢查堆疊記憶體</span><br><br></code></pre></td></tr></table></figure><hr /><h2 id="三-高級逆向工程工具gui-全功能分析平台">三、 高級逆向工程工具（GUI / 全功能分析平台）</h2><p>對於複雜、未開源或高度混淆的二進制文件，可以使用專門的逆向工程工具：</p><ul><li><strong>Ghidra</strong>：NSA 開源的逆向工程套件，內置強大的 C 語言反編譯器（Decompiler）。</li><li><strong>IDA Pro / IDA Free</strong>：業界標準的反編譯與動態調試工具。</li><li><strong>r2 (Redit2)</strong> / <strong>Cutter</strong>：命令列與 GUI 結合的開源逆向框架。</li></ul><hr /><h2 id="四-常用分析流程總結">四、 常用分析流程總結</h2><ol type="1"><li><strong>初步偵查</strong>：用 <code>file</code> 確定架構，用 <code>ldd</code> 或 <code>readelf -d</code> 查看依賴。</li><li><strong>文本提取</strong>：用 <code>strings /path/to/binary</code> 搜尋程序中硬編碼的敏感字串（如網址、路徑、提示訊息）。</li><li><strong>行為追蹤</strong>：用 <code>strace</code> 查看程序在操作哪些檔案與網絡鏈接。</li><li><strong>深入逆向</strong>：使用 <code>Ghidra</code> 或 <code>gdb</code> 分析核心邏輯。</li></ol><p>在 Linux / Unix 系統中，<strong><code>not stripped</code></strong> 表示該可執行文件或動態連結庫（<code>.so</code>）中<strong>保留了完整的符號表（Symbol Table）與除錯資訊（Debug Information）</strong>。</p><p>當你使用 <code>file</code> 命令檢查二進位檔案時，常會看到類似的輸出：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ file my_program<br>my_program: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, ... , not stripped<br><br></code></pre></td></tr></table></figure><hr /><h1 id="not-stripped未剝離"><strong>Not Stripped</strong>（未剝離）</h1><h2 id="一-什麼是符號symbols">一、 什麼是符號（Symbols）？</h2><p>在編譯 C/C++ 等程式碼時，符號表上記錄了：</p><ul><li><strong>函數名稱</strong>（如 <code>main</code>, <code>calculate_sum()</code>）</li><li><strong>全域變數名稱</strong>（如 <code>int global_counter</code>）</li><li><strong>原始碼檔名與行號</strong>（若編譯時加上 <code>-g</code> 開啟 Debug mode）</li></ul><hr /><h2 id="二-not-stripped-vs-stripped-的主要差異">二、 <code>not stripped</code> vs <code>stripped</code> 的主要差異</h2><table><thead><tr class="header"><th>特性</th><th><strong>Not Stripped</strong>（未剝離）</th><th><strong>Stripped</strong>（已剝離）</th></tr></thead><tbody><tr class="odd"><td><strong>符號資訊</strong></td><td>完全保留（包含函數名、變數名）</td><td>絕大部分名稱被移除或替換為記憶體位址</td></tr><tr class="even"><td><strong>檔案大小</strong></td><td>較大（因為包含額外的文字資訊）</td><td>較小（通常可減少 10% ~ 50% 體積）</td></tr><tr class="odd"><td><strong>可讀性 / 反彙編</strong></td><td>非常高（反組譯工具可直接還原原函數名）</td><td>較低（只能看到 <code>sub_401120</code> 等無意義名稱）</td></tr><tr class="even"><td><strong>除錯難易度</strong></td><td>非常容易（可用 <code>gdb</code> 設定函數中斷點）</td><td>困難（需要載入額外的 <code>.debug</code> 檔案）</td></tr><tr class="odd"><td><strong>主要用途</strong></td><td>開發階段、除錯、內部測試</td><td>正式發佈（Release Mode）、減少體積、保護程式邏輯</td></tr></tbody></table><hr /><h2 id="三-如何檢視與操作符號">三、 如何檢視與操作符號？</h2><h3 id="查看未剝離not-stripped檔案的函數名稱">1. 查看未剝離（not stripped）檔案的函數名稱</h3><p>可以使用 <code>nm</code> 或 <code>readelf</code> 檢查：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">nm my_program<br><br></code></pre></td></tr></table></figure><blockquote><p><strong>輸出範例</strong>（能直接看到 <code>my_function</code>）： <code>0000000000001149 T my_function</code> <code>0000000000001129 T main</code></p></blockquote><h3 id="將檔案變更為-stripped">2. 將檔案變更為 <code>stripped</code></h3><p>Linux 提供 <code>strip</code> 命令，可直接移除二進位檔案中的符號資訊以縮減檔案大小：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">strip my_program<br><br></code></pre></td></tr></table></figure><p>執行後再用 <code>file my_program</code> 檢查，狀態就會變成 <strong><code>stripped</code></strong>。</p><hr /><h2 id="四-對分析與逆向工程的影響">四、 對分析與逆向工程的影響</h2><ul><li><strong>開發與除錯</strong>：<code>not stripped</code> 讓 <code>gdb</code> 等除錯工具能直接對應原始碼行號與函數名稱。</li><li><strong>逆向分析</strong>：若拿到的二進位檔案是 <code>not stripped</code>，使用 Ghidra、IDA Pro 等逆向工具時，函數名稱會直接顯示在反組譯碼中，大幅降低分析門檻。</li></ul><p>使用 <code>strip</code> 命令可以非常方便地清除 ELF 可執行檔或共享庫（<code>.so</code>）中的除錯符號與非必要資訊，從而縮小檔案體積並提高逆向分析的門檻。</p><hr /><h1 id="如何使用-strip-命令将-not-stripped-的文件转换为-stripped">如何使用 strip 命令将 not stripped 的文件转换为 stripped</h1><h2 id="基本語法與操作步驟">1. 基本語法與操作步驟</h2><p>在使用 <code>strip</code> 前，建議先備份原始檔案或將處理後的檔案輸出至新路徑。</p><h3 id="方法-a直接修改原檔案不可逆"><strong>方法 A：直接修改原檔案（不可逆）</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">strip ./my_program<br><br></code></pre></td></tr></table></figure><ul><li><strong>驗證方式</strong>：執行 <code>file ./my_program</code>，輸出中應包含 <code>stripped</code> 字樣。</li></ul><h3 id="方法-b將處理後的結果輸出至新檔案推薦"><strong>方法 B：將處理後的結果輸出至新檔案（推薦）</strong></h3><p>使用 <code>-o</code> 參數可以保留原始的 <code>not stripped</code> 檔案，方便日後除錯：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">strip ./my_program -o ./my_program_stripped<br><br></code></pre></td></tr></table></figure><ul><li><strong>驗證方式</strong>：執行 <code>file ./my_program_stripped</code> 確認顯示為 <code>stripped</code>，並使用 <code>ls -lh my_program*</code> 比對兩者檔案大小差異。</li></ul><hr /><h2 id="進階使用技巧控制清除程度">2. 進階使用技巧（控制清除程度）</h2><p>預設情況下，<code>strip</code> 會移除所有非必要的符號表（包括除錯資訊與本地符號）。你可以透過參數進行更精細的控制：</p><table><thead><tr class="header"><th>常用參數</th><th>功能說明</th><th>適用情境</th></tr></thead><tbody><tr class="odd"><td><strong><code>strip --strip-debug &lt;file&gt;</code></strong></td><td><strong>僅移除 Debug 符號</strong>，保留一般函數與變數名稱</td><td>適用於動態庫（.so），確保外部鏈接與調用不受影響</td></tr><tr class="even"><td><strong><code>strip --strip-unneeded &lt;file&gt;</code></strong></td><td>移除所有重定位不需要的符號</td><td>最常見的清理方式</td></tr><tr class="odd"><td><strong><code>strip -K &lt;symbol_name&gt; &lt;file&gt;</code></strong></td><td><strong>保留特定符號</strong>，其他全部移除</td><td>當某些函數（如 Plugin 接口）必須暴露時使用</td></tr><tr class="even"><td><strong><code>strip -g &lt;file&gt;</code></strong> / <strong><code>-S</code></strong></td><td>僅移除除錯（Debug）符號</td><td>類似 <code>--strip-debug</code></td></tr></tbody></table><hr /><h2 id="注意事項">3. 注意事項</h2><ol type="1"><li><strong>共享庫（<code>.so</code> 檔案）</strong>： 對於 <code>.so</code> 檔案，請勿使用過於激進的清除選項（例如清除全域導出符號），否則其他程式在執行時將無法順利載入或呼叫該庫中的函數。一般使用 <code>strip --strip-unneeded libtest.so</code> 即可。</li><li><strong>核心轉儲與除錯（Core Dump / GDB）</strong>： 檔案一旦變成 <code>stripped</code>，程式崩潰時產生的 Core Dump 檔將無法直接顯示出有意義的函數名稱與行號。如果在正式環境需要除錯，通常會在編譯時透過 <code>objcopy</code> 將 Debug 符號獨立抽離為 <code>.debug</code> 檔案保存。</li></ol><h1 id="如何使用-objdump-或-gdb-來查看這類文件的符號表">如何使用 objdump 或 gdb 來查看這類文件的符號表</h1><p>要查看可執行檔或共享庫（<code>.so</code>）中的符號表，不論該檔案是 <strong><code>not stripped</code></strong>（保留完整符號表）還是 <strong><code>stripped</code></strong>（大部分符號已移除），都可以使用 <code>objdump</code> 或 <code>gdb</code> 來進行檢視。</p><hr /><h2 id="一-使用-objdump-查看符號表">一、 使用 <code>objdump</code> 查看符號表</h2><p><code>objdump</code> 是 ELF 靜態分析工具，能精準提取不同類型的符號表：</p><h3 id="查看一般符號表symbol-table-.symtab">1. 查看一般符號表（Symbol Table, <code>.symtab</code>）</h3><p>僅適用於 <strong><code>not stripped</code></strong> 的檔案，包含所有本地（local）與全域（global）函數及變數名稱：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">objdump -t /path/to/binary<br><br></code></pre></td></tr></table></figure><ul><li><strong>常見過濾技巧</strong>（搜尋特定函數，如 <code>main</code>）： <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">objdump -t /path/to/binary | grep main<br><br></code></pre></td></tr></table></figure></li></ul><h3 id="查看動態符號表dynamic-symbol-table-.dynsym">2. 查看動態符號表（Dynamic Symbol Table, <code>.dynsym</code>）</h3><p><strong>不論檔案是否被 strip</strong>，只要是動態連結（Dynamically Linked）的程式，匯出/匯入的共享庫介面符號都會保留在 <code>.dynsym</code> 中：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">objdump -T /path/to/binary<br><br></code></pre></td></tr></table></figure><ul><li><strong>輸出範例解析</strong>：</li><li><code>*UND*</code>：代表未在此檔案內定義，需要執行時由動態連結器（如 <code>libc.so</code>）提供的外部函數（如 <code>printf</code>）。</li><li><code>g F .text</code>：代表全域（global）函數（Function）。</li></ul><hr /><h2 id="二-使用-gdb-查看符號表">二、 使用 <code>gdb</code> 查看符號表</h2><p><code>gdb</code> 適合在互動式環境中查詢或測試符號的解析結果。</p><h3 id="載入檔案並檢查符號狀態">1. 載入檔案並檢查符號狀態</h3><p>直接以 <code>gdb</code> 啟動檔案：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">gdb ./binary<br><br></code></pre></td></tr></table></figure><p>啟動後觀察提示訊息：</p><ul><li>若顯示 <code>Reading symbols from ./binary...</code> 代表為 <strong><code>not stripped</code></strong>。</li><li>若顯示 <code>Reading symbols from ./binary...(no debugging symbols found)</code>，代表除錯符號已被剝離（<code>stripped</code>）。</li></ul><h3 id="常見的-gdb-符號查詢指令">2. 常見的 <code>gdb</code> 符號查詢指令</h3><p>在 <code>gdb</code> 的命令列提示符 <code>(gdb)</code> 下使用：</p><ul><li><p><strong>搜尋所有函數符號</strong>： <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">(gdb) info functions<br><br></code></pre></td></tr></table></figure></p></li><li><p><em>註：若已被 strip，只會列出動態符號表（如 <code>.plt</code> 區段的函數）。</em></p></li><li><p><strong>按關鍵字搜尋函數</strong>： <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">(gdb) info functions &lt;keywords&gt;<br><br></code></pre></td></tr></table></figure></p></li><li><p>範例：<code>(gdb) info functions print</code></p></li><li><p><strong>查看全域/靜態變數符號</strong>： <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">(gdb) info variables<br><br></code></pre></td></tr></table></figure></p></li><li><p><strong>查看特定符號的記憶體位址或型態</strong>： <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">(gdb) ptype main<br>(gdb) print &amp;main<br><br></code></pre></td></tr></table></figure></p></li></ul><hr /><h2 id="三-若檔案已被-stripped該如何搭配獨立-debug-檔">三、 若檔案已被 <code>stripped</code>，該如何搭配獨立 Debug 檔？</h2><p>若你手頭上有透過 <code>objcopy</code> 分離出來的 <code>.debug</code> 符號檔，可在 <code>gdb</code> 中直接載入並還原符號表：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">(gdb) file ./binary_stripped<br>(gdb) symbol-file ./binary.debug<br><br></code></pre></td></tr></table></figure><p>載入成功後，再次執行 <code>info functions</code> 即可重新看到原本被隱藏的函數名稱與行號資訊。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>conda</tag>
+      
+      <tag>Micromamba</tag>
+      
+      <tag>ldd</tag>
+      
+      <tag>gdb</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>NWP | CFD | Roughness Length K_s/z0</title>
     <link href="/2026/10/16/CFD-Roughness-Length/"/>
     <url>/2026/10/16/CFD-Roughness-Length/</url>
@@ -195,8 +226,8 @@
   
   <entry>
     <title>CFD | Rhie-Chow interpolation</title>
-    <link href="/2026/09/04/2026-9-04-CFD-Rhie-Chow-interpolation/"/>
-    <url>/2026/09/04/2026-9-04-CFD-Rhie-Chow-interpolation/</url>
+    <link href="/2026/09/04/CFD-Rhie-Chow-interpolation/"/>
+    <url>/2026/09/04/CFD-Rhie-Chow-interpolation/</url>
     
     <content type="html"><![CDATA[<h1 id="rhie-chow-interpolation">Rhie-Chow Interpolation</h1><p>Instead of storing and updating vector velocity <span class="math inline">\(\mathbf{U}\)</span> directly at the cell faces (a layout known as a <strong>staggered grid</strong>), modern unstructured CFD solvers like OpenFOAM prefer storing primary variables at cell centers (a <strong>collocated grid</strong>) and using Rhie-Chow face interpolation.</p><p>This hybrid approach is used for three primary reasons:</p><hr /><h2 id="handling-arbitrary-unstructured-meshes">1. Handling Arbitrary Unstructured Meshes</h2><ul><li><strong>Staggered Grid Limitation:</strong> Staggered grids store scalar variables (<span class="math inline">\(p, T\)</span>) at cell centers and component velocity vectors (<span class="math inline">\(U_x, U_y, U_z\)</span>) on corresponding cell faces pointing normal to those faces. This layout works well on simple, structured Cartesian grids. However, on arbitrary 3D unstructured meshes with non-orthogonal, polyhedral, or skewed cells, defining distinct directional face-staggered velocity components becomes mathematically and algorithmically complex.</li><li><strong>Collocated Solution:</strong> Storing full 3D velocity vectors <span class="math inline">\(\mathbf{U} = (U_x, U_y, U_z)\)</span> at cell centers allows OpenFOAM to handle complex geometries, polyhedral cells, and mesh movement seamlessly.</li></ul><hr /><h2 id="computational-efficiency-memory-overhead">2. Computational Efficiency &amp; Memory Overhead</h2><p>If full velocity vectors were stored and updated directly as state variables at every face (rather than just cell centers):</p><ul><li><strong>Memory Footprint:</strong> In 3D finite volume meshes, there are typically <strong>3 to 6 times more faces than cells</strong>. Storing all velocity vectors, matrix coefficients, and gradients at cell faces would significantly increase RAM usage.</li><li><strong>Matrix Solver Costs:</strong> Solving linear momentum systems at every face center would multiply computational costs and solver time significantly.</li></ul><hr /><h2 id="consistency-with-transport-equations">3. Consistency with Transport Equations</h2><p>Physical scalar transport equations (like enthalpy <span class="math inline">\(T\)</span>, turbulence variables <span class="math inline">\(k-\varepsilon\)</span>, or species concentration <span class="math inline">\(C\)</span>) naturally live at cell centers.</p><ul><li>By updating velocity <span class="math inline">\(\mathbf{U}\)</span> at the same cell centers, momentum is solved using the exact same matrix structures, discretization schemes, and boundary conditions as all other transported scalars.</li></ul><hr /><h2 id="summary">Summary</h2><p>The <strong>Rhie-Chow method on a collocated grid</strong> provides the best of both worlds:</p><table><thead><tr class="header"><th>Approach</th><th>Primary Storage</th><th>Advantages</th><th>Drawbacks</th></tr></thead><tbody><tr class="odd"><td><strong>Pure Staggered Grid</strong></td><td>Face centers</td><td>Naturally avoids pressure-velocity decoupling without corrections.</td><td>Impractical for arbitrary unstructured or polyhedral meshes.</td></tr><tr class="even"><td><strong>Pure Collocated Grid (No Rhie-Chow)</strong></td><td>Cell centers</td><td>Simple mesh data structures and memory efficiency.</td><td>Suffers from checkerboard pressure oscillations.</td></tr><tr class="odd"><td><strong>OpenFOAM Approach</strong> (Collocated + Rhie-Chow)</td><td>Cell centers (with face-flux <span class="math inline">\(\phi\)</span>)</td><td>Highly efficient on unstructured grids; eliminates checkerboard oscillations.</td><td>Requires evaluating face-flux correction terms.</td></tr></tbody></table><h1 id="rhie-chow-插值">Rhie-Chow 插值</h1><p>Rhie-Chow 插值（Rhie-Chow Interpolation）是計算流體力學（CFD）中用於同位網格（Collocated Grid）的一項關鍵技術，旨在消除非物理的棋盤式壓力震盪（Checkerboard Oscillations）。 ## 緣起與背景</p><ul><li>棋盤危機：在同位網格中，速度和壓力存儲在同一個網格中心。如果對控制體介面上直接採用簡單的線性插值計算速度與壓力梯度，離散的連續性方程將無法有效感知相鄰網格間的奇偶跳躍壓力分佈，導致壓力出現如棋盤格般的鋸齒狀劇烈震盪。</li><li>歷史突破：1983年，工程師 C.M. Rhie 與 W.L. Chow 在《AIAA Journal》發表了關於渦輪機翼邊緣分離流動的研究論文。他們提出了一種聰明的動量插值修正技巧。</li></ul><h2 id="核心思想">核心思想</h2><ul><li>引入阻尼項：Rhie-Chow 插值在計算單元面上的速度時，除了常规插值外，<strong>還人為加入了一個與「相鄰節點壓力差」相關的附加項</strong>。</li><li>建立強耦合：這一額外項巧妙地模仿了動量方程的一部分，將壓力梯度直接帶入介面速度的計算中。這使得連續性方程間接包含了鄰近網格的壓力差，從而充當了數值阻尼，徹底平息了棋盤效應。</li></ul><h2 id="後續發展">後續發展</h2><ul><li>雖然原始的 Rhie-Chow 插值取得了巨大成功並被廣泛應用（如主流 CFD 軟體及 OpenFOAM 中），但在極小時間步長或強源項條件下，它仍會暴露出與時間步無關性、過度耗散或虛假震盪等問題。</li><li>後續學者（如 Perić、Majumdar、Choi 等）提出了多種改進與廣義化公式，使其在處理複雜網格、動態網格以及局部加密時更加穩健。</li></ul><h1 id="references">References</h1><ol type="1"><li><a href="https://www.cfd-china.com/topic/735/rhie-chow%E6%8F%92%E5%80%BC%E6%9C%89%E6%B2%A1%E6%9C%89%E5%AF%B9%E5%BA%94%E7%9A%84%E8%BF%9E%E7%BB%AD%E7%9A%84%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B-%E7%A7%AF%E5%88%86%E6%96%B9%E7%A8%8B">Rhie-Chow插值有没有对应的连续的微分方程/积分方程？</a></li><li><a href="https://sites.fem.unicamp.br/~im450/palestras&amp;artigos/CFD%20of%20Turbulence_Chalmers_Un/chapter_6-1.pdf"><strong>Collocated grids</strong> | Rhie-Chow</a></li><li><a href="https://www.tfd.chalmers.se/~hani/kurser/OS_CFD_2007/rhiechow.pdf">Rhie-Chow interpolation in OpenFOAM</a></li><li><a href="https://zhuanlan.zhihu.com/p/479879683">Rhie-Chow 插值在OpenFOAM中的实现逻辑</a><ol type="1"><li>Rhie-Chow插值相信大家都不陌生，主要是针对<code>同位网格（collocated Grid）</code>中由于速度和压力梯度离散不连续（non-consecutive）导致的<code>棋盘效应（Checkerboard Problem）</code>，即速度和压力梯度有间隔状的震荡现象</li><li>基本逻辑可以简单概括为通过不同于一般的面速度插值，<strong>来让最终的压力泊松方程离散关系不再不连续</strong>，并通过求解出来的压力去更新速度和面流量，从而消除上述的棋盘效应。</li></ol></li></ol>]]></content>
     
@@ -239,13 +270,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
-      <tag>AI</tag>
-      
       <tag>NWP</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Google</tag>
       
@@ -278,13 +309,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
-      <tag>AI</tag>
-      
       <tag>NWP</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Anemoi</tag>
       
@@ -315,13 +346,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
-      <tag>AI</tag>
-      
       <tag>NWP</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Anemoi</tag>
       
@@ -961,13 +992,13 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>PINN</tag>
       
       <tag>AI</tag>
       
-      <tag>PINN</tag>
-      
       <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -1731,9 +1762,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -1896,10 +1927,6 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
-      <tag>AI</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
@@ -1907,6 +1934,10 @@
       <tag>MPAS</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>PanguWeather</tag>
       
@@ -4503,11 +4534,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -4872,19 +4903,19 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
-      <tag>AI</tag>
-      
-      <tag>PINN</tag>
-      
-      <tag>DeepONet</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
       
       <tag>MPAS</tag>
+      
+      <tag>PINN</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -5363,9 +5394,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Ollama</tag>
       
@@ -5435,11 +5466,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -5464,9 +5495,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Ollama</tag>
       
@@ -5493,11 +5524,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
       <tag>deepseek</tag>
       
@@ -5524,11 +5555,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
       <tag>ResNet</tag>
       
@@ -5563,11 +5594,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -5592,11 +5623,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
       <tag>RNN</tag>
       
@@ -5691,11 +5722,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
       <tag>ResNet</tag>
       
@@ -5722,11 +5753,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
       <tag>VAE</tag>
       
@@ -5757,13 +5788,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
-      <tag>AI</tag>
-      
       <tag>NWP</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>Anemoi</tag>
       
@@ -5823,9 +5854,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -5974,9 +6005,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6003,9 +6034,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6038,9 +6069,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6073,9 +6104,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6106,9 +6137,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6137,9 +6168,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6195,13 +6226,13 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>PINN</tag>
       
       <tag>AI</tag>
       
-      <tag>PINN</tag>
-      
       <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
       
       <tag>DeepXDE</tag>
       
@@ -6228,11 +6259,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -6257,9 +6288,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6319,9 +6350,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6402,9 +6433,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6435,9 +6466,9 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
       <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6466,13 +6497,13 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
-      <tag>AI</tag>
-      
       <tag>NWP</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6501,13 +6532,13 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>PINN</tag>
       
       <tag>AI</tag>
       
-      <tag>PINN</tag>
-      
       <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
       
       <tag>pytorch</tag>
       
@@ -6534,11 +6565,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -6689,11 +6720,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -7390,11 +7421,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
       <tag>PDE</tag>
       
@@ -7421,11 +7452,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
       <tag>PDE</tag>
       
@@ -7452,13 +7483,13 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>PINN</tag>
       
       <tag>AI</tag>
       
-      <tag>PINN</tag>
-      
       <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -7483,13 +7514,13 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>PINN</tag>
       
       <tag>AI</tag>
       
-      <tag>PINN</tag>
-      
       <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -7514,13 +7545,13 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>PINN</tag>
       
       <tag>AI</tag>
       
-      <tag>PINN</tag>
-      
       <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -7545,10 +7576,6 @@
     
     <tags>
       
-      <tag>ML</tag>
-      
-      <tag>AI</tag>
-      
       <tag>NWP</tag>
       
       <tag>WRF</tag>
@@ -7556,6 +7583,10 @@
       <tag>MPAS</tag>
       
       <tag>ECMWF</tag>
+      
+      <tag>AI</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -7709,11 +7740,11 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>NWP</tag>
       
       <tag>AI</tag>
       
-      <tag>NWP</tag>
+      <tag>ML</tag>
       
     </tags>
     
@@ -8422,13 +8453,13 @@
     
     <tags>
       
-      <tag>ML</tag>
+      <tag>PINN</tag>
       
       <tag>AI</tag>
       
-      <tag>PINN</tag>
-      
       <tag>DeepONet</tag>
+      
+      <tag>ML</tag>
       
     </tags>
     
@@ -8453,9 +8484,9 @@
     
     <tags>
       
-      <tag>AI</tag>
-      
       <tag>PINN</tag>
+      
+      <tag>AI</tag>
       
     </tags>
     
@@ -8582,31 +8613,6 @@
   
   
   <entry>
-    <title>ssh setup</title>
-    <link href="/2024/06/05/ssh/"/>
-    <url>/2024/06/05/ssh/</url>
-    
-    <content type="html"><![CDATA[<p><a href="https://en.wikipedia.org/wiki/Secure_Shell">The Secure Shell Protocol (SSH)</a> is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login and command-line execution.</p><p>SSH was designed for Unix-like operating systems as a replacement for Telnet and unsecured remote Unix shell protocols, such as the Berkeley Remote Shell (rsh) and the related rlogin and rexec protocols, which all use insecure, plaintext methods of authentication, like passwords.</p><p>安全外殼協定（Secure Shell Protocol，簡稱SSH）是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境[1]。SSH通過在網路中建立安全隧道來實現SSH客戶端與伺服器之間的連線[2]。SSH最常見的用途是遠端登入系統，人們通常利用SSH來傳輸命令列介面和遠端執行命令。SSH使用頻率最高的場合是類Unix系統，但是Windows作業系統也能有限度地使用SSH。2015年，微軟宣布將在未來的作業系統中提供原生SSH協定支援[3]，Windows 10 1803版本已提供OpenSSH工具</p><h1 id="generate-a-key-pair">Generate a key pair</h1><p>In you local PC,</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh-keygen<br>or<br>$ ssh-keygen -t rsa<br></code></pre></td></tr></table></figure><p>where -t rsa option specifies that the type of the key should be RSA. Other choices include DSA, ECDSA, and ED25519. Select the protocol your SSH connection will use.</p><p>and id_rsa/id_rsa.pub are generated on .ssh.</p><ul><li>id_rsa contains the private key.</li><li>id_rsa.pub contains the public key.</li></ul><h1 id="id_rsa.pub">id_rsa.pub</h1><p>Copy id_rsa.pub to remote machine .ssh/authorized_keys</p><h1 id="ssh-login-without-password">ssh login without password</h1><p>In your SSH session with the remote machine, update the permissions of the .ssh directory and authorized_keys file in case they need it:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">chmod</span> 700 ~/.ssh<br>$ <span class="hljs-built_in">chmod</span> 600 ~/.ssh/authorized_keys<br></code></pre></td></tr></table></figure><p>Now, close your connection and your Terminal or Command Prompt. When you reopen it and try to connect to the remote server again from the client where you have your private key saved, you should receive a request to enter the passphrase instead of your username and password.</p><h1 id="linux---ssh-透過-proxy-jump-bastion-site-至遠端主機">Linux - SSH 透過 Proxy jump (Bastion Site) 至遠端主機</h1><ul><li>單一主機<ul><li><code>ssh -J &lt;bastion-host&gt; &lt;remote-host&gt;</code></li></ul></li><li>多重主機<ul><li><code>ssh -J &lt;bastion1&gt;,&lt;bastion2&gt; &lt;remote&gt;</code></li><li>Client 只開放允許 bastion 主機連線， serverA 有防火牆規則阻絕只能透過 bastion 主機連線， serverB 只能透過 serverA 連線。</li></ul></li></ul><h2 id="設定-ssh_config-檔案">設定 ssh_config 檔案</h2><p>上述透過指令很方便可以達成，如果每次都有多台不同主機要連線，可以藉由<strong>設定 ssh_config (~/.ssh/config)來快速自動連線</strong>，而不用輸入一長串指令。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs config">### The Bastion Host<br>Host bastion-host-nickname<br>  HostName bastion-hostname-IP<br><br>### The Remote Host<br>Host remote-host-nickname<br>  HostName remote-hostname-IP<br>  ProxyJump bastion-host-nickname-IP<br>  User xxx<br></code></pre></td></tr></table></figure><h1 id="reference">Reference:</h1><ol type="1"><li><a href="https://www.strongdm.com/blog/ssh-passwordless-login">How to Set Up SSH Passwordless Login (Step-by-Step Tutorial)</a></li><li><a href="https://how64bit.com/posts/linux/2023/linux-ssh-proxy-jump/">Linux - SSH 透過 Proxy jump (Bastion Site) 至遠端主機</a></li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>Linux</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>ssh</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>WRF | WRF uses Pnetcdf</title>
     <link href="/2024/06/05/WRF-install-pnetcdf/"/>
     <url>/2024/06/05/WRF-install-pnetcdf/</url>
@@ -8628,6 +8634,31 @@
       <tag>Installation</tag>
       
       <tag>Pnetcdf</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>ssh setup</title>
+    <link href="/2024/06/05/ssh/"/>
+    <url>/2024/06/05/ssh/</url>
+    
+    <content type="html"><![CDATA[<p><a href="https://en.wikipedia.org/wiki/Secure_Shell">The Secure Shell Protocol (SSH)</a> is a cryptographic network protocol for operating network services securely over an unsecured network. Its most notable applications are remote login and command-line execution.</p><p>SSH was designed for Unix-like operating systems as a replacement for Telnet and unsecured remote Unix shell protocols, such as the Berkeley Remote Shell (rsh) and the related rlogin and rexec protocols, which all use insecure, plaintext methods of authentication, like passwords.</p><p>安全外殼協定（Secure Shell Protocol，簡稱SSH）是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境[1]。SSH通過在網路中建立安全隧道來實現SSH客戶端與伺服器之間的連線[2]。SSH最常見的用途是遠端登入系統，人們通常利用SSH來傳輸命令列介面和遠端執行命令。SSH使用頻率最高的場合是類Unix系統，但是Windows作業系統也能有限度地使用SSH。2015年，微軟宣布將在未來的作業系統中提供原生SSH協定支援[3]，Windows 10 1803版本已提供OpenSSH工具</p><h1 id="generate-a-key-pair">Generate a key pair</h1><p>In you local PC,</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ ssh-keygen<br>or<br>$ ssh-keygen -t rsa<br></code></pre></td></tr></table></figure><p>where -t rsa option specifies that the type of the key should be RSA. Other choices include DSA, ECDSA, and ED25519. Select the protocol your SSH connection will use.</p><p>and id_rsa/id_rsa.pub are generated on .ssh.</p><ul><li>id_rsa contains the private key.</li><li>id_rsa.pub contains the public key.</li></ul><h1 id="id_rsa.pub">id_rsa.pub</h1><p>Copy id_rsa.pub to remote machine .ssh/authorized_keys</p><h1 id="ssh-login-without-password">ssh login without password</h1><p>In your SSH session with the remote machine, update the permissions of the .ssh directory and authorized_keys file in case they need it:</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ <span class="hljs-built_in">chmod</span> 700 ~/.ssh<br>$ <span class="hljs-built_in">chmod</span> 600 ~/.ssh/authorized_keys<br></code></pre></td></tr></table></figure><p>Now, close your connection and your Terminal or Command Prompt. When you reopen it and try to connect to the remote server again from the client where you have your private key saved, you should receive a request to enter the passphrase instead of your username and password.</p><h1 id="linux---ssh-透過-proxy-jump-bastion-site-至遠端主機">Linux - SSH 透過 Proxy jump (Bastion Site) 至遠端主機</h1><ul><li>單一主機<ul><li><code>ssh -J &lt;bastion-host&gt; &lt;remote-host&gt;</code></li></ul></li><li>多重主機<ul><li><code>ssh -J &lt;bastion1&gt;,&lt;bastion2&gt; &lt;remote&gt;</code></li><li>Client 只開放允許 bastion 主機連線， serverA 有防火牆規則阻絕只能透過 bastion 主機連線， serverB 只能透過 serverA 連線。</li></ul></li></ul><h2 id="設定-ssh_config-檔案">設定 ssh_config 檔案</h2><p>上述透過指令很方便可以達成，如果每次都有多台不同主機要連線，可以藉由<strong>設定 ssh_config (~/.ssh/config)來快速自動連線</strong>，而不用輸入一長串指令。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs config">### The Bastion Host<br>Host bastion-host-nickname<br>  HostName bastion-hostname-IP<br><br>### The Remote Host<br>Host remote-host-nickname<br>  HostName remote-hostname-IP<br>  ProxyJump bastion-host-nickname-IP<br>  User xxx<br></code></pre></td></tr></table></figure><h1 id="reference">Reference:</h1><ol type="1"><li><a href="https://www.strongdm.com/blog/ssh-passwordless-login">How to Set Up SSH Passwordless Login (Step-by-Step Tutorial)</a></li><li><a href="https://how64bit.com/posts/linux/2023/linux-ssh-proxy-jump/">Linux - SSH 透過 Proxy jump (Bastion Site) 至遠端主機</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ssh</tag>
       
     </tags>
     
@@ -9570,6 +9601,31 @@
   
   
   <entry>
+    <title>Git cherry-pick</title>
+    <link href="/2023/05/07/Git-cherry-pick/"/>
+    <url>/2023/05/07/Git-cherry-pick/</url>
+    
+    <content type="html"><![CDATA[<h1 id="git-cherry-pick">Git cherry-pick</h1><p>After switching to the master, use the cherry-pick command to take out the submission of "adding commit instructions", and then add it to the master.</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git checkout master<br>Switched to branch <span class="hljs-string">&#x27;master&#x27;</span><br>$ git cherry-pick 99daed2<br>error: could not apply 99daed2... commit<br>hint: after resolving the conflicts, mark the corrected paths<br>hint: with <span class="hljs-string">&#x27;git add &lt;paths&gt;&#x27;</span> or <span class="hljs-string">&#x27;git rm &lt;paths&gt;&#x27;</span><br>hint: and commit the result with <span class="hljs-string">&#x27;git commit&#x27;</span><br></code></pre></td></tr></table></figure><p>If a conflict occurs, please open sample.txt, modify the conflicting part and then submit.</p><h2 id="whats-the-simplest-way-to-list-conflicted-files-in-git">What's the simplest way to list conflicted files in Git?</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># # Search for all conflicting files.</span><br>git diff --name-only --diff-filter=U --relative<br><br><span class="hljs-comment"># Search for all conflicting files.</span><br>grep -lr <span class="hljs-string">&quot;&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD&quot;</span> ./*<br><br></code></pre></td></tr></table></figure><h2 id="resolve-easyobvious-conflicts">Resolve easy/obvious conflicts</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#At this point you may review each files. If solution is to accept local/our version, run:</span><br>git checkout --ours PATH/FILE<br><br><span class="hljs-comment">#If solution is to accept remote/other-branch version, run:</span><br>git checkout --theirs PATH/FILE<br><br><span class="hljs-comment">#If you have multiple files and you want to accept local/our version, run:</span><br>grep -lr <span class="hljs-string">&#x27;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#x27;</span> . | xargs git checkout --ours<br><br><span class="hljs-comment">#If you have multiple files and you want to accept remote/other-branch version, run:</span><br>grep -lr <span class="hljs-string">&#x27;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#x27;</span> . | xargs git checkout --theirs<br></code></pre></td></tr></table></figure><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git add sample.txt<br>$ git commit<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>Git</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>git cherry-pick</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>ERA5 ERA5T expver dimension issue</title>
     <link href="/2023/05/07/ERA5-expver-issue/"/>
     <url>/2023/05/07/ERA5-expver-issue/</url>
@@ -9597,31 +9653,6 @@
       <tag>ERA5</tag>
       
       <tag>ECMWF</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Git cherry-pick</title>
-    <link href="/2023/05/07/Git-cherry-pick/"/>
-    <url>/2023/05/07/Git-cherry-pick/</url>
-    
-    <content type="html"><![CDATA[<h1 id="git-cherry-pick">Git cherry-pick</h1><p>After switching to the master, use the cherry-pick command to take out the submission of "adding commit instructions", and then add it to the master.</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git checkout master<br>Switched to branch <span class="hljs-string">&#x27;master&#x27;</span><br>$ git cherry-pick 99daed2<br>error: could not apply 99daed2... commit<br>hint: after resolving the conflicts, mark the corrected paths<br>hint: with <span class="hljs-string">&#x27;git add &lt;paths&gt;&#x27;</span> or <span class="hljs-string">&#x27;git rm &lt;paths&gt;&#x27;</span><br>hint: and commit the result with <span class="hljs-string">&#x27;git commit&#x27;</span><br></code></pre></td></tr></table></figure><p>If a conflict occurs, please open sample.txt, modify the conflicting part and then submit.</p><h2 id="whats-the-simplest-way-to-list-conflicted-files-in-git">What's the simplest way to list conflicted files in Git?</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># # Search for all conflicting files.</span><br>git diff --name-only --diff-filter=U --relative<br><br><span class="hljs-comment"># Search for all conflicting files.</span><br>grep -lr <span class="hljs-string">&quot;&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD&quot;</span> ./*<br><br></code></pre></td></tr></table></figure><h2 id="resolve-easyobvious-conflicts">Resolve easy/obvious conflicts</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment">#At this point you may review each files. If solution is to accept local/our version, run:</span><br>git checkout --ours PATH/FILE<br><br><span class="hljs-comment">#If solution is to accept remote/other-branch version, run:</span><br>git checkout --theirs PATH/FILE<br><br><span class="hljs-comment">#If you have multiple files and you want to accept local/our version, run:</span><br>grep -lr <span class="hljs-string">&#x27;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#x27;</span> . | xargs git checkout --ours<br><br><span class="hljs-comment">#If you have multiple files and you want to accept remote/other-branch version, run:</span><br>grep -lr <span class="hljs-string">&#x27;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#x27;</span> . | xargs git checkout --theirs<br></code></pre></td></tr></table></figure><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ git add sample.txt<br>$ git commit<br></code></pre></td></tr></table></figure>]]></content>
-    
-    
-    <categories>
-      
-      <category>Git</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>git cherry-pick</tag>
       
     </tags>
     
