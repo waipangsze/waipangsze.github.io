@@ -214,6 +214,8 @@ module purge # unload all modules
 
 - <https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/1.7.0/using/jedi_environment/modules.html>
 
+- moduleload.sh/env.sh
+
 ```sh
 . /home/wpsze/spack-stack/spack-stack-1.9.3/envs/skylab-dev/install/gcc/9.4.0/lmod-8.7.37-2qs4zuc/lmod/lmod/init/bash
 module use /home/wpsze/spack-stack/spack-stack-1.9.3/envs/skylab-dev/install/modulefiles
@@ -447,6 +449,7 @@ check,
 . /home/wpsze/spack-stack/spack-stack-1.9.3/envs/skylab-dev/install/gcc/9.4.0/lmod-8.7.37-2qs4zuc/lmod/lmod/init/bash
 module use /home/wpsze/spack-stack/spack-stack-1.9.3/envs/skylab-dev/install/modulefiles
 
+# Must
 module load gcc/8.5.0/gcc/9.4.0
 module load openmpi/5.0.5/gcc/9.4.0/jedi-mpas-env/1.0.0
 
