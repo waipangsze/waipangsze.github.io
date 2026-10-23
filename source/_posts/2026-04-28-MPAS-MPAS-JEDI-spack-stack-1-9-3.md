@@ -222,6 +222,7 @@ module use /home/wpsze/spack-stack/spack-stack-1.9.3/envs/skylab-dev/install/mod
 
 module load gcc/8.5.0/gcc/9.4.0
 module load openmpi/5.0.5/gcc/9.4.0/jedi-mpas-env/1.0.0
+
 module available
 ```
 
@@ -470,9 +471,30 @@ sed -i 's|PROJECT fckit     GIT "https://github.com/ecmwf/fckit.git" TAG 0.11.0|
 sed -i 's|PROJECT atlas     GIT "https://github.com/ecmwf/atlas.git" TAG 0.34.0|PROJECT atlas     GIT "https://github.com/ecmwf/atlas.git" TAG 0.40.0|g' "$JEDI_SRC"/CMakeLists.txt
 ```
 
-## Error 
+# Source while uses MPAS-JEDI
 
-### Missing actual argument for argument 'omax' at (1)
+- `env.sh`
+
+```sh
+#!/bin/bash
+module_mpasjedi() {
+  export MODULEPATH="/home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/modulefiles"
+  eval "$(/home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/gcc//9.4.0/lmod-8.7.37-zncdmkl/lmod/8.7.37/libexec/lmod $@)"
+}
+
+module_mpasjedi load gcc/11.5.0/gcc/9.4.0
+module_mpasjedi load openmpi/5.0.5/gcc/9.4.0/jedi-mpas-env/1.0.0
+
+export LD_LIBRARY_PATH=/home/wpsze/opt/mpas-jedi/jedi/build/lib:$LD_LIBRARY_PATH
+
+export LD_PRELOAD=/home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/gcc/11.5.0/gcc-runtime-11.5.0-ummhigh/lib/libgfortran.so.5:$LD_PRELOAD
+
+export LD_PRELOAD=/home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/gcc/11.5.0/gcc-runtime-11.5.0-ummhigh/lib/libstdc++.so.6:$LD_PRELOAD
+```
+
+# Error 
+
+## Missing actual argument for argument 'omax' at (1)
 
 ```console
 [ 60%] Building Fortran object MPAS/src/core_atmosphere/CMakeFiles/core_atmosphere.dir/physics/physics_wrf/module_bl_gwdo.F.o
@@ -569,6 +591,35 @@ The issue is that MPAS-JEDI downloads the latest version of `physics_mmm`, but M
 
 The solution is to repeatedly verify and download the correct versions—specifically, ensure that the `physics_mmm` files are compatible with MPAS-A v8.2.2.
 {% endnote %}
+
+## `GFORTRAN_10` not found
+
+```
+13:/home/wpsze/opt/mpas-jedi/jedi/build/bin/mpasjedi_variational.x: /home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/gcc/11.5.0/gcc-9.4.0-43m6lbf/lib64/libgfortran.so.5: version `GFORTRAN_10' not found (required by /home/wpsze/opt/mpas-jedi/jedi/build/bin/../lib64/libmpas_framework.so)
+
+14:/home/wpsze/opt/mpas-jedi/jedi/build/bin/mpasjedi_variational.x: /home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/gcc/11.5.0/gcc-9.4.0-43m6lbf/lib64/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /home/wpsze/opt/mpas-jedi/jedi/build/bin/../lib64/libmpas_framework.so)
+```
+
+### Solved
+
+- `env.sh`
+
+```sh
+#!/bin/bash
+module_mpasjedi() {
+  export MODULEPATH="/home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/modulefiles"
+  eval "$(/home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/gcc//9.4.0/lmod-8.7.37-zncdmkl/lmod/8.7.37/libexec/lmod $@)"
+}
+
+module_mpasjedi load gcc/11.5.0/gcc/9.4.0
+module_mpasjedi load openmpi/5.0.5/gcc/9.4.0/jedi-mpas-env/1.0.0
+
+export LD_LIBRARY_PATH=/home/wpsze/opt/mpas-jedi/jedi/build/lib:$LD_LIBRARY_PATH
+
+export LD_PRELOAD=/home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/gcc/11.5.0/gcc-runtime-11.5.0-ummhigh/lib/libgfortran.so.5:$LD_PRELOAD
+
+export LD_PRELOAD=/home/wpsze/opt/mpas-jedi/jedi/spack-stack-1.9.1/envs/skylab-dev/install/gcc/11.5.0/gcc-runtime-11.5.0-ummhigh/lib/libstdc++.so.6:$LD_PRELOAD
+```
 
 # physics_mmm
 
