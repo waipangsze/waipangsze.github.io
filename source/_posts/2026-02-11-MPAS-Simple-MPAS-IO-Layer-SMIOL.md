@@ -153,3 +153,10 @@ If you use `SMIOL`, you are opting for the `Classic/PnetCDF` side of this table:
   - **Disk Space is Limited**: You need internal compression to keep output file sizes manageable.
   - **Downstream Tools**: Your specific post-processing or visualization software requires NetCDF-4 features (like groups or specific metadata standards).
   - **Complex Metadata**: You need to store many different types of related data in a single, organized file structure.
+
+# decrease RAM usage significantly
+
+- Change compiled library `PIO2` to `SMIOL` decrease RAM usage significantly
+- <https://conf.cwa.gov.tw/media/cwa_past_conferences/113/113_ppt/A2-24.pdf>
+
+![](https://i.imgur.com/klhPvLK.png)
