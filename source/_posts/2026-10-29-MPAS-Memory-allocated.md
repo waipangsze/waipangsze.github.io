@@ -9,8 +9,8 @@ math: true
 mathjax: true
 mathjax_autoNumber: true
 mermaid: true
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/hvQgrVM.png
+banner_img: https://i.imgur.com/hvQgrVM.png
 ---
 
 - `src/framework/mpas_block_creator.F`
@@ -50,5 +50,14 @@ if (domain % dminfo % nprocs > 1) then
 end if
 call mpas_log_write(' ----- done allocating fields -----')
 call mpas_log_write('')
+```
+
+## Example: 92-25km mesh
+
+```log
+ Allocating fields ...
+  417 MB allocated for fields on this task
+  15026 MB total allocated for fields across all tasks
+  ----- done allocating fields -----
 ```
 
