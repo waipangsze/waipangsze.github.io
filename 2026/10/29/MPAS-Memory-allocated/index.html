@@ -26,13 +26,15 @@
 <meta property="og:site_name" content="wpsze">
 <meta property="og:description" content="src&#x2F;framework&#x2F;mpas_block_creator.F https:&#x2F;&#x2F;github.com&#x2F;MPAS-Dev&#x2F;MPAS-Model&#x2F;blob&#x2F;v8.4.0&#x2F;src&#x2F;framework&#x2F;mpas_block_creator.F Commit f324b9b mgduda committed on Feb 10, 2022  https:&#x2F;&#x2F;github.com&#x2F;MPAS-Dev&#x2F;M">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/hvQgrVM.png">
 <meta property="article:published_time" content="2026-10-28T23:01:00.000Z">
-<meta property="article:modified_time" content="2026-10-29T02:12:24.028Z">
+<meta property="article:modified_time" content="2026-10-29T08:12:55.869Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="WRF">
 <meta property="article:tag" content="MPAS">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i.imgur.com/hvQgrVM.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -335,7 +337,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://i.imgur.com/hvQgrVM.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -364,7 +366,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          92 words
+          97 words
         
       </span>
     
@@ -436,6 +438,8 @@
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs log">Report in log file the total memory allocated for fields by the block creator<br>This commit adds code to the mpas_block_creator module to track and<br>report the total number of bytes allocated for fields by the<br>mpas_block_creator_allocate_pool_fields routine. Allocated bytes are<br>reported for both the MPI task itself as well as the sum across all MPI<br>tasks. The report of the number of allocated bytes is written to the log<br>file, for example:<br><br> Allocating fields ...<br>  284 MB allocated for fields on this task<br>  3408 MB total allocated for fields across all tasks<br>  ----- done allocating fields -----<br></code></pre></td></tr></table></figure>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27;Allocating fields ...&#x27;</span>)<br>allocated_bytes = <span class="hljs-number">0_I8KIND</span><br><br><span class="hljs-keyword">call</span> mpas_block_creator_allocate_pool_fields(block_ptr % structs, block_ptr % dimensions, allocated_bytes, ierr)<br><span class="hljs-keyword">if</span> (ierr /= <span class="hljs-number">0</span>) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27;Allocation of fields failed for core &#x27;</span> // <span class="hljs-built_in">trim</span>(block_ptr % domain % core % coreName), MPAS_LOG_CRIT)<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><br><span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27; $i MB allocated for fields on this task&#x27;</span>, intArgs=[<span class="hljs-built_in">int</span>(allocated_bytes / <span class="hljs-number">1000000_I8KIND</span>)])<br><span class="hljs-keyword">if</span> (domain % dminfo % nprocs &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_dmpar_sum_int(domain % dminfo, <span class="hljs-built_in">int</span>(allocated_bytes / <span class="hljs-number">1000000_I8KIND</span>), total_allocated_mb)<br>    <span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27; $i MB total allocated for fields across all tasks&#x27;</span>, intArgs=[total_allocated_mb])<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27; ----- done allocating fields -----&#x27;</span>)<br><span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27;&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="example-92-25km-mesh">Example: 92-25km mesh</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs log">Allocating fields ...<br> 417 MB allocated for fields on this task<br> 15026 MB total allocated for fields across all tasks<br> ----- done allocating fields -----<br></code></pre></td></tr></table></figure>
 
                 
               </div>
