@@ -64,10 +64,24 @@ Authors/Creators](https://zenodo.org/records/21330749)
 - Coupling single layer urban canopy model **to MPAS/Noah-MP**
 - we develop a hybrid land-use dataset by combining the 100 m CGLC–LCZ product with **the default 1-km MODIS dataset**.
 - implemented a **100-m global LCZ dataset (CGLC-LCZ)** specifically for the WRF-Urban modelingframework.
-- Experiment setup:
-  - All lower boundary conditions in the SLUCM scheme were set to **constant mode (BOUNDR =BOUNDB = BOUNDG = 2)**, This configuration allows the building elements to act as either heatsinks or sources during the simulations.
-  - The temperature solution scheme was configured as **TS_SCHEME=2 (force–restore method)** to ensure urban surface energy balance.
-  - **Anthropogenic sensible and latent heat fluxes** were both activated, using prescribed diurnal profiles.
+
+### Experiment setup:
+
+- In global variable-resolution models, the integration time step ( Δ t ) is typically constrained bythe finest grid cell size to satisfy the Courant–Friedrichs–Lewy (CFL) stability condition.Following the standard guideline of approximately 8 seconds per kilometer of grid resolution, `a 500 m mesh would theoretically require a Δt of roughly 3 seconds`. To mitigate thecomputational cost associated with such a small timestep, **we utilized the explicit time-splittingcapability in MPAS by setting the acoustic sub-step parameter (config_number_of_sub_steps)to 4. This configuration allowed us to safely increase the global model time step to 8 s**, thereby optimizing computational efficiency without compromising numerical stability.
+- All lower boundary conditions in the SLUCM scheme were set to **constant mode (BOUNDR =BOUNDB = BOUNDG = 2)**, 
+  - This configuration allows the building elements to act as either heatsinks or sources during the simulations.
+- The temperature solution scheme was configured as **TS_SCHEME=2 (force–restore method)** to ensure urban surface energy balance.
+- **Anthropogenic sensible and latent heat fluxes** were both activated, using prescribed diurnal profiles.
+- while green roofs were not considered.
+
+{% gi 6 3-3 %}
+![](https://i.imgur.com/uEENPyY.png)
+![](https://i.imgur.com/oAl1HvC.png)
+![](https://i.imgur.com/9sUN6X3.png)
+![](https://i.imgur.com/4Gde5C9.png)
+![](https://i.imgur.com/EGtHSQs.png)
+![](https://i.imgur.com/ncxRysx.png)
+{% endgi %}
 
 ### Initialization Notes
 
