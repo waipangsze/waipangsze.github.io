@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>MPAS | Memory allocated</title>
+    <link href="/2026/10/29/MPAS-Memory-allocated/"/>
+    <url>/2026/10/29/MPAS-Memory-allocated/</url>
+    
+    <content type="html"><![CDATA[<ul><li><code>src/framework/mpas_block_creator.F</code></li><li><a href="https://github.com/MPAS-Dev/MPAS-Model/blob/v8.4.0/src/framework/mpas_block_creator.F" class="uri">https://github.com/MPAS-Dev/MPAS-Model/blob/v8.4.0/src/framework/mpas_block_creator.F</a></li><li>Commit f324b9b mgduda committed on Feb 10, 2022<ul><li><a href="https://github.com/MPAS-Dev/MPAS-Model/commit/f324b9b72544efcf9b46ab2af5c0c15b0d1ae7f0" class="uri">https://github.com/MPAS-Dev/MPAS-Model/commit/f324b9b72544efcf9b46ab2af5c0c15b0d1ae7f0</a></li></ul></li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs log">Report in log file the total memory allocated for fields by the block creator<br>This commit adds code to the mpas_block_creator module to track and<br>report the total number of bytes allocated for fields by the<br>mpas_block_creator_allocate_pool_fields routine. Allocated bytes are<br>reported for both the MPI task itself as well as the sum across all MPI<br>tasks. The report of the number of allocated bytes is written to the log<br>file, for example:<br><br> Allocating fields ...<br>  284 MB allocated for fields on this task<br>  3408 MB total allocated for fields across all tasks<br>  ----- done allocating fields -----<br></code></pre></td></tr></table></figure><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27;Allocating fields ...&#x27;</span>)<br>allocated_bytes = <span class="hljs-number">0_I8KIND</span><br><br><span class="hljs-keyword">call</span> mpas_block_creator_allocate_pool_fields(block_ptr % structs, block_ptr % dimensions, allocated_bytes, ierr)<br><span class="hljs-keyword">if</span> (ierr /= <span class="hljs-number">0</span>) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27;Allocation of fields failed for core &#x27;</span> // <span class="hljs-built_in">trim</span>(block_ptr % domain % core % coreName), MPAS_LOG_CRIT)<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><br><span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27; $i MB allocated for fields on this task&#x27;</span>, intArgs=[<span class="hljs-built_in">int</span>(allocated_bytes / <span class="hljs-number">1000000_I8KIND</span>)])<br><span class="hljs-keyword">if</span> (domain % dminfo % nprocs &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">call</span> mpas_dmpar_sum_int(domain % dminfo, <span class="hljs-built_in">int</span>(allocated_bytes / <span class="hljs-number">1000000_I8KIND</span>), total_allocated_mb)<br>    <span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27; $i MB total allocated for fields across all tasks&#x27;</span>, intArgs=[total_allocated_mb])<br><span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27; ----- done allocating fields -----&#x27;</span>)<br><span class="hljs-keyword">call</span> mpas_log_write(<span class="hljs-string">&#x27;&#x27;</span>)<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>MPAS</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NWP</tag>
+      
+      <tag>WRF</tag>
+      
+      <tag>MPAS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MPAS | Gradient, Curl, Divergence, Laplacian on Unstructured Grids</title>
     <link href="/2026/10/27/MPAS-Gradient-Curl-Divergence-Laplacian-on-Unstructured-Grids/"/>
     <url>/2026/10/27/MPAS-Gradient-Curl-Divergence-Laplacian-on-Unstructured-Grids/</url>
