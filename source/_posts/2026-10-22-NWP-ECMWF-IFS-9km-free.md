@@ -288,3 +288,245 @@ edition      centre       date         dataType     gridType     stepRange    ty
 140 of 140 total messages in 1 files
 ```
 {% endfold %}
+
+
+{% fold info @ecmwf_realtime_download.sh %}
+```
+#!/bin/bash
+
+#set -e # stop the shell on first error
+#set -u # fail when using an undefined variable
+#set -x # echo script lines as they are executed
+#set -euo pipefail
+set -o pipefail
+
+source /EM/icare/opt/micromamba/bin/activate venv
+
+#################################################################
+# https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p1/oper/
+# https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p1/oper/20241117000000-114h-oper-fc-sfc/pl.grib2
+#################################################################
+# ./ecmwf_realtime_download.sh [days_ago] [cycle_hour] [max_forecast_hour]
+# ./ecmwf_realtime_download.sh 0 00 0 # single file
+# ./ecmwf_realtime_download.sh 0 12 0 # single file
+# ./ecmwf_realtime_download.sh 0 00 3
+# ./ecmwf_realtime_download.sh 1 00 0 # single file
+# ./ecmwf_realtime_download.sh 1 12 3
+#################################################################
+
+# ------------------------------------------------------------------------------
+# Configuration & Arguments
+# ------------------------------------------------------------------------------
+DAYS_AGO="${1:-0}"
+HH="${2:-00}"             # 00, 06, 12 , 18
+MAX_FCST="${3:-0}"
+
+# BASE_URL="https://data.ecmwf.int/forecasts"
+BASE_URL="https://storage.googleapis.com/ecmwf-open-data"
+
+#yyyy='2026'
+#mm='08'
+#dd='09'
+
+# Calculate date variables based on days ago
+YYYY=$(date -d "${DAYS_AGO} day ago" +%Y)
+MM=$(date -d "${DAYS_AGO} day ago" +%m)
+DD=$(date -d "${DAYS_AGO} day ago" +%d)
+YYYYMMDD="${YYYY}${MM}${DD}"
+YYYYMMDDHH="${YYYYMMDD}${HH}"
+
+# Create and enter output directory safely
+WORK_DIR="${YYYY}${MM}/${YYYYMMDD}"
+mkdir -p "${WORK_DIR}"
+cd "${WORK_DIR}"
+
+# ------------------------------------------------------------------------------
+# Logging Header
+# ------------------------------------------------------------------------------
+echo "=================================================="
+echo " ECMWF Open Data Realtime Downloader"
+echo "=================================================="
+echo " Target Model Run : ${YYYY}-${MM}-${DD} ${HH}:00 UTC"
+echo " Max Forecast Hour: ${MAX_FCST}h (Step: 3h)"
+echo " Output Directory : ${PWD}"
+echo " Download Time    : $(date '+%Y-%m-%d %H:%M:%S %Z')"
+echo "=================================================="
+echo ""
+
+# ------------------------------------------------------------------------------
+# Helper Functions
+# ------------------------------------------------------------------------------
+
+# Formats an integer to 3 digits (e.g., 3 -> 003)
+pad_hour() {
+    printf "%03d" "$1"
+}
+
+# Downloads a single ECMWF file directly into WORK_DIR
+# Usage: download_ecmwf_file <remote_filename> <target_filename>
+download_ecmwf_file() {
+    local remote_filename="$1"
+    local target_filename="$2"
+    local download_url="${BASE_URL}/${YYYYMMDD}/${HH}z/ifs/0p1/oper/${remote_filename}"
+
+    if [[ -f "./${target_filename}" ]]; then
+        echo "  [SKIP] ${target_filename} already exists."
+        return 0
+    fi
+
+    echo "  [DOWNLOADING] ${download_url} -> ${target_filename}"
+    
+    if wget --no-check-certificate -q --show-progress -c "${download_url}" -O "./${target_filename}"; then
+        echo "  [SUCCESS] Saved ${target_filename}"
+    else
+        echo "  [ERROR] Failed to download ${remote_filename}" >&2
+        rm -f "./${target_filename}" # Remove partial file on failed download
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# Main Download Loop
+# ------------------------------------------------------------------------------
+# Generate forecast step sequence: if MAX_FCST is 0, only run for 0
+if [[ "${MAX_FCST}" -eq 0 ]]; then
+    STEPS=(0)
+else
+    STEPS=($(seq 0 3 "${MAX_FCST}"))
+fi
+
+for fcst_hour in "${STEPS[@]}"; do
+    padded_fcst=$(pad_hour "${fcst_hour}")
+    echo "--- Processing Forecast Step: +${padded_fcst}h ---"
+
+    for type in sfc pl; do
+        remote_file="${YYYYMMDDHH}0000-${fcst_hour}h-oper-fc-${type}.grib2"
+        target_file="${YYYYMMDDHH}0000-${padded_fcst}h-oper-fc-${type}.grib2"
+        download_ecmwf_file "${remote_file}" "${target_file}"
+    done
+
+    echo ""
+done
+
+echo "Done!"
+```
+{% endfold %}
+
+{% fold info @historical_ifs.sh %}
+```
+#!/bin/bash
+
+#################################################################
+# https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p25/oper/
+# https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p25/oper/20241117000000-114h-oper-fc-{sfc/pl}.grib2
+#################################################################
+#
+# Usage:
+#   ./historical_ifs.sh <yyyymmdd> [cycle_hour] [max_forecast_hour]
+#
+# Examples:
+#   ./historical_ifs.sh 20260801 00 0     # Single 000h forecast step
+#   ./historical_ifs.sh 20260801 12 72    # 000h to 072h steps (3h interval)
+#################################################################
+
+# ------------------------------------------------------------------------------
+# Input Validation & Arguments
+# ------------------------------------------------------------------------------
+DATE_IN="${1:-}"
+HH="${2:-00}"
+MAX_FCST="${3:-0}"
+
+if [[ ${#DATE_IN} -ne 8 ]]; then
+    echo "Error: Please provide a valid date in YYYYMMDD format (e.g., 20260801)." >&2
+    echo "Usage: $0 <yyyymmdd> [cycle_hour] [max_forecast_hour]" >&2
+    exit 1
+fi
+
+YYYY="${DATE_IN:0:4}"
+MM="${DATE_IN:4:2}"
+DD="${DATE_IN:6:2}"
+YYYYMMDD="${YYYY}${MM}${DD}"
+YYYYMMDDHH="${YYYYMMDD}${HH}"
+
+# Verify valid calendar date
+if ! date -d "${YYYYMMDD}" >/dev/null 2>&1; then
+    echo "Error: Invalid date '${YYYYMMDD}'." >&2
+    exit 1
+fi
+
+# BASE_URL="https://data.ecmwf.int/forecasts"
+BASE_URL="https://storage.googleapis.com/ecmwf-open-data"
+
+# Create and enter output directory safely
+WORK_DIR="${YYYY}${MM}/${YYYYMMDD}"
+mkdir -p "${WORK_DIR}"
+cd "${WORK_DIR}"
+
+# ------------------------------------------------------------------------------
+# Logging Header
+# ------------------------------------------------------------------------------
+echo "=================================================="
+echo " ECMWF Open Data Historical Downloader"
+echo "=================================================="
+echo " Target Model Run : ${YYYY}-${MM}-${DD} ${HH}:00 UTC"
+echo " Max Forecast Hour: ${MAX_FCST}h (Step: 3h)"
+echo " Output Directory : ${PWD}"
+echo " Execution Time   : $(date '+%Y-%m-%d %H:%M:%S %Z')"
+echo "=================================================="
+echo ""
+
+# ------------------------------------------------------------------------------
+# Helper Functions
+# ------------------------------------------------------------------------------
+
+# Formats an integer to 3 digits (e.g., 3 -> 003)
+pad_hour() {
+    printf "%03d" "$1"
+}
+
+# Downloads a single ECMWF file directly into WORK_DIR
+# Usage: download_ecmwf_file <remote_filename> <target_filename>
+download_ecmwf_file() {
+    local remote_filename="$1"
+    local target_filename="$2"
+    local download_url="${BASE_URL}/${YYYYMMDD}/${HH}z/ifs/0p1/oper/${remote_filename}"
+
+    if [[ -f "./${target_filename}" ]]; then
+        echo "  [SKIP] ${target_filename} already exists."
+        return 0
+    fi
+
+    echo "  [DOWNLOADING] ${download_url} -> ${target_filename}"
+    
+    if wget --no-check-certificate -q --show-progress -c "${download_url}" -O "./${target_filename}"; then
+        echo "  [SUCCESS] Saved ${target_filename}"
+    else
+        echo "  [ERROR] Failed to download ${remote_filename}" >&2
+        rm -f "./${target_filename}" # Remove partial file on failure
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# Main Download Loop
+# ------------------------------------------------------------------------------
+if [[ "${MAX_FCST}" -eq 0 ]]; then
+    STEPS=(0)
+else
+    STEPS=($(seq 0 3 "${MAX_FCST}"))
+fi
+
+for fcst_hour in "${STEPS[@]}"; do
+    padded_fcst=$(pad_hour "${fcst_hour}")
+    echo "--- Processing Forecast Step: +${padded_fcst}h ---"
+
+    for type in sfc pl; do
+        remote_file="${YYYYMMDDHH}0000-${fcst_hour}h-oper-fc-${type}.grib2"
+        target_file="${YYYYMMDDHH}0000-${padded_fcst}h-oper-fc-${type}.grib2"
+        download_ecmwf_file "${remote_file}" "${target_file}"
+    done
+
+    echo ""
+done
+
+echo "Done!"
+```
+{% endfold %}
