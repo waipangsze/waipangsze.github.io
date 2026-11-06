@@ -300,7 +300,7 @@ edition      centre       date         dataType     gridType     stepRange    ty
 #set -euo pipefail
 set -o pipefail
 
-source /EM/icare/opt/micromamba/bin/activate venv
+source /home/wpsze/micromamba/bin/activate venv
 
 #################################################################
 # https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p1/oper/
@@ -414,6 +414,14 @@ echo "Done!"
 {% fold info @historical_ifs.sh %}
 ```
 #!/bin/bash
+
+#set -e # stop the shell on first error
+#set -u # fail when using an undefined variable
+#set -x # echo script lines as they are executed
+#set -euo pipefail
+set -o pipefail
+
+source /home/wpsze/micromamba/bin/activate venv
 
 #################################################################
 # https://data.ecmwf.int/forecasts/20241117/00z/ifs/0p25/oper/
