@@ -538,3 +538,9 @@ done
 echo "Done!"
 ```
 {% endfold %}
+
+# Details
+
+- ungrib 
+  - 357M (0.25deg IFS:2026-11-04_00)
+  - 2.2G (0.1deg IFS-0p1:2026-11-04_00)

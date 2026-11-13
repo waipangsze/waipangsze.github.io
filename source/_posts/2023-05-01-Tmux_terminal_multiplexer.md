@@ -38,6 +38,10 @@ micromamba install conda-forge::tmux
 
 ## Edit .tmux.conf
 
+{% note primary %}
+Use the default configuration (Ctrl+B) and apply some useful skills
+{% endnote %}
+
 ```sh
 # wpsze: apply Default
 # # prefix setting (screen-like)
@@ -105,15 +109,62 @@ Ctrl + B |
 Ctrl + B X
 ```
 
-## copy text
+# 在 tmux 中使用滑鼠進行文字反白與點擊操作
 
-If you prefer using your mouse to highlight and copy text just like a normal terminal, you can turn on mouse mode.
+要在 tmux 中使用滑鼠進行文字反白與點擊操作，首先需要啟用滑鼠模式。
 
-1. Open or create your tmux configuration file: vim ~/.tmux.conf
-2. Add the following line:
-   1. `set -g mouse on`
-3. Save the file, and reload your tmux environment inside the terminal:
-   1. `tmux source ~/.tmux.conf`
-4. Enter Copy Mode: Press `Ctrl + b`, then release and press `[`. (The screen will freeze, and a line counter will appear in the top right).
-5. Simply click and drag your mouse over the text.
-6. You can still paste it using `Ctrl + b` followed by `]`
+## 1. 啟用滑鼠模式
+
+### 暫時啟用（當前工作階段）
+
+在 tmux 中按下 `Ctrl + b`，然後放開，再輸入 `:` 進入命令列，輸入以下指令並按 Enter：
+
+```text
+set -g mouse on
+```
+
+### 永久啟用（寫入設定檔）
+
+將設定加到 `~/.tmux.conf` 檔案中：
+
+```text
+set -g mouse on
+```
+
+然後在 tmux 中重新載入設定，或重啟 tmux：
+
+```bash
+tmux source-file ~/.tmux.conf
+```
+
+## 2. 滑鼠常用操作與反白複製
+
+啟用滑鼠模式後，你可以直接透過滑鼠進行以下操作：
+
+- **點擊選擇窗格 (Pane)**：用滑鼠左鍵點擊任一分割畫面，即可切換為當前活動窗格。
+- **點擊切換視窗 (Window)**：點擊最下方狀態列上的視窗名稱，即可切換視窗。
+- **調整窗格大小**：按住並拖曳窗格之間的邊界線。
+- **使用滾輪捲動**：向上滾動會自動進入「複製模式 (Copy Mode)」瀏覽歷史輸出；滾動回最底部則會自動離開複製模式。
+- **滑鼠反白與複製文字**：
+  1. 按住滑鼠左鍵並拖曳來反白選取文字。
+  2. 放開滑鼠按鍵：tmux 會自動將選取的文字複製到其內建的剪貼簿中，並退出複製模式。
+  3. 貼上文字：按下 `Ctrl + b`，然後按 `]` 即可貼上剛剛複製的內容。
+
+{% note primary %}
+- **滑鼠反白與複製文字**：
+  1. 按住滑鼠左鍵並拖曳來反白選取文字。
+  2. 放開滑鼠按鍵：tmux 會自動將選取的文字複製到其內建的剪貼簿中，並退出複製模式。
+  3. 貼上文字：按下 `Ctrl + b`，然後按 `]` 即可貼上剛剛複製的內容。
+{% endnote %}
+
+## 3. 如何繞過 tmux 選取系統原生文字？
+
+當 `mouse on` 開啟時，滑鼠事件會由 tmux 攔截，導致你無法直接用終端機本身的右鍵選單或原生反白功能。
+
+- **解法**：在用滑鼠拖曳反白文字時，按住鍵盤的 `Shift` 鍵（在某些終端機如 iTerm2 中可能是 `Option` 鍵），即可暫時繞過 tmux，使用終端機原本的文字選取與右鍵複製/貼上功能。
+
+# To copy mouse selections directly to your Linux system clipboard in tmux 
+
+In `.bashrc`,
+
+- `alias cpwd="pwd | tr -d '\n' | xclip -selection clipboard && echo 'pwd copied to clipboard'"`
