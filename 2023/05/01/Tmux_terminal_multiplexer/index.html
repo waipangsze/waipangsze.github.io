@@ -27,7 +27,7 @@
 <meta property="og:description" content="Tmux terminal multiplexer tmux is a terminal multiplexer: it enables a number of terminals to be created, accessed, and controlled from a single screen. tmux may be detached from a screen and continue">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-04-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-15T02:15:17.518Z">
+<meta property="article:modified_time" content="2026-11-13T01:37:00.322Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="HPC">
 <meta property="article:tag" content="terminal">
@@ -364,7 +364,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          194 words
+          749 words
         
       </span>
     
@@ -375,7 +375,7 @@
         
         
         
-          2 mins
+          7 mins
         
       </span>
     
@@ -440,27 +440,52 @@
 <p>or</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">micromamba install conda-forge::tmux<br></code></pre></td></tr></table></figure>
 <h2 id="edit-.tmux.conf">Edit .tmux.conf</h2>
+<div class="note note-primary">
+            <p>Use the default configuration (Ctrl+B) and apply some useful skills</p>
+          </div>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># wpsze: apply Default</span><br><span class="hljs-comment"># # prefix setting (screen-like)</span><br><span class="hljs-comment"># set -g prefix C-a</span><br><span class="hljs-comment"># unbind C-b</span><br><span class="hljs-comment"># bind C-a send-prefix</span><br><br><span class="hljs-built_in">set</span> -g mouse on<br><span class="hljs-built_in">set</span> -g set-clipboard on<br><br><span class="hljs-built_in">bind</span> | split-window -h<br><span class="hljs-built_in">bind</span> - split-window -v<br><br><span class="hljs-comment"># History-limit</span><br><span class="hljs-built_in">set</span> -g history-limit 30000<br><br><span class="hljs-built_in">bind</span> -r ^Up select-pane -U<br><span class="hljs-built_in">bind</span> -r ^Down select-pane -D<br><span class="hljs-built_in">bind</span> -r ^Left select-pane -L<br><span class="hljs-built_in">bind</span> -r ^Right select-pane -R<br><br><span class="hljs-built_in">set</span> -g default-terminal <span class="hljs-string">&quot;xterm-256color&quot;</span><br><br>setw -g mode-keys         vi    <span class="hljs-comment"># 进入复制模式的时候使用 vi 键位（默认是 EMACS）</span><br><br><span class="hljs-comment"># Copy mouse selections to Linux system clipboard</span><br>bind-key -T copy-mode-vi MouseScreenDragEnd1Pane send-keys -X copy-pipe-and-cancel <span class="hljs-string">&quot;xclip -selection clipboard -i&quot;</span><br></code></pre></td></tr></table></figure>
 <h2 id="usage">Usage</h2>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Add new seession</span><br>tmux new -s &lt;session-name&gt;<br><br><span class="hljs-comment"># Detach</span><br>tmux detach <span class="hljs-comment"># or Ctrl + B then d</span><br><br><span class="hljs-comment"># List all sessions</span><br>tmux <span class="hljs-built_in">ls</span><br><br><span class="hljs-comment"># Attach a session</span><br>tmux a -t &lt;session-name&gt;<br><br><span class="hljs-comment"># rename session, </span><br>tmux rename-session -t &lt;old-session-name&gt; &lt;new-session-name&gt;<br><br><span class="hljs-comment"># Reload the current Tmux configuration</span><br>tmux source-file ~/.tmux.conf<br></code></pre></td></tr></table></figure>
 <h2 id="actions">Actions</h2>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># Move bewteen panes</span><br>C trl + B (up,down,lef,right)<br><br><span class="hljs-comment"># the window into two panes horizontally.</span><br>Ctrl + B —<br><br><span class="hljs-comment"># Split the window into two panes vertically.</span><br>Ctrl + B |<br><br><span class="hljs-comment"># Ctrl+B X — Close pane.</span><br>Ctrl + B X<br></code></pre></td></tr></table></figure>
-<h2 id="copy-text">copy text</h2>
-<p>If you prefer using your mouse to highlight and copy text just like a normal terminal, you can turn on mouse mode.</p>
+<h1 id="在-tmux-中使用滑鼠進行文字反白與點擊操作">在 tmux 中使用滑鼠進行文字反白與點擊操作</h1>
+<p>要在 tmux 中使用滑鼠進行文字反白與點擊操作，首先需要啟用滑鼠模式。</p>
+<h2 id="啟用滑鼠模式">1. 啟用滑鼠模式</h2>
+<h3 id="暫時啟用當前工作階段">暫時啟用（當前工作階段）</h3>
+<p>在 tmux 中按下 <code>Ctrl + b</code>，然後放開，再輸入 <code>:</code> 進入命令列，輸入以下指令並按 Enter：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">set -g mouse on<br></code></pre></td></tr></table></figure>
+<h3 id="永久啟用寫入設定檔">永久啟用（寫入設定檔）</h3>
+<p>將設定加到 <code>~/.tmux.conf</code> 檔案中：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">set -g mouse on<br></code></pre></td></tr></table></figure>
+<p>然後在 tmux 中重新載入設定，或重啟 tmux：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">tmux source-file ~/.tmux.conf<br></code></pre></td></tr></table></figure>
+<h2 id="滑鼠常用操作與反白複製">2. 滑鼠常用操作與反白複製</h2>
+<p>啟用滑鼠模式後，你可以直接透過滑鼠進行以下操作：</p>
+<ul>
+<li><strong>點擊選擇窗格 (Pane)</strong>：用滑鼠左鍵點擊任一分割畫面，即可切換為當前活動窗格。</li>
+<li><strong>點擊切換視窗 (Window)</strong>：點擊最下方狀態列上的視窗名稱，即可切換視窗。</li>
+<li><strong>調整窗格大小</strong>：按住並拖曳窗格之間的邊界線。</li>
+<li><strong>使用滾輪捲動</strong>：向上滾動會自動進入「複製模式 (Copy Mode)」瀏覽歷史輸出；滾動回最底部則會自動離開複製模式。</li>
+<li><strong>滑鼠反白與複製文字</strong>：
 <ol type="1">
-<li>Open or create your tmux configuration file: vim ~/.tmux.conf</li>
-<li>Add the following line:
-<ol type="1">
-<li><code>set -g mouse on</code></li>
+<li>按住滑鼠左鍵並拖曳來反白選取文字。</li>
+<li>放開滑鼠按鍵：tmux 會自動將選取的文字複製到其內建的剪貼簿中，並退出複製模式。</li>
+<li>貼上文字：按下 <code>Ctrl + b</code>，然後按 <code>]</code> 即可貼上剛剛複製的內容。</li>
 </ol></li>
-<li>Save the file, and reload your tmux environment inside the terminal:
-<ol type="1">
-<li><code>tmux source ~/.tmux.conf</code></li>
-</ol></li>
-<li>Enter Copy Mode: Press <code>Ctrl + b</code>, then release and press <code>[</code>. (The screen will freeze, and a line counter will appear in the top right).</li>
-<li>Simply click and drag your mouse over the text.</li>
-<li>You can still paste it using <code>Ctrl + b</code> followed by <code>]</code></li>
-</ol>
+</ul>
+<div class="note note-primary">
+            <ul><li><strong>滑鼠反白與複製文字</strong>：<ol type="1"><li>按住滑鼠左鍵並拖曳來反白選取文字。</li><li>放開滑鼠按鍵：tmux 會自動將選取的文字複製到其內建的剪貼簿中，並退出複製模式。</li><li>貼上文字：按下 <code>Ctrl + b</code>，然後按 <code>]</code> 即可貼上剛剛複製的內容。</li></ol></li></ul>
+          </div>
+<h2 id="如何繞過-tmux-選取系統原生文字">3. 如何繞過 tmux 選取系統原生文字？</h2>
+<p>當 <code>mouse on</code> 開啟時，滑鼠事件會由 tmux 攔截，導致你無法直接用終端機本身的右鍵選單或原生反白功能。</p>
+<ul>
+<li><strong>解法</strong>：在用滑鼠拖曳反白文字時，按住鍵盤的 <code>Shift</code> 鍵（在某些終端機如 iTerm2 中可能是 <code>Option</code> 鍵），即可暫時繞過 tmux，使用終端機原本的文字選取與右鍵複製/貼上功能。</li>
+</ul>
+<h1 id="to-copy-mouse-selections-directly-to-your-linux-system-clipboard-in-tmux">To copy mouse selections directly to your Linux system clipboard in tmux</h1>
+<p>In <code>.bashrc</code>,</p>
+<ul>
+<li><code>alias cpwd="pwd | tr -d '\n' | xclip -selection clipboard &amp;&amp; echo 'pwd copied to clipboard'"</code></li>
+</ul>
 
                 
               </div>
@@ -529,7 +554,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>September 15, 2026</div>
+          <div>November 13, 2026</div>
         </div>
       
       
