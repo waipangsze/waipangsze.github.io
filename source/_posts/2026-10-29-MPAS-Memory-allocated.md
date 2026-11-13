@@ -13,6 +13,18 @@ index_img: https://i.imgur.com/hvQgrVM.png
 banner_img: https://i.imgur.com/hvQgrVM.png
 ---
 
+- [MPAS | Minimum computer resources for running MPAS](https://waipangsze.github.io/2024/10/28/Minimum-computer-resources-for-running-MPAS/)
+
+{% note primary %}
+**Amount of memory needed** to run a particular simulation is to multiply the number of horizontal cells in the mesh by **0.175 MB/cell**
+{% endnote %}
+
+{% note primary %}
+We find that on Cheyenne, MPAS-A scales with around **70% parallel efficiency down to around 100 grid columns per MPI task**
+{% endnote %}
+
+---
+
 - `src/framework/mpas_block_creator.F`
 - <https://github.com/MPAS-Dev/MPAS-Model/blob/v8.4.0/src/framework/mpas_block_creator.F>
 - Commit f324b9b mgduda committed on Feb 10, 2022
