@@ -15,7 +15,7 @@ banner_img: https://i.imgur.com/g1Xo2sI.jpeg
 
 # 香港分區天氣資訊平台
 
-{% gi 5 3-2 %}
+{% gi 4 2-2 %}
 ![](https://i.imgur.com/rVkGWcK.png)
 ![](https://i.imgur.com/z0n41nt.png)
 ![](https://i.imgur.com/qyIKPrf.png)
@@ -61,6 +61,13 @@ Date,Pressure 2026/11/19 10:20,1023.3 2026/11/19 10:21,1023.3 2026/11/19 10:22,1
 ```
 
 ## Direct Portal Endpoints (Hourly Regional Data, Daily)
+
+The Regional Weather Information Portal (`regional_portal.html`) loads its station-specific hourly forecasts from static files hosted under the `/wxinfo/awsgis/forecast/` directory. Despite having a `.xml` file extension, these files actually return JSON data:
+
+- URL Pattern:<https://www.hko.gov.hk/wxinfo/awsgis/forecast/> and https://www.hko.gov.hk/wxinfo/awsgis/forecast/{STATION_CODE}.xml
+- Station Codes: Replace `HKO` with the station's 3-letter AWS code (e.g., `HKA` for Chek Lap Kok / Airport, `SHA` for Sha Tin, TKL for Ta Kwu Ling, `WGL` for Waglan Island). You can find the full list of station codes by inspecting the Network tab in your browser's Developer Tools (`F12` -> `Network` -> `Fetch/XHR`) when clicking different locations on the map.
+
+### Data
 
 - It will update hourly, replacing past hours with observed data.
   - Remark: Please Avoding for Overwrite !!!
@@ -221,3 +228,20 @@ HourlyWeatherForecast/
     └── 202611
         └── 20261119
 ```
+
+## Official HKO Open Data API (Territory-Wide Forecasts)
+
+If you need a stable, officially supported API for production applications (and do not strictly need hourly station-by-station forecasts), use HKO's official Open Data API. No API key is required.
+
+* **Base Endpoint:** `[https://data.weather.gov.hk/weatherAPI/opendata/weather.php](https://data.weather.gov.hk/weatherAPI/opendata/weather.php)`
+* **9-Day Weather Forecast (`fnd`):**
+`[https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc](https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc)` *(use `lang=en` for English)*
+* **Local Weather Forecast (`flw` - Today/Tomorrow):**
+`[https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=tc](https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=tc)`
+* **Current Regional Weather Report (`rhrread` - Observations):**
+`[https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc](https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc)`
+
+### **Gridded Rainfall Nowcast (Next 2 Hours):**
+If you specifically want the short-term 2-hour rainfall forecast displayed at the top right of your screenshot, HKO provides a dedicated dataset on `DATA.GOV.HK` updated every 12 minutes:
+
+* **CSV Download:** `[https://data.weather.gov.hk/weatherAPI/hko_data/F3/Gridded_rainfall_nowcast.csv](https://data.weather.gov.hk/weatherAPI/hko_data/F3/Gridded_rainfall_nowcast.csv)`
