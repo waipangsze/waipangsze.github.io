@@ -4,7 +4,7 @@ title: NWP | HKO | OCF Objective Consensus Forecast | 客觀整合預報
 categories: NWP
 tags: [NWP, HKO, WRF, MPAS, CMA, CMA_GFS, CMA_MESO]
 author: wpsze
-date: 2026-10-08 06:15:00
+date: 2026-11-20 06:15:00
 math: true
 mathjax: true
 mathjax_autoNumber: true
