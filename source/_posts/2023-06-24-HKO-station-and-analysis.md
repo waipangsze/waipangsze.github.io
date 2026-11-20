@@ -4,8 +4,8 @@ title: HKO station and analysis
 categories: [NWP]
 tags: [HKO, obs, WRF,  MPAS]
 author: wpsze
-index_img: 
-banner_img: 
+index_img: https://i.imgur.com/g1Xo2sI.jpeg
+banner_img: https://i.imgur.com/g1Xo2sI.jpeg
 ---
 
 # Download HKO weather dataset
