@@ -103,7 +103,7 @@ The Regional Weather Information Portal (`regional_portal.html`) loads its stati
 
 - It will update hourly, replacing past hours with observed data.
   - Remark: Please Avoding for Overwrite !!!
-- crontab with `00HKT` and `12HKT`
+- crontab with `10,40 * * * * cd /home/wpsze/hko_ocf && ./run.sh` or `20,50` or `25,55`
 
 {% fold info @python %} 
 ```python
