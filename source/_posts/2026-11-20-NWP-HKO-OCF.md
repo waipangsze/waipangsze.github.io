@@ -33,6 +33,12 @@ Currently, outputs from five different NWP models are used in OCF, including: (*
 4. NCEP GFS,
 5. ECMWF Ensemble Prediction System (EPS).
 
+## 開發新一代「香港及珠江三角洲區域自動分區天氣預報」
+
+- [人工智能天氣模型的定點自動天氣預報 | HKO](https://www.hko.gov.hk/tc/education/weather/data-and-technology/00762-Location-specific-Automatic-Weather-Forecast-using-AI-Weather-Model.html)
+  - 為探討這個問題，我們近期對AI模式，包括「歐洲中心人工智能電腦模式」（AIFS），以及「風烏」、「伏羲」和「盤古」等應用了上述模式後處理方法進行預報修正。綜合以上四個模式的後處理預報表現，初步結果顯示AI模式對未來九天香港天文台的每日最低氣溫預報的誤差，較現行OCF降低了約百分之三至十六（圖一）；而在每日最高氣溫預報方面，AI模式於未來第二至五天的預測誤差平均減少約百分之十（圖二），但之後AI模式的預測誤差在比現行OCF稍為遜色，在第八和第九天的預測誤差增加百分之十左右。
+  - 基於這些發現，我們將上述AI模式的後處理預報融合至現有的OCF系統中。如圖一和圖二所示，這套 「加強版OCF」 成功綜合了NWP和AI模式預報的優勢，提供更準確的每日最高及最低氣溫預測參考依據。在集合NWP和AI多個模式預報的過程中，模式後處理會通過按照各個NWP和AI模型預測的誤差，從新調整各個模式預報在計算「加強版OCF」結果的比重，令到「加強版OCF」有效地將表現較好的NWP或 AI 模式在集合過程中突出其貢獻。從圖一和圖二可見，「加強版OCF」對未來九天的每日最低氣溫預報誤差平均減少約百分之十，同時每日最高氣溫的預報準確度也較現行OCF有所提升。
+
 # To retrieve the hourly regional forecast data
 
 ## HKO observation data
@@ -66,6 +72,32 @@ The Regional Weather Information Portal (`regional_portal.html`) loads its stati
 
 - URL Pattern:<https://www.hko.gov.hk/wxinfo/awsgis/forecast/> and https://www.hko.gov.hk/wxinfo/awsgis/forecast/{STATION_CODE}.xml
 - Station Codes: Replace `HKO` with the station's 3-letter AWS code (e.g., `HKA` for Chek Lap Kok / Airport, `SHA` for Sha Tin, TKL for Ta Kwu Ling, `WGL` for Waglan Island). You can find the full list of station codes by inspecting the Network tab in your browser's Developer Tools (`F12` -> `Network` -> `Fetch/XHR`) when clicking different locations on the map.
+- Same as `https://maps.weather.gov.hk/ocf/index_uc.html?station=HKO`, `https://maps.weather.gov.hk/ocf/dat/HKO.xml`
+
+### Location
+
+#### ARWF 測站代碼摘要
+
+以下為香港天文台**自動分區天氣預報（Automatic Regional Weather Forecast，ARWF）**系統的測站代碼，根據所提供的檔案標頭及隨附說明整理。
+
+| 代碼 | 測站名稱 | 緯度 | 經度 | 備註 |
+|------|---------|------|------|------|
+| **ARWF_CCC** | 香港中文大學（大學站） | 22.4147 | 114.210 | 城市氣象監測站 |
+| **ARWF_CYS** | 香港中文大學（伍宜孫書院） | 22.4224 | 114.203 | 城市氣象監測站 |
+| **ARWF_HMM** | 香港海事博物館 | 22.2863 | 114.162 | 城市氣象監測站 |
+| **ARWF_MKA** | 馬鞍山 | 22.3225 | 114.168 | 城市氣象監測站 |
+| **ARWF_SFY** | 天星碼頭（尖沙咀） | 22.2935 | 114.169 | 城市氣象監測站 |
+| **ARWF_TIT** | 大環山公園 | 22.3319 | 114.197 | 城市氣象監測站 |
+| **ARWF_TWS** | 荃灣 | 22.3057 | 114.193 | 城市氣象監測站 |
+| **ARWF_VIP** | 維多利亞公園 | 22.2826 | 114.188 | 城市氣象監測站 |
+| **ARWF_WCC** | 保良局胡忠中學 | 22.4161 | 114.227 | 城市氣象監測站 |
+
+##### 重點
+
+- **系統**：所有代碼均屬香港天文台**自動分區天氣預報（ARWF）**系統，為香港各區微氣候測站提供定點逐小時天氣預報。
+- **時間戳**：所示檔案均為 `LastModified: 2026112015301x`（2026年11月20日約15:30 香港時間），表示同一預報時次同步產生。
+- **測站類型**：CCC、CYS、HMM、SFY、TIT、VIP、WCC 均為**城市氣象監測站**；MKA（馬鞍山）及 TWS（荃灣）為提示中已有說明的測站。
+- **地理分佈**：測站由約北緯22.28°（VIP、HMM）至約北緯22.42°（CYS、WCC），涵蓋港島、九龍、新界及中大校園一帶。
 
 ### Data
 
@@ -73,7 +105,7 @@ The Regional Weather Information Portal (`regional_portal.html`) loads its stati
   - Remark: Please Avoding for Overwrite !!!
 - crontab with `00HKT` and `12HKT`
 
-{% fold info @python %}
+{% fold info @python %} 
 ```python
 #!/bin/python
 # -*- coding: utf-8 -*-
@@ -98,7 +130,9 @@ stations = [
     "TY1", "NGP", "TYW", "PEN", "EPC", "SKG", "SLW", "SHA", "SSP", "SKW", "SEK",
     "SSH", "STY", "TKL", "TLS", "PLC", "TMS", "YCT", "TAP", "TC", "VP1", "JKB",
     "TWN", "TW", "TU1", "WGL", "WLP", "HKS", "WTS", "YLP", "CCB", "NP", "SC",
-    "SHL", "SF", "TMT", "TO", "TPK", "TUN", "YTS", "TME",
+    "SHL", "SF", "TMT", "TO", "TPK", "TUN", "YTS", "TME", "DF3647", "GF3640", "G137",
+    "ARWF_MKA", "ARWF_SFY", "ARWF_TWS", "ARWF_TIT", "ARWF_CCC", "ARWF_CYS", 
+    "ARWF_WCC", "ARWF_HMM", "ARWF_VIP",
 ]
 
 headers = {"User-Agent": "Mozilla/5.0"}
@@ -167,11 +201,11 @@ for station in stations:
           ref_time[8:10],
       )
       date_subpath = os.path.join(yyyy, yyyymm, yyyymmdd)
-      file_timestamp = f"{yyyymmdd}_{hh}"
+      file_timestamp = f"{data.get('LastModified', '')}"
     elif len(ref_time) >= 8:
       yyyy, yyyymm, yyyymmdd = ref_time[:4], ref_time[:6], ref_time[:8]
       date_subpath = os.path.join(yyyy, yyyymm, yyyymmdd)
-      file_timestamp = yyyymmdd
+      file_timestamp = f"{data.get('LastModified', '')}"
     else:
       date_subpath = "unknown_date"
       file_timestamp = ref_time or "output"
