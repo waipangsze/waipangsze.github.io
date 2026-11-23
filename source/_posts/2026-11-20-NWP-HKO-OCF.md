@@ -36,10 +36,9 @@ Currently, outputs from five different NWP models are used in OCF, including: (*
 - [按天氣情境修正數值預報模式的低溫預報 | 2016 | HKO](https://www.hko.gov.hk/en/publica/reprint/files/r1226.pdf#2#2#2)
   - 該系統先利用實況觀測數據，以**卡爾曼濾波**後處理技巧對多個全球預報模式及天文台中尺度模式的直接輸出作出修正，再按照各模式在**過去三十天的表現訂定其比重**，製成集成預報。目前，OCF 的結果已成為預報員制定每日氣溫預測的主要客觀參考數據之一。
   - 雖然卡爾曼濾波能夠因應模式誤差在過去一段時間的變化而調節其修正幅度，**但在天氣情境急速變化之際，或未能及時掌握模式誤差可能出現的轉變**。
+  - 因此，在參考「客觀集成預報」的同時，**預報員往往根據經驗及最新實況觀測數據，評估在預計會出現的天氣情境下，經後處理的數值模式預報是否需要再作調整**，從而作出氣溫預測，並向公眾發佈。
 
-### 主觀預報  (可能)
-
-主觀預報（Subjective Forecast）
+### 主觀預報 (根據經驗及最新實況觀測數據)
 
 在天文預報語境中，「主觀預報」通常涉及兩個層面：
 
@@ -277,6 +276,10 @@ HourlyWeatherForecast/
 ```
 
 ![Some time slots may occur twice an hour.](https://i.imgur.com/yH6ttfS.png)
+
+# Analysis and Plot
+
+
 
 ## Official HKO Open Data API (Territory-Wide Forecasts)
 
