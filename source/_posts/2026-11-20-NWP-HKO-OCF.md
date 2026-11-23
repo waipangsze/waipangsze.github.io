@@ -33,9 +33,13 @@ Currently, outputs from five different NWP models are used in OCF, including: (*
 4. NCEP GFS,
 5. ECMWF Ensemble Prediction System (EPS).
 
+- [按天氣情境修正數值預報模式的低溫預報 | 2016 | HKO](https://www.hko.gov.hk/en/publica/reprint/files/r1226.pdf#2#2#2)
+  - 該系統先利用實況觀測數據，以**卡爾曼濾波**後處理技巧對多個全球預報模式及天文台中尺度模式的直接輸出作出修正，再按照各模式在**過去三十天的表現訂定其比重**，製成集成預報。目前，OCF 的結果已成為預報員制定每日氣溫預測的主要客觀參考數據之一。
+  - 雖然卡爾曼濾波能夠因應模式誤差在過去一段時間的變化而調節其修正幅度，**但在天氣情境急速變化之際，或未能及時掌握模式誤差可能出現的轉變**。
+
 ## 開發新一代「香港及珠江三角洲區域自動分區天氣預報」
 
-- [人工智能天氣模型的定點自動天氣預報 | HKO](https://www.hko.gov.hk/tc/education/weather/data-and-technology/00762-Location-specific-Automatic-Weather-Forecast-using-AI-Weather-Model.html)
+- [人工智能天氣模型的定點自動天氣預報 | 2025 | HKO](https://www.hko.gov.hk/tc/education/weather/data-and-technology/00762-Location-specific-Automatic-Weather-Forecast-using-AI-Weather-Model.html)
   - 為探討這個問題，我們近期對AI模式，包括「歐洲中心人工智能電腦模式」（AIFS），以及「風烏」、「伏羲」和「盤古」等應用了上述模式後處理方法進行預報修正。綜合以上四個模式的後處理預報表現，初步結果顯示AI模式對未來九天香港天文台的每日最低氣溫預報的誤差，較現行OCF降低了約百分之三至十六（圖一）；而在每日最高氣溫預報方面，AI模式於未來第二至五天的預測誤差平均減少約百分之十（圖二），但之後AI模式的預測誤差在比現行OCF稍為遜色，在第八和第九天的預測誤差增加百分之十左右。
   - 基於這些發現，我們將上述AI模式的後處理預報融合至現有的OCF系統中。如圖一和圖二所示，這套 「加強版OCF」 成功綜合了NWP和AI模式預報的優勢，提供更準確的每日最高及最低氣溫預測參考依據。在集合NWP和AI多個模式預報的過程中，模式後處理會通過按照各個NWP和AI模型預測的誤差，從新調整各個模式預報在計算「加強版OCF」結果的比重，令到「加強版OCF」有效地將表現較好的NWP或 AI 模式在集合過程中突出其貢獻。從圖一和圖二可見，「加強版OCF」對未來九天的每日最低氣溫預報誤差平均減少約百分之十，同時每日最高氣溫的預報準確度也較現行OCF有所提升。
 
@@ -262,6 +266,8 @@ HourlyWeatherForecast/
     └── 202611
         └── 20261119
 ```
+
+![Some time slots may occur twice an hour.](https://i.imgur.com/yH6ttfS.png)
 
 ## Official HKO Open Data API (Territory-Wide Forecasts)
 
