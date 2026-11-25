@@ -282,11 +282,13 @@ save as
 DailyForecast/
 └── 2026
     └── 202611
-        └── 20261119
+        └── 20261125
+            └── 2026112509
 HourlyWeatherForecast/
 └── 2026
     └── 202611
-        └── 20261119
+        └── 20261125
+            └── 2026112509
 ```
 
 ![Some time slots may occur twice an hour.](https://i.imgur.com/yH6ttfS.png)
