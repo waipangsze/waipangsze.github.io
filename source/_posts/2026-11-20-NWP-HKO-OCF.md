@@ -67,6 +67,29 @@ Currently, outputs from five different NWP models are used in OCF, including: (*
   - 為探討這個問題，我們近期對AI模式，包括「歐洲中心人工智能電腦模式」（AIFS），以及「風烏」、「伏羲」和「盤古」等應用了上述模式後處理方法進行預報修正。綜合以上四個模式的後處理預報表現，初步結果顯示AI模式對未來九天香港天文台的每日最低氣溫預報的誤差，較現行OCF降低了約百分之三至十六（圖一）；而在每日最高氣溫預報方面，AI模式於未來第二至五天的預測誤差平均減少約百分之十（圖二），但之後AI模式的預測誤差在比現行OCF稍為遜色，在第八和第九天的預測誤差增加百分之十左右。
   - 基於這些發現，我們將上述AI模式的後處理預報融合至現有的OCF系統中。如圖一和圖二所示，這套 「加強版OCF」 成功綜合了NWP和AI模式預報的優勢，提供更準確的每日最高及最低氣溫預測參考依據。在集合NWP和AI多個模式預報的過程中，模式後處理會通過按照各個NWP和AI模型預測的誤差，從新調整各個模式預報在計算「加強版OCF」結果的比重，令到「加強版OCF」有效地將表現較好的NWP或 AI 模式在集合過程中突出其貢獻。從圖一和圖二可見，「加強版OCF」對未來九天的每日最低氣溫預報誤差平均減少約百分之十，同時每日最高氣溫的預報準確度也較現行OCF有所提升。
 
+# 開放數據平台
+
+- <https://data.weather.gov.hk/weatherAPI/doc/HKO_Open_Data_API_Documentation_tc.pdf>
+- [九天天氣預報 | 香港天文台 | 提供香港九天天氣預報](https://data.gov.hk/tc-datasets/category/climate-and-weather?page=1&sortBy=relevance&keyword=forecast)
+  - 每天兩次及當有更新數據時
+  - **下載歷史數據** | 我們為你收集了歷史數據。 歷史數據是數據集的前版本。
+  - ````
+        Date/Month:
+        02/11 (Monday)<br/>
+        Wind:               
+        East to northeast force 3.<br/>
+        Weather:        
+        Mainly cloudy. One or two light rain patches in the morning and at night. Sunny periods during the day.<br/>
+        Temp range: 
+        26 -  
+        30 C<br/>
+        R.H. range:  
+        65 -  
+        90 per Cent<br/>
+        PSR: Low<p/><p/>
+    ```
+  - ![](https://i.imgur.com/gz880Vb.png)
+
 # To retrieve the hourly regional forecast data
 
 ## HKO observation data
