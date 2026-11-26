@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/g1Xo2sI.jpeg">
 <meta property="article:published_time" content="2026-11-19T22:15:00.000Z">
-<meta property="article:modified_time" content="2026-11-25T01:43:40.257Z">
+<meta property="article:modified_time" content="2026-11-26T06:34:43.785Z">
 <meta property="article:author" content="wpsze">
 <meta property="article:tag" content="NWP">
 <meta property="article:tag" content="MPAS">
@@ -370,7 +370,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6k words
+          6.1k words
         
       </span>
     
@@ -381,7 +381,7 @@
         
         
         
-          51 mins
+          52 mins
         
       </span>
     
@@ -497,14 +497,23 @@
 <li>基於這些發現，我們將上述AI模式的後處理預報融合至現有的OCF系統中。如圖一和圖二所示，這套 「加強版OCF」 成功綜合了NWP和AI模式預報的優勢，提供更準確的每日最高及最低氣溫預測參考依據。在集合NWP和AI多個模式預報的過程中，模式後處理會通過按照各個NWP和AI模型預測的誤差，從新調整各個模式預報在計算「加強版OCF」結果的比重，令到「加強版OCF」有效地將表現較好的NWP或 AI 模式在集合過程中突出其貢獻。從圖一和圖二可見，「加強版OCF」對未來九天的每日最低氣溫預報誤差平均減少約百分之十，同時每日最高氣溫的預報準確度也較現行OCF有所提升。</li>
 </ul></li>
 </ul>
-<h1 id="to-retrieve-the-hourly-regional-forecast-data">To retrieve the hourly regional forecast data</h1>
-<h2 id="hko-observation-data">HKO observation data</h2>
+<h1 id="開放數據平台">開放數據平台</h1>
 <ul>
-<li>Temp and RH</li>
-<li><code>wget -c https://www.hko.gov.hk/wxinfo/awsgis/hkoc.csv</code></li>
-</ul>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs txt">Date,Temp,RH 2026/11/19 10:20,20.6,67 2026/11/19 10:21,20.5,67 2026/11/19 10:22,20.5,68 2026/11/19 10:23,20.6,67 2026/11/19 10:24,20.6,67 2026/11/19 10:25,20.5,68 2026/11/19 10:26,20.5,67 2026/11/19 10:27,20.5,67 2026/11/19 10:28,20.5,67 2026/11/19 10:29,20.6,67 2026/11/19 10:30,20.5,69 2026/11/19 10:31,20.5,69 2026/11/19 10:32,20.5,69 2026/11/19 10:33,20.5,69 2026/11/19 10:34,20.5,69 2026/11/19<br>……<br>10:08,14,80 2026/11/20 10:09,14,80 2026/11/20 10:10,13.9,82 2026/11/20 10:11,13.9,82 2026/11/20 10:12,13.8,82 2026/11/20 10:13,13.7,82 2026/11/20 10:14,13.7,82 2026/11/20 10:15,13.7,83 2026/11/20 10:16,13.7,84 2026/11/20 10:17,13.7,84 2026/11/20 10:18,13.7,84 2026/11/20 10:19,13.6,85 2026/11/20 10:20,13.6,85<br></code></pre></td></tr></table></figure>
+<li><a target="_blank" rel="noopener" href="https://data.weather.gov.hk/weatherAPI/doc/HKO_Open_Data_API_Documentation_tc.pdf" class="uri">https://data.weather.gov.hk/weatherAPI/doc/HKO_Open_Data_API_Documentation_tc.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://data.gov.hk/tc-datasets/category/climate-and-weather?page=1&amp;sortBy=relevance&amp;keyword=forecast">九天天氣預報 | 香港天文台 | 提供香港九天天氣預報</a>
 <ul>
+<li>每天兩次及當有更新數據時</li>
+<li><strong>下載歷史數據</strong> | 我們為你收集了歷史數據。 歷史數據是數據集的前版本。</li>
+<li>```` Date/Month: 02/11 (Monday)<br/> Wind:<br />
+East to northeast force 3.<br/> Weather:<br />
+Mainly cloudy. One or two light rain patches in the morning and at night. Sunny periods during the day.<br/> Temp range: 26 -<br />
+30 C<br/> R.H. range:<br />
+65 -<br />
+90 per Cent<br/> PSR: Low
+<p/>
+<p/>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs dns">  - ![](https://i.imgur.com/gz880Vb.png)<br><br># To retrieve the hourly regional forecast data<br><br>## HKO observation data<br><br>- Temp and RH<br>- `wget -c https://www.hko.gov.hk/wxinfo/awsgis/hkoc.csv`<br><br>```txt<br>Date,Temp,RH <span class="hljs-number">2026/11/19</span> <span class="hljs-number">10:20,20.6</span>,<span class="hljs-number">67 2026/11</span>/<span class="hljs-number">19 10:21,20</span>.<span class="hljs-number">5,67 2026</span>/<span class="hljs-number">11/19 10:22</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,68 2026</span>/<span class="hljs-number">11/19 10:23</span>,<span class="hljs-number">20</span>.<span class="hljs-number">6,67 2026</span>/<span class="hljs-number">11/19 10:24</span>,<span class="hljs-number">20</span>.<span class="hljs-number">6,67 2026</span>/<span class="hljs-number">11/19 10:25</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,68 2026</span>/<span class="hljs-number">11/19 10:26</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,67 2026</span>/<span class="hljs-number">11/19 10:27</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,67 2026</span>/<span class="hljs-number">11/19 10:28</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,67 2026</span>/<span class="hljs-number">11/19 10:29</span>,<span class="hljs-number">20</span>.<span class="hljs-number">6,67 2026</span>/<span class="hljs-number">11/19 10:30</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,69 2026</span>/<span class="hljs-number">11/19 10:31</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,69 2026</span>/<span class="hljs-number">11/19 10:32</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,69 2026</span>/<span class="hljs-number">11/19 10:33</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,69 2026</span>/<span class="hljs-number">11/19 10:34</span>,<span class="hljs-number">20</span>.<span class="hljs-number">5,69 2026</span>/<span class="hljs-number">11</span>/<span class="hljs-number">19</span><br>……<br><span class="hljs-number">10:08,14,80</span> <span class="hljs-number">2026/11/20</span> <span class="hljs-number">10:09,14,80</span> <span class="hljs-number">2026/11/20</span> <span class="hljs-number">10:10,13.9</span>,<span class="hljs-number">82 2026/11</span>/<span class="hljs-number">20 10:11,13</span>.<span class="hljs-number">9,82 2026</span>/<span class="hljs-number">11/20 10:12</span>,<span class="hljs-number">13</span>.<span class="hljs-number">8,82 2026</span>/<span class="hljs-number">11/20 10:13</span>,<span class="hljs-number">13</span>.<span class="hljs-number">7,82 2026</span>/<span class="hljs-number">11/20 10:14</span>,<span class="hljs-number">13</span>.<span class="hljs-number">7,82 2026</span>/<span class="hljs-number">11/20 10:15</span>,<span class="hljs-number">13</span>.<span class="hljs-number">7,83 2026</span>/<span class="hljs-number">11/20 10:16</span>,<span class="hljs-number">13</span>.<span class="hljs-number">7,84 2026</span>/<span class="hljs-number">11/20 10:17</span>,<span class="hljs-number">13</span>.<span class="hljs-number">7,84 2026</span>/<span class="hljs-number">11/20 10:18</span>,<span class="hljs-number">13</span>.<span class="hljs-number">7,84 2026</span>/<span class="hljs-number">11/20 10:19</span>,<span class="hljs-number">13</span>.<span class="hljs-number">6,85 2026</span>/<span class="hljs-number">11/20 10:20</span>,<span class="hljs-number">13</span>.<span class="hljs-number">6</span>,<span class="hljs-number">85</span><br></code></pre></td></tr></table></figure></li>
+</ul></li>
 <li>Heat Index</li>
 <li><code>wget -c https://www.hko.gov.hk/wxinfo/awsgis/hq4_hi2.csv</code></li>
 </ul>
@@ -733,7 +742,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Updated on</div>
-          <div>November 25, 2026</div>
+          <div>November 26, 2026</div>
         </div>
       
       
